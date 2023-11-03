@@ -1,9 +1,8 @@
 package br.f1mane.servidor.controles;
 
+import br.f1mane.recursos.idiomas.Lang;
 import br.f1mane.servidor.entidades.TOs.MsgSrv;
 import br.f1mane.servidor.entidades.persistencia.*;
-import br.f1mane.recursos.CarregadorRecursos;
-import br.f1mane.recursos.idiomas.Lang;
 import br.f1mane.servidor.util.HibernateUtil;
 import br.nnpe.Constantes;
 import br.nnpe.Dia;
@@ -18,17 +17,8 @@ import org.hibernate.criterion.Restrictions;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Piloto;
 
-import javax.swing.*;
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.Date;
+import java.io.FileNotFoundException;
 import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
 /**
  * @author Paulo Sobreira Criado em 20/10/2007 as 14:19:54
@@ -86,30 +76,6 @@ public class ControlePersistencia {
 
     }
 
-    public void gravarDados() throws IOException {
-        synchronized (lock) {
-            processarLimpeza(paddockDadosSrv);
-            paddockDadosSrv.setLastSave(System.currentTimeMillis());
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            XMLEncoder encoder = new XMLEncoder(byteArrayOutputStream);
-            encoder.writeObject(paddockDadosSrv);
-            encoder.flush();
-            ZipOutputStream zipOutputStream = new ZipOutputStream(Files.newOutputStream(Paths.get(basePath + nomeArquivo)));
-            ZipEntry entry = new ZipEntry("paddockDadosSrv.xml");
-            zipOutputStream.putNextEntry(entry);
-            zipOutputStream.write(byteArrayOutputStream.toByteArray());
-            zipOutputStream.closeEntry();
-            zipOutputStream.close();
-            ZipOutputStream zipOutputStreamBak = new ZipOutputStream(
-                    Files.newOutputStream(Paths.get(basePath + "BAK_" + nomeArquivo)));
-            ZipEntry entryBak = new ZipEntry("paddockDadosSrv.xml");
-            zipOutputStreamBak.putNextEntry(entryBak);
-            zipOutputStreamBak.write(byteArrayOutputStream.toByteArray());
-            zipOutputStreamBak.closeEntry();
-            zipOutputStreamBak.close();
-        }
-    }
-
     private void processarLimpeza(PaddockDadosSrv pds) {
         Map map = pds.getJogadoresMap();
         for (Iterator iter = map.keySet().iterator(); iter.hasNext(); ) {
@@ -130,107 +96,6 @@ public class ControlePersistencia {
             }
         }
 
-    }
-
-    private PaddockDadosSrv lerDados() throws Exception {
-        ZipInputStream zin = new ZipInputStream(Files.newInputStream(Paths.get(basePath + nomeArquivo)));
-        zin.getNextEntry();
-        ByteArrayOutputStream arrayDinamico = new ByteArrayOutputStream();
-        int byt = zin.read();
-
-        while (-1 != byt) {
-            arrayDinamico.write(byt);
-            byt = zin.read();
-        }
-
-        arrayDinamico.flush();
-
-        ByteArrayInputStream bin = new ByteArrayInputStream(arrayDinamico.toByteArray());
-        XMLDecoder decoder = new XMLDecoder(bin);
-        return (PaddockDadosSrv) decoder.readObject();
-    }
-
-    public void migrar() throws Exception {
-        JFileChooser fileChooser = new JFileChooser(
-                CarregadorRecursos.class.getResource("CarregadorRecursos.class").getFile());
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
-        int result = fileChooser.showOpenDialog(null);
-
-        if (result == JFileChooser.CANCEL_OPTION) {
-            return;
-        }
-
-        ZipInputStream zin = new ZipInputStream(Files.newInputStream(fileChooser.getSelectedFile().toPath()));
-        zin.getNextEntry();
-        ByteArrayOutputStream arrayDinamico = new ByteArrayOutputStream();
-        int byt = zin.read();
-
-        while (-1 != byt) {
-            arrayDinamico.write(byt);
-            byt = zin.read();
-        }
-
-        arrayDinamico.flush();
-
-        ByteArrayInputStream bin = new ByteArrayInputStream(arrayDinamico.toByteArray());
-        XMLDecoder decoder = new XMLDecoder(bin);
-        PaddockDadosSrv paddockDadosSrv = (PaddockDadosSrv) decoder.readObject();
-        // PaddockDadosSrv paddockDadosSrv = lerDados();
-        Session session = HibernateUtil.getSession();
-        try {
-
-            Transaction beginTransaction = session.beginTransaction();
-            Map jogadores = paddockDadosSrv.getJogadoresMap();
-            Set emails = new HashSet();
-            for (Iterator iterator = jogadores.keySet().iterator(); iterator.hasNext(); ) {
-                String nome = (String) iterator.next();
-                JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) jogadores.get(nome);
-                CarreiraDadosSrv carreiraDadosSrv;
-                List corridas = jogadorDadosSrv.getCorridas();
-                for (Iterator iterator2 = corridas.iterator(); iterator2.hasNext(); ) {
-                    CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator2.next();
-                    corridasDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
-                }
-                if (emails.contains(jogadorDadosSrv.getEmail()))
-                    continue;
-                emails.add(jogadorDadosSrv.getEmail());
-
-                try {
-                    session.saveOrUpdate(jogadorDadosSrv);
-                    carreiraDadosSrv = new CarreiraDadosSrv();
-                    carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
-                    session.saveOrUpdate(carreiraDadosSrv);
-                    session.saveOrUpdate(jogadorDadosSrv);
-                } catch (Exception e) {
-                    Logger.logarExept(e);
-                }
-
-            }
-            beginTransaction.commit();
-        } finally {
-            session.close();
-        }
-    }
-
-    public byte[] obterBytesBase(String tipo) {
-        try {
-            synchronized (lock) {
-
-                ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
-                BufferedInputStream bufferedInputStream = new BufferedInputStream(
-                        Files.newInputStream(Paths.get(basePath + tipo + nomeArquivo)));
-                int byt = bufferedInputStream.read();
-
-                while (-1 != byt) {
-                    arrayOutputStream.write(byt);
-                    byt = bufferedInputStream.read();
-                }
-                return arrayOutputStream.toByteArray();
-            }
-        } catch (Exception e) {
-        }
-        return null;
     }
 
     public JogadorDadosSrv carregaDadosJogador(String tokenJogador, Session session) {
@@ -295,48 +160,6 @@ public class ControlePersistencia {
         } catch (Exception e) {
             transaction.rollback();
             throw e;
-        }
-    }
-
-
-    public void zipDir(String dir2zip, ZipOutputStream zos) {
-        try {
-            // create a new File object based on the directory we
-            // have to zip File
-            File zipDir = new File(dir2zip);
-            // get a listing of the directory content
-            String[] dirList = zipDir.list();
-            byte[] readBuffer = new byte[2156];
-            int bytesIn;
-            // loop through dirList, and zip the files
-            for (int i = 0; i < dirList.length; i++) {
-                File f = new File(zipDir, dirList[i]);
-                if (f.isDirectory()) {
-                    // if the File object is a directory, call this
-                    // function again to add its content recursively
-                    String filePath = f.getPath();
-                    zipDir(filePath, zos);
-                    // loop again
-                    continue;
-                }
-                // if we reached here, the File object f was not
-                // a directory
-                // create a FileInputStream on top of f
-                FileInputStream fis = new FileInputStream(f);
-                // create a new zip entry
-                ZipEntry anEntry = new ZipEntry(
-                        f.getAbsolutePath().split("f1mane" + File.separator + File.separator)[1]);
-                // place the zip entry in the ZipOutputStream object
-                zos.putNextEntry(anEntry);
-                // now write the content of the file to the ZipOutputStream
-                while ((bytesIn = fis.read(readBuffer)) != -1) {
-                    zos.write(readBuffer, 0, bytesIn);
-                }
-                // close the Stream
-                fis.close();
-            }
-        } catch (Exception e) {
-            Logger.logarExept(e);
         }
     }
 
