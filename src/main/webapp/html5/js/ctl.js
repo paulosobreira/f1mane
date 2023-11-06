@@ -574,14 +574,12 @@ function ctl_desenhaInfoCarros() {
 		
 	}
 	if (diff) {
-		if(diff<0){
-			if(noFrente!=null && noFrente.box){
-				diff = 'BOX';
-			}
-			if(noAtras!=null && noAtras.box){
-				diff = 'BOX';
-			}
-		}
+        if(noFrente!=null && noFrente.box){
+            diff = 'BOX';
+        }
+        if(noAtras!=null && noAtras.box){
+            diff = 'BOX';
+        }
 		ctlContext.beginPath();
 		ctlContext.fillStyle = corFundo
 		ctlContext.font = '14px sans-serif';
