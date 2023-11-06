@@ -2,8 +2,7 @@ package br.f1mane.controles;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -293,6 +292,7 @@ public abstract class ControleRecursos {
                     } else if (element instanceof sowbreira.f1mane.entidades.ObjetoConstrucao) {
                         obj = new ObjetoConstrucao();
                     } else if (element instanceof sowbreira.f1mane.entidades.ObjetoLivre) {
+                        System.out.println("Objeto Livre");
                         obj = new ObjetoLivre();
                     } else if (element instanceof sowbreira.f1mane.entidades.ObjetoGuadRails) {
                         obj = new ObjetoGuadRails();
@@ -301,6 +301,18 @@ public abstract class ControleRecursos {
                     }
                     BeanUtil.copiarVO(element, obj);
                     circuitoBr.getObjetos().add(obj);
+                    if (element instanceof sowbreira.f1mane.entidades.ObjetoTransparencia) {
+                        sowbreira.f1mane.entidades.ObjetoTransparencia objetoTransparenciaElement = (sowbreira.f1mane.entidades.ObjetoTransparencia) element;
+                        ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) obj;
+                        objetoTransparencia.setPontos(new ArrayList<>());
+                        for (Iterator iter2 = objetoTransparenciaElement.getPontos().iterator(); iter2.hasNext(); ) {
+                            Object element2 = (Object) iter2.next();
+                            Point p = new Point();
+                            BeanUtil.copiarVO(element2, p);
+                            objetoTransparencia.getPontos().add(p);
+                        }
+                        objetoTransparencia.gerar();
+                    }
                 }
             }
             circuitoBr.setEscapeList(new ArrayList<>());
@@ -316,6 +328,13 @@ public abstract class ControleRecursos {
             circuitoBr.vetorizarPista();
             System.out.println(nmCircuito + " " + circuitoBr);
             System.out.println("---");
+            File file = new File("/home/sobreira/git/f1mane/src/main/resources/circuitos/" + circuito);
+
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            ObjectOutputStream oos = new ObjectOutputStream(fileOutputStream);
+            oos.writeObject(circuitoBr);
+            oos.flush();
+            fileOutputStream.close();
         }
 
     }
