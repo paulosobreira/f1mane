@@ -15,8 +15,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import sowbreira.f1mane.entidades.Carro;
-import sowbreira.f1mane.entidades.Piloto;
+import br.f1mane.entidades.Carro;
+import br.f1mane.entidades.Piloto;
 
 import javax.swing.*;
 import java.beans.XMLDecoder;
@@ -24,7 +24,6 @@ import java.beans.XMLEncoder;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Date;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;

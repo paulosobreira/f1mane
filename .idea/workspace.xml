@@ -5,8 +5,98 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c3430018-9fd3-4efa-9bf0-edcdaf03c6d3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/Campeonato.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/Carro.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/Circuito.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/CircuitosDefault.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/Clima.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/ConstrutoresPontosCampeonato.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/CorridaCampeonato.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/No.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/ObjetoArquibancada.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/ObjetoCirculo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/ObjetoConstrucao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/ObjetoEscapada.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/ObjetoGuadRails.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/ObjetoLivre.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/ObjetoPista.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/ObjetoPistaJSon.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/ObjetoPneus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/ObjetoTransparencia.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/Pausa.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/Piloto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/PilotoSuave.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/PilotosPontosCampeonato.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/Ponto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/PontoEscape.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/SafetyCar.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/TemporadasDefault.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/Volta.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/js/ctl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/js/ctl.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/MainFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/MainFrameSimulacao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/MainFrameSimulacao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleBox.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleCampeonato.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleCampeonato.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleCiclo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleCiclo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleClima.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleClima.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleCorrida.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleCorrida.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleEstatisticas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleEstatisticas.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleJogoLocal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleJogoLocal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleQualificacao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleQualificacao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleRecursos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleRecursos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleSafetyCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleSafetyCar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/InterfaceJogo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/InterfaceJogo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ThreadMudancaClima.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ThreadMudancaClima.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ThreadRecolihimentoCarro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ThreadRecolihimentoCarro.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/editor/FormularioListaObjetos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/editor/FormularioListaObjetos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/editor/FormularioObjetos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/editor/FormularioObjetos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/editor/MainPanelEditor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/editor/MainPanelEditor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/editor/TestePista.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/editor/TestePista.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/recursos/CarregadorRecursos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/recursos/CarregadorRecursos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/JogoServidor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/JogoServidor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/applet/ControleCampeonatoCliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/applet/ControleCampeonatoCliente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/applet/ControlePaddockCliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/applet/ControlePaddockCliente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/applet/JogoCliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/applet/JogoCliente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/applet/MonitorJogo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/applet/MonitorJogo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/applet/PaddockWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/applet/PaddockWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/applet/PainelCampeonato.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/applet/PainelCampeonato.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/applet/PainelEntradaCliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/applet/PainelEntradaCliente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/controles/ControleCampeonatoServidor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/controles/ControleCampeonatoServidor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/controles/ControleClassificacao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/controles/ControleClassificacao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/controles/ControleJogosServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/controles/ControleJogosServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/controles/ControlePaddockServidor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/controles/ControlePaddockServidor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/controles/ControlePersistencia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/controles/ControlePersistencia.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/entidades/TOs/DadosClassificacaoJogador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/entidades/TOs/DadosClassificacaoJogador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/entidades/TOs/DadosCriarJogo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/entidades/TOs/DadosCriarJogo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/entidades/TOs/DadosJogo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/entidades/TOs/DadosJogo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/entidades/TOs/DadosParciais.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/entidades/TOs/DadosParciais.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/entidades/persistencia/F1ManeDados.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/entidades/persistencia/F1ManeDados.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/rest/LetsRace.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/rest/LetsRace.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/visao/ControleSom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/visao/ControleSom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/visao/GerenciadorVisual.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/visao/GerenciadorVisual.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/visao/PainelCampeonato.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/visao/PainelCampeonato.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/visao/PainelCircuito.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/visao/PainelCircuito.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/visao/PainelMenuLocal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/visao/PainelMenuLocal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/visao/PainelTabelaResultadoFinal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/visao/PainelTabelaResultadoFinal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Campeonato.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Campeonato.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Carro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Carro.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Circuito.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Circuito.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Clima.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Clima.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/No.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/No.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoArquibancada.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoArquibancada.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoCirculo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoCirculo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoConstrucao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoConstrucao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoEscapada.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoEscapada.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoGuadRails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoGuadRails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoLivre.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoLivre.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoPista.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoPista.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoPneus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoPneus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoTransparencia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoTransparencia.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Piloto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Piloto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Ponto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Ponto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/PontoEscape.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/PontoEscape.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/TemporadasDefault.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/TemporadasDefault.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Volta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Volta.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,28 +137,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/sobreira/git/f1mane/src/main/resources/png&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "feature/mv__pkg",
+    "last_opened_file_path": "/home/sobreira/git/f1mane/src/main/java/sowbreira/f1mane",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.keymap"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/sowbreira/f1mane" />
       <recent name="$PROJECT_DIR$/src/main/resources/png" />
       <recent name="$PROJECT_DIR$/src/main/webapp/jwtdecode" />
       <recent name="$PROJECT_DIR$/src/main/webapp/html5/testes" />
       <recent name="$PROJECT_DIR$/src/main/webapp/htm5lsrc" />
-      <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources/png" />
@@ -78,9 +168,35 @@
       <recent name="$PROJECT_DIR$/src/main/resources" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.MainFrame">
+  <component name="RunManager" selected="Application.ControleRecursos">
+    <configuration name="ControleRecursos" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="br.f1mane.controles.ControleRecursos" />
+      <module name="f1mane" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="br.f1mane.controles.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="MainFrame" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="br.f1mane.MainFrame" />
+      <module name="f1mane" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="br.f1mane.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainFrameEditor" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="br.f1mane.MainFrameEditor" />
       <module name="f1mane" />
       <extension name="coverage">
         <pattern>
@@ -116,11 +232,15 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.ControleRecursos" />
+      <item itemvalue="Application.MainFrameEditor" />
       <item itemvalue="Application.MainFrame" />
       <item itemvalue="Smart Tomcat.FlMane Web" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.ControleRecursos" />
+        <item itemvalue="Application.MainFrameEditor" />
         <item itemvalue="Application.MainFrame" />
       </list>
     </recent_temporary>
@@ -148,6 +268,11 @@
           <url>file://$PROJECT_DIR$/src/main/java/br/f1mane/servidor/rest/LetsRace.java</url>
           <line>593</line>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/br/nnpe/BeanUtil.java</url>
+          <line>195</line>
+          <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-field">
           <url>file://$PROJECT_DIR$/src/main/java/br/f1mane/servidor/entidades/TOs/DadosParciais.java</url>

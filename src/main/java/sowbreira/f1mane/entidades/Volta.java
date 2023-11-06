@@ -1,13 +1,12 @@
 package sowbreira.f1mane.entidades;
 
-import java.io.Serializable;
-
+import br.f1mane.controles.ControleEstatisticas;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-import br.f1mane.controles.ControleEstatisticas;
+import java.io.Serializable;
 
 /**
  * @author Paulo Sobreira Criado em 16/06/2007 as 16:03:49

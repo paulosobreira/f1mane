@@ -1,10 +1,10 @@
 package sowbreira.f1mane.entidades;
 
-import java.awt.Point;
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.awt.*;
+import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PontoEscape implements Serializable {
 	private static final long serialVersionUID = -7551741480296259036L;

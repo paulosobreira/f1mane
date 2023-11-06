@@ -1,15 +1,11 @@
 package sowbreira.f1mane.entidades;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
 /**
  * @author Paulo Sobreira Criado

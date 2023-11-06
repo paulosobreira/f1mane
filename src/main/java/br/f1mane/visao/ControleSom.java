@@ -15,8 +15,8 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.f1mane.controles.InterfaceJogo;
-import sowbreira.f1mane.entidades.No;
-import sowbreira.f1mane.entidades.Piloto;
+import br.f1mane.entidades.No;
+import br.f1mane.entidades.Piloto;
 import br.f1mane.recursos.CarregadorRecursos;
 
 public class ControleSom {

@@ -11,8 +11,8 @@ import org.hibernate.Session;
 import br.nnpe.Dia;
 import br.nnpe.Util;
 import br.f1mane.controles.ControleRecursos;
-import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.entidades.TemporadasDefault;
+import br.f1mane.entidades.Piloto;
+import br.f1mane.entidades.TemporadasDefault;
 import br.f1mane.servidor.entidades.persistencia.CampeonatoSrv;
 import br.f1mane.servidor.entidades.persistencia.CarreiraDadosSrv;
 import br.f1mane.servidor.entidades.persistencia.CorridaCampeonatoSrv;
@@ -20,7 +20,7 @@ import br.f1mane.servidor.entidades.persistencia.DadosCorridaCampeonatoSrv;
 import br.f1mane.servidor.entidades.persistencia.JogadorDadosSrv;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
-import sowbreira.f1mane.entidades.Volta;
+import br.f1mane.entidades.Volta;
 
 public class ControleCampeonatoServidor {
 

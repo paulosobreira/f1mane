@@ -38,11 +38,11 @@ import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.f1mane.controles.ControleRecursos;
-import sowbreira.f1mane.entidades.Carro;
-import sowbreira.f1mane.entidades.Circuito;
-import sowbreira.f1mane.entidades.CircuitosDefault;
-import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.entidades.TemporadasDefault;
+import br.f1mane.entidades.Carro;
+import br.f1mane.entidades.Circuito;
+import br.f1mane.entidades.CircuitosDefault;
+import br.f1mane.entidades.Piloto;
+import br.f1mane.entidades.TemporadasDefault;
 
 public class CarregadorRecursos {
     private static HashMap<String, String> temporadas;

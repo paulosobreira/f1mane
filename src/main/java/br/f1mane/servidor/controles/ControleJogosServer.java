@@ -11,9 +11,9 @@ import br.nnpe.Constantes;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import org.hibernate.Session;
-import sowbreira.f1mane.entidades.Carro;
-import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.entidades.Volta;
+import br.f1mane.entidades.Carro;
+import br.f1mane.entidades.Piloto;
+import br.f1mane.entidades.Volta;
 
 import java.util.*;
 
@@ -612,7 +612,7 @@ public class ControleJogosServer {
 		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogo
 				.get(clientPaddockPack.getSessaoCliente().getToken());
 		dadosParticiparJogo
-				.setCombustivel(new Integer(clientPaddockPack.getCombustBox()));
+				.setCombustivel(clientPaddockPack.getCombustBox());
 		dadosParticiparJogo.setTpPneu(clientPaddockPack.getTpPneuBox());
 		dadosParticiparJogo.setAsa(clientPaddockPack.getAsaBox());
 		if (piloto.isBox()) {
@@ -1149,7 +1149,7 @@ public class ControleJogosServer {
 		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogo
 				.get(clientPaddockPack.getSessaoCliente().getToken());
 		dadosParticiparJogo
-				.setCombustivel(new Integer(clientPaddockPack.getCombustBox()));
+				.setCombustivel(clientPaddockPack.getCombustBox());
 		dadosParticiparJogo.setTpPneu(clientPaddockPack.getTpPneuBox());
 		dadosParticiparJogo.setAsa(clientPaddockPack.getAsaBox());
 		return null;

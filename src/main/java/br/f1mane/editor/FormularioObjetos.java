@@ -13,7 +13,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import br.nnpe.Logger;
-import sowbreira.f1mane.entidades.ObjetoPista;
+import br.f1mane.entidades.ObjetoPista;
 import br.f1mane.recursos.idiomas.Lang;
 
 public class FormularioObjetos {

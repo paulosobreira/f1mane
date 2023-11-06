@@ -1,9 +1,9 @@
 package sowbreira.f1mane.entidades;
 
-import java.awt.Point;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.awt.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Ponto {
 	@JsonIgnore

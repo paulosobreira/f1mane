@@ -21,8 +21,8 @@ import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
-import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.entidades.Volta;
+import br.f1mane.entidades.Piloto;
+import br.f1mane.entidades.Volta;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
 

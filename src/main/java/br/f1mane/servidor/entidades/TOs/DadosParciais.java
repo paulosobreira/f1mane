@@ -6,9 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.nnpe.Logger;
 import br.nnpe.Util;
-import sowbreira.f1mane.entidades.Carro;
-import sowbreira.f1mane.entidades.Clima;
-import sowbreira.f1mane.entidades.Piloto;
+import br.f1mane.entidades.Carro;
+import br.f1mane.entidades.Clima;
+import br.f1mane.entidades.Piloto;
 import br.f1mane.recursos.idiomas.Lang;
 
 /**

@@ -5,7 +5,7 @@ import java.util.Iterator;
 import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
-import sowbreira.f1mane.entidades.Piloto;
+import br.f1mane.entidades.Piloto;
 import br.f1mane.recursos.idiomas.Lang;
 
 /**

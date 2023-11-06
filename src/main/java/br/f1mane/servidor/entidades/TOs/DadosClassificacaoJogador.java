@@ -3,8 +3,8 @@ package br.f1mane.servidor.entidades.TOs;
 public class DadosClassificacaoJogador {
 	private String nome;
 	private String imagemJogador;
-	private Integer pontos = new Integer(0);
-	private Integer corridas = new Integer(0);
+	private Integer pontos = 0;
+	private Integer corridas = 0;
 	public String getNome() {
 		return nome;
 	}

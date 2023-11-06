@@ -28,10 +28,10 @@ import javax.swing.table.TableModel;
 import br.nnpe.Util;
 import br.f1mane.MainFrame;
 import br.f1mane.controles.ControleCampeonato;
-import sowbreira.f1mane.entidades.Campeonato;
-import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
-import sowbreira.f1mane.entidades.CorridaCampeonato;
-import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
+import br.f1mane.entidades.Campeonato;
+import br.f1mane.entidades.ConstrutoresPontosCampeonato;
+import br.f1mane.entidades.CorridaCampeonato;
+import br.f1mane.entidades.PilotosPontosCampeonato;
 import br.f1mane.recursos.idiomas.Lang;
 
 public class PainelCampeonato extends JPanel {

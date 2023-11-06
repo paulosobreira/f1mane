@@ -14,10 +14,10 @@ import br.nnpe.GeoUtil;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
-import sowbreira.f1mane.entidades.Carro;
-import sowbreira.f1mane.entidades.Circuito;
-import sowbreira.f1mane.entidades.No;
-import sowbreira.f1mane.entidades.Piloto;
+import br.f1mane.entidades.Carro;
+import br.f1mane.entidades.Circuito;
+import br.f1mane.entidades.No;
+import br.f1mane.entidades.Piloto;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
 

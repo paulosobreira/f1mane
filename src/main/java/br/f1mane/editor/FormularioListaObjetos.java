@@ -18,8 +18,8 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import sowbreira.f1mane.entidades.Circuito;
-import sowbreira.f1mane.entidades.ObjetoPista;
+import br.f1mane.entidades.Circuito;
+import br.f1mane.entidades.ObjetoPista;
 
 public class FormularioListaObjetos {
 

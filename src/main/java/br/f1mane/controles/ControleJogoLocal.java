@@ -21,17 +21,17 @@ import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.f1mane.MainFrame;
-import sowbreira.f1mane.entidades.Campeonato;
-import sowbreira.f1mane.entidades.Carro;
-import sowbreira.f1mane.entidades.Circuito;
-import sowbreira.f1mane.entidades.Clima;
-import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
-import sowbreira.f1mane.entidades.No;
-import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
-import sowbreira.f1mane.entidades.SafetyCar;
-import sowbreira.f1mane.entidades.TemporadasDefault;
-import sowbreira.f1mane.entidades.Volta;
+import br.f1mane.entidades.Campeonato;
+import br.f1mane.entidades.Carro;
+import br.f1mane.entidades.Circuito;
+import br.f1mane.entidades.Clima;
+import br.f1mane.entidades.ConstrutoresPontosCampeonato;
+import br.f1mane.entidades.No;
+import br.f1mane.entidades.Piloto;
+import br.f1mane.entidades.PilotosPontosCampeonato;
+import br.f1mane.entidades.SafetyCar;
+import br.f1mane.entidades.TemporadasDefault;
+import br.f1mane.entidades.Volta;
 import br.f1mane.servidor.entidades.TOs.TravadaRoda;
 import br.f1mane.servidor.JogoServidor;
 import br.f1mane.recursos.idiomas.Lang;
@@ -93,7 +93,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see br.f1mane.controles.InterfaceJogo#getCombustBox(sowbreira.f1mane.entidades.Piloto)
+	 * @see br.f1mane.controles.InterfaceJogo#getCombustBox(Piloto)
 	 */
 	public Integer getCombustBox(Piloto piloto) {
 		return piloto.getCombustJogador();
@@ -116,7 +116,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see br.f1mane.controles.InterfaceJogo#getTipoPneuBox(sowbreira.f1mane.entidades.Piloto)
+	 * @see br.f1mane.controles.InterfaceJogo#getTipoPneuBox(Piloto)
 	 */
 	public String getTipoPneuBox(Piloto piloto) {
 		return piloto.getTipoPneuJogador();
@@ -312,7 +312,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see br.f1mane.controles.InterfaceJogo#verificaBoxOcupado(sowbreira.f1mane.entidades.Carro)
+	 * @see br.f1mane.controles.InterfaceJogo#verificaBoxOcupado(Carro)
 	 */
 	public boolean verificaBoxOcupado(Carro carro) {
 		if (isModoQualify()) {
@@ -322,7 +322,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see br.f1mane.controles.InterfaceJogo#calculaSegundosParaLider(sowbreira.f1mane.entidades.Piloto)
+	 * @see br.f1mane.controles.InterfaceJogo#calculaSegundosParaLider(Piloto)
 	 */
 	public String calculaSegundosParaLider(Piloto pilotoSelecionado) {
 		return controleEstatisticas.calculaSegundosParaLider(pilotoSelecionado);
@@ -340,7 +340,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see br.f1mane.controles.InterfaceJogo#processaVoltaRapida(sowbreira.f1mane.entidades.Piloto)
+	 * @see br.f1mane.controles.InterfaceJogo#processaVoltaRapida(Piloto)
 	 */
 	public void processaVoltaRapida(Piloto piloto) {
 		controleEstatisticas.processaVoltaRapida(piloto);
@@ -354,7 +354,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see br.f1mane.controles.InterfaceJogo#verificaVoltaMaisRapidaCorrida(sowbreira.f1mane.entidades.Piloto)
+	 * @see br.f1mane.controles.InterfaceJogo#verificaVoltaMaisRapidaCorrida(Piloto)
 	 */
 	public void verificaVoltaMaisRapidaCorrida(Piloto piloto) {
 		controleEstatisticas.verificaVoltaMaisRapida(piloto);
@@ -557,21 +557,21 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see br.f1mane.controles.InterfaceJogo#obterCarroNaFrente(sowbreira.f1mane.entidades.Piloto)
+	 * @see br.f1mane.controles.InterfaceJogo#obterCarroNaFrente(Piloto)
 	 */
 	public Carro obterCarroNaFrente(Piloto piloto) {
 		return controleCorrida.obterCarroNaFrente(piloto);
 	}
 
 	/**
-	 * @see br.f1mane.controles.InterfaceJogo#obterCarroAtras(sowbreira.f1mane.entidades.Piloto)
+	 * @see br.f1mane.controles.InterfaceJogo#obterCarroAtras(Piloto)
 	 */
 	public Carro obterCarroAtras(Piloto piloto) {
 		return controleCorrida.obterCarroAtras(piloto);
 	}
 
 	/**
-	 * @see br.f1mane.controles.InterfaceJogo#calculaSegundosParaProximo(sowbreira.f1mane.entidades.Piloto)
+	 * @see br.f1mane.controles.InterfaceJogo#calculaSegundosParaProximo(Piloto)
 	 */
 	public String calculaSegundosParaProximo(Piloto psel) {
 		return controleEstatisticas.calculaSegundosParaProximo(psel);

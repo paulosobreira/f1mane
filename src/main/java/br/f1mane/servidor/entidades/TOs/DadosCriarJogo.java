@@ -11,9 +11,9 @@ import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.f1mane.controles.ControleJogoLocal;
 import br.f1mane.controles.ControleRecursos;
-import sowbreira.f1mane.entidades.Circuito;
-import sowbreira.f1mane.entidades.Clima;
-import sowbreira.f1mane.entidades.TemporadasDefault;
+import br.f1mane.entidades.Circuito;
+import br.f1mane.entidades.Clima;
+import br.f1mane.entidades.TemporadasDefault;
 import br.f1mane.recursos.CarregadorRecursos;
 
 /**

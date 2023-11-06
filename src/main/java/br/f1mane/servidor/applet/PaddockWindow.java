@@ -36,7 +36,7 @@ import javax.swing.border.TitledBorder;
 import br.f1mane.servidor.controles.ControleJogosServer;
 import br.nnpe.Logger;
 import br.nnpe.Util;
-import sowbreira.f1mane.entidades.Clima;
+import br.f1mane.entidades.Clima;
 import br.f1mane.servidor.entidades.Comandos;
 import br.f1mane.servidor.entidades.TOs.ClientPaddockPack;
 import br.f1mane.servidor.entidades.TOs.DadosPaddock;

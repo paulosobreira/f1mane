@@ -24,10 +24,10 @@ import br.nnpe.PassGenerator;
 import br.nnpe.TokenGenerator;
 import br.nnpe.Util;
 import br.f1mane.controles.InterfaceJogo;
-import sowbreira.f1mane.entidades.Carro;
-import sowbreira.f1mane.entidades.Circuito;
-import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.entidades.TemporadasDefault;
+import br.f1mane.entidades.Carro;
+import br.f1mane.entidades.Circuito;
+import br.f1mane.entidades.Piloto;
+import br.f1mane.entidades.TemporadasDefault;
 import br.f1mane.servidor.entidades.Comandos;
 import br.f1mane.servidor.entidades.TOs.CampeonatoTO;
 import br.f1mane.servidor.entidades.TOs.ClientPaddockPack;
@@ -476,7 +476,7 @@ public class ControlePaddockServidor {
 		dadosPaddock.setLinhaChat(cliente.getNomeJogador() + " : " + clientPaddockPack.getTexto());
 		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 		srvPaddockPack.setDadosPaddock(dadosPaddock);
-		dadosPaddock.setDataTime(new Long(System.currentTimeMillis()));
+		dadosPaddock.setDataTime(System.currentTimeMillis());
 		return srvPaddockPack;
 	}
 

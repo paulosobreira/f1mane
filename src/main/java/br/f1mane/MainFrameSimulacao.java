@@ -9,7 +9,7 @@ import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.f1mane.controles.ControleJogoLocal;
 import br.f1mane.controles.InterfaceJogo;
-import sowbreira.f1mane.entidades.Clima;
+import br.f1mane.entidades.Clima;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.visao.PainelCircuito;
 import br.f1mane.visao.PainelTabelaResultadoFinal;
