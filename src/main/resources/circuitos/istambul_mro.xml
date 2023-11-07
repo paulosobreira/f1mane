@@ -1484,7 +1484,7 @@
       <int>5</int>
      </void>
      <void property="point">
-      <object idref="Point55"/>
+      <object idref="Point53"/>
      </void>
     </object>
     <object class="java.util.ArrayList" id="ArrayList0">
@@ -111649,7 +111649,18 @@
       <int>5</int>
      </void>
      <void property="point">
-      <object idref="Point53"/>
+      <object idref="Point56"/>
+     </void>
+    </object>
+    <object idref="ArrayList0"/>
+   </void>
+   <void method="put">
+    <object class="br.f1mane.entidades.PontoEscape">
+     <void property="pista">
+      <int>5</int>
+     </void>
+     <void property="point">
+      <object idref="Point55"/>
      </void>
     </object>
     <object idref="ArrayList0"/>
@@ -111671,7 +111682,7 @@
       <int>5</int>
      </void>
      <void property="point">
-      <object idref="Point56"/>
+      <object idref="Point51"/>
      </void>
     </object>
     <object idref="ArrayList0"/>
@@ -168571,17 +168582,6 @@
       <null/>
      </void>
     </object>
-   </void>
-   <void method="put">
-    <object class="br.f1mane.entidades.PontoEscape">
-     <void property="pista">
-      <int>5</int>
-     </void>
-     <void property="point">
-      <object idref="Point51"/>
-     </void>
-    </object>
-    <object idref="ArrayList0"/>
    </void>
   </void>
   <void property="ladoBox">

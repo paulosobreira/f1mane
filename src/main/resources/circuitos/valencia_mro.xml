@@ -84707,7 +84707,7 @@
       <int>4</int>
      </void>
      <void property="point">
-      <object idref="Point59"/>
+      <object idref="Point58"/>
      </void>
     </object>
     <object idref="ArrayList0"/>
@@ -84718,7 +84718,7 @@
       <int>4</int>
      </void>
      <void property="point">
-      <object idref="Point58"/>
+      <object idref="Point59"/>
      </void>
     </object>
     <object idref="ArrayList0"/>

@@ -1162,7 +1162,7 @@
       <int>4</int>
      </void>
      <void property="point">
-      <object idref="Point42"/>
+      <object idref="Point40"/>
      </void>
     </object>
     <object class="java.util.ArrayList" id="ArrayList0">
@@ -105609,6 +105609,50 @@
    <void method="put">
     <object class="br.f1mane.entidades.PontoEscape">
      <void property="pista">
+      <int>4</int>
+     </void>
+     <void property="point">
+      <object idref="Point41"/>
+     </void>
+    </object>
+    <object idref="ArrayList0"/>
+   </void>
+   <void method="put">
+    <object class="br.f1mane.entidades.PontoEscape">
+     <void property="pista">
+      <int>4</int>
+     </void>
+     <void property="point">
+      <object idref="Point42"/>
+     </void>
+    </object>
+    <object idref="ArrayList0"/>
+   </void>
+   <void method="put">
+    <object class="br.f1mane.entidades.PontoEscape">
+     <void property="pista">
+      <int>4</int>
+     </void>
+     <void property="point">
+      <object idref="Point44"/>
+     </void>
+    </object>
+    <object idref="ArrayList0"/>
+   </void>
+   <void method="put">
+    <object class="br.f1mane.entidades.PontoEscape">
+     <void property="pista">
+      <int>4</int>
+     </void>
+     <void property="point">
+      <object idref="Point39"/>
+     </void>
+    </object>
+    <object idref="ArrayList0"/>
+   </void>
+   <void method="put">
+    <object class="br.f1mane.entidades.PontoEscape">
+     <void property="pista">
       <int>5</int>
      </void>
      <void property="point">
@@ -164920,50 +164964,6 @@
      </void>
     </object>
    </void>
-   <void method="put">
-    <object class="br.f1mane.entidades.PontoEscape">
-     <void property="pista">
-      <int>4</int>
-     </void>
-     <void property="point">
-      <object idref="Point44"/>
-     </void>
-    </object>
-    <object idref="ArrayList0"/>
-   </void>
-   <void method="put">
-    <object class="br.f1mane.entidades.PontoEscape">
-     <void property="pista">
-      <int>4</int>
-     </void>
-     <void property="point">
-      <object idref="Point41"/>
-     </void>
-    </object>
-    <object idref="ArrayList0"/>
-   </void>
-   <void method="put">
-    <object class="br.f1mane.entidades.PontoEscape">
-     <void property="pista">
-      <int>4</int>
-     </void>
-     <void property="point">
-      <object idref="Point39"/>
-     </void>
-    </object>
-    <object idref="ArrayList0"/>
-   </void>
-   <void method="put">
-    <object class="br.f1mane.entidades.PontoEscape">
-     <void property="pista">
-      <int>4</int>
-     </void>
-     <void property="point">
-      <object idref="Point40"/>
-     </void>
-    </object>
-    <object idref="ArrayList0"/>
-   </void>
   </void>
   <void property="ladoBox">
    <int>2</int>
@@ -171173,27 +171173,8 @@
   </void>
  </object>
 <void class="java.awt.Polygon" id="Field0" method="getField">
- <string>xpoints</string>
- <void id="intArray0" method="get">
-  <object idref="Polygon0"/>
-  <void index="1">
-   <int>4362</int>
-  </void>
-  <void index="2">
-   <int>4381</int>
-  </void>
-  <void index="3">
-   <int>4376</int>
-  </void>
-  <void index="0">
-   <int>4360</int>
-  </void>
- </void>
-</void>
-<void idref="intArray0"/>
-<void class="java.awt.Polygon" id="Field1" method="getField">
  <string>ypoints</string>
- <void id="intArray1" method="get">
+ <void id="intArray0" method="get">
   <object idref="Polygon0"/>
   <void index="1">
    <int>1866</int>
@@ -171206,6 +171187,25 @@
   </void>
   <void index="0">
    <int>1725</int>
+  </void>
+ </void>
+</void>
+<void idref="intArray0"/>
+<void class="java.awt.Polygon" id="Field1" method="getField">
+ <string>xpoints</string>
+ <void id="intArray1" method="get">
+  <object idref="Polygon0"/>
+  <void index="1">
+   <int>4362</int>
+  </void>
+  <void index="2">
+   <int>4381</int>
+  </void>
+  <void index="3">
+   <int>4376</int>
+  </void>
+  <void index="0">
+   <int>4360</int>
   </void>
  </void>
 </void>

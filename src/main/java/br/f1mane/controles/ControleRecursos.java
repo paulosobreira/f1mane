@@ -2,6 +2,7 @@ package br.f1mane.controles;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.beans.XMLEncoder;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -249,7 +250,7 @@ public abstract class ControleRecursos {
         return nosDaPista;
     }
 
-    public static void main(String[] args) throws Exception {
+    public void migrarAntigo() throws Exception {
         Map<String, String> carregarCircuitos = carregarCircuitos();
         for (Iterator iterator = carregarCircuitos.keySet().iterator(); iterator
                 .hasNext(); ) {
@@ -338,7 +339,99 @@ public abstract class ControleRecursos {
             oos.flush();
             fileOutputStream.close();
         }
+    }
 
+    public static void main(String[] args) throws Exception {
+
+        Map<String, String> carregarCircuitos = carregarCircuitos();
+        for (Iterator iterator = carregarCircuitos.keySet().iterator(); iterator
+                .hasNext(); ) {
+            String nmCircuito = (String) iterator.next();
+            String circuito = carregarCircuitos.get(nmCircuito);
+            ObjectInputStream ois = new ObjectInputStream(
+                    CarregadorRecursos.recursoComoStream("circuitos/" + circuito.replaceAll("xml", "f1mane")));
+            Circuito circuitoObj = (Circuito) ois.readObject();
+            circuitoObj.vetorizarPista();
+            System.out.println(nmCircuito + " " + circuitoObj);
+            Circuito circuitoBr = new Circuito();
+            BeanUtil.copiarVO(circuitoObj, circuitoBr);
+            circuitoBr.setPista(new ArrayList<>());
+            for (Iterator iter = circuitoObj.getPista().iterator(); iter.hasNext(); ) {
+                Object element = (Object) iter.next();
+                No no = new No();
+                BeanUtil.copiarVO(element, no);
+                circuitoBr.getPista().add(no);
+            }
+            circuitoBr.setBox(new ArrayList<>());
+            for (Iterator iter = circuitoObj.getBox().iterator(); iter.hasNext(); ) {
+                Object element = (Object) iter.next();
+                No no = new No();
+                BeanUtil.copiarVO(element, no);
+                circuitoBr.getBox().add(no);
+            }
+            if (circuitoObj.getObjetos() != null) {
+                circuitoBr.setObjetos(new ArrayList<>());
+                for (Iterator iter = circuitoObj.getObjetos().iterator(); iter.hasNext(); ) {
+                    Object element = (Object) iter.next();
+                    ObjetoPista obj = null;
+                    if (element instanceof ObjetoEscapada) {
+                        obj = new ObjetoEscapada();
+                    } else if (element instanceof ObjetoTransparencia) {
+                        obj = new ObjetoTransparencia();
+                    } else if (element instanceof ObjetoArquibancada) {
+                        obj = new ObjetoArquibancada();
+                    } else if (element instanceof ObjetoCirculo) {
+                        obj = new ObjetoCirculo();
+                    } else if (element instanceof ObjetoConstrucao) {
+                        obj = new ObjetoConstrucao();
+                    } else if (element instanceof ObjetoLivre) {
+                        System.out.println("Objeto Livre");
+                        obj = new ObjetoLivre();
+                    } else if (element instanceof ObjetoGuadRails) {
+                        obj = new ObjetoGuadRails();
+                    } else if (element instanceof ObjetoPneus) {
+                        obj = new ObjetoPneus();
+                    }
+                    BeanUtil.copiarVO(element, obj);
+                    circuitoBr.getObjetos().add(obj);
+                    if (element instanceof ObjetoTransparencia) {
+                        ObjetoTransparencia objetoTransparenciaElement = (ObjetoTransparencia) element;
+                        ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) obj;
+                        objetoTransparencia.setPontos(new ArrayList<>());
+                        for (Iterator iter2 = objetoTransparenciaElement.getPontos().iterator(); iter2.hasNext(); ) {
+                            Object element2 = (Object) iter2.next();
+                            Point p = new Point();
+                            BeanUtil.copiarVO(element2, p);
+                            objetoTransparencia.getPontos().add(p);
+                        }
+                        objetoTransparencia.gerar();
+                        System.out.println(objetoTransparencia.getPosicaoQuina());
+                        System.out.println(objetoTransparencia.getPolygon().getBounds());
+                    }
+                }
+            }
+            circuitoBr.setEscapeList(new ArrayList<>());
+            for (Iterator iter = circuitoObj.getEscapeList().iterator(); iter.hasNext(); ) {
+                Object element = (Object) iter.next();
+                Point p = new Point();
+                BeanUtil.copiarVO(element, p);
+                circuitoBr.getEscapeList().add(p);
+            }
+            circuitoBr.setMultiplicador(circuitoObj.getMultiplciador());
+            circuitoBr.setMultiplicadorLarguraPista(circuitoObj.getMultiplicadorLarguraPista());
+
+            circuitoBr.vetorizarPista();
+            System.out.println(nmCircuito + " " + circuitoBr);
+            System.out.println("---");
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            XMLEncoder encoder = new XMLEncoder(byteArrayOutputStream);
+            encoder.writeObject(circuitoObj);
+            encoder.flush();
+            String save = new String(byteArrayOutputStream.toByteArray()) + "</java>";
+            FileOutputStream fileOutputStream = new FileOutputStream(new File("src/main/resources/circuitos/" + circuito.split("\\.")[0] + ".xml"));
+            fileOutputStream.write(save.getBytes());
+            fileOutputStream.close();
+        }
     }
 
     public static Map<String, String> carregarCircuitos() {

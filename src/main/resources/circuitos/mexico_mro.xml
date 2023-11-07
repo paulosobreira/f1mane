@@ -59178,25 +59178,6 @@
 <void class="java.awt.Polygon" id="Field0" method="getField">
  <string>ypoints</string>
  <void id="intArray0" method="get">
-  <object idref="Polygon0"/>
-  <void index="1">
-   <int>496</int>
-  </void>
-  <void index="2">
-   <int>347</int>
-  </void>
-  <void index="3">
-   <int>374</int>
-  </void>
-  <void index="0">
-   <int>527</int>
-  </void>
- </void>
-</void>
-<void idref="intArray0"/>
-<void class="java.awt.Polygon" id="Field1" method="getField">
- <string>ypoints</string>
- <void id="intArray1" method="get">
   <object idref="Polygon1"/>
   <void index="1">
    <int>1751</int>
@@ -59212,29 +59193,29 @@
   </void>
  </void>
 </void>
+<void idref="intArray0"/>
+<void class="java.awt.Polygon" id="Field1" method="getField">
+ <string>ypoints</string>
+ <void id="intArray1" method="get">
+  <object idref="Polygon0"/>
+  <void index="1">
+   <int>496</int>
+  </void>
+  <void index="2">
+   <int>347</int>
+  </void>
+  <void index="3">
+   <int>374</int>
+  </void>
+  <void index="0">
+   <int>527</int>
+  </void>
+ </void>
+</void>
 <void idref="intArray1"/>
 <void class="java.awt.Polygon" id="Field2" method="getField">
  <string>xpoints</string>
  <void id="intArray2" method="get">
-  <object idref="Polygon1"/>
-  <void index="1">
-   <int>3649</int>
-  </void>
-  <void index="2">
-   <int>3902</int>
-  </void>
-  <void index="3">
-   <int>3897</int>
-  </void>
-  <void index="0">
-   <int>3651</int>
-  </void>
- </void>
-</void>
-<void idref="intArray2"/>
-<void class="java.awt.Polygon" id="Field3" method="getField">
- <string>xpoints</string>
- <void id="intArray3" method="get">
   <object idref="Polygon0"/>
   <void index="1">
    <int>2957</int>
@@ -59247,6 +59228,25 @@
   </void>
   <void index="0">
    <int>2908</int>
+  </void>
+ </void>
+</void>
+<void idref="intArray2"/>
+<void class="java.awt.Polygon" id="Field3" method="getField">
+ <string>xpoints</string>
+ <void id="intArray3" method="get">
+  <object idref="Polygon1"/>
+  <void index="1">
+   <int>3649</int>
+  </void>
+  <void index="2">
+   <int>3902</int>
+  </void>
+  <void index="3">
+   <int>3897</int>
+  </void>
+  <void index="0">
+   <int>3651</int>
   </void>
  </void>
 </void>

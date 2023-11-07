@@ -34,6 +34,7 @@
        <int>255</int>
       </object>
      </void>
+     <void id="Integer0" property="index"/>
     </object>
    </void>
    <void method="add">
@@ -205,7 +206,6 @@
        <int>255</int>
       </object>
      </void>
-     <void id="Integer0" property="index"/>
     </object>
    </void>
    <void method="add">
@@ -1612,7 +1612,7 @@
       <int>4</int>
      </void>
      <void property="point">
-      <object idref="Point59"/>
+      <object idref="Point60"/>
      </void>
     </object>
     <object class="java.util.ArrayList" id="ArrayList0">
@@ -107244,7 +107244,7 @@
       <int>4</int>
      </void>
      <void property="point">
-      <object idref="Point60"/>
+      <object idref="Point61"/>
      </void>
     </object>
     <object idref="ArrayList0"/>
@@ -107255,7 +107255,7 @@
       <int>4</int>
      </void>
      <void property="point">
-      <object idref="Point61"/>
+      <object idref="Point59"/>
      </void>
     </object>
     <object idref="ArrayList0"/>
@@ -113686,27 +113686,8 @@
   </void>
  </object>
 <void class="java.awt.Polygon" id="Field0" method="getField">
- <string>xpoints</string>
- <void id="intArray0" method="get">
-  <object idref="Polygon6"/>
-  <void index="1">
-   <int>2984</int>
-  </void>
-  <void index="2">
-   <int>2866</int>
-  </void>
-  <void index="3">
-   <int>2851</int>
-  </void>
-  <void index="0">
-   <int>2963</int>
-  </void>
- </void>
-</void>
-<void idref="intArray0"/>
-<void class="java.awt.Polygon" id="Field1" method="getField">
  <string>ypoints</string>
- <void id="intArray1" method="get">
+ <void id="intArray0" method="get">
   <object idref="Polygon6"/>
   <void index="1">
    <int>2170</int>
@@ -113722,29 +113703,29 @@
   </void>
  </void>
 </void>
-<void idref="intArray1"/>
-<void class="java.awt.Polygon" id="Field2" method="getField">
- <string>ypoints</string>
- <void id="intArray2" method="get">
-  <object idref="Polygon4"/>
+<void idref="intArray0"/>
+<void class="java.awt.Polygon" id="Field1" method="getField">
+ <string>xpoints</string>
+ <void id="intArray1" method="get">
+  <object idref="Polygon6"/>
   <void index="1">
-   <int>828</int>
+   <int>2984</int>
   </void>
   <void index="2">
-   <int>804</int>
+   <int>2866</int>
   </void>
   <void index="3">
-   <int>920</int>
+   <int>2851</int>
   </void>
   <void index="0">
-   <int>936</int>
+   <int>2963</int>
   </void>
  </void>
 </void>
-<void idref="intArray2"/>
-<void class="java.awt.Polygon" id="Field3" method="getField">
+<void idref="intArray1"/>
+<void class="java.awt.Polygon" id="Field2" method="getField">
  <string>xpoints</string>
- <void id="intArray3" method="get">
+ <void id="intArray2" method="get">
   <object idref="Polygon4"/>
   <void index="1">
    <int>1380</int>
@@ -113757,6 +113738,25 @@
   </void>
   <void index="0">
    <int>1274</int>
+  </void>
+ </void>
+</void>
+<void idref="intArray2"/>
+<void class="java.awt.Polygon" id="Field3" method="getField">
+ <string>ypoints</string>
+ <void id="intArray3" method="get">
+  <object idref="Polygon4"/>
+  <void index="1">
+   <int>828</int>
+  </void>
+  <void index="2">
+   <int>804</int>
+  </void>
+  <void index="3">
+   <int>920</int>
+  </void>
+  <void index="0">
+   <int>936</int>
   </void>
  </void>
 </void>

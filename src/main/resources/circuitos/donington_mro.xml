@@ -110966,44 +110966,6 @@
 <void class="java.awt.Polygon" id="Field0" method="getField">
  <string>ypoints</string>
  <void id="intArray0" method="get">
-  <object idref="Polygon3"/>
-  <void index="1">
-   <int>2842</int>
-  </void>
-  <void index="2">
-   <int>2839</int>
-  </void>
-  <void index="3">
-   <int>2720</int>
-  </void>
-  <void index="0">
-   <int>2728</int>
-  </void>
- </void>
-</void>
-<void idref="intArray0"/>
-<void class="java.awt.Polygon" id="Field1" method="getField">
- <string>xpoints</string>
- <void id="intArray1" method="get">
-  <object idref="Polygon2"/>
-  <void index="1">
-   <int>3922</int>
-  </void>
-  <void index="2">
-   <int>3959</int>
-  </void>
-  <void index="3">
-   <int>4051</int>
-  </void>
-  <void index="0">
-   <int>4011</int>
-  </void>
- </void>
-</void>
-<void idref="intArray1"/>
-<void class="java.awt.Polygon" id="Field2" method="getField">
- <string>ypoints</string>
- <void id="intArray2" method="get">
   <object idref="Polygon0"/>
   <void index="1">
    <int>2342</int>
@@ -111019,10 +110981,10 @@
   </void>
  </void>
 </void>
-<void idref="intArray2"/>
-<void class="java.awt.Polygon" id="Field3" method="getField">
+<void idref="intArray0"/>
+<void class="java.awt.Polygon" id="Field1" method="getField">
  <string>ypoints</string>
- <void id="intArray3" method="get">
+ <void id="intArray1" method="get">
   <object idref="Polygon2"/>
   <void index="1">
    <int>1186</int>
@@ -111035,6 +110997,44 @@
   </void>
   <void index="0">
    <int>1081</int>
+  </void>
+ </void>
+</void>
+<void idref="intArray1"/>
+<void class="java.awt.Polygon" id="Field2" method="getField">
+ <string>xpoints</string>
+ <void id="intArray2" method="get">
+  <object idref="Polygon2"/>
+  <void index="1">
+   <int>3922</int>
+  </void>
+  <void index="2">
+   <int>3959</int>
+  </void>
+  <void index="3">
+   <int>4051</int>
+  </void>
+  <void index="0">
+   <int>4011</int>
+  </void>
+ </void>
+</void>
+<void idref="intArray2"/>
+<void class="java.awt.Polygon" id="Field3" method="getField">
+ <string>ypoints</string>
+ <void id="intArray3" method="get">
+  <object idref="Polygon3"/>
+  <void index="1">
+   <int>2842</int>
+  </void>
+  <void index="2">
+   <int>2839</int>
+  </void>
+  <void index="3">
+   <int>2720</int>
+  </void>
+  <void index="0">
+   <int>2728</int>
   </void>
  </void>
 </void>

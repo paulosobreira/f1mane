@@ -8,6 +8,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
+import java.beans.XMLDecoder;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
@@ -34,15 +35,11 @@ import java.util.Vector;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import br.f1mane.entidades.*;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.f1mane.controles.ControleRecursos;
-import br.f1mane.entidades.Carro;
-import br.f1mane.entidades.Circuito;
-import br.f1mane.entidades.CircuitosDefault;
-import br.f1mane.entidades.Piloto;
-import br.f1mane.entidades.TemporadasDefault;
 
 public class CarregadorRecursos {
     private static HashMap<String, String> temporadas;
@@ -142,7 +139,7 @@ public class CarregadorRecursos {
             try {
                 buffer = ImageUtil.toBufferedImage(file);
                 if (buffer == null) {
-                    Logger.logar( "carregaBufferedImageTranspareciaBranca buffer nulo");
+                    Logger.logar("carregaBufferedImageTranspareciaBranca buffer nulo");
                 }
 
             } catch (Exception e) {
@@ -216,79 +213,6 @@ public class CarregadorRecursos {
             carregadorRecursos = new CarregadorRecursos();
         }
         return carregadorRecursos.getClass().getResource("/" + recurso);
-    }
-
-    public static void main(String[] args)
-            throws URISyntaxException, IOException, ClassNotFoundException {
-        // System.out.println(Util.intervalo(0, 0));
-
-        // gerarListaCarrosLado();
-        // gerarCarrosCima();
-        // JFrame frame = new JFrame();
-        // frame.setSize(200, 200);
-        // frame.setVisible(true);
-        // Graphics2D graphics2d = (Graphics2D) frame.getContentPane()
-        // .getGraphics();
-        // BufferedImage gerarCorresCarros = gerarCorresCarros(Color.BLUE, 1);
-        // graphics2d.drawImage(gerarCorresCarros, 0, 0, null);
-        CarregadorRecursos carregadorRecursos = CarregadorRecursos
-                .getCarregadorRecursos(false);
-
-        // Properties properties = new Properties();
-        //
-        // properties.load(CarregadorRecursos
-        // .recursoComoStream("properties/pistas.properties"));
-        //
-        // Enumeration propName = properties.propertyNames();
-        // double media = 0;
-        // double qtde = 0;
-        // while (propName.hasMoreElements()) {
-        // final String name = (String) propName.nextElement();
-        // // System.out.println(name);
-        // ObjectInputStream ois = new ObjectInputStream(carregadorRecursos
-        // .getClass().getResourceAsStream(name));
-        //
-        // Circuito circuito = (Circuito) ois.readObject();
-        // // System.out.println(properties.getProperty(name));
-        // System.out.println(name + " " + circuito.getNome() + " "
-        // + circuito.getMultiplciador());
-        // media += circuito.getMultiplciador();
-        // qtde++;
-        // // circuito.setMultiplicador(circuito.getMultiplciador() + 1);
-        // // FileOutputStream fileOutputStream = new FileOutputStream(new
-        // // File(
-        // // name));
-        // // ObjectOutputStream oos = new
-        // // ObjectOutputStream(fileOutputStream);
-        // // oos.writeObject(circuito);
-        // // oos.flush();
-        // // fileOutputStream.close();
-        // }
-        // System.out.println("Media "+(media/qtde));
-
-        // BufferedImage travadaRodaImg = CarregadorRecursos
-        // .carregaBufferedImageTranspareciaBranca("travadaRoda.png", 200,
-        // 50);
-        // JOptionPane.showConfirmDialog(null, new JLabel(new ImageIcon(
-        // travadaRodaImg)));
-
-        Map<String, List<Piloto>> carregarTemporadasPilotos = carregadorRecursos
-                .carregarTemporadasPilotos();
-        for (Iterator iterator = carregarTemporadasPilotos.keySet()
-                .iterator(); iterator.hasNext(); ) {
-            String temporada = (String) iterator.next();
-
-            List<Piloto> list = carregarTemporadasPilotos.get(temporada);
-            int somaPontecias = 0;
-            for (Iterator iterator2 = list.iterator(); iterator2.hasNext(); ) {
-                Piloto piloto = (Piloto) iterator2.next();
-                Carro carro = piloto.getCarro();
-                somaPontecias += (carro.getPotencia() + carro.getFreios()
-                        + carro.getAerodinamica());
-            }
-            int mediaPontecia = somaPontecias / (list.size());
-            System.out.println(temporada + " " + mediaPontecia);
-        }
     }
 
     private static void gerarListaCarrosLado() throws IOException {
@@ -1053,9 +977,8 @@ public class CarregadorRecursos {
             throws IOException, ClassNotFoundException {
         Circuito circuito = bufferCircuitos.get(nmCircuito);
         if (circuito == null) {
-            ObjectInputStream ois = new ObjectInputStream(
-                    CarregadorRecursos.recursoComoStream("circuitos/" + nmCircuito));
-            circuito = (Circuito) ois.readObject();
+            XMLDecoder xmlDecoder = new XMLDecoder(CarregadorRecursos.recursoComoStream("circuitos/" + nmCircuito));
+            circuito = (Circuito) xmlDecoder.readObject();
         }
         if (cache) {
             bufferCircuitos.put(nmCircuito, circuito);

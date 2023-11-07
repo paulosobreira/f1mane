@@ -7,7 +7,8 @@
     <list default="true" id="c3430018-9fd3-4efa-9bf0-edcdaf03c6d3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleRecursos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleRecursos.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/ObjetoTransparencia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/ObjetoTransparencia.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/editor/MainPanelEditor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/editor/MainPanelEditor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/recursos/CarregadorRecursos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/recursos/CarregadorRecursos.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,21 +49,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "feature/circuitos__xml",
-    "last_opened_file_path": "/home/sobreira/git/f1mane/src/main/java/sowbreira/f1mane",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.keymap"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/circuitos__xml&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/sobreira/git/f1mane/src/main/java/sowbreira/f1mane&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/sowbreira/f1mane" />

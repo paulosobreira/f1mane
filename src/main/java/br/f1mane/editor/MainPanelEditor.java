@@ -166,7 +166,7 @@ public class MainPanelEditor extends JPanel {
 				CarregadorRecursos.class.getResource("CarregadorRecursos.class").getFile());
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-		ExampleFileFilter exampleFileFilter = new ExampleFileFilter("f1mane");
+		ExampleFileFilter exampleFileFilter = new ExampleFileFilter("xml");
 		fileChooser.setFileFilter(exampleFileFilter);
 
 		int result = fileChooser.showOpenDialog(null);
@@ -175,9 +175,7 @@ public class MainPanelEditor extends JPanel {
 			return;
 		}
 
-		FileInputStream inputStream = new FileInputStream(fileChooser.getSelectedFile());
-		ObjectInputStream ois = new ObjectInputStream(inputStream);
-		circuito = (Circuito) ois.readObject();
+		circuito = CarregadorRecursos.carregarCircuito(fileChooser.getSelectedFile().getName());
 		testePista = new TestePista(this, circuito);
 		// if("jacarepagua.jpg".equals(circuito.getBackGround())){
 		// circuito.setBackGround("jacarepagua_mro.jpg");
