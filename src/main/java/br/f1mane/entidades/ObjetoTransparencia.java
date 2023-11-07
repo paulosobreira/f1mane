@@ -89,4 +89,12 @@ public class ObjetoTransparencia extends ObjetoPista {
 		}
 		return super.getPosicaoQuina();
 	}
+
+	public Polygon getPolygon() {
+		return polygon;
+	}
+
+	public void setPolygon(Polygon polygon) {
+		this.polygon = polygon;
+	}
 }

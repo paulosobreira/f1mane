@@ -256,7 +256,7 @@ public abstract class ControleRecursos {
             String nmCircuito = (String) iterator.next();
             String circuito = carregarCircuitos.get(nmCircuito);
             ObjectInputStream ois = new ObjectInputStream(
-                    CarregadorRecursos.recursoComoStream("circuitos/" + circuito));
+                    CarregadorRecursos.recursoComoStream("circuitos_old/" + circuito));
             sowbreira.f1mane.entidades.Circuito circuitoObj = (sowbreira.f1mane.entidades.Circuito) ois.readObject();
             circuitoObj.vetorizarPista();
             System.out.println(nmCircuito + " " + circuitoObj);
@@ -312,6 +312,8 @@ public abstract class ControleRecursos {
                             objetoTransparencia.getPontos().add(p);
                         }
                         objetoTransparencia.gerar();
+                        System.out.println(objetoTransparencia.getPosicaoQuina());
+                        System.out.println(objetoTransparencia.getPolygon().getBounds());
                     }
                 }
             }
