@@ -111649,17 +111649,6 @@
       <int>5</int>
      </void>
      <void property="point">
-      <object idref="Point56"/>
-     </void>
-    </object>
-    <object idref="ArrayList0"/>
-   </void>
-   <void method="put">
-    <object class="br.f1mane.entidades.PontoEscape">
-     <void property="pista">
-      <int>5</int>
-     </void>
-     <void property="point">
       <object idref="Point55"/>
      </void>
     </object>
@@ -111672,6 +111661,17 @@
      </void>
      <void property="point">
       <object idref="Point54"/>
+     </void>
+    </object>
+    <object idref="ArrayList0"/>
+   </void>
+   <void method="put">
+    <object class="br.f1mane.entidades.PontoEscape">
+     <void property="pista">
+      <int>5</int>
+     </void>
+     <void property="point">
+      <object idref="Point56"/>
      </void>
     </object>
     <object idref="ArrayList0"/>
@@ -168976,21 +168976,23 @@
         </object>
        </void>
       </void>
-      <void id="Point3556" property="posicaoQuina">
-       <void class="java.awt.Point" method="getField">
-        <string>x</string>
-        <void method="set">
-         <object idref="Point3556"/>
-         <int>1746</int>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point3556">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point3556"/>
+          <int>1746</int>
+         </void>
         </void>
-       </void>
-       <void class="java.awt.Point" method="getField">
-        <string>y</string>
-        <void method="set">
-         <object idref="Point3556"/>
-         <int>3000</int>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point3556"/>
+          <int>3000</int>
+         </void>
         </void>
-       </void>
+       </object>
       </void>
       <void property="transparencia">
        <int>125</int>

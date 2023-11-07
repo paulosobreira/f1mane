@@ -417,8 +417,7 @@ public class LetsRace {
     public Response circuitoBg(@PathParam("nmCircuito") String nmCircuito) {
         try {
             nmCircuito = nmCircuito.replace("jpg", "f1mane");
-            Object rec = carregadorRecursos.carregarRecurso("circuitos/" + nmCircuito);
-            Circuito circuito = (Circuito) rec;
+            Circuito circuito = CarregadorRecursos.carregarCircuito(nmCircuito);
             circuito.vetorizarPista();
             InterfaceJogo jogo = null;
             if (controlePaddock.obterJogos() != null
@@ -449,8 +448,7 @@ public class LetsRace {
     @Produces("image/png")
     public Response circuitoMini(@PathParam("nmCircuito") String nmCircuito) {
         try {
-            Object rec = carregadorRecursos.carregarRecurso("circuitos/" + nmCircuito);
-            Circuito circuito = (Circuito) rec;
+            Circuito circuito = CarregadorRecursos.carregarCircuito(nmCircuito);
             BufferedImage mini = circuito.desenhaMiniCircuito();
             if (mini == null) {
                 return Response.status(200).entity("null").build();
@@ -473,8 +471,7 @@ public class LetsRace {
     public Response objetoPista(@PathParam("nmCircuito") String nmCircuito,
                                 @PathParam("indice") String indice) {
         try {
-            Object rec = carregadorRecursos.carregarRecurso("circuitos/" + nmCircuito);
-            Circuito circuito = (Circuito) rec;
+            Circuito circuito = CarregadorRecursos.carregarCircuito(nmCircuito);
             BufferedImage carroCima = circuito.desenhaObjetoPista(indice);
             if (carroCima == null) {
                 return Response.status(200).entity("null").build();

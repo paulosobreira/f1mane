@@ -35,11 +35,17 @@ public class ObjetoEscapada extends ObjetoPista {
 	}
 
 	public Point centro() {
+		if(posicaoQuina==null){
+			return null;
+		}
 		return new Point(posicaoQuina.x + (getAltura() / 2), posicaoQuina.y
 				+ (getAltura() / 2));
 	}
 
 	public Ellipse2D getExterno() {
+		if(posicaoQuina==null){
+			return null;
+		}
 		return new Ellipse2D.Double(getPosicaoQuina().x, getPosicaoQuina().y,
 				getAltura(), getAltura());
 	}

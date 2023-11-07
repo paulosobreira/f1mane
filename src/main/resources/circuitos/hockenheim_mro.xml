@@ -97221,17 +97221,6 @@
       <int>4</int>
      </void>
      <void property="point">
-      <object idref="Point45"/>
-     </void>
-    </object>
-    <object idref="ArrayList0"/>
-   </void>
-   <void method="put">
-    <object class="br.f1mane.entidades.PontoEscape">
-     <void property="pista">
-      <int>4</int>
-     </void>
-     <void property="point">
       <object idref="Point46"/>
      </void>
     </object>
@@ -97244,6 +97233,17 @@
      </void>
      <void property="point">
       <object idref="Point43"/>
+     </void>
+    </object>
+    <object idref="ArrayList0"/>
+   </void>
+   <void method="put">
+    <object class="br.f1mane.entidades.PontoEscape">
+     <void property="pista">
+      <int>4</int>
+     </void>
+     <void property="point">
+      <object idref="Point45"/>
      </void>
     </object>
     <object idref="ArrayList0"/>

@@ -107,7 +107,7 @@ public class ControleCampeonato {
 		final Properties properties = new Properties();
 
 		try {
-			properties.load(CarregadorRecursos.recursoComoStream("properties/pistas.properties"));
+			properties.load(CarregadorRecursos.recursoComoStream("properties/circuitos.properties"));
 
 			Enumeration propName = properties.propertyNames();
 			while (propName.hasMoreElements()) {

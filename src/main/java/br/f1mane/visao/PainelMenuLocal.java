@@ -1311,8 +1311,7 @@ public class PainelMenuLocal {
 		ObjectInputStream ois;
 		try {
 			if (circuitoMini == null || !nmCircuitoMRO.equals(circuitoMiniCarregado)) {
-				ois = new ObjectInputStream(CarregadorRecursos.recursoComoStream("circuitos/"+nmCircuitoMRO));
-				circuitoMini = (Circuito) ois.readObject();
+				circuitoMini = CarregadorRecursos.carregarCircuito(nmCircuitoMRO);
 				circuitoMiniCarregado = nmCircuitoMRO;
 			}
 		} catch (Exception e) {

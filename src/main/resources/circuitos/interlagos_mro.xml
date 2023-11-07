@@ -1948,7 +1948,7 @@
       <int>5</int>
      </void>
      <void property="point">
-      <object idref="Point71"/>
+      <object idref="Point73"/>
      </void>
     </object>
     <object class="java.util.ArrayList" id="ArrayList0">
@@ -92032,7 +92032,7 @@
       <int>5</int>
      </void>
      <void property="point">
-      <object idref="Point73"/>
+      <object idref="Point71"/>
      </void>
     </object>
     <object idref="ArrayList0"/>

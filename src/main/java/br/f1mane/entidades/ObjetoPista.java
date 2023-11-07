@@ -1,9 +1,6 @@
 package br.f1mane.entidades;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.io.Serializable;
 
 public abstract class ObjetoPista implements Serializable {

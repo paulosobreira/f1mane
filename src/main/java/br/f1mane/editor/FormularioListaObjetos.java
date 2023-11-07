@@ -1,9 +1,6 @@
 package br.f1mane.editor;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.Transient;
@@ -60,6 +57,13 @@ public class FormularioListaObjetos {
 						&& selectedIndex < defaultListModelOP.size()) {
 					ObjetoPista objetoPista = (ObjetoPista) defaultListModelOP
 							.get(selectedIndex);
+					if (objetoPista.getPosicaoQuina() == null) {
+						Rectangle obterArea = objetoPista.obterArea();
+						objetoPista.setAltura((int) obterArea.getBounds().getHeight());
+						objetoPista.setLargura((int) obterArea.getBounds().getWidth());
+						objetoPista.setPosicaoQuina(new Point(obterArea.getBounds().x,
+								obterArea.getBounds().y));
+					}
 					Point centro = new Point(objetoPista.getPosicaoQuina());
 					centro.x += objetoPista.getLargura()/2;
 					centro.y += objetoPista.getAltura()/2;

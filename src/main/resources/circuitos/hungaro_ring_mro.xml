@@ -60372,17 +60372,6 @@
    <void method="put">
     <object class="br.f1mane.entidades.PontoEscape">
      <void property="pista">
-      <int>4</int>
-     </void>
-     <void property="point">
-      <object idref="Point45"/>
-     </void>
-    </object>
-    <object idref="ArrayList0"/>
-   </void>
-   <void method="put">
-    <object class="br.f1mane.entidades.PontoEscape">
-     <void property="pista">
       <int>5</int>
      </void>
      <void property="point">
@@ -113897,6 +113886,17 @@
       <null/>
      </void>
     </object>
+   </void>
+   <void method="put">
+    <object class="br.f1mane.entidades.PontoEscape">
+     <void property="pista">
+      <int>4</int>
+     </void>
+     <void property="point">
+      <object idref="Point45"/>
+     </void>
+    </object>
+    <object idref="ArrayList0"/>
    </void>
   </void>
   <void property="ladoBox">

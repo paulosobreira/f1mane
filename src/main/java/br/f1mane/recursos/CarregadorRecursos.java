@@ -963,9 +963,7 @@ public class CarregadorRecursos {
             String nmCircuitoOri = (String) iterator.next();
             cd.setNome(Util.substVogais(nmCircuitoOri));
             cd.setArquivo(carregarCircuitos.get(nmCircuitoOri));
-            ObjectInputStream ois = new ObjectInputStream(CarregadorRecursos
-                    .recursoComoStream("circuitos/" + cd.getArquivo()));
-            Circuito circuito = (Circuito) ois.readObject();
+            Circuito circuito = CarregadorRecursos.carregarCircuito(cd.getArquivo());
             cd.setProbalidadeChuva(circuito.getProbalidadeChuva());
             circuitosDefauts.add(cd);
         }

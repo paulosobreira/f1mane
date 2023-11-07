@@ -684,7 +684,7 @@ public class Circuito implements Serializable {
 
             ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
             Rectangle area = objetoPista.obterArea();
-            if (area == null || area.width <= 0 || area.height <= 0) {
+            if (area == null || area.width <= 0 || area.height <= 0 ||objetoTransparencia.getPosicaoQuina() == null) {
                 continue;
             }
             ObjetoPistaJSon objetoPistaJSon = new ObjetoPistaJSon();
@@ -881,7 +881,6 @@ public class Circuito implements Serializable {
         }
 
         ObjetoTransparencia transparencia = objsTransp.get(i);
-        ;
         List<Point> pontos = transparencia.getPontos();
         Polygon polygon = new Polygon();
         Point posicaoQuina = transparencia.getPosicaoQuina();
