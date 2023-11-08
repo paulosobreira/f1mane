@@ -215,44 +215,6 @@ public class CarregadorRecursos {
         return carregadorRecursos.getClass().getResource("/" + recurso);
     }
 
-    private static void gerarListaCarrosLado() throws IOException {
-        List carList = new LinkedList();
-        File file = new File("src/sowbreira/f1mane/recursos/carros");
-        File[] dir = file.listFiles();
-        for (int i = 0; i < dir.length; i++) {
-            if (!dir[i].getName().startsWith(".")) {
-                File[] imgCar = dir[i].listFiles();
-                for (int j = 0; j < imgCar.length; j++) {
-                    if (!imgCar[j].getName().startsWith(".")
-                            && !imgCar[j].getName().equals("Thumbs.db")) {
-                        String str = imgCar[j].getPath().split("recursos")[1];
-                        str = str.substring(1, str.length());
-                        carList.add(str);
-
-                    }
-                }
-            }
-        }
-
-        FileWriter fileWriter = new FileWriter(
-                "src/main/resources/carros/carlist.txt");
-        for (Iterator iterator = carList.iterator(); iterator.hasNext(); ) {
-            String carro = (String) iterator.next();
-            StringBuilder nCarro = new StringBuilder();
-            for (int i = 0; i < carro.length(); i++) {
-                if (carro.charAt(i) == '\\') {
-                    nCarro.append('/');
-                } else {
-                    nCarro.append(carro.charAt(i));
-                }
-            }
-            Logger.logar(nCarro.toString());
-            fileWriter.write(nCarro.toString() + "\n");
-        }
-        fileWriter.close();
-
-    }
-
     private static void gerarCarrosCima() throws IOException {
         File fileT = new File("src/main/resources/properties");
         File[] dirT = fileT.listFiles();
