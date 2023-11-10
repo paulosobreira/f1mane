@@ -1079,7 +1079,7 @@ public class Piloto implements Serializable, PilotoSuave {
             setDevagarAposBanderada(true);
         }
         if (controleJogo.isCorridaTerminada() && isRecebeuBanderada() && (!getNoAtual().verificaRetaOuLargada() || isDevagarAposBanderada())) {
-            double novoModificador = (controleJogo.getCircuito().getMultiplciador()) * 2;
+            double novoModificador = (getMulti() * 2);
             index += novoModificador;
             setPtosPista(Util.inteiro(novoModificador + getPtosPista()));
             setVelocidade(Util.intervalo(50, 65));
@@ -1387,7 +1387,7 @@ public class Piloto implements Serializable, PilotoSuave {
         novoModificador = calculaModificador(controleJogo);
         novoModificador = getCarro().calcularModificadorCarro(novoModificador, getNoAtual(), controleJogo);
         processaLimitadorModificador();
-        ganho = ((novoModificador * controleJogo.getCircuito().getMultiplciador()) * (controleJogo.getIndexVelcidadeDaPista()));
+        ganho = (novoModificador * getMulti() * controleJogo.getIndexVelcidadeDaPista());
         if (noAtual.verificaRetaOuLargada()) {
             if (ganho < ultGanhoReta) {
                 ganho = ultGanhoReta;
@@ -2503,9 +2503,9 @@ public class Piloto implements Serializable, PilotoSuave {
         if (controleJogo.isChovendo() && !getNoAtual().verificaRetaOuLargada()) {
             comparador -= testeHabilidadePilotoAerodinamica(controleJogo) ? 0.2 : 0.3;
         }
-        if (getNoAtual().verificaRetaOuLargada() && getCarro().testePotencia()) {
+        if (getNoAtual().verificaRetaOuLargada() && getCarro().testePotencia() && getCarro().testeAerodinamica()) {
             return (Math.random() < comparador ? 4 : 3);
-        } else if (getNoAtual().verificaRetaOuLargada() && getCarro().testePotencia() && getCarro().testeAerodinamica()) {
+        } else if (getNoAtual().verificaRetaOuLargada() && getCarro().testePotencia()) {
             return (Math.random() < comparador ? 3 : 2);
         } else if (getNoAtual().verificaCurvaAlta() && testeHabilidadePilotoAerodinamica(controleJogo) && testeHabilidadePilotoFreios(controleJogo)) {
             return (Math.random() < comparador ? 3 : 2);
@@ -3321,6 +3321,10 @@ public class Piloto implements Serializable, PilotoSuave {
 
     public boolean usandoErs() {
         return isAtivarErs() && getCarro().getCargaErs() > 0;
+    }
+
+    public double getMulti() {
+        return getNoAtual().verificaRetaOuLargada() ? Constantes.MULTI_RETA : Constantes.MULTI_CURVA;
     }
 
     private static class StringComparator implements Comparator<String> {

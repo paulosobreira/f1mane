@@ -358,7 +358,7 @@ public class CarregadorRecursos {
 
     public List<Carro> carregarListaCarros(List pilotos, String temporada)
             throws IOException {
-        if (temporadas.get(temporada) != null) {
+        if (temporadas!=null && temporadas.get(temporada) != null) {
             Set<Carro> carros = new HashSet<Carro>();
             for (Iterator iterator = pilotos.iterator(); iterator.hasNext(); ) {
                 Piloto piloto = (Piloto) iterator.next();

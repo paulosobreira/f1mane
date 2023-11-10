@@ -188,7 +188,7 @@ public class ControleBox {
                         + piloto.getCarro().getPorcentagemDesgastePneus() + " Combustivel : "
                         + piloto.getCarro().getPorcentagemCombustivel() + " Motor : "
                         + piloto.getCarro().getPorcentagemDesgasteMotor());
-                piloto.setPtosBox(Util.inteiro((piloto.getPtosBox() + 1) * circuito.getMultiplciador()));
+                piloto.setPtosBox(Util.inteiro((piloto.getPtosBox() + 1) * piloto.getMulti()));
             } else {
                 box = piloto.getNoAtual();
                 No nobox = (No) boxEquipes.get(piloto.getCarro());
@@ -210,7 +210,7 @@ public class ControleBox {
                     ptosBox += 1;
                 }
 
-                ptosBox *= circuito.getMultiplciador();
+                ptosBox *= piloto.getMulti();
                 int novosPtsBox = Util.inteiro(ptosBox) + piloto.getPtosBox();
                 piloto.setPtosBox(novosPtsBox);
                 piloto.setVelocidade(Util.intervalo(50, 60) + ptosBox);

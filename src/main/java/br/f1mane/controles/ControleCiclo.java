@@ -17,6 +17,8 @@ public class ControleCiclo extends Thread {
 	private int contadorCiclos;
 	private boolean processadoCilcos = true;
 
+	public static boolean VALENDO = true;
+
 	public ControleCiclo(InterfaceJogo controleJogo,
 			ControleCorrida controleCorrida) {
 		super();
@@ -88,7 +90,9 @@ public class ControleCiclo extends Thread {
 					controleCorrida.atualizaClassificacao();
 					controleCorrida.verificaFinalCorrida();
 					controleJogo.atualizaIndexTracadoPilotos();
-					Thread.sleep(Constantes.CICLO);
+					if(ControleCiclo.VALENDO){
+						Thread.sleep(Constantes.CICLO);
+					}
 					contadorCiclos++;
 				} catch (Exception e) {
 					Logger.logarExept(e);

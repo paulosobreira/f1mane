@@ -61,6 +61,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import br.nnpe.Constantes;
 import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -235,7 +236,8 @@ public class MainPanelEditor extends JPanel {
             circuito.setLadoBoxSaidaBox(2);
         }
         if (!reprocessa && circuito != null) {
-            multiplicadorPista = circuito.getMultiplciador();
+            multiplicadorPista = Constantes.MULTI_CURVA;
+            // multiplicadorPista = circuito.getMultiplciador();
         }
         if (!reprocessa && circuito != null) {
             multiplicadorLarguraPista = circuito.getMultiplicadorLarguraPista();

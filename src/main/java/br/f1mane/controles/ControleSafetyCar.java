@@ -3,6 +3,7 @@ package br.f1mane.controles;
 import java.util.Iterator;
 import java.util.List;
 
+import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -147,7 +148,7 @@ public class ControleSafetyCar {
 			if (noAtual.verificaCurvaBaixa()) {
 				bonus = Math.random() < 0.7 ? 2 : 1;
 			}
-			bonus *= (controleJogo.getCircuito().getMultiplciador() * controleJogo.getIndexVelcidadeDaPista()) * .8;
+			bonus *= (Constantes.MULTI_CURVA * controleJogo.getIndexVelcidadeDaPista()) * .8;
 			bonus = calculaMediaSC(bonus);
 		}
 

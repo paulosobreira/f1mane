@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import br.nnpe.Constantes;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -518,20 +519,6 @@ public class Carro implements Serializable {
                 if ((Math.random() < .9))
                     novoModificador -= Util.intervalo(1, 3);
             }
-        } else if (no.verificaRetaOuLargada()) {
-            if (0 <= indicativo && indicativo < .1) {
-                if ((Math.random() > .7))
-                    novoModificador += Util.intervalo(1, 2);
-            } else if (.1 <= indicativo && indicativo < .2) {
-                if ((Math.random() > .5))
-                    novoModificador += Util.intervalo(0, 1);
-            } else if (.8 <= indicativo && indicativo < .9) {
-                if ((Math.random() < .5))
-                    novoModificador -= Util.intervalo(0, 1);
-            } else if (.9 <= indicativo) {
-                if ((Math.random() < .7))
-                    novoModificador -= Util.intervalo(1, 2);
-            }
         }
         calculaConsumoCombustivel(controleJogo, porcentagemCombustivel, testePotencia);
         if (porcentagemCombustivel == 0 && novoModificador > 0) {
@@ -564,7 +551,7 @@ public class Carro implements Serializable {
         if (controleJogo.calculaDiffParaProximoRetardatario(getPiloto(), true) < dist) {
             valDesgaste += testePotencia ? 1 : 2;
         }
-        double desg = (valDesgaste * controleJogo.getCircuito().getMultiplciador());
+        double desg = (valDesgaste * getPiloto().getMulti());
         if (verificaMotorSuperAquecido()) {
             double desgasteTemp;
             desgasteTemp = testePotencia ? 2 : 3;
@@ -610,7 +597,7 @@ public class Carro implements Serializable {
             }
         }
 
-        double consumoTotal = (valConsumo * controleJogo.getCircuito().getMultiplciador());
+        double consumoTotal = (valConsumo * piloto.getMulti());
 
         combustivel -= consumoTotal;
 
@@ -856,7 +843,7 @@ public class Carro implements Serializable {
 
         double combustivel = fator + incicativoComb;
 
-        double valDesgaste = (desgPneus * controleJogo.getCircuito().getMultiplciador() * combustivel);
+        double valDesgaste = (desgPneus * piloto.getMulti() * combustivel);
         if (controleJogo.isSafetyCarNaPista()) {
             valDesgaste /= 5;
         }

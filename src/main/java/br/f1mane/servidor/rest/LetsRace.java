@@ -734,7 +734,6 @@ public class LetsRace {
         sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
         ControleJogosServer controleJogosServer = controlePaddock
                 .getControleJogosServer();
-        ;
         return Response.status(200)
                 .entity(controleJogosServer.mudarAgressividadePiloto(
                         sessaoCliente, idPiloto, agresividade))

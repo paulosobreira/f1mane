@@ -21,14 +21,14 @@ import br.f1mane.visao.PainelTabelaResultadoFinal;
 
 public interface InterfaceJogo {
 	public static boolean DEBUG_SEM_CHUVA = false;
-	public static String NORMAL = "NORMAL";
-	public static String FACIL = "FACIL";
-	public static String DIFICIL = "DIFICIL";
-	public static double FACIL_NV = .3;
-	public static double MEDIO_NV = .5;
-	public static double DIFICIL_NV = .7;
-	public static int CARGA_ERS = 100;
-	public static int DURABILIDADE_AREOFOLIO = 4;
+	public static final String NORMAL = "NORMAL";
+	public static final String FACIL = "FACIL";
+	public static final String DIFICIL = "DIFICIL";
+	public static final double FACIL_NV = .3;
+	public static final double MEDIO_NV = .5;
+	public static final double DIFICIL_NV = .7;
+	public static final int CARGA_ERS = 100;
+	public static final int DURABILIDADE_AREOFOLIO = 4;
 
 	public List<String> listaInfo();
 

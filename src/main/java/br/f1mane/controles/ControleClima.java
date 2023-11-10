@@ -126,10 +126,6 @@ public class ControleClima {
 			controleJogo.informaMudancaClima();
 	}
 
-	public static void main(String[] args) {
-		Logger.logar(17 * (1 - .7));
-	}
-
 	public void intervaloNublado() {
 		setClima(Clima.NUBLADO);
 		intervaloMudancaClima = (quartoVoltas / 2)
