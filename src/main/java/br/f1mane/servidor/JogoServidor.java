@@ -600,7 +600,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			return;
 		}
 		this.travadaRoda = new TravadaRoda();
-		this.travadaRoda.setIdNo(mapaNosIds.get(piloto.getNoAtual()));
+		this.travadaRoda.setIdNo(mapaNosIds.get(piloto.getNoAtual()).intValue());
 		this.travadaRoda.setTracado(piloto.getTracado());
 		piloto.setTravouRodas(true);
 	}
@@ -629,7 +629,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	public void encerraCorrida() {
 		if (!isCorridaTerminada()) {
 			infoPrioritaria(Html
-					.vinho(Lang.msg("024", new Object[]{getNumVoltaAtual()})));
+					.vinho(Lang.msg("024", new Object[]{Integer.valueOf(getNumVoltaAtual())})));
 			controleCorrida.terminarCorrida();
 		}
 		setCorridaTerminada(true);

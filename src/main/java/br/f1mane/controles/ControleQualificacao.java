@@ -69,8 +69,8 @@ public class ControleQualificacao {
             Piloto piloto = pilotos.get(i);
             piloto.setNoAtual(noLargada);
             int contCiclosQualificacao = 0;
-            while ((Double.valueOf(piloto.getPtosPista()) / Double
-                    .valueOf(controleJogo.getNosDaPista().size())) <= 1) {
+            while ((Double.valueOf(piloto.getPtosPista()).doubleValue() / Double
+                    .valueOf(controleJogo.getNosDaPista().size()).doubleValue()) <= 1) {
                 piloto.processarCiclo(controleJogo);
                 contCiclosQualificacao++;
                 if (Math.random() > (piloto.getCarro()
@@ -127,14 +127,7 @@ public class ControleQualificacao {
         }
         nivelaHabilidade(pilotos);
         nivelaPontecia(pilotos);
-        Collections.sort(pilotos, new Comparator() {
-            public int compare(Object arg0, Object arg1) {
-                Piloto piloto0 = (Piloto) arg0;
-                Piloto piloto1 = (Piloto) arg1;
-                return new Long(piloto0.getCiclosVoltaQualificacao()).compareTo(
-                        new Long(piloto1.getCiclosVoltaQualificacao()));
-            }
-        });
+        Collections.sort(pilotos, new MyComparator());
 
         for (int i = 0; i < pilotos.size(); i++) {
             if (i == 0) {
@@ -300,8 +293,17 @@ public class ControleQualificacao {
                     + piloto.getCarro().getPorcentagemCombustivel() + " Asa : "
                     + piloto.getCarro().getAsa() + " Tempo Qualificação : "
                     + ControleEstatisticas.formatarTempo(
-                    piloto.getCiclosVoltaQualificacao()));
+                    Long.valueOf(piloto.getCiclosVoltaQualificacao())));
         }
 
+    }
+
+    private static class MyComparator implements Comparator {
+        public int compare(Object arg0, Object arg1) {
+            Piloto piloto0 = (Piloto) arg0;
+            Piloto piloto1 = (Piloto) arg1;
+            return new Long(piloto0.getCiclosVoltaQualificacao()).compareTo(
+                    new Long(piloto1.getCiclosVoltaQualificacao()));
+        }
     }
 }

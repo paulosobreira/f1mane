@@ -85,8 +85,8 @@ public class DadosParciais implements Serializable {
 		dano = decodeDano(sp[spcont++]);
 		asa = decodeAsa(sp[spcont++]);
 		asaBox = decodeAsa(sp[spcont++]);
-		melhorVoltaCorrida = parseLong(sp[spcont++]);
-		melhorVolta = parseLong(sp[spcont++]);
+		melhorVoltaCorrida = Long.valueOf(parseLong(sp[spcont++]));
+		melhorVolta = Long.valueOf(parseLong(sp[spcont++]));
 		int contJogador = spcont++;
 		nomeJogador = (sp[contJogador] == null || sp[contJogador].isEmpty()
 				? null
@@ -96,11 +96,11 @@ public class DadosParciais implements Serializable {
 			texto = Lang.decodeTexto(sp[contTexto]);
 		}
 		vantagem = sp[spcont++];
-		ultima1 = parseLong(sp[spcont++]);
-		ultima2 = parseLong(sp[spcont++]);
-		ultima3 = parseLong(sp[spcont++]);
-		ultima4 = parseLong(sp[spcont++]);
-		ultima5 = parseLong(sp[spcont++]);
+		ultima1 = Long.valueOf(parseLong(sp[spcont++]));
+		ultima2 = Long.valueOf(parseLong(sp[spcont++]));
+		ultima3 = Long.valueOf(parseLong(sp[spcont++]));
+		ultima4 = Long.valueOf(parseLong(sp[spcont++]));
+		ultima5 = Long.valueOf(parseLong(sp[spcont++]));
 		posisPack = new PosisPack();
 		posisPack.decode(sp[spcont++]);
 	}

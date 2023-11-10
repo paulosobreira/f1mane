@@ -499,11 +499,11 @@ public class PainelCircuito {
         gridCarro = CarregadorRecursos.carregaBufferedImageTransparecia("png/GridCarro.png");
         scima = CarregadorRecursos.carregaBufferedImage("png/sfcima.png");
         travadaRodaImg0 = ImageUtil.geraTransparenciaAlpha(CarregadorRecursos.carregaBufferedImage("png/travadaRoda0.png"),
-                Integer.valueOf(40));
+                40);
         travadaRodaImg1 = ImageUtil.geraTransparenciaAlpha(CarregadorRecursos.carregaBufferedImage("png/travadaRoda1.png"),
-                Integer.valueOf(40));
+                40);
         travadaRodaImg2 = ImageUtil.geraTransparenciaAlpha(CarregadorRecursos.carregaBufferedImage("png/travadaRoda2.png"),
-                Integer.valueOf(40));
+                40);
         carroCimaFreiosD1 = CarregadorRecursos.carregaBufferedImageTransparecia("png/CarroCimaFreiosD1.png", null);
         carroCimaFreiosD2 = CarregadorRecursos.carregaBufferedImageTransparecia("png/CarroCimaFreiosD2.png", null);
         carroCimaFreiosD3 = CarregadorRecursos.carregaBufferedImageTransparecia("png/CarroCimaFreiosD3.png", null);
@@ -593,46 +593,46 @@ public class PainelCircuito {
         if (menosCombust.contains(e.getPoint()) && porcentCombust > 0
                 && controleJogo.getPilotoJogador().getPtosBox() == 0) {
             porcentCombust -= 10;
-            controleJogo.setBoxJogadorHumano(tpPneu, porcentCombust, tpAsa);
+            controleJogo.setBoxJogadorHumano(tpPneu, Integer.valueOf(porcentCombust), tpAsa);
             return true;
         }
 
         if (maisCombust.contains(e.getPoint()) && porcentCombust < 100
                 && controleJogo.getPilotoJogador().getPtosBox() == 0) {
             porcentCombust += 10;
-            controleJogo.setBoxJogadorHumano(tpPneu, porcentCombust, tpAsa);
+            controleJogo.setBoxJogadorHumano(tpPneu, Integer.valueOf(porcentCombust), tpAsa);
             return true;
         }
 
         if (maisAsa.contains(e.getPoint()) && controleJogo.getPilotoJogador().getPtosBox() == 0) {
             tpAsa = Carro.MAIS_ASA;
-            controleJogo.setBoxJogadorHumano(tpPneu, porcentCombust, tpAsa);
+            controleJogo.setBoxJogadorHumano(tpPneu, Integer.valueOf(porcentCombust), tpAsa);
             return true;
         }
         if (normalAsa.contains(e.getPoint()) && controleJogo.getPilotoJogador().getPtosBox() == 0) {
             tpAsa = Carro.ASA_NORMAL;
-            controleJogo.setBoxJogadorHumano(tpPneu, porcentCombust, tpAsa);
+            controleJogo.setBoxJogadorHumano(tpPneu, Integer.valueOf(porcentCombust), tpAsa);
             return true;
         }
         if (menosAsa.contains(e.getPoint()) && controleJogo.getPilotoJogador().getPtosBox() == 0) {
             tpAsa = Carro.MENOS_ASA;
-            controleJogo.setBoxJogadorHumano(tpPneu, porcentCombust, tpAsa);
+            controleJogo.setBoxJogadorHumano(tpPneu, Integer.valueOf(porcentCombust), tpAsa);
             return true;
         }
 
         if (pneuMole.contains(e.getPoint()) && controleJogo.getPilotoJogador().getPtosBox() == 0) {
             tpPneu = Carro.TIPO_PNEU_MOLE;
-            controleJogo.setBoxJogadorHumano(tpPneu, porcentCombust, tpAsa);
+            controleJogo.setBoxJogadorHumano(tpPneu, Integer.valueOf(porcentCombust), tpAsa);
             return true;
         }
         if (pneuDuro.contains(e.getPoint()) && controleJogo.getPilotoJogador().getPtosBox() == 0) {
             tpPneu = Carro.TIPO_PNEU_DURO;
-            controleJogo.setBoxJogadorHumano(tpPneu, porcentCombust, tpAsa);
+            controleJogo.setBoxJogadorHumano(tpPneu, Integer.valueOf(porcentCombust), tpAsa);
             return true;
         }
         if (pneuChuva.contains(e.getPoint()) && controleJogo.getPilotoJogador().getPtosBox() == 0) {
             tpPneu = Carro.TIPO_PNEU_CHUVA;
-            controleJogo.setBoxJogadorHumano(tpPneu, porcentCombust, tpAsa);
+            controleJogo.setBoxJogadorHumano(tpPneu, Integer.valueOf(porcentCombust), tpAsa);
             return true;
         }
         if (vaiBox.contains(e.getPoint()) && controleJogo.getPilotoJogador().getPtosBox() == 0) {
@@ -1760,7 +1760,7 @@ public class PainelCircuito {
         g2d.drawString(t1PilotoTraz, x + 117, y + 38);
 
         rectanglePos = new RoundRectangle2D.Double(x + 102, y + 44, 100, 20, 0, 0);
-        if (t1Diff.startsWith("-")) {
+        if (!t1Diff.isEmpty() && t1Diff.charAt(0) == '-') {
             g2d.setColor(gre);
         } else {
             g2d.setColor(yel);
@@ -1788,7 +1788,7 @@ public class PainelCircuito {
         g2d.drawString(t2PilotoTraz, x + 219, y + 38);
 
         rectanglePos = new RoundRectangle2D.Double(x + 204, y + 44, 100, 20, 0, 0);
-        if (t2Diff.startsWith("-")) {
+        if (!t2Diff.isEmpty() && t2Diff.charAt(0) == '-') {
             g2d.setColor(gre);
         } else {
             g2d.setColor(yel);
@@ -1816,7 +1816,7 @@ public class PainelCircuito {
         g2d.drawString(t3PilotoTraz, x + 321, y + 38);
 
         rectanglePos = new RoundRectangle2D.Double(x + 306, y + 44, 100, 20, 0, 0);
-        if (t3Diff.startsWith("-")) {
+        if (!t3Diff.isEmpty() && t3Diff.charAt(0) == '-') {
             g2d.setColor(gre);
         } else {
             g2d.setColor(yel);
@@ -2824,7 +2824,7 @@ public class PainelCircuito {
             xS /= multiminiPista;
             yS /= multiminiPista;
             g2d.setColor(lightRed);
-            if (!controleJogo.isSafetyCarVaiBox()) {
+            if (controleJogo.isSafetyCarVaiBox()) {
                 if (alternaPiscaSCSair) {
                     g2d.setColor(yel);
                 }
@@ -3039,7 +3039,7 @@ public class PainelCircuito {
             return null;
         }
         if (piloto.getNoAnterior() != null && piloto.getDiateira() != null && piloto.getCentro() != null
-                && piloto.getTrazeira() != null && !piloto.emMovimento()) {
+                && piloto.getTrazeira() != null && piloto.emMovimento()) {
             return null;
         }
         No noAtual = piloto.getNoAtual();
@@ -3076,7 +3076,7 @@ public class PainelCircuito {
         Point frenteCar = ((No) lista.get(frente)).getPoint();
         frenteCar = new Point(frenteCar.x, frenteCar.y);
         double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
-        piloto.setAngulo(calculaAngulo);
+        piloto.setAngulo(Double.valueOf(calculaAngulo));
         Rectangle2D rectangle = new Rectangle2D.Double((p.x - Carro.MEIA_LARGURA_CIMA), (p.y - Carro.MEIA_ALTURA_CIMA),
                 Carro.LARGURA_CIMA, Carro.ALTURA_CIMA);
         Point p1;
@@ -3385,7 +3385,7 @@ public class PainelCircuito {
         int w2 = Carro.MEIA_LARGURA_CIMA;
         int h2 = Carro.MEIA_LARGURA_CIMA;
 
-        double rad = Math.toRadians((double) calculaAngulo);
+        double rad = Math.toRadians(calculaAngulo.doubleValue());
 
         int imagemCarroX = Util.inteiro((carX - descontoCentraliza.x) * zoom);
         int imagemCarroY = Util.inteiro((carY - descontoCentraliza.y) * zoom);
@@ -3537,12 +3537,12 @@ public class PainelCircuito {
 
         if (rabeadaAgressivo || rabeadaPneuErrado) {
             if (noAtual.verificaCurvaAlta())
-                calculaAngulo += Util.intervalo(-variacao1, variacao1);
+                calculaAngulo = calculaAngulo.doubleValue() + Util.intervalo(-variacao1, variacao1);
             if (noAtual.verificaCurvaBaixa())
-                calculaAngulo += Util.intervalo(-variacao2, variacao2);
+                calculaAngulo = calculaAngulo.doubleValue() + Util.intervalo(-variacao2, variacao2);
         }
         if ((piloto.getTracado() == 4 || piloto.getTracado() == 5) && Math.random() > 0.9) {
-            calculaAngulo += Util.intervalo(-20, 20);
+            calculaAngulo = calculaAngulo.doubleValue() + Util.intervalo(-20, 20);
         }
         return calculaAngulo;
     }
@@ -4246,7 +4246,7 @@ public class PainelCircuito {
         } else if (controleJogo.verificaCampeonatoComRival()) {
             plider = controleJogo.calculaSegundosParaRival(pilotoSelecionado);
             g2d.setColor(Color.black);
-            if (plider.startsWith("-")) {
+            if (!plider.isEmpty() && plider.charAt(0) == '-') {
                 g2d.setColor(new Color(0, 0, 121));
             } else {
                 g2d.setColor(new Color(121, 0, 0));
@@ -4457,11 +4457,11 @@ public class PainelCircuito {
             }
         }
         if (contDesenhaPilotosQualify == null) {
-            contDesenhaPilotosQualify = pilotos.size() * 15;
+            contDesenhaPilotosQualify = Integer.valueOf(pilotos.size() * 15);
         }
-        contDesenhaPilotosQualify--;
+        contDesenhaPilotosQualify = contDesenhaPilotosQualify.intValue() - 1;
         for (int i = 0; i < pilotos.size(); i++) {
-            if ((i) * 15 < contDesenhaPilotosQualify) {
+            if ((i) * 15 < contDesenhaPilotosQualify.intValue()) {
                 continue;
             }
             Piloto piloto = (Piloto) pilotos.get(i);
@@ -4485,7 +4485,7 @@ public class PainelCircuito {
             g2d.drawImage(carroimg, null, carSelX, carSelY);
 
         String nomeTempo = piloto.getPosicao() + " - " + piloto.getNome() + " - "
-                + ControleEstatisticas.formatarTempo(piloto.getCiclosVoltaQualificacao());
+                + ControleEstatisticas.formatarTempo(Long.valueOf(piloto.getCiclosVoltaQualificacao()));
 
         int maior = nomeTempo.length();
 
@@ -5729,7 +5729,7 @@ public class PainelCircuito {
     }
 
     public boolean desenhouPilotosQualificacao() {
-        return contDesenhaPilotosQualify != null && contDesenhaPilotosQualify <= 0;
+        return contDesenhaPilotosQualify != null && contDesenhaPilotosQualify.intValue() <= 0;
     }
 
     public Point getDescontoCentraliza() {

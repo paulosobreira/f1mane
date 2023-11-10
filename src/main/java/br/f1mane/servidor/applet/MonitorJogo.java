@@ -357,7 +357,7 @@ public class MonitorJogo implements Runnable {
 						jogoCliente.travouRodas(piloto);
 						TravadaRoda travadaRoda = new TravadaRoda();
 						travadaRoda.setIdNo(
-								jogoCliente.obterIdPorNo(piloto.getNoAtual()));
+                                jogoCliente.obterIdPorNo(piloto.getNoAtual()).intValue());
 						jogoCliente.travouRodas(travadaRoda);
 					} else if ("A".equals(statusPilotos)) {
 						piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO,
@@ -543,7 +543,7 @@ public class MonitorJogo implements Runnable {
 			dadosJogo.setClima(dadosParciais.clima);
 			dadosJogo
 					.setMelhoVolta(new Volta(dadosParciais.melhorVoltaCorrida));
-			dadosJogo.setVoltaAtual(dadosParciais.voltaAtual);
+			dadosJogo.setVoltaAtual(Integer.valueOf(dadosParciais.voltaAtual));
 			List<Piloto> pilotos = jogoCliente.getPilotos();
 			if (pilotoSelecionado != null) {
 				Piloto piloto = pilotoSelecionado;
@@ -700,7 +700,7 @@ public class MonitorJogo implements Runnable {
 				Comandos.ALTERAR_OPCOES_BOX, sessaoCliente);
 		clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
 		clientPaddockPack.setTpPneuBox((String) tpPneu);
-		clientPaddockPack.setCombustBox((Integer) combust);
+		clientPaddockPack.setCombustBox(((Integer) combust).intValue());
 		clientPaddockPack.setAsaBox((String) asa);
 		Runnable runnable = new Runnable() {
 			@Override
@@ -847,7 +847,7 @@ public class MonitorJogo implements Runnable {
 							Comandos.MUDAR_KERS, sessaoCliente);
 					clientPaddockPack
 							.setNomeJogo(jogoCliente.getNomeJogoCriado());
-					clientPaddockPack.setDataObject(modo);
+					clientPaddockPack.setDataObject(Boolean.valueOf(modo));
 					Object ret = controlePaddockCliente
 							.enviarObjeto(clientPaddockPack, true);
 				} catch (Exception e) {

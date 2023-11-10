@@ -73,7 +73,7 @@ public class ControleJogosServer {
 		}
 
 		if ((mapaJogosCriados.size() + 1) > MaxJogo) {
-			return new MsgSrv(Lang.msg("204", new Object[]{MaxJogo}));
+			return new MsgSrv(Lang.msg("204", new Object[]{Integer.valueOf(MaxJogo)}));
 		}
 		for (Iterator<SessaoCliente> iter = mapaJogosCriados.keySet()
 				.iterator(); iter.hasNext();) {
@@ -345,32 +345,32 @@ public class ControleJogosServer {
 		}
 		DadosJogo dadosJogo = new DadosJogo();
 		dadosJogo.setMelhoVolta(jogoServidor.obterMelhorVolta());
-		dadosJogo.setVoltaAtual(jogoServidor.getNumVoltaAtual());
+		dadosJogo.setVoltaAtual(Integer.valueOf(jogoServidor.getNumVoltaAtual()));
 		dadosJogo.setClima(jogoServidor.getClima());
-		dadosJogo.setCorridaIniciada(jogoServidor.isCorridaIniciada());
+		dadosJogo.setCorridaIniciada(Boolean.valueOf(jogoServidor.isCorridaIniciada()));
 		dadosJogo.setNomeJogo(clientPaddockPack.getNomeJogo());
-		dadosJogo.setErs(jogoServidor.isErs());
-		dadosJogo.setDrs(jogoServidor.isDrs());
-		dadosJogo.setTrocaPneu(jogoServidor.isTrocaPneu());
-		dadosJogo.setReabastecimento(jogoServidor.isReabastecimento());
+		dadosJogo.setErs(Boolean.valueOf(jogoServidor.isErs()));
+		dadosJogo.setDrs(Boolean.valueOf(jogoServidor.isDrs()));
+		dadosJogo.setTrocaPneu(Boolean.valueOf(jogoServidor.isTrocaPneu()));
+		dadosJogo.setReabastecimento(Boolean.valueOf(jogoServidor.isReabastecimento()));
 		dadosJogo.setNomeCircuito(
 				Util.substVogais(jogoServidor.getCircuito().getNome()));
 		dadosJogo.setArquivoCircuito(jogoServidor.getCircuitos()
 				.get(jogoServidor.getCircuito().getNome()));
 		dadosJogo.setTemporada(jogoServidor.getTemporada().replaceAll("t", ""));
-		Integer segundosParaIniciar = Constantes.SEGUNDOS_PARA_INICIAR_CORRRIDA
-				- Util.inteiro(((System.currentTimeMillis()
-						- jogoServidor.getTempoCriacao()) / 1000));
-		if (segundosParaIniciar < 0) {
-			segundosParaIniciar = 0;
+		Integer segundosParaIniciar = Integer.valueOf(Constantes.SEGUNDOS_PARA_INICIAR_CORRRIDA
+                - Util.inteiro(((System.currentTimeMillis()
+                - jogoServidor.getTempoCriacao()) / 1000)));
+		if (segundosParaIniciar.intValue() < 0) {
+			segundosParaIniciar = Integer.valueOf(0);
 		}
 		dadosJogo.setSegundosParaIniciar(
 				ControleEstatisticas.dez.format(segundosParaIniciar));
 		Piloto pilotoSessao = obterPilotoPorSessaoCliente(sessaoCliente);
 		if (pilotoSessao != null) {
-			dadosJogo.setIdPilotoSelecionado(pilotoSessao.getId());
+			dadosJogo.setIdPilotoSelecionado(Integer.valueOf(pilotoSessao.getId()));
 		}
-		dadosJogo.setNumeroVotas(jogoServidor.totalVoltasCorrida());
+		dadosJogo.setNumeroVotas(Integer.valueOf(jogoServidor.totalVoltasCorrida()));
 		dadosJogo.setEstado(jogoServidor.getEstado());
 		List pilotos = jogoServidor.getPilotosCopia();
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
@@ -379,9 +379,9 @@ public class ControleJogosServer {
 			Volta melhor = piloto.obterVoltaMaisRapida();
 			piloto.setMelhorVolta(melhor);
 			piloto.setTempoVoltaQualificacao(ControleEstatisticas
-					.formatarTempo(piloto.getCiclosVoltaQualificacao()));
+					.formatarTempo(Long.valueOf(piloto.getCiclosVoltaQualificacao())));
 		}
-		dadosJogo.setCorridaTerminada(jogoServidor.isCorridaTerminada());
+		dadosJogo.setCorridaTerminada(Boolean.valueOf(jogoServidor.isCorridaTerminada()));
 		dadosJogo.setPilotos(pilotos);
 
 		dadosJogo.setCampeonato(
@@ -521,11 +521,11 @@ public class ControleJogosServer {
 			piloto.setAtivarDRS(true);
 			int giroAntes = piloto.getCarro().getGiro();
 			piloto.getCarro().mudarGiroMotor(giro);
-			return giroAntes != piloto.getCarro().getGiro();
+			return Boolean.valueOf(giroAntes != piloto.getCarro().getGiro());
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
-		return false;
+		return Boolean.FALSE;
 	}
 
 	public Boolean mudarAgressividadePiloto(SessaoCliente sessaoCliente,
@@ -534,21 +534,21 @@ public class ControleJogosServer {
 			if (!Piloto.LENTO.equals(agressividade)
 					&& !Piloto.AGRESSIVO.equals(agressividade)
 					&& !Piloto.NORMAL.equals(agressividade)) {
-				return false;
+				return Boolean.FALSE;
 			}
 
 			Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 			if (piloto == null) {
-				return false;
+				return Boolean.FALSE;
 			}
 			piloto.setAtivarDRS(true);
 			piloto.setModoPilotagem(agressividade);
-			return agressividade.equals(piloto.getModoPilotagem());
+			return Boolean.valueOf(agressividade.equals(piloto.getModoPilotagem()));
 		} catch (Exception e) {
 			Logger.logarExept(e);
 
 		}
-		return false;
+		return Boolean.FALSE;
 	}
 
 	public Piloto obterPilotoPorId(SessaoCliente sessaoCliente,
@@ -612,7 +612,7 @@ public class ControleJogosServer {
 		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogo
 				.get(clientPaddockPack.getSessaoCliente().getToken());
 		dadosParticiparJogo
-				.setCombustivel(clientPaddockPack.getCombustBox());
+				.setCombustivel(Integer.valueOf(clientPaddockPack.getCombustBox()));
 		dadosParticiparJogo.setTpPneu(clientPaddockPack.getTpPneuBox());
 		dadosParticiparJogo.setAsa(clientPaddockPack.getAsaBox());
 		if (piloto.isBox()) {
@@ -719,7 +719,7 @@ public class ControleJogosServer {
 			}
 			int idPiloto = 0;
 			try {
-				idPiloto = Integer.valueOf(idPilotoStr);
+				idPiloto = Integer.valueOf(idPilotoStr).intValue();
 			} catch (Exception e) {
 			}
 			if (piloto.getId() != idPiloto) {
@@ -851,10 +851,10 @@ public class ControleJogosServer {
 				}
 
 				if (anterior != null && proximo != null) {
-					if (anterior < proximo && !atrasBox) {
+					if (anterior.longValue() < proximo.longValue() && !atrasBox) {
 						dadosParciais.vantagem = piloto
 								.getCalculaSegundosParaAnterior();
-					} else if (anterior > proximo && !frenteBox) {
+					} else if (anterior.longValue() > proximo.longValue() && !frenteBox) {
 						dadosParciais.vantagem = piloto
 								.getCalculaSegundosParaProximo();
 					} else {
@@ -946,20 +946,20 @@ public class ControleJogosServer {
 		try {
 			if (!"0".equals(tracado) && !"1".equals(tracado)
 					&& !"2".equals(tracado)) {
-				return false;
+				return Boolean.FALSE;
 			}
 
 			Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 			if (piloto == null) {
-				return false;
+				return Boolean.FALSE;
 			}
 			piloto.setAtivarDRS(true);
-			return piloto.mudarTracado(Integer.parseInt(tracado),
-					obterJogoPeloNome(sessaoCliente.getJogoAtual()));
+			return Boolean.valueOf(piloto.mudarTracado(Integer.parseInt(tracado),
+                    obterJogoPeloNome(sessaoCliente.getJogoAtual())));
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
-		return false;
+		return Boolean.FALSE;
 	}
 
 	private Piloto obterPiloto(ClientPaddockPack clientPaddockPack,
@@ -1043,7 +1043,7 @@ public class ControleJogosServer {
 		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 		detalhesJogo.setVoltaAtual(jogoServidor.getNumVoltaAtual());
 		detalhesJogo
-				.setNumVoltas(jogoServidor.getDadosCriarJogo().getQtdeVoltas());
+				.setNumVoltas(jogoServidor.getDadosCriarJogo().getQtdeVoltas().longValue());
 		srvPaddockPack.setDetalhesJogo(detalhesJogo);
 		return srvPaddockPack;
 	}
@@ -1149,7 +1149,7 @@ public class ControleJogosServer {
 		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogo
 				.get(clientPaddockPack.getSessaoCliente().getToken());
 		dadosParticiparJogo
-				.setCombustivel(clientPaddockPack.getCombustBox());
+				.setCombustivel(Integer.valueOf(clientPaddockPack.getCombustBox()));
 		dadosParticiparJogo.setTpPneu(clientPaddockPack.getTpPneuBox());
 		dadosParticiparJogo.setAsa(clientPaddockPack.getAsaBox());
 		return null;
@@ -1159,31 +1159,31 @@ public class ControleJogosServer {
 		try {
 			Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 			if (piloto == null) {
-				return false;
+				return Boolean.FALSE;
 			}
 			piloto.setAtivarDRS(true);
-			return Carro.MENOS_ASA.equals(piloto.getCarro().getAsa());
+			return Boolean.valueOf(Carro.MENOS_ASA.equals(piloto.getCarro().getAsa()));
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
-		return false;
+		return Boolean.FALSE;
 	}
 
 	public Object mudarErs(SessaoCliente sessaoCliente, String idPiloto) {
 		try {
 			Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 			if (piloto == null) {
-				return false;
+				return Boolean.FALSE;
 			}
             //obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
             // obterJogoPorSessaoCliente(sessaoCliente).climaChuvoso();
             //obterJogoPorSessaoCliente(sessaoCliente).forcaQuerbraAereofolio(piloto);
             piloto.setAtivarErs(!piloto.isAtivarErs());
-			return piloto.isAtivarErs();
+			return Boolean.valueOf(piloto.isAtivarErs());
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
-		return false;
+		return Boolean.FALSE;
 	}
 
 	public Object boxPiloto(SessaoCliente sessaoCliente, String idPiloto,
@@ -1191,26 +1191,26 @@ public class ControleJogosServer {
 		try {
 			Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 			if (piloto == null) {
-				return false;
+				return Boolean.FALSE;
 			}
 			if (!Carro.MAIS_ASA.equals(asa) && !Carro.MENOS_ASA.equals(asa)
 					&& !Carro.ASA_NORMAL.equals(asa)) {
-				return false;
+				return Boolean.FALSE;
 			}
 			if (!Carro.TIPO_PNEU_CHUVA.equals(pneu)
 					&& !Carro.TIPO_PNEU_MOLE.equals(pneu)
 					&& !Carro.TIPO_PNEU_DURO.equals(pneu)) {
-				return false;
+				return Boolean.FALSE;
 			}
-			if (combustivel > 100) {
-				combustivel = 100;
+			if (combustivel.intValue() > 100) {
+				combustivel = Integer.valueOf(100);
 			}
-			if (combustivel < 0) {
-				combustivel = 0;
+			if (combustivel.intValue() < 0) {
+				combustivel = Integer.valueOf(0);
 			}
-			piloto.setBox(ativa);
+			piloto.setBox(ativa.booleanValue());
 			piloto.setTipoPneuBox(pneu);
-			piloto.setQtdeCombustBox(combustivel);
+			piloto.setQtdeCombustBox(combustivel.intValue());
 			piloto.setAsaBox(asa);
 			JogoServidor jogoServidor = obterJogoPeloNome(
 					sessaoCliente.getJogoAtual());
@@ -1220,11 +1220,11 @@ public class ControleJogosServer {
 			dadosParticiparJogo.setCombustivel(combustivel);
 			dadosParticiparJogo.setTpPneu(pneu);
 			dadosParticiparJogo.setAsa(asa);
-			return piloto.isBox();
+			return Boolean.valueOf(piloto.isBox());
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
-		return false;
+		return Boolean.FALSE;
 	}
 
 	public SrvPaddockPack obterDadosToken(String token) {

@@ -62,26 +62,26 @@ public class Volta implements Serializable {
 	}
 
 	public long getCiclosFim() {
-		return ciclosFim;
+		return ciclosFim.longValue();
 	}
 
 	public void setCiclosFim(long ciclosFim) {
-		this.ciclosFim = ciclosFim;
+		this.ciclosFim = Long.valueOf(ciclosFim);
 	}
 
 	public long getCiclosInicio() {
-		return ciclosInicio;
+		return ciclosInicio.longValue();
 	}
 
 	public void setCiclosInicio(long ciclos) {
-		this.ciclosInicio = ciclos;
+		this.ciclosInicio = Long.valueOf(ciclos);
 	}
 
 	public Long obterTempoVolta() {
 		if (tempoNumero != null) {
 			return tempoNumero;
 		}
-		return ((ciclosFim - ciclosInicio) - tempoPausado);
+		return Long.valueOf((ciclosFim.longValue() - ciclosInicio.longValue()) - tempoPausado.longValue());
 	}
 
 	public String getTempoVoltaFormatado() {
@@ -98,11 +98,11 @@ public class Volta implements Serializable {
 	}
 
 	public long getTempoPausado() {
-		return tempoPausado;
+		return tempoPausado.longValue();
 	}
 
 	public void setTempoPausado(long tempoPausado) {
-		this.tempoPausado = tempoPausado;
+		this.tempoPausado = Long.valueOf(tempoPausado);
 	}
 
 	public Long getTempoNumero() {

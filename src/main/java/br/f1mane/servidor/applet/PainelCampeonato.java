@@ -360,12 +360,12 @@ public class PainelCampeonato extends JPanel {
 					if (corridaCampeonato == null || corridaCampeonato.getTempoInicio() == null) {
 						return "";
 					}
-					return dateFormat.format(new Date(corridaCampeonato.getTempoInicio()));
+					return dateFormat.format(new Date(corridaCampeonato.getTempoInicio().longValue()));
 				case 2:
 					if (corridaCampeonato == null || corridaCampeonato.getTempoFim() == null) {
 						return "";
 					}
-					return dateFormat.format(new Date(corridaCampeonato.getTempoFim()));
+					return dateFormat.format(new Date(corridaCampeonato.getTempoFim().longValue()));
 				case 3:
 					if (corridaCampeonato == null)
 						return "";
@@ -469,7 +469,7 @@ public class PainelCampeonato extends JPanel {
 
 				switch (columnIndex) {
 				case 0:
-					return dadosCorridaCampeonato.getPosicao();
+					return Integer.valueOf(dadosCorridaCampeonato.getPosicao());
 				case 1:
 					return dadosCorridaCampeonato.getPiloto();
 				case 2:
@@ -477,11 +477,11 @@ public class PainelCampeonato extends JPanel {
 				case 3:
 					return Lang.msg(dadosCorridaCampeonato.getTpPneu());
 				case 4:
-					return dadosCorridaCampeonato.getNumVoltas();
+					return Integer.valueOf(dadosCorridaCampeonato.getNumVoltas());
 				case 5:
 					return dadosCorridaCampeonato.getVoltaMaisRapida();
 				case 6:
-					return dadosCorridaCampeonato.getQtdeParadasBox();
+					return Integer.valueOf(dadosCorridaCampeonato.getQtdeParadasBox());
 				case 7:
 					return dadosCorridaCampeonato.getDesgastePneus();
 				case 8:
@@ -489,7 +489,7 @@ public class PainelCampeonato extends JPanel {
 				case 9:
 					return dadosCorridaCampeonato.getDesgasteMotor();
 				case 10:
-					return dadosCorridaCampeonato.getPontos();
+					return Integer.valueOf(dadosCorridaCampeonato.getPontos());
 				default:
 					return "";
 

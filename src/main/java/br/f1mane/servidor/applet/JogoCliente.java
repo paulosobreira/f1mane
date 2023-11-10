@@ -303,7 +303,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	public int getNumVoltaAtual() {
 		if (dadosJogo != null)
-			return dadosJogo.getVoltaAtual();
+			return dadosJogo.getVoltaAtual().intValue();
 		return 0;
 	}
 
@@ -356,7 +356,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	public boolean isCorridaTerminada() {
 		if (dadosJogo != null) {
-			return dadosJogo.getCorridaTerminada();
+			return dadosJogo.getCorridaTerminada().booleanValue();
 		}
 		return false;
 	}
@@ -367,8 +367,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	public boolean isSafetyCarVaiBox() {
 		if (safetyCar != null)
-			return safetyCar.isVaiProBox();
-		return false;
+			return !safetyCar.isVaiProBox();
+		return true;
 	}
 
 	public void matarThreadsResultadoFnal() {
@@ -1287,7 +1287,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 				Object object = field.get(this);
 				String valor = "null";
 				if (object != null) {
-					if (!Util.isWrapperType(object.getClass())) {
+					if (Util.isWrapperType(object.getClass())) {
 						continue;
 					}
 					valor = object.toString();

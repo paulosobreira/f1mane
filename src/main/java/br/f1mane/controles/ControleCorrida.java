@@ -22,7 +22,6 @@ import br.f1mane.recursos.idiomas.Lang;
  */
 public class ControleCorrida {
     private final int distaciaCorrida;
-    private int durabilidadeMaxMotor;
     private int tanqueCheio;
     private int voltaAtual;
     private int qtdeTotalVoltas;
@@ -104,7 +103,7 @@ public class ControleCorrida {
 
     private void definirDurabilidadeMotores() {
         int valCalc = (qtdeTotalVoltas < 12 ? 12 : qtdeTotalVoltas);
-        durabilidadeMaxMotor = (int) (distaciaCorrida * 1.4);
+        int durabilidadeMaxMotor = (int) (distaciaCorrida * 1.4);
         int somaPontecias = 0;
         for (int i = 0; i < controleJogo.getCarros().size(); i++) {
             Carro carro = (Carro) controleJogo.getCarros().get(i);
@@ -188,12 +187,7 @@ public class ControleCorrida {
 
     public void atualizaClassificacao() {
         List<Piloto> pilotos = controleJogo.getPilotos();
-        Collections.sort(pilotos, new Comparator<Piloto>() {
-            @Override
-            public int compare(Piloto piloto0, Piloto piloto1) {
-                return ControleCorrida.compare(piloto0, piloto1);
-            }
-        });
+        Collections.sort(pilotos, new MyComparator());
 
         for (int i = 0; i < pilotos.size(); i++) {
             Piloto piloto = (Piloto) pilotos.get(i);
@@ -422,17 +416,12 @@ public class ControleCorrida {
 
     private void atualizaClassificacaoFinal() {
         List<Piloto> pilotos = controleJogo.getPilotos();
-        Collections.sort(pilotos, new Comparator<Piloto>() {
-            @Override
-            public int compare(Piloto piloto0, Piloto piloto1) {
-                return ControleCorrida.compareBandeirada(piloto0, piloto1);
-            }
-        });
+        Collections.sort(pilotos, new PilotoComparator());
 
         for (int i = 0; i < pilotos.size(); i++) {
             Piloto piloto = (Piloto) pilotos.get(i);
             piloto.setPosicao(i + 1);
-            piloto.setPontosCorrida(calculaPontos25(piloto));
+            piloto.setPontosCorrida(calculaPontos25(piloto).intValue());
         }
 
     }
@@ -652,4 +641,17 @@ public class ControleCorrida {
         return controleBox.verificaEntradaBox(piloto);
     }
 
+    private static class PilotoComparator implements Comparator<Piloto> {
+        @Override
+        public int compare(Piloto piloto0, Piloto piloto1) {
+            return ControleCorrida.compareBandeirada(piloto0, piloto1);
+        }
+    }
+
+    private static class MyComparator implements Comparator<Piloto> {
+        @Override
+        public int compare(Piloto piloto0, Piloto piloto1) {
+            return ControleCorrida.compare(piloto0, piloto1);
+        }
+    }
 }

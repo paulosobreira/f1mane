@@ -9,11 +9,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class TemporadasDefault implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private Boolean trocaPneu = false;
-	private Boolean reabastecimento = false;
-	private Boolean ers = false;
-	private Boolean drs = false;
-	private Boolean safetyCar = true;
+	private Boolean trocaPneu = Boolean.FALSE;
+	private Boolean reabastecimento = Boolean.FALSE;
+	private Boolean ers = Boolean.FALSE;
+	private Boolean drs = Boolean.FALSE;
+	private Boolean safetyCar = Boolean.TRUE;
 	private Double fatorBox;
 	private List<Piloto> pilotos;
 

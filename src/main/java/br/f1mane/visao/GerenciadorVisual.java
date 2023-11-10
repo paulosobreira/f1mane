@@ -760,7 +760,7 @@ public class GerenciadorVisual {
 			}
 		};
 		spinnerCombustivel = new JSlider(0, 100);
-		spinnerCombustivel.setValue(new Integer(50));
+		spinnerCombustivel.setValue(new Integer(50).intValue());
 		spinnerCombustivel.setPaintLabels(true);
 		painelInicio.add(tipoPneu);
 		painelInicio.add(boxPneuInicial);
@@ -774,7 +774,7 @@ public class GerenciadorVisual {
 			}
 		});
 		spinnerDificuldadeUltrapassagem = new JSlider(000, 500);
-		spinnerDificuldadeUltrapassagem.setValue(new Integer(Util.intervalo(000, 500)));
+		spinnerDificuldadeUltrapassagem.setValue(new Integer(Util.intervalo(000, 500)).intValue());
 		Hashtable labelTable = new Hashtable();
 		labelTable.put(new Integer(000), new JLabel("") {
 			@Override
@@ -915,7 +915,7 @@ public class GerenciadorVisual {
 			}
 		});
 		spinnerDificuldadeUltrapassagem = new JSlider(000, 500);
-		spinnerDificuldadeUltrapassagem.setValue(new Integer(Util.intervalo(000, 500)));
+		spinnerDificuldadeUltrapassagem.setValue(new Integer(Util.intervalo(000, 500)).intValue());
 		Hashtable labelTable = new Hashtable();
 		labelTable.put(new Integer(000), new JLabel("") {
 			@Override
@@ -1152,15 +1152,15 @@ public class GerenciadorVisual {
 		}
 
 		Integer qtdeVoltas = (Integer) spinnerQtdeVoltas.getValue();
-		if (qtdeVoltas < 12) {
+		if (qtdeVoltas.intValue() < 12) {
 			spinnerQtdeVoltas.setValue(new Integer(12));
 		}
-		Integer combustivelInicial = (Integer) spinnerCombustivel.getValue();
-		if (combustivelInicial <= 0) {
+		Integer combustivelInicial = Integer.valueOf(spinnerCombustivel.getValue());
+		if (combustivelInicial.intValue() <= 0) {
 			if (reabastecimento.isSelected()) {
-				spinnerCombustivel.setValue(new Integer(1));
+				spinnerCombustivel.setValue(new Integer(1).intValue());
 			} else {
-				spinnerCombustivel.setValue(new Integer(20));
+				spinnerCombustivel.setValue(new Integer(20).intValue());
 			}
 
 		}
@@ -1170,7 +1170,7 @@ public class GerenciadorVisual {
 
 		if (selec instanceof Piloto) {
 			controleJogo.efetuarSelecaoPilotoJogador(selec, Lang.key(boxPneuInicial.getSelectedItem().toString()),
-					spinnerCombustivel.getValue(), nomeJogador.getText(),
+                    Integer.valueOf(spinnerCombustivel.getValue()), nomeJogador.getText(),
 					Lang.key((String) comboBoxAsaInicial.getSelectedItem()));
 		}
 		return true;
@@ -1352,7 +1352,7 @@ public class GerenciadorVisual {
 			spinnerCombustivel.setLabelTable(labelTable);
 			spinnerCombustivel.setPaintLabels(true);
 
-			spinnerCombustivel.setValue(new Integer(50));
+			spinnerCombustivel.setValue(new Integer(50).intValue());
 			painelJogSel.add(tipoPneu);
 			painelJogSel.add(boxPneuInicial);
 			painelJogSel.add(tipoAsa);
@@ -1363,7 +1363,7 @@ public class GerenciadorVisual {
 			JOptionPane.showMessageDialog(controleJogo.getMainFrame(), painelJogSel,
 					Lang.msg("275", new String[] { selec[i].toString() }), JOptionPane.QUESTION_MESSAGE);
 			controleJogo.efetuarSelecaoPilotoJogador(selec[i], Lang.key(boxPneuInicial.getSelectedItem().toString()),
-					spinnerCombustivel.getValue(), nomeJogador.getText(),
+                    Integer.valueOf(spinnerCombustivel.getValue()), nomeJogador.getText(),
 					Lang.key((String) comboBoxAsaInicial.getSelectedItem()));
 
 		}
@@ -1382,15 +1382,15 @@ public class GerenciadorVisual {
 		}
 
 		Integer qtdeVoltas = (Integer) spinnerQtdeVoltas.getValue();
-		if (qtdeVoltas < 12) {
+		if (qtdeVoltas.intValue() < 12) {
 			spinnerQtdeVoltas.setValue(new Integer(12));
 		}
-		Integer combustivelInicial = (Integer) spinnerCombustivel.getValue();
-		if (combustivelInicial <= 0) {
+		Integer combustivelInicial = Integer.valueOf(spinnerCombustivel.getValue());
+		if (combustivelInicial.intValue() <= 0) {
 			if (reabastecimento.isSelected()) {
-				spinnerCombustivel.setValue(new Integer(1));
+				spinnerCombustivel.setValue(new Integer(1).intValue());
 			} else {
-				spinnerCombustivel.setValue(new Integer(20));
+				spinnerCombustivel.setValue(new Integer(20).intValue());
 			}
 
 		}
@@ -1399,7 +1399,7 @@ public class GerenciadorVisual {
 
 		if (selec instanceof Piloto) {
 			controleJogo.efetuarSelecaoPilotoJogador(selec, Lang.key(boxPneuInicial.getSelectedItem().toString()),
-					spinnerCombustivel.getValue(), nomeJogador.getText(),
+                    Integer.valueOf(spinnerCombustivel.getValue()), nomeJogador.getText(),
 					Lang.key(comboBoxAsaInicial.getSelectedItem().toString()));
 		}
 

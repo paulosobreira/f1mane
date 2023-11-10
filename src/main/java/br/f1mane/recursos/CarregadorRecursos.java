@@ -98,12 +98,12 @@ public class CarregadorRecursos {
                 final String name = (String) propName.nextElement();
                 String[] split = properties.getProperty(name).split(",");
                 TemporadasDefault defauts = new TemporadasDefault();
-                defauts.setTrocaPneu("true".equals(split[1]));
-                defauts.setReabastecimento("true".equals(split[2]));
-                defauts.setErs("true".equals(split[3]));
-                defauts.setDrs("true".equals(split[4]));
-                defauts.setFatorBox(Double.parseDouble(split[5]));
-                defauts.setSafetyCar("true".equals(split[6]));
+                defauts.setTrocaPneu(Boolean.valueOf("true".equals(split[1])));
+                defauts.setReabastecimento(Boolean.valueOf("true".equals(split[2])));
+                defauts.setErs(Boolean.valueOf("true".equals(split[3])));
+                defauts.setDrs(Boolean.valueOf("true".equals(split[4])));
+                defauts.setFatorBox(Double.valueOf(Double.parseDouble(split[5])));
+                defauts.setSafetyCar(Boolean.valueOf("true".equals(split[6])));
                 temporadasDefauts.put(name, defauts);
                 temporadas.put(split[0], name);
                 vectorTemps.add(split[0]);
@@ -351,12 +351,7 @@ public class CarregadorRecursos {
                     Integer.parseInt(String.valueOf(duasCasas) + "0"));
             retorno.add(piloto);
         }
-        Collections.sort(retorno, new Comparator<Piloto>() {
-            public int compare(Piloto piloto0, Piloto piloto1) {
-                return Integer.valueOf(piloto1.getHabilidade()+piloto1.getCarro().getPotencia())
-                        .compareTo(Integer.valueOf(piloto0.getHabilidade()+piloto0.getCarro().getPotencia()));
-            }
-        });
+        Collections.sort(retorno, new PilotoComparator());
 
         return retorno;
     }
@@ -370,13 +365,7 @@ public class CarregadorRecursos {
                 carros.add(piloto.getCarro());
             }
             List<Carro> carrosL = new ArrayList<Carro>(carros);
-            Collections.sort(carrosL, new Comparator<Carro>() {
-                @Override
-                public int compare(Carro carro1, Carro carro2) {
-                    return carro1.getNome().compareTo(carro2.getNome());
-                }
-
-            });
+            Collections.sort(carrosL, new CarroComparator());
             return carrosL;
         }
 
@@ -946,4 +935,18 @@ public class CarregadorRecursos {
         return circuito;
     }
 
+    private static class PilotoComparator implements Comparator<Piloto> {
+        public int compare(Piloto piloto0, Piloto piloto1) {
+            return Integer.valueOf(piloto1.getHabilidade()+piloto1.getCarro().getPotencia())
+                    .compareTo(Integer.valueOf(piloto0.getHabilidade()+piloto0.getCarro().getPotencia()));
+        }
+    }
+
+    private static class CarroComparator implements Comparator<Carro> {
+        @Override
+        public int compare(Carro carro1, Carro carro2) {
+            return carro1.getNome().compareTo(carro2.getNome());
+        }
+
+    }
 }

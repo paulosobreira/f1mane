@@ -212,12 +212,12 @@ public class FormularioObjetos {
 
 	public void objetoLivreFormulario(ObjetoPista objetoPista) {
 		this.objetoPista = null;
-		largura.setValue(objetoPista.getLargura());
+		largura.setValue(Integer.valueOf(objetoPista.getLargura()));
 		setCor(objetoPista.getCorPimaria(), labelCor1);
 		setCor(objetoPista.getCorSecundaria(), labelCor2);
 		frente.setSelected(objetoPista.isPintaEmcima());
-		inicioTranparencia.setValue(objetoPista.getInicioTransparencia());
-		fimTransparencia.setValue(objetoPista.getFimTransparencia());
+		inicioTranparencia.setValue(Integer.valueOf(objetoPista.getInicioTransparencia()));
+		fimTransparencia.setValue(Integer.valueOf(objetoPista.getFimTransparencia()));
 		transparenciaBox.setSelected(objetoPista.isTransparenciaBox());
 		this.objetoPista = objetoPista;
 		mostrarPainelModal();
@@ -226,11 +226,11 @@ public class FormularioObjetos {
 	public void formularioObjetoPista(ObjetoPista objetoPista) {
 //		objetoPista.setCorPimaria(getLabelCor1().getBackground());
 //		objetoPista.setCorSecundaria(getLabelCor2().getBackground());
-		objetoPista.setAngulo((Integer) angulo.getValue());
+		objetoPista.setAngulo(((Integer) angulo.getValue()).doubleValue());
 		objetoPista.setInicioTransparencia(
-				(Integer) getInicioTranparencia().getValue());
+                ((Integer) getInicioTranparencia().getValue()).intValue());
 		objetoPista.setFimTransparencia(
-				(Integer) getFimTransparencia().getValue());
+                ((Integer) getFimTransparencia().getValue()).intValue());
 		objetoPista.setTransparenciaBox(transparenciaBox.isSelected());
 	}
 }

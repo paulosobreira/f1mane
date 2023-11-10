@@ -252,7 +252,7 @@ public class MainPanelEditor extends JPanel {
         probalidadeChuvaText.setText(String.valueOf(circuito.getProbalidadeChuva()));
         velocidadePistaText.setText(String.valueOf(circuito.getVelocidadePista()));
         circuito.setNome(nomePistaText.getText());
-        larguraPistaSpinner.getModel().setValue(multiplicadorLarguraPista);
+        larguraPistaSpinner.getModel().setValue(Double.valueOf(multiplicadorLarguraPista));
         List l = circuito.getPistaFull();
 
         for (Iterator iterator = l.iterator(); iterator.hasNext(); ) {
@@ -1879,7 +1879,7 @@ public class MainPanelEditor extends JPanel {
         reprocessar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    multiplicadorLarguraPista = (double) larguraPistaSpinner.getModel().getValue();
+                    multiplicadorLarguraPista = ((Double) larguraPistaSpinner.getModel().getValue()).doubleValue();
                     vetorizarCircuito(true);
                     desSelecionaNosPista();
                     repaint();

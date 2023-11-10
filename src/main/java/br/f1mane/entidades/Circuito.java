@@ -115,7 +115,7 @@ public class Circuito implements Serializable {
             noAnt = no;
         }
 
-        if (!pista.isEmpty()) {
+        if (!pista.isEmpty() && noAnt != null) {
             No no = (No) pista.get(0);
             arrayList.addAll(converterPointNo(GeoUtil.drawBresenhamLine(noAnt.getPoint(), no.getPoint()), noAnt));
         }
@@ -185,7 +185,7 @@ public class Circuito implements Serializable {
             noAnt = no;
         }
 
-        if (!pistaTemp.isEmpty()) {
+        if (!pistaTemp.isEmpty() && noAnt != null) {
             No no = (No) pistaTemp.get(0);
             Point p1 = noAnt.getPoint();
             Point p2 = no.getPoint();
@@ -232,7 +232,7 @@ public class Circuito implements Serializable {
             }
             noAnt = no;
         }
-        if (!boxTemp.isEmpty()) {
+        if (!boxTemp.isEmpty() && noAnt != null) {
             No no = (No) boxTemp.get(boxTemp.size() - 1);
             Point p1 = noAnt.getPoint();
             Point p2 = no.getPoint();
@@ -426,7 +426,7 @@ public class Circuito implements Serializable {
                     }
                     if (contSaida < max) {
                         contPonto = contSaida;
-                    } else if (contVolta > 0) {
+                    } else if (contVolta > 0 && p5 != null) {
                         boolean sair = false;
                         for (int j = (index + 10); j < pista1Full.size(); j++) {
                             if (GeoUtil.distaciaEntrePontos(pista1Full.get(j).getPoint(), p5) < 1) {
@@ -463,7 +463,7 @@ public class Circuito implements Serializable {
                     }
                     if (contSaida < max) {
                         contPonto = contSaida;
-                    } else if (contVolta > 0) {
+                    } else if (contVolta > 0 && p4 != null) {
                         boolean sair = false;
                         for (int j = (index + 10); j < pista2Full.size(); j++) {
                             if (GeoUtil.distaciaEntrePontos(pista2Full.get(j).getPoint(), p4) < 1) {
@@ -684,14 +684,14 @@ public class Circuito implements Serializable {
 
             ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
             Rectangle area = objetoPista.obterArea();
-            if (area == null || area.width <= 0 || area.height <= 0 ||objetoTransparencia.getPosicaoQuina() == null) {
+            if (area == null || area.width <= 0 || area.height <= 0 || objetoTransparencia.getPosicaoQuina() == null) {
                 continue;
             }
             ObjetoPistaJSon objetoPistaJSon = new ObjetoPistaJSon();
-            objetoPistaJSon.setX(objetoTransparencia.getPosicaoQuina().x);
-            objetoPistaJSon.setY(objetoTransparencia.getPosicaoQuina().y);
-            objetoPistaJSon.setIndexInicio(objetoTransparencia.getInicioTransparencia());
-            objetoPistaJSon.setIndexFim(objetoTransparencia.getFimTransparencia());
+            objetoPistaJSon.setX(Integer.valueOf(objetoTransparencia.getPosicaoQuina().x));
+            objetoPistaJSon.setY(Integer.valueOf(objetoTransparencia.getPosicaoQuina().y));
+            objetoPistaJSon.setIndexInicio(Integer.valueOf(objetoTransparencia.getInicioTransparencia()));
+            objetoPistaJSon.setIndexFim(Integer.valueOf(objetoTransparencia.getFimTransparencia()));
             objetoPistaJSon.setTransparenciaBox(objetoTransparencia.isTransparenciaBox());
             objetosNoTransparencia.add(objetoPistaJSon);
         }
@@ -842,15 +842,16 @@ public class Circuito implements Serializable {
             ultNo = (No) map.get(oldP);
         }
         Point p0 = (Point) pistaMinimizada.get(0);
-        if (ultNo.verificaCurvaBaixa()) {
+        if (ultNo != null && ultNo.verificaCurvaBaixa()) {
             g2d.setColor(Color.red);
-        } else if (ultNo.verificaCurvaAlta()) {
+        } else if (ultNo != null && ultNo.verificaCurvaAlta()) {
             g2d.setColor(Color.orange);
-        } else if (ultNo.verificaRetaOuLargada()) {
+        } else if (ultNo != null && ultNo.verificaRetaOuLargada()) {
             g2d.setColor(new Color(0, 200, 0));
         }
-        g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y, o.x + p0.x + incX + x, o.y + p0.y + y);
-
+        if (oldP != null) {
+            g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y, o.x + p0.x + incX + x, o.y + p0.y + y);
+        }
         g2d.setStroke(new BasicStroke(2.0f));
         oldP = null;
         g2d.setColor(Color.lightGray);
@@ -880,7 +881,7 @@ public class Circuito implements Serializable {
             }
         }
 
-        ObjetoTransparencia transparencia = objsTransp.get(i);
+        ObjetoTransparencia transparencia = objsTransp.get(i.intValue());
         List<Point> pontos = transparencia.getPontos();
         Polygon polygon = new Polygon();
         Point posicaoQuina = transparencia.getPosicaoQuina();
@@ -923,6 +924,11 @@ public class Circuito implements Serializable {
     public String toString() {
         return "Circuito{" +
                 "backGround='" + backGround + '\'' +
+                ", nome='" + nome + '\'' +
+                ", velocidadePista=" + velocidadePista +
+                ", noite=" + noite +
+                ", multiplicadorPista=" + multiplicadorPista +
+                ", multiplicadorLarguraPista=" + multiplicadorLarguraPista +
                 ", pista=" + pista.size() +
                 ", pistaFull=" + pistaFull.size() +
                 ", pista1Full=" + pista1Full.size() +
@@ -936,20 +942,15 @@ public class Circuito implements Serializable {
                 ", ladoBox=" + ladoBox +
                 ", ladoBoxSaidaBox=" + ladoBoxSaidaBox +
                 ", probalidadeChuva=" + probalidadeChuva +
-                ", velocidadePista=" + velocidadePista +
                 ", entradaBoxIndex=" + entradaBoxIndex +
                 ", saidaBoxIndex=" + saidaBoxIndex +
                 ", paradaBoxIndex=" + paradaBoxIndex +
                 ", fimParadaBoxIndex=" + fimParadaBoxIndex +
-                ", nome='" + nome + '\'' +
-                ", noite=" + noite +
                 ", usaBkg=" + usaBkg +
                 ", objetosNoTransparencia=" + objetosNoTransparencia +
                 ", pistaKey=" + (pistaKey != null ? String.valueOf(pistaKey.size()) : "null") +
                 ", boxKey=" + (boxKey != null ? String.valueOf(boxKey.size()) : "null") +
                 ", escapeMap=" + escapeMap.size() +
-                ", multiplicadorPista=" + multiplicadorPista +
-                ", multiplicadorLarguraPista=" + multiplicadorLarguraPista +
                 ", objetos=" + (objetos != null ? String.valueOf(objetos.size()) : "null") +
                 ", creditos=" + creditos +
                 ", escapeList=" + escapeList.size() +

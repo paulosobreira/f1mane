@@ -43,10 +43,10 @@ public class BufferTexto implements Serializable {
 				return "";
 			}
 			if (utlConsumoTexto != null
-					&& (System.currentTimeMillis() - utlConsumoTexto) < 5000) {
+					&& (System.currentTimeMillis() - utlConsumoTexto.longValue()) < 5000) {
 				return utlTexto;
 			}
-			utlConsumoTexto = System.currentTimeMillis();
+			utlConsumoTexto = Long.valueOf(System.currentTimeMillis());
 			utlTexto = (String) bufferinfo.removeFirst();
 			return utlTexto;
 		}

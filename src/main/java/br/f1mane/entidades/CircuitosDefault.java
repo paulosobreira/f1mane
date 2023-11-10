@@ -10,7 +10,7 @@ public class CircuitosDefault {
 	private String arquivo;
 	private Integer probalidadeChuva;
 	@JsonIgnore
-	private Integer voltas = 16;
+	private Integer voltas = Integer.valueOf(16);
 	public String getNome() {
 		return nome;
 	}
@@ -25,16 +25,16 @@ public class CircuitosDefault {
 	}
 
 	public int getVoltas() {
-		return voltas;
+		return voltas.intValue();
 	}
 	public void setVoltas(int voltas) {
-		this.voltas = voltas;
+		this.voltas = Integer.valueOf(voltas);
 	}
 	public int getProbalidadeChuva() {
-		return probalidadeChuva;
+		return probalidadeChuva.intValue();
 	}
 	public void setProbalidadeChuva(int probalidadeChuva) {
-		this.probalidadeChuva = probalidadeChuva;
+		this.probalidadeChuva = Integer.valueOf(probalidadeChuva);
 	}
 
 }

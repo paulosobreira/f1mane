@@ -138,7 +138,7 @@ public class ControleClima {
 				.totalVoltasCorrida() > (controleJogo.getNumVoltaAtual()
 						+ intervaloMudancaClima))) {
 			controleJogo.infoPrioritaria(Html.msgClima(Html.msgClima(
-					Lang.msg("007", new Object[]{intervaloMudancaClima}))));
+					Lang.msg("007", new Object[]{Integer.valueOf(intervaloMudancaClima)}))));
 		}
 	}
 

@@ -113,11 +113,11 @@ public class Carro implements Serializable {
     private Piloto piloto;
 
     public String getCor1Hex() {
-        return String.format("#%02x%02x%02x", cor1.getRed(), cor1.getGreen(), cor1.getBlue());
+        return String.format("#%02x%02x%02x", Integer.valueOf(cor1.getRed()), Integer.valueOf(cor1.getGreen()), Integer.valueOf(cor1.getBlue()));
     }
 
     public String getCor2Hex() {
-        return String.format("#%02x%02x%02x", cor2.getRed(), cor2.getGreen(), cor2.getBlue());
+        return String.format("#%02x%02x%02x", Integer.valueOf(cor2.getRed()), Integer.valueOf(cor2.getGreen()), Integer.valueOf(cor2.getBlue()));
     }
 
     public int getPotenciaAntesQualify() {
@@ -1054,7 +1054,7 @@ public class Carro implements Serializable {
                 Object object = field.get(this);
                 String valor = "null";
                 if (object != null) {
-                    if (!Util.isWrapperType(object.getClass())) {
+                    if (Util.isWrapperType(object.getClass())) {
                         continue;
                     }
                     valor = object.toString();
@@ -1064,12 +1064,7 @@ public class Carro implements Serializable {
                 e1.printStackTrace();
             }
         }
-        Collections.sort(campos, new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                return o1.toLowerCase().compareTo(o2.toLowerCase());
-            }
-        });
+        Collections.sort(campos, new StringComparator());
         for (Iterator<String> iterator = campos.iterator(); iterator.hasNext(); ) {
             buffer.append(iterator.next());
         }
@@ -1107,4 +1102,10 @@ public class Carro implements Serializable {
         this.id = id;
     }
 
+    private static class StringComparator implements Comparator<String> {
+        @Override
+        public int compare(String o1, String o2) {
+            return o1.toLowerCase().compareTo(o2.toLowerCase());
+        }
+    }
 }

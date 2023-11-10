@@ -53,7 +53,7 @@ public abstract class ControleRecursos {
     }
 
     public No obterNoPorId(int idNo) {
-        return mapaIdsNos.get(idNo);
+        return mapaIdsNos.get(Integer.valueOf(idNo));
     }
 
     public Integer obterIdPorNo(No no) {
@@ -156,7 +156,8 @@ public abstract class ControleRecursos {
         List<No> listaDeRetas = new ArrayList<No>();
         for (Iterator<No> iter = nosDaPista.iterator(); iter.hasNext(); ) {
             No noPsita = iter.next();
-            Integer pistaId = new Integer(contId++);
+            Integer pistaId = new Integer(contId);
+            contId++;
             mapaIdsNos.put(pistaId, noPsita);
             mapaNosIds.put(noPsita, pistaId);
             idsNoPista.add(pistaId);
@@ -167,7 +168,8 @@ public abstract class ControleRecursos {
 
         for (Iterator iter = nosDoBox.iterator(); iter.hasNext(); ) {
             No noDoBox = (No) iter.next();
-            Integer boxId = new Integer(contId++);
+            Integer boxId = new Integer(contId);
+            contId++;
             mapaIdsNos.put(boxId, noDoBox);
             mapaNosIds.put(noDoBox, boxId);
             idsNoBox.add(boxId);
@@ -258,28 +260,9 @@ public abstract class ControleRecursos {
             String nmCircuito = (String) iterator.next();
             String circuito = carregarCircuitos.get(nmCircuito);
             //circuito = "indianapoles_mro.xml";
-            ObjectInputStream ois = new ObjectInputStream(
-                    CarregadorRecursos.recursoComoStream("circuitos/" + circuito.replaceAll("xml", "f1mane")));
-            Circuito circuitoObj = (Circuito) ois.readObject();
+            Circuito circuitoObj = CarregadorRecursos.carregarCircuito(circuito);
             circuitoObj.vetorizarPista();
-            if (circuitoObj.getObjetos() != null) {
-                for (Iterator iter = circuitoObj.getObjetos().iterator(); iter.hasNext(); ) {
-                    Object element = (Object) iter.next();
-                    if (element instanceof ObjetoTransparencia) {
-                        ((ObjetoTransparencia) element).gerar();
-                    }
-                }
-            }
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            XMLEncoder encoder = new XMLEncoder(byteArrayOutputStream);
-            encoder.writeObject(circuitoObj);
-            encoder.flush();
-            String save = new String(byteArrayOutputStream.toByteArray()) + "</java>";
-            FileOutputStream fileOutputStream = new FileOutputStream(new File("src/main/resources/circuitos/" + circuito.split("\\.")[0] + ".xml"));
-            fileOutputStream.write(save.getBytes());
-            fileOutputStream.close();
             System.out.println(circuitoObj);
-            //return;
         }
     }
 
@@ -341,7 +324,7 @@ public abstract class ControleRecursos {
         if (id == null) {
             return null;
         }
-        int idInt = new Integer(id);
+        int idInt = new Integer(id).intValue();
 
         for (Iterator iterator = pilotos.iterator(); iterator.hasNext(); ) {
             Piloto piloto = (Piloto) iterator.next();

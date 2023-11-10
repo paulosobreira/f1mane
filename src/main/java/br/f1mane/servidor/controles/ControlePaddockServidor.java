@@ -103,7 +103,7 @@ public class ControlePaddockServidor {
 		if (object instanceof ClientPaddockPack) {
 			ClientPaddockPack clientPaddockPack = (ClientPaddockPack) object;
 			if (Comandos.VERIFICA_VERSAO.equals(clientPaddockPack.getComando())) {
-				return versao;
+				return Integer.valueOf(versao);
 			} else if (Comandos.GUEST_LOGIN_APPLET.equals(clientPaddockPack.getComando())) {
 				return criarSessaoVisitante();
 			}
@@ -476,7 +476,7 @@ public class ControlePaddockServidor {
 		dadosPaddock.setLinhaChat(cliente.getNomeJogador() + " : " + clientPaddockPack.getTexto());
 		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 		srvPaddockPack.setDadosPaddock(dadosPaddock);
-		dadosPaddock.setDataTime(System.currentTimeMillis());
+		dadosPaddock.setDataTime(Long.valueOf(System.currentTimeMillis()));
 		return srvPaddockPack;
 	}
 
@@ -511,7 +511,7 @@ public class ControlePaddockServidor {
 							sessaoCliente.setPilotoAtual(piloto.getNome());
 						}
 					}
-					sessaoCliente.setIdPilotoAtual(participarJogo.getIdPiloto());
+					sessaoCliente.setIdPilotoAtual(Integer.valueOf(participarJogo.getIdPiloto()));
 					achouJogo = true;
 				}
 			}

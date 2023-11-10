@@ -71,8 +71,10 @@ public class GeoUtil {
 
 	public static List<Point> drawBresenhamLine(int x0, int y0, int x1, int y1,
 			List<Point> list) {
-		int dy = y1 - y0;
-		int dx = x1 - x0;
+		int x01 = x0;
+		int y01 = y0;
+		int dy = y1 - y01;
+		int dx = x1 - x01;
 		int stepx, stepy;
 
 		if (dy < 0) {
@@ -92,31 +94,31 @@ public class GeoUtil {
 		// dx is now 2*dx
 		dx <<= 1;
 
-		list.add(new Point(x0, y0));
+		list.add(new Point(x01, y01));
 		if (dx > dy) {
 			// same as 2*dy - dx
 			int fraction = dy - (dx >> 1);
-			while (x0 != x1) {
+			while (x01 != x1) {
 				if (fraction >= 0) {
-					y0 += stepy;
+					y01 += stepy;
 					// same as fraction -= 2*dx
 					fraction -= dx;
 				}
-				x0 += stepx;
+				x01 += stepx;
 				// same as fraction -= 2*dy
 				fraction += dy;
-				list.add(new Point(x0, y0));
+				list.add(new Point(x01, y01));
 			}
 		} else {
 			int fraction = dx - (dy >> 1);
-			while (y0 != y1) {
+			while (y01 != y1) {
 				if (fraction >= 0) {
-					x0 += stepx;
+					x01 += stepx;
 					fraction -= dy;
 				}
-				y0 += stepy;
+				y01 += stepy;
 				fraction += dx;
-				list.add(new Point(x0, y0));
+				list.add(new Point(x01, y01));
 			}
 		}
 

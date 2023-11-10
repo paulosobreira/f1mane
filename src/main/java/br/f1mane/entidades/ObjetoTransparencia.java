@@ -90,6 +90,6 @@ public class ObjetoTransparencia extends ObjetoPista {
     }
 
     public Boolean getTransparenciaBox() {
-        return transparenciaBox;
+        return Boolean.valueOf(transparenciaBox);
     }
 }

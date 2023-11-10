@@ -87,14 +87,7 @@ public class ControleBox {
         } catch (IOException e) {
             Logger.logarExept(e);
         }
-        Collections.sort(carrosBox, new Comparator() {
-            public int compare(Object arg0, Object arg1) {
-                Carro carro0 = (Carro) arg0;
-                Carro carro1 = (Carro) arg1;
-
-                return new Integer(carro1.getPotencia()).compareTo(new Integer(carro0.getPotencia()));
-            }
-        });
+        Collections.sort(carrosBox, new MyComparator());
 
         List<No> ptosBox = controleJogo.getNosDoBox();
 
@@ -326,7 +319,7 @@ public class ControleBox {
 
         double paradoBox = (((porcentCombust + penalidade) * 100) / Constantes.CICLO);
 
-        piloto.setParadoBox(Util.inteiro(paradoBox * controleJogo.getFatorBoxTemporada()));
+        piloto.setParadoBox(Util.inteiro(paradoBox * controleJogo.getFatorBoxTemporada().doubleValue()));
         piloto.setPorcentagemCombustUltimaParadaBox(porcentCombust);
 
         piloto.setParouNoBoxMilis(System.currentTimeMillis());
@@ -370,7 +363,7 @@ public class ControleBox {
         piloto.setNumeroVolta(piloto.getNumeroVolta() + 1);
         long diff = piloto.getSaiuDoBoxMilis() - piloto.getParouNoBoxMilis();
         String[] strings = new String[]{piloto.nomeJogadorFormatado(), piloto.getNome(),
-                ControleEstatisticas.formatarTempo(diff),
+                ControleEstatisticas.formatarTempo(Long.valueOf(diff)),
                 String.valueOf(piloto.getPorcentagemCombustUltimaParadaBox())};
         String info = "";
 
@@ -631,4 +624,12 @@ public class ControleBox {
         return (index > entradaBoxIndex - 1000 && index < entradaBoxIndex);
     }
 
+    private static class MyComparator implements Comparator {
+        public int compare(Object arg0, Object arg1) {
+            Carro carro0 = (Carro) arg0;
+            Carro carro1 = (Carro) arg1;
+
+            return new Integer(carro1.getPotencia()).compareTo(new Integer(carro0.getPotencia()));
+        }
+    }
 }

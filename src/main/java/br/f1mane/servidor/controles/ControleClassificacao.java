@@ -61,16 +61,16 @@ public class ControleClassificacao {
 		Session session = controlePersistencia.getSession();
 		try {
 			List returnList = new ArrayList();
-			Dia ini = new Dia(1, 1, ano);
-			Dia fim = new Dia(1, 1, ano + 1);
+			Dia ini = new Dia(1, 1, ano.intValue());
+			Dia fim = new Dia(1, 1, ano.intValue() + 1);
 			Set jogadores = controlePersistencia.obterListaJogadoresCorridasPeriodo(session, ini, fim);
 			for (Iterator iter = jogadores.iterator(); iter.hasNext();) {
 				String key = (String) iter.next();
 				JogadorDadosSrv jogadorDadosSrv = controlePersistencia.carregaDadosJogador(key, session);
 				List corridas = session.createCriteria(CorridasDadosSrv.class)
 						.add(Restrictions.eq("jogadorDadosSrv", jogadorDadosSrv))
-						.add(Restrictions.ge("tempoFim", ini.toTimestamp().getTime()))
-						.add(Restrictions.le("tempoFim", fim.toTimestamp().getTime())).list();
+						.add(Restrictions.ge("tempoFim", Long.valueOf(ini.toTimestamp().getTime())))
+						.add(Restrictions.le("tempoFim", Long.valueOf(fim.toTimestamp().getTime()))).list();
 				DadosJogador dadosJogador = new DadosJogador();
 				dadosJogador.setNome(jogadorDadosSrv.getNome());
 				dadosJogador.setUltimoAceso(jogadorDadosSrv.getUltimoLogon());
@@ -78,14 +78,7 @@ public class ControleClassificacao {
 				dadosJogador.setCorridas(corridas.size());
 				returnList.add(dadosJogador);
 			}
-			Collections.sort(returnList, new Comparator() {
-				public int compare(Object arg0, Object arg1) {
-					DadosJogador d0 = (DadosJogador) arg0;
-					DadosJogador d1 = (DadosJogador) arg1;
-					return new Long(d1.getPontos() * d1.getCorridas())
-							.compareTo(new Long(d0.getPontos() * d0.getCorridas()));
-				}
-			});
+			Collections.sort(returnList, new MyComparator());
 			return returnList;
 		} finally {
 			if (session.isOpen()) {
@@ -299,7 +292,7 @@ public class ControleClassificacao {
 				String key = (String) iterator.next();
 				DadosClassificacaoCarros dadosConstrutoresCarros = new DadosClassificacaoCarros();
 				dadosConstrutoresCarros.setNome(key);
-				dadosConstrutoresCarros.setPontos((Integer) mapaCarros.get(key));
+				dadosConstrutoresCarros.setPontos(((Integer) mapaCarros.get(key)).intValue());
 				if (dadosConstrutoresCarros.getPontos() > 0)
 					listaCarros.add(dadosConstrutoresCarros);
 
@@ -308,7 +301,7 @@ public class ControleClassificacao {
 				String key = (String) iterator.next();
 				DadosClassificacaoPilotos dadosConstrutoresPilotos = new DadosClassificacaoPilotos();
 				dadosConstrutoresPilotos.setNome(key);
-				dadosConstrutoresPilotos.setPontos((Integer) mapaPilotos.get(key));
+				dadosConstrutoresPilotos.setPontos(((Integer) mapaPilotos.get(key)).intValue());
 				if (dadosConstrutoresPilotos.getPontos() > 0)
 					listaPilotos.add(dadosConstrutoresPilotos);
 			}
@@ -331,7 +324,7 @@ public class ControleClassificacao {
 	public Object verCarreira(String token, Session session) {
 		CarreiraDadosSrv carreiraDadosSrv = controlePersistencia.carregaCarreiraJogador(token, true, session);
 		if (carreiraDadosSrv != null) {
-			carreiraDadosSrv.setBonus(calculaBonusCarreira(carreiraDadosSrv));
+			carreiraDadosSrv.setBonus(Integer.valueOf(calculaBonusCarreira(carreiraDadosSrv)));
 		}
 		return carreiraDadosSrv;
 	}
@@ -413,7 +406,7 @@ public class ControleClassificacao {
 					Piloto piloto = (Piloto) iterator.next();
 					Logger.logar(
 							piloto.getNome() + " " + piloto.getHabilidadeReal() + " " + carreiraDados.getPtsPiloto());
-					if (piloto.getId() == carreiraDados.getIdCapaceteLivery()
+					if (piloto.getId() == carreiraDados.getIdCapaceteLivery().intValue()
 							&& piloto.getHabilidadeReal() > carreiraDados.getPtsPiloto()) {
 						return new MsgSrv(Lang.msg("pinturaCapacete",
 								new String[] { String.valueOf(piloto.getHabilidadeReal()) }));
@@ -426,7 +419,7 @@ public class ControleClassificacao {
 						.get("t" + carreiraDados.getTemporadaCarroLivery());
 				for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 					Piloto piloto = (Piloto) iterator.next();
-					if (piloto.getCarro().getId() == carreiraDados.getIdCarroLivery()
+					if (piloto.getCarro().getId() == carreiraDados.getIdCarroLivery().intValue()
 							&& (piloto.getCarro().getPotenciaReal() > carreiraDados.getPtsCarro()
 									|| piloto.getCarro().getAerodinamica() > carreiraDados.getPtsAerodinamica()
 									|| piloto.getCarro().getFreios() > carreiraDados.getPtsFreio())) {
@@ -476,7 +469,7 @@ public class ControleClassificacao {
 		int ptsFreioBase = carreiraDadosSrv.getPtsFreio();
 		int ptsPilotoBase = carreiraDadosSrv.getPtsPiloto();
 
-		Numero numero = new Numero(ptsConstrutoresBase);
+		Numero numero = new Numero(Integer.valueOf(ptsConstrutoresBase));
 		Logger.logar("ptsConstrutoresBase antes " + numero.getNumero().intValue());
 
 		if (ptsAerodinamica < ptsAerodinamicaBase) {
@@ -553,22 +546,12 @@ public class ControleClassificacao {
 							.setImagemJogador(corridasDadosSrv.getJogadorDadosSrv().getImagemJogador());
 					mapa.put(corridasDadosSrv.getJogadorDadosSrv().getId(), dadosClassificacaoCircuito);
 				}
-				dadosClassificacaoCircuito.setCorridas(dadosClassificacaoCircuito.getCorridas() + 1);
+				dadosClassificacaoCircuito.setCorridas(Integer.valueOf(dadosClassificacaoCircuito.getCorridas() + 1));
 				dadosClassificacaoCircuito
-						.setPontos(dadosClassificacaoCircuito.getPontos() + corridasDadosSrv.getPontos());
+						.setPontos(Integer.valueOf(dadosClassificacaoCircuito.getPontos() + corridasDadosSrv.getPontos()));
 			}
 			List<DadosClassificacaoJogador> classificacao = new ArrayList<DadosClassificacaoJogador>(mapa.values());
-			Collections.sort(classificacao, new Comparator<DadosClassificacaoJogador>() {
-				@Override
-				public int compare(DadosClassificacaoJogador o1, DadosClassificacaoJogador o2) {
-					int compareTo = o2.getPontos().compareTo(o1.getPontos());
-					if (compareTo == 0) {
-						return o2.getCorridas().compareTo(o1.getCorridas());
-					} else {
-						return compareTo;
-					}
-				}
-			});
+			Collections.sort(classificacao, new DadosClassificacaoJogadorComparator());
 			return classificacao;
 		} catch (Exception e) {
 			Logger.logarExept(e);
@@ -595,9 +578,9 @@ public class ControleClassificacao {
 							.setImagemJogador(corridasDadosSrv.getJogadorDadosSrv().getImagemJogador());
 					mapa.put(corridasDadosSrv.getJogadorDadosSrv().getId(), dadosClassificacaoCircuito);
 				}
-				dadosClassificacaoCircuito.setCorridas(dadosClassificacaoCircuito.getCorridas() + 1);
+				dadosClassificacaoCircuito.setCorridas(Integer.valueOf(dadosClassificacaoCircuito.getCorridas() + 1));
 				dadosClassificacaoCircuito
-						.setPontos(dadosClassificacaoCircuito.getPontos() + corridasDadosSrv.getPontos());
+						.setPontos(Integer.valueOf(dadosClassificacaoCircuito.getPontos() + corridasDadosSrv.getPontos()));
 			}
 			List<DadosClassificacaoJogador> classificacao = new ArrayList<DadosClassificacaoJogador>(mapa.values());
 			Collections.sort(classificacao, new Comparator<DadosClassificacaoJogador>() {
@@ -618,10 +601,6 @@ public class ControleClassificacao {
 			session.close();
 		}
 		return null;
-	}
-
-	public static void main(String[] args) {
-		System.out.println(new Long(10).compareTo(new Long(10)));
 	}
 
 	public boolean atualizarJogadoresOnlineCarreira(Piloto piloto, String token) {
@@ -688,16 +667,16 @@ public class ControleClassificacao {
 							.setImagemJogador(corridasDadosSrv.getJogadorDadosSrv().getImagemJogador());
 					mapa.put(corridasDadosSrv.getJogadorDadosSrv().getId(), dadosClassificacaoCircuito);
 				}
-				dadosClassificacaoCircuito.setCorridas(dadosClassificacaoCircuito.getCorridas() + 1);
+				dadosClassificacaoCircuito.setCorridas(Integer.valueOf(dadosClassificacaoCircuito.getCorridas() + 1));
 				dadosClassificacaoCircuito
-						.setPontos(dadosClassificacaoCircuito.getPontos() + corridasDadosSrv.getPontos());
+						.setPontos(Integer.valueOf(dadosClassificacaoCircuito.getPontos() + corridasDadosSrv.getPontos()));
 			}
 			List<DadosClassificacaoJogador> classificacao = new ArrayList<DadosClassificacaoJogador>(mapa.values());
 
 			List<DadosClassificacaoJogador> classificacaoremover = new ArrayList<DadosClassificacaoJogador>();
 			for (Iterator iterator = classificacao.iterator(); iterator.hasNext();) {
 				DadosClassificacaoJogador dadosClassificacaoJogador = (DadosClassificacaoJogador) iterator.next();
-				if (dadosClassificacaoJogador.getPontos() < 50) {
+				if (dadosClassificacaoJogador.getPontos().intValue() < 50) {
 					classificacaoremover.add(dadosClassificacaoJogador);
 				}
 			}
@@ -758,13 +737,7 @@ public class ControleClassificacao {
 				campeonatoTO.limpaListas();
 				ret.add(campeonatoTO);
 			}
-			Collections.sort(ret, new Comparator<CampeonatoTO>() {
-
-				@Override
-				public int compare(CampeonatoTO o1, CampeonatoTO o2) {
-					return o2.getUltimaCorrida().compareTo(o1.getUltimaCorrida());
-				}
-			});
+			Collections.sort(ret, new CampeonatoTOComparator());
 
 			return ret;
 		} catch (Exception e) {
@@ -773,5 +746,34 @@ public class ControleClassificacao {
 			session.close();
 		}
 		return null;
+	}
+
+	private static class MyComparator implements Comparator {
+		public int compare(Object arg0, Object arg1) {
+			DadosJogador d0 = (DadosJogador) arg0;
+			DadosJogador d1 = (DadosJogador) arg1;
+			return new Long(d1.getPontos() * d1.getCorridas())
+					.compareTo(new Long(d0.getPontos() * d0.getCorridas()));
+		}
+	}
+
+	private static class DadosClassificacaoJogadorComparator implements Comparator<DadosClassificacaoJogador> {
+		@Override
+		public int compare(DadosClassificacaoJogador o1, DadosClassificacaoJogador o2) {
+			int compareTo = o2.getPontos().compareTo(o1.getPontos());
+			if (compareTo == 0) {
+				return o2.getCorridas().compareTo(o1.getCorridas());
+			} else {
+				return compareTo;
+			}
+		}
+	}
+
+	private static class CampeonatoTOComparator implements Comparator<CampeonatoTO> {
+
+		@Override
+		public int compare(CampeonatoTO o1, CampeonatoTO o2) {
+			return o2.getUltimaCorrida().compareTo(o1.getUltimaCorrida());
+		}
 	}
 }

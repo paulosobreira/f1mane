@@ -53,15 +53,16 @@ public class OcilaCor {
 
 	public OcilaCor(int min, int max, int alpha, int r, int g, int b) {
 		super();
-		if (alpha < min) {
-			alpha = min;
+		int alpha1 = alpha;
+		if (alpha1 < min) {
+			alpha1 = min;
 		}
-		if (alpha > max) {
-			alpha = max;
+		if (alpha1 > max) {
+			alpha1 = max;
 		}
 		this.min = min;
 		this.max = max;
-		this.alpha = alpha;
+		this.alpha = alpha1;
 		this.r = r;
 		this.g = g;
 		this.b = b;
@@ -100,18 +101,19 @@ public class OcilaCor {
 	}
 
 	public static Color porcentVerde100Vermelho0(int porcent) {
+		int porcent1 = porcent;
 		int r, g;
-		if (porcent < 1) {
-			porcent = 1;
+		if (porcent1 < 1) {
+			porcent1 = 1;
 		}
-		if (porcent > 99) {
-			porcent = 99;
+		if (porcent1 > 99) {
+			porcent1 = 99;
 		}
-		r = 510 * (100 - porcent) / 100;
+		r = 510 * (100 - porcent1) / 100;
 		if (r < 255) {
 			g = 255;
 		} else {
-			g = 255 * (porcent + 25) / 100;
+			g = 255 * (porcent1 + 25) / 100;
 			r = 255;
 		}
 		return new Color(r, g, 0);
@@ -124,18 +126,19 @@ public class OcilaCor {
 	}
 
 	public static Color porcentVermelho100Verde0(int porcent) {
+		int porcent1 = porcent;
 		int r, g;
-		if (porcent < 1) {
-			porcent = 1;
+		if (porcent1 < 1) {
+			porcent1 = 1;
 		}
-		if (porcent > 99) {
-			porcent = 99;
+		if (porcent1 > 99) {
+			porcent1 = 99;
 		}
-		g = 510 * (100 - porcent) / 100;
+		g = 510 * (100 - porcent1) / 100;
 		if (g < 255) {
 			r = 255;
 		} else {
-			r = 255 * (porcent + 25) / 100;
+			r = 255 * (porcent1 + 25) / 100;
 			g = 255;
 		}
 		return new Color(r, g, 0);

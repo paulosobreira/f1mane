@@ -143,15 +143,7 @@ public class ControleCampeonato {
 		JPanel panel1st = new JPanel(new BorderLayout());
 		JPanel buttonsPanel = new JPanel(new GridLayout(6, 1));
 		JButton esq = new JButton("<");
-		esq.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (listSelecionados.getSelectedIndex() == -1)
-					return;
-				defaultListModelCircuitos
-						.addElement(defaultListModelCircuitosSelecionados.remove(listSelecionados.getSelectedIndex()));
-			}
-
-		});
+		esq.addActionListener(new MyActionListener(listSelecionados, defaultListModelCircuitos, defaultListModelCircuitosSelecionados));
 		JButton dir = new JButton(">");
 		dir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -514,9 +506,9 @@ public class ControleCampeonato {
 			Integer ponteciaEquipeRival = campeonato.getEquipesPotenciaCampeonato().get(equipeRival);
 			String equipeJogador = campeonato.getPilotosEquipesCampeonato().get(campeonato.getNomePiloto());
 			Integer potenciaEquipeJogador = campeonato.getEquipesPotenciaCampeonato().get(equipeJogador);
-			ponteciaEquipeRival = ponteciaEquipeRival == null ? 0 : ponteciaEquipeRival;
-			potenciaEquipeJogador = potenciaEquipeJogador == null ? 0 : potenciaEquipeJogador;
-			if (ponteciaEquipeRival > potenciaEquipeJogador) {
+			ponteciaEquipeRival = Integer.valueOf(ponteciaEquipeRival == null ? 0 : ponteciaEquipeRival);
+			potenciaEquipeJogador = Integer.valueOf(potenciaEquipeJogador == null ? 0 : potenciaEquipeJogador);
+			if (ponteciaEquipeRival.intValue() > potenciaEquipeJogador.intValue()) {
 				reiniciarDesafio();
 				campeonato.setRebaixadoEquipeRival(false);
 			} else {
@@ -565,7 +557,7 @@ public class ControleCampeonato {
 		for (Iterator iterator = pilotosPontos.iterator(); iterator.hasNext();) {
 			PilotosPontosCampeonato pilotosPontosCampeonato = (PilotosPontosCampeonato) iterator.next();
 			pilotosPontosCampeonato.setPontos(calculaPontosPiloto(pilotosPontosCampeonato.getId()));
-			pilotosPontosCampeonato.setVitorias(computaVitorias(pilotosPontosCampeonato.getId()));
+			pilotosPontosCampeonato.setVitorias(computaVitorias(pilotosPontosCampeonato.getId()).intValue());
 		}
 		Collections.sort(pilotosPontos, new Comparator() {
 			public int compare(Object o1, Object o2) {
@@ -684,7 +676,7 @@ public class ControleCampeonato {
 				}
 			}
 		}
-		return vitorias;
+		return Integer.valueOf(vitorias);
 	}
 
 	public void criarCampeonatoPiloto() {
@@ -919,8 +911,8 @@ public class ControleCampeonato {
 		for (Iterator iterator = tempList.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
 			pilotosEquipesCampeonato.put(piloto.getNome(), piloto.getCarro().getNome());
-			equipesPotenciaCampeonato.put(piloto.getCarro().getNome(), piloto.getCarro().getPotenciaReal());
-			pilotosHabilidadeCampeonato.put(piloto.getNome(), piloto.getHabilidade());
+			equipesPotenciaCampeonato.put(piloto.getCarro().getNome(), Integer.valueOf(piloto.getCarro().getPotenciaReal()));
+			pilotosHabilidadeCampeonato.put(piloto.getNome(), Integer.valueOf(piloto.getHabilidade()));
 		}
 
 		Collections.sort(tempList, new Comparator() {
@@ -1076,13 +1068,13 @@ public class ControleCampeonato {
 			String equipeRival = campeonato.getPilotosEquipesCampeonato().get(pilotoRival);
 			Integer ponteciaEquipeRival = campeonato.getEquipesPotenciaCampeonato().get(equipeRival);
 			Integer potenciaEquipeJogador = campeonato.getEquipesPotenciaCampeonato().get(equipePiloto);
-			ponteciaEquipeRival = ponteciaEquipeRival == null ? 0 : ponteciaEquipeRival;
-			potenciaEquipeJogador = potenciaEquipeJogador == null ? 0 : potenciaEquipeJogador;
-			if (ponteciaEquipeRival < potenciaEquipeJogador && ponteciaEquipeRival > ptenciaRivalAteAgora
+			ponteciaEquipeRival = Integer.valueOf(ponteciaEquipeRival == null ? 0 : ponteciaEquipeRival);
+			potenciaEquipeJogador = Integer.valueOf(potenciaEquipeJogador == null ? 0 : potenciaEquipeJogador);
+			if (ponteciaEquipeRival.intValue() < potenciaEquipeJogador.intValue() && ponteciaEquipeRival.intValue() > ptenciaRivalAteAgora
 					&& !equipePiloto.equals(equipeRival)) {
 				rival = pilotoRival;
 				rivalEquipe = equipeRival;
-				ptenciaRivalAteAgora = ponteciaEquipeRival;
+				ptenciaRivalAteAgora = ponteciaEquipeRival.intValue();
 			}
 		}
 
@@ -1109,8 +1101,8 @@ public class ControleCampeonato {
 		for (Iterator iterator = tempList.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
 			pilotosEquipesCampeonato.put(piloto.getNome(), piloto.getCarro().getNome());
-			equipesPotenciaCampeonato.put(piloto.getCarro().getNome(), piloto.getCarro().getPotenciaReal());
-			pilotosHabilidadeCampeonato.put(piloto.getNome(), piloto.getHabilidade());
+			equipesPotenciaCampeonato.put(piloto.getCarro().getNome(), Integer.valueOf(piloto.getCarro().getPotenciaReal()));
+			pilotosHabilidadeCampeonato.put(piloto.getNome(), Integer.valueOf(piloto.getHabilidade()));
 		}
 
 		campeonato = new Campeonato();
@@ -1133,7 +1125,7 @@ public class ControleCampeonato {
 		Map<String, TemporadasDefault> carregarTemporadasPilotosDefauts = carregadorRecursos
 				.carregarTemporadasPilotosDefauts();
 		TemporadasDefault temporadasDefault = carregarTemporadasPilotosDefauts.get("t" + temporadaSelecionada);
-		campeonato.setSafetycar(temporadasDefault.getSafetyCar());
+		campeonato.setSafetycar(temporadasDefault.getSafetyCar().booleanValue());
 		return campeonato;
 	}
 
@@ -1141,4 +1133,23 @@ public class ControleCampeonato {
 		this.campeonato = campeonato;
 	}
 
+	private static class MyActionListener implements ActionListener {
+		private final JList listSelecionados;
+		private final DefaultListModel defaultListModelCircuitos;
+		private final DefaultListModel defaultListModelCircuitosSelecionados;
+
+		public MyActionListener(JList listSelecionados, DefaultListModel defaultListModelCircuitos, DefaultListModel defaultListModelCircuitosSelecionados) {
+			this.listSelecionados = listSelecionados;
+			this.defaultListModelCircuitos = defaultListModelCircuitos;
+			this.defaultListModelCircuitosSelecionados = defaultListModelCircuitosSelecionados;
+		}
+
+		public void actionPerformed(ActionEvent arg0) {
+			if (listSelecionados.getSelectedIndex() == -1)
+				return;
+			defaultListModelCircuitos
+					.addElement(defaultListModelCircuitosSelecionados.remove(listSelecionados.getSelectedIndex()));
+		}
+
+	}
 }

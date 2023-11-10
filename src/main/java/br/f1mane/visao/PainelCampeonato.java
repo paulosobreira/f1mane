@@ -537,7 +537,7 @@ public class PainelCampeonato extends JPanel {
 
 				switch (columnIndex) {
 				case 0:
-					return cc.getPosicao();
+					return Integer.valueOf(cc.getPosicao());
 				case 1:
 					return cc.getPiloto();
 				case 2:
@@ -545,11 +545,11 @@ public class PainelCampeonato extends JPanel {
 				case 3:
 					return Lang.msg(cc.getTpPneu());
 				case 4:
-					return cc.getNumVoltas();
+					return Integer.valueOf(cc.getNumVoltas());
 				case 5:
 					return cc.getVoltaMaisRapida();
 				case 6:
-					return cc.getQtdeParadasBox();
+					return Integer.valueOf(cc.getQtdeParadasBox());
 				case 7:
 					return cc.getDesgastePneus();
 				case 8:
@@ -557,7 +557,7 @@ public class PainelCampeonato extends JPanel {
 				case 9:
 					return cc.getDesgasteMotor();
 				case 10:
-					return cc.getPontos();
+					return Integer.valueOf(cc.getPontos());
 				default:
 					return "";
 

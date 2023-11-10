@@ -816,14 +816,14 @@ public class PainelMenuLocal {
 
 		for (int i = 0; i < creditos.size(); i++) {
 			String txt = creditos.get(i).toUpperCase();
-			if (txt.startsWith("-")) {
+			if (!txt.isEmpty() && txt.charAt(0) == '-') {
 				g2d.setFont(fontNegrito);
 			} else {
 				g2d.setFont(fontMaior);
 			}
 			g2d.setColor(Color.BLACK);
 			g2d.drawString(txt, x + 5, yDesenha + 16);
-			if (txt.startsWith("-")) {
+			if (!txt.isEmpty() && txt.charAt(0) == '-') {
 				yDesenha += 30;
 			} else {
 				yDesenha += 25;
@@ -945,7 +945,7 @@ public class PainelMenuLocal {
 
 		temporadaSelecionada = campeonato.getTemporada();
 		circuitoSelecionado = campeonato.getCircuitoVez();
-		numVoltasSelecionado = campeonato.getQtdeVoltas();
+		numVoltasSelecionado = campeonato.getQtdeVoltas().intValue();
 		nivelSelecionado = campeonato.getNivel();
 		reabastecimento = campeonato.isReabastecimento();
 		kers = campeonato.isDrs();
@@ -2118,22 +2118,7 @@ public class PainelMenuLocal {
 
 		});
 
-		Collections.sort(pilotos, new Comparator() {
-
-			@Override
-			public int compare(Object o1, Object o2) {
-				Piloto p1 = (Piloto) o1;
-				Piloto p2 = (Piloto) o2;
-
-				double val1 = (p1.getCarro().getPotenciaReal() + p1.getCarro().getAerodinamica()
-						+ p1.getCarro().getFreios()) / 3.0;
-				double val2 = (p2.getCarro().getPotenciaReal() + p2.getCarro().getAerodinamica()
-						+ p2.getCarro().getFreios()) / 3.0;
-
-				return new Double(val2).compareTo(new Double(val1));
-			}
-
-		});
+		Collections.sort(pilotos, new MyComparator());
 		return pilotos;
 	}
 
@@ -2166,12 +2151,12 @@ public class PainelMenuLocal {
 			Map<String, TemporadasDefault> carregarTemporadasPilotosDefauts = carregadorRecursos
 					.carregarTemporadasPilotosDefauts();
 			TemporadasDefault temporadasDefault = carregarTemporadasPilotosDefauts.get("t" + temporadaSelecionada);
-			this.drs = temporadasDefault.getDrs();
-			this.kers = temporadasDefault.getErs();
-			this.reabastecimento = temporadasDefault.getReabastecimento();
-			this.trocaPneus = temporadasDefault.getTrocaPneu();
+			this.drs = temporadasDefault.getDrs().booleanValue();
+			this.kers = temporadasDefault.getErs().booleanValue();
+			this.reabastecimento = temporadasDefault.getReabastecimento().booleanValue();
+			this.trocaPneus = temporadasDefault.getTrocaPneu().booleanValue();
 			this.desenhouTemporadasDefaults = true;
-			this.safetyCar = temporadasDefault.getSafetyCar();
+			this.safetyCar = temporadasDefault.getSafetyCar().booleanValue();
 		}
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
@@ -2961,4 +2946,20 @@ public class PainelMenuLocal {
 		g2d.setFont(fontOri);
 	}
 
+	private static class MyComparator implements Comparator {
+
+		@Override
+		public int compare(Object o1, Object o2) {
+			Piloto p1 = (Piloto) o1;
+			Piloto p2 = (Piloto) o2;
+
+			double val1 = (p1.getCarro().getPotenciaReal() + p1.getCarro().getAerodinamica()
+					+ p1.getCarro().getFreios()) / 3.0;
+			double val2 = (p2.getCarro().getPotenciaReal() + p2.getCarro().getAerodinamica()
+					+ p2.getCarro().getFreios()) / 3.0;
+
+			return new Double(val2).compareTo(new Double(val1));
+		}
+
+	}
 }

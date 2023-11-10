@@ -92,7 +92,7 @@ public class MonitorAtividade implements Runnable {
 			SessaoCliente key = iter.next();
 			JogoServidor jogoServidor = (JogoServidor) jogos.get(key);
 			if ((timeNow - jogoServidor
-					.getTempoCriacao()) > (Constantes.SEGUNDOS_PARA_INICIAR_CORRRIDA
+					.getTempoCriacao()) > (Constantes.SEGUNDOS_PARA_INICIAR_CORRRIDA.intValue()
 							* 1000)) {
 				jogoServidor.iniciarJogo();
 			}

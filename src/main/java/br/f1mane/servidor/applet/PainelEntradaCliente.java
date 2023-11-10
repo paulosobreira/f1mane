@@ -195,7 +195,7 @@ public class PainelEntradaCliente {
 			}
 		});
 		sliderDificuldadeUltrapassagem = new JSlider(000, 500);
-		sliderDificuldadeUltrapassagem.setValue(new Integer(250));
+		sliderDificuldadeUltrapassagem.setValue(new Integer(250).intValue());
 		Hashtable labelTable = new Hashtable();
 		labelTable.put(new Integer(000), new JLabel("") {
 			@Override
@@ -293,7 +293,7 @@ public class PainelEntradaCliente {
 		}
 
 		Integer qtdeVoltas = (Integer) spinnerQtdeVoltas.getValue();
-		if (qtdeVoltas < 12) {
+		if (qtdeVoltas.intValue() < 12) {
 			spinnerQtdeVoltas.setValue(new Integer(12));
 		}
 		preecherDadosCriarJogo();
@@ -479,7 +479,7 @@ public class PainelEntradaCliente {
 		String temporada = (String) comboTemporada.getSelectedItem();
 		dadosCriarJogo.setTemporada("t" + temporada);
 		dadosCriarJogo.setQtdeVoltas(qtdeVoltas);
-		dadosCriarJogo.setDiffultrapassagem((Integer) sliderDificuldadeUltrapassagem.getValue());
+		dadosCriarJogo.setDiffultrapassagem(Integer.valueOf(sliderDificuldadeUltrapassagem.getValue()));
 		String circuitoSelecionado = (String) comboBoxCircuito.getSelectedItem();
 		dadosCriarJogo.setCircuitoSelecionado(circuitoSelecionado);
 		dadosCriarJogo.setNivelCorrida(Lang.key(comboBoxNivelCorrida.getSelectedItem().toString()));
@@ -494,7 +494,7 @@ public class PainelEntradaCliente {
 		String tpPneu = Lang.key(comboBoxPneuInicial.getSelectedItem().toString());
 		Piloto piloto = (Piloto) comboBoxPilotoSelecionado.getSelectedItem();
 		String asa = Lang.key((String) comboBoxAsa.getSelectedItem());
-		Integer combustivel = (Integer) sliderCombustivelInicial.getValue();
+		Integer combustivel = Integer.valueOf(sliderCombustivelInicial.getValue());
 		if (combustivel.intValue() > 100) {
 			combustivel = new Integer(100);
 		}
@@ -589,7 +589,7 @@ public class PainelEntradaCliente {
 		sliderCombustivelInicial.setLabelTable(labelTable);
 		sliderCombustivelInicial.setPaintLabels(true);
 
-		sliderCombustivelInicial.setValue(new Integer(50));
+		sliderCombustivelInicial.setValue(new Integer(50).intValue());
 
 		painelInicio.add(tipoPneu);
 		painelInicio.add(comboBoxPneuInicial);

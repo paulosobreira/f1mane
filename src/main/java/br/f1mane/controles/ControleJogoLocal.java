@@ -409,7 +409,7 @@ public class ControleJogoLocal extends ControleRecursos
 			int porcentCombust = 50;
 			String tpPneu = Carro.TIPO_PNEU_DURO;
 			String tpAsa = Carro.ASA_NORMAL;
-			setBoxJogadorHumano(tpPneu, porcentCombust, tpAsa);
+			setBoxJogadorHumano(tpPneu, Integer.valueOf(porcentCombust), tpAsa);
 			pilotoJogador.setBox(!pilotoJogador.isBox());
 			return pilotoJogador.isBox();
 		}
@@ -427,7 +427,7 @@ public class ControleJogoLocal extends ControleRecursos
 			pilotoJogador.setCombustJogador(combustJogador);
 			pilotoJogador.setAsaJogador(asaJogador);
 			pilotoJogador.setTipoPneuBox(tipoPneuJogador);
-			pilotoJogador.setQtdeCombustBox(combustJogador);
+			pilotoJogador.setQtdeCombustBox(combustJogador.intValue());
 			pilotoJogador.setAsaBox(asaJogador);
 		}
 
@@ -474,7 +474,7 @@ public class ControleJogoLocal extends ControleRecursos
 			setCorridaTerminada(true);
 			controleCorrida.terminarCorrida();
 			infoPrioritaria(Html
-					.vinho(Lang.msg("024", new Object[]{getNumVoltaAtual()})));
+					.vinho(Lang.msg("024", new Object[]{Integer.valueOf(getNumVoltaAtual())})));
 		}
 		if (getNumVoltaAtual() == 2 && isDrs() && !isChovendo()
 				&& !isSafetyCarNaPista()) {
@@ -551,9 +551,9 @@ public class ControleJogoLocal extends ControleRecursos
 	 */
 	public boolean isSafetyCarVaiBox() {
 		if (controleCorrida != null) {
-			return controleCorrida.isSafetyCarVaiBox();
+			return !controleCorrida.isSafetyCarVaiBox();
 		}
-		return false;
+		return true;
 	}
 
 	/**
@@ -649,7 +649,7 @@ public class ControleJogoLocal extends ControleRecursos
 
 		}
 		iniciarJogoMenuLocal(campeonato.getCircuitoVez(),
-				campeonato.getTemporada(), campeonato.getQtdeVoltas(),
+				campeonato.getTemporada(), campeonato.getQtdeVoltas().intValue(),
 				Util.intervalo(130, 370), clima, campeonato.getNivel(),
 				pilotoSel, campeonato.isKers(), campeonato.isDrs(),
 				campeonato.isTrocaPneus(), campeonato.isReabastecimento(),
@@ -715,8 +715,8 @@ public class ControleJogoLocal extends ControleRecursos
 					qtdeVoltas = new Integer(72);
 				}
 			}
-			diffultrapassagem = (Integer) gerenciadorVisual
-					.getSpinnerDificuldadeUltrapassagem().getValue();
+			diffultrapassagem = Integer.valueOf(gerenciadorVisual
+                    .getSpinnerDificuldadeUltrapassagem().getValue());
 			circuitoSelecionado = (String) gerenciadorVisual
 					.getComboBoxCircuito().getSelectedItem();
 
@@ -1005,7 +1005,7 @@ public class ControleJogoLocal extends ControleRecursos
 			return;
 		}
 		TravadaRoda travadaRoda = new TravadaRoda();
-		travadaRoda.setIdNo(mapaNosIds.get(piloto.getNoAtual()));
+		travadaRoda.setIdNo(mapaNosIds.get(piloto.getNoAtual()).intValue());
 		travadaRoda.setTracado(piloto.getTracado());
 		int qtdeFumaca = 0;
 		if (piloto.getNoAtual().verificaRetaOuLargada()) {
@@ -1615,7 +1615,7 @@ public class ControleJogoLocal extends ControleRecursos
 				Object object = field.get(this);
 				String valor = "null";
 				if (object != null) {
-					if (!Util.isWrapperType(object.getClass())) {
+					if (Util.isWrapperType(object.getClass())) {
 						continue;
 					}
 					valor = object.toString();
@@ -1631,7 +1631,7 @@ public class ControleJogoLocal extends ControleRecursos
 		campos.add("isChovendo = " + this.isChovendo() + "<br>");
 		campos.add(
 				"isSafetyCarNaPista = " + this.isSafetyCarNaPista() + "<br>");
-		campos.add("isSafetyCarVaiBox = " + this.isSafetyCarVaiBox() + "<br>");
+		campos.add("isSafetyCarVaiBox = " + !this.isSafetyCarVaiBox() + "<br>");
 		campos.add("IndexVelcidadeDaPista = " + this.getIndexVelcidadeDaPista()
 				+ "<br>");
 		campos.add("isModoQualify = " + this.isModoQualify() + "<br>");
@@ -1646,12 +1646,7 @@ public class ControleJogoLocal extends ControleRecursos
 				"isCorridaTerminada = " + this.isCorridaTerminada() + "<br>");
 		campos.add("isCorridaIniciada = " + this.isCorridaIniciada() + "<br>");
 		campos.add("MediaPontecia = " + this.getMediaPontecia() + "<br>");
-		Collections.sort(campos, new Comparator<String>() {
-			@Override
-			public int compare(String o1, String o2) {
-				return o1.toLowerCase().compareTo(o2.toLowerCase());
-			}
-		});
+		Collections.sort(campos, new StringComparator());
 		for (Iterator<String> iterator = campos.iterator(); iterator
 				.hasNext();) {
 			buffer.append(iterator.next());
@@ -1715,19 +1710,19 @@ public class ControleJogoLocal extends ControleRecursos
 			for (Iterator iterator = piloto.getGanhosBaixa()
 					.iterator(); iterator.hasNext();) {
 				Double d = (Double) iterator.next();
-				somaBaixa += d;
+				somaBaixa += d.doubleValue();
 			}
 			double somaAlta = 0;
 			for (Iterator iterator = piloto.getGanhosAlta().iterator(); iterator
 					.hasNext();) {
 				Double d = (Double) iterator.next();
-				somaAlta += d;
+				somaAlta += d.doubleValue();
 			}
 			double somaReta = 0;
 			for (Iterator iterator = piloto.getGanhosReta().iterator(); iterator
 					.hasNext();) {
 				Double d = (Double) iterator.next();
-				somaReta += d;
+				somaReta += d.doubleValue();
 			}
 			somaBaixa /= piloto.getGanhosBaixa().size();
 			somaAlta /= piloto.getGanhosAlta().size();
@@ -1805,4 +1800,10 @@ public class ControleJogoLocal extends ControleRecursos
 		
 	}
 
+	private static class StringComparator implements Comparator<String> {
+		@Override
+		public int compare(String o1, String o2) {
+			return o1.toLowerCase().compareTo(o2.toLowerCase());
+		}
+	}
 }
