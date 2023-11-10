@@ -5,37 +5,134 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c3430018-9fd3-4efa-9bf0-edcdaf03c6d3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/carros/t2023/alfaromeo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/carros/t2023/alfaromeo_cima.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/carros/t2023/alpine.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/carros/t2023/alpine_cima.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/carros/t2023/astonmartin.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/carros/t2023/astonmartin_cima.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/carros/t2023/atr.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/carros/t2023/atr_cima.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/carros/t2023/ferrari.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/carros/t2023/ferrari_cima.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/carros/t2023/haas.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/carros/t2023/haas_cima.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/carros/t2023/mclaren.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/carros/t2023/mclaren_cima.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/carros/t2023/mercedes.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/carros/t2023/mercedes_cima.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/carros/t2023/nowing_cima.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/carros/t2023/rbr.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/carros/t2023/rbr_cima.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/carros/t2023/williams.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/carros/t2023/williams_cima.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/properties/t2023/carros.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/properties/t2023/pilotos.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/AAlbon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/CLeclerc.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/CSainz.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/DRicciardo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/GRussel.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/KMagnussen.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/LHamilton.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/LNorris.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/LStroll.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/MVerstappen.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/NHulkenberg.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/PGasly.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/SPerez.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/VBottas.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleBox.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleCorrida.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleCorrida.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleRecursos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleRecursos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/Carro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/Carro.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/Piloto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/Piloto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/recursos/CarregadorRecursos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/recursos/CarregadorRecursos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/entidades/BufferTexto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/servidor/entidades/BufferTexto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/visao/GerenciadorVisual.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/visao/GerenciadorVisual.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/visao/PainelCircuito.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/visao/PainelCircuito.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/nnpe/Constantes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/nnpe/Constantes.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/nnpe/Logger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/nnpe/Logger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Campeonato.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Carro.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Circuito.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/CircuitosDefault.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Clima.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ConstrutoresPontosCampeonato.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/CorridaCampeonato.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/No.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoArquibancada.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoCirculo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoConstrucao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoEscapada.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoGuadRails.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoLivre.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoPista.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoPistaJSon.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoPneus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/ObjetoTransparencia.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Pausa.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Piloto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/PilotoSuave.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/PilotosPontosCampeonato.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Ponto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/PontoEscape.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/SafetyCar.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/TemporadasDefault.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Volta.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/carros/carlist.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/properties/temporadas.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/properties/temporadas.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/properties/tsuper/carros.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/properties/tsuper/pilotos.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/albert_park_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/austin_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/bahrain_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/baku_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/catalunya_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/donington_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/estoril_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/fuji_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/hockenheim6601_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/hockenheim_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/hungaro_ring_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/imola_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/india_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/indianapoles_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/interlagos_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/istambul_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/jacarepagua_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/jerez_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/korea_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/magny_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/mexico_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/montecarlo_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/montreal_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/monza_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/nuburgring_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/osterreichring_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/paulricard_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/phoenix_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/shangai_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/silverstone_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/singapura_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/spa_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/spang_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/suzuka_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/valencia_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos/yas_marina_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/albert_park_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/austin_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/bahrain_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/baku_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/catalunya_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/donington_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/estoril_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/fuji_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/hockenheim6601_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/hockenheim_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/hungaro_ring_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/imola_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/india_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/indianapoles_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/interlagos_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/istambul_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/jacarepagua_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/jerez_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/korea_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/magny_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/mexico_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/montecarlo_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/montreal_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/monza_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/nuburgring_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/osterreichring_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/paulricard_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/phoenix_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/shangai_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/silverstone_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/singapura_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/spa_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/spang_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/suzuka_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/valencia_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/circuitos_old/yas_marina_mro.f1mane" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/properties/t2023/carros.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/properties/t2023/carros.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/properties/t2023/pilotos.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/properties/t2023/pilotos.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/campeonato.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/campeonato.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/classificacao.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/classificacao.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_campeonato.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_campeonato.html" afterDir="false" />
@@ -97,7 +194,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "feature/t2023",
-    "last_opened_file_path": "/home/sobreira/git/f1mane/src/main/resources/carros",
+    "last_opened_file_path": "/home/sobreira/git/f1mane/src/main/resources/capacetes",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
@@ -107,11 +204,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/capacetes" />
       <recent name="$PROJECT_DIR$/src/main/resources/carros" />
       <recent name="$PROJECT_DIR$/src/main/resources/properties" />
       <recent name="$PROJECT_DIR$/src/main/java/sowbreira/f1mane" />
       <recent name="$PROJECT_DIR$/src/main/resources/png" />
-      <recent name="$PROJECT_DIR$/src/main/webapp/jwtdecode" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources/png" />
@@ -275,6 +372,11 @@
           <url>file://$PROJECT_DIR$/src/main/java/br/f1mane/entidades/ObjetoTransparencia.java</url>
           <line>80</line>
           <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleBox.java</url>
+          <line>543</line>
+          <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-field">
           <url>file://$PROJECT_DIR$/src/main/java/br/f1mane/servidor/entidades/TOs/DadosParciais.java</url>

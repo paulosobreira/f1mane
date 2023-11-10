@@ -353,8 +353,8 @@ public class CarregadorRecursos {
         }
         Collections.sort(retorno, new Comparator<Piloto>() {
             public int compare(Piloto piloto0, Piloto piloto1) {
-                return Integer.valueOf(piloto1.getHabilidade())
-                        .compareTo(Integer.valueOf(piloto0.getHabilidade()));
+                return Integer.valueOf(piloto1.getHabilidade()+piloto1.getCarro().getPotencia())
+                        .compareTo(Integer.valueOf(piloto0.getHabilidade()+piloto0.getCarro().getPotencia()));
             }
         });
 

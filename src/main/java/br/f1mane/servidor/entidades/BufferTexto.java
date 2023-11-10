@@ -38,16 +38,18 @@ public class BufferTexto implements Serializable {
 	}
 
 	public String consumirTexto() {
-		if (bufferinfo.isEmpty()) {
-			return "";
-		}
-		if (utlConsumoTexto != null
-				&& (System.currentTimeMillis() - utlConsumoTexto) < 5000) {
+		synchronized (bufferinfo){
+			if (bufferinfo.isEmpty()) {
+				return "";
+			}
+			if (utlConsumoTexto != null
+					&& (System.currentTimeMillis() - utlConsumoTexto) < 5000) {
+				return utlTexto;
+			}
+			utlConsumoTexto = System.currentTimeMillis();
+			utlTexto = (String) bufferinfo.removeFirst();
 			return utlTexto;
 		}
-		utlConsumoTexto = System.currentTimeMillis();
-		utlTexto = (String) bufferinfo.removeFirst();
-		return utlTexto;
 	}
 
 }

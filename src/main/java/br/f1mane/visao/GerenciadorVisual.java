@@ -1502,12 +1502,6 @@ public class GerenciadorVisual {
 		painelCircuito.setMouseZoom(d);
 	}
 
-	public boolean isDesenhouQualificacao() {
-		if (painelCircuito == null)
-			return false;
-		return painelCircuito.isDesenhouQualificacao();
-	}
-
 	public void selecionaPilotoCima() {
 		List<Piloto> pilotos = controleJogo.getPilotosCopia();
 		if (controleJogo.getPilotoSelecionado() == null) {

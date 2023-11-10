@@ -824,8 +824,11 @@ public class PainelCircuito {
         if (index < nos.size()) {
             noAtualSuave = nos.get(index);
         }
-
-        if (diferencaSualReal > 1000) {
+        int limite = 1000;
+        if (noAtualSuave.getTracado() == 4 || noAtualSuave.getTracado() == 5) {
+            limite = 2000;
+        }
+        if (diferencaSualReal > limite) {
             if (piloto instanceof Piloto && ((Piloto) piloto).isJogadorHumano()) {
                 Logger.logar("atualizacaoSuave diff > 1000 " + diferencaSualReal);
             }
@@ -2298,8 +2301,8 @@ public class PainelCircuito {
         int xkers = x - (tamKers - tamF5);
 
         kers.setFrame(xkers, y - 25, tamKers + 10, 20);
-        if (pilotoSelecionado != null && pilotoSelecionado.getCarro().getCargaErs() > 0
-                && pilotoSelecionado.isAtivarErs() && pilotoSelecionado.getCarro().getCargaErs() > 0) {
+        if (pilotoSelecionado != null
+                && pilotoSelecionado.usandoErs()) {
             g2d.setColor(transpSel);
             g2d.fill(kers);
             Stroke stroke = g2d.getStroke();
@@ -3527,7 +3530,7 @@ public class PainelCircuito {
             variacao2 = 20.0;
         }
 
-        boolean rabeadaAgressivo = piloto.isAgressivo() && piloto.getCarro().getGiro() == Carro.GIRO_MAX_VAL
+        boolean rabeadaAgressivo = Piloto.AGRESSIVO.equals(piloto.getModoPilotagem()) && piloto.getCarro().getGiro() == Carro.GIRO_MAX_VAL
                 && (noAtual.verificaCurvaAlta() || noAtual.verificaCurvaBaixa()) && Math.random() > .9;
         boolean rabeadaPneuErrado = piloto.getCarro().verificaPneusIncompativeisClima(controleJogo)
                 && Math.random() > .95;
@@ -4445,11 +4448,11 @@ public class PainelCircuito {
             for (int i = 0; i < pilotos.size(); i++) {
                 Piloto piloto = (Piloto) pilotos.get(i);
                 if (piloto.getPosicao() % 2 == 0) {
-                    ptosPilotosDesQualy.add(new Point(midPainel + 270, iniY2));
-                    iniY2 += 40;
+                    ptosPilotosDesQualy.add(new Point(midPainel + 280, iniY2));
+                    iniY2 += 50;
                 } else {
-                    ptosPilotosDesQualy.add(new Point(midPainel - 100, iniY1));
-                    iniY1 += 40;
+                    ptosPilotosDesQualy.add(new Point(midPainel - 110, iniY1));
+                    iniY1 += 50;
                 }
             }
         }
@@ -4776,11 +4779,11 @@ public class PainelCircuito {
         }
         if (qtdeLuzesApagadas > 0 || carro.getPiloto().isBox()) {
             return 0;
-        } else if (!carro.getPiloto().isAgressivo()) {
+        } else if (!Piloto.AGRESSIVO.equals(carro.getPiloto().getModoPilotagem())) {
             return Math.random() > .5 ? 1 : 0;
-        } else if (carro.getPiloto().isAgressivo() && carro.getGiro() != Carro.GIRO_MAX_VAL) {
+        } else if (Piloto.AGRESSIVO.equals(carro.getPiloto().getModoPilotagem()) && carro.getGiro() != Carro.GIRO_MAX_VAL) {
             return 1;
-        } else if (carro.getPiloto().isAgressivo() && carro.getGiro() == Carro.GIRO_MAX_VAL) {
+        } else if (Piloto.AGRESSIVO.equals(carro.getPiloto().getModoPilotagem()) && carro.getGiro() == Carro.GIRO_MAX_VAL) {
             return Math.random() > .5 ? 2 : 1;
         }
         return 0;
