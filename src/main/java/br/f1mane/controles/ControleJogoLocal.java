@@ -821,8 +821,8 @@ public class ControleJogoLocal extends ControleRecursos
 
 		String tipoPneu = (String) tpPneu;
 		Integer qtdeCombustPorcent = (Integer) combust;
-		if (isSemReabastecimento() && qtdeCombustPorcent.intValue() < 75) {
-			qtdeCombustPorcent = new Integer(75);
+		if (isSemReabastecimento() && qtdeCombustPorcent.intValue() < 50) {
+			qtdeCombustPorcent = new Integer(50);
 		}
 		pilotoJogador.getCarro().trocarPneus(this, tipoPneu,
 				controleCorrida.getDistaciaCorrida());

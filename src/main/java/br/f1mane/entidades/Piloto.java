@@ -1089,7 +1089,6 @@ public class Piloto implements Serializable, PilotoSuave {
             }
             return index;
         }
-
         if (desqualificado) {
             return getNoAtual().getIndex();
         }
@@ -1332,7 +1331,7 @@ public class Piloto implements Serializable, PilotoSuave {
          */
         if (getStress() > getValorLimiteStressePararErrarCurva(controleJogo) && !controleJogo.isSafetyCarNaPista() && AGRESSIVO.equals(modoPilotagem) && !testeHabilidadePilotoCarro()) {
             if (escapaTracado(controleJogo)) {
-                setCiclosDesconcentrado(50);
+                setCiclosDesconcentrado(25);
                 controleJogo.travouRodas(this);
                 if (controleJogo.verificaInfoRelevante(this)) {
                     controleJogo.info(Lang.msg("saiDaPista", new String[]{Html.vermelho(nomeJogadorFormatado()), Html.vermelho(getNome())}));

@@ -374,9 +374,9 @@ public class Carro implements Serializable {
         processaTemperaturaMotor(controleJogo);
         processaTemperaturaPneus(controleJogo);
         calculaDesgasteMotor(novoModificador, no, controleJogo);
-        novoModificador = calculaModificadorAsa(novoModificador, no, controleJogo);
         novoModificador = calculaModificadorCombustivel(novoModificador, no, controleJogo);
         novoModificador = calculaModificadorPneu(novoModificador, no, controleJogo);
+        novoModificador = calculaModificadorAsa(novoModificador, no, controleJogo);
         return novoModificador;
     }
 
