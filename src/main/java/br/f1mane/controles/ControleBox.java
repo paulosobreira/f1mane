@@ -188,7 +188,7 @@ public class ControleBox {
                         + piloto.getCarro().getPorcentagemDesgastePneus() + " Combustivel : "
                         + piloto.getCarro().getPorcentagemCombustivel() + " Motor : "
                         + piloto.getCarro().getPorcentagemDesgasteMotor());
-                piloto.setPtosBox(Util.inteiro((piloto.getPtosBox() + 1) * piloto.getMulti()));
+                piloto.setPtosBox(Util.inteiro((piloto.getPtosBox() + 1) * Constantes.MULTIPLICADOR));
             } else {
                 box = piloto.getNoAtual();
                 No nobox = (No) boxEquipes.get(piloto.getCarro());
@@ -210,7 +210,7 @@ public class ControleBox {
                     ptosBox += 1;
                 }
 
-                ptosBox *= piloto.getMulti();
+                ptosBox *= Constantes.MULTIPLICADOR;
                 int novosPtsBox = Util.inteiro(ptosBox) + piloto.getPtosBox();
                 piloto.setPtosBox(novosPtsBox);
                 piloto.setVelocidade(Util.intervalo(50, 60) + ptosBox);
@@ -303,8 +303,7 @@ public class ControleBox {
 
         carro.setPotencia(carro.getPotencia() + Util.intervalo(-5, +5));
 
-        if ((piloto.getPosicao() / controleJogo.getPilotos().size() < Math.random())
-                && !controleJogo.verificaNivelJogo()) {
+        if ((piloto.getPosicao() / controleJogo.getPilotos().size() < Math.random())) {
             if (piloto.getHabilidadeAntesQualify() > piloto.getHabilidade()) {
                 piloto.setHabilidade(piloto.getHabilidadeAntesQualify());
             }
@@ -478,7 +477,7 @@ public class ControleBox {
             }
             processarTipoAsaAutomatico(piloto);
             if (controleJogo.isSemReabastecimento()) {
-                piloto.getCarro().setCombustivel((int) (controleCorrida.getTanqueCheio() * 0.8));
+                piloto.getCarro().setCombustivel((int) (controleCorrida.getTanqueCheio()));
             } else {
                 piloto.getCarro().setCombustivel((int) (controleCorrida.getTanqueCheio() * 0.4));
             }

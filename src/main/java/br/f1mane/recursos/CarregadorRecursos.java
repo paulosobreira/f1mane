@@ -79,6 +79,9 @@ public class CarregadorRecursos {
     }
 
     public Vector<String> getVectorTemps() {
+        if(vectorTemps==null){
+            vectorTemps = carregarTemporadas();
+        }
         return vectorTemps;
     }
 
@@ -937,8 +940,8 @@ public class CarregadorRecursos {
 
     private static class PilotoComparator implements Comparator<Piloto> {
         public int compare(Piloto piloto0, Piloto piloto1) {
-            return Integer.valueOf(piloto1.getHabilidade()+piloto1.getCarro().getPotencia())
-                    .compareTo(Integer.valueOf(piloto0.getHabilidade()+piloto0.getCarro().getPotencia()));
+            return Integer.valueOf(piloto1.getHabilidadeReal()+piloto1.getCarro().getPotenciaReal())
+                    .compareTo(Integer.valueOf(piloto0.getHabilidadeReal()+piloto0.getCarro().getPotenciaReal()));
         }
     }
 

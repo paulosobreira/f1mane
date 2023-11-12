@@ -72,8 +72,6 @@ public interface InterfaceJogo {
 
 	/**
 	 * Quanto Mais dificil o jogo mais ira de retornar true
-	 * 
-	 * @return boolean
 	 */
 	public boolean verificaNivelJogo();
 

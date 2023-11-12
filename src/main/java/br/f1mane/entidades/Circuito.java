@@ -906,10 +906,11 @@ public class Circuito implements Serializable {
     }
 
     public double getVelocidadePista() {
-        if (velocidadePista == 0) {
-            return Constantes.VELOCIDADE_PISTA;
-        }
-        return velocidadePista;
+        return Constantes.VELOCIDADE_PISTA;
+//        if (velocidadePista == 0) {
+//            return Constantes.VELOCIDADE_PISTA;
+//        }
+//        return velocidadePista;
     }
 
     public void setVelocidadePista(double velocidadePista) {

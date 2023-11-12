@@ -1,42 +1,24 @@
 package br.f1mane.controles;
 
-import java.awt.image.BufferedImage;
-import java.lang.reflect.Field;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.imageio.ImageIO;
-import javax.swing.JPanel;
-
+import br.f1mane.MainFrame;
+import br.f1mane.entidades.*;
+import br.f1mane.recursos.idiomas.Lang;
+import br.f1mane.servidor.JogoServidor;
+import br.f1mane.servidor.entidades.TOs.TravadaRoda;
+import br.f1mane.visao.GerenciadorVisual;
+import br.f1mane.visao.PainelTabelaResultadoFinal;
 import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
-import br.f1mane.MainFrame;
-import br.f1mane.entidades.Campeonato;
-import br.f1mane.entidades.Carro;
-import br.f1mane.entidades.Circuito;
-import br.f1mane.entidades.Clima;
-import br.f1mane.entidades.ConstrutoresPontosCampeonato;
-import br.f1mane.entidades.No;
-import br.f1mane.entidades.Piloto;
-import br.f1mane.entidades.PilotosPontosCampeonato;
-import br.f1mane.entidades.SafetyCar;
-import br.f1mane.entidades.TemporadasDefault;
-import br.f1mane.entidades.Volta;
-import br.f1mane.servidor.entidades.TOs.TravadaRoda;
-import br.f1mane.servidor.JogoServidor;
-import br.f1mane.recursos.idiomas.Lang;
-import br.f1mane.visao.GerenciadorVisual;
-import br.f1mane.visao.PainelTabelaResultadoFinal;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.lang.reflect.Field;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author Paulo Sobreira
@@ -228,9 +210,6 @@ public class ControleJogoLocal extends ControleRecursos
         }
     }
 
-    /**
-     * @see br.f1mane.controles.InterfaceJogo#verificaNivelJogo()
-     */
     public boolean verificaNivelJogo() {
         return Math.random() < getNiveljogo();
     }
@@ -652,7 +631,7 @@ public class ControleJogoLocal extends ControleRecursos
         }
         iniciarJogoMenuLocal(campeonato.getCircuitoVez(),
                 campeonato.getTemporada(), campeonato.getQtdeVoltas().intValue(),
-                Util.intervalo(200, 500), clima, campeonato.getNivel(),
+                Util.intervalo(50, 250), clima, campeonato.getNivel(),
                 pilotoSel, campeonato.isKers(), campeonato.isDrs(),
                 campeonato.isTrocaPneus(), campeonato.isReabastecimento(),
                 combustivelSelecionado, asaSelecionado, pneuSelecionado, campeonato.isSafetycar());
@@ -823,8 +802,8 @@ public class ControleJogoLocal extends ControleRecursos
 
         String tipoPneu = (String) tpPneu;
         Integer qtdeCombustPorcent = (Integer) combust;
-        if (isSemReabastecimento() && qtdeCombustPorcent.intValue() < 50) {
-            qtdeCombustPorcent = new Integer(50);
+        if (isSemReabastecimento()) {
+            qtdeCombustPorcent = 100;
         }
         pilotoJogador.getCarro().trocarPneus(this, tipoPneu,
                 controleCorrida.getDistaciaCorrida());

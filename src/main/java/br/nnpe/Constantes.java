@@ -16,10 +16,9 @@ public final class Constantes {
     public static final Integer SEGUNDOS_PARA_INICIAR_CORRRIDA = Integer.valueOf(Logger.ativo
             ? 30
             : 60);
-    public static final double VELOCIDADE_PISTA = 1.5;
+    public static final double VELOCIDADE_PISTA = 1;
     public static final int TAMANHO_RETA_DRS = 1500;
-    public static final double MULTI_RETA = 6;
-    public static final double MULTI_CURVA = 9;
+    public static final double MULTIPLICADOR = 10;
 
     private Constantes() {
     }

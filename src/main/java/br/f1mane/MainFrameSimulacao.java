@@ -72,7 +72,7 @@ public class MainFrameSimulacao extends MainFrame {
             drs = temporadaDefault.getDrs();
             trocaPneus = temporadaDefault.getTrocaPneu();
             reabastecimento = temporadaDefault.getReabastecimento();
-            turbulencia = Util.intervalo(200, 500);
+            turbulencia = Util.intervalo(0, 500);
             controleJogo.iniciarJogoMenuLocal(circuito, temporada, voltas,
                     turbulencia, clima, nivel, null, kers, drs, trocaPneus,
                     reabastecimento, 0, null, null, false);

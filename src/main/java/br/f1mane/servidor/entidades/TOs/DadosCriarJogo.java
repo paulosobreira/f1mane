@@ -67,7 +67,7 @@ public class DadosCriarJogo implements Serializable {
 					.setQtdeVoltas(new Integer(Util.extrairNumeros(numVoltas)));
 		}
 		dadosCriarJogo.setQtdeVoltas(Integer.valueOf(Constantes.MIN_VOLTAS));
-		dadosCriarJogo.setDiffultrapassagem(Integer.valueOf(Util.intervalo(200, 500)));
+		dadosCriarJogo.setDiffultrapassagem(Integer.valueOf(Util.intervalo(50, 250)));
 
 		String pista = ControleRecursos
 				.nomeArquivoCircuitoParaPista(arquivoCircuito);

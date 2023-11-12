@@ -344,7 +344,6 @@ public class Carro implements Serializable {
 
     public boolean testePotencia() {
         return Math.random() < (potencia / 1000.0);
-
     }
 
     public boolean testeAerodinamica() {
@@ -551,7 +550,7 @@ public class Carro implements Serializable {
         if (controleJogo.calculaDiffParaProximoRetardatario(getPiloto(), true) < dist) {
             valDesgaste += testePotencia ? 1 : 2;
         }
-        double desg = (valDesgaste * getPiloto().getMulti());
+        double desg = (valDesgaste * Constantes.MULTIPLICADOR);
         if (verificaMotorSuperAquecido()) {
             double desgasteTemp;
             desgasteTemp = testePotencia ? 2 : 3;
@@ -597,7 +596,7 @@ public class Carro implements Serializable {
             }
         }
 
-        double consumoTotal = (valConsumo * piloto.getMulti());
+        double consumoTotal = (valConsumo * Constantes.MULTIPLICADOR);
 
         combustivel -= consumoTotal;
 
@@ -622,7 +621,6 @@ public class Carro implements Serializable {
         if (controleJogo.isSemTrocaPneu() && Math.random() > .7) {
             return modificador;
         }
-
         if (TIPO_PNEU_MOLE.equals(getTipoPneu())) {
             int intervaloMin;
             if (testeAerodinamica() && testeFreios(controleJogo)) {
@@ -659,8 +657,7 @@ public class Carro implements Serializable {
                 } else if ((porcentagemDesgastePneus < intervaloMin || !pneuAquecido)) {
                     novoModificador -= getPiloto().testeHabilidadePilotoFreios(controleJogo) ? 0 : 1;
                 }
-            }
-            if (no.verificaCurvaBaixa()) {
+            } else if (no.verificaCurvaBaixa()) {
                 int mod = 0;
                 if (!controleJogo.asfaltoAbrasivo()) {
                     mod = Util.intervalo(5, 10);
@@ -843,7 +840,7 @@ public class Carro implements Serializable {
 
         double combustivel = fator + incicativoComb;
 
-        double valDesgaste = (desgPneus * piloto.getMulti() * combustivel);
+        double valDesgaste = (desgPneus * Constantes.MULTIPLICADOR * combustivel);
         if (controleJogo.isSafetyCarNaPista()) {
             valDesgaste /= 5;
         }

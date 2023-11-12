@@ -148,7 +148,7 @@ public class ControleSafetyCar {
 			if (noAtual.verificaCurvaBaixa()) {
 				bonus = Math.random() < 0.7 ? 2 : 1;
 			}
-			bonus *= (Constantes.MULTI_CURVA * controleJogo.getIndexVelcidadeDaPista()) * .8;
+			bonus *= (Constantes.MULTIPLICADOR) * .8;
 			bonus = calculaMediaSC(bonus);
 		}
 
