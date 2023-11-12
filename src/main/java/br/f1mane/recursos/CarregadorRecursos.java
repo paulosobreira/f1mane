@@ -79,7 +79,7 @@ public class CarregadorRecursos {
     }
 
     public Vector<String> getVectorTemps() {
-        if(vectorTemps==null){
+        if (vectorTemps == null) {
             vectorTemps = carregarTemporadas();
         }
         return vectorTemps;
@@ -361,7 +361,7 @@ public class CarregadorRecursos {
 
     public List<Carro> carregarListaCarros(List pilotos, String temporada)
             throws IOException {
-        if (temporadas!=null && temporadas.get(temporada) != null) {
+        if (temporadas != null && temporadas.get(temporada) != null) {
             Set<Carro> carros = new HashSet<Carro>();
             for (Iterator iterator = pilotos.iterator(); iterator.hasNext(); ) {
                 Piloto piloto = (Piloto) iterator.next();
@@ -940,8 +940,8 @@ public class CarregadorRecursos {
 
     private static class PilotoComparator implements Comparator<Piloto> {
         public int compare(Piloto piloto0, Piloto piloto1) {
-            return Integer.valueOf(piloto1.getHabilidadeReal()+piloto1.getCarro().getPotenciaReal())
-                    .compareTo(Integer.valueOf(piloto0.getHabilidadeReal()+piloto0.getCarro().getPotenciaReal()));
+            return Integer.valueOf(piloto1.getHabilidadeReal())
+                    .compareTo(Integer.valueOf(piloto0.getHabilidadeReal()));
         }
     }
 
