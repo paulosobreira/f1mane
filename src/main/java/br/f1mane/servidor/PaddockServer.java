@@ -12,7 +12,7 @@ public class PaddockServer {
 	private static ControlePaddockServidor controlePaddock;
 	private static ControlePersistencia controlePersistencia;
 	private static MonitorAtividade monitorAtividade;
-	private static Boolean iniciado = false;
+	private static Boolean iniciado = Boolean.FALSE;
 
 	public static ControlePaddockServidor getControlePaddock() {
 		init(null);
@@ -28,7 +28,7 @@ public class PaddockServer {
 	}
 
 	public static synchronized void init(String realpath) {
-		if (iniciado) {
+		if (iniciado.booleanValue()) {
 			return;
 		}
 		Lang.setSrvgame(true);
@@ -42,7 +42,7 @@ public class PaddockServer {
 		monitorAtividade = new MonitorAtividade(controlePaddock);
 		Thread monitor = new Thread(monitorAtividade);
 		monitor.start();
-		iniciado = true;
+		iniciado = Boolean.TRUE;
 	}
 
 }

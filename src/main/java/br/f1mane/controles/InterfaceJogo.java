@@ -8,27 +8,27 @@ import java.util.Map;
 import javax.swing.JPanel;
 
 import br.f1mane.MainFrame;
-import sowbreira.f1mane.entidades.Campeonato;
-import sowbreira.f1mane.entidades.Carro;
-import sowbreira.f1mane.entidades.Circuito;
-import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
-import sowbreira.f1mane.entidades.No;
-import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
-import sowbreira.f1mane.entidades.SafetyCar;
-import sowbreira.f1mane.entidades.Volta;
+import br.f1mane.entidades.Campeonato;
+import br.f1mane.entidades.Carro;
+import br.f1mane.entidades.Circuito;
+import br.f1mane.entidades.ConstrutoresPontosCampeonato;
+import br.f1mane.entidades.No;
+import br.f1mane.entidades.Piloto;
+import br.f1mane.entidades.PilotosPontosCampeonato;
+import br.f1mane.entidades.SafetyCar;
+import br.f1mane.entidades.Volta;
 import br.f1mane.visao.PainelTabelaResultadoFinal;
 
 public interface InterfaceJogo {
 	public static boolean DEBUG_SEM_CHUVA = false;
-	public static String NORMAL = "NORMAL";
-	public static String FACIL = "FACIL";
-	public static String DIFICIL = "DIFICIL";
-	public static double FACIL_NV = .3;
-	public static double MEDIO_NV = .5;
-	public static double DIFICIL_NV = .7;
-	public static int CARGA_ERS = 100;
-	public static int DURABILIDADE_AREOFOLIO = 4;
+	public static final String NORMAL = "NORMAL";
+	public static final String FACIL = "FACIL";
+	public static final String DIFICIL = "DIFICIL";
+	public static final double FACIL_NV = .3;
+	public static final double MEDIO_NV = .5;
+	public static final double DIFICIL_NV = .7;
+	public static final int CARGA_ERS = 100;
+	public static final int DURABILIDADE_AREOFOLIO = 4;
 
 	public List<String> listaInfo();
 
@@ -72,8 +72,6 @@ public interface InterfaceJogo {
 
 	/**
 	 * Quanto Mais dificil o jogo mais ira de retornar true
-	 * 
-	 * @return boolean
 	 */
 	public boolean verificaNivelJogo();
 

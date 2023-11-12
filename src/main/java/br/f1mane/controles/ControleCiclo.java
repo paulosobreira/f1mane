@@ -5,7 +5,7 @@ import java.util.Iterator;
 import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
-import sowbreira.f1mane.entidades.Piloto;
+import br.f1mane.entidades.Piloto;
 import br.f1mane.recursos.idiomas.Lang;
 
 /**
@@ -16,6 +16,8 @@ public class ControleCiclo extends Thread {
 	private final ControleCorrida controleCorrida;
 	private int contadorCiclos;
 	private boolean processadoCilcos = true;
+
+	public static boolean VALENDO = true;
 
 	public ControleCiclo(InterfaceJogo controleJogo,
 			ControleCorrida controleCorrida) {
@@ -88,7 +90,9 @@ public class ControleCiclo extends Thread {
 					controleCorrida.atualizaClassificacao();
 					controleCorrida.verificaFinalCorrida();
 					controleJogo.atualizaIndexTracadoPilotos();
-					Thread.sleep(Constantes.CICLO);
+					if(ControleCiclo.VALENDO){
+						Thread.sleep(Constantes.CICLO);
+					}
 					contadorCiclos++;
 				} catch (Exception e) {
 					Logger.logarExept(e);

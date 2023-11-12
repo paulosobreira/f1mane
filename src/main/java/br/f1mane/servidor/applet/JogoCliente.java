@@ -24,16 +24,16 @@ import br.f1mane.controles.ControleCampeonato;
 import br.f1mane.controles.ControleEstatisticas;
 import br.f1mane.controles.ControleRecursos;
 import br.f1mane.controles.InterfaceJogo;
-import sowbreira.f1mane.entidades.Campeonato;
-import sowbreira.f1mane.entidades.Carro;
-import sowbreira.f1mane.entidades.Circuito;
-import sowbreira.f1mane.entidades.Clima;
-import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
-import sowbreira.f1mane.entidades.No;
-import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
-import sowbreira.f1mane.entidades.SafetyCar;
-import sowbreira.f1mane.entidades.Volta;
+import br.f1mane.entidades.Campeonato;
+import br.f1mane.entidades.Carro;
+import br.f1mane.entidades.Circuito;
+import br.f1mane.entidades.Clima;
+import br.f1mane.entidades.ConstrutoresPontosCampeonato;
+import br.f1mane.entidades.No;
+import br.f1mane.entidades.Piloto;
+import br.f1mane.entidades.PilotosPontosCampeonato;
+import br.f1mane.entidades.SafetyCar;
+import br.f1mane.entidades.Volta;
 import br.f1mane.servidor.entidades.Comandos;
 import br.f1mane.servidor.entidades.TOs.DadosCriarJogo;
 import br.f1mane.servidor.entidades.TOs.DadosJogo;
@@ -303,7 +303,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	public int getNumVoltaAtual() {
 		if (dadosJogo != null)
-			return dadosJogo.getVoltaAtual();
+			return dadosJogo.getVoltaAtual().intValue();
 		return 0;
 	}
 
@@ -356,7 +356,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	public boolean isCorridaTerminada() {
 		if (dadosJogo != null) {
-			return dadosJogo.getCorridaTerminada();
+			return dadosJogo.getCorridaTerminada().booleanValue();
 		}
 		return false;
 	}
@@ -367,8 +367,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	public boolean isSafetyCarVaiBox() {
 		if (safetyCar != null)
-			return safetyCar.isVaiProBox();
-		return false;
+			return !safetyCar.isVaiProBox();
+		return true;
 	}
 
 	public void matarThreadsResultadoFnal() {
@@ -1287,7 +1287,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 				Object object = field.get(this);
 				String valor = "null";
 				if (object != null) {
-					if (!Util.isWrapperType(object.getClass())) {
+					if (Util.isWrapperType(object.getClass())) {
 						continue;
 					}
 					valor = object.toString();

@@ -2,7 +2,7 @@ package br.f1mane.controles;
 
 import br.nnpe.Html;
 import br.nnpe.Logger;
-import sowbreira.f1mane.entidades.Clima;
+import br.f1mane.entidades.Clima;
 import br.f1mane.recursos.idiomas.Lang;
 
 /**
@@ -126,10 +126,6 @@ public class ControleClima {
 			controleJogo.informaMudancaClima();
 	}
 
-	public static void main(String[] args) {
-		Logger.logar(17 * (1 - .7));
-	}
-
 	public void intervaloNublado() {
 		setClima(Clima.NUBLADO);
 		intervaloMudancaClima = (quartoVoltas / 2)
@@ -138,7 +134,7 @@ public class ControleClima {
 				.totalVoltasCorrida() > (controleJogo.getNumVoltaAtual()
 						+ intervaloMudancaClima))) {
 			controleJogo.infoPrioritaria(Html.msgClima(Html.msgClima(
-					Lang.msg("007", new Object[]{intervaloMudancaClima}))));
+					Lang.msg("007", new Object[]{Integer.valueOf(intervaloMudancaClima)}))));
 		}
 	}
 

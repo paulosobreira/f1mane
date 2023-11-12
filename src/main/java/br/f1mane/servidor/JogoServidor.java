@@ -18,9 +18,9 @@ import br.f1mane.controles.ControleCorrida;
 import br.f1mane.controles.ControleEstatisticas;
 import br.f1mane.controles.ControleJogoLocal;
 import br.f1mane.controles.InterfaceJogo;
-import sowbreira.f1mane.entidades.Carro;
-import sowbreira.f1mane.entidades.Clima;
-import sowbreira.f1mane.entidades.Piloto;
+import br.f1mane.entidades.Carro;
+import br.f1mane.entidades.Clima;
+import br.f1mane.entidades.Piloto;
 import br.f1mane.servidor.entidades.BufferTexto;
 import br.f1mane.servidor.entidades.Comandos;
 import br.f1mane.servidor.entidades.TOs.DadosCriarJogo;
@@ -600,7 +600,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			return;
 		}
 		this.travadaRoda = new TravadaRoda();
-		this.travadaRoda.setIdNo(mapaNosIds.get(piloto.getNoAtual()));
+		this.travadaRoda.setIdNo(mapaNosIds.get(piloto.getNoAtual()).intValue());
 		this.travadaRoda.setTracado(piloto.getTracado());
 		piloto.setTravouRodas(true);
 	}
@@ -629,7 +629,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	public void encerraCorrida() {
 		if (!isCorridaTerminada()) {
 			infoPrioritaria(Html
-					.vinho(Lang.msg("024", new Object[]{getNumVoltaAtual()})));
+					.vinho(Lang.msg("024", new Object[]{Integer.valueOf(getNumVoltaAtual())})));
 			controleCorrida.terminarCorrida();
 		}
 		setCorridaTerminada(true);

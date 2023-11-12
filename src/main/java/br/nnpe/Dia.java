@@ -80,13 +80,14 @@ public class Dia implements Cloneable, Serializable {
 
 	public static Timestamp converteStringTimestamp(String valor)
 			throws Exception {
-		if (valor == null) {
+		String valor1 = valor;
+		if (valor1 == null) {
 			return null;
 		}
 
-		if ((valor.indexOf('/') != -1) && (valor.length() < 10)) {
+		if ((valor1.indexOf('/') != -1) && (valor1.length() < 10)) {
 			DecimalFormat format = new DecimalFormat("00");
-			String[] parts = valor.split("/");
+			String[] parts = valor1.split("/");
 			StringBuilder buffer = new StringBuilder();
 
 			for (int i = 0; i < parts.length; i++) {
@@ -97,11 +98,11 @@ public class Dia implements Cloneable, Serializable {
 				}
 			}
 
-			valor = buffer.toString();
+			valor1 = buffer.toString();
 		}
 
-		return ((valor.length() == 10) ? new java.sql.Timestamp(
-				parseDate(valor).getTime()) : parseTimestamp(valor,
+		return ((valor1.length() == 10) ? new java.sql.Timestamp(
+				parseDate(valor1).getTime()) : parseTimestamp(valor1,
 				"yyyy-MM-dd HH:mm:ss"));
 	}
 
@@ -258,7 +259,7 @@ public class Dia implements Cloneable, Serializable {
 
 	public Boolean isDayOfWeek() {
 		int dia = getDayOfWeek();
-        return dia > 1 && dia < 7;
+        return Boolean.valueOf(dia > 1 && dia < 7);
 	}
 
 	public int getDayOfWeek() {

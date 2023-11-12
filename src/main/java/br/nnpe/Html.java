@@ -20,15 +20,6 @@ public class Html {
 		return buffer.toString();
 	}
 
-	public static String mailto(String email, String nome) {
-		StringBuilder buffer = new StringBuilder();
-
-		buffer.append("<a href=\"").append(email).append("\"")
-				.append(" target=\"_blank\">").append(nome).append("</a>");
-
-		return null;
-	}
-
 	/**
 	 * Tag HTML font color
 	 * 
@@ -143,33 +134,33 @@ public class Html {
 
 	public static String tagsJava2d(String info) {
 		StringBuilder ret = new StringBuilder();
-		info = info.replaceAll("&nbsp;", " ");
+		String info1 = info.replaceAll("&nbsp;", " ");
 		boolean ingnora = false;
 		boolean achouDigito = false;
 		boolean pulaDigito = true;
-		for (int i = 0; i < info.length(); i++) {
-			if (info.charAt(i) == '<') {
+		for (int i = 0; i < info1.length(); i++) {
+			if (info1.charAt(i) == '<') {
 				ingnora = true;
 				continue;
 			}
-			if (!achouDigito && !Character.isDigit(info.charAt(i))) {
+			if (!achouDigito && !Character.isDigit(info1.charAt(i))) {
 				continue;
 			} else {
 				achouDigito = true;
 			}
 
-			if (pulaDigito && Character.isDigit(info.charAt(i))) {
+			if (pulaDigito && Character.isDigit(info1.charAt(i))) {
 				continue;
 			} else {
 				pulaDigito = false;
 			}
 
-			if (info.charAt(i) == '>') {
+			if (info1.charAt(i) == '>') {
 				ingnora = false;
 				continue;
 			}
 			if (!ingnora) {
-				ret.append(info.charAt(i));
+				ret.append(info1.charAt(i));
 			}
 		}
 		return ret.toString();

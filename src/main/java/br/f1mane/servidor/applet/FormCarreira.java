@@ -105,7 +105,7 @@ public class FormCarreira extends JPanel {
 	private final JLabel imgCarroLado = new JLabel();
 	private final JLabel imgCarroCima = new JLabel();
 	private String imgCarroStr = "";
-	private Integer ptsCarreira = 1;
+	private Integer ptsCarreira = Integer.valueOf(1);
 
 	public FormCarreira() {
 
@@ -255,11 +255,11 @@ public class FormCarreira extends JPanel {
 	public static void main(String[] args) {
 		FormCarreira formCarreira = new FormCarreira();
 		int ptsCarreira = 3;// Util.intervalo(1000, 5000);
-		formCarreira.ptsCarreira = ptsCarreira;
-		formCarreira.ptsAeroDinamica.setValue(600);
-		formCarreira.ptsCarro.setValue(850);
-		formCarreira.ptsFreio.setValue(600);
-		formCarreira.ptsPiloto.setValue(850);
+		formCarreira.ptsCarreira = Integer.valueOf(ptsCarreira);
+		formCarreira.ptsAeroDinamica.setValue(Integer.valueOf(600));
+		formCarreira.ptsCarro.setValue(Integer.valueOf(850));
+		formCarreira.ptsFreio.setValue(Integer.valueOf(600));
+		formCarreira.ptsPiloto.setValue(Integer.valueOf(850));
 		JOptionPane.showMessageDialog(null, formCarreira);
 		CarreiraDadosSrv carreiraDadosSrv = new CarreiraDadosSrv();
 		carreiraDadosSrv.setPtsCarro(850);
@@ -270,18 +270,18 @@ public class FormCarreira extends JPanel {
 
 		System.out.println(ControleClassificacao.validadeDistribuicaoPontos(
 				carreiraDadosSrv,
-				(Integer) formCarreira.getPtsAeroDinamica().getValue(),
-				(Integer) formCarreira.getPtsCarro().getValue(),
-				(Integer) formCarreira.getPtsFreio().getValue(),
-				(Integer) formCarreira.getPtsPiloto().getValue()));
+                ((Integer) formCarreira.getPtsAeroDinamica().getValue()).intValue(),
+                ((Integer) formCarreira.getPtsCarro().getValue()).intValue(),
+                ((Integer) formCarreira.getPtsFreio().getValue()).intValue(),
+                ((Integer) formCarreira.getPtsPiloto().getValue()).intValue()));
 	}
 
 	public int getPtsCarreira() {
-		return ptsCarreira;
+		return ptsCarreira.intValue();
 	}
 
 	public void setPtsCarreira(int ptsCarreira) {
-		this.ptsCarreira = ptsCarreira;
+		this.ptsCarreira = Integer.valueOf(ptsCarreira);
 	}
 
 	public JTextField getNomePiloto() {
@@ -307,15 +307,15 @@ public class FormCarreira extends JPanel {
 	private class CarreiraSpinnerModel extends SpinnerNumberModel {
 		@Override
 		public void setValue(Object value) {
-			int val = (Integer) getValue();
+			int val = ((Integer) getValue()).intValue();
 			if (val == 0) {
 				super.setValue(value);
 			} else {
-				int nexVal = (Integer) value;
+				int nexVal = ((Integer) value).intValue();
 				if (val != nexVal && nexVal >= 400 && nexVal <= 999) {
 					Numero numero = new Numero(ptsCarreira);
 					if (Util.processaValorPontosCarreira(val, nexVal, numero)) {
-						ptsCarreira = numero.getNumero().intValue();
+						ptsCarreira = Integer.valueOf(numero.getNumero().intValue());
 						try {
 							ptsCarreiraVal.repaint();
 						} catch (Exception e) {

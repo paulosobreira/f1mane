@@ -56,7 +56,7 @@ public class Util {
 	private static final Set<Class<?>> WRAPPER_TYPES = getWrapperTypes();
 
 	public static boolean isWrapperType(Class<?> clazz) {
-		return WRAPPER_TYPES.contains(clazz);
+		return !WRAPPER_TYPES.contains(clazz);
 	}
 
 	private static Set<Class<?>> getWrapperTypes() {
@@ -440,14 +440,14 @@ public class Util {
 			inc = 50;
 		}
 		if ((proximoValor - valorAutal) > 0) {
-			numeroVal -= inc;
+			numeroVal = Double.valueOf(numeroVal.doubleValue() - inc);
 			numero.setNumero(numeroVal);
-            return (numeroVal - inc) >= 0;
+            return (numeroVal.doubleValue() - inc) >= 0;
 		} else {
-			numeroVal += inc;
+			numeroVal = Double.valueOf(numeroVal.doubleValue() + inc);
 			numero.setNumero(numeroVal);
 		}
-        return numeroVal > 0;
+        return numeroVal.doubleValue() > 0;
 	}
 	public static Color criarCorAleatoria() {
 
@@ -507,13 +507,13 @@ public class Util {
 		return map;
 	}
 	public static Color hex2Rgb(String colorStr) {
-		return new Color(Integer.valueOf(colorStr.substring(1, 3), 16),
-				Integer.valueOf(colorStr.substring(3, 5), 16),
-				Integer.valueOf(colorStr.substring(5, 7), 16));
+		return new Color(Integer.valueOf(colorStr.substring(1, 3), 16).intValue(),
+                Integer.valueOf(colorStr.substring(3, 5), 16).intValue(),
+                Integer.valueOf(colorStr.substring(5, 7), 16).intValue());
 	}
 
 	public static String rgb2hex(Color c) {
-		return String.format("%02x%02x%02x", c.getRed(), c.getGreen(),
-				c.getBlue());
+		return String.format("%02x%02x%02x", Integer.valueOf(c.getRed()), Integer.valueOf(c.getGreen()),
+                Integer.valueOf(c.getBlue()));
 	}
 }

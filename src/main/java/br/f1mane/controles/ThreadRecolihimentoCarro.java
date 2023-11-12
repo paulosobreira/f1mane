@@ -2,8 +2,8 @@ package br.f1mane.controles;
 
 import br.nnpe.Html;
 import br.nnpe.Logger;
-import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.entidades.SafetyCar;
+import br.f1mane.entidades.Piloto;
+import br.f1mane.entidades.SafetyCar;
 import br.f1mane.recursos.idiomas.Lang;
 
 /**

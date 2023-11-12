@@ -161,31 +161,7 @@ public class ServletPaddock extends HttpServlet {
         MetadataSources metadata = new MetadataSources(
                 new StandardServiceRegistryBuilder()
                         .applySetting("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect")
-                        .applySetting(AvailableSettings.CONNECTION_PROVIDER, new ConnectionProvider() {
-                            @Override
-                            public boolean isUnwrappableAs(Class unwrapType) {
-                                return false;
-                            }
-
-                            @Override
-                            public <T> T unwrap(Class<T> unwrapType) {
-                                return null;
-                            }
-
-                            @Override
-                            public Connection getConnection() {
-                                return connection; // Interesting part here
-                            }
-
-                            @Override
-                            public void closeConnection(Connection conn) throws SQLException {
-                            }
-
-                            @Override
-                            public boolean supportsAggressiveRelease() {
-                                return true;
-                            }
-                        })
+                        .applySetting(AvailableSettings.CONNECTION_PROVIDER, new MyConnectionProvider(connection))
                         .build());
         metadata.addAnnotatedClass(F1ManeDados.class);
         metadata.addAnnotatedClass(JogadorDadosSrv.class);
@@ -256,4 +232,35 @@ public class ServletPaddock extends HttpServlet {
     }
 
 
+    private static class MyConnectionProvider implements ConnectionProvider {
+        private final Connection connection;
+
+        public MyConnectionProvider(Connection connection) {
+            this.connection = connection;
+        }
+
+        @Override
+        public boolean isUnwrappableAs(Class unwrapType) {
+            return false;
+        }
+
+        @Override
+        public <T> T unwrap(Class<T> unwrapType) {
+            return null;
+        }
+
+        @Override
+        public Connection getConnection() {
+            return connection; // Interesting part here
+        }
+
+        @Override
+        public void closeConnection(Connection conn) throws SQLException {
+        }
+
+        @Override
+        public boolean supportsAggressiveRelease() {
+            return true;
+        }
+    }
 }

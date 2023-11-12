@@ -11,9 +11,9 @@ import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.f1mane.controles.ControleJogoLocal;
 import br.f1mane.controles.ControleRecursos;
-import sowbreira.f1mane.entidades.Circuito;
-import sowbreira.f1mane.entidades.Clima;
-import sowbreira.f1mane.entidades.TemporadasDefault;
+import br.f1mane.entidades.Circuito;
+import br.f1mane.entidades.Clima;
+import br.f1mane.entidades.TemporadasDefault;
 import br.f1mane.recursos.CarregadorRecursos;
 
 /**
@@ -38,7 +38,6 @@ public class DadosCriarJogo implements Serializable {
 	private String senha;
 	private String nomeJogo;
 	private String circuitoSelecionado = null;
-	private final Integer tempoCiclo = Constantes.CICLO;
 	private String clima = null;
 	private Integer qtdeVoltas = null;
 	private String nivelCorrida = null;
@@ -67,8 +66,8 @@ public class DadosCriarJogo implements Serializable {
 			dadosCriarJogo
 					.setQtdeVoltas(new Integer(Util.extrairNumeros(numVoltas)));
 		}
-		dadosCriarJogo.setQtdeVoltas(Constantes.MIN_VOLTAS);
-		dadosCriarJogo.setDiffultrapassagem(Util.intervalo(200, 500));
+		dadosCriarJogo.setQtdeVoltas(Integer.valueOf(Constantes.MIN_VOLTAS));
+		dadosCriarJogo.setDiffultrapassagem(Integer.valueOf(Util.intervalo(50, 250)));
 
 		String pista = ControleRecursos
 				.nomeArquivoCircuitoParaPista(arquivoCircuito);
@@ -91,28 +90,28 @@ public class DadosCriarJogo implements Serializable {
 				.get("t" + temporada);
 
 		if (!Util.isNullOrEmpty(combustivel)) {
-			int fuel = new Integer(Util.extrairNumeros(combustivel));
+			int fuel = new Integer(Util.extrairNumeros(combustivel)).intValue();
 			if (fuel > 100) {
 				fuel = 100;
 			}
 			if (fuel < 10) {
 				fuel = 10;
 			}
-			dadosCriarJogo.setCombustivel(fuel);
+			dadosCriarJogo.setCombustivel(Integer.valueOf(fuel));
 		} else {
-			if (temporadasDefault.getReabastecimento()) {
-				dadosCriarJogo.setCombustivel(Util.intervalo(25, 50));
+			if (temporadasDefault.getReabastecimento().booleanValue()) {
+				dadosCriarJogo.setCombustivel(Integer.valueOf(Util.intervalo(25, 50)));
 			} else {
-				dadosCriarJogo.setCombustivel(Util.intervalo(70, 90));
+				dadosCriarJogo.setCombustivel(Integer.valueOf(Util.intervalo(70, 90)));
 			}
 		}
 		dadosCriarJogo
-				.setReabastecimento(temporadasDefault.getReabastecimento());
-		dadosCriarJogo.setTrocaPneu(temporadasDefault.getTrocaPneu());
-		dadosCriarJogo.setErs(temporadasDefault.getErs());
-		dadosCriarJogo.setDrs(temporadasDefault.getDrs());
-		dadosCriarJogo.setIdPiloto(new Integer(idPiloto));
-		dadosCriarJogo.setSafetyCar(temporadasDefault.getSafetyCar());
+				.setReabastecimento(temporadasDefault.getReabastecimento().booleanValue());
+		dadosCriarJogo.setTrocaPneu(temporadasDefault.getTrocaPneu().booleanValue());
+		dadosCriarJogo.setErs(temporadasDefault.getErs().booleanValue());
+		dadosCriarJogo.setDrs(temporadasDefault.getDrs().booleanValue());
+		dadosCriarJogo.setIdPiloto(new Integer(idPiloto).intValue());
+		dadosCriarJogo.setSafetyCar(temporadasDefault.getSafetyCar().booleanValue());
 		return dadosCriarJogo;
 	}
 
@@ -237,6 +236,7 @@ public class DadosCriarJogo implements Serializable {
 	}
 
 	public Integer getTempoCiclo() {
+		Integer tempoCiclo = Integer.valueOf(Constantes.CICLO);
 		return tempoCiclo;
 	}
 

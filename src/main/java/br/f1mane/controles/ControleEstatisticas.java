@@ -21,8 +21,8 @@ import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
-import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.entidades.Volta;
+import br.f1mane.entidades.Piloto;
+import br.f1mane.entidades.Volta;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
 
@@ -32,7 +32,6 @@ import br.f1mane.recursos.idiomas.Lang;
 public class ControleEstatisticas {
 	private JPanel painelDebug;
 	private JEditorPane infoTextual;
-	private JScrollPane scrollPaneTextual;
 	private final InterfaceJogo controleJogo;
 	private Volta voltaMaisRapida;
 	private static final DecimalFormat mil = new DecimalFormat("000");
@@ -99,7 +98,7 @@ public class ControleEstatisticas {
 		for (Iterator iter = piloto.getVoltasCopy().iterator(); iter.hasNext();) {
 			Volta volta = (Volta) iter.next();
 
-			if (voltaAtual.obterTempoVolta() > volta.obterTempoVolta()) {
+			if (voltaAtual.obterTempoVolta().longValue() > volta.obterTempoVolta().longValue()) {
 				teveMelhor = true;
 			}
 		}
@@ -124,8 +123,8 @@ public class ControleEstatisticas {
 			voltaMaisRapida = piloto.getVoltaAtual();
 		}
 
-		if (voltaMaisRapida.obterTempoVolta() > piloto.getVoltaAtual()
-				.obterTempoVolta()) {
+		if (voltaMaisRapida.obterTempoVolta().longValue() > piloto.getVoltaAtual()
+                .obterTempoVolta().longValue()) {
 			voltaMaisRapida = piloto.getVoltaAtual();
 			controleJogo.infoPrioritaria(Html.verde(Lang.msg("023",
 					new String[]{piloto.nomeJogadorFormatado(),
@@ -142,9 +141,9 @@ public class ControleEstatisticas {
 		if (value == null) {
 			return null;
 		}
-		long minu = (value / 60000);
-		long seg = ((value - (minu * 60000)) / 1000);
-		long mili = value - ((minu * 60000) + (seg * 1000));
+		long minu = (value.longValue() / 60000);
+		long seg = ((value.longValue() - (minu * 60000)) / 1000);
+		long mili = value.longValue() - ((minu * 60000) + (seg * 1000));
 		if (minu > 0)
 			return (minu) + ":" + dez.format(Math.abs(seg)) + "."
 					+ mil.format(Math.abs(mili));
@@ -153,7 +152,7 @@ public class ControleEstatisticas {
 	}
 
 	public double calculaDiferencaParaProximoDouble(Piloto psel) {
-		return new Double(calculaDiferencaParaProximo(psel));
+		return new Double(calculaDiferencaParaProximo(psel)).doubleValue();
 
 	}
 
@@ -201,7 +200,7 @@ public class ControleEstatisticas {
 			public void run() {
 				try {
 					controleJogo.adicionarInfoDireto(Html.verde(Lang.msg("000",
-							new Object[]{controleJogo.totalVoltasCorrida()})));
+							new Object[]{Integer.valueOf(controleJogo.totalVoltasCorrida())})));
 					boolean interruput = false;
 					while (!interruput && consumidorAtivo) {
 						try {
@@ -244,7 +243,7 @@ public class ControleEstatisticas {
 		// for (int i = allInfo.size() - 1; i > allInfo.size() - 6; i--) {
 		// }
 		// }
-		System.out.println(formatarTempo(1342l));
+		System.out.println(formatarTempo(Long.valueOf(1342l)));
 	}
 
 	public void info(String info, boolean prioritaria) {
@@ -343,15 +342,16 @@ public class ControleEstatisticas {
 
 	private String preencherTabela(Piloto piloto1, Piloto piloto2,
 			String tabela) {
-		tabela = tabela.replaceAll("piloto1",
+		String tabela1 = tabela;
+		tabela1 = tabela1.replaceAll("piloto1",
 				piloto1.getNomeAbreviado() + " " + piloto1.getPosicao());
-		tabela = tabela.replaceAll("piloto2",
+		tabela1 = tabela1.replaceAll("piloto2",
 				piloto2.getNomeAbreviado() + " " + piloto2.getPosicao());
-		tabela = tabela.replaceAll("volta1",
+		tabela1 = tabela1.replaceAll("volta1",
 				Lang.msg("081") + (piloto2.getNumeroVolta()));
-		tabela = tabela.replaceAll("volta2",
+		tabela1 = tabela1.replaceAll("volta2",
 				Lang.msg("081") + (piloto2.getNumeroVolta() - 1));
-		tabela = tabela.replaceAll("volta3",
+		tabela1 = tabela1.replaceAll("volta3",
 				Lang.msg("081") + (piloto2.getNumeroVolta() - 2));
 		for (int i = 1; i < 4; i++) {
 			int gap = piloto1.getNumeroVolta() - piloto2.getNumeroVolta();
@@ -368,28 +368,28 @@ public class ControleEstatisticas {
 			if (vp1.isVoltaBox() || vp1.isVoltaSafetyCar()) {
 				return null;
 			}
-			tabela = tabela.replaceAll("p1_v" + i,
+			tabela1 = tabela1.replaceAll("p1_v" + i,
 					(vp1.getTempoVoltaFormatado()));
 			Volta vp2 = (Volta) voltasP2
 					.get(voltasP2.size() - i);
 			if (vp2.isVoltaBox() || vp2.isVoltaSafetyCar()) {
 				return null;
 			}
-			tabela = tabela.replaceAll("p2_v" + i,
+			tabela1 = tabela1.replaceAll("p2_v" + i,
 					(vp2.getTempoVoltaFormatado()));
-			long diff = (long) (vp2.obterTempoVolta() - vp1.obterTempoVolta());
+			long diff = (long) (vp2.obterTempoVolta().longValue() - vp1.obterTempoVolta().longValue());
 			if (diff < 0) {
-				tabela = tabela.replaceAll("cor" + i, "#80FF00");
-				String subs = formatarTempo(diff);
-				tabela = tabela.replaceAll("diff_v" + i,
-						(subs.startsWith("-") ? subs : "-" + subs));
+				tabela1 = tabela1.replaceAll("cor" + i, "#80FF00");
+				String subs = formatarTempo(Long.valueOf(diff));
+				tabela1 = tabela1.replaceAll("diff_v" + i,
+						(!subs.isEmpty() && subs.charAt(0) == '-' ? subs : "-" + subs));
 			} else {
-				tabela = tabela.replaceAll("cor" + i, "#FFFF00");
-				tabela = tabela.replaceAll("diff_v" + i, (formatarTempo(diff)));
+				tabela1 = tabela1.replaceAll("cor" + i, "#FFFF00");
+				tabela1 = tabela1.replaceAll("diff_v" + i, (formatarTempo(Long.valueOf(diff))));
 			}
 
 		}
-		return tabela;
+		return tabela1;
 	}
 
 	public boolean verificaInfoRelevante(Piloto piloto) {
@@ -498,7 +498,7 @@ public class ControleEstatisticas {
 		painelDebug = new JPanel(new BorderLayout());
 		infoTextual = new JEditorPane("text/html", "");
 		infoTextual.setEditable(false);
-		scrollPaneTextual = new JScrollPane(infoTextual);
+		JScrollPane scrollPaneTextual = new JScrollPane(infoTextual);
 		painelDebug.setLayout(new BorderLayout());
 		painelDebug.add(scrollPaneTextual, BorderLayout.CENTER);
 	}
@@ -560,8 +560,8 @@ public class ControleEstatisticas {
 	}
 
 	private Long diferecaParaSegundos(long diff) {
-		return Math
-				.round((diff / new Double(Util.intervalo(30, 40)).doubleValue())
-						* Constantes.CICLO);
+		return Long.valueOf(Math
+                .round((diff / new Double(Util.intervalo(30, 40)).doubleValue())
+                        * Constantes.CICLO));
 	}
 }

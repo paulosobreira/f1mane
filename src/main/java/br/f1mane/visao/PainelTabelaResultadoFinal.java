@@ -8,8 +8,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.entidades.Volta;
+import br.f1mane.entidades.Piloto;
+import br.f1mane.entidades.Volta;
 import br.f1mane.recursos.idiomas.Lang;
 
 /**
@@ -95,7 +95,7 @@ public class PainelTabelaResultadoFinal extends JPanel {
 			case 10:
 				return p.getNomeJogador();
 			case 11:
-				return p.getPontosCorrida();
+				return Integer.valueOf(p.getPontosCorrida());
 			default:
 				return "";
 			}

@@ -11,8 +11,8 @@ import org.hibernate.Session;
 import br.nnpe.Dia;
 import br.nnpe.Util;
 import br.f1mane.controles.ControleRecursos;
-import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.entidades.TemporadasDefault;
+import br.f1mane.entidades.Piloto;
+import br.f1mane.entidades.TemporadasDefault;
 import br.f1mane.servidor.entidades.persistencia.CampeonatoSrv;
 import br.f1mane.servidor.entidades.persistencia.CarreiraDadosSrv;
 import br.f1mane.servidor.entidades.persistencia.CorridaCampeonatoSrv;
@@ -20,7 +20,7 @@ import br.f1mane.servidor.entidades.persistencia.DadosCorridaCampeonatoSrv;
 import br.f1mane.servidor.entidades.persistencia.JogadorDadosSrv;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
-import sowbreira.f1mane.entidades.Volta;
+import br.f1mane.entidades.Volta;
 
 public class ControleCampeonatoServidor {
 
@@ -85,12 +85,12 @@ public class ControleCampeonatoServidor {
 					"campeonato.getTemporada() " + campeonato.getTemporada());
 			TemporadasDefault temporadasDefault = carregarTemporadasPilotosDefauts
 					.get("t" + campeonato.getTemporada());
-			campeonato.setTrocaPneus(temporadasDefault.getTrocaPneu());
-			campeonato.setDrs(temporadasDefault.getDrs());
-			campeonato.setErs(temporadasDefault.getErs());
+			campeonato.setTrocaPneus(temporadasDefault.getTrocaPneu().booleanValue());
+			campeonato.setDrs(temporadasDefault.getDrs().booleanValue());
+			campeonato.setErs(temporadasDefault.getErs().booleanValue());
 			campeonato
-					.setReabastecimento(temporadasDefault.getReabastecimento());
-			campeonato.setQtdeVoltas(Constantes.MIN_VOLTAS);
+					.setReabastecimento(temporadasDefault.getReabastecimento().booleanValue());
+			campeonato.setQtdeVoltas(Integer.valueOf(Constantes.MIN_VOLTAS));
 			campeonato.setNivel(ControleJogoLocal.NORMAL);
 			campeonato.setJogadorDadosSrv(jogadorDadosSrv);
 			List<CorridaCampeonatoSrv> corridaCampeonatos = campeonato
@@ -100,7 +100,7 @@ public class ControleCampeonatoServidor {
 					.hasNext();) {
 				CorridaCampeonatoSrv corridaCampeonato = (CorridaCampeonatoSrv) iterator
 						.next();
-				corridaCampeonato.setRodada(rodada);
+				corridaCampeonato.setRodada(Long.valueOf(rodada));
 				corridaCampeonato.setCampeonato(campeonato);
 				rodada++;
 
@@ -128,7 +128,7 @@ public class ControleCampeonatoServidor {
 					.getCorridaCampeonatos();
 			for (CorridaCampeonatoSrv corridaCampeonato : corridaCampeonatos) {
 				if (corridaCampeonato.getTempoFim() == null
-						|| corridaCampeonato.getTempoFim() == 0) {
+						|| corridaCampeonato.getTempoFim().longValue() == 0) {
 					return true;
 				}
 			}
@@ -148,7 +148,7 @@ public class ControleCampeonatoServidor {
 				Object[] row = new Object[5];
 				row[0] = campeonato.getNome();
 				row[1] = campeonato.getJogadorDadosSrv().getNome();
-				row[2] = verificaCampeonatoConcluido(campeonato);
+				row[2] = Boolean.valueOf(verificaCampeonatoConcluido(campeonato));
 				row[3] = campeonato.getDataCriacao();
 				row[4] = campeonato.getId();
 				retorno.add(row);
@@ -217,8 +217,8 @@ public class ControleCampeonatoServidor {
 				Logger.logar("corridaCampeonatoCorrente nulo");
 				return;
 			}
-			corridaCampeonatoCorrente.setTempoInicio(tempoInicio);
-			corridaCampeonatoCorrente.setTempoFim(tempoFim);
+			corridaCampeonatoCorrente.setTempoInicio(Long.valueOf(tempoInicio));
+			corridaCampeonatoCorrente.setTempoFim(Long.valueOf(tempoFim));
 			for (Iterator iter = pilotos.iterator(); iter.hasNext(); ) {
 				Piloto piloto = (Piloto) iter.next();
 				DadosCorridaCampeonatoSrv dadosCorridaCampeonato = new DadosCorridaCampeonatoSrv();
@@ -324,12 +324,7 @@ public class ControleCampeonatoServidor {
 		CampeonatoTO campeonatoTO = new CampeonatoTO();
 		processsaCorridaCampeonatoTO(campeonato, campeonatoTO);
 		Collections.sort(campeonatoTO.getCorridas(),
-				new Comparator<CorridaCampeonatoTO>() {
-					public int compare(CorridaCampeonatoTO arg0,
-							CorridaCampeonatoTO arg1) {
-						return arg0.getRodada().compareTo(arg1.getRodada());
-					}
-				});
+				new CorridaCampeonatoTOComparator());
 		preencherContrutores(campeonato, campeonatoTO);
 		return campeonatoTO;
 
@@ -391,7 +386,7 @@ public class ControleCampeonatoServidor {
 	public void processsaCorridaCampeonatoTO(CampeonatoSrv campeonato,
 			CampeonatoTO campeonatoTO) {
 		campeonatoTO.setCampeonato(campeonato);
-		campeonatoTO.setUltimaCorrida(campeonato.getDataCriacao().getTime());
+		campeonatoTO.setUltimaCorrida(Long.valueOf(campeonato.getDataCriacao().getTime()));
 		List<CorridaCampeonatoSrv> corridaCampeonatos = campeonato
 				.getCorridaCampeonatos();
 		int rodada = 0;
@@ -418,7 +413,7 @@ public class ControleCampeonatoServidor {
 				rodada++;
 				campeonatoTO
 						.setUltimaCorrida(corridaCampeonato.getTempoInicio());
-				Dia dia = new Dia(corridaCampeonato.getTempoFim());
+				Dia dia = new Dia(corridaCampeonato.getTempoFim().longValue());
 				corridaCampeonatoTO.setData(dia.toString());
 				List<DadosCorridaCampeonatoSrv> dadosCorridaCampeonatos = corridaCampeonato
 						.getDadosCorridaCampeonatos();
@@ -548,7 +543,7 @@ public class ControleCampeonatoServidor {
 					} else {
 						mapaJogadoresCorridas.put(
 								dadosCorridaCampeonatoSrv.getJogador(),
-								new Integer(corrida + 1));
+								new Integer(corrida.intValue() + 1));
 					}
 				}
 
@@ -563,7 +558,7 @@ public class ControleCampeonatoServidor {
 			String key = (String) iterator.next();
 			DadosClassificacaoCarros dadosConstrutoresCarros = new DadosClassificacaoCarros();
 			dadosConstrutoresCarros.setNome(key);
-			dadosConstrutoresCarros.setPontos((Integer) mapaCarros.get(key));
+			dadosConstrutoresCarros.setPontos(((Integer) mapaCarros.get(key)).intValue());
 			dadosConstrutoresCarros.setCor((String) mapaCarrosCor.get(key));
 			if (dadosConstrutoresCarros.getPontos() > 0)
 				listaCarros.add(dadosConstrutoresCarros);
@@ -574,7 +569,7 @@ public class ControleCampeonatoServidor {
 			String key = (String) iterator.next();
 			DadosClassificacaoPilotos dadosConstrutoresPilotos = new DadosClassificacaoPilotos();
 			dadosConstrutoresPilotos.setNome(key);
-			dadosConstrutoresPilotos.setPontos((Integer) mapaPilotos.get(key));
+			dadosConstrutoresPilotos.setPontos(((Integer) mapaPilotos.get(key)).intValue());
 			dadosConstrutoresPilotos.setCor((String) mapaPilotosCor.get(key));
 			if (dadosConstrutoresPilotos.getPontos() > 0)
 				listaPilotos.add(dadosConstrutoresPilotos);
@@ -598,7 +593,7 @@ public class ControleCampeonatoServidor {
 						.setPontos((Integer) mapaJogadores.get(key));
 				dadosClassificacaoJogador
 						.setCorridas((Integer) mapaJogadoresCorridas.get(key));
-				if (dadosClassificacaoJogador.getPontos() > 0) {
+				if (dadosClassificacaoJogador.getPontos().intValue() > 0) {
 					listaJogadores.add(dadosClassificacaoJogador);
 				}
 			}
@@ -612,31 +607,13 @@ public class ControleCampeonatoServidor {
 		campeonatoTO.setJogadores(listaJogadores);
 
 		Collections.sort(listaCarros,
-				new Comparator<DadosClassificacaoCarros>() {
-					public int compare(DadosClassificacaoCarros arg0,
-							DadosClassificacaoCarros arg1) {
-						return new Integer(arg1.getPontos())
-								.compareTo(arg0.getPontos());
-					}
-				});
+				new DadosClassificacaoCarrosComparator());
 
 		Collections.sort(listaPilotos,
-				new Comparator<DadosClassificacaoPilotos>() {
-					public int compare(DadosClassificacaoPilotos arg0,
-							DadosClassificacaoPilotos arg1) {
-						return new Integer(arg1.getPontos())
-								.compareTo(arg0.getPontos());
-					}
-				});
+				new DadosClassificacaoPilotosComparator());
 
 		Collections.sort(listaJogadores,
-				new Comparator<DadosClassificacaoJogador>() {
-					public int compare(DadosClassificacaoJogador arg0,
-							DadosClassificacaoJogador arg1) {
-						return arg1.getPontos()
-								.compareTo(arg0.getPontos());
-					}
-				});
+				new DadosClassificacaoJogadorComparator());
 	}
 
 	public Object finalizaCampeonato(CampeonatoTO campeonato, String token) {
@@ -662,6 +639,37 @@ public class ControleCampeonatoServidor {
 			if (session.isOpen()) {
 				session.close();
 			}
+		}
+	}
+
+	private static class CorridaCampeonatoTOComparator implements Comparator<CorridaCampeonatoTO> {
+		public int compare(CorridaCampeonatoTO arg0,
+				CorridaCampeonatoTO arg1) {
+			return arg0.getRodada().compareTo(arg1.getRodada());
+		}
+	}
+
+	private static class DadosClassificacaoCarrosComparator implements Comparator<DadosClassificacaoCarros> {
+		public int compare(DadosClassificacaoCarros arg0,
+				DadosClassificacaoCarros arg1) {
+			return new Integer(arg1.getPontos())
+					.compareTo(Integer.valueOf(arg0.getPontos()));
+		}
+	}
+
+	private static class DadosClassificacaoPilotosComparator implements Comparator<DadosClassificacaoPilotos> {
+		public int compare(DadosClassificacaoPilotos arg0,
+				DadosClassificacaoPilotos arg1) {
+			return new Integer(arg1.getPontos())
+					.compareTo(Integer.valueOf(arg0.getPontos()));
+		}
+	}
+
+	private static class DadosClassificacaoJogadorComparator implements Comparator<DadosClassificacaoJogador> {
+		public int compare(DadosClassificacaoJogador arg0,
+				DadosClassificacaoJogador arg1) {
+			return arg1.getPontos()
+					.compareTo(arg0.getPontos());
 		}
 	}
 }

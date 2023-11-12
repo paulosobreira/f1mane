@@ -25,8 +25,8 @@ import br.nnpe.Dia;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.f1mane.MainFrame;
-import sowbreira.f1mane.entidades.Carro;
-import sowbreira.f1mane.entidades.Clima;
+import br.f1mane.entidades.Carro;
+import br.f1mane.entidades.Clima;
 import br.f1mane.servidor.PaddockConstants;
 import br.f1mane.servidor.util.ZipUtil;
 import br.f1mane.servidor.entidades.Comandos;
@@ -48,7 +48,6 @@ import br.f1mane.recursos.idiomas.Lang;
 public class ControlePaddockCliente {
 	private final URL url;
 	private final AppletPaddock applet;
-	private final String urlSufix = "/f1mane/ServletPaddock";
 	private SessaoCliente sessaoCliente;
 	private PaddockWindow paddockWindow;
 	private Thread threadAtualizadora;
@@ -114,6 +113,7 @@ public class ControlePaddockCliente {
 			// Gerar Lag
 			// Thread.sleep(Util.intervalo(1500, 2000));
 			Object retorno;
+			String urlSufix = "/f1mane/ServletPaddock";
 			dataUrl = new URL(protocol, host, port, urlSufix);
 
 			URLConnection connection = dataUrl.openConnection();
@@ -762,10 +762,10 @@ public class ControlePaddockCliente {
 		CarreiraDadosSrv carreiraDadosSrv = new CarreiraDadosSrv();
 		carreiraDadosSrv.setNomePiloto(formCarreira.getNomePiloto().getText());
 		carreiraDadosSrv.setNomeCarro(formCarreira.getNomeCarro().getText());
-		carreiraDadosSrv.setPtsCarro((Integer) formCarreira.getPtsCarro().getValue());
-		carreiraDadosSrv.setPtsAerodinamica((Integer) formCarreira.getPtsAeroDinamica().getValue());
-		carreiraDadosSrv.setPtsFreio((Integer) formCarreira.getPtsFreio().getValue());
-		carreiraDadosSrv.setPtsPiloto((Integer) formCarreira.getPtsPiloto().getValue());
+		carreiraDadosSrv.setPtsCarro(((Integer) formCarreira.getPtsCarro().getValue()).intValue());
+		carreiraDadosSrv.setPtsAerodinamica(((Integer) formCarreira.getPtsAeroDinamica().getValue()).intValue());
+		carreiraDadosSrv.setPtsFreio(((Integer) formCarreira.getPtsFreio().getValue()).intValue());
+		carreiraDadosSrv.setPtsPiloto(((Integer) formCarreira.getPtsPiloto().getValue()).intValue());
 		carreiraDadosSrv.setPtsConstrutores(formCarreira.getPtsCarreira());
 		carreiraDadosSrv.setModoCarreira(formCarreira.getModoCarreira().isSelected());
 		carreiraDadosSrv.setC1B(formCarreira.getCor1().getBlue());
@@ -807,12 +807,7 @@ public class ControlePaddockCliente {
 		});
 		panel.add(new JLabel(String.valueOf(carreiraDadosSrv.getPtsAerodinamica())));
 
-		panel.add(new JLabel("Freio Carro:") {
-			@Override
-			public String getText() {
-				return Lang.msg("freioCarro");
-			}
-		});
+		panel.add(new MyJLabel());
 		panel.add(new JLabel(String.valueOf(carreiraDadosSrv.getPtsFreio())));
 
 		int result = JOptionPane.showConfirmDialog(null, panel);
@@ -931,6 +926,17 @@ public class ControlePaddockCliente {
 		Object ret = enviarObjeto(clientPaddockPack);
 		if (!retornoNaoValido(ret) && ret != null) {
 			versaoServidor = ":" + decimalFormat.format((Integer) ret);
+		}
+	}
+
+	private static class MyJLabel extends JLabel {
+		public MyJLabel() {
+			super("Freio Carro:");
+		}
+
+		@Override
+		public String getText() {
+			return Lang.msg("freioCarro");
 		}
 	}
 }

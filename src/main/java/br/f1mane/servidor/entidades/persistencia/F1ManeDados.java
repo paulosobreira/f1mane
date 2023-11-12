@@ -47,7 +47,7 @@ public abstract class F1ManeDados implements Serializable {
 	}
 
 	public void setId(int id) {
-		this.id = new Long(id);
+		this.id = Long.valueOf((long) id);
 	}
 
 	@Override

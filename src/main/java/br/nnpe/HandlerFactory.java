@@ -10,7 +10,7 @@ public class HandlerFactory {
 	public String getHandler(String[] config, String requestUri) {
 
 		for (int i = 0; i < config.length; i++) {
-			if (config[i].startsWith("/")) {
+			if (!config[i].isEmpty() && config[i].charAt(0) == '/') {
 				if (config[i].equals(requestUri)) {
 					if (i + 1 < config.length) {
 						return config[i + 1];
@@ -21,7 +21,7 @@ public class HandlerFactory {
 		String[] toks = requestUri.split("/");
 
 		for (int i = 0; i < config.length; i++) {
-			if (config[i].startsWith("/")) {
+			if (!config[i].isEmpty() && config[i].charAt(0) == '/') {
 				if (config[i].replaceAll("/", "").startsWith((toks[1]))) {
 					if (i + 1 < config.length) {
 						return config[i + 1];
@@ -31,10 +31,10 @@ public class HandlerFactory {
 			}
 
 		}
-		requestUri = "/";
+		String requestUri1 = "/";
 		for (int i = 0; i < config.length; i++) {
-			if (config[i].startsWith("/")) {
-				if (config[i].equals(requestUri)) {
+			if (!config[i].isEmpty() && config[i].charAt(0) == '/') {
+				if (config[i].equals(requestUri1)) {
 					if (i + 1 < config.length) {
 						return config[i + 1];
 					}

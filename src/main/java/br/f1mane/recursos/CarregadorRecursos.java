@@ -8,6 +8,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
+import java.beans.XMLDecoder;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
@@ -34,15 +35,11 @@ import java.util.Vector;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import br.f1mane.entidades.*;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.f1mane.controles.ControleRecursos;
-import sowbreira.f1mane.entidades.Carro;
-import sowbreira.f1mane.entidades.Circuito;
-import sowbreira.f1mane.entidades.CircuitosDefault;
-import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.entidades.TemporadasDefault;
 
 public class CarregadorRecursos {
     private static HashMap<String, String> temporadas;
@@ -82,6 +79,9 @@ public class CarregadorRecursos {
     }
 
     public Vector<String> getVectorTemps() {
+        if (vectorTemps == null) {
+            vectorTemps = carregarTemporadas();
+        }
         return vectorTemps;
     }
 
@@ -101,12 +101,12 @@ public class CarregadorRecursos {
                 final String name = (String) propName.nextElement();
                 String[] split = properties.getProperty(name).split(",");
                 TemporadasDefault defauts = new TemporadasDefault();
-                defauts.setTrocaPneu("true".equals(split[1]));
-                defauts.setReabastecimento("true".equals(split[2]));
-                defauts.setErs("true".equals(split[3]));
-                defauts.setDrs("true".equals(split[4]));
-                defauts.setFatorBox(Double.parseDouble(split[5]));
-                defauts.setSafetyCar("true".equals(split[6]));
+                defauts.setTrocaPneu(Boolean.valueOf("true".equals(split[1])));
+                defauts.setReabastecimento(Boolean.valueOf("true".equals(split[2])));
+                defauts.setErs(Boolean.valueOf("true".equals(split[3])));
+                defauts.setDrs(Boolean.valueOf("true".equals(split[4])));
+                defauts.setFatorBox(Double.valueOf(Double.parseDouble(split[5])));
+                defauts.setSafetyCar(Boolean.valueOf("true".equals(split[6])));
                 temporadasDefauts.put(name, defauts);
                 temporadas.put(split[0], name);
                 vectorTemps.add(split[0]);
@@ -142,7 +142,7 @@ public class CarregadorRecursos {
             try {
                 buffer = ImageUtil.toBufferedImage(file);
                 if (buffer == null) {
-                    Logger.logar( "carregaBufferedImageTranspareciaBranca buffer nulo");
+                    Logger.logar("carregaBufferedImageTranspareciaBranca buffer nulo");
                 }
 
             } catch (Exception e) {
@@ -216,117 +216,6 @@ public class CarregadorRecursos {
             carregadorRecursos = new CarregadorRecursos();
         }
         return carregadorRecursos.getClass().getResource("/" + recurso);
-    }
-
-    public static void main(String[] args)
-            throws URISyntaxException, IOException, ClassNotFoundException {
-        // System.out.println(Util.intervalo(0, 0));
-
-        // gerarListaCarrosLado();
-        // gerarCarrosCima();
-        // JFrame frame = new JFrame();
-        // frame.setSize(200, 200);
-        // frame.setVisible(true);
-        // Graphics2D graphics2d = (Graphics2D) frame.getContentPane()
-        // .getGraphics();
-        // BufferedImage gerarCorresCarros = gerarCorresCarros(Color.BLUE, 1);
-        // graphics2d.drawImage(gerarCorresCarros, 0, 0, null);
-        CarregadorRecursos carregadorRecursos = CarregadorRecursos
-                .getCarregadorRecursos(false);
-
-        // Properties properties = new Properties();
-        //
-        // properties.load(CarregadorRecursos
-        // .recursoComoStream("properties/pistas.properties"));
-        //
-        // Enumeration propName = properties.propertyNames();
-        // double media = 0;
-        // double qtde = 0;
-        // while (propName.hasMoreElements()) {
-        // final String name = (String) propName.nextElement();
-        // // System.out.println(name);
-        // ObjectInputStream ois = new ObjectInputStream(carregadorRecursos
-        // .getClass().getResourceAsStream(name));
-        //
-        // Circuito circuito = (Circuito) ois.readObject();
-        // // System.out.println(properties.getProperty(name));
-        // System.out.println(name + " " + circuito.getNome() + " "
-        // + circuito.getMultiplciador());
-        // media += circuito.getMultiplciador();
-        // qtde++;
-        // // circuito.setMultiplicador(circuito.getMultiplciador() + 1);
-        // // FileOutputStream fileOutputStream = new FileOutputStream(new
-        // // File(
-        // // name));
-        // // ObjectOutputStream oos = new
-        // // ObjectOutputStream(fileOutputStream);
-        // // oos.writeObject(circuito);
-        // // oos.flush();
-        // // fileOutputStream.close();
-        // }
-        // System.out.println("Media "+(media/qtde));
-
-        // BufferedImage travadaRodaImg = CarregadorRecursos
-        // .carregaBufferedImageTranspareciaBranca("travadaRoda.png", 200,
-        // 50);
-        // JOptionPane.showConfirmDialog(null, new JLabel(new ImageIcon(
-        // travadaRodaImg)));
-
-        Map<String, List<Piloto>> carregarTemporadasPilotos = carregadorRecursos
-                .carregarTemporadasPilotos();
-        for (Iterator iterator = carregarTemporadasPilotos.keySet()
-                .iterator(); iterator.hasNext(); ) {
-            String temporada = (String) iterator.next();
-
-            List<Piloto> list = carregarTemporadasPilotos.get(temporada);
-            int somaPontecias = 0;
-            for (Iterator iterator2 = list.iterator(); iterator2.hasNext(); ) {
-                Piloto piloto = (Piloto) iterator2.next();
-                Carro carro = piloto.getCarro();
-                somaPontecias += (carro.getPotencia() + carro.getFreios()
-                        + carro.getAerodinamica());
-            }
-            int mediaPontecia = somaPontecias / (list.size());
-            System.out.println(temporada + " " + mediaPontecia);
-        }
-    }
-
-    private static void gerarListaCarrosLado() throws IOException {
-        List carList = new LinkedList();
-        File file = new File("src/sowbreira/f1mane/recursos/carros");
-        File[] dir = file.listFiles();
-        for (int i = 0; i < dir.length; i++) {
-            if (!dir[i].getName().startsWith(".")) {
-                File[] imgCar = dir[i].listFiles();
-                for (int j = 0; j < imgCar.length; j++) {
-                    if (!imgCar[j].getName().startsWith(".")
-                            && !imgCar[j].getName().equals("Thumbs.db")) {
-                        String str = imgCar[j].getPath().split("recursos")[1];
-                        str = str.substring(1, str.length());
-                        carList.add(str);
-
-                    }
-                }
-            }
-        }
-
-        FileWriter fileWriter = new FileWriter(
-                "src/main/resources/carros/carlist.txt");
-        for (Iterator iterator = carList.iterator(); iterator.hasNext(); ) {
-            String carro = (String) iterator.next();
-            StringBuilder nCarro = new StringBuilder();
-            for (int i = 0; i < carro.length(); i++) {
-                if (carro.charAt(i) == '\\') {
-                    nCarro.append('/');
-                } else {
-                    nCarro.append(carro.charAt(i));
-                }
-            }
-            Logger.logar(nCarro.toString());
-            fileWriter.write(nCarro.toString() + "\n");
-        }
-        fileWriter.close();
-
     }
 
     private static void gerarCarrosCima() throws IOException {
@@ -465,32 +354,21 @@ public class CarregadorRecursos {
                     Integer.parseInt(String.valueOf(duasCasas) + "0"));
             retorno.add(piloto);
         }
-        Collections.sort(retorno, new Comparator<Piloto>() {
-            public int compare(Piloto piloto0, Piloto piloto1) {
-                return Integer.valueOf(piloto1.getHabilidade())
-                        .compareTo(Integer.valueOf(piloto0.getHabilidade()));
-            }
-        });
+        Collections.sort(retorno, new PilotoComparator());
 
         return retorno;
     }
 
     public List<Carro> carregarListaCarros(List pilotos, String temporada)
             throws IOException {
-        if (temporadas.get(temporada) != null) {
+        if (temporadas != null && temporadas.get(temporada) != null) {
             Set<Carro> carros = new HashSet<Carro>();
             for (Iterator iterator = pilotos.iterator(); iterator.hasNext(); ) {
                 Piloto piloto = (Piloto) iterator.next();
                 carros.add(piloto.getCarro());
             }
             List<Carro> carrosL = new ArrayList<Carro>(carros);
-            Collections.sort(carrosL, new Comparator<Carro>() {
-                @Override
-                public int compare(Carro carro1, Carro carro2) {
-                    return carro1.getNome().compareTo(carro2.getNome());
-                }
-
-            });
+            Collections.sort(carrosL, new CarroComparator());
             return carrosL;
         }
 
@@ -1039,9 +917,7 @@ public class CarregadorRecursos {
             String nmCircuitoOri = (String) iterator.next();
             cd.setNome(Util.substVogais(nmCircuitoOri));
             cd.setArquivo(carregarCircuitos.get(nmCircuitoOri));
-            ObjectInputStream ois = new ObjectInputStream(CarregadorRecursos
-                    .recursoComoStream("circuitos/" + cd.getArquivo()));
-            Circuito circuito = (Circuito) ois.readObject();
+            Circuito circuito = CarregadorRecursos.carregarCircuito(cd.getArquivo());
             cd.setProbalidadeChuva(circuito.getProbalidadeChuva());
             circuitosDefauts.add(cd);
         }
@@ -1053,9 +929,8 @@ public class CarregadorRecursos {
             throws IOException, ClassNotFoundException {
         Circuito circuito = bufferCircuitos.get(nmCircuito);
         if (circuito == null) {
-            ObjectInputStream ois = new ObjectInputStream(
-                    CarregadorRecursos.recursoComoStream("circuitos/" + nmCircuito));
-            circuito = (Circuito) ois.readObject();
+            XMLDecoder xmlDecoder = new XMLDecoder(CarregadorRecursos.recursoComoStream("circuitos/" + nmCircuito));
+            circuito = (Circuito) xmlDecoder.readObject();
         }
         if (cache) {
             bufferCircuitos.put(nmCircuito, circuito);
@@ -1063,4 +938,18 @@ public class CarregadorRecursos {
         return circuito;
     }
 
+    private static class PilotoComparator implements Comparator<Piloto> {
+        public int compare(Piloto piloto0, Piloto piloto1) {
+            return Integer.valueOf(piloto1.getHabilidadeReal())
+                    .compareTo(Integer.valueOf(piloto0.getHabilidadeReal()));
+        }
+    }
+
+    private static class CarroComparator implements Comparator<Carro> {
+        @Override
+        public int compare(Carro carro1, Carro carro2) {
+            return carro1.getNome().compareTo(carro2.getNome());
+        }
+
+    }
 }

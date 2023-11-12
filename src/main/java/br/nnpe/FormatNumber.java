@@ -22,10 +22,11 @@ public class FormatNumber extends Object {
 	 * The format patterns can be verified in java.text.DecimalFormat.
 	 */
 	public static String format(double NUMBER, String FORMAT) {
-		if (FORMAT == null || FORMAT.length() == 0) {
-			FORMAT = "0.00";
+		String FORMAT1 = FORMAT;
+		if (FORMAT1 == null || FORMAT1.length() == 0) {
+			FORMAT1 = "0.00";
 		}
-		DecimalFormat df = new DecimalFormat(FORMAT);
+		DecimalFormat df = new DecimalFormat(FORMAT1);
 		String number = df.format(NUMBER);
 		return number;
 	}
@@ -35,10 +36,11 @@ public class FormatNumber extends Object {
 	 * The format patterns can be verified in java.text.DecimalFormat.
 	 */
 	public static String format(int NUMBER, String FORMAT) {
-		if (FORMAT == null || FORMAT.length() == 0) {
-			FORMAT = "000";
+		String FORMAT1 = FORMAT;
+		if (FORMAT1 == null || FORMAT1.length() == 0) {
+			FORMAT1 = "000";
 		}
-		DecimalFormat df = new DecimalFormat(FORMAT);
+		DecimalFormat df = new DecimalFormat(FORMAT1);
 		String number = df.format(NUMBER);
 		return number;
 	}
@@ -48,10 +50,11 @@ public class FormatNumber extends Object {
 	 * The format patterns can be verified in java.text.DecimalFormat.
 	 */
 	public static String format(long NUMBER, String FORMAT) {
-		if (FORMAT == null || FORMAT.length() == 0) {
-			FORMAT = "000";
+		String FORMAT1 = FORMAT;
+		if (FORMAT1 == null || FORMAT1.length() == 0) {
+			FORMAT1 = "000";
 		}
-		DecimalFormat df = new DecimalFormat(FORMAT);
+		DecimalFormat df = new DecimalFormat(FORMAT1);
 		String number = df.format(NUMBER);
 		return number;
 	}
@@ -61,13 +64,14 @@ public class FormatNumber extends Object {
 	 * The format patterns can be verified in java.text.DecimalFormat.
 	 */
 	public static String format(java.lang.Integer NUMBER, String FORMAT) {
+		String FORMAT1 = FORMAT;
 		if (NUMBER == null) {
 			return "";
 		}
-		if (FORMAT == null || FORMAT.length() == 0) {
-			FORMAT = "000";
+		if (FORMAT1 == null || FORMAT1.length() == 0) {
+			FORMAT1 = "000";
 		}
-		DecimalFormat df = new DecimalFormat(FORMAT);
+		DecimalFormat df = new DecimalFormat(FORMAT1);
 		String number = df.format(NUMBER);
 		return number;
 	}
@@ -77,13 +81,14 @@ public class FormatNumber extends Object {
 	 * The format patterns can be verified in java.text.DecimalFormat.
 	 */
 	public static String format(java.lang.Double NUMBER, String FORMAT) {
+		String FORMAT1 = FORMAT;
 		if (NUMBER == null) {
 			return "";
 		}
-		if (FORMAT == null || FORMAT.length() == 0) {
-			FORMAT = "0.00";
+		if (FORMAT1 == null || FORMAT1.length() == 0) {
+			FORMAT1 = "0.00";
 		}
-		DecimalFormat df = new DecimalFormat(FORMAT);
+		DecimalFormat df = new DecimalFormat(FORMAT1);
 		String number = df.format(NUMBER);
 		return number;
 	}
@@ -93,13 +98,14 @@ public class FormatNumber extends Object {
 	 * The format patterns can be verified in java.text.DecimalFormat.
 	 */
 	public static String format(java.lang.Float NUMBER, String FORMAT) {
+		String FORMAT1 = FORMAT;
 		if (NUMBER == null) {
 			return "";
 		}
-		if (FORMAT == null || FORMAT.length() == 0) {
-			FORMAT = "0.00";
+		if (FORMAT1 == null || FORMAT1.length() == 0) {
+			FORMAT1 = "0.00";
 		}
-		DecimalFormat df = new DecimalFormat(FORMAT);
+		DecimalFormat df = new DecimalFormat(FORMAT1);
 		String number = df.format(NUMBER);
 		return number;
 	}
@@ -109,13 +115,14 @@ public class FormatNumber extends Object {
 	 * The format patterns can be verified in java.text.DecimalFormat.
 	 */
 	public static String format(java.lang.Byte NUMBER, String FORMAT) {
+		String FORMAT1 = FORMAT;
 		if (NUMBER == null) {
 			return "";
 		}
-		if (FORMAT == null || FORMAT.length() == 0) {
-			FORMAT = "0";
+		if (FORMAT1 == null || FORMAT1.length() == 0) {
+			FORMAT1 = "0";
 		}
-		DecimalFormat df = new DecimalFormat(FORMAT);
+		DecimalFormat df = new DecimalFormat(FORMAT1);
 		String number = df.format(NUMBER);
 		return number;
 	}
@@ -125,13 +132,14 @@ public class FormatNumber extends Object {
 	 * The format patterns can be verified in java.text.DecimalFormat.
 	 */
 	public static String format(java.lang.Short NUMBER, String FORMAT) {
+		String FORMAT1 = FORMAT;
 		if (NUMBER == null) {
 			return "";
 		}
-		if (FORMAT == null || FORMAT.length() == 0) {
-			FORMAT = "0";
+		if (FORMAT1 == null || FORMAT1.length() == 0) {
+			FORMAT1 = "0";
 		}
-		DecimalFormat df = new DecimalFormat(FORMAT);
+		DecimalFormat df = new DecimalFormat(FORMAT1);
 		String number = df.format(NUMBER);
 		return number;
 	}
@@ -141,13 +149,14 @@ public class FormatNumber extends Object {
 	 * The format patterns can be verified in java.text.DecimalFormat.
 	 */
 	public static String format(java.lang.Long NUMBER, String FORMAT) {
+		String FORMAT1 = FORMAT;
 		if (NUMBER == null) {
 			return "";
 		}
-		if (FORMAT == null || FORMAT.length() == 0) {
-			FORMAT = "000";
+		if (FORMAT1 == null || FORMAT1.length() == 0) {
+			FORMAT1 = "000";
 		}
-		DecimalFormat df = new DecimalFormat(FORMAT);
+		DecimalFormat df = new DecimalFormat(FORMAT1);
 		String number = df.format(NUMBER);
 		return number;
 	}
@@ -157,13 +166,14 @@ public class FormatNumber extends Object {
 	 * The format patterns can be verified in java.text.DecimalFormat.
 	 */
 	public static String format(java.math.BigDecimal NUMBER, String FORMAT) {
+		String FORMAT1 = FORMAT;
 		if (NUMBER == null) {
 			return "";
 		}
-		if (FORMAT == null || FORMAT.length() == 0) {
-			FORMAT = "0.00";
+		if (FORMAT1 == null || FORMAT1.length() == 0) {
+			FORMAT1 = "0.00";
 		}
-		DecimalFormat df = new DecimalFormat(FORMAT);
+		DecimalFormat df = new DecimalFormat(FORMAT1);
 		String number = df.format(NUMBER);
 		return number;
 	}
@@ -259,15 +269,16 @@ public class FormatNumber extends Object {
 	 * parameter: String
 	 */
 	public static int parseInt(String NUMBER) {
+		String NUMBER1 = NUMBER;
 		int resultado = 0;
-		if (NUMBER != null && NUMBER.length() > 0) {
-			NUMBER = NUMBER.trim();
-			NUMBER = checkInt(NUMBER);
-			if (NUMBER.indexOf(".") > 0) {
-				NUMBER = NUMBER.substring(0, NUMBER.indexOf("."));
+		if (NUMBER1 != null && NUMBER1.length() > 0) {
+			NUMBER1 = NUMBER1.trim();
+			NUMBER1 = checkInt(NUMBER1);
+			if (NUMBER1.indexOf(".") > 0) {
+				NUMBER1 = NUMBER1.substring(0, NUMBER1.indexOf("."));
 			}
 			try {
-				resultado = (new Integer(NUMBER)).intValue();
+				resultado = (new Integer(NUMBER1)).intValue();
 			} catch (Exception e) {
 				resultado = 0;
 			}
@@ -280,15 +291,16 @@ public class FormatNumber extends Object {
 	 * parameter: String
 	 */
 	public static Integer parseIntegerWrapper(String NUMBER) {
+		String NUMBER1 = NUMBER;
 		Integer resultado = null;
-		if (NUMBER != null && NUMBER.length() > 0) {
-			NUMBER = NUMBER.trim();
-			NUMBER = checkInt(NUMBER);
-			if (NUMBER.indexOf(".") > 0) {
-				NUMBER = NUMBER.substring(0, NUMBER.indexOf("."));
+		if (NUMBER1 != null && NUMBER1.length() > 0) {
+			NUMBER1 = NUMBER1.trim();
+			NUMBER1 = checkInt(NUMBER1);
+			if (NUMBER1.indexOf(".") > 0) {
+				NUMBER1 = NUMBER1.substring(0, NUMBER1.indexOf("."));
 			}
 			try {
-				resultado = new Integer(NUMBER);
+				resultado = new Integer(NUMBER1);
 			} catch (Exception e) {
 				resultado = null;
 			}
@@ -301,15 +313,16 @@ public class FormatNumber extends Object {
 	 * parameter: String
 	 */
 	public static long parseLong(String NUMBER) {
+		String NUMBER1 = NUMBER;
 		long resultado = 0;
-		if (NUMBER != null && NUMBER.length() > 0) {
-			NUMBER = NUMBER.trim();
-			NUMBER = checkInt(NUMBER);
-			if (NUMBER.indexOf(".") > 0) {
-				NUMBER = NUMBER.substring(0, NUMBER.indexOf("."));
+		if (NUMBER1 != null && NUMBER1.length() > 0) {
+			NUMBER1 = NUMBER1.trim();
+			NUMBER1 = checkInt(NUMBER1);
+			if (NUMBER1.indexOf(".") > 0) {
+				NUMBER1 = NUMBER1.substring(0, NUMBER1.indexOf("."));
 			}
 			try {
-				resultado = (new Long(NUMBER)).longValue();
+				resultado = (new Long(NUMBER1)).longValue();
 			} catch (Exception e) {
 				resultado = 0;
 			}
@@ -322,15 +335,16 @@ public class FormatNumber extends Object {
 	 * parameter: String
 	 */
 	public static Long parseLongWrapper(String NUMBER) {
+		String NUMBER1 = NUMBER;
 		Long resultado = null;
-		if (NUMBER != null && NUMBER.length() > 0) {
-			NUMBER = NUMBER.trim();
-			NUMBER = checkInt(NUMBER);
-			if (NUMBER.indexOf(".") > 0) {
-				NUMBER = NUMBER.substring(0, NUMBER.indexOf("."));
+		if (NUMBER1 != null && NUMBER1.length() > 0) {
+			NUMBER1 = NUMBER1.trim();
+			NUMBER1 = checkInt(NUMBER1);
+			if (NUMBER1.indexOf(".") > 0) {
+				NUMBER1 = NUMBER1.substring(0, NUMBER1.indexOf("."));
 			}
 			try {
-				resultado = new Long(NUMBER);
+				resultado = new Long(NUMBER1);
 			} catch (Exception e) {
 				resultado = null;
 			}
@@ -343,12 +357,13 @@ public class FormatNumber extends Object {
 	 * parameter: String
 	 */
 	public static java.math.BigDecimal parseBigDecimal(String NUMBER) {
+		String NUMBER1 = NUMBER;
 		java.math.BigDecimal resultado = null;
-		if (NUMBER != null && NUMBER.length() > 0) {
-			NUMBER = NUMBER.trim();
-			NUMBER = checkDouble(NUMBER);
+		if (NUMBER1 != null && NUMBER1.length() > 0) {
+			NUMBER1 = NUMBER1.trim();
+			NUMBER1 = checkDouble(NUMBER1);
 			try {
-				resultado = new java.math.BigDecimal(NUMBER);
+				resultado = new java.math.BigDecimal(NUMBER1);
 			} catch (Exception e) {
 				resultado = null;
 			}
@@ -374,12 +389,13 @@ public class FormatNumber extends Object {
 	 * parameter: String
 	 */
 	public static double parseDouble(String NUMBER) {
+		String NUMBER1 = NUMBER;
 		double resultado = 0;
-		if (NUMBER != null && NUMBER.length() > 0) {
-			NUMBER = NUMBER.trim();
-			NUMBER = checkDouble(NUMBER);
+		if (NUMBER1 != null && NUMBER1.length() > 0) {
+			NUMBER1 = NUMBER1.trim();
+			NUMBER1 = checkDouble(NUMBER1);
 			try {
-				resultado = (new Double(NUMBER)).doubleValue();
+				resultado = (new Double(NUMBER1)).doubleValue();
 			} catch (Exception e) {
 				resultado = 0;
 			}
@@ -392,12 +408,13 @@ public class FormatNumber extends Object {
 	 * parameter: String
 	 */
 	public static Double parseDoubleWrapper(String NUMBER) {
+		String NUMBER1 = NUMBER;
 		Double resultado = null;
-		if (NUMBER != null && NUMBER.length() > 0) {
-			NUMBER = NUMBER.trim();
-			NUMBER = checkDouble(NUMBER);
+		if (NUMBER1 != null && NUMBER1.length() > 0) {
+			NUMBER1 = NUMBER1.trim();
+			NUMBER1 = checkDouble(NUMBER1);
 			try {
-				resultado = new Double(NUMBER);
+				resultado = new Double(NUMBER1);
 			} catch (Exception e) {
 				resultado = null;
 			}
@@ -450,51 +467,56 @@ public class FormatNumber extends Object {
 	}
 
 	public static Integer toInteger(String NUMBER) {
+		String NUMBER1 = NUMBER;
 		Integer resultado = null;
-		if (NUMBER != null && NUMBER.length() > 0) {
-			NUMBER = NUMBER.trim();
-			NUMBER = checkInt(NUMBER);
-			resultado = new Integer(NUMBER);
+		if (NUMBER1 != null && NUMBER1.length() > 0) {
+			NUMBER1 = NUMBER1.trim();
+			NUMBER1 = checkInt(NUMBER1);
+			resultado = new Integer(NUMBER1);
 		}
 		return resultado;
 	}
 
 	public static Integer toInt(String NUMBER) {
+		String NUMBER1 = NUMBER;
 		Integer resultado = null;
-		if (NUMBER != null && NUMBER.length() > 0) {
-			NUMBER = NUMBER.trim();
-			NUMBER = checkInt(NUMBER);
-			resultado = new Integer(NUMBER);
+		if (NUMBER1 != null && NUMBER1.length() > 0) {
+			NUMBER1 = NUMBER1.trim();
+			NUMBER1 = checkInt(NUMBER1);
+			resultado = new Integer(NUMBER1);
 		}
 		return resultado;
 	}
 
 	public static Double toDouble(String NUMBER) {
+		String NUMBER1 = NUMBER;
 		Double resultado = null;
-		if (NUMBER != null && NUMBER.length() > 0) {
-			NUMBER = NUMBER.trim();
-			NUMBER = checkDouble(NUMBER);
-			resultado = new Double(NUMBER);
+		if (NUMBER1 != null && NUMBER1.length() > 0) {
+			NUMBER1 = NUMBER1.trim();
+			NUMBER1 = checkDouble(NUMBER1);
+			resultado = new Double(NUMBER1);
 		}
 		return resultado;
 	}
 
 	public static Long toLong(String NUMBER) {
+		String NUMBER1 = NUMBER;
 		Long resultado = null;
-		if (NUMBER != null && NUMBER.length() > 0) {
-			NUMBER = NUMBER.trim();
-			NUMBER = checkInt(NUMBER);
-			resultado = new Long(NUMBER);
+		if (NUMBER1 != null && NUMBER1.length() > 0) {
+			NUMBER1 = NUMBER1.trim();
+			NUMBER1 = checkInt(NUMBER1);
+			resultado = new Long(NUMBER1);
 		}
 		return resultado;
 	}
 
 	public static java.math.BigDecimal toBigDecimal(String NUMBER) {
+		String NUMBER1 = NUMBER;
 		java.math.BigDecimal resultado = null;
-		if (NUMBER != null && NUMBER.length() > 0) {
-			NUMBER = NUMBER.trim();
-			NUMBER = checkDouble(NUMBER);
-			resultado = new java.math.BigDecimal(NUMBER);
+		if (NUMBER1 != null && NUMBER1.length() > 0) {
+			NUMBER1 = NUMBER1.trim();
+			NUMBER1 = checkDouble(NUMBER1);
+			resultado = new java.math.BigDecimal(NUMBER1);
 		}
 		return resultado;
 	}
@@ -503,44 +525,46 @@ public class FormatNumber extends Object {
 	 * Method for checking a double number format.
 	 */
 	private static String checkDouble(String NUMBER) {
-		if (NUMBER != null && NUMBER.length() > 0) {
-			if (NUMBER.indexOf(",") != -1 || NUMBER.indexOf(".") != -1) {
-				int limit = NUMBER.length() - 4;
+		String NUMBER1 = NUMBER;
+		if (NUMBER1 != null && NUMBER1.length() > 0) {
+			if (NUMBER1.indexOf(",") != -1 || NUMBER1.indexOf(".") != -1) {
+				int limit = NUMBER1.length() - 4;
 				StringBuilder new_number = new StringBuilder();
-				for (int i = 0; i < NUMBER.length(); i++) {
-					if (NUMBER.charAt(i) == '.' || NUMBER.charAt(i) == ',') {
+				for (int i = 0; i < NUMBER1.length(); i++) {
+					if (NUMBER1.charAt(i) == '.' || NUMBER1.charAt(i) == ',') {
 						if (i > limit) {
 							new_number.append(".");
-						} else if (NUMBER.substring(i + 1).indexOf(".") == -1
-								&& NUMBER.substring(i + 1).indexOf(",") == -1) {
+						} else if (NUMBER1.substring(i + 1).indexOf(".") == -1
+								&& NUMBER1.substring(i + 1).indexOf(",") == -1) {
 							new_number.append(".");
 						}
 					} else {
-						new_number.append(NUMBER.charAt(i));
+						new_number.append(NUMBER1.charAt(i));
 					}
 				}
-				NUMBER = new_number.toString();
+				NUMBER1 = new_number.toString();
 			}
 		}
-		return NUMBER;
+		return NUMBER1;
 	}
 
 	/**
 	 * Method for checking a int number format.
 	 */
 	private static String checkInt(String NUMBER) {
-		if (NUMBER != null && NUMBER.length() > 0) {
-			if (NUMBER.indexOf(",") != -1 || NUMBER.indexOf(".") != -1) {
-				int limit = NUMBER.length() - 4;
+		String NUMBER1 = NUMBER;
+		if (NUMBER1 != null && NUMBER1.length() > 0) {
+			if (NUMBER1.indexOf(",") != -1 || NUMBER1.indexOf(".") != -1) {
+				int limit = NUMBER1.length() - 4;
 				StringBuilder new_number = new StringBuilder();
-				for (int i = 0; i < NUMBER.length(); i++) {
-					if (!(NUMBER.charAt(i) == '.' || NUMBER.charAt(i) == ',')) {
-						new_number.append(NUMBER.charAt(i));
+				for (int i = 0; i < NUMBER1.length(); i++) {
+					if (!(NUMBER1.charAt(i) == '.' || NUMBER1.charAt(i) == ',')) {
+						new_number.append(NUMBER1.charAt(i));
 					}
 				}
-				NUMBER = new_number.toString();
+				NUMBER1 = new_number.toString();
 			}
 		}
-		return NUMBER;
+		return NUMBER1;
 	}
 }

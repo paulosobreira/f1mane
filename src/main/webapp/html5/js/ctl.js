@@ -756,7 +756,7 @@ function ctl_desenhaInfoDireita() {
 		ctlContext.fillRect(x, y, 110, 20);
 		ctlContext.font = '14px sans-serif';
 		ctlContext.fillStyle = "black"
-		ctlContext.fillText(lang_text('vol') + ' '
+		ctlContext.fillText(lang_text('82') + ' '
 				+ (dadosParciais.pVolta) + ' '
 				+ formatarTempo(dadosParciais.ultima1), x + 5, y + 15);
 
@@ -767,7 +767,7 @@ function ctl_desenhaInfoDireita() {
 			ctlContext.fillRect(x, y, 110, 20);
 			ctlContext.font = '14px sans-serif';
 			ctlContext.fillStyle = "black"
-			ctlContext.fillText(lang_text('vol') + ' '
+			ctlContext.fillText(lang_text('82') + ' '
 					+ (dadosParciais.pVolta - 1) + ' '
 					+ formatarTempo(dadosParciais.ultima2), x + 5, y + 15);
 			y += 30;
@@ -778,7 +778,7 @@ function ctl_desenhaInfoDireita() {
 			ctlContext.fillRect(x, y, 110, 20);
 			ctlContext.font = '14px sans-serif';
 			ctlContext.fillStyle = "black"
-			ctlContext.fillText(lang_text('vol') + ' '
+			ctlContext.fillText(lang_text('82') + ' '
 					+ (dadosParciais.pVolta - 2) + ' '
 					+ formatarTempo(dadosParciais.ultima3), x + 5, y + 15);
 			y += 30;
@@ -789,7 +789,7 @@ function ctl_desenhaInfoDireita() {
 			ctlContext.fillRect(x, y, 110, 20);
 			ctlContext.font = '14px sans-serif';
 			ctlContext.fillStyle = "black"
-			ctlContext.fillText(lang_text('vol') + ' '
+			ctlContext.fillText(lang_text('82') + ' '
 					+ (dadosParciais.pVolta - 3) + ' '
 					+ formatarTempo(dadosParciais.ultima4), x + 5, y + 15);
 			y += 30;

@@ -15,8 +15,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import sowbreira.f1mane.entidades.Carro;
-import sowbreira.f1mane.entidades.Piloto;
+import br.f1mane.entidades.Carro;
+import br.f1mane.entidades.Piloto;
 
 import javax.swing.*;
 import java.beans.XMLDecoder;
@@ -24,7 +24,6 @@ import java.beans.XMLEncoder;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Date;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -41,10 +40,6 @@ public class ControlePersistencia {
 
     private final static String lock = "lock";
 
-    private String webInfDir;
-
-    private String webDir;
-
     public Session getSession() {
         if (!Constantes.DATABASE) {
             return null;
@@ -54,8 +49,6 @@ public class ControlePersistencia {
 
     public ControlePersistencia(String webDir, String webInfDir) {
         super();
-        this.webInfDir = webInfDir;
-        this.webDir = webDir;
     }
 
     /**
@@ -270,8 +263,8 @@ public class ControlePersistencia {
     public Set obterListaJogadoresCorridasPeriodo(Session session, Dia ini, Dia fim) {
         Set nomes = new HashSet();
         List corridas = session.createCriteria(CorridasDadosSrv.class)
-                .add(Restrictions.ge("tempoFim", ini.toTimestamp().getTime()))
-                .add(Restrictions.le("tempoFim", fim.toTimestamp().getTime())).list();
+                .add(Restrictions.ge("tempoFim", Long.valueOf(ini.toTimestamp().getTime())))
+                .add(Restrictions.le("tempoFim", Long.valueOf(fim.toTimestamp().getTime()))).list();
         for (Iterator iterator = corridas.iterator(); iterator.hasNext(); ) {
             CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator.next();
             nomes.add(corridasDadosSrv.getJogadorDadosSrv().getToken());
@@ -366,10 +359,10 @@ public class ControlePersistencia {
         Criteria criteria = session.createCriteria(CorridasDadosSrv.class).createAlias("jogadorDadosSrv", "j")
                 .add(Restrictions.eq("j.nome", nomeJogador)).addOrder(Order.asc("tempoInicio"));
         if (ano != null) {
-            Dia ini = new Dia(1, 1, ano);
-            Dia fim = new Dia(1, 1, ano + 1);
-            criteria.add(Restrictions.ge("tempoFim", ini.toTimestamp().getTime()));
-            criteria.add(Restrictions.le("tempoFim", fim.toTimestamp().getTime()));
+            Dia ini = new Dia(1, 1, ano.intValue());
+            Dia fim = new Dia(1, 1, ano.intValue() + 1);
+            criteria.add(Restrictions.ge("tempoFim", Long.valueOf(ini.toTimestamp().getTime())));
+            criteria.add(Restrictions.le("tempoFim", Long.valueOf(fim.toTimestamp().getTime())));
         }
 
         List corridas = criteria.list();
@@ -387,7 +380,7 @@ public class ControlePersistencia {
         }
         Criteria criteria = session.createCriteria(CorridasDadosSrv.class);
         criteria.add(Restrictions.eq("circuito", circuito));
-        criteria.add(Restrictions.gt("pontos", 0));
+        criteria.add(Restrictions.gt("pontos", Integer.valueOf(0)));
         List corridas = criteria.list();
         return corridas;
     }
@@ -398,7 +391,7 @@ public class ControlePersistencia {
         }
         Criteria criteria = session.createCriteria(CorridasDadosSrv.class);
         criteria.add(Restrictions.eq("temporada", temporadaSelecionada));
-        criteria.add(Restrictions.gt("pontos", 0));
+        criteria.add(Restrictions.gt("pontos", Integer.valueOf(0)));
         List corridas = criteria.list();
         return corridas;
     }
@@ -437,7 +430,7 @@ public class ControlePersistencia {
     }
 
     public CampeonatoSrv pesquisaCampeonato(Session session, String id, boolean cliente) {
-        List campeonatos = session.createCriteria(CampeonatoSrv.class).add(Restrictions.eq("id", Long.parseLong(id))).list();
+        List campeonatos = session.createCriteria(CampeonatoSrv.class).add(Restrictions.eq("id", Long.valueOf(Long.parseLong(id)))).list();
         CampeonatoSrv campeonato = (CampeonatoSrv) (campeonatos.isEmpty() ? null : campeonatos.get(0));
         if (campeonato == null) {
             return null;
@@ -463,7 +456,7 @@ public class ControlePersistencia {
 
     public List pesquisaCampeonatosEmAberto(String token, Session session, boolean cliente) {
         List campeonatos = session.createCriteria(CampeonatoSrv.class).createAlias("jogadorDadosSrv", "j")
-                .add(Restrictions.eq("j.token", token)).add(Restrictions.eq("finalizado", false)).list();
+                .add(Restrictions.eq("j.token", token)).add(Restrictions.eq("finalizado", Boolean.FALSE)).list();
         if (cliente) {
             for (Iterator iterator = campeonatos.iterator(); iterator.hasNext(); ) {
                 CampeonatoSrv campeonato = (CampeonatoSrv) iterator.next();
@@ -475,7 +468,7 @@ public class ControlePersistencia {
 
     public CampeonatoSrv pesquisaCampeonatoId(String id, Session session) {
         CampeonatoSrv campeonatoSrv = (CampeonatoSrv) session.createCriteria(CampeonatoSrv.class)
-                .add(Restrictions.eq("id", Long.parseLong(id))).uniqueResult();
+                .add(Restrictions.eq("id", Long.valueOf(Long.parseLong(id)))).uniqueResult();
         campeonatoCliente(session, campeonatoSrv);
         return campeonatoSrv;
     }
@@ -552,7 +545,7 @@ public class ControlePersistencia {
             return null;
         }
         Criteria criteria = session.createCriteria(CorridasDadosSrv.class);
-        criteria.add(Restrictions.gt("pontos", 0));
+        criteria.add(Restrictions.gt("pontos", Integer.valueOf(0)));
         List corridas = criteria.list();
         return corridas;
     }
@@ -561,7 +554,7 @@ public class ControlePersistencia {
         Criteria criteria = session.createCriteria(CarreiraDadosSrv.class);
         criteria.add(Restrictions.isNotNull("nomeCarro"));
         criteria.add(Restrictions.isNotNull("nomePiloto"));
-        criteria.add(Restrictions.gt("ptsConstrutoresGanhos", 0));
+        criteria.add(Restrictions.gt("ptsConstrutoresGanhos", Integer.valueOf(0)));
         criteria.addOrder(Order.desc("ptsConstrutoresGanhos"));
         List carreiras = criteria.list();
         return carreiras;
@@ -583,14 +576,14 @@ public class ControlePersistencia {
         }
 
         if (carreiraDadosSrv.getTemporadaCapaceteLivery() != null && carreiraDadosSrv.getIdCapaceteLivery() != null
-                && carreiraDadosSrv.getIdCapaceteLivery() != 0) {
+                && carreiraDadosSrv.getIdCapaceteLivery().intValue() != 0) {
             piloto.setIdCapaceteLivery(carreiraDadosSrv.getIdCapaceteLivery().toString());
         } else {
             piloto.setIdCapaceteLivery(Util.rgb2hex(carreiraDadosSrv.geraCor2()));
 
         }
         if (carreiraDadosSrv.getTemporadaCarroLivery() != null && carreiraDadosSrv.getIdCarroLivery() != null
-                && carreiraDadosSrv.getIdCarroLivery() != 0) {
+                && carreiraDadosSrv.getIdCarroLivery().intValue() != 0) {
             piloto.setIdCarroLivery(carreiraDadosSrv.getIdCarroLivery().toString());
         } else {
             piloto.setIdCarroLivery(Util.rgb2hex(carreiraDadosSrv.geraCor2()));
@@ -613,7 +606,7 @@ public class ControlePersistencia {
         umMesAtras.advance(-15);
         String hql = "from CampeonatoSrv obj where obj.id in (select distinct obj2.id from  CampeonatoSrv obj2 inner join  obj2.corridaCampeonatos cc where cc.tempoFim >= :tempoFim)";
         Query qry = session.createQuery(hql);
-        qry.setParameter("tempoFim", umMesAtras.toTimestamp().getTime());
+        qry.setParameter("tempoFim", Long.valueOf(umMesAtras.toTimestamp().getTime()));
         List list = qry.list();
         return list;
     }
