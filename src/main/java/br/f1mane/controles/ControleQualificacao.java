@@ -2,11 +2,7 @@ package br.f1mane.controles;
 
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import br.nnpe.Constantes;
 import br.nnpe.GeoUtil;
@@ -73,51 +69,9 @@ public class ControleQualificacao {
                     .valueOf(controleJogo.getNosDaPista().size()).doubleValue()) <= 1) {
                 piloto.processarCiclo(controleJogo);
                 contCiclosQualificacao++;
-                if (Math.random() > (piloto.getCarro()
-                        .getPorcentagemCombustivel() / 100.0)
-                        && !piloto.getNoAtual().verificaRetaOuLargada()
-                        && piloto.getCarro().testeAerodinamica()
-                        && piloto.testeHabilidadePilotoCarro()
-                        && piloto.getCarro().testeFreios(controleJogo)) {
-                    contCiclosQualificacao -= Math.random() > incCurva ? 1 : 0;
-                }
-                if (Math.random() > (piloto.getCarro()
-                        .getPorcentagemCombustivel() / 100.0)
-                        && piloto.getNoAtual().verificaRetaOuLargada()
-                        && piloto.getCarro().testePotencia()) {
-                    contCiclosQualificacao -= Math.random() > increta ? 1 : 0;
-                }
-                if (piloto.getCarro()
-                        .verificaPneusIncompativeisClima(controleJogo)) {
-                    contCiclosQualificacao++;
-                }
-            }
-            int modMili = 60;
-            for (int j = 0; j < 5; j++) {
-                if (piloto.testeHabilidadePiloto()) {
-                    modMili -= 4;
-                } else {
-                    piloto.incStress(40);
-                }
-                if (piloto.getCarro().testePotencia()) {
-                    modMili -= 3;
-                } else {
-                    piloto.incStress(10);
-                }
-                if (piloto.getCarro().testeFreios(controleJogo)) {
-                    modMili -= 2;
-                } else {
-                    piloto.incStress(10);
-                }
-                if (piloto.getCarro().testeAerodinamica()) {
-                    modMili -= 1;
-                } else {
-                    piloto.incStress(10);
-                }
-
             }
             piloto.setCiclosVoltaQualificacao(Util.inteiro(
-                    ((contCiclosQualificacao * Constantes.CICLO) + modMili)));
+                    contCiclosQualificacao * Constantes.CICLO));
             piloto.setNumeroVolta(-1);
             piloto.setUltimaVolta(null);
             piloto.setVoltaAtual(null);
@@ -127,7 +81,7 @@ public class ControleQualificacao {
         }
         nivelaHabilidade(pilotos);
         nivelaPontecia(pilotos);
-        Collections.sort(pilotos, new MyComparator());
+        Collections.sort(pilotos, new ComparatorVoltaQualyAleatoria());
 
         for (int i = 0; i < pilotos.size(); i++) {
             if (i == 0) {
@@ -297,7 +251,7 @@ public class ControleQualificacao {
 
     }
 
-    private static class MyComparator implements Comparator {
+    private static class ComparatorVoltaQualyAleatoria implements Comparator {
         public int compare(Object arg0, Object arg1) {
             Piloto piloto0 = (Piloto) arg0;
             Piloto piloto1 = (Piloto) arg1;

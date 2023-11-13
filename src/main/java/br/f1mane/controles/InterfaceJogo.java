@@ -24,9 +24,9 @@ public interface InterfaceJogo {
 	public static final String NORMAL = "NORMAL";
 	public static final String FACIL = "FACIL";
 	public static final String DIFICIL = "DIFICIL";
-	public static final double FACIL_NV = .3;
-	public static final double MEDIO_NV = .5;
-	public static final double DIFICIL_NV = .7;
+	public static final double FACIL_NV = .5;
+	public static final double MEDIO_NV = .7;
+	public static final double DIFICIL_NV = .9;
 	public static final int CARGA_ERS = 100;
 	public static final int DURABILIDADE_AREOFOLIO = 4;
 

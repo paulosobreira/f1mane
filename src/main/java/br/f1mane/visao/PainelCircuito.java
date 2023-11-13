@@ -2951,7 +2951,9 @@ public class PainelCircuito {
         } else {
             graphics = controleJogo.getMainFrame().obterGraficos();
         }
-
+        if (graphics == null) {
+            return;
+        }
         graphics.drawImage(travada, Util.inteiro(carx + Util.intervalo(-15, 15)),
                 Util.inteiro(cary + Util.intervalo(-15, 15)), null);
     }

@@ -61,6 +61,18 @@ public class ServletPaddock extends HttpServlet {
             host = properties.getProperty("host");
             senha = properties.getProperty("senha");
             port = Integer.parseInt(properties.getProperty("port"));
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(10000);
+                        createSchema(null);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            thread.run();
         } catch (Exception e) {
             Logger.logarExept(e);
         }

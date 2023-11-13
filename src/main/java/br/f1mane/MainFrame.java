@@ -471,6 +471,9 @@ public class MainFrame extends JFrame {
 			createBufferStrategy(2);
 			strategy = getBufferStrategy();
 		}
+		if(strategy==null){
+			return null;
+		}
 		return (Graphics2D) strategy.getDrawGraphics();
 	}
 

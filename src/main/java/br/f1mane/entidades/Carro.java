@@ -112,6 +112,8 @@ public class Carro implements Serializable {
     private Color cor2;
     @JsonIgnore
     private Piloto piloto;
+    @JsonIgnore
+    private boolean pontenciaErs;
 
     public String getCor1Hex() {
         return String.format("#%02x%02x%02x", Integer.valueOf(cor1.getRed()), Integer.valueOf(cor1.getGreen()), Integer.valueOf(cor1.getBlue()));
@@ -343,7 +345,7 @@ public class Carro implements Serializable {
     }
 
     public boolean testePotencia() {
-        return Math.random() < (potencia / 1000.0);
+        return Math.random() < ((potencia + (pontenciaErs ? 100 : 0)) / 1000.0);
     }
 
     public boolean testeAerodinamica() {
@@ -581,19 +583,11 @@ public class Carro implements Serializable {
         int valConsumo = 0;
 
         if (giro == GIRO_MIN_VAL) {
-            valConsumo += (testePotencia ? 0 : 3);
+            valConsumo += (testePotencia && testeAerodinamica() ? 0 : 5);
         } else if (giro == GIRO_NOR_VAL) {
-            valConsumo += (testePotencia ? 3 : 6);
+            valConsumo += (testePotencia && testeAerodinamica() ? 5 : 10);
         } else if (giro == GIRO_MAX_VAL) {
-            valConsumo += (testePotencia && testeAerodinamica() ? 5 : 9);
-        }
-
-        if (giro == GIRO_MAX_VAL) {
-            if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
-                valConsumo += 1;
-            } else {
-                valConsumo += testeAerodinamica() ? 0 : 1;
-            }
+            valConsumo += (testePotencia && testeAerodinamica() ? 10 : 15);
         }
 
         double consumoTotal = (valConsumo * Constantes.MULTIPLICADOR);
@@ -1001,6 +995,9 @@ public class Carro implements Serializable {
     public void usaErs() {
         if (cargaErs > 0) {
             cargaErs -= (testePotencia() ? 1 : 2);
+            pontenciaErs = true;
+        } else {
+            pontenciaErs = false;
         }
     }
 

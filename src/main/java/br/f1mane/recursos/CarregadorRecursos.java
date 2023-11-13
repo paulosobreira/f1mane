@@ -447,11 +447,10 @@ public class CarregadorRecursos {
         carroNovo.setCor2(carro.getCor2());
         carroNovo.setImg(carro.getImg());
         carroNovo.setPiloto(piloto);
-        carroNovo.setPotenciaReal(carro.getPotencia());
+        carroNovo.setPotenciaReal(carro.getPotenciaReal());
         carroNovo.setAerodinamica(carro.getAerodinamica());
         carroNovo.setFreios(carro.getFreios());
-        carroNovo.setPotencia(
-                carro.getPotencia() + (Math.random() > .5 ? -5 : 5));
+        carroNovo.setPotencia(carro.getPotencia());
         return carroNovo;
     }
 
