@@ -631,7 +631,7 @@ public class ControleJogoLocal extends ControleRecursos
         }
         iniciarJogoMenuLocal(campeonato.getCircuitoVez(),
                 campeonato.getTemporada(), campeonato.getQtdeVoltas().intValue(),
-                Util.intervalo(50, 250), clima, campeonato.getNivel(),
+                Util.intervalo(50, 500), clima, campeonato.getNivel(),
                 pilotoSel, campeonato.isKers(), campeonato.isDrs(),
                 campeonato.isTrocaPneus(), campeonato.isReabastecimento(),
                 combustivelSelecionado, asaSelecionado, pneuSelecionado, campeonato.isSafetycar());

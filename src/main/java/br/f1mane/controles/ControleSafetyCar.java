@@ -36,7 +36,7 @@ public class ControleSafetyCar {
 	}
 
 	public double ganhoComSafetyCar(double ganho, InterfaceJogo controleJogo, Piloto piloto) {
-		double ganho1 = ganho;
+		double ganhoSC = ganho;
 		if (piloto.getPosicao() != 1 && piloto.getCarroPilotoDaFrente() != null) {
 			Piloto pilotoFrente = piloto.getCarroPilotoDaFrente().getPiloto();
 			if (pilotoFrente.getPtosBox() != 0 || pilotoFrente.getCarro().verificaParado()
@@ -44,13 +44,13 @@ public class ControleSafetyCar {
 					|| Carro.PERDEU_AEREOFOLIO.equals(pilotoFrente.getCarro().getDanificado())
 					|| piloto.verificaNaoPrecisaDesviar(pilotoFrente)
 					|| piloto.getNumeroVolta() != pilotoFrente.getNumeroVolta()) {
-				return ganho1;
+				return ganhoSC;
 			}
 			long diffIndex = piloto.getDiferencaParaProximo();
 			if (diffIndex < 100) {
-				ganho1 = 1;
+				ganhoSC = 1;
 			} else {
-				ganho1 = limitaGanho(ganho1, diffIndex, 150);
+				ganhoSC = limitaGanho(ganhoSC, diffIndex, 150);
 			}
 		} else {
 			long indexNafrente = safetyCar.getPtosPista();
@@ -60,30 +60,23 @@ public class ControleSafetyCar {
 			}
 			long diffIndex = (indexNafrente - index);
 			if (diffIndex < 100) {
-				ganho1 = 1;
+				ganhoSC = 1;
 			} else {
 				long max = 150;
 				if (safetyCar.isVaiProBox()) {
 					max = 300;
 				}
-				ganho1 = limitaGanho(ganho1, diffIndex, max);
+				ganhoSC = limitaGanho(ganhoSC, diffIndex, max);
 			}
 
 		}
-		if (ganho1 > 30) {
-			ganho1 = 30;
+		if (ganhoSC > 30) {
+			ganhoSC = 30;
 		}
-		if (ganho1 < 15 && piloto.getDiferencaParaProximo() > 200) {
-			ganho1 = 15;
+		if (ganhoSC < 15 && piloto.getDiferencaParaProximo() > 200) {
+			ganhoSC = 15;
 		}
-		if (piloto.getTracado() == 4) {
-			piloto.mudarTracado(2, controleJogo);
-		}
-		if (piloto.getTracado() == 5) {
-			piloto.mudarTracado(1, controleJogo);
-		}
-
-		return ganho1;
+		return ganhoSC;
 	}
 
 	private double limitaGanho(double ganho, long diffIndex, long max) {

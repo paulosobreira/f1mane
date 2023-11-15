@@ -384,6 +384,8 @@ public class Carro implements Serializable {
 
     private int calculaModificadorAsa(int modificador, No no, InterfaceJogo controleJogo) {
         boolean testeAerodinamica = testeAerodinamica();
+        boolean testePotencia = testePotencia();
+        boolean testeFreios = testeFreios(controleJogo);
         int novoModificador = 0;
         if (controleJogo.isChovendo() && MAIS_ASA.equals(getAsa()) && no.verificaCurvaBaixa()
                 && getPiloto().testeHabilidadePilotoAerodinamica(controleJogo)) {
@@ -391,7 +393,7 @@ public class Carro implements Serializable {
         }
         if (no.verificaRetaOuLargada()) {
             if (MENOS_ASA.equals(getAsa())) {
-                novoModificador += testeAerodinamica ? 1 : 0;
+                novoModificador += testeAerodinamica && testePotencia ? 1 : 0;
             } else if (MAIS_ASA.equals(getAsa())) {
                 novoModificador -= testeAerodinamica ? 0 : 1;
             }
@@ -400,7 +402,7 @@ public class Carro implements Serializable {
             if (MENOS_ASA.equals(getAsa())) {
                 novoModificador -= testeAerodinamica ? 0 : 1;
             } else if (MAIS_ASA.equals(getAsa())) {
-                novoModificador += testeAerodinamica ? 1 : 0;
+                novoModificador += testeAerodinamica && testeFreios ? 1 : 0;
             }
         }
         return modificador + novoModificador;

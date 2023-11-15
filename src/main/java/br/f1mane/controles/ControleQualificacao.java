@@ -55,12 +55,6 @@ public class ControleQualificacao {
         int position = controleJogo.getNosDaPista().size() - 1;
         No noLargada = (No) controleJogo.getNosDaPista().get(position);
         List<Piloto> pilotos = controleJogo.getPilotos();
-        double incCurva = 0.6;
-        double increta = 0.8;
-        if (controleJogo.isSemReabastecimento()) {
-            incCurva = 0.8;
-            increta = 0.9;
-        }
         for (int i = 0; i < pilotos.size(); i++) {
             Piloto piloto = pilotos.get(i);
             piloto.setNoAtual(noLargada);
