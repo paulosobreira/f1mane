@@ -273,8 +273,6 @@ public class Piloto implements Serializable, PilotoSuave {
     private Piloto colisao;
     @JsonIgnore
     private int contadorPodeAcionarDRS;
-    @JsonIgnore
-    private int contadorIndiceUltimoAcionamentoDRS;
     protected static final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
     private static final int CONTADOR_LIBERAR_DRS = 20;
     private boolean temMotor;
@@ -1571,7 +1569,11 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     private boolean verificaPodeUsarDRS(InterfaceJogo controleJogo) {
-        if (controleJogo.isDrs() && getPtosBox() == 0 && getNumeroVolta() > 1 && !controleJogo.isSafetyCarNaPista() && !controleJogo.isChovendo() && !controleJogo.isCorridaTerminada() && carroPilotoDaFrenteRetardatario != null && getNoAtual().verificaRetaOuLargada() && calculaDiffParaProximoRetardatario < Constantes.LIMITE_DRS) {
+        if (controleJogo.isDrs() && getPtosBox() == 0 &&
+                getNumeroVolta() > 1 && !controleJogo.isSafetyCarNaPista() &&
+                !controleJogo.isChovendo() && !controleJogo.isCorridaTerminada() &&
+                carroPilotoDaFrenteRetardatario != null && getNoAtual().verificaRetaOuLargada() &&
+                calculaDiffParaProximoRetardatario < Constantes.LIMITE_DRS) {
             No obterCurvaAnterior = controleJogo.obterCurvaAnterior(getNoAtual());
             No obterProxCurva = controleJogo.obterProxCurva(getNoAtual());
             if (obterCurvaAnterior == null || obterProxCurva == null) {
@@ -1583,8 +1585,8 @@ public class Piloto implements Serializable, PilotoSuave {
                 indexProxCurva += controleJogo.getNosDaPista().size();
             }
             if ((indexProxCurva - indexCurvaAnterior) >= Constantes.TAMANHO_RETA_DRS) {
-                if (contadorPodeAcionarDRS <= 0 && (contadorIndiceUltimoAcionamentoDRS < obterCurvaAnterior.getIndex() || contadorIndiceUltimoAcionamentoDRS > obterProxCurva.getIndex())) {
-                    contadorIndiceUltimoAcionamentoDRS = getNoAtual().getIndex();
+                if (contadorPodeAcionarDRS <= 0 &&
+                        (getNoAtual().getIndex() > indexCurvaAnterior && getNoAtual().getIndex() < indexCurvaAnterior + 30)) {
                     contadorPodeAcionarDRS = CONTADOR_LIBERAR_DRS;
                 }
                 return true;

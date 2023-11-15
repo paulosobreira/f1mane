@@ -6,28 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="c3430018-9fd3-4efa-9bf0-edcdaf03c6d3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/MainFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleJogoLocal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleJogoLocal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleQualificacao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleQualificacao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleSafetyCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleSafetyCar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/Carro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/Carro.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/Piloto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/Piloto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/nnpe/Constantes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/nnpe/Constantes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/campeonato.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/campeonato.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/classificacao.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/classificacao.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_campeonato.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_campeonato.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_circuito.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_circuito.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_equipes.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_equipes.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_geral.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_geral.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_temporada.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_temporada.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/configuracao.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/configuracao.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/controles.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/controles.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/corrida.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/corrida.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/equipe.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/equipe.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/jogar.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/jogar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/resultado.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/resultado.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -296,7 +275,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/br/f1mane/entidades/Piloto.java</url>
-          <line>2402</line>
+          <line>2404</line>
           <option name="timeStamp" value="55" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-field">
