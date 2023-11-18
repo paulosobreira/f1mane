@@ -287,7 +287,6 @@ public class PainelCircuito {
         for (int i = 0; i < mouseListeners.length; i++) {
             controleJogo.getMainFrame().removeMouseListener(mouseListeners[i]);
         }
-        Logger.logar("controleJogo.getMainFrame().addMouseListener(new MouseAdapter() {");
         controleJogo.getMainFrame().addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 controleJogo.getMainFrame().requestFocus();
@@ -829,9 +828,9 @@ public class PainelCircuito {
             limite = 2000;
         }
         if (diferencaSualReal > limite) {
-            if (piloto instanceof Piloto && ((Piloto) piloto).isJogadorHumano()) {
-                Logger.logar("atualizacaoSuave diff > 1000 " + diferencaSualReal);
-            }
+//            if (piloto instanceof Piloto && ((Piloto) piloto).isJogadorHumano()) {
+//                Logger.logar("atualizacaoSuave diff > 1000 " + diferencaSualReal);
+//            }
             noAtualSuave = noAtual;
         }
 
@@ -4606,7 +4605,7 @@ public class PainelCircuito {
             carroimg = controleJogo.obterCarroLado(carroFrente.getPiloto());
             carSelX += (carroimg.getWidth() + 10) / 2;
             bounce = calculaBalancoCarroLado(carroFrente);
-            int diferencaParaProximo = psel.getDiferencaParaProximo() / Constantes.CICLO;
+            int diferencaParaProximo = psel.getDiferencaParaProximo() / Constantes.FATOR_CICLO;
             int dstX = limitesViewPort.x + (limitesViewPort.width / 4);
 
             int dstY = carSelY + 20;
@@ -4700,7 +4699,7 @@ public class PainelCircuito {
 
             int dstX = limitesViewPort.x + limitesViewPort.width + -(limitesViewPort.width / 3);
             int dstY = carSelY + 20;
-            double diferencaParaProximo = carroAtras.getPiloto().getDiferencaParaProximo() / Constantes.CICLO;
+            double diferencaParaProximo = carroAtras.getPiloto().getDiferencaParaProximo() / Constantes.FATOR_CICLO;
 
             int halfCarWidth = carroimg.getWidth() / 3;
             carSelX -= (125 - halfCarWidth);

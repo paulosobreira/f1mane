@@ -236,7 +236,7 @@ public class MainPanelEditor extends JPanel {
             circuito.setLadoBoxSaidaBox(2);
         }
         if (!reprocessa && circuito != null) {
-            multiplicadorPista = Constantes.MULTIPLICADOR;
+            multiplicadorPista = 10;
         }
         if (!reprocessa && circuito != null) {
             multiplicadorLarguraPista = circuito.getMultiplicadorLarguraPista();

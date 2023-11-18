@@ -2626,7 +2626,7 @@ public class PainelMenuLocal {
 
         g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 144));
 
-        String txt = "F1-MANE";
+        String txt = "Fl-MANE";
         int larguraTexto = Util.larguraTexto(txt, g2d);
         g2d.setColor(lightWhite);
         g2d.fillRoundRect(centerX, centerY - 120, larguraTexto + 10, 130, 0, 0);

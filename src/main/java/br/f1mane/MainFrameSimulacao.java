@@ -44,9 +44,9 @@ public class MainFrameSimulacao extends MainFrame {
         String title = "Fl-Mane " + getVersao() + " MANager & Engineer";
         setTitle(title);
         try {
+            Logger.ativo = true;
             controleJogo = new ControleJogoLocal();
             controleJogo.setMainFrame(this);
-            Logger.ativo = true;
             PainelCircuito.desenhaBkg = false;
             PainelCircuito.desenhaImagens = false;
             PainelCircuito.desenhaPista = false;
@@ -73,12 +73,13 @@ public class MainFrameSimulacao extends MainFrame {
             trocaPneus = temporadaDefault.getTrocaPneu();
             reabastecimento = temporadaDefault.getReabastecimento();
             turbulencia = Util.intervalo(0, 500);
+            fatorAcidente = 100 - (controleJogo.getFatorAcidente() * 100);
             controleJogo.iniciarJogoMenuLocal(circuito, temporada, voltas,
                     turbulencia, clima, nivel, null, kers, drs, trocaPneus,
                     reabastecimento, 0, null, null, false);
-            abrasivo = controleJogo.asfaltoAbrasivo();
+            Thread.sleep(5000);
+            abrasivo = controleJogo.asfaltoAbrasivoReal();
             boxRapido = controleJogo.isBoxRapido();
-            fatorAcidente = 100 - (controleJogo.getFatorAcidente() * 100);
             mostraDadosSimulacao();
         } catch (Exception e) {
             Logger.logarExept(e);
@@ -110,7 +111,6 @@ public class MainFrameSimulacao extends MainFrame {
         System.out
                 .println("############################ Dados Simulação ############################");
         System.out.println("Circuito : " + circuito);
-        System.out.println("VelocidadePista : " + CarregadorRecursos.carregarCircuito((String) controleJogo.getCircuitos().get(circuito)).getVelocidadePista());
         System.out.println("Temporada : " + temporada);
         System.out.println("Clima : " + clima);
         System.out.println("Nivel : " + nivel);

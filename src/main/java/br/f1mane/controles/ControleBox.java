@@ -188,7 +188,7 @@ public class ControleBox {
                         + piloto.getCarro().getPorcentagemDesgastePneus() + " Combustivel : "
                         + piloto.getCarro().getPorcentagemCombustivel() + " Motor : "
                         + piloto.getCarro().getPorcentagemDesgasteMotor());
-                piloto.setPtosBox(Util.inteiro((piloto.getPtosBox() + 1) * Constantes.MULTIPLICADOR));
+                piloto.setPtosBox(Util.inteiro((piloto.getPtosBox() + 1) * 10));
             } else {
                 box = piloto.getNoAtual();
                 No nobox = (No) boxEquipes.get(piloto.getCarro());
@@ -210,7 +210,7 @@ public class ControleBox {
                     ptosBox += 1;
                 }
 
-                ptosBox *= Constantes.MULTIPLICADOR;
+                ptosBox *= 10;
                 int novosPtsBox = Util.inteiro(ptosBox) + piloto.getPtosBox();
                 piloto.setPtosBox(novosPtsBox);
                 piloto.setVelocidade(Util.intervalo(50, 60) + ptosBox);
@@ -310,13 +310,19 @@ public class ControleBox {
             if (piloto.getCarro().getPotenciaAntesQualify() > piloto.getCarro().getPotencia()) {
                 piloto.getCarro().setPotencia(piloto.getCarro().getPotenciaAntesQualify());
             }
+            if (piloto.getCarro().getFreiosAntesQualify() > piloto.getCarro().getFreios()) {
+                piloto.getCarro().setFreios(piloto.getCarro().getFreiosAntesQualify());
+            }
+            if (piloto.getCarro().getAeroAntesQualify() > piloto.getCarro().getAerodinamica()) {
+                piloto.getCarro().setAerodinamica(piloto.getCarro().getAeroAntesQualify());
+            }
         }
 
         if (carro.getDurabilidadeAereofolio() <= 0) {
             penalidade = Util.inteiro(penalidade * (2 - (carro.getPotencia() / 1000)));
         }
 
-        double paradoBox = (((porcentCombust + penalidade) * 100) / Constantes.CICLO);
+        double paradoBox = (((porcentCombust + penalidade) * 100) / Constantes.FATOR_CICLO);
 
         piloto.setParadoBox(Util.inteiro(paradoBox * controleJogo.getFatorBoxTemporada().doubleValue()));
         piloto.setPorcentagemCombustUltimaParadaBox(porcentCombust);

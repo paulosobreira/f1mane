@@ -914,6 +914,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
+	public boolean asfaltoAbrasivoReal() {
+		return false;
+	}
+
+	@Override
 	public double ganhoComSafetyCar(double ganho, InterfaceJogo controleJogo, Piloto p) {
 		// TODO Auto-generated method stub
 		return 0;
@@ -1374,6 +1379,16 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public void setVantagem(String vantagem) {
 		this.vantagem = vantagem;
 	}
-	
+
+	@Override
+	public double getFatorConsumoPneuSemTroca() {
+		return 0;
+	}
+
+	@Override
+	public double getFatorConsumoCombustivelSemReabastecimento() {
+		return 0;
+	}
+
 
 }

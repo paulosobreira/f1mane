@@ -1,11 +1,11 @@
-# F1Mane
+# Fl-Mane
  
-- F1-MANE (MANager & Engineer) é um jogo de gerenciamento de corrida. 
+- Fl-MANE (MANager & Engineer) é um jogo de gerenciamento de corrida. 
 - O jogo consiste em comandar o piloto e fazer ajustes telemétricos do carro. 
 - O jogador poderá configurar sua corrida escolhendo número de voltas, tipo de clima e configuração do carro. 
 - No modo campeonato o jogador poderá escolher um piloto/equipe iniciante e desafiar rivais mais promissores  e caso vença poderá assumir o controle da novo piloto/equipe.
 
-## F1-MANE por Paulo Sobreira
+## Fl-MANE por Paulo Sobreira
 - Fl-MANE (MANager & Engineer) É um jogo de gerenciamento e engenharia de corrida.
 - O jogador envia comandos sobre como guiar e faz ajustes telemétricos do carro.
 - É possível escolher estratégia de box e muda-lá a qualquer momento na corrida.

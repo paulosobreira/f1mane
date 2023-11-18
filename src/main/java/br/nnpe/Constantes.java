@@ -6,7 +6,8 @@ public final class Constantes {
     public static final int MAX_VOLTAS = 72;
     public static final int MIN_VOLTAS = Logger.ativo ? 2 : 12;
     public static final boolean DATABASE = true;
-    public static final int CICLO = 180;
+    public static final int FATOR_CICLO = 180;
+    public static final int CICLO = FATOR_CICLO;
     public static final int CICLO_SOM = 100;
     public static final int ACIMA_MEDIA_NORMAL = 500;
     public static final int ACIMA_MEDIA_FACIL = 1000;
@@ -18,7 +19,6 @@ public final class Constantes {
             : 60);
     public static final double VELOCIDADE_PISTA = 1;
     public static final int TAMANHO_RETA_DRS = 1500;
-    public static final double MULTIPLICADOR = 10;
     public static final double LIMITE_ESTRESSE_PARA_RERRAR_CURVA = 90;
 
     private Constantes() {

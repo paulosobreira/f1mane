@@ -38,6 +38,10 @@ public class ControleCorrida {
     private long pontosPilotoLargada;
     private boolean asfaltoAbrasivo;
     private Pausa pausaAtual;
+
+    private double fatorConsumoPneuSemTroca;
+
+    private double fatorConsumoCombustivelSemReabastecimento;
     private final List<Pausa> tempoPausado = new ArrayList<Pausa>();
 
     public long getPontosPilotoLargada() {
@@ -68,7 +72,7 @@ public class ControleCorrida {
         controleSafetyCar = new ControleSafetyCar(controleJogo, this);
         controleClima = new ControleClima(controleJogo, qtdeTotalVoltas);
         controleCiclo = new ControleCiclo(controleJogo, this);
-        controleQualificacao = new ControleQualificacao(controleJogo, controleBox);
+        controleQualificacao = new ControleQualificacao(controleJogo, controleBox, this);
         if (controleJogo.isSemReabastecimento()) {
             tanqueCheio = (distaciaCorrida + Util.inteiro(distaciaCorrida / 1.4));
         } else {
@@ -153,15 +157,10 @@ public class ControleCorrida {
     }
 
     public void iniciarCorrida() {
-        Logger.logar("iniciarCorrida()");
         controleJogo.selecionaPilotoJogador();
-        Logger.logar("selecionaPilotoJogador()");
         controleJogo.atualizaIndexTracadoPilotos();
-        Logger.logar("atualizaPainel()");
         controleCiclo.start();
-        Logger.logar("controleCiclo.start()");
         corridaIniciada = true;
-        Logger.logar("corridaIniciada = true");
     }
 
     protected void finalize() throws Throwable {
@@ -641,6 +640,10 @@ public class ControleCorrida {
         return controleBox.verificaEntradaBox(piloto);
     }
 
+    public boolean asfaltoAbrasivoReal() {
+        return asfaltoAbrasivo;
+    }
+
     private static class PilotoComparator implements Comparator<Piloto> {
         @Override
         public int compare(Piloto piloto0, Piloto piloto1) {
@@ -653,5 +656,21 @@ public class ControleCorrida {
         public int compare(Piloto piloto0, Piloto piloto1) {
             return ControleCorrida.compare(piloto0, piloto1);
         }
+    }
+
+    public double getFatorConsumoPneuSemTroca() {
+        return fatorConsumoPneuSemTroca;
+    }
+
+    public void setFatorConsumoPneuSemTroca(double fatorConsumoPneuSemTroca) {
+        this.fatorConsumoPneuSemTroca = fatorConsumoPneuSemTroca;
+    }
+
+    public double getFatorConsumoCombustivelSemReabastecimento() {
+        return fatorConsumoCombustivelSemReabastecimento;
+    }
+
+    public void setFatorConsumoCombustivelSemReabastecimento(double fatorConsumoCombustivelSemReabastecimento) {
+        this.fatorConsumoCombustivelSemReabastecimento = fatorConsumoCombustivelSemReabastecimento;
     }
 }

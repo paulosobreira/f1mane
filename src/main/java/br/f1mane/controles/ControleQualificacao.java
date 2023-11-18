@@ -20,16 +20,18 @@ public class ControleQualificacao {
 
     private final InterfaceJogo controleJogo;
     private final ControleBox controleBox;
+    private final ControleCorrida controleCorrida;
     private boolean modoQualify = false;
 
     /**
      * @param controleJogo
      */
     public ControleQualificacao(InterfaceJogo controleJogo,
-                                ControleBox controleBox) {
+                                ControleBox controleBox, ControleCorrida controleCorrida) {
         super();
         this.controleJogo = controleJogo;
         this.controleBox = controleBox;
+        this.controleCorrida = controleCorrida;
     }
 
     private void gerarQualificacaoAleatoria() {
@@ -43,11 +45,8 @@ public class ControleQualificacao {
     public void gerarGridLargada() {
         modoQualify = true;
         gerarQualificacaoAleatoria();
-        Logger.logar("gerarQualificacaoAleatoria();");
         gerarVoltaQualificacaoAleatoria();
-        Logger.logar("gerarVoltaQualificacaoAleatoria();");
         posicionarCarrosLargada();
-        Logger.logar("gerarVoltaQualificacaoAleatoria();");
         modoQualify = false;
     }
 
@@ -55,17 +54,23 @@ public class ControleQualificacao {
         int position = controleJogo.getNosDaPista().size() - 1;
         No noLargada = (No) controleJogo.getNosDaPista().get(position);
         List<Piloto> pilotos = controleJogo.getPilotos();
+        double consumoMedioPneu = 0;
+        double consumoMedioCombustivel = 0;
         for (int i = 0; i < pilotos.size(); i++) {
             Piloto piloto = pilotos.get(i);
             piloto.setNoAtual(noLargada);
             int contCiclosQualificacao = 0;
+            int pneus = piloto.getCarro().getPneus();
+            int combustivel = piloto.getCarro().getCombustivel();
             while ((Double.valueOf(piloto.getPtosPista()).doubleValue() / Double
                     .valueOf(controleJogo.getNosDaPista().size()).doubleValue()) <= 1) {
                 piloto.processarCiclo(controleJogo);
                 contCiclosQualificacao++;
             }
+            consumoMedioPneu += (pneus - piloto.getCarro().getPneus());
+            consumoMedioCombustivel += (combustivel - piloto.getCarro().getCombustivel());
             piloto.setCiclosVoltaQualificacao(Util.inteiro(
-                    contCiclosQualificacao * Constantes.CICLO));
+                    contCiclosQualificacao * Constantes.FATOR_CICLO));
             piloto.setNumeroVolta(-1);
             piloto.setUltimaVolta(null);
             piloto.setVoltaAtual(null);
@@ -73,8 +78,20 @@ public class ControleQualificacao {
             piloto.setVoltas(new ArrayList());
             controleJogo.zerarMelhorVolta();
         }
+        consumoMedioPneu = consumoMedioPneu / pilotos.size();
+        consumoMedioCombustivel /= pilotos.size();
+        Logger.logar("consumoMedioPneu " + consumoMedioPneu);
+        Logger.logar("consumoMedioCombustivel " + consumoMedioCombustivel);
+        Logger.logar("Consumo estimado Combustivel " + consumoMedioCombustivel * controleJogo.totalVoltasCorrida());
+        Logger.logar("Tanque Cheio " + (controleCorrida.getTanqueCheio() * 0.9));
+        Logger.logar("setFatorConsumoCombustivelSemReabastecimento " + (controleCorrida.getTanqueCheio()) / (consumoMedioCombustivel * controleJogo.totalVoltasCorrida()));
+        Logger.logar("60% controleCorrida.getDistaciaCorrida() " + (controleCorrida.getDistaciaCorrida() * 0.6));
+        Logger.logar("Consumo estimado Pneu " + (consumoMedioPneu * controleJogo.totalVoltasCorrida()));
+        Logger.logar("setFatorConsumoPneuSemTroca " + ((controleCorrida.getDistaciaCorrida() * 0.6) / (consumoMedioPneu * controleJogo.totalVoltasCorrida())));
+        controleCorrida.setFatorConsumoPneuSemTroca((controleCorrida.getDistaciaCorrida() * 0.6) / (consumoMedioPneu * controleJogo.totalVoltasCorrida()));
+        controleCorrida.setFatorConsumoCombustivelSemReabastecimento((controleCorrida.getTanqueCheio()) / (consumoMedioCombustivel * controleJogo.totalVoltasCorrida()));
         nivelaHabilidade(pilotos);
-        nivelaPontecia(pilotos);
+        nivelaCarro(pilotos);
         Collections.sort(pilotos, new ComparatorVoltaQualyAleatoria());
 
         for (int i = 0; i < pilotos.size(); i++) {
@@ -124,29 +141,57 @@ public class ControleQualificacao {
         }
     }
 
-    private void nivelaPontecia(List<Piloto> pilotos) {
-        int valor = 0;
+    private void nivelaCarro(List<Piloto> pilotos) {
+        int valorPotencia = 0;
+        int valorAero = 0;
+        int valorFreios = 0;
         for (Iterator iterator = pilotos.iterator(); iterator.hasNext(); ) {
             Piloto piloto = (Piloto) iterator.next();
             piloto.getCarro()
                     .setPotenciaAntesQualify(piloto.getCarro().getPotencia());
-            valor += piloto.getCarro().getPotencia();
+            piloto.getCarro()
+                    .setAeroAntesQualify(piloto.getCarro().getAerodinamica());
+            piloto.getCarro()
+                    .setFreiosAntesQualify(piloto.getCarro().getFreios());
+            valorPotencia += piloto.getCarro().getPotencia();
+            valorAero += piloto.getCarro().getAerodinamica();
+            valorFreios += piloto.getCarro().getFreios();
         }
-        valor = valor / pilotos.size();
-
+        valorPotencia = valorPotencia / pilotos.size();
+        valorAero = valorAero / pilotos.size();
+        valorFreios = valorFreios / pilotos.size();
         for (Iterator iterator = pilotos.iterator(); iterator.hasNext(); ) {
             Piloto piloto = (Piloto) iterator.next();
-            int diff;
-            if (piloto.getCarro().getPotencia() > valor) {
-                diff = piloto.getCarro().getPotencia() - valor;
+            int diffPotencia;
+            if (piloto.getCarro().getPotencia() > valorPotencia) {
+                diffPotencia = piloto.getCarro().getPotencia() - valorPotencia;
                 piloto.getCarro().setPotencia(piloto.getCarro().getPotencia()
-                        - Util.intervalo(diff / 2, diff));
+                        - Util.intervalo(diffPotencia / 2, diffPotencia));
             } else {
-                diff = valor - piloto.getCarro().getPotencia();
+                diffPotencia = valorPotencia - piloto.getCarro().getPotencia();
                 piloto.getCarro().setPotencia(piloto.getCarro().getPotencia()
-                        + Util.intervalo(diff / 2, diff));
+                        + Util.intervalo(diffPotencia / 2, diffPotencia));
             }
-
+            int diffAero;
+            if (piloto.getCarro().getPotencia() > valorAero) {
+                diffAero = piloto.getCarro().getAerodinamica() - valorAero;
+                piloto.getCarro().setAerodinamica(piloto.getCarro().getAerodinamica()
+                        - Util.intervalo(diffAero / 2, diffAero));
+            } else {
+                diffAero = valorAero - piloto.getCarro().getAerodinamica();
+                piloto.getCarro().setAerodinamica(piloto.getCarro().getAerodinamica()
+                        + Util.intervalo(diffAero / 2, diffAero));
+            }
+            int diffFreios;
+            if (piloto.getCarro().getFreios() > valorFreios) {
+                diffFreios = piloto.getCarro().getFreios() - valorFreios;
+                piloto.getCarro().setFreios(piloto.getCarro().getFreios()
+                        - Util.intervalo(diffFreios / 2, diffFreios));
+            } else {
+                diffFreios = valorFreios - piloto.getCarro().getFreios();
+                piloto.getCarro().setFreios(piloto.getCarro().getFreios()
+                        + Util.intervalo(diffFreios / 2, diffFreios));
+            }
         }
         Logger.logar(
                 "-----------------=====nivelaPontecia=====----------------");

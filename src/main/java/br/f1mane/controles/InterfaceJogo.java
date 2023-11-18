@@ -20,399 +20,403 @@ import br.f1mane.entidades.Volta;
 import br.f1mane.visao.PainelTabelaResultadoFinal;
 
 public interface InterfaceJogo {
-	public static boolean DEBUG_SEM_CHUVA = false;
-	public static final String NORMAL = "NORMAL";
-	public static final String FACIL = "FACIL";
-	public static final String DIFICIL = "DIFICIL";
-	public static final double FACIL_NV = .5;
-	public static final double MEDIO_NV = .7;
-	public static final double DIFICIL_NV = .9;
-	public static final int CARGA_ERS = 100;
-	public static final int DURABILIDADE_AREOFOLIO = 4;
+    public static boolean DEBUG_SEM_CHUVA = false;
+    public static final String NORMAL = "NORMAL";
+    public static final String FACIL = "FACIL";
+    public static final String DIFICIL = "DIFICIL";
+    public static final double FACIL_NV = .5;
+    public static final double MEDIO_NV = .7;
+    public static final double DIFICIL_NV = .9;
+    public static final int CARGA_ERS = 100;
+    public static final int DURABILIDADE_AREOFOLIO = 4;
 
-	public List<String> listaInfo();
+    public List<String> listaInfo();
 
-	public boolean isSemTrocaPneu();
+    public boolean isSemTrocaPneu();
 
-	public boolean isSemReabastecimento();
+    public boolean isSemReabastecimento();
 
-	public Integer getCombustBox(Piloto piloto);
+    public Integer getCombustBox(Piloto piloto);
 
-	public String getTipoPneuBox(Piloto piloto);
-	
-	public String getAsaBox(Piloto piloto);
+    public String getTipoPneuBox(Piloto piloto);
 
-	public void setNiveljogo(double niveljogo);
+    public String getAsaBox(Piloto piloto);
 
-	public boolean isCorridaTerminada();
+    public void setNiveljogo(double niveljogo);
 
-	public boolean isCorridaIniciada();
+    public boolean isCorridaTerminada();
 
-	public void setCorridaTerminada(boolean corridaTerminada);
+    public boolean isCorridaIniciada();
 
-	public List<No> getNosDoBox();
+    public void setCorridaTerminada(boolean corridaTerminada);
 
-	public MainFrame getMainFrame();
+    public List<No> getNosDoBox();
 
-	public int getMediaPontecia();
+    public MainFrame getMainFrame();
 
-	public String getNivelCorrida();
+    public int getMediaPontecia();
 
-	public void setNivelCorrida(String nivelCorrida);
+    public String getNivelCorrida();
 
-	public Circuito getCircuito();
+    public void setNivelCorrida(String nivelCorrida);
 
-	public List<No> getNosDaPista();
+    public Circuito getCircuito();
 
-	public List<Carro> getCarros();
+    public List<No> getNosDaPista();
 
-	public List<Piloto> getPilotos();
+    public List<Carro> getCarros();
 
-	public void matarTodasThreads();
+    public List<Piloto> getPilotos();
 
-	/**
-	 * Quanto Mais dificil o jogo mais ira de retornar true
-	 */
-	public boolean verificaNivelJogo();
+    public void matarTodasThreads();
 
-	public String getClima();
+    /**
+     * Quanto Mais dificil o jogo mais ira de retornar true
+     */
+    public boolean verificaNivelJogo();
 
-	public void atualizaIndexTracadoPilotos();
+    public String getClima();
 
-	public void info(String info);
+    public void atualizaIndexTracadoPilotos();
 
-	public void infoPrioritaria(String info);
+    public void info(String info);
 
-	public int porcentagemCorridaConcluida();
+    public void infoPrioritaria(String info);
 
-	public int getNumVoltaAtual();
+    public int porcentagemCorridaConcluida();
 
-	public int totalVoltasCorrida();
+    public int getNumVoltaAtual();
 
-	public boolean verificaBoxOcupado(Carro carro);
+    public int totalVoltasCorrida();
 
-	public String calculaSegundosParaLider(Piloto pilotoSelecionado);
+    public boolean verificaBoxOcupado(Carro carro);
 
-	public boolean verificaUltimaVolta();
+    public String calculaSegundosParaLider(Piloto pilotoSelecionado);
 
-	public void processaVoltaRapida(Piloto piloto);
+    public boolean verificaUltimaVolta();
 
-	public int getCicloAtual();
+    public void processaVoltaRapida(Piloto piloto);
 
-	public void verificaVoltaMaisRapidaCorrida(Piloto piloto);
+    public int getCicloAtual();
 
-	public double obterIndicativoCorridaCompleta();
+    public void verificaVoltaMaisRapidaCorrida(Piloto piloto);
 
-	public Volta obterMelhorVolta();
+    public double obterIndicativoCorridaCompleta();
 
-	public double getNiveljogo();
+    public Volta obterMelhorVolta();
 
-	public void verificaAcidente(Piloto piloto);
+    public double getNiveljogo();
 
-	public void efetuarSelecaoPilotoJogador(Object selec, Object tpneu,
-			Object combust, String nomeJogador, Object asa);
+    public void verificaAcidente(Piloto piloto);
 
-	public boolean mudarModoBox();
+    public void efetuarSelecaoPilotoJogador(Object selec, Object tpneu,
+                                            Object combust, String nomeJogador, Object asa);
 
-	public void setBoxJogadorHumano(Object tpneu, Object combust, Object asa);
+    public boolean mudarModoBox();
 
-	public void selecionaPilotoJogador();
+    public void setBoxJogadorHumano(Object tpneu, Object combust, Object asa);
 
-	public void apagarLuz();
+    public void selecionaPilotoJogador();
 
-	public void processaNovaVolta();
+    public void apagarLuz();
 
-	public boolean isChovendo();
+    public void processaNovaVolta();
 
-	public void informaMudancaClima();
+    public boolean isChovendo();
 
-	public void pausarJogo();
+    public void informaMudancaClima();
 
-	public PainelTabelaResultadoFinal obterResultadoFinal();
+    public void pausarJogo();
 
-	public boolean isSafetyCarNaPista();
+    public PainelTabelaResultadoFinal obterResultadoFinal();
 
-	public SafetyCar getSafetyCar();
+    public boolean isSafetyCarNaPista();
 
-	public boolean isSafetyCarVaiBox();
+    public SafetyCar getSafetyCar();
 
-	public Carro obterCarroNaFrente(Piloto piloto);
+    public boolean isSafetyCarVaiBox();
 
-	public Carro obterCarroAtras(Piloto piloto);
+    public Carro obterCarroNaFrente(Piloto piloto);
 
-	public String calculaSegundosParaProximo(Piloto psel);
+    public Carro obterCarroAtras(Piloto piloto);
 
-	public String calculaSegundosParaProximo(Piloto psel, int diferenca);
+    public String calculaSegundosParaProximo(Piloto psel);
 
-	public double getIndexVelcidadeDaPista();
+    public String calculaSegundosParaProximo(Piloto psel, int diferenca);
 
-	public Map getCircuitos();
+    public double getIndexVelcidadeDaPista();
 
-	public void iniciarJogo() throws Exception;
+    public Map getCircuitos();
 
-	public void iniciarJogo(ControleCampeonato controleCampeonato)
-			throws Exception;
+    public void iniciarJogo() throws Exception;
 
-	public void exibirResultadoFinal();
+    public void iniciarJogo(ControleCampeonato controleCampeonato)
+            throws Exception;
 
-	public void abandonar();
+    public void exibirResultadoFinal();
 
-	public void desenhaQualificacao();
+    public void abandonar();
 
-	public void zerarMelhorVolta();
+    public void desenhaQualificacao();
 
-	public void adicionarInfoDireto(String string);
+    public void zerarMelhorVolta();
 
-	public void atulizaTabelaPosicoes();
+    public void adicionarInfoDireto(String string);
 
-	public void selecionouPiloto(Piloto pilotoSelecionado);
+    public void atulizaTabelaPosicoes();
 
-	public Piloto getPilotoSelecionado();
+    public void selecionouPiloto(Piloto pilotoSelecionado);
 
-	public int setUpJogadorHumano(Piloto pilotoJogador, Object tpPneu,
-			Object combust, Object asa);
+    public Piloto getPilotoSelecionado();
 
-	public Volta obterMelhorVolta(Piloto pilotoSelecionado);
+    public int setUpJogadorHumano(Piloto pilotoJogador, Object tpPneu,
+                                  Object combust, Object asa);
 
-	public Piloto getPilotoJogador();
+    public Volta obterMelhorVolta(Piloto pilotoSelecionado);
 
-	public void mudarGiroMotor(Object selectedItem);
+    public Piloto getPilotoJogador();
 
-	public int calculaDiferencaParaProximo(Piloto piloto);
+    public void mudarGiroMotor(Object selectedItem);
 
-	public double calculaDiferencaParaProximoDouble(Piloto psel);
+    public int calculaDiferencaParaProximo(Piloto piloto);
 
-	public void mudarModoPilotagem(String modo);
+    public double calculaDiferencaParaProximoDouble(Piloto psel);
 
-	public void setMainFrame(MainFrame mainFrame);
+    public void mudarModoPilotagem(String modo);
 
-	public boolean isModoQualify();
+    public void setMainFrame(MainFrame mainFrame);
 
-	public void tabelaComparativa();
+    public boolean isModoQualify();
 
-	public void iniciaJanela();
+    public void tabelaComparativa();
 
-	public void mudaPilotoSelecionado();
+    public void iniciaJanela();
 
-	public List getCarrosBox();
+    public void mudaPilotoSelecionado();
 
-	public void mudarTracado(int i);
+    public List getCarrosBox();
 
-	/**
-	 * Minimo 0.5 = Mais dificil de passar; Maximo 1.0 = Mais facil de passar;
-	 */
-	public double getFatorUtrapassagem();
+    public void mudarTracado(int i);
 
-	public String getTemporada();
+    /**
+     * Minimo 0.5 = Mais dificil de passar; Maximo 1.0 = Mais facil de passar;
+     */
+    public double getFatorUtrapassagem();
 
-	public void setTemporada(String string);
+    public String getTemporada();
 
-	public void mudarAutoPos(boolean autoPos);
+    public void setTemporada(String string);
 
-	public BufferedImage obterCarroCima(Piloto piloto);
+    public void mudarAutoPos(boolean autoPos);
 
-	public void ajusteUltrapassagem(Piloto piloto, Piloto pilotoFrente);
+    public BufferedImage obterCarroCima(Piloto piloto);
 
-	public List<No> obterPista(No noPiloto);
+    public void ajusteUltrapassagem(Piloto piloto, Piloto pilotoFrente);
 
-	public BufferedImage obterCarroLado(Piloto piloto);
+    public List<No> obterPista(No noPiloto);
 
-	public BufferedImage obterCapacete(Piloto piloto);
+    public BufferedImage obterCarroLado(Piloto piloto);
 
-	public No getNoEntradaBox();
+    public BufferedImage obterCapacete(Piloto piloto);
 
-	public void travouRodas(Piloto piloto);
+    public No getNoEntradaBox();
 
-	public No obterNoPorId(int idNo);
+    public void travouRodas(Piloto piloto);
 
-	public Integer obterIdPorNo(No no);
+    public No obterNoPorId(int idNo);
 
-	public List<No> obterNosPista();
+    public Integer obterIdPorNo(No no);
 
-	public boolean verificaNoPitLane(Piloto piloto);
+    public List<No> obterNosPista();
 
-	public boolean verificaSaidaBox(Piloto piloto);
+    public boolean verificaNoPitLane(Piloto piloto);
 
-	public BufferedImage carregaBackGround(String backGround);
+    public boolean verificaSaidaBox(Piloto piloto);
 
-	public boolean isErs();
+    public BufferedImage carregaBackGround(String backGround);
 
-	public void setErs(boolean kers);
+    public boolean isErs();
 
-	public boolean isDrs();
+    public void setErs(boolean kers);
 
-	public void setDrs(boolean drs);
+    public boolean isDrs();
 
-	public boolean mudarModoDRS();
+    public void setDrs(boolean drs);
 
-	public boolean mudarModoKers();
+    public boolean mudarModoDRS();
 
-	public int calculaDiferencaParaAnterior(Piloto piloto);
+    public boolean mudarModoKers();
 
-	public int percetagemDeVoltaConcluida(Piloto pilotoSelecionado);
+    public int calculaDiferencaParaAnterior(Piloto piloto);
 
-	public boolean verirficaDesafiandoCampeonato(Piloto piloto);
+    public int percetagemDeVoltaConcluida(Piloto pilotoSelecionado);
 
-	public boolean verificaCampeonatoComRival();
+    public boolean verirficaDesafiandoCampeonato(Piloto piloto);
 
-	public String calculaSegundosParaRival(Piloto pilotoSelecionado);
+    public boolean verificaCampeonatoComRival();
 
-	public void verificaDesafioCampeonatoPiloto();
+    public String calculaSegundosParaRival(Piloto pilotoSelecionado);
 
-	public void aumentaFatorAcidade();
+    public void verificaDesafioCampeonatoPiloto();
 
-	public void diminueFatorAcidade();
+    public void aumentaFatorAcidade();
 
-	public void setPontosPilotoLargada(long ptosPista);
+    public void diminueFatorAcidade();
 
-	public boolean asfaltoAbrasivo();
+    public void setPontosPilotoLargada(long ptosPista);
 
-	public double ganhoComSafetyCar(double ganho, InterfaceJogo controleJogo,
-			Piloto p);
+    public boolean asfaltoAbrasivo();
 
-	public void driveThru();
+    public boolean asfaltoAbrasivoReal();
 
-	public int porcentagemChuvaCircuito();
+    public double ganhoComSafetyCar(double ganho, InterfaceJogo controleJogo,
+                                    Piloto p);
 
-	public boolean isBoxRapido();
+    public void driveThru();
 
-	public JPanel painelNarracao();
+    public int porcentagemChuvaCircuito();
 
-	public void forcaSafatyCar();
+    public boolean isBoxRapido();
 
-	public No obterProxCurva(No noAtual);
+    public JPanel painelNarracao();
 
-	public boolean verificaLag();
+    public void forcaSafatyCar();
 
-	public int getLag();
+    public No obterProxCurva(No noAtual);
 
-	public int obterLadoEscape(Point pontoDerrapada);
+    public boolean verificaLag();
 
-	public void decrementaTracado();
+    public int getLag();
 
-	public int calculaDiffParaProximoRetardatario(Piloto piloto,
-			boolean analisaTracado);
+    public int obterLadoEscape(Point pontoDerrapada);
 
-	public No getNoSaidaBox();
+    public void decrementaTracado();
 
-	public void selecionaPilotoCima();
+    public int calculaDiffParaProximoRetardatario(Piloto piloto,
+                                                  boolean analisaTracado);
 
-	public void selecionaPilotoBaixo();
+    public No getNoSaidaBox();
 
-	public boolean isJogoPausado();
+    public void selecionaPilotoCima();
 
-	public void descontaTempoPausado(Volta volta);
+    public void selecionaPilotoBaixo();
 
-	public void criarCampeonato() throws Exception;
+    public boolean isJogoPausado();
 
-	public void criarCampeonatoPiloto() throws Exception;
+    public void descontaTempoPausado(Volta volta);
 
-	public Campeonato continuarCampeonato();
+    public void criarCampeonato() throws Exception;
 
-	public void dadosPersistenciaCampeonato(Campeonato campeonato);
+    public void criarCampeonatoPiloto() throws Exception;
 
-	public void proximaCorridaCampeonato();
+    public Campeonato continuarCampeonato();
 
-	public void climaLimpo();
+    public void dadosPersistenciaCampeonato(Campeonato campeonato);
 
-	public void climaChuvoso();
+    public void proximaCorridaCampeonato();
 
-	public void ativaVerControles();
+    public void climaLimpo();
 
-	public void iniciarJogoMenuLocal(String circuitoSelecionado,
-			String temporadaSelecionada, int numVoltasSelecionado,
-			int turbulenciaSelecionado, String climaSelecionado,
-			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
-			boolean drs, boolean trocaPneus, boolean reabastecimento,
-			int combustivelSelecionado, String asaSelecionado,
-			String pneuSelecionado,boolean safetycar) throws Exception;
+    public void climaChuvoso();
 
-	public boolean verificaPistaEmborrachada();
+    public void ativaVerControles();
 
-	public Campeonato criarCampeonatoPiloto(List cirucitosCampeonato,
-			String temporadaSelecionada, int numVoltasSelecionado,
-			int turbulenciaSelecionado, String climaSelecionado,
-			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
-			boolean drs, boolean trocaPneus, boolean reabastecimento);
+    public void iniciarJogoMenuLocal(String circuitoSelecionado,
+                                     String temporadaSelecionada, int numVoltasSelecionado,
+                                     int turbulenciaSelecionado, String climaSelecionado,
+                                     String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
+                                     boolean drs, boolean trocaPneus, boolean reabastecimento,
+                                     int combustivelSelecionado, String asaSelecionado,
+                                     String pneuSelecionado, boolean safetycar) throws Exception;
 
-	public void voltaMenuPrincipal();
+    public boolean verificaPistaEmborrachada();
 
-	public List<PilotosPontosCampeonato> geraListaPilotosPontos();
+    public Campeonato criarCampeonatoPiloto(List cirucitosCampeonato,
+                                            String temporadaSelecionada, int numVoltasSelecionado,
+                                            int turbulenciaSelecionado, String climaSelecionado,
+                                            String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
+                                            boolean drs, boolean trocaPneus, boolean reabastecimento);
 
-	public List<ConstrutoresPontosCampeonato> geraListaContrutoresPontos();
+    public void voltaMenuPrincipal();
 
-	public void iniciarJogoCapeonatoMenuLocal(Campeonato campeonato,
-			int combustivelSelecionado, String asaSelecionado,
-			String pneuSelecionado, String clima) throws Exception;
+    public List<PilotosPontosCampeonato> geraListaPilotosPontos();
 
-	public void continuarCampeonato(Campeonato campeonato);
+    public List<ConstrutoresPontosCampeonato> geraListaContrutoresPontos();
 
-	public Piloto obterRivalCampeonato();
+    public void iniciarJogoCapeonatoMenuLocal(Campeonato campeonato,
+                                              int combustivelSelecionado, String asaSelecionado,
+                                              String pneuSelecionado, String clima) throws Exception;
 
-	public Carro obterCarroNaFrenteRetardatario(Piloto piloto,
-			boolean analisaTracado);
+    public void continuarCampeonato(Campeonato campeonato);
 
-	public void desenhouQualificacao();
+    public Piloto obterRivalCampeonato();
 
-	public void detalhesCorridaCampeonato();
+    public Carro obterCarroNaFrenteRetardatario(Piloto piloto,
+                                                boolean analisaTracado);
 
-	public boolean safetyCarUltimas3voltas();
+    public void desenhouQualificacao();
 
-	public double getFatorAcidente();
+    public void detalhesCorridaCampeonato();
 
-	public List<Piloto> getPilotosCopia();
+    public boolean safetyCarUltimas3voltas();
 
-	public boolean verificaInfoRelevante(Piloto piloto);
+    public double getFatorAcidente();
 
-	public Campeonato continuarCampeonatoXml();
+    public List<Piloto> getPilotosCopia();
 
-	public void processaMudancaEquipeCampeontato();
+    public boolean verificaInfoRelevante(Piloto piloto);
 
-	public Campeonato continuarCampeonatoXmlDisco();
+    public Campeonato continuarCampeonatoXml();
 
-	public No obterCurvaAnterior(No noAtual);
+    public void processaMudancaEquipeCampeontato();
 
-	public int getFPS();
+    public Campeonato continuarCampeonatoXmlDisco();
 
-	public void pilotoSelecionadoMinimo();
+    public No obterCurvaAnterior(No noAtual);
 
-	public void pilotoSelecionadoNormal();
+    public int getFPS();
 
-	public void pilotoSelecionadoMaximo();
+    public void pilotoSelecionadoMinimo();
 
-	public boolean mostraTipoPneuAdversario();
+    public void pilotoSelecionadoNormal();
 
-	public JPanel painelDebug();
+    public void pilotoSelecionadoMaximo();
 
-	public void atualizaInfoDebug();
+    public boolean mostraTipoPneuAdversario();
 
-	public void atualizaInfoDebug(StringBuilder buffer);
+    public JPanel painelDebug();
 
-	public void forcaQuerbraAereofolio(Piloto piloto);
+    public void atualizaInfoDebug();
 
-	public boolean isAtualizacaoSuave();
+    public void atualizaInfoDebug(StringBuilder buffer);
 
-	public boolean isSafetyCar();
+    public void forcaQuerbraAereofolio(Piloto piloto);
 
-	public void setAtualizacaoSuave(boolean atualizacaoSuave);
+    public boolean isAtualizacaoSuave();
 
-	public void setRecebeuBanderada(Piloto piloto);
+    public boolean isSafetyCar();
 
-	public Piloto obterPilotoPorId(String id);
+    public void setAtualizacaoSuave(boolean atualizacaoSuave);
 
-	public Piloto getPilotoBateu();
+    public void setRecebeuBanderada(Piloto piloto);
 
-	public boolean verificaEntradaBox(Piloto piloto);
+    public Piloto obterPilotoPorId(String id);
 
-	public Double getFatorBoxTemporada();
+    public Piloto getPilotoBateu();
 
-	void travouRodas(Piloto piloto, boolean semFumaca);
+    public boolean verificaEntradaBox(Piloto piloto);
 
-	public void desqualificaPiloto(Piloto piloto);
+    public Double getFatorBoxTemporada();
 
-	public String getVantagem();
+    void travouRodas(Piloto piloto, boolean semFumaca);
 
-	public void setVantagem(String vantagem);
+    public void desqualificaPiloto(Piloto piloto);
 
+    public String getVantagem();
 
+    public void setVantagem(String vantagem);
+
+    double getFatorConsumoPneuSemTroca();
+
+    double getFatorConsumoCombustivelSemReabastecimento();
 }

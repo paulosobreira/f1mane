@@ -1115,7 +1115,7 @@ public class ControleJogoLocal extends ControleRecursos
             }
         }
 
-        long tempo = Constantes.CICLO;
+        long tempo = Constantes.FATOR_CICLO;
         return controleEstatisticas.calculaSegundosParaRival(pilotoSelecionado,
                 pRival, tempo);
     }
@@ -1153,6 +1153,14 @@ public class ControleJogoLocal extends ControleRecursos
     public boolean asfaltoAbrasivo() {
         if (controleCorrida != null) {
             return controleCorrida.asfaltoAbrasivo();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean asfaltoAbrasivoReal() {
+        if (controleCorrida != null) {
+            return controleCorrida.asfaltoAbrasivoReal();
         }
         return false;
     }
@@ -1783,6 +1791,16 @@ public class ControleJogoLocal extends ControleRecursos
     public void setVantagem(String vantagem) {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public double getFatorConsumoPneuSemTroca() {
+        return controleCorrida.getFatorConsumoPneuSemTroca();
+    }
+
+    @Override
+    public double getFatorConsumoCombustivelSemReabastecimento() {
+        return controleCorrida.getFatorConsumoCombustivelSemReabastecimento();
     }
 
     private static class StringComparator implements Comparator<String> {

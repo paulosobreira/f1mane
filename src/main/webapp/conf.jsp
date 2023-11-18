@@ -39,7 +39,7 @@ h4 {
 }
 
 </style>
-<title>F1-Mane</title>
+<title>Fl-Mane</title>
 </head>
 <body>
 <table>

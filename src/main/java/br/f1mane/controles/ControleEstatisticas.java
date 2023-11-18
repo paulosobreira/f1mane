@@ -315,8 +315,10 @@ public class ControleEstatisticas {
 				if (piloto.getPosicao() < 9) {
 					pilotos.add(piloto);
 				}
-
 			}
+		}
+		if(pilotos.size()==0){
+			return;
 		}
 		Collections.shuffle(pilotos);
 		Piloto pilotoSel = (Piloto) pilotos.get(0);
@@ -562,6 +564,6 @@ public class ControleEstatisticas {
 	private Long diferecaParaSegundos(long diff) {
 		return Long.valueOf(Math
                 .round((diff / new Double(Util.intervalo(30, 40)).doubleValue())
-                        * Constantes.CICLO));
+                        * Constantes.FATOR_CICLO));
 	}
 }

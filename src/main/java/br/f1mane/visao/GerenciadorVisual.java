@@ -137,7 +137,6 @@ public class GerenciadorVisual {
     }
 
     public void iniciarInterfaceGraficaJogo() throws IOException {
-        Logger.logar("GerenciadorVisual iniciarInterfaceGraficaJogo()");
         painelCircuito = new PainelCircuito(controleJogo, this);
         addiconarListenerComandos();
         gerarPainelInfoText();
