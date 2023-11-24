@@ -2,7 +2,6 @@ package br.f1mane;
 
 import br.f1mane.controles.ControleCiclo;
 import br.f1mane.controles.ControleJogoLocal;
-import br.f1mane.controles.ControleRecursos;
 import br.f1mane.controles.InterfaceJogo;
 import br.f1mane.entidades.Clima;
 import br.f1mane.entidades.TemporadasDefault;
@@ -39,7 +38,7 @@ public class MainFrameSimulacao extends MainFrame {
     private boolean boxRapido;
     private double fatorAcidente;
 
-    public MainFrameSimulacao() {
+    public MainFrameSimulacao(String temporadaParam) {
         setSize(1030, 720);
         String title = "Fl-Mane " + getVersao() + " MANager & Engineer";
         setTitle(title);
@@ -63,15 +62,19 @@ public class MainFrameSimulacao extends MainFrame {
             Collections.shuffle(listTemporadas);
 
             circuito = listCircuitos.get(0);
-            temporada = listTemporadas.get(0);
+            if(temporadaParam!=null){
+                temporada = temporadaParam;
+            }else{
+                temporada = listTemporadas.get(0);
+            }
             Map<String, TemporadasDefault> temporadasDefaultMap =
                     carregadorRecursos.carregarTemporadasPilotosDefauts();
             TemporadasDefault temporadaDefault = temporadasDefaultMap.get("t" + temporada);
             voltas = Util.intervalo(12, 72);
-            kers = temporadaDefault.getErs();
-            drs = temporadaDefault.getDrs();
-            trocaPneus = temporadaDefault.getTrocaPneu();
-            reabastecimento = temporadaDefault.getReabastecimento();
+            kers = temporadaDefault.getErs().booleanValue();
+            drs = temporadaDefault.getDrs().booleanValue();
+            trocaPneus = temporadaDefault.getTrocaPneu().booleanValue();
+            reabastecimento = temporadaDefault.getReabastecimento().booleanValue();
             turbulencia = Util.intervalo(0, 500);
             fatorAcidente = 100 - (controleJogo.getFatorAcidente() * 100);
             controleJogo.iniciarJogoMenuLocal(circuito, temporada, voltas,
@@ -87,7 +90,7 @@ public class MainFrameSimulacao extends MainFrame {
     }
 
     public static void main(String[] args) {
-        MainFrameSimulacao frame = new MainFrameSimulacao();
+        MainFrameSimulacao frame = new MainFrameSimulacao(args[0]);
     }
 
     public void mostrarGraficos() {

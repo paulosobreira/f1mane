@@ -1,43 +1,20 @@
 package br.f1mane.servidor.controles;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
-
-import br.nnpe.Constantes;
-import br.nnpe.Dia;
-import br.nnpe.Logger;
-import br.nnpe.Numero;
-import br.nnpe.Util;
 import br.f1mane.controles.InterfaceJogo;
 import br.f1mane.entidades.Piloto;
-import br.f1mane.servidor.entidades.TOs.CampeonatoTO;
-import br.f1mane.servidor.entidades.TOs.ClientPaddockPack;
-import br.f1mane.servidor.entidades.TOs.DadosClassificacaoJogador;
-import br.f1mane.servidor.entidades.TOs.DadosClassificacaoCarros;
-import br.f1mane.servidor.entidades.TOs.DadosClassificacaoPilotos;
-import br.f1mane.servidor.entidades.TOs.DadosCriarJogo;
-import br.f1mane.servidor.entidades.TOs.DadosJogador;
-import br.f1mane.servidor.entidades.TOs.ErroServ;
-import br.f1mane.servidor.entidades.TOs.MsgSrv;
-import br.f1mane.servidor.entidades.TOs.SrvPaddockPack;
-import br.f1mane.servidor.entidades.TOs.VoltaJogadorOnline;
+import br.f1mane.recursos.CarregadorRecursos;
+import br.f1mane.recursos.idiomas.Lang;
+import br.f1mane.servidor.entidades.TOs.*;
 import br.f1mane.servidor.entidades.persistencia.CampeonatoSrv;
 import br.f1mane.servidor.entidades.persistencia.CarreiraDadosSrv;
 import br.f1mane.servidor.entidades.persistencia.CorridasDadosSrv;
 import br.f1mane.servidor.entidades.persistencia.JogadorDadosSrv;
-import br.f1mane.recursos.CarregadorRecursos;
-import br.f1mane.recursos.idiomas.Lang;
+import br.nnpe.*;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
+
+import java.util.*;
 
 /**
  * @author Paulo Sobreira Criado em 27/10/2007 as 18:50:08
@@ -546,9 +523,9 @@ public class ControleClassificacao {
 							.setImagemJogador(corridasDadosSrv.getJogadorDadosSrv().getImagemJogador());
 					mapa.put(corridasDadosSrv.getJogadorDadosSrv().getId(), dadosClassificacaoCircuito);
 				}
-				dadosClassificacaoCircuito.setCorridas(Integer.valueOf(dadosClassificacaoCircuito.getCorridas() + 1));
+				dadosClassificacaoCircuito.setCorridas(Integer.valueOf(dadosClassificacaoCircuito.getCorridas().intValue() + 1));
 				dadosClassificacaoCircuito
-						.setPontos(Integer.valueOf(dadosClassificacaoCircuito.getPontos() + corridasDadosSrv.getPontos()));
+						.setPontos(Integer.valueOf(dadosClassificacaoCircuito.getPontos().intValue() + corridasDadosSrv.getPontos()));
 			}
 			List<DadosClassificacaoJogador> classificacao = new ArrayList<DadosClassificacaoJogador>(mapa.values());
 			Collections.sort(classificacao, new DadosClassificacaoJogadorComparator());
@@ -578,9 +555,9 @@ public class ControleClassificacao {
 							.setImagemJogador(corridasDadosSrv.getJogadorDadosSrv().getImagemJogador());
 					mapa.put(corridasDadosSrv.getJogadorDadosSrv().getId(), dadosClassificacaoCircuito);
 				}
-				dadosClassificacaoCircuito.setCorridas(Integer.valueOf(dadosClassificacaoCircuito.getCorridas() + 1));
+				dadosClassificacaoCircuito.setCorridas(Integer.valueOf(dadosClassificacaoCircuito.getCorridas().intValue() + 1));
 				dadosClassificacaoCircuito
-						.setPontos(Integer.valueOf(dadosClassificacaoCircuito.getPontos() + corridasDadosSrv.getPontos()));
+						.setPontos(Integer.valueOf(dadosClassificacaoCircuito.getPontos().intValue() + corridasDadosSrv.getPontos()));
 			}
 			List<DadosClassificacaoJogador> classificacao = new ArrayList<DadosClassificacaoJogador>(mapa.values());
 			Collections.sort(classificacao, new Comparator<DadosClassificacaoJogador>() {
@@ -667,9 +644,9 @@ public class ControleClassificacao {
 							.setImagemJogador(corridasDadosSrv.getJogadorDadosSrv().getImagemJogador());
 					mapa.put(corridasDadosSrv.getJogadorDadosSrv().getId(), dadosClassificacaoCircuito);
 				}
-				dadosClassificacaoCircuito.setCorridas(Integer.valueOf(dadosClassificacaoCircuito.getCorridas() + 1));
+				dadosClassificacaoCircuito.setCorridas(Integer.valueOf(dadosClassificacaoCircuito.getCorridas().intValue() + 1));
 				dadosClassificacaoCircuito
-						.setPontos(Integer.valueOf(dadosClassificacaoCircuito.getPontos() + corridasDadosSrv.getPontos()));
+						.setPontos(Integer.valueOf(dadosClassificacaoCircuito.getPontos().intValue() + corridasDadosSrv.getPontos()));
 			}
 			List<DadosClassificacaoJogador> classificacao = new ArrayList<DadosClassificacaoJogador>(mapa.values());
 

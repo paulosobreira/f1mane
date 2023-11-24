@@ -272,7 +272,7 @@ public class Piloto implements Serializable, PilotoSuave {
     @JsonIgnore
     private int contadorPodeAcionarDRS;
     protected static final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-    private static final int CONTADOR_LIBERAR_DRS = 20;
+    private static final int CONTADOR_LIBERAR_DRS = 50;
     private boolean temMotor;
     private boolean temCombustivel;
     private boolean superAquecido;

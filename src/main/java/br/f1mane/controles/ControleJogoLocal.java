@@ -204,7 +204,6 @@ public class ControleJogoLocal extends ControleRecursos
                 controleEstatisticas.setConsumidorAtivo(false);
                 controleEstatisticas.finalize();
             }
-            System.gc();
         } catch (Throwable e) {
             Logger.logarExept(e);
         }

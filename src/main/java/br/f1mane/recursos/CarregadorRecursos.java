@@ -1,45 +1,22 @@
 package br.f1mane.recursos;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
-import java.awt.image.WritableRaster;
-import java.beans.XMLDecoder;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.Vector;
-
-import javax.imageio.ImageIO;
-import javax.swing.JPanel;
-
+import br.f1mane.controles.ControleRecursos;
 import br.f1mane.entidades.*;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
-import br.f1mane.controles.ControleRecursos;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
+import java.beans.XMLDecoder;
+import java.io.*;
+import java.net.URL;
+import java.util.List;
+import java.util.*;
 
 public class CarregadorRecursos {
     private static HashMap<String, String> temporadas;

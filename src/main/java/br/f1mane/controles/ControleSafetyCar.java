@@ -3,7 +3,6 @@ package br.f1mane.controles;
 import java.util.Iterator;
 import java.util.List;
 
-import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;

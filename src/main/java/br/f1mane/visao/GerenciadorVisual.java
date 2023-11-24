@@ -55,7 +55,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
-import br.f1mane.controles.ControleCiclo;
 import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;

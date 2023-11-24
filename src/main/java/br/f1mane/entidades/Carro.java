@@ -2,7 +2,6 @@ package br.f1mane.entidades;
 
 import br.f1mane.controles.InterfaceJogo;
 import br.f1mane.recursos.idiomas.Lang;
-import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Util;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -361,18 +360,18 @@ public class Carro implements Serializable {
 
     public void setPneuDuro(int distanciaCorrida, InterfaceJogo controleJogo) {
         if (controleJogo.isSemReabastecimento()) {
-            pneus = Util.inteiro(distanciaCorrida * 1.2);
-        } else {
             pneus = Util.inteiro(distanciaCorrida);
+        } else {
+            pneus = Util.inteiro(distanciaCorrida * 0.7);
         }
         durabilidadeMaxPneus = pneus;
     }
 
     public void setPneuMoleOuChuva(int distaciaCorrida, InterfaceJogo controleJogo) {
         if (controleJogo.isSemReabastecimento()) {
-            pneus = Util.inteiro(distaciaCorrida * 0.60);
+            pneus = Util.inteiro(distaciaCorrida * 0.7);
         } else {
-            pneus = Util.inteiro(distaciaCorrida * 0.40);
+            pneus = Util.inteiro(distaciaCorrida * 0.5);
         }
         durabilidadeMaxPneus = pneus;
     }
@@ -406,16 +405,16 @@ public class Carro implements Serializable {
         }
         if (no.verificaRetaOuLargada()) {
             if (MENOS_ASA.equals(getAsa())) {
-                ganho += testeAerodinamica && testePotencia ? 7 : 3;
+                ganho += testeAerodinamica && testePotencia ? 5 : 1;
             } else if (MAIS_ASA.equals(getAsa())) {
-                ganho *= testeAerodinamica ? 0.9 : 0.8;
+                ganho *= testeAerodinamica ? 0.95 : 0.90;
             }
         }
         if (no.verificaCurvaAlta() || no.verificaCurvaBaixa()) {
             if (MENOS_ASA.equals(getAsa())) {
                 ganho *= testeAerodinamica ? 0.9 : 0.8;
             } else if (MAIS_ASA.equals(getAsa())) {
-                ganho += testeAerodinamica && testeFreios ? 7 : 3;
+                ganho += testeAerodinamica && testeFreios ? 5 : 1;
             }
         }
         return ganho;
@@ -698,7 +697,7 @@ public class Carro implements Serializable {
                         && getPiloto().getStress() > 70) {
                     controleJogo.travouRodas(getPiloto(), true);
                 }
-                desgPneus += (teste ? 200 : 300);
+                desgPneus += (teste ? 50 : 100);
             }
         } else if (no.verificaCurvaAlta()) {
             desgPneus += (getPiloto().testeHabilidadePilotoAerodinamicaFreios(controleJogo) ? 3 : 4);
@@ -713,7 +712,7 @@ public class Carro implements Serializable {
                         && getPiloto().getStress() > 50 && Math.random() > 0.5) {
                     controleJogo.travouRodas(getPiloto(), true);
                 }
-                desgPneus += (teste ? 100 : 200);
+                desgPneus += (teste ? 30 : 70);
             }
         } else if (no.verificaRetaOuLargada()) {
             int indexFrete = no.getIndex() + 50;
@@ -730,7 +729,7 @@ public class Carro implements Serializable {
                     }
                     teste = false;
                 }
-                desgPneus += (teste ? 10 : 50);
+                desgPneus += (teste ? 5 : 10);
             }
         }
         if (Clima.SOL.equals(controleJogo.getClima()) && Math.random() > 0.5) {
@@ -749,7 +748,10 @@ public class Carro implements Serializable {
         if (!no.verificaRetaOuLargada() && Piloto.AGRESSIVO.equals(getPiloto().getModoPilotagem())) {
             desgPneus += 10;
         }
-        double fatorComb = porcentagemCombustivel / 100.0;
+        double fatorComb = porcentagemCombustivel / 50.0;
+        if (no.verificaRetaOuLargada()) {
+            fatorComb = 1;
+        }
         double valDesgaste = (desgPneus * fatorComb);
 
         if (TIPO_PNEU_CHUVA.equals(getTipoPneu()) && !no.verificaRetaOuLargada()) {
@@ -761,7 +763,7 @@ public class Carro implements Serializable {
             }
         }
         if (controleJogo.asfaltoAbrasivo()) {
-            valDesgaste *= 1.1;
+            valDesgaste *= 1.5;
         }
         if (!controleJogo.isModoQualify() && controleJogo.isSemTrocaPneu()) {
             valDesgaste *= controleJogo.getFatorConsumoPneuSemTroca();

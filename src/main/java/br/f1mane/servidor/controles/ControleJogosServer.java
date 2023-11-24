@@ -358,7 +358,7 @@ public class ControleJogosServer {
 		dadosJogo.setArquivoCircuito(jogoServidor.getCircuitos()
 				.get(jogoServidor.getCircuito().getNome()));
 		dadosJogo.setTemporada(jogoServidor.getTemporada().replaceAll("t", ""));
-		Integer segundosParaIniciar = Integer.valueOf(Constantes.SEGUNDOS_PARA_INICIAR_CORRRIDA
+		Integer segundosParaIniciar = Integer.valueOf(Constantes.SEGUNDOS_PARA_INICIAR_CORRRIDA.intValue()
                 - Util.inteiro(((System.currentTimeMillis()
                 - jogoServidor.getTempoCriacao()) / 1000)));
 		if (segundosParaIniciar.intValue() < 0) {

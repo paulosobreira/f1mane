@@ -1,61 +1,27 @@
 package br.f1mane.visao;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.Stroke;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
-import java.lang.reflect.InvocationTargetException;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import br.nnpe.Constantes;
-import br.nnpe.GeoUtil;
-import br.nnpe.Html;
-import br.nnpe.ImageUtil;
-import br.nnpe.Logger;
-import br.nnpe.OcilaCor;
-import br.nnpe.Util;
 import br.f1mane.MainFrame;
 import br.f1mane.controles.ControleEstatisticas;
 import br.f1mane.controles.ControleJogoLocal;
 import br.f1mane.controles.InterfaceJogo;
-import br.f1mane.entidades.Carro;
-import br.f1mane.entidades.Circuito;
-import br.f1mane.entidades.Clima;
-import br.f1mane.entidades.No;
-import br.f1mane.entidades.ObjetoEscapada;
-import br.f1mane.entidades.ObjetoPista;
-import br.f1mane.entidades.ObjetoTransparencia;
-import br.f1mane.entidades.Piloto;
-import br.f1mane.entidades.PilotoSuave;
-import br.f1mane.entidades.PontoEscape;
-import br.f1mane.entidades.SafetyCar;
-import br.f1mane.entidades.Volta;
-import br.f1mane.servidor.applet.JogoCliente;
-import br.f1mane.servidor.entidades.TOs.TravadaRoda;
+import br.f1mane.entidades.*;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
+import br.f1mane.servidor.applet.JogoCliente;
+import br.f1mane.servidor.entidades.TOs.TravadaRoda;
+import br.nnpe.*;
+
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.geom.*;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.lang.reflect.InvocationTargetException;
+import java.text.DecimalFormat;
+import java.util.List;
+import java.util.*;
 
 /**
  * @author Paulo Sobreira
@@ -333,7 +299,6 @@ public class PainelCircuito {
             try {
                 carregaBackGround();
             } catch (Error e) {
-                System.gc();
                 Logger.logarExept(e);
             }
         }
@@ -3538,12 +3503,12 @@ public class PainelCircuito {
 
         if (rabeadaAgressivo || rabeadaPneuErrado) {
             if (noAtual.verificaCurvaAlta())
-                calculaAngulo = calculaAngulo.doubleValue() + Util.intervalo(-variacao1, variacao1);
+                calculaAngulo = Double.valueOf(calculaAngulo.doubleValue() + Util.intervalo(-variacao1, variacao1));
             if (noAtual.verificaCurvaBaixa())
-                calculaAngulo = calculaAngulo.doubleValue() + Util.intervalo(-variacao2, variacao2);
+                calculaAngulo = Double.valueOf(calculaAngulo.doubleValue() + Util.intervalo(-variacao2, variacao2));
         }
         if ((piloto.getTracado() == 4 || piloto.getTracado() == 5) && Math.random() > 0.9) {
-            calculaAngulo = calculaAngulo.doubleValue() + Util.intervalo(-20, 20);
+            calculaAngulo = Double.valueOf(calculaAngulo.doubleValue() + Util.intervalo(-20, 20));
         }
         return calculaAngulo;
     }
@@ -4460,7 +4425,7 @@ public class PainelCircuito {
         if (contDesenhaPilotosQualify == null) {
             contDesenhaPilotosQualify = Integer.valueOf(pilotos.size() * 15);
         }
-        contDesenhaPilotosQualify = contDesenhaPilotosQualify.intValue() - 1;
+        contDesenhaPilotosQualify = Integer.valueOf(contDesenhaPilotosQualify.intValue() - 1);
         for (int i = 0; i < pilotos.size(); i++) {
             if ((i) * 15 < contDesenhaPilotosQualify.intValue()) {
                 continue;

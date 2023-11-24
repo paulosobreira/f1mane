@@ -1,25 +1,16 @@
 package br.f1mane.controles;
 
-import java.awt.Point;
-import java.awt.image.BufferedImage;
-import java.beans.XMLEncoder;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
 import br.f1mane.entidades.*;
-import br.nnpe.BeanUtil;
+import br.f1mane.recursos.CarregadorRecursos;
+import br.f1mane.servidor.JogoServidor;
 import br.nnpe.Logger;
 import br.nnpe.Util;
-import br.f1mane.servidor.JogoServidor;
-import br.f1mane.recursos.CarregadorRecursos;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.List;
+import java.util.*;
 
 /**
  * @author Paulo Sobreira

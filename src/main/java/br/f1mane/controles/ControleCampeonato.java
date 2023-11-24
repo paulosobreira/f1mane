@@ -1,63 +1,26 @@
 package br.f1mane.controles;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import br.f1mane.MainFrame;
+import br.f1mane.entidades.*;
+import br.f1mane.recursos.CarregadorRecursos;
+import br.f1mane.recursos.idiomas.Lang;
+import br.f1mane.visao.PainelCampeonato;
+import br.nnpe.Constantes;
+import br.nnpe.Logger;
+import br.nnpe.Util;
+
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.io.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
-
-import br.nnpe.Constantes;
-import br.nnpe.Logger;
-import br.nnpe.Util;
-import br.f1mane.MainFrame;
-import br.f1mane.entidades.Campeonato;
-import br.f1mane.entidades.Carro;
-import br.f1mane.entidades.ConstrutoresPontosCampeonato;
-import br.f1mane.entidades.CorridaCampeonato;
-import br.f1mane.entidades.Piloto;
-import br.f1mane.entidades.PilotosPontosCampeonato;
-import br.f1mane.entidades.TemporadasDefault;
-import br.f1mane.entidades.Volta;
-import br.f1mane.recursos.CarregadorRecursos;
-import br.f1mane.recursos.idiomas.Lang;
-import br.f1mane.visao.PainelCampeonato;
+import java.util.*;
 
 public class ControleCampeonato {
 
@@ -506,8 +469,8 @@ public class ControleCampeonato {
 			Integer ponteciaEquipeRival = campeonato.getEquipesPotenciaCampeonato().get(equipeRival);
 			String equipeJogador = campeonato.getPilotosEquipesCampeonato().get(campeonato.getNomePiloto());
 			Integer potenciaEquipeJogador = campeonato.getEquipesPotenciaCampeonato().get(equipeJogador);
-			ponteciaEquipeRival = Integer.valueOf(ponteciaEquipeRival == null ? 0 : ponteciaEquipeRival);
-			potenciaEquipeJogador = Integer.valueOf(potenciaEquipeJogador == null ? 0 : potenciaEquipeJogador);
+			ponteciaEquipeRival = Integer.valueOf(ponteciaEquipeRival == null ? 0 : ponteciaEquipeRival.intValue());
+			potenciaEquipeJogador = Integer.valueOf(potenciaEquipeJogador == null ? 0 : potenciaEquipeJogador.intValue());
 			if (ponteciaEquipeRival.intValue() > potenciaEquipeJogador.intValue()) {
 				reiniciarDesafio();
 				campeonato.setRebaixadoEquipeRival(false);
@@ -1068,8 +1031,8 @@ public class ControleCampeonato {
 			String equipeRival = campeonato.getPilotosEquipesCampeonato().get(pilotoRival);
 			Integer ponteciaEquipeRival = campeonato.getEquipesPotenciaCampeonato().get(equipeRival);
 			Integer potenciaEquipeJogador = campeonato.getEquipesPotenciaCampeonato().get(equipePiloto);
-			ponteciaEquipeRival = Integer.valueOf(ponteciaEquipeRival == null ? 0 : ponteciaEquipeRival);
-			potenciaEquipeJogador = Integer.valueOf(potenciaEquipeJogador == null ? 0 : potenciaEquipeJogador);
+			ponteciaEquipeRival = Integer.valueOf(ponteciaEquipeRival == null ? 0 : ponteciaEquipeRival.intValue());
+			potenciaEquipeJogador = Integer.valueOf(potenciaEquipeJogador == null ? 0 : potenciaEquipeJogador.intValue());
 			if (ponteciaEquipeRival.intValue() < potenciaEquipeJogador.intValue() && ponteciaEquipeRival.intValue() > ptenciaRivalAteAgora
 					&& !equipePiloto.equals(equipeRival)) {
 				rival = pilotoRival;

@@ -6,7 +6,7 @@ var idPilotoSelecionado;
 var temporadaSelecionada;
 var circuitoSelecionado;
 var token;
-var circuitos, dadosJogo, drsTeporada;
+var circuitos, dadosJogo, drsTeporada,reabastecimento;
 var jogoPreparado = false;
 
 $('#trocaPneuCheck').append(lang_text('trocaPneus'));
@@ -223,6 +223,7 @@ function carregarDadosJogoCampeonato(){
 					$('#trocaPneuCheck').addClass('line-through');
 				}
 				if (campeonato.reabastecimento) {
+				    reabastecimento = campeonato.reabastecimento;
 					$('#reabastecimentoCheck').removeClass('line-through');
 				} else {
 					$('#reabastecimentoCheck').addClass('line-through');
@@ -241,6 +242,10 @@ function carregarDadosJogoCampeonato(){
 				if (drsTeporada) {
 					$('#ajusteDeAsa').addClass('hide');
 				}
+				if(!reabastecimento){
+					$('#ctrCombustivel').addClass('hide');
+				}
+
 				$('#btnJogar').css('z-index', '100000');
 				$('#idNumeroVoltas').addClass('hide');
 				$('#btnJogar').show();
@@ -365,6 +370,9 @@ function preparaJogo() {
 	$('#voltar').attr('href', 'jogar.html');
 	if (drsTeporada) {
 		$('#ajusteDeAsa').addClass('hide');
+	}
+    if(!reabastecimento){
+		$('#ctrCombustivel').addClass('hide');
 	}
 	$('#btnJogar').css('z-index', '100000');
 	$('#idNumeroVoltas').addClass('hide');
@@ -558,7 +566,8 @@ function selecionaTemporada(temporada) {
 			} else {
 				$('#trocaPneuCheck').addClass('line-through');
 			}
-			if (response.reabastecimento) {
+			reabastecimento = response.reabastecimento;
+			if (reabastecimento) {
 				$('#reabastecimentoCheck').removeClass('line-through');
 			} else {
 				$('#reabastecimentoCheck').addClass('line-through');
