@@ -6,25 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="c3430018-9fd3-4efa-9bf0-edcdaf03c6d3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/Carro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/Carro.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/Piloto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/entidades/Piloto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/AAlbon.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/AAlbon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/CLeclerc.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/CLeclerc.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/CSainz.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/CSainz.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/DRicciardo.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/DRicciardo.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/EOcon.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/EOcon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/GRussel.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/GRussel.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/KMagnussen.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/KMagnussen.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/LHamilton.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/LHamilton.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/LNorris.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/LNorris.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/LSargent.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/LSargent.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/MVerstappen.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/MVerstappen.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/NHulkenberg.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/NHulkenberg.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/OPiastri.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/OPiastri.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/PGasly.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/PGasly.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/SPerez.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/SPerez.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/YTsunoda.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/capacetes/t2023/YTsunoda.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/campeonato.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/campeonato.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/classificacao.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/classificacao.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_campeonato.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_campeonato.html" afterDir="false" />
@@ -38,6 +20,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/equipe.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/equipe.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/jogar.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/jogar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/js/ctl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/js/ctl.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/resultado.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/resultado.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -82,21 +65,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/melhorias__2023__2&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/sobreira/git/f1mane&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "/home/sobreira/git/f1mane",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />

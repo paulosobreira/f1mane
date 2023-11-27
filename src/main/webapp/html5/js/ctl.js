@@ -253,14 +253,21 @@ function ctl_desenhaControles() {
 					ctlContext.stroke();
 				}
 			}
-			ctlContext.fillStyle = "black"
+
 			if (controle.centralizaTexto) {
-				ctlContext.fillText(controle.exibir, controle.x
-						+ (controle.width / 2) - 10, controle.y
-						+ (controle.height / 2) + ajusteAluraText);
+			    var x = controle.x + (controle.width / 2) - 10;
+			    var y = controle.y + (controle.height / 2) + ajusteAluraText;
+			    ctlContext.fillStyle = corBabaca;
+				ctlContext.fillText(controle.exibir, x+1, y+1);
+			    ctlContext.fillStyle = "black";
+				ctlContext.fillText(controle.exibir, x, y);
 			} else {
-				ctlContext.fillText(controle.exibir, controle.x + 5,
-						controle.y + (controle.height / 2) + ajusteAluraText);
+			    var x = controle.x + 5;
+			    var y = controle.y + (controle.height / 2) + ajusteAluraText;
+			    ctlContext.fillStyle = corBabaca;
+                ctlContext.fillText(controle.exibir,x+1 ,y+1);
+			    ctlContext.fillStyle = "black";
+				ctlContext.fillText(controle.exibir,x ,y);
 			}
 		}
 		ctlContext.closePath();
