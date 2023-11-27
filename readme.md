@@ -58,3 +58,21 @@
 - mvn war:war
 - docker build -f f1mane.dockerfile . -t sowbreira/f1mane
 - docker push sowbreira/f1mane
+
+## Como testar
+
+Pode ser executado no [Play with Docker](https://labs.play-with-docker.com/)
+
+>Baixar o aqruiovo do docker compose
+```
+curl -LfO 'https://raw.githubusercontent.com/paulosobreira/f1mane/master/docker-compose.yaml'
+```
+
+>Iniciar containers do Mysql,PhpMyAdmin e FlMane
+```
+docker compose up
+```
+
+>Url de acesso:
+
+link_gerado_playwithdocker/**f1mane/html5/index.html**
