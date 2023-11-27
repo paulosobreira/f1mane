@@ -369,9 +369,9 @@ public class Carro implements Serializable {
 
     public void setPneuMoleOuChuva(int distaciaCorrida, InterfaceJogo controleJogo) {
         if (controleJogo.isSemReabastecimento()) {
-            pneus = Util.inteiro(distaciaCorrida * 0.7);
+            pneus = Util.inteiro(distaciaCorrida * 0.8);
         } else {
-            pneus = Util.inteiro(distaciaCorrida * 0.5);
+            pneus = Util.inteiro(distaciaCorrida * 0.6);
         }
         durabilidadeMaxPneus = pneus;
     }
@@ -382,9 +382,9 @@ public class Carro implements Serializable {
         processaPorcentagemDesgastePneus();
         processaTemperaturaMotor(controleJogo);
         processaTemperaturaPneus(controleJogo);
+        ganho = calculaModificadorAsa(ganho, no, controleJogo);
         ganho = calculaModificadorCombustivel(ganho, no, controleJogo);
         ganho = calculaModificadorPneu(ganho, no, controleJogo);
-        ganho = calculaModificadorAsa(ganho, no, controleJogo);
         calculaDesgasteMotor(ganho, no, controleJogo);
         calculaConsumoCombustivel(controleJogo);
         calculaDesgastePneus(no, controleJogo);
@@ -407,12 +407,12 @@ public class Carro implements Serializable {
             if (MENOS_ASA.equals(getAsa())) {
                 ganho += testeAerodinamica && testePotencia ? 5 : 1;
             } else if (MAIS_ASA.equals(getAsa())) {
-                ganho *= testeAerodinamica ? 0.95 : 0.90;
+                ganho *= testeAerodinamica ? 0.97 : 0.93;
             }
         }
         if (no.verificaCurvaAlta() || no.verificaCurvaBaixa()) {
             if (MENOS_ASA.equals(getAsa())) {
-                ganho *= testeAerodinamica ? 0.9 : 0.8;
+                ganho *= testeAerodinamica ? 0.95 : 0.9;
             } else if (MAIS_ASA.equals(getAsa())) {
                 ganho += testeAerodinamica && testeFreios ? 5 : 1;
             }

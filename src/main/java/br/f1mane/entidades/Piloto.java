@@ -192,8 +192,6 @@ public class Piloto implements Serializable, PilotoSuave {
     @JsonIgnore
     private int naoDesenhaEfeitos;
     @JsonIgnore
-    private final int tamanhoBufferGanho = 10;
-    @JsonIgnore
     private boolean colisaoDiantera;
     @JsonIgnore
     private boolean colisaoCentro;
@@ -2245,7 +2243,7 @@ public class Piloto implements Serializable, PilotoSuave {
         if (controleJogo.isModoQualify()) {
             return;
         }
-        while (listGanho.size() > tamanhoBufferGanho) {
+        while (listGanho.size() > (noAtual.verificaRetaOuLargada() ? 20 : 10)) {
             listGanho.remove(0);
         }
         listGanho.add(Double.valueOf(ganho));
@@ -2443,7 +2441,7 @@ public class Piloto implements Serializable, PilotoSuave {
             return (Math.random() < comparador ? 45 : 40);
         } else if (getNoAtual().verificaRetaOuLargada() && getCarro().testePotencia()) {
             return (Math.random() < comparador ? 40 : 35);
-        } else if (getNoAtual().verificaRetaOuLargada() ) {
+        } else if (getNoAtual().verificaRetaOuLargada()) {
             return (Math.random() < comparador ? 35 : 30);
         } else if (getNoAtual().verificaCurvaAlta() && testeHabilidadePilotoAerodinamica(controleJogo)) {
             return (Math.random() < comparador ? 30 : 25);
