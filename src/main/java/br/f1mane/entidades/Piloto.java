@@ -2412,7 +2412,7 @@ public class Piloto implements Serializable, PilotoSuave {
             comparador += testeHabilidadePiloto() ? 0.1 : 0.0;
         }
         if (Carro.GIRO_MIN_VAL == getCarro().getGiro()) {
-            comparador += getCarro().testePotencia() ? 0.1 : -0.1;
+            comparador += getCarro().testePotencia() ? 0.0 : -0.1;
         }
         if (!noAtual.verificaRetaOuLargada()) {
             if (AGRESSIVO.equals(modoPilotagem)) {
@@ -2423,7 +2423,7 @@ public class Piloto implements Serializable, PilotoSuave {
                 ;
             }
             if (LENTO.equals(modoPilotagem)) {
-                comparador += testeHabilidadePiloto() ? 0.1 : -0.1;
+                comparador += testeHabilidadePiloto() ? 0.0 : -0.1;
             }
         }
         if (usandoErs()) {
