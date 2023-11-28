@@ -982,12 +982,12 @@ public class Piloto implements Serializable, PilotoSuave {
             combustPorcentagem = 100;
         }
 
-        if (controleJogo.isSafetyCarNaPista() && controleJogo.isSafetyCarVaiBox()) {
+        if (controleJogo.isSafetyCarNaPista()) {
             if (combustPorcentagem < 20 || pneusPorcentagem < 50) {
                 box = true;
             }
-
         }
+
         boolean boxPneus = false;
         if (pneusPorcentagem < 15) {
             boxPneus = true;
@@ -1445,15 +1445,15 @@ public class Piloto implements Serializable, PilotoSuave {
         if (diff < distLimiteTurbulencia && !verificaForaPista(carroPilotoDaFrenteRetardatario.getPiloto())) {
             if (getTracado() != carroPilotoDaFrenteRetardatario.getPiloto().getTracado()) {
                 if (getNoAtual().verificaRetaOuLargada()) {
-                    multiplicadoGanhoTurbulencia += (getCarro().testePotencia() && getCarro().testeAerodinamica()) ? 0.0 : -0.01;
+                    multiplicadoGanhoTurbulencia += (getCarro().testePotencia() && getCarro().testeAerodinamica()) ? 0.2 : 0.0;
                 } else {
-                    multiplicadoGanhoTurbulencia += (testeHabilidadePilotoAerodinamicaFreios(controleJogo) ? 0.0 : -0.01);
+                    multiplicadoGanhoTurbulencia += (testeHabilidadePilotoAerodinamicaFreios(controleJogo) ? 0.1 : 0.0);
                 }
             }
             if (multiplicadoGanhoTurbulencia > 1) {
                 multiplicadoGanhoTurbulencia = 1;
-            } else if (multiplicadoGanhoTurbulencia < 0.01) {
-                multiplicadoGanhoTurbulencia = 0.01;
+            } else if (multiplicadoGanhoTurbulencia < 0.1) {
+                multiplicadoGanhoTurbulencia = 0.1;
             }
             ganho *= (multiplicadoGanhoTurbulencia);
         }
@@ -1792,9 +1792,6 @@ public class Piloto implements Serializable, PilotoSuave {
         }
         Piloto pilotoAtras = carroPilotoAtras.getPiloto();
         if (pilotoAtras.getPtosBox() != 0) {
-            return false;
-        }
-        if (Math.random() > (controleJogo.getNiveljogo() + 0.3)) {
             return false;
         }
         if (calculaDiferencaParaAnterior < (controleJogo.isDrs() ? 600 : 300) && testeHabilidadePilotoCarro()) {
