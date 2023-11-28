@@ -1,19 +1,14 @@
 # Fl-Mane
- 
-- Fl-MANE (MANager & Engineer) é um jogo de gerenciamento de corrida. 
-- O jogo consiste em comandar o piloto e fazer ajustes telemétricos do carro. 
-- O jogador poderá configurar sua corrida escolhendo número de voltas, tipo de clima e configuração do carro. 
-- No modo campeonato o jogador poderá escolher um piloto/equipe iniciante e desafiar rivais mais promissores  e caso vença poderá assumir o controle da novo piloto/equipe.
 
 ## Fl-MANE por Paulo Sobreira
-- Fl-MANE (MANager & Engineer) É um jogo de gerenciamento e engenharia de corrida.
+- Fl-MANE (MANager & Engineer) é um jogo de gerenciamento de corrida.
+- O jogador poderá configurar sua corrida escolhendo número de voltas, tipo de clima e configuração do carro.
 - O jogador envia comandos sobre como guiar e faz ajustes telemétricos do carro.
 - É possível escolher estratégia de box e muda-lá a qualquer momento na corrida.
 - Configuração da corrida com varias opções de como numero de voltas e tipo de clima e etc.
 - O jogo gerencia eventos dinamicos como mudança de clima e acidentes entre os corredores.
-- Várias temporadas e pistas reais disponíveis
-
--Contato Paulo Sobreira : sowbreira@gmail.com.
+- Várias temporadas e pistas disponíveis
+- No modo campeonato o jogador poderá escolher um piloto/equipe iniciante e desafiar rivais mais promissores  e caso vença poderá assumir o controle da novo piloto/equipe.
 
 ## Controles:
 
@@ -52,14 +47,14 @@
 - Iniciar o jogo a pista nova deve esta em circuitos.
 
 
-## Construção
+## Construção Maven e Docker
 
 - mvn clean package
 - mvn war:war
 - docker build -f f1mane.dockerfile . -t sowbreira/f1mane
 - docker push sowbreira/f1mane
 
-## Como testar
+## Como testar no Play with Docker
 
 Pode ser executado no [Play with Docker](https://labs.play-with-docker.com/)
 
