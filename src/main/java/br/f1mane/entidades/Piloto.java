@@ -1625,7 +1625,7 @@ public class Piloto implements Serializable, PilotoSuave {
         temMotor = porcentagemMotor > 30 || porcentagemMotor > porcentagemCorridaRestante;
         temCombustivel = porcentagemCombustivel > 10;
         if (controleJogo.isSemReabastecimento()) {
-            temCombustivel = porcentagemCombustivel > 40 || porcentagemCombustivel > porcentagemCorridaRestante;
+            temCombustivel = porcentagemCombustivel > 20 || porcentagemCombustivel > porcentagemCorridaRestante;
         }
         temPneu = porcentagemDesgastePneus > 30;
         if (controleJogo.isSemTrocaPneu()) {

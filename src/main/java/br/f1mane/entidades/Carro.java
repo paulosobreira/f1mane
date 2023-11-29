@@ -333,7 +333,7 @@ public class Carro implements Serializable {
     public boolean verificaCondicoesCautelaGiro(InterfaceJogo controleJogo) {
         int combust = porcentagemCombustivel;
         int motor = porcentagemDesgasteMotor;
-        return (motor <= 5) || (combust <= (controleJogo.isSemReabastecimento() ? 15 : 10));
+        return (motor <= 5) || (combust <= (controleJogo.isSemReabastecimento() ? 10 : 5));
     }
 
     public boolean verificaPneusIncompativeisClima(InterfaceJogo controleJogo) {
