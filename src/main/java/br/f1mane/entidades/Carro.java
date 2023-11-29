@@ -783,7 +783,7 @@ public class Carro implements Serializable {
         if (verificaDano()) {
             valDesgaste /= 3;
         }
-        if (porcentagemDesgastePneus < 5) {
+        if (porcentagemDesgastePneus < 5 && Piloto.LENTO.equals(getPiloto().getModoPilotagem())) {
             valDesgaste *= 0.1;
         }
         if (porcentagemDesgastePneus < -5 && !controleJogo.isSemTrocaPneu()) {
