@@ -24,9 +24,6 @@ public interface InterfaceJogo {
     public static final String NORMAL = "NORMAL";
     public static final String FACIL = "FACIL";
     public static final String DIFICIL = "DIFICIL";
-    public static final double FACIL_NV = .5;
-    public static final double MEDIO_NV = .7;
-    public static final double DIFICIL_NV = .9;
     public static final int CARGA_ERS = 100;
     public static final int DURABILIDADE_AREOFOLIO = 4;
 
@@ -42,8 +39,6 @@ public interface InterfaceJogo {
 
     public String getAsaBox(Piloto piloto);
 
-    public void setNiveljogo(double niveljogo);
-
     public boolean isCorridaTerminada();
 
     public boolean isCorridaIniciada();
@@ -56,9 +51,9 @@ public interface InterfaceJogo {
 
     public int getMediaPontecia();
 
-    public String getNivelCorrida();
+    public String getNivelJogo();
 
-    public void setNivelCorrida(String nivelCorrida);
+    public void setNivelJogo(String niveljogo);
 
     public Circuito getCircuito();
 
@@ -69,11 +64,6 @@ public interface InterfaceJogo {
     public List<Piloto> getPilotos();
 
     public void matarTodasThreads();
-
-    /**
-     * Quanto Mais dificil o jogo mais ira de retornar true
-     */
-    public boolean verificaNivelJogo();
 
     public String getClima();
 
@@ -104,8 +94,6 @@ public interface InterfaceJogo {
     public double obterIndicativoCorridaCompleta();
 
     public Volta obterMelhorVolta();
-
-    public double getNiveljogo();
 
     public void verificaAcidente(Piloto piloto);
 

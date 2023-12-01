@@ -32,22 +32,13 @@ public class ThreadMudancaClima extends Thread {
 			sleep(Util.intervalo(3000, 15000));
 			if (Clima.SOL.equals(controleClima.getClima())
 					|| Clima.CHUVA.equals(controleClima.getClima())) {
-
 				controleClima.intervaloNublado();
-
 			} else if (Clima.NUBLADO.equals(controleClima.getClima())) {
-				if (Math.random() > controleClima.getControleJogo()
-						.getNiveljogo()) {
-					controleClima.intervaloSol();
+				if (controleClima.verificaPossibilidadeChoverNaPista()) {
+					controleClima.intervaloChuva();
 				} else {
-
-					if (controleClima.verificaPossibilidadeChoverNaPista()) {
-						controleClima.intervaloChuva();
-					} else {
-						controleClima.intervaloSol();
-					}
+					controleClima.intervaloSol();
 				}
-
 			}
 			controleClima.informaMudancaClima();
 			processada = true;

@@ -829,7 +829,7 @@ public class PainelCircuito {
                 || pilotoSelecionado.getPtosBox() != 0) {
             return;
         }
-        if (controleJogo.getNiveljogo() != InterfaceJogo.FACIL_NV) {
+        if (!Logger.ativo) {
             return;
         }
         No noReal = pilotoSelecionado.getNoAtual();
@@ -955,7 +955,7 @@ public class PainelCircuito {
         int xOri = x;
         int yOri = y;
 
-        if (controleJogo.getNiveljogo() != InterfaceJogo.DIFICIL_NV) {
+        if (!InterfaceJogo.DIFICIL.equals(controleJogo.getNivelJogo())) {
             y -= 150;
 
             x -= 25;
@@ -2386,7 +2386,7 @@ public class PainelCircuito {
         if (isExibeResultadoFinal()) {
             return;
         }
-        if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV
+        if (InterfaceJogo.DIFICIL.equals(controleJogo.getNivelJogo())
                 && !pilotoSelecionado.equals(controleJogo.getPilotoJogador())) {
             return;
         }
@@ -4299,7 +4299,7 @@ public class PainelCircuito {
         if (pilotoSelecionado == null) {
             return;
         }
-        if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV
+        if (InterfaceJogo.DIFICIL.equals(controleJogo.getNivelJogo())
                 && !pilotoSelecionado.equals(controleJogo.getPilotoJogador())) {
             return;
         }
@@ -4892,7 +4892,7 @@ public class PainelCircuito {
         if (isExibeResultadoFinal()) {
             return;
         }
-        if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
+        if (InterfaceJogo.DIFICIL.equals(controleJogo.getNivelJogo())) {
             return;
         }
         BufferedImage icon = null;
@@ -5205,7 +5205,7 @@ public class PainelCircuito {
         if (isExibeResultadoFinal()) {
             return;
         }
-        if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV
+        if (InterfaceJogo.DIFICIL.equals(controleJogo.getNivelJogo())
                 && !pilotoSelecionado.equals(controleJogo.getPilotoJogador())) {
             return;
         }
@@ -5270,7 +5270,7 @@ public class PainelCircuito {
         if (isExibeResultadoFinal()) {
             return;
         }
-        if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV
+        if (InterfaceJogo.DIFICIL.equals(controleJogo.getNivelJogo())
                 && !pilotoSelecionado.equals(controleJogo.getPilotoJogador())) {
             return;
         }

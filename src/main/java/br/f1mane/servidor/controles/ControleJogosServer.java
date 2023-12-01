@@ -34,10 +34,10 @@ public class ControleJogosServer {
 	 * @param dadosPaddock
 	 */
 	public ControleJogosServer(DadosPaddock dadosPaddock,
-			ControleClassificacao controleClassificacao,
-			ControleCampeonatoServidor controleCampeonatoServidor,
-			ControlePersistencia controlePersistencia,
-			ControlePaddockServidor controlePaddockServidor) {
+							   ControleClassificacao controleClassificacao,
+							   ControleCampeonatoServidor controleCampeonatoServidor,
+							   ControlePersistencia controlePersistencia,
+							   ControlePaddockServidor controlePaddockServidor) {
 		super();
 		this.dadosPaddock = dadosPaddock;
 		this.controleClassificacao = controleClassificacao;
@@ -76,7 +76,7 @@ public class ControleJogosServer {
 			return new MsgSrv(Lang.msg("204", new Object[]{Integer.valueOf(MaxJogo)}));
 		}
 		for (Iterator<SessaoCliente> iter = mapaJogosCriados.keySet()
-				.iterator(); iter.hasNext();) {
+				.iterator(); iter.hasNext(); ) {
 			SessaoCliente element = iter.next();
 			if (element.equals(clientPaddockPack.getSessaoCliente())) {
 				return new MsgSrv(Lang.msg("205"));
@@ -112,23 +112,14 @@ public class ControleJogosServer {
 			if (Util.isNullOrEmpty(carreiraDadosSrv.getNomeCarro())
 					|| Util.isNullOrEmpty(carreiraDadosSrv.getNomePiloto())
 					|| Util.isNullOrEmpty(
-							carreiraDadosSrv.getNomePilotoAbreviado())) {
+					carreiraDadosSrv.getNomePilotoAbreviado())) {
 				return new MsgSrv(Lang.msg("128"));
 			}
 			if (verificaPotenciaLimite(jogoServidor.getMediaPontecia(),
 					carreiraDadosSrv.getPtsCarro()
 							+ carreiraDadosSrv.getPtsAerodinamica()
-							+ carreiraDadosSrv.getPtsFreio(),
-					jogoServidor.getNiveljogo())) {
-				int permitidoAcimaMedia = 0;
-				if (InterfaceJogo.FACIL_NV == jogoServidor.getNiveljogo()) {
-					permitidoAcimaMedia = Constantes.ACIMA_MEDIA_FACIL;
-				}
-				if (InterfaceJogo.MEDIO_NV == jogoServidor.getNiveljogo()) {
-					permitidoAcimaMedia = Constantes.ACIMA_MEDIA_NORMAL;
-				}
-				String media = (jogoServidor.getMediaPontecia()
-						+ permitidoAcimaMedia) + "";
+							+ carreiraDadosSrv.getPtsFreio())) {
+				String media = (jogoServidor.getMediaPontecia()) + "";
 				return new MsgSrv(Lang.msg("261", new String[]{media}));
 
 			}
@@ -149,22 +140,14 @@ public class ControleJogosServer {
 		return srvPaddockPack;
 	}
 
-	private boolean verificaPotenciaLimite(int mediaPontecia, int ptsCarro,
-			double nivel) {
-		int permitidoAcimaMedia = 0;
-		if (InterfaceJogo.FACIL_NV == nivel) {
-			permitidoAcimaMedia = Constantes.ACIMA_MEDIA_FACIL;
-		}
-		if (InterfaceJogo.MEDIO_NV == nivel) {
-			permitidoAcimaMedia = Constantes.ACIMA_MEDIA_NORMAL;
-		}
-		return (mediaPontecia + permitidoAcimaMedia) < ptsCarro;
+	private boolean verificaPotenciaLimite(int mediaPontecia, int ptsCarro) {
+		return (mediaPontecia) < ptsCarro;
 	}
 
 	private void gerarListaJogosCriados() {
 		List<String> jogos = new ArrayList<String>();
 		for (Iterator<SessaoCliente> iter = mapaJogosCriados.keySet()
-				.iterator(); iter.hasNext();) {
+				.iterator(); iter.hasNext(); ) {
 			SessaoCliente element = iter.next();
 			JogoServidor jogoServidor = (JogoServidor) mapaJogosCriados
 					.get(element);
@@ -201,23 +184,14 @@ public class ControleJogosServer {
 			if (Util.isNullOrEmpty(carreiraDadosSrv.getNomeCarro())
 					|| Util.isNullOrEmpty(carreiraDadosSrv.getNomePiloto())
 					|| Util.isNullOrEmpty(
-							carreiraDadosSrv.getNomePilotoAbreviado())) {
+					carreiraDadosSrv.getNomePilotoAbreviado())) {
 				return new MsgSrv(Lang.msg("128"));
 			}
 			if (verificaPotenciaLimite(jogoServidor.getMediaPontecia(),
 					carreiraDadosSrv.getPtsCarro()
 							+ carreiraDadosSrv.getPtsAerodinamica()
-							+ carreiraDadosSrv.getPtsFreio(),
-					jogoServidor.getNiveljogo())) {
-				int permitidoAcimaMedia = 0;
-				if (InterfaceJogo.FACIL_NV == jogoServidor.getNiveljogo()) {
-					permitidoAcimaMedia = Constantes.ACIMA_MEDIA_FACIL;
-				}
-				if (InterfaceJogo.MEDIO_NV == jogoServidor.getNiveljogo()) {
-					permitidoAcimaMedia = Constantes.ACIMA_MEDIA_NORMAL;
-				}
-				String media = (jogoServidor.getMediaPontecia()
-						+ permitidoAcimaMedia) + "";
+							+ carreiraDadosSrv.getPtsFreio())) {
+				String media = (jogoServidor.getMediaPontecia()) + "";
 				return new MsgSrv(Lang.msg("261", new String[]{media}));
 
 			}
@@ -246,7 +220,7 @@ public class ControleJogosServer {
 
 	public boolean verificaJaEmAlgumJogo(SessaoCliente sessaoCliente) {
 		for (Iterator<SessaoCliente> iter = mapaJogosCriados.keySet()
-				.iterator(); iter.hasNext();) {
+				.iterator(); iter.hasNext(); ) {
 			SessaoCliente key = iter.next();
 			JogoServidor jogoServidor = (JogoServidor) mapaJogosCriados
 					.get(key);
@@ -260,7 +234,7 @@ public class ControleJogosServer {
 
 	public JogoServidor obterJogoPeloNome(String nomeJogo) {
 		for (Iterator<SessaoCliente> iter = mapaJogosCriados.keySet()
-				.iterator(); iter.hasNext();) {
+				.iterator(); iter.hasNext(); ) {
 			SessaoCliente key = iter.next();
 			JogoServidor jogoServidorTemp = (JogoServidor) mapaJogosCriados
 					.get(key);
@@ -276,7 +250,7 @@ public class ControleJogosServer {
 			return null;
 		}
 		for (Iterator<SessaoCliente> iter = mapaJogosCriados.keySet()
-				.iterator(); iter.hasNext();) {
+				.iterator(); iter.hasNext(); ) {
 			SessaoCliente key = iter.next();
 			JogoServidor jogoServidorTemp = (JogoServidor) mapaJogosCriados
 					.get(key);
@@ -359,8 +333,8 @@ public class ControleJogosServer {
 				.get(jogoServidor.getCircuito().getNome()));
 		dadosJogo.setTemporada(jogoServidor.getTemporada().replaceAll("t", ""));
 		Integer segundosParaIniciar = Integer.valueOf(Constantes.SEGUNDOS_PARA_INICIAR_CORRRIDA.intValue()
-                - Util.inteiro(((System.currentTimeMillis()
-                - jogoServidor.getTempoCriacao()) / 1000)));
+				- Util.inteiro(((System.currentTimeMillis()
+				- jogoServidor.getTempoCriacao()) / 1000)));
 		if (segundosParaIniciar.intValue() < 0) {
 			segundosParaIniciar = Integer.valueOf(0);
 		}
@@ -373,7 +347,7 @@ public class ControleJogosServer {
 		dadosJogo.setNumeroVotas(Integer.valueOf(jogoServidor.totalVoltasCorrida()));
 		dadosJogo.setEstado(jogoServidor.getEstado());
 		List pilotos = jogoServidor.getPilotosCopia();
-		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
+		for (Iterator iter = pilotos.iterator(); iter.hasNext(); ) {
 			Piloto piloto = (Piloto) iter.next();
 			piloto.setMelhorVolta(null);
 			Volta melhor = piloto.obterVoltaMaisRapida();
@@ -402,10 +376,10 @@ public class ControleJogosServer {
 		}
 		Piloto acharPiloto = null;
 		for (Iterator<SessaoCliente> iterator = mapaJogosCriados.keySet()
-				.iterator(); iterator.hasNext();) {
+				.iterator(); iterator.hasNext(); ) {
 			JogoServidor jogoServidor = mapaJogosCriados.get(iterator.next());
 			List piList = jogoServidor.getPilotos();
-			for (Iterator iter = piList.iterator(); iter.hasNext();) {
+			for (Iterator iter = piList.iterator(); iter.hasNext(); ) {
 				Piloto piloto = (Piloto) iter.next();
 				if (sessaoCliente.getIdPilotoAtual().intValue() == piloto
 						.getId()) {
@@ -419,7 +393,7 @@ public class ControleJogosServer {
 
 	/**
 	 * Big Change
-	 * 
+	 *
 	 * @param nomeJogo
 	 * @return
 	 */
@@ -443,7 +417,7 @@ public class ControleJogosServer {
 			Logger.logar("gerarPosicaoPilotos pilotos == null");
 			return null;
 		}
-		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
+		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext(); ) {
 			Piloto piloto = iter.next();
 			Posis posis = new Posis();
 			String statusPilotos = null;
@@ -511,10 +485,10 @@ public class ControleJogosServer {
 	}
 
 	public Boolean mudarGiroMotor(SessaoCliente sessaoCliente, String idPiloto,
-			String giro) {
+								  String giro) {
 		try {
-            // obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
-            Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
+			// obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
+			Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 			if (piloto == null) {
 				return null;
 			}
@@ -529,7 +503,7 @@ public class ControleJogosServer {
 	}
 
 	public Boolean mudarAgressividadePiloto(SessaoCliente sessaoCliente,
-			String idPiloto, String agressividade) {
+											String idPiloto, String agressividade) {
 		try {
 			if (!Piloto.LENTO.equals(agressividade)
 					&& !Piloto.AGRESSIVO.equals(agressividade)
@@ -552,10 +526,10 @@ public class ControleJogosServer {
 	}
 
 	public Piloto obterPilotoPorId(SessaoCliente sessaoCliente,
-			String idPiloto) {
+								   String idPiloto) {
 		Piloto acharPiloto = null;
 		for (Iterator<SessaoCliente> iterator = mapaJogosCriados.keySet()
-				.iterator(); iterator.hasNext();) {
+				.iterator(); iterator.hasNext(); ) {
 			JogoServidor jogoServidor = mapaJogosCriados.get(iterator.next());
 			if (!jogoServidor.getNomeJogoServidor()
 					.equals(sessaoCliente.getJogoAtual())) {
@@ -568,7 +542,7 @@ public class ControleJogosServer {
 				return null;
 			}
 			List piList = jogoServidor.getPilotos();
-			for (Iterator iter = piList.iterator(); iter.hasNext();) {
+			for (Iterator iter = piList.iterator(); iter.hasNext(); ) {
 				Piloto piloto = (Piloto) iter.next();
 				if (String.valueOf(piloto.getId()).equals(idPiloto)) {
 					acharPiloto = piloto;
@@ -581,7 +555,7 @@ public class ControleJogosServer {
 
 	public JogoServidor obterJogoPorSessaoCliente(SessaoCliente sessaoCliente) {
 		for (Iterator<SessaoCliente> iterator = mapaJogosCriados.keySet()
-				.iterator(); iterator.hasNext();) {
+				.iterator(); iterator.hasNext(); ) {
 			JogoServidor jogoServidor = mapaJogosCriados.get(iterator.next());
 			Map<String, DadosCriarJogo> mapJogadoresOnline = jogoServidor
 					.getMapJogadoresOnline();
@@ -658,7 +632,7 @@ public class ControleJogosServer {
 	public void removerJogo(JogoServidor servidor) {
 		SessaoCliente remover = null;
 		for (Iterator<SessaoCliente> iter = mapaJogosCriados.keySet()
-				.iterator(); iter.hasNext();) {
+				.iterator(); iter.hasNext(); ) {
 			SessaoCliente element = iter.next();
 			JogoServidor jogoServidor = (JogoServidor) mapaJogosCriados
 					.get(element);
@@ -674,9 +648,7 @@ public class ControleJogosServer {
 	}
 
 	/**
-	 * 
-	 * @param args
-	 *            args[0] jogo args[1] tokenJogador args[2] pilto Sel
+	 * @param args args[0] jogo args[1] tokenJogador args[2] pilto Sel
 	 * @return
 	 */
 	public Object obterDadosParciaisPilotos(String[] args) {
@@ -692,7 +664,7 @@ public class ControleJogosServer {
 	}
 
 	public DadosParciais obterDadosParciaisPilotos(String nomeJogo,
-			String tokenJogador, String idPilotoStr) {
+												   String tokenJogador, String idPilotoStr) {
 
 		JogoServidor jogoServidor = obterJogoPeloNome(nomeJogo);
 		if (jogoServidor == null) {
@@ -712,7 +684,7 @@ public class ControleJogosServer {
 		dadosParciais.estado = jogoServidor.getEstado();
 		dadosParciais.posisPack = gerarPosicaoPilotos(jogoServidor);
 		List<Piloto> pilotos = jogoServidor.getPilotosCopia();
-		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
+		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext(); ) {
 			Piloto piloto = iter.next();
 			if (Util.isNullOrEmpty(idPilotoStr)) {
 				break;
@@ -840,13 +812,13 @@ public class ControleJogosServer {
 				boolean frenteBox = false;
 				if (piloto.getCarroPilotoAtras() != null
 						&& jogoServidor.verificaNoPitLane(
-								piloto.getCarroPilotoAtras().getPiloto())) {
+						piloto.getCarroPilotoAtras().getPiloto())) {
 					atrasBox = true;
 				}
 				if (piloto.getCarroPilotoAtras() != null
 						&& piloto.getCarroPilotoDaFrente() != null
 						&& jogoServidor.verificaNoPitLane(
-								piloto.getCarroPilotoDaFrente().getPiloto())) {
+						piloto.getCarroPilotoDaFrente().getPiloto())) {
 					frenteBox = true;
 				}
 
@@ -880,7 +852,7 @@ public class ControleJogosServer {
 		}
 		boolean removeu = false;
 		for (Iterator<SessaoCliente> iter = mapaJogosCriados.keySet()
-				.iterator(); iter.hasNext();) {
+				.iterator(); iter.hasNext(); ) {
 			SessaoCliente element = iter.next();
 			JogoServidor jogoServidor = (JogoServidor) mapaJogosCriados
 					.get(element);
@@ -912,7 +884,7 @@ public class ControleJogosServer {
 	}
 
 	public Object mudarModoAutoPos(ClientPaddockPack clientPaddockPack,
-			boolean autoPos) {
+								   boolean autoPos) {
 		JogoServidor jogoServidor = obterJogoPeloNome(
 				clientPaddockPack.getNomeJogo());
 		if (jogoServidor == null) {
@@ -942,7 +914,7 @@ public class ControleJogosServer {
 	}
 
 	public Object mudarTracadoPiloto(SessaoCliente sessaoCliente,
-			String idPiloto, String tracado) {
+									 String idPiloto, String tracado) {
 		try {
 			if (!"0".equals(tracado) && !"1".equals(tracado)
 					&& !"2".equals(tracado)) {
@@ -955,7 +927,7 @@ public class ControleJogosServer {
 			}
 			piloto.setAtivarDRS(true);
 			return Boolean.valueOf(piloto.mudarTracado(Integer.parseInt(tracado),
-                    obterJogoPeloNome(sessaoCliente.getJogoAtual())));
+					obterJogoPeloNome(sessaoCliente.getJogoAtual())));
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -963,7 +935,7 @@ public class ControleJogosServer {
 	}
 
 	private Piloto obterPiloto(ClientPaddockPack clientPaddockPack,
-			JogoServidor jogoServidor) {
+							   JogoServidor jogoServidor) {
 		Piloto acharPiloto = obterPilotoLista(clientPaddockPack, jogoServidor);
 		int cont = 0;
 		while (acharPiloto == null && cont < 5) {
@@ -974,11 +946,11 @@ public class ControleJogosServer {
 	}
 
 	private Piloto obterPilotoLista(ClientPaddockPack clientPaddockPack,
-			JogoServidor jogoServidor) {
+									JogoServidor jogoServidor) {
 		try {
 			List piList = jogoServidor.getPilotos();
 			Piloto acharPiloto = null;
-			for (Iterator iter = piList.iterator(); iter.hasNext();) {
+			for (Iterator iter = piList.iterator(); iter.hasNext(); ) {
 				Piloto piloto = (Piloto) iter.next();
 				if (clientPaddockPack.getSessaoCliente().getToken()
 						.equals(piloto.getTokenJogador())) {
@@ -1175,10 +1147,10 @@ public class ControleJogosServer {
 			if (piloto == null) {
 				return Boolean.FALSE;
 			}
-            //obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
-            // obterJogoPorSessaoCliente(sessaoCliente).climaChuvoso();
-            //obterJogoPorSessaoCliente(sessaoCliente).forcaQuerbraAereofolio(piloto);
-            piloto.setAtivarErs(!piloto.isAtivarErs());
+			//obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
+			// obterJogoPorSessaoCliente(sessaoCliente).climaChuvoso();
+			//obterJogoPorSessaoCliente(sessaoCliente).forcaQuerbraAereofolio(piloto);
+			piloto.setAtivarErs(!piloto.isAtivarErs());
 			return Boolean.valueOf(piloto.isAtivarErs());
 		} catch (Exception e) {
 			Logger.logarExept(e);
@@ -1187,7 +1159,7 @@ public class ControleJogosServer {
 	}
 
 	public Object boxPiloto(SessaoCliente sessaoCliente, String idPiloto,
-			Boolean ativa, String pneu, Integer combustivel, String asa) {
+							Boolean ativa, String pneu, Integer combustivel, String asa) {
 		try {
 			Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 			if (piloto == null) {
@@ -1230,7 +1202,7 @@ public class ControleJogosServer {
 	public SrvPaddockPack obterDadosToken(String token) {
 		try {
 			List<SessaoCliente> clientes = dadosPaddock.getClientes();
-			for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {
+			for (Iterator iterator = clientes.iterator(); iterator.hasNext(); ) {
 				SessaoCliente sessaoCliente = (SessaoCliente) iterator.next();
 				if (sessaoCliente.getToken().equals(token)) {
 					SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
@@ -1285,7 +1257,7 @@ public class ControleJogosServer {
 	}
 
 	public Object gravarEquipe(SessaoCliente sessaoCliente, String idioma,
-			CarreiraDadosSrv equipe) {
+							   CarreiraDadosSrv equipe) {
 		return controleClassificacao.atualizaCarreira(sessaoCliente.getToken(),
 				equipe);
 	}

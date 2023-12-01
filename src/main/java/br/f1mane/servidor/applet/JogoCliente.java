@@ -82,7 +82,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 				pilotos = new ArrayList();
 			}
 			List pilotosList = dadosJogo.getPilotos();
-			for (Iterator iterator = pilotosList.iterator(); iterator.hasNext();) {
+			for (Iterator iterator = pilotosList.iterator(); iterator.hasNext(); ) {
 				Piloto object = (Piloto) iterator.next();
 				if (pilotos.contains(object)) {
 					throw new Exception("Piloto Repetido");
@@ -106,7 +106,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public void iniciarJogoOnline(DadosCriarJogo dadosParticiparJogo, String nomeJogoCriado,
-			ControlePaddockCliente controlePaddockCliente, SessaoCliente sessaoCliente, String nomePilotoJogador) {
+								  ControlePaddockCliente controlePaddockCliente, SessaoCliente sessaoCliente, String nomePilotoJogador) {
 		try {
 			if (getCircuito() == null) {
 				carregaRecursos((String) getCircuitos().get(dadosParticiparJogo.getCircuitoSelecionado()));
@@ -147,7 +147,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			gerenciadorVisual.iniciarInterfaceGraficaJogo();
 			controleEstatisticas.inicializarThreadConsumidoraInfo();
 		} catch (Exception e) {
-            StackTraceElement[] trace = e.getStackTrace();
+			StackTraceElement[] trace = e.getStackTrace();
 			StringBuilder retorno = new StringBuilder();
 			int size = ((trace.length > 10) ? 10 : trace.length);
 
@@ -231,7 +231,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public void efetuarSelecaoPilotoJogador(Object selec, Object tpneu, Object combust, String nomeJogador,
-			Object asa) {
+											Object asa) {
 
 	}
 
@@ -274,23 +274,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	public MainFrame getMainFrame() {
 		return mainFrame;
-	}
-
-	public String getNivelCorrida() {
-		return dadosParticiparJogo.getNivelCorrida();
-	}
-
-	public double getNiveljogo() {
-		if (InterfaceJogo.DIFICIL.equals(dadosParticiparJogo.getNivelCorrida())) {
-			return InterfaceJogo.DIFICIL_NV;
-		}
-		if (InterfaceJogo.NORMAL.equals(dadosParticiparJogo.getNivelCorrida())) {
-			return InterfaceJogo.MEDIO_NV;
-		}
-		if (InterfaceJogo.FACIL.equals(dadosParticiparJogo.getNivelCorrida())) {
-			return InterfaceJogo.FACIL_NV;
-		}
-		return 0;
 	}
 
 	public List<No> getNosDaPista() {
@@ -351,8 +334,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public boolean isChovendo() {
-        return Clima.CHUVA.equals(clima);
-    }
+		return Clima.CHUVA.equals(clima);
+	}
 
 	public boolean isCorridaTerminada() {
 		if (dadosJogo != null) {
@@ -468,7 +451,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		if (pilotoSelecionado != null) {
 			return;
 		}
-		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
+		for (Iterator iter = pilotos.iterator(); iter.hasNext(); ) {
 			Piloto piloto = (Piloto) iter.next();
 			if (tokenJogador.equals(piloto.getTokenJogador())) {
 				pilotoSelecionado = piloto;
@@ -550,7 +533,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	public Piloto getPilotoSelecionado() {
 		if (pilotoSelecionado != null) {
-			for (Iterator iter = getPilotosCopia().iterator(); iter.hasNext();) {
+			for (Iterator iter = getPilotosCopia().iterator(); iter.hasNext(); ) {
 				Piloto piloto = (Piloto) iter.next();
 				if (piloto.getId() == pilotoSelecionado.getId()) {
 					return piloto;
@@ -567,7 +550,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		safetyCar.setNoAtual(no);
 		safetyCar.setVaiProBox(safetySair);
 		if (safetySair) {
-			for (Iterator iterator = getPilotosCopia().iterator(); iterator.hasNext();) {
+			for (Iterator iterator = getPilotosCopia().iterator(); iterator.hasNext(); ) {
 				Piloto piloto = (Piloto) iterator.next();
 				if (piloto.isDesqualificado()) {
 					piloto.getCarro().setRecolhido(true);
@@ -586,7 +569,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	public Piloto getPilotoJogador() {
 		List<Piloto> pilotosCopia = getPilotosCopia();
-		for (Iterator iter = pilotosCopia.iterator(); iter.hasNext();) {
+		for (Iterator iter = pilotosCopia.iterator(); iter.hasNext(); ) {
 			Piloto piloto = (Piloto) iter.next();
 			if (piloto.getNome().equals(nomePilotoJogador)) {
 				return piloto;
@@ -595,14 +578,19 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return null;
 	}
 
+	@Override
+	public String getNivelJogo() {
+		return dadosParticiparJogo.getNivelJogo();
+	}
+
 	public void verificaMudancaClima(String climaNovo) {
 		if (clima != null && !clima.equals(climaNovo)) {
 			clima = climaNovo;
-			if (getNiveljogo() != InterfaceJogo.DIFICIL_NV)
+			if (!InterfaceJogo.DIFICIL.equals(getNivelJogo())) {
 				gerenciadorVisual.informaMudancaClima();
+			}
 		}
 	}
-
 	public void mudarGiroMotor(Object selectedItem) {
 		monitorJogo.mudarGiroMotor(selectedItem);
 
@@ -669,6 +657,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public int getMediaPontecia() {
 
 		return 0;
+	}
+
+	@Override
+	public void setNivelJogo(String niveljogo) {
+
 	}
 
 	@Override
@@ -985,7 +978,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 				&& pilotoSelecionado.getNoAtual().verificaRetaOuLargada() && pilotoSelecionado.getNumeroVolta() > 0
 				&& pilotoSelecionado.getPtosBox() == 0 && !Carro.MENOS_ASA.equals(pilotoSelecionado.getCarro().getAsa())
 				&& (obterCarroNaFrente(pilotoSelecionado) != null
-						&& obterCarroNaFrente(pilotoSelecionado).getPiloto().getPtosBox() == 0)
+				&& obterCarroNaFrente(pilotoSelecionado).getPiloto().getPtosBox() == 0)
 				&& calculaDiferencaParaProximoDouble(pilotoSelecionado) < 1) {
 			monitorJogo.mudarModoDRS(true);
 		}
@@ -1010,7 +1003,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	@Override
 	public void decrementaTracado() {
 		List<Piloto> pilotosCopia = getPilotosCopia();
-		for (Iterator iterator = pilotosCopia.iterator(); iterator.hasNext();) {
+		for (Iterator iterator = pilotosCopia.iterator(); iterator.hasNext(); ) {
 			Piloto piloto = (Piloto) iterator.next();
 			piloto.decIndiceTracado(this);
 		}
@@ -1090,9 +1083,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public void iniciarJogoMenuLocal(String circuitoSelecionado, String temporadaSelecionada, int numVoltasSelecionado,
-			int turbulenciaSelecionado, String climaSelecionado, String nivelSelecionado, Piloto pilotoSelecionado,
-			boolean kers, boolean drs, boolean trocaPneus, boolean reabastecimento, int combustivelSelecionado,
-			String asaSelecionado, String pneuSelecionado,boolean safetyCar) {
+									 int turbulenciaSelecionado, String climaSelecionado, String nivelSelecionado, Piloto pilotoSelecionado,
+									 boolean kers, boolean drs, boolean trocaPneus, boolean reabastecimento, int combustivelSelecionado,
+									 String asaSelecionado, String pneuSelecionado, boolean safetyCar) {
 		// TODO Auto-generated method stub
 
 	}
@@ -1105,8 +1098,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public Campeonato criarCampeonatoPiloto(List cirucitosCampeonato, String temporadaSelecionada,
-			int numVoltasSelecionado, int turbulenciaSelecionado, String climaSelecionado, String nivelSelecionado,
-			Piloto pilotoSelecionado, boolean kers, boolean drs, boolean trocaPneus, boolean reabastecimento) {
+											int numVoltasSelecionado, int turbulenciaSelecionado, String climaSelecionado, String nivelSelecionado,
+											Piloto pilotoSelecionado, boolean kers, boolean drs, boolean trocaPneus, boolean reabastecimento) {
 		return null;
 	}
 
@@ -1129,7 +1122,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public void iniciarJogoCapeonatoMenuLocal(Campeonato campeonato, int combustivelSelecionado, String asaSelecionado,
-			String pneuSelecionado, String clima) throws Exception {
+											  String pneuSelecionado, String clima) throws Exception {
 		// TODO Auto-generated method stub
 
 	}
@@ -1368,8 +1361,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		// TODO Auto-generated method stub
 
 	}
-	
-	
+
+
 	@Override
 	public String getVantagem() {
 		return vantagem;

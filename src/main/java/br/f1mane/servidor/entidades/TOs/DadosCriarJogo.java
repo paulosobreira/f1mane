@@ -40,7 +40,7 @@ public class DadosCriarJogo implements Serializable {
 	private String circuitoSelecionado = null;
 	private String clima = null;
 	private Integer qtdeVoltas = null;
-	private String nivelCorrida = null;
+	private String nivelJogo = null;
 	private List pilotosCarreira;
 	private boolean reabastecimento;
 	private boolean trocaPneu;
@@ -49,8 +49,8 @@ public class DadosCriarJogo implements Serializable {
 	private boolean safetyCar = true;
 
 	public static DadosCriarJogo gerarJogoLetsRace(String temporada,
-			String arquivoCircuito, String idPiloto, String numVoltas,
-			String tipoPneu, String combustivel, String asa)
+												   String arquivoCircuito, String idPiloto, String numVoltas,
+												   String tipoPneu, String combustivel, String asa)
 			throws ClassNotFoundException, IOException {
 		Logger.logar("gerarJogoLetsRace temporada " + temporada);
 		Logger.logar("gerarJogoLetsRace arquivoCircuito " + arquivoCircuito);
@@ -75,7 +75,7 @@ public class DadosCriarJogo implements Serializable {
 		// pista = "Monte Carlo";
 		// dadosCriarJogo.setSafetyCar(false);
 		dadosCriarJogo.setCircuitoSelecionado(pista);
-		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
+		dadosCriarJogo.setNivelJogo(ControleJogoLocal.NORMAL);
 		dadosCriarJogo.setAsa(asa);
 		dadosCriarJogo.setTpPneu(tipoPneu);
 		Circuito circuitoObj = CarregadorRecursos
@@ -195,12 +195,12 @@ public class DadosCriarJogo implements Serializable {
 		this.diffultrapassagem = diffultrapassagem;
 	}
 
-	public String getNivelCorrida() {
-		return nivelCorrida;
+	public String getNivelJogo() {
+		return nivelJogo;
 	}
 
-	public void setNivelCorrida(String nivelCorrida) {
-		this.nivelCorrida = nivelCorrida;
+	public void setNivelJogo(String nivelJogo) {
+		this.nivelJogo = nivelJogo;
 	}
 
 	public String getNomeJogo() {

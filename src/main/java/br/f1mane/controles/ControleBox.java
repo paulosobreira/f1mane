@@ -222,13 +222,7 @@ public class ControleBox {
             }
 
             if (piloto.getPtosBox() < boxList.size()) {
-                if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
-                    piloto.decStress(1);
-                } else if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV) {
-                    piloto.decStress(2);
-                } else if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
-                    piloto.decStress(3);
-                }
+                piloto.decStress(2);
                 piloto.setNoAtual((No) boxList.get(piloto.getPtosBox()));
             } else {
                 processarPilotoSairBox(piloto, controleJogo);
@@ -339,7 +333,7 @@ public class ControleBox {
             }
         }
         carro.setDanificado(null, controleJogo);
-        if (carro.getDurabilidadeAereofolio() <= 0 || InterfaceJogo.DIFICIL_NV != controleJogo.getNiveljogo()) {
+        if (carro.getDurabilidadeAereofolio() <= 0) {
             carro.setDurabilidadeAereofolio(InterfaceJogo.DURABILIDADE_AREOFOLIO);
         }
         if (controleJogo.isErs()) {
@@ -543,8 +537,7 @@ public class ControleBox {
                 piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_MOLE, controleCorrida.getDistaciaCorrida());
             }
         }
-        if (!(InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()))
-            processarTipoAsaAutomatico(piloto);
+        processarTipoAsaAutomatico(piloto);
 
         int percentagem;
 

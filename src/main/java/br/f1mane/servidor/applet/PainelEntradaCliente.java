@@ -482,7 +482,7 @@ public class PainelEntradaCliente {
 		dadosCriarJogo.setDiffultrapassagem(Integer.valueOf(sliderDificuldadeUltrapassagem.getValue()));
 		String circuitoSelecionado = (String) comboBoxCircuito.getSelectedItem();
 		dadosCriarJogo.setCircuitoSelecionado(circuitoSelecionado);
-		dadosCriarJogo.setNivelCorrida(Lang.key(comboBoxNivelCorrida.getSelectedItem().toString()));
+		dadosCriarJogo.setNivelJogo(Lang.key(comboBoxNivelCorrida.getSelectedItem().toString()));
 		dadosCriarJogo.setClima(((Clima) comboBoxClimaInicial.getSelectedItem()).getClima());
 		dadosCriarJogo.setReabastecimento(reabastecimento.isSelected());
 		dadosCriarJogo.setTrocaPneu(trocaPneu.isSelected());
@@ -513,7 +513,7 @@ public class PainelEntradaCliente {
 	}
 
 	public boolean gerarDadosEntrarJogo(DadosCriarJogo dadosParticiparJogo, JPanel panelJogoCriado, String circuito,
-			String temporada, String clima) {
+										String temporada, String clima) {
 		JPanel painelInicio = new JPanel();
 		gerarPainelParticiparJogo(painelInicio, clima);
 		JPanel panel = new JPanel(new BorderLayout());

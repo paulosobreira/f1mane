@@ -35,8 +35,7 @@ public class ControleJogoLocal extends ControleRecursos
     protected ControleCampeonato controleCampeonato;
 
     protected final List pilotosJogadores = new ArrayList();
-    protected double niveljogo = InterfaceJogo.MEDIO_NV;
-    protected String nivelCorrida;
+    protected String niveljogo = InterfaceJogo.NORMAL;
     protected boolean corridaTerminada;
     protected boolean trocaPneu;
     protected boolean reabastecimento;
@@ -104,21 +103,6 @@ public class ControleJogoLocal extends ControleRecursos
         return piloto.getTipoPneuJogador();
     }
 
-    protected void setarNivelCorrida() {
-        if (ControleJogoLocal.FACIL.equals(getNivelCorrida())) {
-            niveljogo = FACIL_NV;
-        } else if (ControleJogoLocal.DIFICIL.equals(getNivelCorrida())) {
-            niveljogo = DIFICIL_NV;
-        }
-    }
-
-    /**
-     * @see br.f1mane.controles.InterfaceJogo#setNiveljogo(double)
-     */
-    public void setNiveljogo(double niveljogo) {
-        this.niveljogo = niveljogo;
-    }
-
     /**
      * @see br.f1mane.controles.InterfaceJogo#isCorridaTerminada()
      */
@@ -145,20 +129,6 @@ public class ControleJogoLocal extends ControleRecursos
      */
     public MainFrame getMainFrame() {
         return mainFrame;
-    }
-
-    /**
-     * @see br.f1mane.controles.InterfaceJogo#getNivelCorrida()
-     */
-    public String getNivelCorrida() {
-        return nivelCorrida;
-    }
-
-    /**
-     * @see br.f1mane.controles.InterfaceJogo#setNivelCorrida(java.lang.String)
-     */
-    public void setNivelCorrida(String nivelCorrida) {
-        this.nivelCorrida = nivelCorrida;
     }
 
     /**
@@ -209,13 +179,6 @@ public class ControleJogoLocal extends ControleRecursos
         }
     }
 
-    public boolean verificaNivelJogo() {
-        return Math.random() < getNiveljogo();
-    }
-
-    /**
-     * @see br.f1mane.controles.InterfaceJogo#getClima()
-     */
     public String getClima() {
         if (controleCorrida != null)
             return controleCorrida.getControleClima().getClima();
@@ -356,16 +319,10 @@ public class ControleJogoLocal extends ControleRecursos
         controleCorrida.verificaAcidente(piloto);
     }
 
-    /**
-     * @see br.f1mane.controles.InterfaceJogo#getNiveljogo()
-     */
-    public double getNiveljogo() {
+    public String getNiveljogo() {
         return niveljogo;
     }
 
-    /**
-     *
-     */
     public void efetuarSelecaoPilotoJogador(Object selec, Object tpneu,
                                             Object combust, String nomeJogador, Object asa) {
         pilotoJogador = (Piloto) selec;
@@ -590,9 +547,8 @@ public class ControleJogoLocal extends ControleRecursos
             carregaRecursos((String) getCircuitos().get(circuitoSelecionado),
                     gerenciadorVisual.getListaPilotosCombo(),
                     gerenciadorVisual.getListaCarrosCombo());
-            this.nivelCorrida = Lang.key(gerenciadorVisual
+            this.niveljogo = Lang.key(gerenciadorVisual
                     .getComboBoxNivelCorrida().getSelectedItem().toString());
-            setarNivelCorrida();
             controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
                     diffultrapassagem.intValue());
             controleCorrida.getControleClima()
@@ -654,11 +610,10 @@ public class ControleJogoLocal extends ControleRecursos
         this.ers = ers;
         this.drs = drs;
         this.safetyCar = safetycar;
-        this.nivelCorrida = nivelSelecionado;
+        this.niveljogo = nivelSelecionado;
         setTemporada("t" + temporadaSelecionada);
         carregarPilotosCarros();
         carregaRecursos((String) getCircuitos().get(circuitoSelecionado));
-        setarNivelCorrida();
         List<Piloto> pilotosList = getPilotos();
         for (Iterator iterator = pilotosList.iterator(); iterator.hasNext(); ) {
             Piloto piloto = (Piloto) iterator.next();
@@ -907,6 +862,17 @@ public class ControleJogoLocal extends ControleRecursos
         }
         int mediaPontecia = somaPontecias / (getCarros().size());
         return mediaPontecia;
+    }
+
+    @Override
+    public String getNivelJogo() {
+        return niveljogo;
+    }
+
+    @Override
+    public void setNivelJogo(String niveljogo) {
+        this.niveljogo = niveljogo;
+
     }
 
     @Override
@@ -1596,7 +1562,6 @@ public class ControleJogoLocal extends ControleRecursos
         campos.add(
                 "FatorUtrapassagem = " + this.getFatorUtrapassagem() + "<br>");
         campos.add("FatorAcidente = " + this.getFatorAcidente() + "<br>");
-        campos.add("verificaNivelJogo = " + this.verificaNivelJogo() + "<br>");
         campos.add("NumVoltaAtual = " + this.getNumVoltaAtual() + "<br>");
         campos.add(
                 "totalVoltasCorrida = " + this.totalVoltasCorrida() + "<br>");

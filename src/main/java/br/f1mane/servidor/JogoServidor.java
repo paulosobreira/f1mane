@@ -1,19 +1,5 @@
 package br.f1mane.servidor;
 
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import br.f1mane.servidor.controles.ControleCampeonatoServidor;
-import br.f1mane.servidor.controles.ControleClassificacao;
-import br.f1mane.servidor.controles.ControleJogosServer;
-import br.nnpe.Constantes;
-import br.nnpe.Html;
-import br.nnpe.Logger;
-import br.nnpe.Util;
 import br.f1mane.controles.ControleCorrida;
 import br.f1mane.controles.ControleEstatisticas;
 import br.f1mane.controles.ControleJogoLocal;
@@ -21,17 +7,21 @@ import br.f1mane.controles.InterfaceJogo;
 import br.f1mane.entidades.Carro;
 import br.f1mane.entidades.Clima;
 import br.f1mane.entidades.Piloto;
+import br.f1mane.recursos.idiomas.Lang;
+import br.f1mane.servidor.controles.ControleCampeonatoServidor;
+import br.f1mane.servidor.controles.ControleClassificacao;
+import br.f1mane.servidor.controles.ControleJogosServer;
 import br.f1mane.servidor.entidades.BufferTexto;
 import br.f1mane.servidor.entidades.Comandos;
-import br.f1mane.servidor.entidades.TOs.DadosCriarJogo;
-import br.f1mane.servidor.entidades.TOs.DetalhesJogo;
-import br.f1mane.servidor.entidades.TOs.MsgSrv;
-import br.f1mane.servidor.entidades.TOs.SessaoCliente;
-import br.f1mane.servidor.entidades.TOs.SrvPaddockPack;
-import br.f1mane.servidor.entidades.TOs.TravadaRoda;
-import br.f1mane.servidor.entidades.TOs.VoltaJogadorOnline;
+import br.f1mane.servidor.entidades.TOs.*;
 import br.f1mane.servidor.entidades.persistencia.CarreiraDadosSrv;
-import br.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Constantes;
+import br.nnpe.Html;
+import br.nnpe.Logger;
+import br.nnpe.Util;
+
+import java.awt.image.BufferedImage;
+import java.util.*;
 
 /**
  * @author Paulo Sobreira Criado em 29/07/2007 as 18:28:27
@@ -64,7 +54,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		controleEstatisticas = new ControleEstatisticas(JogoServidor.this);
 		processarEntradaDados();
 		carregaRecursos((String) getCircuitos().get(circuitoSelecionado));
-		setarNivelCorrida();
 		controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
 				diffultrapassagem.intValue());
 		controleCorrida.getControleClima()
@@ -90,7 +79,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		super.processaNovaVolta();
 		List voltasJogadoresOnline = new ArrayList();
 
-		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
+		for (Iterator iter = pilotos.iterator(); iter.hasNext(); ) {
 			Piloto piloto = (Piloto) iter.next();
 
 			if (piloto.isJogadorHumano()
@@ -118,14 +107,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	public void setNomeCriador(String nomeCriador) {
 		this.nomeCriador = nomeCriador;
-	}
-
-	public void setarNivelCorrida() {
-		if (ControleJogoLocal.FACIL.equals(getNivelCorrida())) {
-			niveljogo = FACIL_NV;
-		} else if (ControleJogoLocal.DIFICIL.equals(getNivelCorrida())) {
-			niveljogo = DIFICIL_NV;
-		}
 	}
 
 	public String getEstado() {
@@ -174,13 +155,13 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	public Object adicionarJogador(SessaoCliente sessaoCliente,
-			DadosCriarJogo dadosParticiparJogo) {
+								   DadosCriarJogo dadosParticiparJogo) {
 		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
-				.hasNext();) {
+				.hasNext(); ) {
 			String key = (String) iter.next();
 			DadosCriarJogo valor = (DadosCriarJogo) mapJogadoresOnline.get(key);
 			if (dadosParticiparJogo.getIdPiloto() == valor.getIdPiloto()) {
-				for (Iterator iter2 = pilotos.iterator(); iter2.hasNext();) {
+				for (Iterator iter2 = pilotos.iterator(); iter2.hasNext(); ) {
 					Piloto piloto = (Piloto) iter2.next();
 					if (piloto.getId() == dadosParticiparJogo.getIdPiloto()) {
 						if (sessaoCliente.isGuest()) {
@@ -196,7 +177,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			}
 		}
 		boolean pilotoDisponivel = false;
-		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
+		for (Iterator iter = pilotos.iterator(); iter.hasNext(); ) {
 			Piloto piloto = (Piloto) iter.next();
 			if (piloto.getId() == dadosParticiparJogo.getIdPiloto()) {
 				pilotoDisponivel = true;
@@ -224,7 +205,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	public void preencherDetalhes(DetalhesJogo detalhesJogo) {
 		Map<String, String> detMap = detalhesJogo.getJogadoresPilotos();
 		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
-				.hasNext();) {
+				.hasNext(); ) {
 			String key = (String) iter.next();
 			DadosCriarJogo valor = (DadosCriarJogo) mapJogadoresOnline.get(key);
 			CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
@@ -240,7 +221,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			if (obterDadosToken != null
 					&& obterDadosToken.getSessaoCliente() != null
 					&& obterDadosToken.getSessaoCliente()
-							.getNomeJogador() != null) {
+					.getNomeJogador() != null) {
 				detMap.put(obterDadosToken.getSessaoCliente().getNomeJogador(),
 						piloto);
 			}
@@ -253,7 +234,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	protected void processarEntradaDados() throws Exception {
 		try {
-			this.nivelCorrida = dadosCriarJogo.getNivelCorrida();
+			this.niveljogo = dadosCriarJogo.getNivelJogo();
 
 			qtdeVoltas = dadosCriarJogo.getQtdeVoltas();
 			if (qtdeVoltas.intValue() <= Constantes.MIN_VOLTAS) {
@@ -303,7 +284,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		Logger.logar("controleCorrida.gerarGridLargada();");
 		setEstado(Comandos.MOSTRANDO_QUALIFY);
 		List carrobox = new ArrayList();
-		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext(); ) {
 			Piloto piloto = (Piloto) iterator.next();
 			if (!carrobox.contains(piloto.getCarro())) {
 				carrobox.add(piloto.getCarro());
@@ -328,31 +309,25 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	public String getNivelCorrida() {
-		return dadosCriarJogo.getNivelCorrida();
+		return dadosCriarJogo.getNivelJogo();
 	}
 
-	public double getNiveljogo() {
-		if (InterfaceJogo.DIFICIL.equals(dadosCriarJogo.getNivelCorrida())) {
-			return InterfaceJogo.DIFICIL_NV;
-		}
-		if (InterfaceJogo.FACIL.equals(dadosCriarJogo.getNivelCorrida())) {
-			return InterfaceJogo.FACIL_NV;
-		}
-        return InterfaceJogo.MEDIO_NV;
+	public String getNiveljogo() {
+		return dadosCriarJogo.getNivelJogo();
 	}
 
 	public void atualizarJogadoresOnline() {
 		try {
 			synchronized (lock) {
 				for (Iterator<String> iter = mapJogadoresOnline.keySet()
-						.iterator(); iter.hasNext();) {
+						.iterator(); iter.hasNext(); ) {
 					String key = iter.next();
 					SrvPaddockPack srvPaddockPack = controleJogosServer
 							.obterDadosToken(key);
 					DadosCriarJogo dadosParticiparJogo = mapJogadoresOnline
 							.get(key);
 					for (Iterator<Piloto> iterator = pilotos
-							.iterator(); iterator.hasNext();) {
+							.iterator(); iterator.hasNext(); ) {
 						Piloto piloto = iterator.next();
 						if (piloto.getId() == dadosParticiparJogo
 								.getIdPiloto()) {
@@ -379,12 +354,12 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	public void atualizarJogadoresOnlineCarreira() {
 		try {
 			for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
-					.hasNext();) {
+					.hasNext(); ) {
 				String token = (String) iter.next();
 				DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
 						.get(token);
 				for (Iterator iterator = pilotos.iterator(); iterator
-						.hasNext();) {
+						.hasNext(); ) {
 					Piloto piloto = (Piloto) iterator.next();
 					if (piloto.getId() == dadosParticiparJogo.getIdPiloto()) {
 						controleClassificacao.atualizarJogadoresOnlineCarreira(
@@ -435,7 +410,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	public int setUpJogadorHumano(Piloto pilotoJogador, Object tpPneu,
-			Object combust, Object asa) {
+								  Object combust, Object asa) {
 		return super.setUpJogadorHumano(pilotoJogador, tpPneu, combust, asa);
 	}
 
@@ -468,7 +443,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			return;
 		}
 		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
-				.hasNext();) {
+				.hasNext(); ) {
 			String key = (String) iter.next();
 			BufferTexto bufferTexto = (BufferTexto) mapJogadoresOnlineTexto
 					.get(key);
@@ -484,7 +459,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			return;
 		}
 		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
-				.hasNext();) {
+				.hasNext(); ) {
 			String key = (String) iter.next();
 			BufferTexto bufferTexto = (BufferTexto) mapJogadoresOnlineTexto
 					.get(key);
@@ -504,7 +479,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 					tempoFim = System.currentTimeMillis();
 					try {
 						for (Iterator iter = mapJogadoresOnline.keySet()
-								.iterator(); iter.hasNext();) {
+								.iterator(); iter.hasNext(); ) {
 							String key = (String) iter.next();
 							SrvPaddockPack obterDadosToken = controleJogosServer
 									.obterDadosToken(key);
@@ -560,7 +535,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			return false;
 		}
 		List pilotos = getPilotos();
-		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
+		for (Iterator iter = pilotos.iterator(); iter.hasNext(); ) {
 			Piloto piloto = (Piloto) iter.next();
 			if (token.equals(piloto.getTokenJogador())) {
 				removeJogadroPiloto(piloto);
@@ -612,7 +587,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	public int getNumJogadores() {
 		int cont = 0;
 		List piList = getPilotos();
-		for (Iterator iter = piList.iterator(); iter.hasNext();) {
+		for (Iterator iter = piList.iterator(); iter.hasNext(); ) {
 			Piloto piloto = (Piloto) iter.next();
 			if (piloto.isJogadorHumano()) {
 				cont++;

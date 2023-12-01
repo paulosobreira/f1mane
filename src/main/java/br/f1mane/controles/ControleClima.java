@@ -65,22 +65,22 @@ public class ControleClima {
 		int val = 1 + (int) (Math.random() * 3);
 
 		switch (val) {
-			case 1 :
+			case 1:
 				clima = Clima.SOL;
 
 				break;
 
-			case 2 :
+			case 2:
 				clima = Clima.NUBLADO;
 
 				break;
 
-			case 3 :
+			case 3:
 				clima = Clima.CHUVA;
 
 				break;
 
-			default :
+			default:
 				break;
 		}
 	}
@@ -90,15 +90,10 @@ public class ControleClima {
 			clima = Clima.SOL;
 			return;
 		}
-
-		if (Math.random() > controleJogo.getNiveljogo()) {
-			return;
-		}
 		if ((voltaMudancaClima + intervaloMudancaClima) > controleJogo
 				.getNumVoltaAtual()) {
 			return;
 		}
-
 		voltaMudancaClima = controleJogo.getNumVoltaAtual();
 		if (intervaloMudancaClima == 0) {
 			intervaloMudancaClima = quartoVoltas
@@ -122,7 +117,7 @@ public class ControleClima {
 			controleJogo.infoPrioritaria(Html.msgClima(Lang.msg("006")));
 			Logger.logar("CHUVA");
 		}
-		if (controleJogo.getNiveljogo() != InterfaceJogo.DIFICIL_NV)
+		if (!InterfaceJogo.DIFICIL.equals(controleJogo.getNivelJogo()))
 			controleJogo.informaMudancaClima();
 	}
 
@@ -132,7 +127,7 @@ public class ControleClima {
 				+ ((int) (Math.random() * quartoVoltas));
 		if (intervaloMudancaClima > 0 && (controleJogo
 				.totalVoltasCorrida() > (controleJogo.getNumVoltaAtual()
-						+ intervaloMudancaClima))) {
+				+ intervaloMudancaClima))) {
 			controleJogo.infoPrioritaria(Html.msgClima(Html.msgClima(
 					Lang.msg("007", new Object[]{Integer.valueOf(intervaloMudancaClima)}))));
 		}
@@ -151,8 +146,6 @@ public class ControleClima {
 		if (Math.random() > 0.5) {
 			intervaloMudancaClima = intervaloMudancaClima / 2;
 		}
-		intervaloMudancaClima = (int) (intervaloMudancaClima
-				* (1 - controleJogo.getNiveljogo()));
 	}
 
 	public void matarThreads() {

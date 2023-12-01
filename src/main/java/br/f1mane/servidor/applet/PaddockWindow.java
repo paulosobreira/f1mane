@@ -634,7 +634,7 @@ public class PaddockWindow {
             }
         });
         panelJogo.add(
-                new JLabel(detalhesJogo.getDadosCriarJogo().getNivelCorrida()));
+                new JLabel(detalhesJogo.getDadosCriarJogo().getNivelJogo()));
         panelJogo.add(new JLabel("Hora Criação : ") {
             public String getText() {
                 return Lang.msg("192");

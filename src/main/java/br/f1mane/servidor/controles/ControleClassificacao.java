@@ -28,7 +28,7 @@ public class ControleClassificacao {
 	 * @param controlePersistencia
 	 */
 	public ControleClassificacao(ControlePersistencia controlePersistencia,
-			ControleCampeonatoServidor controleCampeonatoServidor) {
+								 ControleCampeonatoServidor controleCampeonatoServidor) {
 		super();
 		this.controlePersistencia = controlePersistencia;
 		this.controleCampeonatoServidor = controleCampeonatoServidor;
@@ -75,7 +75,7 @@ public class ControleClassificacao {
 	}
 
 	public void processaCorrida(long tempoInicio, long tempoFim, Map mapVoltasJogadoresOnline, List pilotos,
-			DadosCriarJogo dadosCriarJogo) {
+								DadosCriarJogo dadosCriarJogo) {
 		if (!Constantes.DATABASE) {
 			return;
 		}
@@ -98,7 +98,7 @@ public class ControleClassificacao {
 					corridasDadosSrv.setTempoFim(tempoFim);
 					corridasDadosSrv.setCircuito(dadosCriarJogo.getCircuitoSelecionado());
 					corridasDadosSrv.setNumVoltas(dadosCriarJogo.getQtdeVoltas().intValue());
-					corridasDadosSrv.setNivel(dadosCriarJogo.getNivelCorrida());
+					corridasDadosSrv.setNivel(dadosCriarJogo.getNivelJogo());
 					int pts = gerarPontos(piloto);
 					CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
 							.carregaCarreiraJogador(piloto.getTokenJogador(), false, session);
@@ -398,8 +398,8 @@ public class ControleClassificacao {
 					Piloto piloto = (Piloto) iterator.next();
 					if (piloto.getCarro().getId() == carreiraDados.getIdCarroLivery().intValue()
 							&& (piloto.getCarro().getPotenciaReal() > carreiraDados.getPtsCarro()
-									|| piloto.getCarro().getAerodinamica() > carreiraDados.getPtsAerodinamica()
-									|| piloto.getCarro().getFreios() > carreiraDados.getPtsFreio())) {
+							|| piloto.getCarro().getAerodinamica() > carreiraDados.getPtsAerodinamica()
+							|| piloto.getCarro().getFreios() > carreiraDados.getPtsFreio())) {
 						return new MsgSrv(Lang.msg("pinturaCarro",
 								new String[] { String.valueOf(piloto.getCarro().getPotenciaReal()),
 										String.valueOf(piloto.getCarro().getAerodinamica()),
@@ -439,7 +439,7 @@ public class ControleClassificacao {
 	}
 
 	public static int validadeDistribuicaoPontos(CarreiraDadosSrv carreiraDadosSrv, int ptsAerodinamica, int ptsCarro,
-			int ptsFreio, int ptsPiloto) {
+												 int ptsFreio, int ptsPiloto) {
 		int ptsConstrutoresBase = carreiraDadosSrv.getPtsConstrutores();
 		int ptsAerodinamicaBase = carreiraDadosSrv.getPtsAerodinamica();
 		int ptsCarroBase = carreiraDadosSrv.getPtsCarro();

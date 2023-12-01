@@ -270,12 +270,6 @@ public class ControleQualificacao {
             }
             Carro carro = piloto.getCarro();
             carro.setTempMax(carro.getPotencia() / 4);
-            if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-                carro.setTempMax(carro.getPotencia() / 2);
-            }
-            if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
-                carro.setTempMax(carro.getPotencia() / 6);
-            }
             carro.setDurabilidadeAereofolio(
                     InterfaceJogo.DURABILIDADE_AREOFOLIO);
             piloto.calculaCarrosAdjacentes(controleJogo);

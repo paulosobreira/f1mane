@@ -377,16 +377,14 @@ public class GerenciadorVisual {
                     mudarModoPilotagem(Piloto.AGRESSIVO);
                 }
 
-                if (controleJogo.getNiveljogo() != InterfaceJogo.DIFICIL_NV) {
-                    if (keyCoode == KeyEvent.VK_Q) {
-                        controleJogo.pilotoSelecionadoMinimo();
-                    }
-                    if (keyCoode == KeyEvent.VK_W) {
-                        controleJogo.pilotoSelecionadoNormal();
-                    }
-                    if (keyCoode == KeyEvent.VK_E) {
-                        controleJogo.pilotoSelecionadoMaximo();
-                    }
+                if (keyCoode == KeyEvent.VK_Q) {
+                    controleJogo.pilotoSelecionadoMinimo();
+                }
+                if (keyCoode == KeyEvent.VK_W) {
+                    controleJogo.pilotoSelecionadoNormal();
+                }
+                if (keyCoode == KeyEvent.VK_E) {
+                    controleJogo.pilotoSelecionadoMaximo();
                 }
 
                 if (keyCoode == KeyEvent.VK_ESCAPE) {
