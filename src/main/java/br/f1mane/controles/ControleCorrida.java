@@ -58,12 +58,12 @@ public class ControleCorrida {
 
     public ControleCorrida(ControleJogoLocal jogo, int qtdeVoltas, double fatorUtr) throws Exception {
         controleJogo = jogo;
-        this.fatorUtrapassagem = fatorUtr / 1000;
-        if (this.fatorUtrapassagem > 0.5) {
-            this.fatorUtrapassagem = 0.5;
+        double fatorUtrapassagem = fatorUtr / 1000;
+        if (fatorUtrapassagem > 0.5) {
+            fatorUtrapassagem = 0.5;
         }
+        this.fatorUtrapassagem = 1.0 - fatorUtrapassagem;
         this.velocidadePista = controleJogo.getCircuito().getVelocidadePista();
-        this.fatorUtrapassagem = 1.0 - this.fatorUtrapassagem;
         int valCalc = (qtdeVoltas < 14 ? 14 : qtdeVoltas);
         distaciaCorrida = jogo.getNosDaPista().size() * valCalc;
         definirDurabilidadeMotores();

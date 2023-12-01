@@ -907,7 +907,7 @@ public class ControleJogoLocal extends ControleRecursos
         if (controleCorrida != null) {
             return controleCorrida.getFatorUtrapassagem();
         }
-        return 0;
+        return 1;
     }
 
     @Override
