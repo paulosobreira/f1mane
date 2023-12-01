@@ -603,9 +603,9 @@ public class Carro implements Serializable {
                 int intervaloMin = Util.intervalo(mod, 10 + mod);
                 if ((porcentagemDesgastePneus > intervaloMin) && pneuAquecido
                         && (controleJogo.verificaPistaEmborrachada())) {
-                    ganho *= 1.1;
+                    ganho *= 1.07;
                 } else if ((porcentagemDesgastePneus < intervaloMin || !pneuAquecido)) {
-                    ganho *= getPiloto().testeHabilidadePilotoFreios(controleJogo) ? 1.1 : 1.05;
+                    ganho *= getPiloto().testeHabilidadePilotoFreios(controleJogo) ? 1.07 : 1.03;
                 }
             } else if (no.verificaCurvaBaixa()) {
                 int mod = 0;
@@ -616,9 +616,9 @@ public class Carro implements Serializable {
                 if ((porcentagemDesgastePneus > intervaloMin) && pneuAquecido
                         && (controleJogo.verificaPistaEmborrachada())) {
                     if (porcentagemDesgastePneus > (intervaloMin + 10))
-                        ganho *= 1.1;
+                        ganho *= 1.08;
                 } else if ((porcentagemDesgastePneus < intervaloMin || !pneuAquecido)) {
-                    ganho *= getPiloto().testeHabilidadePilotoFreios(controleJogo) ? 1.1 : 1.05;
+                    ganho *= getPiloto().testeHabilidadePilotoFreios(controleJogo) ? 1.08 : 1.04;
                 }
             }
         }
@@ -690,7 +690,7 @@ public class Carro implements Serializable {
         getPiloto().setMarcaPneu(false);
         int desgPneus = 10;
         if (no.verificaCurvaBaixa()) {
-            int stress = Util.intervalo(20, 30);
+            int stress = Util.intervalo(10, 20);
             getPiloto().incStress(getPiloto().testeHabilidadePilotoAerodinamicaFreios(controleJogo) ? stress - 1 : stress);
             if (!controleJogo.isChovendo() && getPiloto().getPtosBox() == 0) {
                 boolean teste = getPiloto().testeHabilidadePilotoAerodinamicaFreios(controleJogo);
@@ -730,7 +730,7 @@ public class Carro implements Serializable {
                 if (getPiloto().getStress() > 60 && !controleJogo.isChovendo() && getPiloto().getPtosBox() == 0
                         && noFrente.verificaCurvaBaixa()) {
                     controleJogo.travouRodas(getPiloto(), true);
-                    getPiloto().incStress(getPiloto().testeHabilidadePiloto() ? 1 : 5);
+                    getPiloto().incStress(getPiloto().testeHabilidadePiloto() ? 1 : 3);
                     if (controleJogo.asfaltoAbrasivo() && getPiloto().getStress() > 80 && !controleJogo.isChovendo()
                             && noFrente.verificaCurvaAlta() && Math.random() > 0.7) {
                         controleJogo.travouRodas(getPiloto(), true);
@@ -760,12 +760,12 @@ public class Carro implements Serializable {
         if (controleJogo.asfaltoAbrasivo()) {
             desgPneus *= 1.5;
         }
-        double fatorComb = porcentagemCombustivel / 50.0;
+        double fatorComb = 2 - (1 + porcentagemCombustivel / 1000.0);
         if (no.verificaRetaOuLargada()) {
             fatorComb = 1;
         }
-        if (fatorComb < 0.7) {
-            fatorComb = 0.7;
+        if (fatorComb < 0.9) {
+            fatorComb = 0.9;
         }
         double valDesgaste = (desgPneus * fatorComb);
 

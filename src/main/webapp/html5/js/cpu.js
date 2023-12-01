@@ -30,7 +30,6 @@ var sleepMain = sleepDefault;
 var loader = $('<div class="loader"></div>');
 $('body').prepend(loader);
 var $loading = loader.hide();
-var pisca = false;
 
 function cpu_main() {
 	sleepMain = sleepDefault;
@@ -213,7 +212,6 @@ var fila = setInterval(function() {
 
 // update canvas with some information and animation
 var fps = new FpsCtrl(30, function(e) {
-	pisca = !pisca;
 	vdp_desenha(fps);
 })
 
