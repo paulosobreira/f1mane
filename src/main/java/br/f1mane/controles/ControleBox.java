@@ -210,7 +210,7 @@ public class ControleBox {
                     ptosBox += 1;
                 }
 
-                ptosBox *= 10;
+                ptosBox *= 5;
                 int novosPtsBox = Util.inteiro(ptosBox) + piloto.getPtosBox();
                 piloto.setPtosBox(novosPtsBox);
                 piloto.setVelocidade(Util.intervalo(50, 60) + ptosBox);
