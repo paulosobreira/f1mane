@@ -210,7 +210,7 @@ public class ControleBox {
                     ptosBox += 1;
                 }
 
-                ptosBox *= 5;
+                ptosBox *= 7;
                 int novosPtsBox = Util.inteiro(ptosBox) + piloto.getPtosBox();
                 piloto.setPtosBox(novosPtsBox);
                 piloto.setVelocidade(Util.intervalo(50, 60) + ptosBox);
@@ -312,7 +312,7 @@ public class ControleBox {
             }
         }
 
-        if (carro.getDurabilidadeAereofolio() <= 0) {
+        if (carro.getDurabilidadeAereofolio() < InterfaceJogo.DURABILIDADE_AREOFOLIO) {
             penalidade = Util.inteiro(penalidade * (2 - (carro.getPotencia() / 1000)));
         }
 
@@ -333,7 +333,7 @@ public class ControleBox {
             }
         }
         carro.setDanificado(null, controleJogo);
-        if (carro.getDurabilidadeAereofolio() <= 0) {
+        if (carro.getDurabilidadeAereofolio() < InterfaceJogo.DURABILIDADE_AREOFOLIO) {
             carro.setDurabilidadeAereofolio(InterfaceJogo.DURABILIDADE_AREOFOLIO);
         }
         if (controleJogo.isErs()) {
