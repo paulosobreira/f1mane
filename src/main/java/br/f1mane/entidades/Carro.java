@@ -397,16 +397,16 @@ public class Carro implements Serializable {
         boolean testeFreios = testeFreios(controleJogo);
         if (no.verificaRetaOuLargada()) {
             if (MENOS_ASA.equals(getAsa())) {
-                ganho *= testeAerodinamica && testePotencia ? 1.07 : 1.03;
+                ganho *= testeAerodinamica && testePotencia ? 1.05 : 1.01;
             } else if (MAIS_ASA.equals(getAsa())) {
                 ganho *= testeAerodinamica ? 0.97 : 0.95;
             }
         }
         if (no.verificaCurvaAlta() || no.verificaCurvaBaixa()) {
             if (MENOS_ASA.equals(getAsa())) {
-                ganho *= testeAerodinamica ? 0.95 : 0.9;
+                ganho *= testeAerodinamica ? 0.93 : 0.9;
             } else if (MAIS_ASA.equals(getAsa())) {
-                ganho *= testeAerodinamica && testeFreios ? 1.06 : 1.04;
+                ganho *= testeAerodinamica && testeFreios ? 1.09 : 1.07;
             }
         }
         return ganho;
@@ -583,9 +583,9 @@ public class Carro implements Serializable {
             if (no.verificaCurvaBaixa() || no.verificaCurvaAlta()) {
                 if ((porcentagemDesgastePneus > intervaloMin) && (controleJogo.verificaPistaEmborrachada())
                         && pneuAquecido) {
-                    ganho *= 1.1;
+                    ganho *= 1.12;
                 } else if ((porcentagemDesgastePneus < intervaloMin || !pneuAquecido)) {
-                    ganho *= testeFreios(controleJogo) ? 1.1 : 1.05;
+                    ganho *= testeFreios(controleJogo) ? 1.1 : 1.03;
                 }
             }
         } else if (TIPO_PNEU_DURO.equals(getTipoPneu())) {

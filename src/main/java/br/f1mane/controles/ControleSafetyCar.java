@@ -49,7 +49,7 @@ public class ControleSafetyCar {
             if (diffIndex < 100) {
                 ganhoSC = 1;
             } else {
-                ganhoSC = limitaGanho(ganhoSC, diffIndex, 150);
+                ganhoSC = limitaGanho(ganhoSC, diffIndex, 100);
             }
         } else {
             long indexNafrente = safetyCar.getPtosPista();
@@ -58,22 +58,22 @@ public class ControleSafetyCar {
                 indexNafrente += controleJogo.getNosDaPista().size();
             }
             long diffIndex = (indexNafrente - index);
-            if (diffIndex < 100) {
+            long lim = 100;
+            if (safetyCar.isVaiProBox()) {
+                lim = 200;
+            }
+            if (diffIndex < lim) {
                 ganhoSC = 1;
             } else {
-                long max = 150;
-                if (safetyCar.isVaiProBox()) {
-                    max = 300;
-                }
-                ganhoSC = limitaGanho(ganhoSC, diffIndex, max);
+                ganhoSC = limitaGanho(ganhoSC, diffIndex, 200);
             }
 
         }
-        if (ganhoSC > 30) {
-            ganhoSC = 30;
+        if (ganhoSC > 20) {
+            ganhoSC = 20;
         }
-        if (ganhoSC < 15 && piloto.getDiferencaParaProximo() > 200) {
-            ganhoSC = 15;
+        if (ganhoSC < 10 && piloto.getDiferencaParaProximo() > 200) {
+            ganhoSC = 10;
         }
         return ganhoSC;
     }
@@ -133,14 +133,13 @@ public class ControleSafetyCar {
         long ptsSc = safetyCar.getPtosPista();
         long polePts = pole.getPtosPista();
         if (ptsSc < (polePts + 500)) {
-            bonus = Math.random() < 0.3 ? 3 : 2;
+            bonus = 20;
             if (noAtual.verificaCurvaAlta()) {
-                bonus = Math.random() < 0.9 ? 2 : 1;
+                bonus = 15;
             }
             if (noAtual.verificaCurvaBaixa()) {
-                bonus = Math.random() < 0.7 ? 2 : 1;
+                bonus = 10;
             }
-            bonus *= 8;
             bonus = calculaMediaSC(bonus);
         }
 

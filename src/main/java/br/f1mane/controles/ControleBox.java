@@ -201,16 +201,14 @@ public class ControleBox {
                     /**
                      * gera limite velocidade no box
                      */
-                    ptosBox += ((boxRapido) ? Util.intervalo(2, 3) : Util.intervalo(1, 2));
+                    ptosBox += (boxRapido ? 20 : 15);
                 } else if (box.verificaRetaOuLargada()) {
-                    ptosBox += ((boxRapido) ? 3 : Util.intervalo(2, 3));
+                    ptosBox += (boxRapido? 25 : 20);
                 } else if (box.verificaCurvaAlta()) {
-                    ptosBox += ((boxRapido) ? Util.intervalo(2, 3) : Util.intervalo(1, 2));
+                    ptosBox += (boxRapido ? 20 : 15);
                 } else {
-                    ptosBox += 1;
+                    ptosBox += (boxRapido ? 15 : 10);
                 }
-
-                ptosBox *= 7;
                 int novosPtsBox = Util.inteiro(ptosBox) + piloto.getPtosBox();
                 piloto.setPtosBox(novosPtsBox);
                 piloto.setVelocidade(Util.intervalo(50, 60) + ptosBox);
