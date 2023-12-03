@@ -48,6 +48,10 @@ public class ControleBox {
         return carrosBox;
     }
 
+    private int alta = 0;
+    private int media = 0;
+    private int baixa = 0;
+
     /**
      * @param controleJogo
      * @param controleCorrida
@@ -70,6 +74,30 @@ public class ControleBox {
             boxRapido = true;
         }
         geraBoxesEquipes(carrosBox);
+        processaNosCircuito();
+    }
+
+    private void processaNosCircuito() {
+        int noAlta = 0;
+        int noMedia = 0;
+        int noBaixa = 0;
+        List list = controleJogo.getCircuito().geraPontosPista();
+        for (Iterator iterator = list.iterator(); iterator.hasNext(); ) {
+            No no = (No) iterator.next();
+            if (no.verificaRetaOuLargada()) {
+                noAlta++;
+            }
+            if (no.verificaCurvaAlta()) {
+                noMedia++;
+            }
+            if (no.verificaCurvaBaixa()) {
+                noBaixa++;
+            }
+        }
+        double total = noAlta + noMedia + noBaixa;
+        int alta = (int) (100 * noAlta / total);
+        int media = (int) (100 * noMedia / total);
+        int baixa = (int) (100 * noBaixa / total);
     }
 
     public ControleBox() {
@@ -485,27 +513,6 @@ public class ControleBox {
     public void processarTipoAsaAutomatico(Piloto piloto) {
         piloto.getCarro().setAsa(Carro.ASA_NORMAL);
         if (piloto.testeHabilidadePiloto()) {
-            int noAlta = 0;
-            int noMedia = 0;
-            int noBaixa = 0;
-            List list = controleJogo.getCircuito().geraPontosPista();
-            for (Iterator iterator = list.iterator(); iterator.hasNext(); ) {
-                No no = (No) iterator.next();
-                if (no.verificaRetaOuLargada()) {
-                    noAlta++;
-                }
-                if (no.verificaCurvaAlta()) {
-                    noMedia++;
-                }
-                if (no.verificaCurvaBaixa()) {
-                    noBaixa++;
-                }
-            }
-            double total = noAlta + noMedia + noBaixa;
-            int alta = (int) (100 * noAlta / total);
-            int media = (int) (100 * noMedia / total);
-            int baixa = (int) (100 * noBaixa / total);
-
             if (alta >= 60) {
                 piloto.getCarro().setAsa(Carro.MENOS_ASA);
             }

@@ -1063,6 +1063,12 @@ public class Piloto implements Serializable, PilotoSuave {
         }
         if (controleJogo.isCorridaTerminada() && isRecebeuBanderada() && (!getNoAtual().verificaRetaOuLargada() || isDevagarAposBanderada())) {
             double novoModificador = 20;
+            if(noAtual.verificaCurvaAlta()){
+                novoModificador = 15;
+            }
+            if(noAtual.verificaCurvaBaixa()){
+                novoModificador = 10;
+            }
             index += novoModificador;
             setPtosPista(Util.inteiro(novoModificador + getPtosPista()));
             setVelocidade(Util.intervalo(50, 65));
@@ -1092,8 +1098,8 @@ public class Piloto implements Serializable, PilotoSuave {
         processaMudarTracado(controleJogo);
         processaColisao(controleJogo);
         processaPenalidadeColisao(controleJogo);
-        processaGanhoMedio(controleJogo);
         processaLimitadorGanho(controleJogo);
+        processaGanhoMedio(controleJogo);
         processaEstatisticasGanho();
         processaGanhoSafetyCar(controleJogo);
         processaUltimas5Voltas();
@@ -1377,11 +1383,8 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     private void processaGanho(InterfaceJogo controleJogo) {
-        ganho = calculaModificador(controleJogo);
+        ganho = calculaModificadorPrincipal(controleJogo);
         ganho = getCarro().calcularModificadorCarro(ganho, getNoAtual(), controleJogo);
-        if (ganho < 0) {
-            ganho = 0;
-        }
     }
 
     public double getValorLimiteStressePararErrarCurva(InterfaceJogo controleJogo) {
@@ -1533,13 +1536,10 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     private void processaLimitadorGanho(InterfaceJogo controleJogo) {
-        if (verificaForaPista(this)) {
-            return;
+        if (ganho < 0) {
+            ganho = 0;
         }
-        if (getColisao() != null) {
-            if (ganho > 5) {
-                ganho = 5;
-            }
+        if (verificaForaPista(this)) {
             return;
         }
         if (evitaBaterCarroFrente) {
@@ -2402,7 +2402,7 @@ public class Piloto implements Serializable, PilotoSuave {
         return true;
     }
 
-    private int calculaModificador(InterfaceJogo controleJogo) {
+    private int calculaModificadorPrincipal(InterfaceJogo controleJogo) {
         double comparador = 0.3;
         if (Carro.GIRO_MAX_VAL == getCarro().getGiro()) {
             comparador += getCarro().testePotencia() ? 0.3 : 0.2;
@@ -2419,7 +2419,6 @@ public class Piloto implements Serializable, PilotoSuave {
             }
             if (NORMAL.equals(modoPilotagem)) {
                 comparador += testeHabilidadePiloto() ? 0.1 : 0.0;
-                ;
             }
             if (LENTO.equals(modoPilotagem)) {
                 comparador += testeHabilidadePiloto() ? 0.0 : -0.1;
