@@ -302,10 +302,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		this.safetyCarNaPista = safetyCarNaPista;
 	}
 
-	public long getTempoCiclo() {
-		return dadosParticiparJogo.getTempoCiclo().longValue();
-	}
-
 	public String getTipoPneuBox(Piloto piloto) {
 		return piloto.getTipoPneuBox();
 	}
@@ -1380,6 +1376,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public double getFatorConsumoCombustivelSemReabastecimento() {
+		return 0;
+	}
+
+	@Override
+	public long tempoCicloCircuito() {
 		return 0;
 	}
 

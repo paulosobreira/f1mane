@@ -22,7 +22,8 @@ public abstract class ControleRecursos {
     protected List<No> nosDoBox = new ArrayList<No>();
     protected List<Carro> carros;
     protected CarregadorRecursos carregadorRecursos;
-    protected Map<String, String> circuitos;
+    protected static Map<String, String> circuitos;
+    public static Map<String, Integer> circuitosCiclo;
     protected final Map<No, No> mapaNoProxCurva = new HashMap<No, No>();
     protected final Map<No, No> mapaNoCurvaAnterior = new HashMap<No, No>();
     protected Map<Integer, No> mapaIdsNos = new HashMap<Integer, No>();
@@ -259,7 +260,13 @@ public abstract class ControleRecursos {
 
     public static Map<String, String> carregarCircuitos() {
 
-        Map<String, String> circuitos = new HashMap<String, String>();
+        if(circuitos!=null){
+            return circuitos;
+
+        }
+
+        circuitos = new HashMap<String, String>();
+        circuitosCiclo= new HashMap<String, Integer>();
         final Properties properties = new Properties();
 
         try {
@@ -268,7 +275,9 @@ public abstract class ControleRecursos {
             Enumeration propName = properties.propertyNames();
             while (propName.hasMoreElements()) {
                 final String name = (String) propName.nextElement();
-                circuitos.put(properties.getProperty(name), name);
+                String names[] = properties.getProperty(name).split(",");
+                circuitos.put(names[0], name);
+                circuitosCiclo.put(names[0],Integer.valueOf(names[1]));
             }
 
         } catch (IOException e) {

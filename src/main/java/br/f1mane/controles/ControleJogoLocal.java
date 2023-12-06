@@ -1080,9 +1080,8 @@ public class ControleJogoLocal extends ControleRecursos
             }
         }
 
-        long tempo = Constantes.FATOR_CICLO;
         return controleEstatisticas.calculaSegundosParaRival(pilotoSelecionado,
-                pRival, tempo);
+                pRival, tempoCicloCircuito());
     }
 
     @Override
@@ -1765,6 +1764,11 @@ public class ControleJogoLocal extends ControleRecursos
     @Override
     public double getFatorConsumoCombustivelSemReabastecimento() {
         return controleCorrida.getFatorConsumoCombustivelSemReabastecimento();
+    }
+
+    @Override
+    public long tempoCicloCircuito() {
+        return circuitosCiclo.get(circuito.getNome());
     }
 
     private static class StringComparator implements Comparator<String> {

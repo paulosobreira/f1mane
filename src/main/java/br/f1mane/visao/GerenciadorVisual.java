@@ -228,15 +228,15 @@ public class GerenciadorVisual {
                         Logger.logarExept(e);
                     }
                 }
-                while (thAtualizaSomAlive) {
-                    ControleSom.processaSom(controleJogo.getPilotoJogador(), controleJogo, painelCircuito);
-                    try {
-                        Thread.sleep(Constantes.CICLO_SOM);
-                    } catch (InterruptedException e) {
-                        thAtualizaSomAlive = false;
-                        Logger.logarExept(e);
-                    }
-                }
+//                while (thAtualizaSomAlive) {
+//                    ControleSom.processaSom(controleJogo.getPilotoJogador(), controleJogo, painelCircuito);
+//                    try {
+//                        Thread.sleep(Constantes.CICLO_SOM);
+//                    } catch (InterruptedException e) {
+//                        thAtualizaSomAlive = false;
+//                        Logger.logarExept(e);
+//                    }
+//                }
 
             }
 

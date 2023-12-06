@@ -70,7 +70,7 @@ public class ControleQualificacao {
             consumoMedioPneu += (pneus - piloto.getCarro().getPneus());
             consumoMedioCombustivel += (combustivel - piloto.getCarro().getCombustivel());
             piloto.setCiclosVoltaQualificacao(Util.inteiro(
-                    contCiclosQualificacao * Constantes.FATOR_CICLO));
+                    contCiclosQualificacao * controleJogo.tempoCicloCircuito()));
             piloto.setNumeroVolta(-1);
             piloto.setUltimaVolta(null);
             piloto.setVoltaAtual(null);

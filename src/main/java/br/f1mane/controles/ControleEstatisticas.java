@@ -564,6 +564,6 @@ public class ControleEstatisticas {
 	private Long diferecaParaSegundos(long diff) {
 		return Long.valueOf(Math
                 .round((diff / new Double(Util.intervalo(30, 40)).doubleValue())
-                        * Constantes.FATOR_CICLO));
+                        * controleJogo.tempoCicloCircuito()));
 	}
 }

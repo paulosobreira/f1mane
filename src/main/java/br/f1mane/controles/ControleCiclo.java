@@ -2,6 +2,7 @@ package br.f1mane.controles;
 
 import java.util.Iterator;
 
+import br.f1mane.recursos.CarregadorRecursos;
 import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
@@ -61,7 +62,7 @@ public class ControleCiclo extends Thread {
 			while (!interrupt && processadoCilcos) {
 				try {
 					if (controleCorrida.isCorridaPausada()) {
-						Thread.sleep(Constantes.CICLO);
+						Thread.sleep(controleJogo.tempoCicloCircuito());
 						continue;
 					}
 					controleCorrida.processaVoltaSafetyCar();
@@ -91,7 +92,7 @@ public class ControleCiclo extends Thread {
 					controleCorrida.verificaFinalCorrida();
 					controleJogo.atualizaIndexTracadoPilotos();
 					if(ControleCiclo.VALENDO){
-						Thread.sleep(Constantes.CICLO);
+						Thread.sleep(controleJogo.tempoCicloCircuito());
 					}
 					contadorCiclos++;
 				} catch (Exception e) {

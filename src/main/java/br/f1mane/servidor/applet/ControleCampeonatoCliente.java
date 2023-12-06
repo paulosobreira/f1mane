@@ -36,6 +36,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
+import br.f1mane.controles.ControleRecursos;
 import br.nnpe.Constantes;
 import br.nnpe.Logger;
 import br.f1mane.controles.ControleJogoLocal;
@@ -75,7 +76,7 @@ public class ControleCampeonatoCliente {
 		return campeonato;
 	}
 
-	protected final Map circuitos = new HashMap();
+	protected Map<String, String> circuitos = new HashMap();
 
 	protected Map circuitosPilotos = new HashMap();
 
@@ -112,20 +113,9 @@ public class ControleCampeonatoCliente {
 	private List campeonatos;
 
 	protected void carregarCircuitos() {
-		final Properties properties = new Properties();
 
-		try {
-			properties.load(CarregadorRecursos.recursoComoStream("properties/circuitos.properties"));
+		circuitos = ControleRecursos.carregarCircuitos();
 
-			Enumeration propName = properties.propertyNames();
-			while (propName.hasMoreElements()) {
-				final String name = (String) propName.nextElement();
-				circuitos.put(name, properties.getProperty(name));
-
-			}
-		} catch (IOException e) {
-			Logger.logarExept(e);
-		}
 	}
 
 	public void criarCampeonato() throws Exception {

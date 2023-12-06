@@ -2392,7 +2392,7 @@ public class Piloto implements Serializable, PilotoSuave {
             }
             return false;
         }
-        double val = (Constantes.FATOR_CICLO / 80);
+        double val = (interfaceJogo.tempoCicloCircuito() / 80);
         int dec = (int) val;
         if (AGRESSIVO.equals(modoPilotagem) && getStress() < 70) {
             incStress(1);
@@ -2693,7 +2693,7 @@ public class Piloto implements Serializable, PilotoSuave {
         if (getCarro().testeFreios(interfaceJogo)) {
             multi -= 2;
         }
-        if (!forcaMudar && getTracado() != 4 && getTracado() != 5 && getColisao() != null && (agora - ultimaMudancaPos) < (Constantes.FATOR_CICLO * multi)) {
+        if (!forcaMudar && getTracado() != 4 && getTracado() != 5 && getColisao() != null && (agora - ultimaMudancaPos) < (interfaceJogo.tempoCicloCircuito() * multi)) {
             return false;
         }
         if (getTracado() == 1 && mudarTracado == 2) {

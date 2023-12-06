@@ -4570,7 +4570,7 @@ public class PainelCircuito {
             carroimg = controleJogo.obterCarroLado(carroFrente.getPiloto());
             carSelX += (carroimg.getWidth() + 10) / 2;
             bounce = calculaBalancoCarroLado(carroFrente);
-            int diferencaParaProximo = psel.getDiferencaParaProximo() / Constantes.FATOR_CICLO;
+            int diferencaParaProximo = (int) (psel.getDiferencaParaProximo() / controleJogo.tempoCicloCircuito());
             int dstX = limitesViewPort.x + (limitesViewPort.width / 4);
 
             int dstY = carSelY + 20;
@@ -4664,7 +4664,7 @@ public class PainelCircuito {
 
             int dstX = limitesViewPort.x + limitesViewPort.width + -(limitesViewPort.width / 3);
             int dstY = carSelY + 20;
-            double diferencaParaProximo = carroAtras.getPiloto().getDiferencaParaProximo() / Constantes.FATOR_CICLO;
+            double diferencaParaProximo = carroAtras.getPiloto().getDiferencaParaProximo() / controleJogo.tempoCicloCircuito();
 
             int halfCarWidth = carroimg.getWidth() / 3;
             carSelX -= (125 - halfCarWidth);

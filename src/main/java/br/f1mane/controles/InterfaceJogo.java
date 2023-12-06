@@ -407,4 +407,6 @@ public interface InterfaceJogo {
     double getFatorConsumoPneuSemTroca();
 
     double getFatorConsumoCombustivelSemReabastecimento();
+
+    long tempoCicloCircuito();
 }

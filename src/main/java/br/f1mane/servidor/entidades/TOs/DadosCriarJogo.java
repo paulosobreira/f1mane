@@ -235,11 +235,6 @@ public class DadosCriarJogo implements Serializable {
 		this.senha = senha;
 	}
 
-	public Integer getTempoCiclo() {
-		Integer tempoCiclo = Integer.valueOf(Constantes.CICLO);
-		return tempoCiclo;
-	}
-
 	public Integer getTempoQualificacao() {
 		return tempoQualificacao;
 	}
