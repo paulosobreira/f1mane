@@ -58,7 +58,7 @@
 
 Pode ser executado no [Play with Docker](https://labs.play-with-docker.com/)
 
->Baixar o aqruiovo do docker compose
+>Baixar o aqruivo do docker compose
 ```
 curl -LfO 'https://raw.githubusercontent.com/paulosobreira/f1mane/master/docker-compose.yaml'
 ```
