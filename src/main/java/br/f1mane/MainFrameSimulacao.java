@@ -90,7 +90,13 @@ public class MainFrameSimulacao extends MainFrame {
     }
 
     public static void main(String[] args) {
-        MainFrameSimulacao frame = new MainFrameSimulacao(args[0]);
+        MainFrameSimulacao frame = null;
+        if(args.length>0){
+            frame = new MainFrameSimulacao(args[0]);
+        }else{
+            frame = new MainFrameSimulacao(null);
+        }
+
     }
 
     public void mostrarGraficos() {
