@@ -231,13 +231,13 @@ public class PainelCircuito {
     private final List<No> boxFull;
     private final int entradaBoxIndex;
     private final int saidaBoxIndex;
-    private java.awt.geom.RoundRectangle2D.Double rectanglePos;
-    private java.awt.geom.RoundRectangle2D.Double rectangleVol;
+    private RoundRectangle2D.Double rectanglePos;
+    private RoundRectangle2D.Double rectangleVol;
     private final int interpolacao = AffineTransformOp.TYPE_BILINEAR;
-    private java.awt.geom.Rectangle2D.Double rectangleMarcasPneuPista;
-    private java.awt.geom.Rectangle2D.Double rectangleGerarGrid;
-    private java.awt.geom.Rectangle2D.Double rectangleSafetyCarCima;
-    private java.awt.geom.Rectangle2D.Double rectangleGerarBoxes;
+    private Rectangle2D.Double rectangleMarcasPneuPista;
+    private Rectangle2D.Double rectangleGerarGrid;
+    private Rectangle2D.Double rectangleSafetyCarCima;
+    private Rectangle2D.Double rectangleGerarBoxes;
     private int contImgFundo;
     public static boolean efeitosLigados = true;
 
@@ -716,19 +716,14 @@ public class PainelCircuito {
 
         double multi = diferencaSualReal;
 
-        double fatorNo = .05;
+        double fatorFps = .05;
 
-        if ("A".equals(noAtualSuave.getTipoJson())) {
-            fatorNo = .04;
-        }
-        if ("B".equals(noAtualSuave.getTipoJson())) {
-            fatorNo = .03;
-        }
+
         if (gerenciadorVisual.getFpsLimite() == 60D) {
-            fatorNo /= 2;
+            fatorFps = .03;
         }
 
-        ganhoSuave = Util.inteiro(fatorNo * multi);
+        ganhoSuave = Util.inteiro(fatorFps * multi);
 
         int ganhoSuaveAnt = piloto.getGanhoSuave();
         if (ganhoSuave > ganhoSuaveAnt) {
@@ -800,24 +795,6 @@ public class PainelCircuito {
         }
 
         piloto.setNoAtualSuave(noAtualSuave);
-    }
-
-    @Deprecated
-    private int loopCalculaGanhoSuave(int diff, int incExtra) {
-        int ganhoSuave = 0;
-        int maxLoop = 1000;
-        int inc = 40;
-        if (gerenciadorVisual.getFpsLimite() == 30.0) {
-            inc = 20;
-        }
-        inc += incExtra;
-        for (int i = 0; i < maxLoop; i += inc) {
-            if (diff >= i && diff < i + inc) {
-                break;
-            }
-            ganhoSuave += 1;
-        }
-        return ganhoSuave;
     }
 
     public int getQtdeLuzesApagadas() {
@@ -978,11 +955,11 @@ public class PainelCircuito {
         y += 40;
         x += 20;
 
-        desenhaAjudaComandoPiloto(g2d, x, y, f5_Z, "Z");
+        desenhaAjudaComandoPiloto(g2d, x, y, f7_C, "C");
         x += 40;
         desenhaAjudaComandoPiloto(g2d, x, y, f6_X, "X");
         x += 40;
-        desenhaAjudaComandoPiloto(g2d, x, y, f7_C, "C");
+        desenhaAjudaComandoPiloto(g2d, x, y, f5_Z, "Z");
 
         x = xOri + 300;
         y = yOri + 20;
@@ -1610,8 +1587,24 @@ public class PainelCircuito {
                     }
                     info = Html.tagsJava2d(info);
                     g2d.setFont(new Font(fontOri.getName(), Font.BOLD, fontOri.getSize()));
-                    int c = (cont++);
-                    g2d.drawString("" + info, x + 4, y + (20 * c));
+                    if(Util.calculaLarguraText(info, g2d)>400){
+                        String[] infoSplit = info.split(" ");
+                        String line1 = "",line2 = "";
+                        for (String s : infoSplit) {
+                            if(Util.calculaLarguraText(line1, g2d)<400) {
+                                line1 += s + " ";
+                            }else{
+                                line2 += s + " ";
+                            }
+                        }
+                        int c = (cont++);
+                        g2d.drawString("" + line1, x + 4, y + (20 * c));
+                        c = (cont++);
+                        g2d.drawString("" + line2, x + 4, y + (20 * c));
+                    }else{
+                        int c = (cont++);
+                        g2d.drawString("" + info, x + 4, y + (20 * c));
+                    }
                 }
                 indemax--;
                 if (cont > 5) {
@@ -2190,25 +2183,29 @@ public class PainelCircuito {
         int x = limitesViewPort.x + limitesViewPort.width;
         int y = limitesViewPort.y + limitesViewPort.height - 25;
 
-        String strAgressivo = Lang.msg("077");
-        int tamAgressivo = Util.calculaLarguraText(strAgressivo, g2d);
-        x -= (tamAgressivo + 15);
-        f7_C.setFrame(x, y, tamAgressivo + 10, 20);
-        if (pilotoSelecionado != null && Piloto.AGRESSIVO.equals(pilotoSelecionado.getModoPilotagem())) {
+        String strConservador = Lang.msg("075");
+        int tamConservador = Util.calculaLarguraText(strConservador, g2d);
+        x -= (tamConservador + 15);
+
+        f5_Z.setFrame(x, y, tamConservador + 10, 20);
+        if (pilotoSelecionado != null && Piloto.LENTO.equals(pilotoSelecionado.getModoPilotagem())) {
             g2d.setColor(transpSel);
-            g2d.fill(f7_C);
+            g2d.fill(f5_Z);
             Stroke stroke = g2d.getStroke();
             g2d.setStroke(trilhoMiniPista);
-            g2d.setColor(red);
-            g2d.draw(f7_C);
+            g2d.setColor(gre);
+            g2d.draw(f5_Z);
             g2d.setStroke(stroke);
         } else {
             g2d.setColor(transpMenus);
-            g2d.fill(f7_C);
+            g2d.fill(f5_Z);
         }
+
         g2d.setColor(Color.black);
-        g2d.drawString(strAgressivo, x + 5, y + 16);
-        desenhaControleErs(g2d, x, y, tamAgressivo);
+        g2d.drawString(strConservador, x + 5, y + 16);
+
+        desenhaControleErs(g2d, x, y, tamConservador);
+
 
         String strNormal = Lang.msg("076");
         int tamNormal = Util.calculaLarguraText(strNormal, g2d);
@@ -2230,26 +2227,25 @@ public class PainelCircuito {
         g2d.setColor(Color.black);
         g2d.drawString(strNormal, x + 5, y + 16);
 
-        String strConservador = Lang.msg("075");
-        int tamConservador = Util.calculaLarguraText(strConservador, g2d);
-        x -= (tamConservador + 15);
-
-        f5_Z.setFrame(x, y, tamConservador + 10, 20);
-        if (pilotoSelecionado != null && Piloto.LENTO.equals(pilotoSelecionado.getModoPilotagem())) {
+        String strAgressivo = Lang.msg("077");
+        int tamAgressivo = Util.calculaLarguraText(strAgressivo, g2d);
+        x -= (tamAgressivo + 15);
+        f7_C.setFrame(x, y, tamAgressivo + 10, 20);
+        if (pilotoSelecionado != null && Piloto.AGRESSIVO.equals(pilotoSelecionado.getModoPilotagem())) {
             g2d.setColor(transpSel);
-            g2d.fill(f5_Z);
+            g2d.fill(f7_C);
             Stroke stroke = g2d.getStroke();
             g2d.setStroke(trilhoMiniPista);
-            g2d.setColor(gre);
-            g2d.draw(f5_Z);
+            g2d.setColor(red);
+            g2d.draw(f7_C);
             g2d.setStroke(stroke);
         } else {
             g2d.setColor(transpMenus);
-            g2d.fill(f5_Z);
+            g2d.fill(f7_C);
         }
-
         g2d.setColor(Color.black);
-        g2d.drawString(strConservador, x + 5, y + 16);
+        g2d.drawString(strAgressivo, x + 5, y + 16);
+
 
     }
 
@@ -5136,13 +5132,13 @@ public class PainelCircuito {
             velocidade = 0;
         }
 
-        String velo = "~" + velocidade + " Km/h";
+        String velo = velocidade + " Km/h";
 
         if (pilotoSelecionado.getPtosBox() != 0) {
             velo = " Box";
         }
         if (controleJogo.isSafetyCarNaPista()) {
-            velo = " Safety Car ";
+            velo = "SafetyCar";
         }
 
         g2d.setColor(transpMenus);
