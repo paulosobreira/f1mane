@@ -438,7 +438,7 @@ public class ControleCampeonato {
     }
 
     private void verificaMudancaEquipe() {
-        int qtdeDisputas = 0;
+        int qtdeDisputas = 1;
         if (ControleJogoLocal.NORMAL.equals(campeonato.getNivel())) {
             qtdeDisputas = Util.intervalo(1, 2);
         }
@@ -454,17 +454,11 @@ public class ControleCampeonato {
                 campeonato.setPromovidoEquipeRival(true);
             }
         } else if (campeonato.getDerrotas() > qtdeDisputas) {
-            String equipeRival = campeonato.getPilotosEquipesCampeonato().get(campeonato.getRival());
-            Integer ponteciaEquipeRival = campeonato.getEquipesPotenciaCampeonato().get(equipeRival);
-            String equipeJogador = campeonato.getPilotosEquipesCampeonato().get(campeonato.getNomePiloto());
-            Integer potenciaEquipeJogador = campeonato.getEquipesPotenciaCampeonato().get(equipeJogador);
-            ponteciaEquipeRival = Integer.valueOf(ponteciaEquipeRival == null ? 0 : ponteciaEquipeRival.intValue());
-            potenciaEquipeJogador = Integer.valueOf(potenciaEquipeJogador == null ? 0 : potenciaEquipeJogador.intValue());
-            if (ponteciaEquipeRival.intValue() > potenciaEquipeJogador.intValue()) {
+            if (campeonato.isFoiDesafiado()) {
+                campeonato.setRebaixadoEquipeRival(true);
+            } else {
                 reiniciarDesafio();
                 campeonato.setRebaixadoEquipeRival(false);
-            } else {
-                campeonato.setRebaixadoEquipeRival(true);
             }
         }
     }
