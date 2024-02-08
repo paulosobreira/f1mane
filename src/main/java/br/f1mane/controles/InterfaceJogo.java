@@ -245,6 +245,8 @@ public interface InterfaceJogo {
 
     public String calculaSegundosParaRival(Piloto pilotoSelecionado);
 
+    public String obterSegundosParaRival(Piloto pilotoSelecionado);
+
     public void verificaDesafioCampeonatoPiloto();
 
     public void aumentaFatorAcidade();

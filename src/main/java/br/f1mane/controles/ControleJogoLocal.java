@@ -1062,26 +1062,24 @@ public class ControleJogoLocal extends ControleRecursos
 
     @Override
     public String calculaSegundosParaRival(Piloto pilotoSelecionado) {
-        String rival = null;
-        if (controleCampeonato != null) {
-            Campeonato campeonato = controleCampeonato.getCampeonato();
-            if (campeonato != null) {
-                rival = campeonato.getRival();
-            }
+        Piloto piloto = obterRivalCampeonato();
+        if (piloto == null) {
+            return "";
         }
-        if (Util.isNullOrEmpty(rival)) {
-            return null;
-        }
+        String rival = piloto.getNome();
         Piloto pRival = null;
-        for (Iterator iterator = pilotos.iterator(); iterator.hasNext(); ) {
-            Piloto piloto = (Piloto) iterator.next();
-            if (piloto.getNome().equals(rival)) {
+        for (Iterator iterator = getPilotos().iterator(); iterator.hasNext(); ) {
+            Piloto p = (Piloto) iterator.next();
+            if (p.getNome().equals(rival)) {
                 pRival = piloto;
             }
         }
+        return controleEstatisticas.calculaSegundosParaRival(pilotoSelecionado, pRival, tempoCicloCircuito());
+    }
 
-        return controleEstatisticas.calculaSegundosParaRival(pilotoSelecionado,
-                pRival, tempoCicloCircuito());
+    @Override
+    public String obterSegundosParaRival(Piloto pilotoSelecionado) {
+        return pilotoSelecionado.getSegundosParaRival();
     }
 
     @Override

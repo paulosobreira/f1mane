@@ -873,6 +873,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
+	public String obterSegundosParaRival(Piloto pilotoSelecionado) {
+		return null;
+	}
+
+	@Override
 	public void verificaDesafioCampeonatoPiloto() {
 		// TODO Auto-generated method stub
 

@@ -364,6 +364,12 @@ public class PainelMenuLocal {
             desenhouTemporadasDefaults = false;
             return;
         }
+        if (MENU.equals(MENU_SOBRE)) {
+            MENU = MENU_PRINCIPAL;
+            circuitoSelecionado = null;
+            desenhouTemporadasDefaults = false;
+            return;
+        }
         if (MENU.equals(MENU_PRINCIPAL) && campeonatoRect.contains(e.getPoint())) {
             try {
                 if (mainFrame.verificaCriarJogo()) {
@@ -763,15 +769,12 @@ public class PainelMenuLocal {
         if (!MENU.equals(MENU_SOBRE)) {
             return;
         }
-        int x = (int) (getWidth() / 2);
+        int x = 10;
         int y = (int) (getHeight() / 2);
 
-        x -= 490;
-        y -= 285;
+        y -= 325;
 
-        desenhaTextosCreditos(g2d, x + 120, y - 40);
-
-        desenhaAnteriroProximo(g2d, x + 350, y + 620);
+        desenhaTextosCreditos(g2d, x, y);
 
     }
 

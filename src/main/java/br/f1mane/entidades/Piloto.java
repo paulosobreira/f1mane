@@ -269,6 +269,8 @@ public class Piloto implements Serializable, PilotoSuave {
     private Piloto colisao;
     @JsonIgnore
     private boolean podeUsarDRS;
+    @JsonIgnore
+    String segundosParaRival;
     protected static final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
     private boolean temMotor;
     private boolean temCombustivel;
@@ -1063,10 +1065,10 @@ public class Piloto implements Serializable, PilotoSuave {
         }
         if (controleJogo.isCorridaTerminada() && isRecebeuBanderada() && (!getNoAtual().verificaRetaOuLargada() || isDevagarAposBanderada())) {
             double novoModificador = 20;
-            if(noAtual.verificaCurvaAlta()){
+            if (noAtual.verificaCurvaAlta()) {
                 novoModificador = 15;
             }
-            if(noAtual.verificaCurvaBaixa()){
+            if (noAtual.verificaCurvaBaixa()) {
                 novoModificador = 10;
             }
             index += novoModificador;
@@ -1105,12 +1107,17 @@ public class Piloto implements Serializable, PilotoSuave {
         processaUltimas5Voltas();
         processaMudancaRegime(controleJogo);
         decrementaPilotoDesconcentrado(controleJogo);
+        processaSegundosParaRival(controleJogo);
         controleJogo.verificaAcidente(this);
         long roundGanho = Math.round(ganho);
         setPtosPista(Util.inteiro(getPtosPista() + roundGanho));
         index += roundGanho;
         setVelocidade(calculoVelocidade(ganho));
         return index;
+    }
+
+    private void processaSegundosParaRival(InterfaceJogo interfaceJogo) {
+        setSegundosParaRival(interfaceJogo.calculaSegundosParaRival(this));
     }
 
     private void processaEstatisticasGanho() {
@@ -1624,7 +1631,7 @@ public class Piloto implements Serializable, PilotoSuave {
         temMotor = porcentagemMotor > 30 || porcentagemMotor > porcentagemCorridaRestante;
         temCombustivel = porcentagemCombustivel > 10;
         if (controleJogo.isSemReabastecimento()) {
-            temCombustivel =  porcentagemCombustivel > porcentagemCorridaRestante;
+            temCombustivel = porcentagemCombustivel > porcentagemCorridaRestante;
         }
         temPneu = porcentagemDesgastePneus > 30;
         if (controleJogo.isSemTrocaPneu()) {
@@ -1676,7 +1683,7 @@ public class Piloto implements Serializable, PilotoSuave {
         if (controleJogo.isModoQualify()) {
             return;
         }
-        if(isJogadorHumano() && InterfaceJogo.DIFICIL.equals(controleJogo.getNivelJogo())){
+        if (isJogadorHumano() && InterfaceJogo.DIFICIL.equals(controleJogo.getNivelJogo())) {
             return;
         }
         if (!noAtual.verificaRetaOuLargada() && !controleJogo.isSafetyCarNaPista()) {
@@ -3249,6 +3256,14 @@ public class Piloto implements Serializable, PilotoSuave {
 
     public boolean usandoErs() {
         return isAtivarErs() && getCarro().getCargaErs() > 0;
+    }
+
+    public String getSegundosParaRival() {
+        return segundosParaRival;
+    }
+
+    public void setSegundosParaRival(String segundosParaRival) {
+        this.segundosParaRival = segundosParaRival;
     }
 
     private static class StringComparator implements Comparator<String> {

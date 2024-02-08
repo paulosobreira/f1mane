@@ -510,10 +510,6 @@ public class GerenciadorVisual {
         ControleSom.ligaDesligaSom();
     }
 
-    protected void ligaDesligaEfeitos() {
-        PainelCircuito.ligaDesligaEfeitos();
-    }
-
     protected void mudaPilotoSelecionado() {
         if (controleJogo == null) {
             return;

@@ -54,7 +54,6 @@ public class MainFrame extends JFrame {
     private JMenu menuIdiomas;
     private JMenu menuInfo;
     private JCheckBoxMenuItem som;
-    private JCheckBoxMenuItem efeitos;
     private JCheckBoxMenuItem atualizacaoSuave;
     private JMenuItem iniciar;
     private JMenuItem pausa;
@@ -303,21 +302,6 @@ public class MainFrame extends JFrame {
         });
         menu1.add(som);
 
-        efeitos = new JCheckBoxMenuItem("efeitos") {
-            public String getText() {
-                return Lang.msg("efeitos");
-            }
-
-        };
-
-        efeitos.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                PainelCircuito.efeitosLigados = !efeitos.isSelected();
-            }
-        });
-        menu1.add(efeitos);
         atualizacaoSuave = new JCheckBoxMenuItem("atualizacaoSuave") {
             public String getText() {
                 return Lang.msg("atualizacaoSuave");
