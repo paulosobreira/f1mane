@@ -454,7 +454,7 @@ public class ControleCampeonato {
                 campeonato.setPromovidoEquipeRival(true);
             }
         } else if (campeonato.getDerrotas() > qtdeDisputas) {
-            if (campeonato.isFoiDesafiado()) {
+            if (campeonato.isFoiDesafiado() && !campeonato.getNomePiloto().equals(campeonato.getRival())) {
                 campeonato.setRebaixadoEquipeRival(true);
             } else {
                 reiniciarDesafio();

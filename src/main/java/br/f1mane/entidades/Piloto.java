@@ -1580,11 +1580,7 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     private boolean verificaPodeUsarDRS(InterfaceJogo controleJogo) {
-        if (controleJogo.isDrs() && getPtosBox() == 0 &&
-                getNumeroVolta() > 1 && !controleJogo.isSafetyCarNaPista() &&
-                !controleJogo.isChovendo() && !controleJogo.isCorridaTerminada() &&
-                carroPilotoDaFrenteRetardatario != null && getNoAtual().verificaRetaOuLargada() &&
-                calculaDiffParaProximoRetardatario < Constantes.LIMITE_DRS) {
+        if (controleJogo.isDrs() && getPtosBox() == 0 && getNumeroVolta() > 1 && !controleJogo.isSafetyCarNaPista() && !controleJogo.isChovendo() && !controleJogo.isCorridaTerminada() && carroPilotoDaFrenteRetardatario != null && getNoAtual().verificaRetaOuLargada() && calculaDiffParaProximoRetardatario < Constantes.LIMITE_DRS) {
             No obterCurvaAnterior = controleJogo.obterCurvaAnterior(getNoAtual());
             No obterProxCurva = controleJogo.obterProxCurva(getNoAtual());
             if (obterCurvaAnterior == null || obterProxCurva == null) {
@@ -1653,7 +1649,7 @@ public class Piloto implements Serializable, PilotoSuave {
         if (!tentaPassarFrete) {
             tentarEscaparAtras = tentarEscaparPilotoAtras(controleJogo, false);
         }
-        if (getNumeroVolta() > 0 && controleJogo.verificaInfoRelevante(this)) {
+        if (getNumeroVolta() > 0 && controleJogo.verificaInfoRelevante(this) && getPtosBox() != 0 && carroPilotoDaFrente.getPiloto().getPtosBox() != 0) {
             if (tentaPassarFrete && calculaDiferencaParaProximo < 100) {
                 String txt = Lang.msg("tentaPassarFrete", new String[]{nomeJogadorFormatado(), Html.negrito(getNome()), Html.negrito(carroPilotoDaFrente.getPiloto().getNome())});
                 controleJogo.info(Html.preto(txt));
@@ -2311,8 +2307,7 @@ public class Piloto implements Serializable, PilotoSuave {
         boolean maxCarro = false;
 
         if (getNoAtual().verificaRetaOuLargada()) {
-            maxCarro = (!superAquecido && temMotor && temCombustivel && testeHabilidadePilotoCarro()) ||
-                    (!superAquecido && ativarDRS && controleJogo.isDrs() && Carro.MENOS_ASA.equals(getCarro().getAsa()));
+            maxCarro = (!superAquecido && temMotor && temCombustivel && testeHabilidadePilotoCarro()) || (!superAquecido && ativarDRS && controleJogo.isDrs() && Carro.MENOS_ASA.equals(getCarro().getAsa()));
         } else {
             maxPilotagem = temPneu && stress < valorLimiteStressePararErrarCurva;
         }

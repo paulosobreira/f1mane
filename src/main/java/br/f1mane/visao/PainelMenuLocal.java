@@ -707,10 +707,9 @@ public class PainelMenuLocal {
 
         pilotoDesafio = null;
 
-        int centerX = (int) (getWidth() / 2.3);
+        int centerX = (int) (getWidth() / 2.5);
         int centerY = (int) (getHeight() / 2.5);
 
-        centerX -= 300;
 
         Font fontOri = g2d.getFont();
 
@@ -724,6 +723,7 @@ public class PainelMenuLocal {
             txt = Lang.msg("rebaixado", new String[]{pilotoSelecionado.getCarro().getNome()});
         }
         int larguraTexto = Util.larguraTexto(txt, g2d);
+        centerX -= larguraTexto/4;
         g2d.setColor(lightWhite);
         g2d.fillRoundRect(centerX, centerY - 25, larguraTexto + 10, 30, 0, 0);
         g2d.setColor(Color.BLACK);

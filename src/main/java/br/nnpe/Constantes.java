@@ -4,7 +4,7 @@ public final class Constantes {
 
     public static final String DATA_FORMATO = "dd/MM/yyyy";
     public static final int MAX_VOLTAS = 72;
-    public static final int MIN_VOLTAS = Logger.ativo ? 2 : 12;
+    public static final int MIN_VOLTAS = Logger.ativo ? 1 : 12;
     public static final boolean DATABASE = true;
     public static final int ACIMA_MEDIA_NORMAL = 500;
     public static final int ACIMA_MEDIA_FACIL = 1000;

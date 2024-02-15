@@ -606,25 +606,6 @@ public class ControlePaddockCliente {
 	public void logar() {
 
 		FormEntrada formEntrada = new FormEntrada(this);
-		try {
-//			PersistenceService persistenceService = (PersistenceService) ServiceManager
-//					.lookup("javax.jnlp.PersistenceService");
-//			FileContents fileContents = persistenceService.get(applet.getCodeBase());
-//			if (fileContents == null) {
-//				Logger.logar(" fileContents == null  ");
-//			}
-//			ObjectInputStream ois = new ObjectInputStream(fileContents.getInputStream());
-//			Map map = (Map) ois.readObject();
-//			String login = (String) map.get("login");
-//			String pass = (String) map.get("pass");
-//			if (!Util.isNullOrEmpty(pass) && !Util.isNullOrEmpty(login)) {
-//				formEntrada.getNome().setText(login);
-//				formEntrada.getSenha().setText(pass);
-//				formEntrada.getLembrar().setSelected(true);
-//			}
-		} catch (Exception e) {
-			Logger.logarExept(e);
-		}
 
 		formEntrada.setToolTipText(Lang.msg("066"));
 		int result = JOptionPane.showConfirmDialog(applet.getFrame(), formEntrada, Lang.msg("066"),

@@ -1588,9 +1588,10 @@ public class PainelCircuito {
                     g2d.setFont(new Font(fontOri.getName(), Font.BOLD, fontOri.getSize()));
                     if (Util.calculaLarguraText(info, g2d) > 400) {
                         String[] infoSplit = info.split(" ");
-                        String line1 = "", line2 = "";
+                        String line1 = "", line2 = "" , lineComp = "";
                         for (String s : infoSplit) {
-                            if (Util.calculaLarguraText(line1, g2d) < 395) {
+                            lineComp += s + " ";
+                            if (Util.calculaLarguraText(lineComp, g2d) < 395) {
                                 line1 += s + " ";
                             } else {
                                 line2 += s + " ";
@@ -1598,8 +1599,10 @@ public class PainelCircuito {
                         }
                         int c = (cont++);
                         g2d.drawString("" + line1, x + 4, y + (20 * c));
-                        c = (cont++);
-                        g2d.drawString("" + line2, x + 4, y + (20 * c));
+                        if(y + (20 * (c+1)) < (y+110)) {
+                            c = (cont++);
+                            g2d.drawString("" + line2, x + 4, y + (20 * c));
+                        }
                     } else {
                         int c = (cont++);
                         g2d.drawString("" + info, x + 4, y + (20 * c));

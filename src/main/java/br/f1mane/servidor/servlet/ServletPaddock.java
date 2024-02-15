@@ -43,9 +43,7 @@ public class ServletPaddock extends HttpServlet {
     private final static String lock = "lock";
     private ControlePaddockServidor controlePaddock;
     private static MonitorAtividade monitorAtividade;
-    String host = "localhot";
     String senha;
-    int port = 80;
 
     public void init() throws ServletException {
         super.init();
@@ -55,9 +53,7 @@ public class ServletPaddock extends HttpServlet {
         try {
             Properties properties = new Properties();
             properties.load(CarregadorRecursos.recursoComoStream("application.properties"));
-            host = properties.getProperty("host");
             senha = properties.getProperty("senha");
-            port = Integer.parseInt(properties.getProperty("port"));
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
