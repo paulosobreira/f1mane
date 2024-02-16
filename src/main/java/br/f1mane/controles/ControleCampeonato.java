@@ -449,21 +449,22 @@ public class ControleCampeonato {
         if (campeonato.getVitorias() > qtdeDisputas) {
             if (campeonato.isFoiDesafiado()) {
                 reiniciarDesafio();
-                campeonato.setPromovidoEquipeRival(false);
             } else {
                 campeonato.setPromovidoEquipeRival(true);
             }
         } else if (campeonato.getDerrotas() > qtdeDisputas) {
-            if (campeonato.isFoiDesafiado() && !campeonato.getNomePiloto().equals(campeonato.getRival())) {
+            if (campeonato.isFoiDesafiado()) {
                 campeonato.setRebaixadoEquipeRival(true);
             } else {
                 reiniciarDesafio();
-                campeonato.setRebaixadoEquipeRival(false);
             }
         }
     }
 
-    public void processaMudancaEquipe() {
+    public void processaMudancaEquipe() throws Exception {
+        if (Util.isNullOrEmpty(campeonato.getRival())) {
+            throw new Exception("Nome rival Nulo");
+        }
         campeonato.setNomePiloto(campeonato.getRival());
         reiniciarDesafio();
         persistirEmCache();
@@ -479,6 +480,8 @@ public class ControleCampeonato {
     public void iniciaCorrida(String circuito) {
         circuitoJogando = circuito;
         tempoInicio = System.currentTimeMillis();
+        campeonato.setPromovidoEquipeRival(false);
+        campeonato.setRebaixadoEquipeRival(false);
     }
 
     public void geraListaPilotosPontos() {
@@ -981,23 +984,9 @@ public class ControleCampeonato {
     }
 
     public static void main(String[] args) {
-        Campeonato campeonato = new Campeonato();
-        ControleCampeonato controleCampeonato = new ControleCampeonato(campeonato, null);
-        campeonato.setVitorias(2);
-        controleCampeonato.campeonato = campeonato;
-        Map pilotosEquipesCampeonato = new HashMap();
-        pilotosEquipesCampeonato.put("Jogador", "Equipe Jogador");
-        pilotosEquipesCampeonato.put("Desafio", "Equipe Desafio");
-        campeonato.setPilotosEquipesCampeonato(pilotosEquipesCampeonato);
-        campeonato.setNomePiloto("Jogador");
-        campeonato.setRival("Desafio");
-        controleCampeonato.processaMudancaEquipe();
     }
 
     public void verificaDesafioCampeonatoPiloto() {
-        if (campeonato == null || Util.isNullOrEmpty(campeonato.getNomePiloto())) {
-            return;
-        }
         if (!campeonato.isUltimaCorridaSemDesafiar()) {
             if (Util.isNullOrEmpty(campeonato.getRival())) {
                 campeonato.setUltimaCorridaSemDesafiar(true);
@@ -1047,7 +1036,10 @@ public class ControleCampeonato {
         for (Iterator iterator = tempList.iterator(); iterator.hasNext(); ) {
             Piloto piloto = (Piloto) iterator.next();
             pilotosEquipesCampeonato.put(piloto.getNome(), piloto.getCarro().getNome());
-            equipesPotenciaCampeonato.put(piloto.getCarro().getNome(), Integer.valueOf(piloto.getCarro().getPotenciaReal()));
+            int potenciaReal = piloto.getCarro().getPotenciaReal();
+            int freios = piloto.getCarro().getFreios();
+            int aerodinamica = piloto.getCarro().getAerodinamica();
+            equipesPotenciaCampeonato.put(piloto.getCarro().getNome(), Integer.valueOf((potenciaReal + freios + aerodinamica) / 3));
             pilotosHabilidadeCampeonato.put(piloto.getNome(), Integer.valueOf(piloto.getHabilidade()));
         }
 

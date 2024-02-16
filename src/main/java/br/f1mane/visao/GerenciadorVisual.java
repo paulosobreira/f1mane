@@ -463,7 +463,7 @@ public class GerenciadorVisual {
                     }
                     if (keyCoode == KeyEvent.VK_4) {
                         Piloto pilotoSelecionado = controleJogo.getPilotoSelecionado();
-                        pilotoSelecionado.setDesqualificado(true);
+                        controleJogo.desqualificaPiloto(pilotoSelecionado);
                     }
                     if (keyCoode == KeyEvent.VK_5) {
                         List<Piloto> pilotos = controleJogo.getPilotos();
@@ -1036,8 +1036,7 @@ public class GerenciadorVisual {
         ObjectInputStream ois;
         Circuito circuito = null;
         try {
-            ois = new ObjectInputStream(carregadorRecursos.getClass().getResourceAsStream(circuitoStr));
-            circuito = (Circuito) ois.readObject();
+            circuito = CarregadorRecursos.carregarCircuito(circuitoStr);
         } catch (Exception e) {
             Logger.logarExept(e);
         }

@@ -358,7 +358,7 @@ public interface InterfaceJogo {
 
     public Campeonato continuarCampeonatoXml();
 
-    public void processaMudancaEquipeCampeontato();
+    public void processaMudancaEquipeCampeontato() throws Exception;
 
     public Campeonato continuarCampeonatoXmlDisco();
 

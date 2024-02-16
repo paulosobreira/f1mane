@@ -113,7 +113,7 @@ public class ControlePaddockCliente {
 			// Gerar Lag
 			// Thread.sleep(Util.intervalo(1500, 2000));
 			Object retorno;
-			String urlSufix = "/f1mane/ServletPaddock";
+			String urlSufix = "/flmane/ServletPaddock";
 			dataUrl = new URL(protocol, host, port, urlSufix);
 
 			URLConnection connection = dataUrl.openConnection();

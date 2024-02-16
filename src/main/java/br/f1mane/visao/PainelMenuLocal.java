@@ -234,7 +234,7 @@ public class PainelMenuLocal {
 
     private String linguagem;
 
-    public PainelMenuLocal(MainFrame mf) {
+    public PainelMenuLocal(MainFrame mf) throws Exception {
         this.mainFrame = mf;
         linguagem = Lang.msg(Lang.getSufix()).toUpperCase();
         retangulos = new ArrayList<java.awt.geom.RoundRectangle2D>();
@@ -325,7 +325,7 @@ public class PainelMenuLocal {
             controleJogo.continuarCampeonato(mainFrame.getCampeonato());
             MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
             carregaCampeonato();
-            if (campeonato.isPromovidoEquipeRival() || campeonato.isRebaixadoEquipeRival()) {
+            if (!Util.isNullOrEmpty(campeonato.getRival()) && (campeonato.isPromovidoEquipeRival() || campeonato.isRebaixadoEquipeRival())) {
                 controleJogo.processaMudancaEquipeCampeontato();
                 String temporada = "t" + campeonato.getTemporada();
                 carregaPilotoSelecionadoCampeonato(temporada, null);
@@ -658,17 +658,19 @@ public class PainelMenuLocal {
                 return;
             }
             Graphics2D g2d = mainFrame.obterGraficos();
-            if(g2d==null){
+            if (g2d == null) {
                 return;
             }
             setarHints(g2d);
             g2d.setColor(g2d.getBackground());
             g2d.fillRect(0, 0, getWidth(), getHeight());
             if (PainelCircuito.desenhaBkg) {
-                if (MENU.equals(MENU_PRINCIPAL))
+                if (MENU.equals(MENU_PRINCIPAL)) {
                     bg = bg1;
-                if (MENU.equals(MENU_CORRIDA) || MENU.equals(MENU_CORRIDA_CAMPEONATO_PILOTOS))
+                }
+                if (MENU.equals(MENU_CORRIDA) || MENU.equals(MENU_CORRIDA_CAMPEONATO_PILOTOS) || MENU.equals(MENU_MUDAR_EQUIPE_CAMPEONATO_PILOTOS)) {
                     bg = bg2;
+                }
                 if (MENU.equals(MENU_SOBRE)) {
                     bg = bg3;
                 }
@@ -723,11 +725,11 @@ public class PainelMenuLocal {
             txt = Lang.msg("rebaixado", new String[]{pilotoSelecionado.getCarro().getNome()});
         }
         int larguraTexto = Util.larguraTexto(txt, g2d);
-        centerX -= larguraTexto/4;
+        centerX -= larguraTexto / 4;
         g2d.setColor(lightWhite);
-        g2d.fillRoundRect(centerX, centerY - 25, larguraTexto + 10, 30, 0, 0);
+        g2d.fillRoundRect(centerX - 10, centerY - 25, larguraTexto + 10, 30, 0, 0);
         g2d.setColor(Color.BLACK);
-        g2d.drawString(txt, centerX + 5, centerY);
+        g2d.drawString(txt, centerX, centerY);
         g2d.setFont(fontOri);
 
         desenhaPilotoSelecionado(g2d, centerX + 130, centerY + 100, pilotoSelecionado);

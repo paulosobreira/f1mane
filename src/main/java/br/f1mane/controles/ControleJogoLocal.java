@@ -1442,7 +1442,7 @@ public class ControleJogoLocal extends ControleRecursos
     }
 
     @Override
-    public void processaMudancaEquipeCampeontato() {
+    public void processaMudancaEquipeCampeontato() throws Exception {
         if (controleCampeonato != null) {
             controleCampeonato.processaMudancaEquipe();
         }

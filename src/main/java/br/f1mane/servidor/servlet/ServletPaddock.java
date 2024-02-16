@@ -2,10 +2,12 @@ package br.f1mane.servidor.servlet;
 
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.servidor.MonitorAtividade;
+import br.f1mane.servidor.PaddockConstants;
 import br.f1mane.servidor.PaddockServer;
 import br.f1mane.servidor.controles.ControlePaddockServidor;
 import br.f1mane.servidor.entidades.TOs.SessaoCliente;
 import br.f1mane.servidor.entidades.persistencia.*;
+import br.f1mane.servidor.util.ZipUtil;
 import br.nnpe.FormatDate;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -85,11 +87,73 @@ public class ServletPaddock extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
         try {
-            doGetHtml(req, res);
-            return;
+            ObjectInputStream inputStream = null;
+            try {
+                inputStream = new ObjectInputStream(req.getInputStream());
+            } catch (Exception e) {
+                Logger.logar("inputStream null - > doGetHtml");
+            }
+            if (inputStream != null) {
+                Object object = null;
+
+                object = inputStream.readObject();
+
+                Object escrever = controlePaddock
+                        .processarObjetoRecebido(object);
+
+                if (PaddockConstants.modoZip) {
+                    dumparDadosZip(ZipUtil.compactarObjeto(
+                            PaddockConstants.dumparDados, escrever,
+                            res.getOutputStream()));
+                } else {
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    ObjectOutputStream oos = new ObjectOutputStream(bos);
+                    oos.writeObject(escrever);
+                    oos.flush();
+                    dumparDados(escrever);
+                    res.getOutputStream().write(bos.toByteArray());
+                }
+
+                return;
+            } else {
+                doGetHtml(req, res);
+                return;
+            }
         } catch (Exception e) {
             Logger.topExecpts(e);
         }
+    }
+
+    private void dumparDadosZip(ByteArrayOutputStream byteArrayOutputStream)
+            throws IOException {
+        if (PaddockConstants.dumparDados) {
+            String basePath = getServletContext().getRealPath("")
+                    + File.separator + "WEB-INF" + File.separator;
+            FileOutputStream fileOutputStream = new FileOutputStream(
+                    basePath + "Pack-" + System.currentTimeMillis() + ".zip");
+            fileOutputStream.write(byteArrayOutputStream.toByteArray());
+            fileOutputStream.close();
+
+        }
+
+    }
+
+    private void dumparDados(Object escrever) throws IOException {
+        if (PaddockConstants.dumparDados && (escrever != null)) {
+            ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+                    arrayOutputStream);
+            objectOutputStream.writeObject(escrever);
+            String basePath = getServletContext().getRealPath("")
+                    + File.separator + "WEB-INF" + File.separator;
+            FileOutputStream fileOutputStream = new FileOutputStream(
+                    basePath + escrever.getClass().getSimpleName() + "-"
+                            + System.currentTimeMillis() + ".txt");
+            fileOutputStream.write(arrayOutputStream.toByteArray());
+            fileOutputStream.close();
+
+        }
+
     }
 
     public void doGetHtml(HttpServletRequest req, HttpServletResponse res)
