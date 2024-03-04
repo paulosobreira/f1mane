@@ -70,7 +70,6 @@ public class ControleJogoLocal extends ControleRecursos
         super();
         gerenciadorVisual = new GerenciadorVisual(this);
         controleEstatisticas = new ControleEstatisticas(this);
-        controleCampeonato = new ControleCampeonato(mainFrame);
     }
 
     /**
@@ -573,6 +572,7 @@ public class ControleJogoLocal extends ControleRecursos
     public void iniciarJogoCapeonatoMenuLocal(Campeonato campeonato,
                                               int combustivelSelecionado, String asaSelecionado,
                                               String pneuSelecionado, String clima) throws Exception {
+        controleCampeonato = new ControleCampeonato(mainFrame);
         Map circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
         List pilotos = new ArrayList((Collection) circuitosPilotos
                 .get("t" + campeonato.getTemporada()));
@@ -1236,6 +1236,9 @@ public class ControleJogoLocal extends ControleRecursos
 
     @Override
     public Campeonato continuarCampeonato() {
+        if (controleCampeonato == null) {
+            controleCampeonato = new ControleCampeonato(mainFrame);
+        }
         return controleCampeonato.continuarCampeonato();
     }
 

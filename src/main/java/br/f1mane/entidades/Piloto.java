@@ -16,6 +16,8 @@ import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * @author Paulo Sobreira
@@ -2234,6 +2236,9 @@ public class Piloto implements Serializable, PilotoSuave {
 
     public void zerarGanhoEVariaveisUlt() {
         listGanho = new ArrayList<Double>();
+        listGanho.addAll(IntStream.range(0, 15)
+                .mapToObj(num -> Double.valueOf(0))
+                .collect(Collectors.toList()));
         velocidade = 0;
         velocidadeAnterior = 0;
         ultimaMudancaPos = 0;
