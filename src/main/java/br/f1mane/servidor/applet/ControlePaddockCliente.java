@@ -63,7 +63,7 @@ public class ControlePaddockCliente {
                 public void run() {
                     try {
                         while (isComunicacaoServer()) {
-                            Thread.sleep(100000);
+                            Thread.sleep(10000);
                             atualizaVisao(paddockWindow);
                         }
                     } catch (Exception e) {
