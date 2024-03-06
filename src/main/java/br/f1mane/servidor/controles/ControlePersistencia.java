@@ -34,8 +34,6 @@ import java.util.zip.ZipOutputStream;
  */
 public class ControlePersistencia {
 
-    private String basePath;
-    private final String nomeArquivo = "paddockDadosSrv.zip";
     private static PaddockDadosSrv paddockDadosSrv;
 
     private final static String lock = "lock";
@@ -51,13 +49,8 @@ public class ControlePersistencia {
         super();
     }
 
-    /**
-     * @param basePath
-     * @throws FileNotFoundException
-     */
-    public ControlePersistencia(String basePath) throws Exception {
+    public ControlePersistencia() throws Exception {
         super();
-        this.basePath = basePath;
 
         try {
             if (paddockDadosSrv == null) {
@@ -77,30 +70,6 @@ public class ControlePersistencia {
             paddockDadosSrv = new PaddockDadosSrv();
         }
 
-    }
-
-    public void gravarDados() throws IOException {
-        synchronized (lock) {
-            processarLimpeza(paddockDadosSrv);
-            paddockDadosSrv.setLastSave(System.currentTimeMillis());
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            XMLEncoder encoder = new XMLEncoder(byteArrayOutputStream);
-            encoder.writeObject(paddockDadosSrv);
-            encoder.flush();
-            ZipOutputStream zipOutputStream = new ZipOutputStream(Files.newOutputStream(Paths.get(basePath + nomeArquivo)));
-            ZipEntry entry = new ZipEntry("paddockDadosSrv.xml");
-            zipOutputStream.putNextEntry(entry);
-            zipOutputStream.write(byteArrayOutputStream.toByteArray());
-            zipOutputStream.closeEntry();
-            zipOutputStream.close();
-            ZipOutputStream zipOutputStreamBak = new ZipOutputStream(
-                    Files.newOutputStream(Paths.get(basePath + "BAK_" + nomeArquivo)));
-            ZipEntry entryBak = new ZipEntry("paddockDadosSrv.xml");
-            zipOutputStreamBak.putNextEntry(entryBak);
-            zipOutputStreamBak.write(byteArrayOutputStream.toByteArray());
-            zipOutputStreamBak.closeEntry();
-            zipOutputStreamBak.close();
-        }
     }
 
     private void processarLimpeza(PaddockDadosSrv pds) {
@@ -123,107 +92,6 @@ public class ControlePersistencia {
             }
         }
 
-    }
-
-    private PaddockDadosSrv lerDados() throws Exception {
-        ZipInputStream zin = new ZipInputStream(Files.newInputStream(Paths.get(basePath + nomeArquivo)));
-        zin.getNextEntry();
-        ByteArrayOutputStream arrayDinamico = new ByteArrayOutputStream();
-        int byt = zin.read();
-
-        while (-1 != byt) {
-            arrayDinamico.write(byt);
-            byt = zin.read();
-        }
-
-        arrayDinamico.flush();
-
-        ByteArrayInputStream bin = new ByteArrayInputStream(arrayDinamico.toByteArray());
-        XMLDecoder decoder = new XMLDecoder(bin);
-        return (PaddockDadosSrv) decoder.readObject();
-    }
-
-    public void migrar() throws Exception {
-        JFileChooser fileChooser = new JFileChooser(
-                CarregadorRecursos.class.getResource("CarregadorRecursos.class").getFile());
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
-        int result = fileChooser.showOpenDialog(null);
-
-        if (result == JFileChooser.CANCEL_OPTION) {
-            return;
-        }
-
-        ZipInputStream zin = new ZipInputStream(Files.newInputStream(fileChooser.getSelectedFile().toPath()));
-        zin.getNextEntry();
-        ByteArrayOutputStream arrayDinamico = new ByteArrayOutputStream();
-        int byt = zin.read();
-
-        while (-1 != byt) {
-            arrayDinamico.write(byt);
-            byt = zin.read();
-        }
-
-        arrayDinamico.flush();
-
-        ByteArrayInputStream bin = new ByteArrayInputStream(arrayDinamico.toByteArray());
-        XMLDecoder decoder = new XMLDecoder(bin);
-        PaddockDadosSrv paddockDadosSrv = (PaddockDadosSrv) decoder.readObject();
-        // PaddockDadosSrv paddockDadosSrv = lerDados();
-        Session session = HibernateUtil.getSession();
-        try {
-
-            Transaction beginTransaction = session.beginTransaction();
-            Map jogadores = paddockDadosSrv.getJogadoresMap();
-            Set emails = new HashSet();
-            for (Iterator iterator = jogadores.keySet().iterator(); iterator.hasNext(); ) {
-                String nome = (String) iterator.next();
-                JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) jogadores.get(nome);
-                CarreiraDadosSrv carreiraDadosSrv;
-                List corridas = jogadorDadosSrv.getCorridas();
-                for (Iterator iterator2 = corridas.iterator(); iterator2.hasNext(); ) {
-                    CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator2.next();
-                    corridasDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
-                }
-                if (emails.contains(jogadorDadosSrv.getEmail()))
-                    continue;
-                emails.add(jogadorDadosSrv.getEmail());
-
-                try {
-                    session.saveOrUpdate(jogadorDadosSrv);
-                    carreiraDadosSrv = new CarreiraDadosSrv();
-                    carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
-                    session.saveOrUpdate(carreiraDadosSrv);
-                    session.saveOrUpdate(jogadorDadosSrv);
-                } catch (Exception e) {
-                    Logger.logarExept(e);
-                }
-
-            }
-            beginTransaction.commit();
-        } finally {
-            session.close();
-        }
-    }
-
-    public byte[] obterBytesBase(String tipo) {
-        try {
-            synchronized (lock) {
-
-                ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
-                BufferedInputStream bufferedInputStream = new BufferedInputStream(
-                        Files.newInputStream(Paths.get(basePath + tipo + nomeArquivo)));
-                int byt = bufferedInputStream.read();
-
-                while (-1 != byt) {
-                    arrayOutputStream.write(byt);
-                    byt = bufferedInputStream.read();
-                }
-                return arrayOutputStream.toByteArray();
-            }
-        } catch (Exception e) {
-        }
-        return null;
     }
 
     public JogadorDadosSrv carregaDadosJogador(String tokenJogador, Session session) {

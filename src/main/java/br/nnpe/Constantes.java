@@ -8,8 +8,8 @@ public final class Constantes {
     public static final boolean DATABASE = true;
     public static final int ACIMA_MEDIA_NORMAL = 500;
     public static final int ACIMA_MEDIA_FACIL = 1000;
-    public static final int LATENCIA_MAX = 250;
-    public static final int LATENCIA_MIN = 50;
+    public static final int LATENCIA_MAX = 500;
+    public static final int LATENCIA_MIN = 100;
     public static final int LIMITE_DRS = 300;
     public static final Integer SEGUNDOS_PARA_INICIAR_CORRRIDA = Integer.valueOf(Logger.ativo
             ? 30

@@ -33,8 +33,7 @@ public class PaddockServer {
 		}
 		Lang.setSrvgame(true);
 		try {
-			controlePersistencia = new ControlePersistencia(
-					realpath + File.separator + "WEB-INF" + File.separator);
+			controlePersistencia = new ControlePersistencia();
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}

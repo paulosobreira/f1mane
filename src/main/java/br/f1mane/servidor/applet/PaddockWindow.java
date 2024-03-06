@@ -829,6 +829,10 @@ public class PaddockWindow {
         JOptionPane.showMessageDialog(mainPanel, panel);
     }
 
+    public JTextArea getTextAreaChat() {
+        return textAreaChat;
+    }
+
     public void atualizaInfo() {
         String text = Lang.msg("114") + " "
                 + controlePaddockCliente.getLatenciaMinima();

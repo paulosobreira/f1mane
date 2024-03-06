@@ -722,6 +722,10 @@ public class PainelCircuito {
             fatorFps = .03;
         }
 
+        if(controleJogo instanceof JogoCliente){
+            fatorFps = .02;
+        }
+
         ganhoSuave = Util.inteiro(fatorFps * multi);
 
         int ganhoSuaveAnt = piloto.getGanhoSuave();

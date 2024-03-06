@@ -10,7 +10,7 @@ public class Logger {
 
 	public static Map topExceptions = new HashMap();
 
-	public static boolean ativo = false;
+	public static boolean ativo = true;
 
 	public static boolean novaSession = false;
 
@@ -62,11 +62,12 @@ public class Logger {
 
 	}
 
-	public static void logar(Object val) {
+	public static Object logar(Object val) {
 		if (ativo) {
 			System.out.println(val);
 		}
-	}
+        return val;
+    }
 
 	public static void logarExept(Throwable e) {
 		if (ativo || e instanceof NullPointerException) {

@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.nnpe.Logger;
 import br.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Util;
 
 /**
  * @author paulo.sobreira
@@ -55,7 +56,11 @@ public class AppletPaddock {
 
     public static void main(String[] args) throws IOException {
         AppletPaddock appletPaddock = new AppletPaddock();
-        appletPaddock.setCodeBase(new URL("http://localhost"));
+        String host = JOptionPane.showInputDialog("Host. Esc to localhost.");
+        if(Util.isNullOrEmpty(host)){
+            host = "http://localhost";
+        }
+        appletPaddock.setCodeBase(new URL(host));
         appletPaddock.init();
     }
 
@@ -71,7 +76,7 @@ public class AppletPaddock {
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    controlePaddockCliente.logarGuest();
+                    controlePaddockCliente.logar();
                 }
             };
 

@@ -2813,8 +2813,8 @@ public class Piloto implements Serializable, PilotoSuave {
                 continue;
             }
             int indiceCarro = piloto.getNoAtual().getIndex();
-            int traz = indiceCarro - 50;
-            int frente = indiceCarro + 50;
+            int traz = indiceCarro - 75;
+            int frente = indiceCarro + 75;
             List lista = piloto.obterPista(controleJogo);
             if (traz < 0) {
                 traz = (lista.size() - 1) + traz;

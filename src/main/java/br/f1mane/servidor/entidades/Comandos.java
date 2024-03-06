@@ -53,5 +53,5 @@ public class Comandos {
 	public static final String VERIFICA_VERSAO = "49";
 	public static final String MUDAR_MODO_AUTOPOS_N = "50";
 	public static final String GUEST_LOGIN_APPLET = "51";
-
+	public static final String LOGIN_APPLET = "52";
 }
