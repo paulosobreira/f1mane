@@ -148,6 +148,6 @@ function rgbToHexUrlSafe(r, g, b) {
 
 function imgError(image) {
     image.onerror = "";
-    image.src = "/f1mane/rest/letsRace/png/profile-0";
+    image.src = "/flmane/rest/letsRace/png/profile-0";
     return true;
 }

@@ -104,7 +104,7 @@ $('#sair').bind("click", function() {
 });
 
 function dadosJogador() {
-	var urlServico = "/f1mane/rest/letsRace/dadosToken/";
+	var urlServico = "/flmane/rest/letsRace/dadosToken/";
 	$.ajax({
 		type : "GET",
 		url : urlServico,
@@ -139,7 +139,7 @@ function dadosJogador() {
 }
 
 function sobre() {
-	var urlServico = "/f1mane/rest/letsRace/sobre/";
+	var urlServico = "/flmane/rest/letsRace/sobre/";
 	$.ajax({
 		type : "GET",
 		url : urlServico,
@@ -196,7 +196,7 @@ function sobre() {
 
     function handleCredentialResponse(response) {
         const data = jwt_decode(response.credential)
-        var urlServico = "/f1mane/rest/letsRace/criarSessaoGoogle";
+        var urlServico = "/flmane/rest/letsRace/criarSessaoGoogle";
         $.ajax({
             type : "GET",
             url : urlServico,

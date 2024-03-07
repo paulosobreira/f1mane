@@ -25,7 +25,7 @@ $('#voltar').bind("click", function() {
 classificacaoCampeonato();
 
 function classificacaoCampeonato() {
-	var urlServico = "/f1mane/rest/letsRace/classificacaoCampeonato";
+	var urlServico = "/flmane/rest/letsRace/classificacaoCampeonato";
 	$.ajax({
 		type : "GET",
 		url : urlServico,
@@ -63,7 +63,7 @@ function classificacaoCampeonato() {
 	});
 
 	function detalhaCampeonato(campeonatoId) {
-		var urlServico = "/f1mane/rest/letsRace/campeonato/" + campeonatoId;
+		var urlServico = "/flmane/rest/letsRace/campeonato/" + campeonatoId;
 		$.ajax({
 			type : "GET",
 			url : urlServico,

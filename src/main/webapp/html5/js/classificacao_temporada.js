@@ -17,7 +17,7 @@ $('#temporadaCarousel').on('slide.bs.carousel', function(event) {
 $('#temporadaCarousel').carousel('pause');
 
 function temporadaClassificacao(temporadaSelecionada) {
-	var urlServico = "/f1mane/rest/letsRace/temporadaClassificacao/" + temporadaSelecionada;
+	var urlServico = "/flmane/rest/letsRace/temporadaClassificacao/" + temporadaSelecionada;
 	$.ajax({
 		type : "GET",
 		url : urlServico,
@@ -59,7 +59,7 @@ function temporadaClassificacao(temporadaSelecionada) {
 }
 
 function listaTemporadas() {
-	var urlServico = "/f1mane/rest/letsRace/temporadas";
+	var urlServico = "/flmane/rest/letsRace/temporadas";
 	$.ajax({
 		type : "GET",
 		url : urlServico,

@@ -1,7 +1,7 @@
 version: '3.8'
 services:
-  f1mane:
-    image: sowbreira/f1mane
+  flmane:
+    image: sowbreira/flmane
     restart: always
     ports:
       - "80:8080"
@@ -12,8 +12,8 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: f1mane
-      MYSQL_DATABASE: f1mane
+      MYSQL_ROOT_PASSWORD: flmane
+      MYSQL_DATABASE: flmane
 
   phpmyadmin:
     image: phpmyadmin

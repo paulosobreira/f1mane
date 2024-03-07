@@ -12,7 +12,7 @@ public class HibernateUtil {
 
     public static Session getSession() {
         if (factory == null) {
-            factory = Persistence.createEntityManagerFactory("f1mane-jpa");
+            factory = Persistence.createEntityManagerFactory("flmane-jpa");
         }
         EntityManager entityManager = factory.createEntityManager();
         System.out.println(factory.getProperties());

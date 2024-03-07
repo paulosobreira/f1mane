@@ -60,7 +60,7 @@ var adicionarLiCircuito;
 var circuitos;
 
 function carregaCampeonato() {
-	var urlServico = "/f1mane/rest/letsRace/campeonato";
+	var urlServico = "/flmane/rest/letsRace/campeonato";
 	$.ajax({
 		type : "GET",
 		url : urlServico,
@@ -122,8 +122,8 @@ function carregaCampeonato() {
 				
 				pilotoSelecionado.removeClass('hide');
 
-				pilotoSelecionado.find('#imgCarroPilotoSelecionado').attr('src', '/f1mane/rest/letsRace/carroLado/' + campeonato.temporadaCarro + '/' + campeonato.idCarro);
-				pilotoSelecionado.find('#imgCapacetePilotoSelecionado').attr('src', '/f1mane/rest/letsRace/capacete/' + campeonato.temporadaCapacete + '/' +campeonato.idPiloto);
+				pilotoSelecionado.find('#imgCarroPilotoSelecionado').attr('src', '/flmane/rest/letsRace/carroLado/' + campeonato.temporadaCarro + '/' + campeonato.idCarro);
+				pilotoSelecionado.find('#imgCapacetePilotoSelecionado').attr('src', '/flmane/rest/letsRace/capacete/' + campeonato.temporadaCapacete + '/' +campeonato.idPiloto);
 				pilotoSelecionado.find('#nomePilotoSelecionado').html('');
 				pilotoSelecionado.find('#nomePilotoSelecionado').append(campeonato.nomePiloto);
 				pilotoSelecionado.find('#nomeCarroSelecionado').html('');
@@ -249,7 +249,7 @@ function carregaCampeonato() {
 }
 
 function listaTemporadas() {
-	var urlServico = "/f1mane/rest/letsRace/temporadas";
+	var urlServico = "/flmane/rest/letsRace/temporadas";
 	$.ajax({
 		type : "GET",
 		url : urlServico,
@@ -284,7 +284,7 @@ function listaTemporadas() {
 function preencherLiCircuitos(circuito) {
 	var dv = $('<div class="item"></div>');
 	var img = $('<img class="img-responsive center-block"/>');
-	img.attr('src', '/f1mane/rest/letsRace/circuitoMini/' + circuito.arquivo);
+	img.attr('src', '/flmane/rest/letsRace/circuitoMini/' + circuito.arquivo);
 	var h3 = $('<h3 class="text-center transbox"></h3>');
 	dv.prop('circuito', circuito.arquivo);
 	h3.append(circuito.nome);
@@ -442,7 +442,7 @@ function sequnciaPistasSelecionadas(){
 }
 
 function listaCircuitos() {
-	var urlServico = "/f1mane/rest/letsRace/circuitos";
+	var urlServico = "/flmane/rest/letsRace/circuitos";
 	$.ajax({
 		type : "GET",
 		url : urlServico,
@@ -483,7 +483,7 @@ function selecionaTemporada(temporada) {
 }
 
 function carregaTemporada() {
-	var urlServico = "/f1mane/rest/letsRace/temporadas/" + temporadaSelecionada;
+	var urlServico = "/flmane/rest/letsRace/temporadas/" + temporadaSelecionada;
 	$.ajax({
 		type : "GET",
 		url : urlServico,
@@ -574,8 +574,8 @@ function selecionarPilotoTemporada(piloto){
 	}
 	$('#nomePilotoSelecionado').html(piloto.nome);
 	$('#nomeCarroSelecionado').html(piloto.nomeCarro);
-	$('#imgCarroPilotoSelecionado').attr('src', '/f1mane/rest/letsRace/carroLado/' + temporadaCarro + '/' + carroId);
-	$('#imgCapacetePilotoSelecionado').attr('src', '/f1mane/rest/letsRace/capacete/' + temporadaCapacete + '/' +pilotoId);
+	$('#imgCarroPilotoSelecionado').attr('src', '/flmane/rest/letsRace/carroLado/' + temporadaCarro + '/' + carroId);
+	$('#imgCapacetePilotoSelecionado').attr('src', '/flmane/rest/letsRace/capacete/' + temporadaCapacete + '/' +pilotoId);
 	$('#criarCampeonato').removeClass('hide');
 	$('#pilotoSelecionado').removeClass('hide');
 	$('#selecionarPiloto').addClass('hide');
@@ -583,7 +583,7 @@ function selecionarPilotoTemporada(piloto){
 }
 
 function pilotoCarreiraTemporada(){
-	var urlServico = "/f1mane/rest/letsRace/equipePilotoCarro";
+	var urlServico = "/flmane/rest/letsRace/equipePilotoCarro";
 	$.ajax({
 		type : "GET",
 		url : urlServico,
@@ -637,7 +637,7 @@ function gerarTr1Pilotos(piloto){
 	var capacetes = $('<div style="display:  inline-flex;"  />');
 	td1.append(capacetes);
 	var capacete = $('<img class="img-responsive img-center"/>');
-	capacete.attr('src', '/f1mane/rest/letsRace/capacete/' + temporadaCapacete + '/' +pilotoId);
+	capacete.attr('src', '/flmane/rest/letsRace/capacete/' + temporadaCapacete + '/' +pilotoId);
 	capacetes.append($('<br>'));
 	capacetes.append(capacete);
 	if(piloto.imgJogador!=null){
@@ -647,7 +647,7 @@ function gerarTr1Pilotos(piloto){
 	}
 	tr.append(td1);
 	var carroLado = $('<img class="img-responsive img-center"/>');
-	carroLado.attr('src', '/f1mane/rest/letsRace/carroLado/' + temporadaCarro + '/' + carroId);
+	carroLado.attr('src', '/flmane/rest/letsRace/carroLado/' + temporadaCarro + '/' + carroId);
 	td2.append(carroLado);
 	if (piloto.id == idPilotoSelecionado) {
 		tr.addClass('success');
@@ -697,7 +697,7 @@ function criarCampeonato() {
 		toaster(lang_text('min5CorridasCampeonato'), 4000, 'alert alert-danger');
 		return;
 	}	
-	var urlServico = "/f1mane/rest/letsRace/campeonato";
+	var urlServico = "/flmane/rest/letsRace/campeonato";
 	$.ajax({
 		type : "POST",
 		url : urlServico,
@@ -721,7 +721,7 @@ function criarCampeonato() {
 
 
 function finalizaCampeonato(campeonato) {
-	var urlServico = "/f1mane/rest/letsRace/finalizaCampeonato";
+	var urlServico = "/flmane/rest/letsRace/finalizaCampeonato";
 	var dataObj = {	id : campeonato.id	};
 	$.ajax({
 		type : "POST",

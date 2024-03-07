@@ -59,19 +59,19 @@ function mid_caregaMidia() {
 			carroId = piloto.idCarroLivery;
 		}
 
-		imgCarro.src = '/f1mane/rest/letsRace/carroCima/' + temporadaCarro + '/' + carroId;
+		imgCarro.src = '/flmane/rest/letsRace/carroCima/' + temporadaCarro + '/' + carroId;
 		carrosImgMap.set(piloto.id, imgCarro);
 
 		var imgSemAereofolio = new Image();
-		imgSemAereofolio.src = "/f1mane/rest/letsRace/carroCimaSemAreofolio/" + temporadaCarro + "/" + carroId;
+		imgSemAereofolio.src = "/flmane/rest/letsRace/carroCimaSemAreofolio/" + temporadaCarro + "/" + carroId;
 		carrosImgSemAereofolioMap.set(piloto.id, imgSemAereofolio);
 
 		var imgCarroLado = new Image();
-		imgCarroLado.src = "/f1mane/rest/letsRace/carroLado/" + temporadaCarro + "/" + carroId;
+		imgCarroLado.src = "/flmane/rest/letsRace/carroLado/" + temporadaCarro + "/" + carroId;
 		carrosLadoImgMap.set(piloto.id, imgCarroLado);
 
 		var imgCapacete = new Image();
-		imgCapacete.src = "/f1mane/rest/letsRace/capacete/" + temporadaCapacete + "/" + pilotoId;
+		imgCapacete.src = "/flmane/rest/letsRace/capacete/" + temporadaCapacete + "/" + pilotoId;
 		capaceteImgMap.set(piloto.id, imgCapacete);
 
 		jogadorImgMap.set(piloto.id, piloto.imgJogador);
@@ -128,77 +128,77 @@ function mid_caregaMidia() {
 	
 	
 	imgBg = new Image();
-	imgBg.src = "/f1mane/rest/letsRace/circuitoJpg/" + circuito.backGround
+	imgBg.src = "/flmane/rest/letsRace/circuitoJpg/" + circuito.backGround
 
 	pow = new Image();
-	pow.src = "/f1mane/rest/letsRace/png/pow"
+	pow.src = "/flmane/rest/letsRace/png/pow"
 	imgFarois = new Image();
-	imgFarois.src = "/f1mane/rest/letsRace/png/farois"
+	imgFarois.src = "/flmane/rest/letsRace/png/farois"
 	imgFarois1 = new Image();
-	imgFarois1.src = "/f1mane/rest/letsRace/png/farois1"
+	imgFarois1.src = "/flmane/rest/letsRace/png/farois1"
 	imgFarois2 = new Image();
-	imgFarois2.src = "/f1mane/rest/letsRace/png/farois2"		
+	imgFarois2.src = "/flmane/rest/letsRace/png/farois2"
 	imgFarois3 = new Image();
-	imgFarois3.src = "/f1mane/rest/letsRace/png/farois3"
+	imgFarois3.src = "/flmane/rest/letsRace/png/farois3"
 	imgFarois4 = new Image();
-	imgFarois4.src = "/f1mane/rest/letsRace/png/farois4"		
+	imgFarois4.src = "/flmane/rest/letsRace/png/farois4"
 	imgFaroisApagados = new Image();
-	imgFaroisApagados.src = "/f1mane/rest/letsRace/png/farois-apagados"
+	imgFaroisApagados.src = "/flmane/rest/letsRace/png/farois-apagados"
 	imgPneuM = new Image();
-	imgPneuM.src = "/f1mane/rest/letsRace/png/pneuMoleMenor"
+	imgPneuM.src = "/flmane/rest/letsRace/png/pneuMoleMenor"
 	imgPneuD = new Image();
-	imgPneuD.src = "/f1mane/rest/letsRace/png/pneuDuroMenor"
+	imgPneuD.src = "/flmane/rest/letsRace/png/pneuDuroMenor"
 	imgPneuC = new Image();
-	imgPneuC.src = "/f1mane/rest/letsRace/png/pneuChuvaMenor"
+	imgPneuC.src = "/flmane/rest/letsRace/png/pneuChuvaMenor"
 	girdLargadaMarca = new Image();
-	girdLargadaMarca.src = "/f1mane/rest/letsRace/png/GridCarro/180"
+	girdLargadaMarca.src = "/flmane/rest/letsRace/png/GridCarro/180"
 	motor = new Image();
-	motor.src = "/f1mane/rest/letsRace/png/motor"
+	motor.src = "/flmane/rest/letsRace/png/motor"
 	capacete = new Image();
-	capacete.src = "/f1mane/rest/letsRace/png/capaceteMonster"
+	capacete.src = "/flmane/rest/letsRace/png/capaceteMonster"
 	menosAsa = new Image();
-	menosAsa.src = "/f1mane/rest/letsRace/png/menosAsa"
+	menosAsa.src = "/flmane/rest/letsRace/png/menosAsa"
 	maisAsa = new Image();
-	maisAsa.src = "/f1mane/rest/letsRace/png/maisAsa"
+	maisAsa.src = "/flmane/rest/letsRace/png/maisAsa"
 	normalAsa = new Image();
-	normalAsa.src = "/f1mane/rest/letsRace/png/normalAsa"
+	normalAsa.src = "/flmane/rest/letsRace/png/normalAsa"
 	safetycar = new Image();
-	safetycar.src = "/f1mane/rest/letsRace/png/sfcima"
+	safetycar.src = "/flmane/rest/letsRace/png/sfcima"
 	travadaRoda0 = new Image();
-	travadaRoda0.src = "/f1mane/rest/letsRace/png/travadaRoda0/50"
+	travadaRoda0.src = "/flmane/rest/letsRace/png/travadaRoda0/50"
 	travadaRoda1 = new Image();
-	travadaRoda1.src = "/f1mane/rest/letsRace/png/travadaRoda1/50"
+	travadaRoda1.src = "/flmane/rest/letsRace/png/travadaRoda1/50"
 	travadaRoda2 = new Image();
-	travadaRoda2.src = "/f1mane/rest/letsRace/png/travadaRoda2/50"
+	travadaRoda2.src = "/flmane/rest/letsRace/png/travadaRoda2/50"
 
 	carroCimaFreiosD1 = new Image();
-	carroCimaFreiosD1.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosD1"
+	carroCimaFreiosD1.src = "/flmane/rest/letsRace/png/CarroCimaFreiosD1"
 	carroCimaFreiosD2 = new Image();
-	carroCimaFreiosD2.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosD2"
+	carroCimaFreiosD2.src = "/flmane/rest/letsRace/png/CarroCimaFreiosD2"
 	carroCimaFreiosD3 = new Image();
-	carroCimaFreiosD3.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosD3"
+	carroCimaFreiosD3.src = "/flmane/rest/letsRace/png/CarroCimaFreiosD3"
 	carroCimaFreiosD4 = new Image();
-	carroCimaFreiosD4.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosD4"
+	carroCimaFreiosD4.src = "/flmane/rest/letsRace/png/CarroCimaFreiosD4"
 	carroCimaFreiosD5 = new Image();
-	carroCimaFreiosD5.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosD5"
+	carroCimaFreiosD5.src = "/flmane/rest/letsRace/png/CarroCimaFreiosD5"
 
 	carroCimaFreiosE1 = new Image();
-	carroCimaFreiosE1.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosE1"
+	carroCimaFreiosE1.src = "/flmane/rest/letsRace/png/CarroCimaFreiosE1"
 	carroCimaFreiosE2 = new Image();
-	carroCimaFreiosE2.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosE2"
+	carroCimaFreiosE2.src = "/flmane/rest/letsRace/png/CarroCimaFreiosE2"
 	carroCimaFreiosE3 = new Image();
-	carroCimaFreiosE3.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosE3"
+	carroCimaFreiosE3.src = "/flmane/rest/letsRace/png/CarroCimaFreiosE3"
 	carroCimaFreiosE4 = new Image();
-	carroCimaFreiosE4.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosE4"
+	carroCimaFreiosE4.src = "/flmane/rest/letsRace/png/CarroCimaFreiosE4"
 	carroCimaFreiosE5 = new Image();
-	carroCimaFreiosE5.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosE5"
+	carroCimaFreiosE5.src = "/flmane/rest/letsRace/png/CarroCimaFreiosE5"
 
 	bandeirada = new Image();
-	bandeirada.src = "/f1mane/rest/letsRace/png/flags"
+	bandeirada.src = "/flmane/rest/letsRace/png/flags"
 
 	for (var i = 0; i < circuito.objetosNoTransparencia.length; i++) {
 		var img = new Image();
-		img.src = "/f1mane/rest/letsRace/objetoPista/" + dadosJogo.arquivoCircuito + "/" + i;
+		img.src = "/flmane/rest/letsRace/objetoPista/" + dadosJogo.arquivoCircuito + "/" + i;
 		objImgPistaMap.set(i, img);
 	}
 

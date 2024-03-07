@@ -17,7 +17,7 @@ $('#circuitoCarousel').on('slide.bs.carousel', function(event) {
 $('#circuitoCarousel').carousel('pause');
 
 function circuitoClassificacao(circuitoSelecionado) {
-	var urlServico = "/f1mane/rest/letsRace/circuitoClassificacao/" + circuitoSelecionado;
+	var urlServico = "/flmane/rest/letsRace/circuitoClassificacao/" + circuitoSelecionado;
 	$.ajax({
 		type : "GET",
 		url : urlServico,
@@ -58,7 +58,7 @@ function circuitoClassificacao(circuitoSelecionado) {
 }
 
 function listaCircuitos() {
-	var urlServico = "/f1mane/rest/letsRace/circuitos";
+	var urlServico = "/flmane/rest/letsRace/circuitos";
 	$.ajax({
 		type : "GET",
 		url : urlServico,
@@ -72,7 +72,7 @@ function listaCircuitos() {
 			circuitos = circuitosRes;
 			var circuito = circuitosRes[0];
 			$('#circuitosLabel').html(circuito.nome);
-			$('#imgCircuito').attr('src', '/f1mane/rest/letsRace/circuitoMini/' + circuito.arquivo);
+			$('#imgCircuito').attr('src', '/flmane/rest/letsRace/circuitoMini/' + circuito.arquivo);
 			circuitoSelecionado = circuito.arquivo;
 			$('#circuitoActive').prop('circuito', circuito.arquivo);
 			$.each(circuitosRes, function(i, val) {
@@ -81,7 +81,7 @@ function listaCircuitos() {
 				}
 				var dv = $('<div class="item"></div>');
 				var img = $('<img class="img-responsive center-block"/>');
-				img.attr('src', '/f1mane/rest/letsRace/circuitoMini/' + this.arquivo);
+				img.attr('src', '/flmane/rest/letsRace/circuitoMini/' + this.arquivo);
 				var h3 = $('<h3 class="text-center"></h3>');
 				dv.prop('circuito', this.arquivo);
 				h3.append(this.nome);

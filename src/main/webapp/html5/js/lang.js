@@ -42,7 +42,7 @@ function lang_idioma(idioma, sincrono) {
 	localStorage.setItem('idioma', idioma);
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/lang/" + idioma,
+		url : "/flmane/rest/letsRace/lang/" + idioma,
 		contentType : "application/json",
 		dataType : "json",
 		async : !sincrono,

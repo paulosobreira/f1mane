@@ -133,7 +133,7 @@ function gerarTr1Pilotos(piloto){
 	var capacetes = $('<div style="display:  inline-flex;"  />');
 	td1.append(capacetes);
 	var capacete = $('<img class="img-responsive img-center"/>');
-	capacete.attr('src', '/f1mane/rest/letsRace/capacete/' + temporadaCapacete + '/' +pilotoId);
+	capacete.attr('src', '/flmane/rest/letsRace/capacete/' + temporadaCapacete + '/' +pilotoId);
 	capacetes.append($('<br>'));
 	capacetes.append(capacete);
 	if(piloto.imgJogador!=null){
@@ -143,7 +143,7 @@ function gerarTr1Pilotos(piloto){
 	}
 	tr.append(td1);
 	var carroLado = $('<img class="img-responsive img-center"/>');
-	carroLado.attr('src', '/f1mane/rest/letsRace/carroLado/' + temporadaCarro + '/' + carroId);
+	carroLado.attr('src', '/flmane/rest/letsRace/carroLado/' + temporadaCarro + '/' + carroId);
 	td2.append(carroLado);
 	if (piloto.id == idPilotoSelecionado) {
 		tr.addClass('success');
@@ -189,7 +189,7 @@ function carregarDadosJogo() {
 }
 
 function carregarDadosJogoCampeonato(){
-	var urlServico = "/f1mane/rest/letsRace/campeonato";
+	var urlServico = "/flmane/rest/letsRace/campeonato";
 	$.ajax({
 		type : "GET",
 		url : urlServico,
@@ -211,7 +211,7 @@ function carregarDadosJogoCampeonato(){
 				$('#temporadaProxima').remove();
 				$('#circuitoAnterior').remove();
 				$('#circuitoProximo').remove();				
-				$('#imgCircuito').attr('src', '/f1mane/rest/letsRace/circuitoMini/' + campeonato.arquivoCircuitoAtual);
+				$('#imgCircuito').attr('src', '/flmane/rest/letsRace/circuitoMini/' + campeonato.arquivoCircuitoAtual);
 				circuitoSelecionado = campeonato.arquivoCircuitoAtual;
 				temporadaSelecionada = campeonato.temporada;
 				var circuitosLabel = campeonato.nomeCircuitoAtual;
@@ -270,7 +270,7 @@ function carregarDadosJogoPadrao() {
 		headers : {
 			'token' : localStorage.getItem("token")
 		},
-		url : "/f1mane/rest/letsRace/dadosJogo?modoCarreira="+localStorage.getItem("modoCarreira"),
+		url : "/flmane/rest/letsRace/dadosJogo?modoCarreira="+localStorage.getItem("modoCarreira"),
 		contentType : "application/json",
 		dataType : "json",
 		success : function(dadosJogoParam) {
@@ -284,7 +284,7 @@ function carregarDadosJogoPadrao() {
 			if (localStorage.getItem("modoCarreira")=="true" && '07' != dadosJogo.estado) {
 				toaster(lang_text('247'), 3000, 'alert alert-danger');
 			}
-			$('#imgCircuito').attr('src', '/f1mane/rest/letsRace/circuitoMini/' + dadosJogo.arquivoCircuito);
+			$('#imgCircuito').attr('src', '/flmane/rest/letsRace/circuitoMini/' + dadosJogo.arquivoCircuito);
 			circuitoSelecionado = dadosJogo.arquivoCircuito;
 			idPilotoSelecionado = dadosJogo.idPilotoSelecionado;
 			temporadaSelecionada = dadosJogo.temporada;
@@ -392,7 +392,7 @@ function jogarCampeonato() {
 	if (combustivel < 0 ) {
 		combustivel = 0;
 	}
-	var urlServico = "/f1mane/rest/letsRace/jogarCampeonato/" + tpPneu + "/" + combustivel + "/" + tpAsa;
+	var urlServico = "/flmane/rest/letsRace/jogarCampeonato/" + tpPneu + "/" + combustivel + "/" + tpAsa;
 	$.ajax({
 		type : "GET",
 		url : urlServico,
@@ -443,7 +443,7 @@ function jogar() {
 	if (combustivel < 0 ) {
 		combustivel = 0;
 	}
-	var urlServico = "/f1mane/rest/letsRace/jogar/" + temporadaSelecionada + "/" + idPilotoSelecionado + "/" + circuitoSelecionado + "/" + voltas
+	var urlServico = "/flmane/rest/letsRace/jogar/" + temporadaSelecionada + "/" + idPilotoSelecionado + "/" + circuitoSelecionado + "/" + voltas
 			+ "/" + tpPneu + "/" + combustivel + "/" + tpAsa+"/"+localStorage.getItem("modoCarreira");
 	$.ajax({
 		type : "GET",
@@ -474,7 +474,7 @@ function jogar() {
 }
 
 function criarSessao() {
-	var urlServico = "/f1mane/rest/letsRace/criarSessaoVisitante";
+	var urlServico = "/flmane/rest/letsRace/criarSessaoVisitante";
 	$.ajax({
 		type : "GET",
 		url : urlServico,
@@ -493,7 +493,7 @@ function criarSessao() {
 }
 
 function listaCircuitos() {
-	var urlServico = "/f1mane/rest/letsRace/circuitos";
+	var urlServico = "/flmane/rest/letsRace/circuitos";
 	$.ajax({
 		type : "GET",
 		url : urlServico,
@@ -507,7 +507,7 @@ function listaCircuitos() {
 			circuitos = circuitosRes;
 			var circuito = circuitosRes[0];
 			$('#circuitosLabel').html(circuito.nome);
-			$('#imgCircuito').attr('src', '/f1mane/rest/letsRace/circuitoMini/' + circuito.arquivo);
+			$('#imgCircuito').attr('src', '/flmane/rest/letsRace/circuitoMini/' + circuito.arquivo);
 			circuitoSelecionado = circuito.arquivo;
 			$('#circuitoActive').prop('circuito', circuito.arquivo);
 			var dvChuva = $('<div class="well"></div>');
@@ -521,7 +521,7 @@ function listaCircuitos() {
 				var img = $('<img class="img-responsive center-block"/>');
 				var nmArquivo = this.arquivo;
 				setTimeout(function(){ 
-							img.attr('src', '/f1mane/rest/letsRace/circuitoMini/' + nmArquivo); 
+							img.attr('src', '/flmane/rest/letsRace/circuitoMini/' + nmArquivo);
 							}, 500*i);
 				var h3 = $('<h3 class="text-center"></h3>');
 				dv.prop('circuito', this.arquivo);
@@ -544,7 +544,7 @@ function listaCircuitos() {
 }
 
 function selecionaTemporada(temporada) {
-	var urlServico = "/f1mane/rest/letsRace/temporadas/" + temporada;
+	var urlServico = "/flmane/rest/letsRace/temporadas/" + temporada;
 	$.ajax({
 		type : "GET",
 		url : urlServico,
@@ -616,7 +616,7 @@ function selecionaTemporada(temporada) {
 }
 
 function listaTemporadas() {
-	var urlServico = "/f1mane/rest/letsRace/temporadas";
+	var urlServico = "/flmane/rest/letsRace/temporadas";
 	$.ajax({
 		type : "GET",
 		url : urlServico,

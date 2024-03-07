@@ -5,13 +5,13 @@
     http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
              version="2.1">
 
-    <persistence-unit name="f1mane-jpa" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="flmane-jpa" transaction-type="RESOURCE_LOCAL">
         <properties>
             <property name="javax.persistence.jdbc.url"
-                      value="jdbc:mysql://db/f1mane?useSSL=false&amp;serverTimezone=UTC"/>
+                      value="jdbc:mysql://db/flmane?useSSL=false&amp;serverTimezone=UTC"/>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.user" value="root"/>
-            <property name="javax.persistence.jdbc.password" value="f1mane"/>
+            <property name="javax.persistence.jdbc.password" value="flmane"/>
 
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>

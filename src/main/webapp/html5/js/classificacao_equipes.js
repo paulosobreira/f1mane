@@ -11,7 +11,7 @@ $('#153').html(lang_text('153'));
 classificacaoEquipes();
 
 function classificacaoEquipes() {
-	var urlServico = "/f1mane/rest/letsRace/classificacaoEquipes";
+	var urlServico = "/flmane/rest/letsRace/classificacaoEquipes";
 	$.ajax({
 		type : "GET",
 		url : urlServico,
@@ -38,10 +38,10 @@ function classificacaoEquipes() {
 				
 				//style="height: 25px;"
 				var imgCapacete = $('<img class="img-responsive img-center"  />');	
-				imgCapacete.attr('src', '/f1mane/rest/letsRace/capacete/' + pilotos[i].temporadaCapaceteLivery + '/' + pilotos[i].idCapaceteLivery);
+				imgCapacete.attr('src', '/flmane/rest/letsRace/capacete/' + pilotos[i].temporadaCapaceteLivery + '/' + pilotos[i].idCapaceteLivery);
 				//style="height: 25px;"
 				var imgCarro = $('<img class="img-responsive img-center"  />');	
-				imgCarro.attr('src', '/f1mane/rest/letsRace/carroLado/' + pilotos[i].temporadaCarroLivery + '/' + pilotos[i].idCarroLivery);
+				imgCarro.attr('src', '/flmane/rest/letsRace/carroLado/' + pilotos[i].temporadaCarroLivery + '/' + pilotos[i].idCarroLivery);
 
 				td0.append(i+1);
 				td1.append(imgCapacete);

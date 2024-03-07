@@ -18,7 +18,7 @@ function rest_dadosJogo(nomeJogo) {
 			'token' : token,
 			'idioma' : localStorage.getItem('idioma')
 		},
-		url : "/f1mane/rest/letsRace/dadosJogo?nomeJogo=" + nomeJogo,
+		url : "/flmane/rest/letsRace/dadosJogo?nomeJogo=" + nomeJogo,
 		contentType : "application/json",
 		dataType : "json",
 		success : function(response) {
@@ -57,7 +57,7 @@ function rest_dadosJogo_jogadores(nomeJogo) {
 			'token' : token,
 			'idioma' : localStorage.getItem('idioma')
 		},
-		url : "/f1mane/rest/letsRace/dadosJogo?nomeJogo=" + nomeJogo,
+		url : "/flmane/rest/letsRace/dadosJogo?nomeJogo=" + nomeJogo,
 		contentType : "application/json",
 		dataType : "json",
 		success : function(response) {
@@ -92,7 +92,7 @@ function rest_ciruito() {
 	carregando = true;
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/circuito?nomeCircuito=" + dadosJogo.arquivoCircuito,
+		url : "/flmane/rest/letsRace/circuito?nomeCircuito=" + dadosJogo.arquivoCircuito,
 		contentType : "application/json",
 		dataType : "json",
 		success : function(response) {
@@ -153,7 +153,7 @@ function rest_dadosParciais() {
 	carregando = true;
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/dadosParciais/" + dadosJogo.nomeJogo + "/" + idPilotoSelecionado,
+		url : "/flmane/rest/letsRace/dadosParciais/" + dadosJogo.nomeJogo + "/" + idPilotoSelecionado,
 		headers : {
 			'token' : token,
 			'idioma' : localStorage.getItem('idioma')
@@ -197,7 +197,7 @@ function rest_sairJogo() {
 	}
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/sairJogo/" + dadosJogo.nomeJogo,
+		url : "/flmane/rest/letsRace/sairJogo/" + dadosJogo.nomeJogo,
 		headers : {
 			'token' : token
 		},
@@ -230,7 +230,7 @@ function rest_sairJogo() {
 function rest_potenciaMotor(valor) {
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/potenciaMotor/" + valor + "/" + idPilotoSelecionado,
+		url : "/flmane/rest/letsRace/potenciaMotor/" + valor + "/" + idPilotoSelecionado,
 		headers : {
 			'token' : token
 		},
@@ -263,7 +263,7 @@ function rest_potenciaMotor(valor) {
 function rest_agressividadePiloto(valor) {
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/agressividadePiloto/" + valor + "/" + idPilotoSelecionado,
+		url : "/flmane/rest/letsRace/agressividadePiloto/" + valor + "/" + idPilotoSelecionado,
 		headers : {
 			'token' : token
 		},
@@ -295,7 +295,7 @@ function rest_agressividadePiloto(valor) {
 function rest_tracadoPiloto(valor) {
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/tracadoPiloto/" + valor + "/" + idPilotoSelecionado,
+		url : "/flmane/rest/letsRace/tracadoPiloto/" + valor + "/" + idPilotoSelecionado,
 		headers : {
 			'token' : token
 		},
@@ -329,7 +329,7 @@ function rest_tracadoPiloto(valor) {
 function rest_ers() {
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/ersPiloto/" + idPilotoSelecionado,
+		url : "/flmane/rest/letsRace/ersPiloto/" + idPilotoSelecionado,
 		headers : {
 			'token' : token
 		},
@@ -362,7 +362,7 @@ function rest_ers() {
 function rest_drs() {
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/drsPiloto/" + idPilotoSelecionado,
+		url : "/flmane/rest/letsRace/drsPiloto/" + idPilotoSelecionado,
 		headers : {
 			'token' : token
 		},
@@ -395,7 +395,7 @@ function rest_drs() {
 function rest_boxPiloto(ativa, pneu, combustivel, asa) {
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/boxPiloto/" + idPilotoSelecionado + "/" + ativa + "/" + pneu + "/" + combustivel + "/" + asa,
+		url : "/flmane/rest/letsRace/boxPiloto/" + idPilotoSelecionado + "/" + ativa + "/" + pneu + "/" + combustivel + "/" + asa,
 		headers : {
 			'token' : token
 		},

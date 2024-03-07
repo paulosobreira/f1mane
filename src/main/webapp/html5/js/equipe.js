@@ -100,7 +100,7 @@ $(document).on('click', '.number-spinner button', function() {
 
 
 function carregaEquipe() {
-	var urlServico = "/f1mane/rest/letsRace/equipe";
+	var urlServico = "/flmane/rest/letsRace/equipe";
 	$.ajax({
 		type : "GET",
 		url : urlServico,
@@ -142,21 +142,21 @@ function carregaEquipe() {
 			$('#bonusValor').html(response.bonus);
 			$('#somaPontosCarroValor').html((response.ptsCarro)+(response.ptsAerodinamica)+(response.ptsFreio));
 			if(response.temporadaCapaceteLivery !=null && response.idCapaceteLivery != null && response.idCapaceteLivery != 0){
-				$('#idImgCapacete').attr('src', '/f1mane/rest/letsRace/capacete/' + response.temporadaCapaceteLivery + '/' + response.idCapaceteLivery);
+				$('#idImgCapacete').attr('src', '/flmane/rest/letsRace/capacete/' + response.temporadaCapaceteLivery + '/' + response.idCapaceteLivery);
 			}else{
-				$('#idImgCapacete').attr('src', '/f1mane/rest/letsRace/capacete/' + rgbToHexUrlSafe(response.c1R,response.c1G,response.c1B) + '/' + rgbToHexUrlSafe(response.c2R,response.c2G,response.c2B));
+				$('#idImgCapacete').attr('src', '/flmane/rest/letsRace/capacete/' + rgbToHexUrlSafe(response.c1R,response.c1G,response.c1B) + '/' + rgbToHexUrlSafe(response.c2R,response.c2G,response.c2B));
 			}
 
 			if(response.temporadaCarroLivery !=null && response.idCarroLivery != null && response.idCarroLivery != 0){
-				$('#idImgCarroLado').attr('src', '/f1mane/rest/letsRace/carroLado/' + response.temporadaCarroLivery + '/' + response.idCarroLivery);
+				$('#idImgCarroLado').attr('src', '/flmane/rest/letsRace/carroLado/' + response.temporadaCarroLivery + '/' + response.idCarroLivery);
 			}else{
-				$('#idImgCarroLado').attr('src', '/f1mane/rest/letsRace/carroLado/' + rgbToHexUrlSafe(response.c1R,response.c1G,response.c1B) + '/' + rgbToHexUrlSafe(response.c2R,response.c2G,response.c2B));
+				$('#idImgCarroLado').attr('src', '/flmane/rest/letsRace/carroLado/' + rgbToHexUrlSafe(response.c1R,response.c1G,response.c1B) + '/' + rgbToHexUrlSafe(response.c2R,response.c2G,response.c2B));
 			}
 			
 			if(response.temporadaCarroLivery !=null && response.idCarroLivery != null && response.idCarroLivery != 0){
-				$('#idImgCarroCima').attr('src', '/f1mane/rest/letsRace/carroCima/' + response.temporadaCarroLivery + '/' + response.idCarroLivery);
+				$('#idImgCarroCima').attr('src', '/flmane/rest/letsRace/carroCima/' + response.temporadaCarroLivery + '/' + response.idCarroLivery);
 			}else{
-				$('#idImgCarroCima').attr('src', '/f1mane/rest/letsRace/carroCima/' + rgbToHexUrlSafe(response.c1R,response.c1G,response.c1B) + '/' + rgbToHexUrlSafe(response.c2R,response.c2G,response.c2B));
+				$('#idImgCarroCima').attr('src', '/flmane/rest/letsRace/carroCima/' + rgbToHexUrlSafe(response.c1R,response.c1G,response.c1B) + '/' + rgbToHexUrlSafe(response.c2R,response.c2G,response.c2B));
 			}
 
 			
@@ -218,7 +218,7 @@ function objetoEquipe(){
 
 function salvarEquipe() {
 	var dataObj = objetoEquipe();
-	var urlServico = "/f1mane/rest/letsRace/equipe";
+	var urlServico = "/flmane/rest/letsRace/equipe";
 	$.ajax({
 		type : "POST",
 		url : urlServico,
@@ -248,7 +248,7 @@ function gerarTrCapaceteCores(){
 	trCapacete.append(tdCapacete);
 	var div = $('<div class="row"/>');
 	var capacete = $('<img class="img-responsive img-center"/>');
-	capacete.attr('src', '/f1mane/rest/letsRace/capacete/' + rgbToHexUrlSafe(response.c1R,response.c1G,response.c1B) + '/' + rgbToHexUrlSafe(response.c2R,response.c2G,response.c2B));
+	capacete.attr('src', '/flmane/rest/letsRace/capacete/' + rgbToHexUrlSafe(response.c1R,response.c1G,response.c1B) + '/' + rgbToHexUrlSafe(response.c2R,response.c2G,response.c2B));
 	div.append(capacete);
 	var divNome = $('<div class="row transbox textCenter"/>');
 	divNome.append(response.nomePiloto+'<br>');
@@ -257,7 +257,7 @@ function gerarTrCapaceteCores(){
 	div.bind("click", function() {
 		$('#temporadaCapaceteLivery').val(null);
 		$('#idCapaceteLivery').val(null);
-		$('#idImgCapacete').attr('src', '/f1mane/rest/letsRace/capacete/' + rgbToHexUrlSafe(response.c1R,response.c1G,response.c1B) + '/' + rgbToHexUrlSafe(response.c2R,response.c2G,response.c2B));
+		$('#idImgCapacete').attr('src', '/flmane/rest/letsRace/capacete/' + rgbToHexUrlSafe(response.c1R,response.c1G,response.c1B) + '/' + rgbToHexUrlSafe(response.c2R,response.c2G,response.c2B));
 		$('#escolha').addClass('hidden');
 		$('#capacetes').addClass('hidden');
 		$('#equipe').removeClass('hidden');
@@ -281,7 +281,7 @@ function gerarTrCarro(){
 	trCarro2.append(tdCarro4);
 	var div1 = $('<div/>');
 	var carroCima = $('<img class="img-responsive img-center" />');
-	carroCima.attr('src', '/f1mane/rest/letsRace/carroCima/' + rgbToHexUrlSafe(response.c1R,response.c1G,response.c1B) + '/' + rgbToHexUrlSafe(response.c2R,response.c2G,response.c2B));
+	carroCima.attr('src', '/flmane/rest/letsRace/carroCima/' + rgbToHexUrlSafe(response.c1R,response.c1G,response.c1B) + '/' + rgbToHexUrlSafe(response.c2R,response.c2G,response.c2B));
 	div1.append(carroCima);
 	var div3 = $('<div class="row" />');
 	div3.append(response.nomeCarro+'<br>');
@@ -291,7 +291,7 @@ function gerarTrCarro(){
 	
 	var div2 = $('<div/>');
 	var carroLado = $('<img class="img-responsive img-center" style="margin-top: 20px;" />');
-	carroLado.attr('src', '/f1mane/rest/letsRace/carroLado/' + rgbToHexUrlSafe(response.c1R,response.c1G,response.c1B) + '/' + rgbToHexUrlSafe(response.c2R,response.c2G,response.c2B));
+	carroLado.attr('src', '/flmane/rest/letsRace/carroLado/' + rgbToHexUrlSafe(response.c1R,response.c1G,response.c1B) + '/' + rgbToHexUrlSafe(response.c2R,response.c2G,response.c2B));
 	div2.append(carroLado);
 	var div4 = $('<div class="row" />');
 	div4.append(lang_text('freioCarro')+' '+response.ptsFreio+'<br>');
@@ -302,8 +302,8 @@ function gerarTrCarro(){
 	var click = function() {
 		$('#temporadaCarroLivery').val(null);
 		$('#idCarroLivery').val(null);
-		$('#idImgCarroLado').attr('src', '/f1mane/rest/letsRace/carroLado/' + rgbToHexUrlSafe(response.c1R,response.c1G,response.c1B) + '/' + rgbToHexUrlSafe(response.c2R,response.c2G,response.c2B));
-		$('#idImgCarroCima').attr('src', '/f1mane/rest/letsRace/carroCima/' + rgbToHexUrlSafe(response.c1R,response.c1G,response.c1B) + '/' + rgbToHexUrlSafe(response.c2R,response.c2G,response.c2B));
+		$('#idImgCarroLado').attr('src', '/flmane/rest/letsRace/carroLado/' + rgbToHexUrlSafe(response.c1R,response.c1G,response.c1B) + '/' + rgbToHexUrlSafe(response.c2R,response.c2G,response.c2B));
+		$('#idImgCarroCima').attr('src', '/flmane/rest/letsRace/carroCima/' + rgbToHexUrlSafe(response.c1R,response.c1G,response.c1B) + '/' + rgbToHexUrlSafe(response.c2R,response.c2G,response.c2B));
 		$('#escolha').addClass('hidden');
 		$('#carros').addClass('hidden');
 		$('#equipe').removeClass('hidden');
@@ -318,7 +318,7 @@ function gerarTrCarro(){
 
 
 function selecionaTemporada(temporada) {
-	var urlServico = "/f1mane/rest/letsRace/temporadas/" + temporada;
+	var urlServico = "/flmane/rest/letsRace/temporadas/" + temporada;
 	$.ajax({
 		type : "GET",
 		url : urlServico,
@@ -345,7 +345,7 @@ function selecionaTemporada(temporada) {
 				trCapacete.append(tdCapacete);
 				var div = $('<div class="row"/>');
 				var capacete = $('<img class="img-responsive img-center"/>');
-				capacete.attr('src', '/f1mane/rest/letsRace/capacete/' + temporadaSelecionada + '/' + piloto.id);
+				capacete.attr('src', '/flmane/rest/letsRace/capacete/' + temporadaSelecionada + '/' + piloto.id);
 				div.append(capacete);
 				var divNome = $('<div class="row transbox textCenter"/>');
 				divNome.append(piloto.nome+'<br>');
@@ -360,7 +360,7 @@ function selecionaTemporada(temporada) {
 					}
 					$('#temporadaCapaceteLivery').val(temporadaSelecionada);
 					$('#idCapaceteLivery').val(piloto.id);
-					$('#idImgCapacete').attr('src', '/f1mane/rest/letsRace/capacete/' + temporadaSelecionada + '/' + piloto.id);
+					$('#idImgCapacete').attr('src', '/flmane/rest/letsRace/capacete/' + temporadaSelecionada + '/' + piloto.id);
 					$('#escolha').addClass('hidden');
 					$('#capacetes').addClass('hidden');
 					$('#equipe').removeClass('hidden');
@@ -384,7 +384,7 @@ function selecionaTemporada(temporada) {
 					
 					var div1 = $('<div/>');
 					var carroCima = $('<img class="img-responsive img-center" />');
-					carroCima.attr('src', '/f1mane/rest/letsRace/carroCima/' + temporadaSelecionada + '/' + piloto.carro.id);
+					carroCima.attr('src', '/flmane/rest/letsRace/carroCima/' + temporadaSelecionada + '/' + piloto.carro.id);
 					div1.append(carroCima);
 					var div3 = $('<div class="row"/>');
 					div3.append(piloto.carro.nome+'<br>');
@@ -394,7 +394,7 @@ function selecionaTemporada(temporada) {
 					
 					var div2 = $('<div/>');
 					var carroLado = $('<img class="img-responsive img-center" style="margin-top: 20px;" />');
-					carroLado.attr('src', '/f1mane/rest/letsRace/carroLado/' + temporadaSelecionada + '/' + piloto.carro.id);
+					carroLado.attr('src', '/flmane/rest/letsRace/carroLado/' + temporadaSelecionada + '/' + piloto.carro.id);
 					div2.append(carroLado);
 					var div4 = $('<div class="row"/>');
 					div4.append(lang_text('freioCarro')+' '+piloto.carro.freios+'<br>');
@@ -415,8 +415,8 @@ function selecionaTemporada(temporada) {
 						}
 						$('#temporadaCarroLivery').val(temporadaSelecionada);
 						$('#idCarroLivery').val(piloto.carro.id);
-						$('#idImgCarroLado').attr('src', '/f1mane/rest/letsRace/carroLado/' + temporadaSelecionada + '/' + piloto.carro.id);
-						$('#idImgCarroCima').attr('src', '/f1mane/rest/letsRace/carroCima/' + temporadaSelecionada + '/' + piloto.carro.id);
+						$('#idImgCarroLado').attr('src', '/flmane/rest/letsRace/carroLado/' + temporadaSelecionada + '/' + piloto.carro.id);
+						$('#idImgCarroCima').attr('src', '/flmane/rest/letsRace/carroCima/' + temporadaSelecionada + '/' + piloto.carro.id);
 						$('#escolha').addClass('hidden');
 						$('#carros').addClass('hidden');
 						$('#equipe').removeClass('hidden');
@@ -437,7 +437,7 @@ function selecionaTemporada(temporada) {
 }
 
 function listaTemporadas() {
-	var urlServico = "/f1mane/rest/letsRace/temporadas";
+	var urlServico = "/flmane/rest/letsRace/temporadas";
 	$.ajax({
 		type : "GET",
 		url : urlServico,

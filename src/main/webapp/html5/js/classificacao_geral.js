@@ -9,7 +9,7 @@ $('#165').html(lang_text('165'));
 classificacaoGeral();
 
 function classificacaoGeral() {
-	var urlServico = "/f1mane/rest/letsRace/classificacaoGeral";
+	var urlServico = "/flmane/rest/letsRace/classificacaoGeral";
 	$.ajax({
 		type : "GET",
 		url : urlServico,

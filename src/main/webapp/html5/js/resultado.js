@@ -20,7 +20,7 @@ function resultado() {
 		headers : {
 			'token' : token
 		},
-		url : "/f1mane/rest/letsRace/dadosJogo?nomeJogo=" + nomeJogo,
+		url : "/flmane/rest/letsRace/dadosJogo?nomeJogo=" + nomeJogo,
 		contentType : "application/json",
 		dataType : "json",
 		success : function(dadosJogo) {
@@ -28,7 +28,7 @@ function resultado() {
 				window.location.href = "index.html";
 				return;
 			}
-			$('#imgCircuito').attr('src', '/f1mane/rest/letsRace/circuitoMini/' + dadosJogo.arquivoCircuito);
+			$('#imgCircuito').attr('src', '/flmane/rest/letsRace/circuitoMini/' + dadosJogo.arquivoCircuito);
 			circuitoSelecionado = dadosJogo.arquivoCircuito;
 			idPilotoSelecionado = dadosJogo.idPilotoSelecionado;
 			temporadaSelecionada = dadosJogo.temporada;
@@ -114,7 +114,7 @@ function montaLinhaGridResultado(i, piloto) {
 	
 	
 	var capacete = $('<img class="img-responsive img-responsive-line img-left"/>');
-	capacete.attr('src', '/f1mane/rest/letsRace/capacete/' +temporadaCapacete + '/' + pilotoId );
+	capacete.attr('src', '/flmane/rest/letsRace/capacete/' +temporadaCapacete + '/' + pilotoId );
 	var capacetes = $('<div style="display:  inline-flex;"  />');
 	capacetes.append(capacete);
 	if(piloto.imgJogador!=null){
@@ -124,11 +124,11 @@ function montaLinhaGridResultado(i, piloto) {
 	}
 	var pneu = $('<img class="img-right"/>');
 	if (piloto.carro.tipoPneu == 'TIPO_PNEU_MOLE') {
-		pneu.attr('src', '/f1mane/rest/letsRace/png/pneuMoleMenor');
+		pneu.attr('src', '/flmane/rest/letsRace/png/pneuMoleMenor');
 	} else if (piloto.carro.tipoPneu == 'TIPO_PNEU_DURO') {
-		pneu.attr('src', '/f1mane/rest/letsRace/png/pneuDuroMenor');
+		pneu.attr('src', '/flmane/rest/letsRace/png/pneuDuroMenor');
 	} else if (piloto.carro.tipoPneu == 'TIPO_PNEU_CHUVA') {
-		pneu.attr('src', '/f1mane/rest/letsRace/png/pneuChuvaMenor');
+		pneu.attr('src', '/flmane/rest/letsRace/png/pneuChuvaMenor');
 	}
 	capacetes.append(pneu);
 	td1.append(capacetes);
@@ -165,7 +165,7 @@ function montaLinhaGridResultado(i, piloto) {
 	}
 	td2.append('<br>');
 	var carroLado = $('<img class="img-responsive img-center"/>');
-	carroLado.attr('src', '/f1mane/rest/letsRace/carroLado/' + temporadaCarro + '/' + carroId);
+	carroLado.attr('src', '/flmane/rest/letsRace/carroLado/' + temporadaCarro + '/' + carroId);
 	td2.append(carroLado);
 	tr.append(td2);
 	if (piloto.id == idPilotoSelecionado) {
