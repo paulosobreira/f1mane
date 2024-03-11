@@ -9,7 +9,7 @@
         <properties>
             <property name="javax.persistence.jdbc.url"
                       value="jdbc:mysql://db/flmane?useSSL=false&amp;serverTimezone=UTC"/>
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.user" value="root"/>
             <property name="javax.persistence.jdbc.password" value="flmane"/>
 

@@ -18,6 +18,7 @@ import br.nnpe.Util;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -828,10 +829,12 @@ public class ControlePaddockCliente {
         if (JOptionPane.OK_OPTION == result) {
             ClientPaddockPack clientPaddockPack = new ClientPaddockPack(Comandos.SAIR_JOGO, sessaoCliente);
             clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
+            enviarObjeto(clientPaddockPack);
             if (jogoCliente != null) {
                 jogoCliente.matarTodasThreads();
+                jogoCliente.getMainFrame().setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                jogoCliente.getMainFrame().dispatchEvent(new WindowEvent(jogoCliente.getMainFrame(), WindowEvent.WINDOW_CLOSING));
             }
-            enviarObjeto(clientPaddockPack);
         }
         return;
 
