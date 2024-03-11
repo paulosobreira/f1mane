@@ -5,8 +5,6 @@ package br.f1mane.servidor.controles;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +53,7 @@ public class ControlePaddockServidor {
     private int versao;
     private int contadorVistantes = 1;
     private final CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);
+    private Properties properties;
 
     public DadosPaddock getDadosPaddock() {
         return dadosPaddock;
@@ -207,6 +206,10 @@ public class ControlePaddockServidor {
     }
 
     private Object registar(ClientPaddockPack clientPaddockPack) {
+        String applet = properties.getProperty("applet");
+        if(!"true".equals(applet)){
+            return new MsgSrv(Lang.msg("loginIndisponivel"));
+        }
         JogadorDadosSrv jogadorDadosSrv = null;
         Session session = controlePersistencia.getSession();
         String senha;
@@ -767,7 +770,7 @@ public class ControlePaddockServidor {
     }
 
     public void initProperties() throws IOException {
-        Properties properties = new Properties();
+        properties = new Properties();
         properties.load(CarregadorRecursos.recursoComoStream("application.properties"));
         String versao = properties.getProperty("versao");
         if (versao.contains(".")) {

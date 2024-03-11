@@ -719,7 +719,7 @@ public class PainelCircuito {
 
 
         if (gerenciadorVisual.getFpsLimite() == 60D) {
-            fatorFps = .03;
+            fatorFps = .025;
         }
 
         if(controleJogo instanceof JogoCliente){
