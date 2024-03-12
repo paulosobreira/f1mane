@@ -827,18 +827,16 @@ public class ControlePaddockCliente {
         int result = JOptionPane.showConfirmDialog(applet.getFrame(), Lang.msg("sairJogo"), Lang.msg("095"),
                 JOptionPane.OK_CANCEL_OPTION);
         if (JOptionPane.OK_OPTION == result) {
-            ClientPaddockPack clientPaddockPack = new ClientPaddockPack(Comandos.SAIR_JOGO, sessaoCliente);
-            clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
-            enviarObjeto(clientPaddockPack);
-            if (jogoCliente != null) {
-                jogoCliente.matarTodasThreads();
-                jogoCliente.getMainFrame().setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-                jogoCliente.getMainFrame().dispatchEvent(new WindowEvent(jogoCliente.getMainFrame(), WindowEvent.WINDOW_CLOSING));
+            WindowListener[] windowListeners = mainFrame.getWindowListeners();
+            for (int i = 0; i < windowListeners.length; i++) {
+                mainFrame.removeWindowListener(windowListeners[i]);
             }
+            mainFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            mainFrame.dispatchEvent(new WindowEvent(jogoCliente.getMainFrame(), WindowEvent.WINDOW_CLOSING));
+            jogoCliente.abandonar();
         }
-        return;
-
     }
+
 
     public String getVersaoFormatado() {
         AppletPaddock appletPaddock = (AppletPaddock) applet;

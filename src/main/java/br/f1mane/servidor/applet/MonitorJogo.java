@@ -507,6 +507,12 @@ public class MonitorJogo implements Runnable {
             clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
             controlePaddockCliente.enviarObjeto(clientPaddockPack);
             jogoCliente.matarTodasThreads();
+            List<Piloto> pilotos = jogoCliente.getPilotos();
+            for (Piloto piloto : pilotos) {
+                if(clientPaddockPack.getSessaoCliente().getToken().equals(piloto.getTokenJogador())){
+                    piloto.setTokenJogador(null);
+                }
+            }
         } catch (Exception e) {
             Logger.logarExept(e);
             jogoAtivo = false;

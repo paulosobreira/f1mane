@@ -23,7 +23,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,15 +39,15 @@ import java.util.*;
 /**
  * @author paulo.sobreira
  */
-@WebServlet("/ServletPaddock")
 public class ServletPaddock extends HttpServlet {
     private final static String lock = "lock";
     private ControlePaddockServidor controlePaddock;
     private static MonitorAtividade monitorAtividade;
     String senha;
 
+    @Override
     public void init() throws ServletException {
-        super.init();
+        Logger.logar("Init");
         PaddockServer.init(getServletContext().getRealPath(""));
         controlePaddock = PaddockServer.getControlePaddock();
         monitorAtividade = PaddockServer.getMonitorAtividade();
@@ -56,22 +55,25 @@ public class ServletPaddock extends HttpServlet {
             Properties properties = new Properties();
             properties.load(CarregadorRecursos.recursoComoStream("application.properties"));
             senha = properties.getProperty("senha");
+            String createSchema = properties.getProperty("createSchema");
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        Thread.sleep(10000);
+                        Thread.sleep(15000);
+                        Logger.logar("createSchema(null);");
                         createSchema(null);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             });
-            thread.run();
+            if("true".equalsIgnoreCase(createSchema)){
+                thread.start();
+            }
         } catch (Exception e) {
             Logger.logarExept(e);
         }
-
     }
 
     public void destroy() {

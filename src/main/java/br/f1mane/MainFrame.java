@@ -101,6 +101,7 @@ public class MainFrame extends JFrame {
         gerarMenusInfo(menuInfo);
         gerarMenusSobre(menuInfo);
         gerarMenusidiomas(menuIdiomas);
+        pack();
         setSize(1280, 720);
         String title = "Fl-MANE " + getVersao() + " MANager & Engineer";
         setTitle(title);

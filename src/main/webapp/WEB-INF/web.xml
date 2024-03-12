@@ -3,7 +3,16 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
    http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
-    <display-name>f1mane</display-name>
+    <display-name>flmane</display-name>
+    <servlet>
+        <servlet-name>ServletPaddock</servlet-name>
+        <servlet-class>br.f1mane.servidor.servlet.ServletPaddock</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletPaddock</servlet-name>
+        <url-pattern>/ServletPaddock</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>Jersey REST Service</servlet-name>
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
