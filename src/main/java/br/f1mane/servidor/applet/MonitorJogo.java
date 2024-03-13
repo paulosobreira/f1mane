@@ -354,7 +354,6 @@ public class MonitorJogo implements Runnable {
                         piloto.setFaiscas(true);
                     } else if ("T".equals(statusPilotos)
                             || "M".equals(statusPilotos)) {
-                        jogoCliente.travouRodas(piloto);
                         if (piloto.getNoAtual() != null && jogoCliente.obterIdPorNo(piloto.getNoAtual()) != null) {
                             TravadaRoda travadaRoda = new TravadaRoda();
                             travadaRoda.setIdNo(

@@ -29,6 +29,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import br.f1mane.recursos.CarregadorRecursos;
 import br.nnpe.Logger;
 import br.f1mane.controles.ControleJogoLocal;
 import br.f1mane.controles.InterfaceJogo;
@@ -48,7 +49,6 @@ public class MainFrame extends JFrame {
 
     private static final long serialVersionUID = -284357233387917389L;
     protected InterfaceJogo controleJogo;
-    private String codeBase;
     private JMenuBar bar;
     private JMenu menuJogo;
     private JMenu menuIdiomas;
@@ -63,14 +63,14 @@ public class MainFrame extends JFrame {
     boolean adicionouPainelNarracao = false;
     boolean adicionouPainelDebug = false;
 
-    private final AppletPaddock ver = new AppletPaddock();
+    private AppletPaddock appletPaddock = new AppletPaddock();
 
     public InterfaceJogo getControleJogo() {
         return controleJogo;
     }
 
-    public MainFrame(AppletPaddock modoApplet, String codeBase) throws IOException {
-        this.codeBase = codeBase;
+    public MainFrame(AppletPaddock appletPaddock) throws IOException {
+        this.appletPaddock = appletPaddock;
         bar = new JMenuBar();
         menuFrame = new JFrame();
         menuFrame.setJMenuBar(bar);
@@ -105,7 +105,7 @@ public class MainFrame extends JFrame {
         setSize(1280, 720);
         String title = "Fl-MANE " + getVersao() + " MANager & Engineer";
         setTitle(title);
-        if (modoApplet == null) {
+        if (appletPaddock == null) {
             iniciar();
             setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         } else {
@@ -118,7 +118,7 @@ public class MainFrame extends JFrame {
     }
 
     public String getVersao() {
-        return ver.getVersaoFormatado();
+        return CarregadorRecursos.getVersaoFormatado();
     }
 
     private void gerarMenusidiomas(JMenu menuIdiomas) {
@@ -354,14 +354,10 @@ public class MainFrame extends JFrame {
     }
 
     public static void main(String[] args) throws IOException {
-        String codeBase = File.separator + "WebContent" + File.separator;
-        if (args != null && args.length > 0) {
-            codeBase = args[0];
-        }
         if (args != null && args.length > 1) {
             Lang.mudarIdioma(args[1]);
         }
-        MainFrame frame = new MainFrame(null, codeBase);
+        MainFrame frame = new MainFrame(null);
     }
 
     public void iniciar() {
@@ -401,7 +397,10 @@ public class MainFrame extends JFrame {
     }
 
     public String getCodeBase() {
-        return codeBase;
+        if (appletPaddock.getCodeBase() != null) {
+            return appletPaddock.getCodeBase().toString();
+        }
+        return null;
     }
 
     public void desbilitarMenusModoOnline() {

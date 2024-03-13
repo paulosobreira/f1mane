@@ -513,7 +513,7 @@ public class PainelEntradaCliente {
     public boolean gerarDadosEntrarJogo(DadosCriarJogo dadosParticiparJogo, JPanel panelJogoCriado, String circuito,
                                         String temporada, String clima) {
         JPanel painelInicio = new JPanel();
-        gerarPainelParticiparJogo(painelInicio, clima);
+        gerarPainelParticiparJogo(painelInicio, clima, dadosParticiparJogo);
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(panelJogoCriado, BorderLayout.NORTH);
         panel.add(gerarSeletorTemporadaCircuito());
@@ -536,7 +536,7 @@ public class PainelEntradaCliente {
         return true;
     }
 
-    private void gerarPainelParticiparJogo(JPanel painelInicio, String clima) {
+    private void gerarPainelParticiparJogo(JPanel painelInicio, String clima, DadosCriarJogo dadosParticiparJogo) {
         painelInicio.setLayout(new GridLayout(4, 2));
 
         comboBoxPilotoSelecionado = new JComboBox();
@@ -593,8 +593,10 @@ public class PainelEntradaCliente {
         painelInicio.add(comboBoxPneuInicial);
         painelInicio.add(tipoAsa);
         painelInicio.add(comboBoxAsa);
-        painelInicio.add(qtdeComustivel);
-        painelInicio.add(sliderCombustivelInicial);
+        if (dadosParticiparJogo.isReabastecimento()) {
+            painelInicio.add(qtdeComustivel);
+            painelInicio.add(sliderCombustivelInicial);
+        }
 
     }
 

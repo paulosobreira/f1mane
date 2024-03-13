@@ -3,6 +3,7 @@ package br.f1mane.servidor.applet;
 import br.f1mane.MainFrame;
 import br.f1mane.entidades.Carro;
 import br.f1mane.entidades.Clima;
+import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
 import br.f1mane.servidor.PaddockConstants;
 import br.f1mane.servidor.entidades.Comandos;
@@ -35,8 +36,7 @@ import java.util.List;
  * @author paulo.sobreira
  */
 public class ControlePaddockCliente {
-    private final URL url;
-    private final AppletPaddock applet;
+    private AppletPaddock applet;
     private SessaoCliente sessaoCliente;
     private PaddockWindow paddockWindow;
     private Thread threadAtualizadora;
@@ -50,14 +50,13 @@ public class ControlePaddockCliente {
     private String versaoServidor = "";
     final DecimalFormat decimalFormat = new DecimalFormat("#,###");
 
-    public ControlePaddockCliente(URL url, AppletPaddock panel) {
-        this.url = url;
-        this.applet = panel;
+    public ControlePaddockCliente(AppletPaddock applet) {
+        this.applet = applet;
     }
 
     public void init() {
         try {
-            mainFrame = new MainFrame(applet, applet.getCodeBase().toString());
+            mainFrame = new MainFrame(applet);
             mainFrame.setVisible(false);
             mainFrame.desbilitarMenusModoOnline();
             threadAtualizadora = new Thread(new Runnable() {
@@ -94,9 +93,12 @@ public class ControlePaddockCliente {
 
     public Object enviarObjeto(Object enviar, boolean timeout) {
         try {
-            String protocol = url.getProtocol();
-            String host = url.getHost();
-            int port = url.getPort();
+            if (applet == null || applet.getCodeBase() == null) {
+                return null;
+            }
+            String protocol = applet.getCodeBase().getProtocol();
+            String host = applet.getCodeBase().getHost();
+            int port = applet.getCodeBase().getPort();
             URL dataUrl;
             long envioT = System.currentTimeMillis();
             // Gerar Lag
@@ -831,21 +833,19 @@ public class ControlePaddockCliente {
             for (int i = 0; i < windowListeners.length; i++) {
                 mainFrame.removeWindowListener(windowListeners[i]);
             }
-            mainFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            mainFrame.dispatchEvent(new WindowEvent(jogoCliente.getMainFrame(), WindowEvent.WINDOW_CLOSING));
             jogoCliente.abandonar();
+            mainFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+            mainFrame.dispatchEvent(new WindowEvent(jogoCliente.getMainFrame(), WindowEvent.WINDOW_CLOSING));
         }
     }
 
 
     public String getVersaoFormatado() {
-        AppletPaddock appletPaddock = (AppletPaddock) applet;
-        return appletPaddock.getVersaoFormatado() + " Srv" + versaoServidor;
+        return CarregadorRecursos.getVersaoFormatado() + " Srv" + versaoServidor;
     }
 
     public String getVersao() {
-        AppletPaddock appletPaddock = (AppletPaddock) applet;
-        return appletPaddock.getVersao();
+        return CarregadorRecursos.getVersao();
     }
 
     public void verificaVersao() {

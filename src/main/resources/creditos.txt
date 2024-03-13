@@ -1,5 +1,5 @@
 -Fl-MANE
-Formula league - Manager & Engineer
+Formula legends - Manager & Engineer
 -Desenvolvido / Developed
 Paulo Sobreira
 -Fonte de Imagens /Images Sources

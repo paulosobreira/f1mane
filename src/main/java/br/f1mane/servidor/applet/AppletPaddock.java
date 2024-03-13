@@ -7,6 +7,7 @@ package br.f1mane.servidor.applet;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.Properties;
@@ -21,46 +22,18 @@ import br.nnpe.Util;
 
 /**
  * @author paulo.sobreira
- *
  */
 public class AppletPaddock {
 
     private static final long serialVersionUID = -2007934906883016154L;
     private ControlePaddockCliente controlePaddockCliente;
-    private String versao;
+
     private JFrame frame;
     private URL codeBase;
-    final DecimalFormat decimalFormat = new DecimalFormat("#,###");
 
-    public String getVersaoFormatado() {
-        if (versao == null) {
-            try {
-                initProperties();
-            } catch (IOException e) {
-                Logger.logarExept(e);
-            }
-        }
-        return decimalFormat.format(new Integer(versao));
-    }
-
-    public String getVersao() {
-        if (versao == null) {
-            try {
-                initProperties();
-            } catch (IOException e) {
-                Logger.logarExept(e);
-            }
-        }
-        return versao;
-    }
 
     public static void main(String[] args) throws IOException {
         AppletPaddock appletPaddock = new AppletPaddock();
-        String host = JOptionPane.showInputDialog("Host. Esc to localhost.");
-        if(Util.isNullOrEmpty(host)){
-            host = "http://localhost";
-        }
-        appletPaddock.setCodeBase(new URL(host));
         appletPaddock.init();
     }
 
@@ -68,14 +41,24 @@ public class AppletPaddock {
         try {
             frame = new JFrame();
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            initProperties();
-            controlePaddockCliente = new ControlePaddockCliente(
-                    this.getCodeBase(), this);
+            CarregadorRecursos.initProperties();
+            controlePaddockCliente = new ControlePaddockCliente(this);
             controlePaddockCliente.verificaVersao();
             controlePaddockCliente.init();
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
+                    if (getCodeBase() == null) {
+                        String host = JOptionPane.showInputDialog(AppletPaddock.this.getFrame(), "Host. Esc to localhost.");
+                        if (Util.isNullOrEmpty(host)) {
+                            host = "http://localhost";
+                        }
+                        try {
+                            setCodeBase(new URL(host));
+                        } catch (MalformedURLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
                     controlePaddockCliente.logar();
                 }
             };
@@ -104,15 +87,6 @@ public class AppletPaddock {
         return frame;
     }
 
-    public void initProperties() throws IOException {
-        Properties properties = new Properties();
-        properties.load(CarregadorRecursos.recursoComoStream("application.properties"));
-        this.versao = properties.getProperty("versao");
-        if (versao.contains(".")) {
-            this.versao = versao.replaceAll("\\.", "");
-        }
-
-    }
 
     public void setCodeBase(URL codeBase) {
         this.codeBase = codeBase;

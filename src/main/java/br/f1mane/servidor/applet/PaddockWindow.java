@@ -1,10 +1,6 @@
 package br.f1mane.servidor.applet;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -17,23 +13,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import br.f1mane.servidor.controles.ControleJogosServer;
+import br.f1mane.visao.PainelCircuito;
+import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.f1mane.entidades.Clima;
@@ -173,9 +159,21 @@ public class PaddockWindow {
     }
 
     public PaddockWindow(ControlePaddockCliente controlePaddockApplet) {
+        if (PainelCircuito.desenhaBkg) {
+            img = ImageUtil.geraResize(ImageUtil.gerarFade(CarregadorRecursos.carregaBufferedImage("bg/bg" + Util.intervalo(1, 3) + ".jpg"), 40), 0.6, 0.6);
+        }
         CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);
         carregadorRecursos.carregarTemporadasPilotos();
-        mainPanel = new JPanel(new BorderLayout());
+        mainPanel = new JPanel(new BorderLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D graphics2d = (Graphics2D) g;
+                if (img != null) {
+                    graphics2d.drawImage(img, null, 0, 0);
+                }
+            }
+        };
         if (controlePaddockApplet != null) {
             this.controlePaddockCliente = controlePaddockApplet;
             controlePaddockApplet.setPaddockWindow(this);
@@ -185,6 +183,11 @@ public class PaddockWindow {
         if (controlePaddockApplet != null) {
             atualizaInfo();
         }
+    }
+
+    private Component compTransp(JComponent c) {
+        c.setBackground(new Color(255, 255, 255, 0));
+        return c;
     }
 
     private void gerarAcoes() {
@@ -360,8 +363,8 @@ public class PaddockWindow {
     private void gerarLayout() {
         JPanel cPanel = new JPanel(new BorderLayout());
         JPanel sPanel = new JPanel(new BorderLayout());
-        mainPanel.add(cPanel, BorderLayout.CENTER);
-        mainPanel.add(sPanel, BorderLayout.SOUTH);
+        mainPanel.add(compTransp(cPanel), BorderLayout.CENTER);
+        mainPanel.add(compTransp(sPanel), BorderLayout.SOUTH);
         JPanel chatPanel = new JPanel();
         if (controlePaddockCliente != null) {
             chatPanel.setBorder(
@@ -374,26 +377,26 @@ public class PaddockWindow {
                 return Lang.msg("186");
             }
         });
-        cPanel.add(chatPanel, BorderLayout.CENTER);
-        cPanel.add(usersPanel, BorderLayout.EAST);
+        cPanel.add(compTransp(chatPanel), BorderLayout.CENTER);
+        cPanel.add(compTransp(usersPanel), BorderLayout.EAST);
         JPanel jogsPanel = new JPanel();
         jogsPanel.setBorder((new TitledBorder("Lista de Jogos") {
             public String getTitle() {
                 return Lang.msg("187");
             }
         }));
-        sPanel.add(jogsPanel, BorderLayout.EAST);
+        sPanel.add(compTransp(jogsPanel), BorderLayout.EAST);
         JPanel inputPanel = new JPanel();
-        sPanel.add(inputPanel, BorderLayout.CENTER);
+        sPanel.add(compTransp(inputPanel), BorderLayout.CENTER);
         /**
          * adicionar componentes.
          */
-        JScrollPane jogsPane = new JScrollPane(listaClientes);
+        JScrollPane jogsPane = new JScrollPane(compTransp(listaClientes));
         jogsPane.setPreferredSize(new Dimension(150, 235));
-        usersPanel.add(jogsPane);
-        JScrollPane jogsCriados = new JScrollPane(listaJogosCriados);
+        usersPanel.add(compTransp(jogsPane));
+        JScrollPane jogsCriados = new JScrollPane(compTransp(listaJogosCriados));
         jogsCriados.setPreferredSize(new Dimension(150, 100));
-        jogsPanel.add(jogsCriados);
+        jogsPanel.add(compTransp(jogsCriados));
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(3, 4));
         buttonsPanel.add(entrarJogo);
@@ -434,14 +437,14 @@ public class PaddockWindow {
             }
         });
         panelTextoEnviar.setLayout(new BorderLayout());
-        panelTextoEnviar.add(textoEnviar, BorderLayout.CENTER);
+        panelTextoEnviar.add(compTransp(textoEnviar), BorderLayout.CENTER);
         inputPanel.setLayout(new BorderLayout());
-        inputPanel.add(panelTextoEnviar, BorderLayout.NORTH);
-        inputPanel.add(buttonsPanel, BorderLayout.CENTER);
-        inputPanel.add(infoLabel1, BorderLayout.SOUTH);
+        inputPanel.add(compTransp(panelTextoEnviar), BorderLayout.NORTH);
+        inputPanel.add(compTransp(buttonsPanel), BorderLayout.CENTER);
+        inputPanel.add(compTransp(infoLabel1), BorderLayout.SOUTH);
         chatPanel.setLayout(new BorderLayout());
-        JScrollPane jScrollPane = new JScrollPane(textAreaChat);
-        chatPanel.add(jScrollPane, BorderLayout.CENTER);
+        JScrollPane jScrollPane = new JScrollPane(compTransp(textAreaChat));
+        chatPanel.add(compTransp(jScrollPane), BorderLayout.CENTER);
     }
 
     public JPanel getMainPanel() {

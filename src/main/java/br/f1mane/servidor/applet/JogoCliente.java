@@ -642,9 +642,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	public void iniciaJanela() {
 		if (!getMainFrame().isVisible()) {
-			getMainFrame().pack();
-			getMainFrame().setSize(1280, 720);
-			getMainFrame().setVisible(true);
+            getMainFrame().setVisible(true);
+            getMainFrame().pack();
+            getMainFrame().setSize(1280, 720);
 		}
 	}
 

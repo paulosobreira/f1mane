@@ -15,6 +15,7 @@ import java.awt.image.WritableRaster;
 import java.beans.XMLDecoder;
 import java.io.*;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.*;
 
@@ -40,7 +41,55 @@ public class CarregadorRecursos {
 
     private static boolean cache;
 
+    private static String versao;
+
+    private static URL codeBase;
+
+    private static String applet;
+
+    final static DecimalFormat decimalFormat = new DecimalFormat("#,###");
+
     private CarregadorRecursos() {
+    }
+
+    public static void initProperties() throws IOException {
+        Properties properties = new Properties();
+        properties.load(CarregadorRecursos.recursoComoStream("application.properties"));
+        versao = properties.getProperty("versao");
+        applet = properties.getProperty("applet");
+        String codeBaseStr = properties.getProperty("codeBase");
+        if (!Util.isNullOrEmpty(codeBaseStr)) {
+            codeBase = new URL(codeBaseStr);
+        }
+        if (versao.contains(".")) {
+            versao = versao.replaceAll("\\.", "");
+        }
+
+    }
+
+    public static String getApplet() {
+        if (applet == null) {
+            try {
+                initProperties();
+            } catch (IOException e) {
+                Logger.logarExept(e);
+            }
+        }
+        return applet;
+    }
+    public static String getVersao() {
+        if (versao == null) {
+            try {
+                initProperties();
+            } catch (IOException e) {
+                Logger.logarExept(e);
+            }
+        }
+        return versao;
+    }
+
+    public static String getVersaoFormatado() {
+        return decimalFormat.format(new Integer(CarregadorRecursos.getVersao()));
     }
 
     public static synchronized CarregadorRecursos getCarregadorRecursos(

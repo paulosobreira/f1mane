@@ -53,7 +53,6 @@ public class ControlePaddockServidor {
     private int versao;
     private int contadorVistantes = 1;
     private final CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);
-    private Properties properties;
 
     public DadosPaddock getDadosPaddock() {
         return dadosPaddock;
@@ -70,7 +69,7 @@ public class ControlePaddockServidor {
         controleJogosServer = new ControleJogosServer(dadosPaddock, controleClassificacao, controleCampeonatoServidor,
                 controlePersistencia, this);
         try {
-            initProperties();
+            CarregadorRecursos.initProperties();
         } catch (IOException e) {
             Logger.logarExept(e);
         }
@@ -206,8 +205,7 @@ public class ControlePaddockServidor {
     }
 
     private Object registar(ClientPaddockPack clientPaddockPack) {
-        String applet = properties.getProperty("applet");
-        if(!"true".equals(applet)){
+        if (!"true".equals(CarregadorRecursos.getApplet())) {
             return new MsgSrv(Lang.msg("loginIndisponivel"));
         }
         JogadorDadosSrv jogadorDadosSrv = null;
@@ -767,15 +765,6 @@ public class ControlePaddockServidor {
     public void removerSessao(SessaoCliente sessaoCliente) {
         removerCliente(sessaoCliente);
         dadosPaddock.remove(sessaoCliente);
-    }
-
-    public void initProperties() throws IOException {
-        properties = new Properties();
-        properties.load(CarregadorRecursos.recursoComoStream("application.properties"));
-        String versao = properties.getProperty("versao");
-        if (versao.contains(".")) {
-            this.versao = Integer.parseInt(versao.replaceAll("\\.", ""));
-        }
     }
 
     public List<String> obterJogos() {
