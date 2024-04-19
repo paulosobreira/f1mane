@@ -722,7 +722,7 @@ public class PainelCircuito {
             fatorFps = .025;
         }
 
-        if(controleJogo instanceof JogoCliente){
+        if (controleJogo instanceof JogoCliente) {
             fatorFps = .02;
         }
 
@@ -1592,7 +1592,7 @@ public class PainelCircuito {
                     g2d.setFont(new Font(fontOri.getName(), Font.BOLD, fontOri.getSize()));
                     if (Util.calculaLarguraText(info, g2d) > 400) {
                         String[] infoSplit = info.split(" ");
-                        String line1 = "", line2 = "" , lineComp = "";
+                        String line1 = "", line2 = "", lineComp = "";
                         for (String s : infoSplit) {
                             lineComp += s + " ";
                             if (Util.calculaLarguraText(lineComp, g2d) < 395) {
@@ -1603,7 +1603,7 @@ public class PainelCircuito {
                         }
                         int c = (cont++);
                         g2d.drawString("" + line1, x + 4, y + (20 * c));
-                        if(y + (20 * (c+1)) < (y+110)) {
+                        if (y + (20 * (c + 1)) < (y + 110)) {
                             c = (cont++);
                             g2d.drawString("" + line2, x + 4, y + (20 * c));
                         }
@@ -5385,6 +5385,13 @@ public class PainelCircuito {
     }
 
     private void setarHints(Graphics2D g2d) {
+        if (gerenciadorVisual.getQdtAbaixoFps() < 1000) {
+            g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_DEFAULT);
+            g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
+                    RenderingHints.VALUE_ALPHA_INTERPOLATION_DEFAULT);
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_DEFAULT);
+            return;
+        }
         g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
         g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
                 RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);

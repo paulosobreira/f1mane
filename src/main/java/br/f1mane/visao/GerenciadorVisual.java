@@ -116,6 +116,8 @@ public class GerenciadorVisual {
     protected double fpsLimite = 30D;
     private long ultMudaPos;
 
+    private long qdtAbaixoFps;
+
     public JComboBox getComboBoxTemporadas() {
         return comboBoxTemporadas;
     }
@@ -1567,6 +1569,7 @@ public class GerenciadorVisual {
     }
 
     public void mudaLimiteFps() {
+        qdtAbaixoFps = 0;
         if (controleJogo instanceof JogoCliente) {
             fpsLimite = 30D;
             return;
@@ -1590,4 +1593,10 @@ public class GerenciadorVisual {
 
     }
 
+    public long getQdtAbaixoFps() {
+        if(controleJogo.isCorridaIniciada() && fps<fpsLimite){
+            GerenciadorVisual.this.qdtAbaixoFps++;
+        }
+        return qdtAbaixoFps;
+    }
 }
