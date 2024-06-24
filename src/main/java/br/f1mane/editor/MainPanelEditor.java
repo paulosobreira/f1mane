@@ -26,10 +26,8 @@ import java.awt.geom.RoundRectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.beans.Transient;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.beans.XMLEncoder;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -126,7 +124,6 @@ public class MainPanelEditor extends JPanel {
     private JSpinner larguraPistaSpinner;
     private JTextField nomePistaText;
     private JTextField probalidadeChuvaText;
-    private JTextField velocidadePistaText;
     private final BasicStroke trilho = new BasicStroke(1);
     private BasicStroke pista;
     private BasicStroke pistaTinta;
@@ -141,59 +138,17 @@ public class MainPanelEditor extends JPanel {
     private Point ultimoClicado;
     private FormularioListaObjetos formularioListaObjetos;
     protected final DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
+    JCheckBox noite = new JCheckBox();
+    File file;
 
     public MainPanelEditor() {
     }
 
-    public MainPanelEditor(String backGroundStr, MainFrameEditor frame) {
-        backGround = CarregadorRecursos.carregaBackGround(backGroundStr, this, circuito);
-        if (backGround == null) {
-            JOptionPane.showMessageDialog(null, Lang.msg("backGroundNull"), Lang.msg("039"), JOptionPane.ERROR_MESSAGE);
-            return;
-
-        }
+    public MainPanelEditor(MainFrameEditor frame) {
         this.srcFrame = frame;
-        iniciaEditor(frame);
-        atualizaListas();
-        frame.pack();
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
-    public MainPanelEditor(MainFrameEditor frame) throws IOException, ClassNotFoundException {
-        JFileChooser fileChooser = new JFileChooser(
-                CarregadorRecursos.class.getResource("CarregadorRecursos.class").getFile());
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
-        ExampleFileFilter exampleFileFilter = new ExampleFileFilter("xml");
-        fileChooser.setFileFilter(exampleFileFilter);
-
-        int result = fileChooser.showOpenDialog(null);
-
-        if (result == JFileChooser.CANCEL_OPTION) {
-            return;
-        }
-
-        circuito = CarregadorRecursos.carregarCircuito(fileChooser.getSelectedFile().getName());
-//		FileInputStream inputStream = new FileInputStream(fileChooser.getSelectedFile());
-//		ObjectInputStream ois = new ObjectInputStream(inputStream);
-//		circuito = (Circuito) ois.readObject();
-        testePista = new TestePista(this, circuito);
-        // if("jacarepagua.jpg".equals(circuito.getBackGround())){
-        // circuito.setBackGround("jacarepagua_mro.jpg");
-        // }
-        backGround = CarregadorRecursos.carregaBackGround(circuito.getBackGround(), this, circuito);
-        this.srcFrame = frame;
-        iniciaEditor(frame);
-        atualizaListas();
-        vetorizarCircuito(false);
-        frame.pack();
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        if (circuito.getPistaFull() != null && !circuito.getPistaFull().isEmpty()) {
-            centralizarPonto(((No) circuito.getPistaFull().get(0)).getPoint());
-        }
-    }
-
-    private void vetorizarCircuito(boolean reprocessa) {
+    private boolean vetorizarCircuito() {
         mx = 0;
         my = 0;
         pista = null;
@@ -204,22 +159,18 @@ public class MainPanelEditor extends JPanel {
         testePista.pararTeste();
 
         DefaultListModel defaultListModel = (DefaultListModel) pistaJList.getModel();
-        if (defaultListModel.size() < 10) {
-            JOptionPane.showMessageDialog(null, Lang.msg("pelomenos10NosParaProcesar"), Lang.msg("039"),
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
         boolean temLargada = false;
         for (int i = 0; i < defaultListModel.size(); i++) {
             No no = (No) defaultListModel.get(i);
             if (No.LARGADA.equals(no.getTipo())) {
                 temLargada = true;
+                break;
             }
         }
         if (!temLargada) {
             JOptionPane.showMessageDialog(null, Lang.msg("noLargadaObrigatorio"), Lang.msg("039"),
                     JOptionPane.ERROR_MESSAGE);
-            return;
+            return false;
         }
 
         if (ladoBoxCombo.getSelectedItem().equals(LADO_COMBO_1)) {
@@ -232,27 +183,16 @@ public class MainPanelEditor extends JPanel {
         } else {
             circuito.setLadoBoxSaidaBox(2);
         }
-        if (!reprocessa && circuito != null) {
-            multiplicadorPista = 10;
-        }
-        if (!reprocessa && circuito != null) {
-            multiplicadorLarguraPista = circuito.getMultiplicadorLarguraPista();
-        }
+        multiplicadorLarguraPista = circuito.getMultiplicadorLarguraPista();
         if (multiplicadorLarguraPista < 1.0 || multiplicadorLarguraPista > 2.0) {
             JOptionPane.showMessageDialog(null, Lang.msg("multiplicadorLarguraPista"), Lang.msg("039"),
                     JOptionPane.INFORMATION_MESSAGE);
-            return;
+            return false;
         }
-        circuito.setUsaBkg(true);
-        circuito.vetorizarPista(this.multiplicadorPista, this.multiplicadorLarguraPista);
-        circuito.setProbalidadeChuva(Integer.parseInt(probalidadeChuvaText.getText()));
-        circuito.setVelocidadePista(Double.parseDouble(velocidadePistaText.getText()));
-        probalidadeChuvaText.setText(String.valueOf(circuito.getProbalidadeChuva()));
-        velocidadePistaText.setText(String.valueOf(circuito.getVelocidadePista()));
-        circuito.setNome(nomePistaText.getText());
-        larguraPistaSpinner.getModel().setValue(Double.valueOf(multiplicadorLarguraPista));
+        if (defaultListModel.size() > 10) {
+            circuito.vetorizarPista(this.multiplicadorPista, this.multiplicadorLarguraPista);
+        }
         List l = circuito.getPistaFull();
-
         for (Iterator iterator = l.iterator(); iterator.hasNext(); ) {
             No no = (No) iterator.next();
             Point point = no.getPoint();
@@ -264,10 +204,9 @@ public class MainPanelEditor extends JPanel {
             }
 
         }
-
         mx += 300;
         my += 300;
-        No n1 = (No) l.get(0);
+        return true;
     }
 
     private void atualizaListas() {
@@ -281,7 +220,7 @@ public class MainPanelEditor extends JPanel {
         }
     }
 
-    private void iniciaEditor(JFrame frame) {
+    private void iniciaEditor() {
 
         carroCima = CarregadorRecursos.carregaBufferedImage("png/CarroCima.png");
 
@@ -396,9 +335,9 @@ public class MainPanelEditor extends JPanel {
         bottonsPanel.add(fimBoxButton);
         radiosPanel.add(bottonsPanel);
 
-        gerarLayout(frame, controlPanel, buttonsPanel, radiosPanel);
+        gerarLayout(srcFrame, controlPanel, buttonsPanel, radiosPanel);
         testePista = new TestePista(this, circuito);
-        adicionaEventosMouse(frame);
+        adicionaEventosMouse(srcFrame);
     }
 
     private JPanel gerarBotoesTracado() {
@@ -458,6 +397,7 @@ public class MainPanelEditor extends JPanel {
                         circuito.getPista().remove(pistaModel.get(selectedIndexPista));
                         pistaModel.remove(selectedIndexPista);
                     }
+                    vetorizarCircuito();
                     repaint();
                 } catch (Exception e1) {
                     e1.printStackTrace();
@@ -892,6 +832,7 @@ public class MainPanelEditor extends JPanel {
             }
 
         }
+        vetorizarCircuito();
     }
 
     private void setarHints(Graphics2D g2d) {
@@ -1061,11 +1002,6 @@ public class MainPanelEditor extends JPanel {
         g2d.drawLine(x + 50, y, x + 100, y);
         g2d.setColor(Color.black);
         g2d.drawString("Pista 2 ", x, y);
-
-        // limitesViewPort.width -= 100;
-        // limitesViewPort.height -= 100;
-
-        // g2d.draw(limitesViewPort);
     }
 
     private void desenhaObjetosCima(Graphics2D g2d) {
@@ -1140,13 +1076,13 @@ public class MainPanelEditor extends JPanel {
             int iP = paradas + Util.inteiro(Carro.LARGURA * multi * i) + Carro.LARGURA;
             int n1Idx = iP - Carro.MEIA_LARGURA;
             int n2Idx = iP + Carro.MEIA_LARGURA;
-            if (n1Idx > circuito.getBoxFull().size()) {
+            if (n1Idx >=circuito.getBoxFull().size()) {
                 continue;
             }
-            if (iP > circuito.getBoxFull().size()) {
+            if (iP >= circuito.getBoxFull().size()) {
                 continue;
             }
-            if (n2Idx > circuito.getBoxFull().size()) {
+            if (n2Idx >=circuito.getBoxFull().size()) {
                 continue;
             }
             No n1 = (No) circuito.getBoxFull().get(n1Idx);
@@ -1683,34 +1619,44 @@ public class MainPanelEditor extends JPanel {
         circuito.getPista().remove(ultimoNo);
         ((DefaultListModel) boxJList.getModel()).removeElement(ultimoNo);
         ((DefaultListModel) pistaJList.getModel()).removeElement(ultimoNo);
+        vetorizarCircuito();
         repaint();
     }
 
     public void salvarPista() throws IOException {
-        JFileChooser fileChooser = new JFileChooser(
-                CarregadorRecursos.class.getResource("CarregadorRecursos.class").getFile());
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        if (file == null) {
+            JFileChooser fileChooser = new JFileChooser(
+                    CarregadorRecursos.class.getResource("CarregadorRecursos.class").getFile());
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-        ExampleFileFilter exampleFileFilter = new ExampleFileFilter("f1mane");
-        fileChooser.setFileFilter(exampleFileFilter);
+            ExampleFileFilter exampleFileFilter = new ExampleFileFilter("xml");
+            fileChooser.setFileFilter(exampleFileFilter);
 
-        int result = fileChooser.showOpenDialog(null);
+            int result = fileChooser.showOpenDialog(null);
 
-        if (result == JFileChooser.CANCEL_OPTION) {
+            if (result == JFileChooser.CANCEL_OPTION) {
+                return;
+            }
+            String fileName = fileChooser.getSelectedFile().getCanonicalFile().toString();
+            if (!fileName.endsWith(".xml")) {
+                fileName += ".xml";
+            }
+            file = new File(fileName);
+        }
+        circuito.setUsaBkg(true);
+        circuito.setMultiplicadorLarguraPista(multiplicadorLarguraPista);
+        circuito.setProbalidadeChuva(Integer.parseInt(probalidadeChuvaText.getText()));
+        circuito.setNome(nomePistaText.getText());
+        if (!vetorizarCircuito()) {
             return;
         }
-
-        File file = fileChooser.getSelectedFile();
-        String fileName = file.getCanonicalFile().toString();
-        if (!fileName.endsWith(".f1mane")) {
-            fileName += ".f1mane";
-        }
-        file = new File(fileName);
-
         FileOutputStream fileOutputStream = new FileOutputStream(file);
-        ObjectOutputStream oos = new ObjectOutputStream(fileOutputStream);
-        oos.writeObject(circuito);
-        oos.flush();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        XMLEncoder encoder = new XMLEncoder(byteArrayOutputStream);
+        encoder.writeObject(circuito);
+        encoder.flush();
+        String save = new String(byteArrayOutputStream.toByteArray()) + "</java>";
+        fileOutputStream.write(save.getBytes());
         fileOutputStream.close();
     }
 
@@ -1803,7 +1749,7 @@ public class MainPanelEditor extends JPanel {
                     if (testePista.isAlive()) {
                         testePista.pararTeste();
                     } else {
-                        vetorizarCircuito(false);
+                        vetorizarCircuito();
                         testePista.iniciarTeste(multiplicadorPista);
                     }
 
@@ -1868,30 +1814,8 @@ public class MainPanelEditor extends JPanel {
         });
         buttonsPanel1.add(right);
 
-        JButton reprocessar = new JButton("reprocessarPista") {
-            @Override
-            public String getText() {
-                return Lang.msg("reprocessarPista");
-            }
-        };
-        reprocessar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    multiplicadorLarguraPista = ((Double) larguraPistaSpinner.getModel().getValue()).doubleValue();
-                    vetorizarCircuito(true);
-                    desSelecionaNosPista();
-                    repaint();
-                } catch (Exception e2) {
-                    e2.printStackTrace();
-                    srcFrame.dialogDeErro(e2);
-                }
-
-            }
-        });
-        buttonsPanel1.add(reprocessar);
-
         JPanel buttonsPanel2 = new JPanel();
-        buttonsPanel2.setLayout(new FlowLayout());
+        buttonsPanel2.setLayout(new GridLayout());
 
         nomePistaText = new JTextField() {
             @Override
@@ -1945,26 +1869,6 @@ public class MainPanelEditor extends JPanel {
         p2.add(probalidadeChuvaText);
         buttonsPanel2.add(p2);
 
-        p2 = new JPanel();
-
-        velocidadePistaText = new JTextField() {
-            @Override
-            public Dimension getPreferredSize() {
-                return new Dimension(30, super.getPreferredSize().height);
-            }
-        };
-        if (circuito != null) {
-            velocidadePistaText.setText("" + circuito.getVelocidadePista());
-        }
-
-        p2.add(new JLabel() {
-            @Override
-            public String getText() {
-                return Lang.msg("velocidadePista");
-            }
-        });
-        p2.add(velocidadePistaText);
-        buttonsPanel2.add(p2);
         if (multiplicadorLarguraPista < 1.0) {
             multiplicadorLarguraPista = 1.0;
         }
@@ -1978,6 +1882,14 @@ public class MainPanelEditor extends JPanel {
                 return new Dimension(60, super.getPreferredSize().height);
             }
         };
+        larguraPistaSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                circuito.setMultiplicadorLarguraPista(((Double) larguraPistaSpinner.getModel().getValue()).doubleValue());
+                vetorizarCircuito();
+                repaint();
+            }
+        });
         p2 = new JPanel();
         p2.add(new JLabel() {
             @Override
@@ -1996,7 +1908,6 @@ public class MainPanelEditor extends JPanel {
             }
         });
 
-        final JCheckBox noite = new JCheckBox();
         noite.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -2005,26 +1916,6 @@ public class MainPanelEditor extends JPanel {
             }
         });
         p2.add(noite);
-        buttonsPanel2.add(p2);
-        p2 = new JPanel();
-        p2.add(new JLabel("UsaBkg") {
-            @Override
-            public String getText() {
-                return Lang.msg("UsaBkg");
-            }
-        });
-        final JCheckBox usaBkg = new JCheckBox();
-        if (circuito != null && mostraBG) {
-            usaBkg.setSelected(true);
-        }
-        usaBkg.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                mostraBG = usaBkg.isSelected();
-                repaint();
-            }
-        });
-        p2.add(usaBkg);
         buttonsPanel2.add(p2);
         buttonsPanel.add(buttonsPanel1);
         buttonsPanel.add(buttonsPanel2);
@@ -2216,5 +2107,61 @@ public class MainPanelEditor extends JPanel {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         Circuito circuito1 = CarregadorRecursos.carregarCircuito("indianapoles_mro.xml");
         System.out.println(circuito1);
+    }
+
+    public void novo() {
+        JFileChooser fileChooser = new JFileChooser(
+                CarregadorRecursos.class.getResource(
+                        "CarregadorRecursos.class").getFile());
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        ExampleFileFilter exampleFileFilter = new ExampleFileFilter("jpg");
+        fileChooser.setFileFilter(exampleFileFilter);
+        int result = fileChooser.showOpenDialog(null);
+        if (result == JFileChooser.CANCEL_OPTION) {
+            return;
+        }
+        File file = fileChooser.getSelectedFile();
+        backGround = CarregadorRecursos.carregaBackGround(file.getName(), this, circuito);
+        if (backGround == null) {
+            JOptionPane.showMessageDialog(null, Lang.msg("backGroundNull"), Lang.msg("039"), JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        circuito.setBackGround(file.getName());
+        testePista = new TestePista(this, circuito);
+        iniciaEditor();
+        atualizaListas();
+        srcFrame.pack();
+        srcFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    }
+
+    public void editar() throws IOException, ClassNotFoundException {
+        JFileChooser fileChooser = new JFileChooser(
+                CarregadorRecursos.class.getResource("CarregadorRecursos.class").getFile());
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        ExampleFileFilter exampleFileFilter = new ExampleFileFilter("xml");
+        fileChooser.setFileFilter(exampleFileFilter);
+
+        int result = fileChooser.showOpenDialog(null);
+
+        if (result == JFileChooser.CANCEL_OPTION) {
+            return;
+        }
+        file = fileChooser.getSelectedFile();
+        circuito = CarregadorRecursos.carregarCircuito(fileChooser.getSelectedFile().getName());
+        testePista = new TestePista(this, circuito);
+        backGround = CarregadorRecursos.carregaBackGround(circuito.getBackGround(), this, circuito);
+        iniciaEditor();
+        atualizaListas();
+        vetorizarCircuito();
+        larguraPistaSpinner.getModel().setValue(Double.valueOf(circuito.getMultiplicadorLarguraPista()));
+        probalidadeChuvaText.setText(String.valueOf(circuito.getProbalidadeChuva()));
+        nomePistaText.setText(circuito.getNome());
+        noite.setSelected(circuito.isNoite());
+        srcFrame.pack();
+        srcFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        if (circuito.getPistaFull() != null && !circuito.getPistaFull().isEmpty()) {
+            centralizarPonto(((No) circuito.getPistaFull().get(0)).getPoint());
+        }
     }
 }

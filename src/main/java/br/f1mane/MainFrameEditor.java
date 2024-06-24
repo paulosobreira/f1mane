@@ -29,6 +29,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import br.f1mane.editor.ExampleFileFilter;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.f1mane.controles.InterfaceJogo;
@@ -232,7 +233,7 @@ public class MainFrameEditor extends JFrame {
                 + " spotterguidecentral.com                    ".trim() + "\n"
                 + "- http://sowbreira.appspot.com              ".trim() + "\n"
                 + "- sowbreira@gmail.com                       ".trim() + "\n"
-                + "- 2007-2014";
+                + "- 2007-2024";
         JOptionPane.showMessageDialog(MainFrameEditor.this, msg,
                 Lang.msg("093"), JOptionPane.INFORMATION_MESSAGE);
     }
@@ -310,29 +311,8 @@ public class MainFrameEditor extends JFrame {
     }
 
     private void gerarMenusEditor(Container menu4) {
-        JMenuItem abrirPista = new JMenuItem("Editar Arquivo Circuito") {
-            public String getText() {
-                return Lang.msg("097");
-            }
 
-        };
-        abrirPista.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    if (controleJogo != null) {
-                        controleJogo.matarTodasThreads();
-                    }
-                    editor = new MainPanelEditor(MainFrameEditor.this);
-                    ativarKeysEditor();
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                    dialogDeErro(e1);
-                }
-            }
-        });
-        menu4.add(abrirPista);
-
-        JMenuItem abrirImg = new JMenuItem("Criar Arquivo Circuito") {
+        JMenuItem abrirImg = new JMenuItem("Novo Circuito") {
             public String getText() {
                 return Lang.msg("098");
             }
@@ -344,21 +324,9 @@ public class MainFrameEditor extends JFrame {
                     if (controleJogo != null) {
                         controleJogo.matarTodasThreads();
                     }
-
-                    JFileChooser fileChooser = new JFileChooser(
-                            CarregadorRecursos.class.getResource(
-                                    "CarregadorRecursos.class").getFile());
-                    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
-                    int result = fileChooser.showOpenDialog(null);
-
-                    if (result == JFileChooser.CANCEL_OPTION) {
-                        return;
-                    }
-
-                    File file = fileChooser.getSelectedFile();
-                    editor = new MainPanelEditor(file.getName(),
+                    editor = new MainPanelEditor(
                             MainFrameEditor.this);
+                    editor.novo();
                     ativarKeysEditor();
                 } catch (Exception e1) {
                     e1.printStackTrace();
@@ -367,6 +335,27 @@ public class MainFrameEditor extends JFrame {
             }
         });
         menu4.add(abrirImg);
+        JMenuItem abrirPista = new JMenuItem("Editar Circuito") {
+            public String getText() {
+                return Lang.msg("097");
+            }
+        };
+        abrirPista.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    if (controleJogo != null) {
+                        controleJogo.matarTodasThreads();
+                    }
+                    editor = new MainPanelEditor(MainFrameEditor.this);
+                    editor.editar();
+                    ativarKeysEditor();
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                    dialogDeErro(e1);
+                }
+            }
+        });
+        menu4.add(abrirPista);
 
         JMenuItem salvarPista = new JMenuItem("Salvar Pista F8") {
             public String getText() {
@@ -385,28 +374,6 @@ public class MainFrameEditor extends JFrame {
         });
         menu4.add(salvarPista);
 
-        JMenuItem vetorizarPista = new JMenuItem("vetorizarPista") {
-            public String getText() {
-                return Lang.msg("reprocessarPista");
-            }
-
-        };
-        vetorizarPista.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-
-                try {
-                    if (controleJogo != null) {
-                        controleJogo.matarTodasThreads();
-                    }
-                    ativarKeysEditor();
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                    dialogDeErro(e1);
-                }
-
-            }
-        });
-        menu4.add(vetorizarPista);
     }
 
     public static void main(String[] args) throws IOException {
