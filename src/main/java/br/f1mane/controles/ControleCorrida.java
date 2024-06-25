@@ -263,14 +263,14 @@ public class ControleCorrida {
     }
 
     private void verificaAcidenteIA(final Piloto piloto, final Piloto pilotoNaFrente, double fatorAcidenteMomento) {
-        if(Logger.ativo){
+        if (Logger.ativo) {
             return;
         }
         int limiteStress = (int) (100 * (1 - fatorAcidenteMomento));
         if (pilotoNaFrente.isJogadorHumano() && limiteStress > 10) {
             limiteStress -= 10;
         }
-        if (piloto.getCarro().getDurabilidadeAereofolio() <= 0) {
+        if (piloto.getCarro().getDurabilidadeAereofolio() <= 0 && controleJogo.getNumVoltaAtual() > 1) {
             if (!controleSafetyCar.safetyCarUltimas3voltas() && !piloto.isDesqualificado()
                     && !piloto.testeHabilidadePilotoCarro() && !controleJogo.verificaEntradaBox(piloto)
                     && !controleJogo.verificaSaidaBox(piloto) && piloto.getStress() > limiteStress) {
