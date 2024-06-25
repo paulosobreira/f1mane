@@ -17,6 +17,7 @@ public final class Constantes {
     public static final double VELOCIDADE_PISTA = 1;
     public static final int TAMANHO_RETA_DRS = 1500;
     public static final double LIMITE_ESTRESSE_PARA_RERRAR_CURVA = 90;
+    public static double SUAVE = 0.015;
 
     private Constantes() {
     }

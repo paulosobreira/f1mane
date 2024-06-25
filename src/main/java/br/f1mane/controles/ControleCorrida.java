@@ -263,6 +263,9 @@ public class ControleCorrida {
     }
 
     private void verificaAcidenteIA(final Piloto piloto, final Piloto pilotoNaFrente, double fatorAcidenteMomento) {
+        if(Logger.ativo){
+            return;
+        }
         int limiteStress = (int) (100 * (1 - fatorAcidenteMomento));
         if (pilotoNaFrente.isJogadorHumano() && limiteStress > 10) {
             limiteStress -= 10;

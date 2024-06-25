@@ -110,7 +110,6 @@ public class GerenciadorVisual {
     private int fps = 0;
     protected double fpsLimite = 30D;
     private long ultMudaPos;
-
     private long qdtAbaixoFps;
 
     public JComboBox getComboBoxTemporadas() {
@@ -212,7 +211,7 @@ public class GerenciadorVisual {
             public void run() {
                 while (thAtualizaPainelSuaveAlive) {
                     try {
-                        Thread.sleep(10);
+                        Thread.sleep(15);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
@@ -384,6 +383,7 @@ public class GerenciadorVisual {
                     controleJogo.selecionaPilotoJogador();
                 }
                 if (keyCoode == KeyEvent.VK_LEFT) {
+                    Constantes.SUAVE -= 0.001;
                     if (controleJogo.getPilotoJogador() == null) {
                         return;
                     }
@@ -397,6 +397,7 @@ public class GerenciadorVisual {
                     }
                 }
                 if (keyCoode == KeyEvent.VK_RIGHT) {
+                    Constantes.SUAVE += 0.001;
                     if (controleJogo.getPilotoJogador() == null) {
                         return;
                     }
@@ -476,6 +477,7 @@ public class GerenciadorVisual {
                     }
 
                 }
+                System.out.println("Constantes.SUAVE " + Constantes.SUAVE);
             }
         };
     }
