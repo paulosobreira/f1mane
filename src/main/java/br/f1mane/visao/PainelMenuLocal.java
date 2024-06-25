@@ -661,7 +661,6 @@ public class PainelMenuLocal {
             if (g2d == null) {
                 return;
             }
-            setarHints(g2d);
             g2d.setColor(g2d.getBackground());
             g2d.fillRect(0, 0, getWidth(), getHeight());
             if (PainelCircuito.desenhaBkg) {
@@ -2608,12 +2607,6 @@ public class PainelMenuLocal {
 
     }
 
-    private void setarHints(Graphics2D g2d) {
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-    }
 
     private void desenhaMenuPrincipalSelecao(Graphics2D g2d) {
         if (!MENU.equals(MENU_PRINCIPAL)) {

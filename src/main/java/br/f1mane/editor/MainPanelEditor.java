@@ -1057,7 +1057,7 @@ public class MainPanelEditor extends JPanel {
     }
 
     private void desenhaBoxes(Graphics2D g2d) {
-        if (circuito.getBoxFull() == null || circuito.getBoxFull().isEmpty()) {
+        if (circuito.getBoxFull() == null || circuito.getBoxFull().isEmpty() || circuito.getParadaBoxIndex() ==0) {
             return;
         }
         double multi = 1.5;

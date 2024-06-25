@@ -780,22 +780,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return null;
 	}
 
-	public void setPosisRec(No no) {
-		if (gerenciadorVisual == null) {
-			return;
-		}
-		gerenciadorVisual.setPosisRec(no);
-
-	}
-
-	public void setPosisAtual(Point point) {
-		if (gerenciadorVisual == null) {
-			return;
-		}
-		gerenciadorVisual.setPosisAtual(point);
-
-	}
-
 	public void carregaBackGroundCliente() {
 		if (gerenciadorVisual == null) {
 			return;

@@ -55,18 +55,13 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
+import br.f1mane.entidades.*;
 import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.f1mane.controles.ControleJogoLocal;
 import br.f1mane.controles.InterfaceJogo;
-import br.f1mane.entidades.Campeonato;
-import br.f1mane.entidades.Carro;
-import br.f1mane.entidades.Circuito;
-import br.f1mane.entidades.Clima;
-import br.f1mane.entidades.No;
-import br.f1mane.entidades.Piloto;
 import br.f1mane.servidor.applet.JogoCliente;
 import br.f1mane.servidor.entidades.TOs.TravadaRoda;
 import br.f1mane.recursos.CarregadorRecursos;
@@ -107,8 +102,8 @@ public class GerenciadorVisual {
     protected JCheckBox reabastecimento;
     protected JCheckBox ers;
     protected JCheckBox drs;
-    private Thread thAtualizaPainelSuave;
-    private Thread thAtualizaSom;
+    private Thread thAtualizaPainel;
+    private Thread thAtualizaSuave;
     protected boolean thAtualizaPainelSuaveAlive = true;
     protected boolean thAtualizaPilotosSuaveAlive = true;
     protected boolean thAtualizaSomAlive = true;
@@ -178,7 +173,7 @@ public class GerenciadorVisual {
     }
 
     private void iniciaThreadJogoSuave() {
-        thAtualizaPainelSuave = new Thread(new Runnable() {
+        thAtualizaPainel = new Thread(new Runnable() {
             @Override
             public void run() {
                 int frames = 0;
@@ -197,8 +192,8 @@ public class GerenciadorVisual {
                     }
                     if (render) {
                         List<Piloto> pilotos = controleJogo.getPilotosCopia();
-                        centralizarPiloto();
                         painelCircuito.setPilotosList(pilotos);
+                        centralizarPiloto();
                         painelCircuito.render();
                         controleJogo.getMainFrame().mostrarGraficos();
                         ++frames;
@@ -212,36 +207,24 @@ public class GerenciadorVisual {
                 }
             }
         });
-
-        thAtualizaSom = new Thread(new Runnable() {
+        thAtualizaSuave = new Thread(new Runnable() {
             @Override
             public void run() {
-                if (controleJogo instanceof br.f1mane.servidor.applet.JogoCliente) {
-                    while (!controleJogo.getMainFrame().isVisible()) {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            Logger.logarExept(e);
-                        }
-                    }
+                while (thAtualizaPainelSuaveAlive) {
                     try {
-                        Thread.sleep(15000);
+                        Thread.sleep(10);
                     } catch (InterruptedException e) {
-                        Logger.logarExept(e);
+                        throw new RuntimeException(e);
+                    }
+                    List<Piloto> pilotos = controleJogo.getPilotosCopia();
+                    for (Piloto piloto : pilotos) {
+                        painelCircuito.atualizacaoSuave(piloto);
+                    }
+                    if (controleJogo.isSafetyCarNaPista()) {
+                        painelCircuito.atualizacaoSuave(controleJogo.getSafetyCar());
                     }
                 }
-//                while (thAtualizaSomAlive) {
-//                    ControleSom.processaSom(controleJogo.getPilotoJogador(), controleJogo, painelCircuito);
-//                    try {
-//                        Thread.sleep(Constantes.CICLO_SOM);
-//                    } catch (InterruptedException e) {
-//                        thAtualizaSomAlive = false;
-//                        Logger.logarExept(e);
-//                    }
-//                }
-
             }
-
         });
         Graphics2D g2d = controleJogo.getMainFrame().obterGraficos();
         if (g2d != null) {
@@ -253,10 +236,13 @@ public class GerenciadorVisual {
 
                 }
             }
-            thAtualizaPainelSuave.start();
-            thAtualizaSom.start();
+            List<Piloto> pilotos = controleJogo.getPilotos();
+            painelCircuito.setPilotosList(pilotos);
+            thAtualizaPainel.start();
+            thAtualizaSuave.start();
         }
     }
+
 
     private void gerarLayout() {
         centerPanel.setLayout(new BorderLayout());
@@ -1468,20 +1454,6 @@ public class GerenciadorVisual {
         }
     }
 
-    public void setPosisRec(No no) {
-        if (painelCircuito == null)
-            return;
-        painelCircuito.setPosisRec(no);
-
-    }
-
-    public void setPosisAtual(Point point) {
-        if (painelCircuito == null)
-            return;
-        painelCircuito.setPosisAtual(point);
-
-    }
-
     public void carregaBackGroundCliente() {
         if (painelCircuito != null && painelCircuito.getBackGround() == null) {
             painelCircuito.carregaBackGround();
@@ -1594,7 +1566,7 @@ public class GerenciadorVisual {
     }
 
     public long getQdtAbaixoFps() {
-        if(controleJogo.isCorridaIniciada() && fps<fpsLimite){
+        if (controleJogo.isCorridaIniciada() && fps < fpsLimite) {
             GerenciadorVisual.this.qdtAbaixoFps++;
         }
         return qdtAbaixoFps;

@@ -28,7 +28,7 @@ import java.util.*;
  */
 public class PainelCircuito {
 
-    public static boolean desenhaBkg = true;
+    public static boolean desenhaBkg = false;
     public static boolean desenhaPista = true;
     public static boolean desenhaImagens = true;
 
@@ -50,12 +50,9 @@ public class PainelCircuito {
     private GerenciadorVisual gerenciadorVisual;
     private final Point pointDesenhaVelo = new Point(5, 60);
     private Point pontoClicado = null;
-    private No posisRec;
-    private Point posisAtual;
     public final static Color luzDistProx1 = new Color(0, 255, 0, 100);
     public final static Color luzDistProx2 = new Color(255, 255, 0, 100);
     public final static Color luzLargadaApagada = new Color(255, 255, 255, 170);
-    public final static Color luzLargadaAcesa = new Color(255, 10, 10, 255);
     public final static Color red = new Color(250, 0, 0, 150);
     public final static Color lightRed = new Color(250, 0, 0, 100);
     public final static Color gre = new Color(0, 255, 0, 150);
@@ -65,8 +62,6 @@ public class PainelCircuito {
     public final static Color jogador = new Color(70, 140, 255, 180);
     public final static Color oran = new Color(255, 188, 40, 180);
     public final static Color transpSel = new Color(165, 165, 165, 180);
-    public final static Color ver = new Color(255, 10, 10, 150);
-    public final static Color blu = new Color(105, 105, 105, 40);
     public final static Color bluQualy = new Color(105, 105, 205);
     public final static Color lightWhiteRain = new Color(255, 255, 255, 160);
     public final static Color nublado = new Color(200, 200, 200, 100);
@@ -342,7 +337,6 @@ public class PainelCircuito {
             descontoCentraliza();
             limitesViewPort = (Rectangle) limitesViewPort();
             limitesViewPortFull = (Rectangle) limitesViewPortFull();
-            setarHints(g2d);
             processaZoom();
             desenhaBackGround(g2d);
             if (!desenhouCreditos) {
@@ -665,7 +659,7 @@ public class PainelCircuito {
         }
     }
 
-    private void atualizacaoSuave(PilotoSuave piloto) {
+    public void atualizacaoSuave(PilotoSuave piloto) {
         if (!controleJogo.isAtualizacaoSuave()) {
             piloto.setNoAtualSuave(piloto.getNoAtual());
             return;
@@ -686,8 +680,6 @@ public class PainelCircuito {
         boolean noAtualSuaveBox = noAtualSuave.isBox();
         boolean noAtualSuavePista = !noAtualSuave.isBox();
         boolean noAtualPista = !noAtual.isBox();
-        ;
-
         if (noAtualBox && noAtualSuaveBox) {
             nos = boxFull;
         } else if (noAtualBox && noAtualSuavePista) {
@@ -697,44 +689,25 @@ public class PainelCircuito {
         } else {
             nos = pistaFull;
         }
-
         int diferencaSualReal = noAtual.getIndex() - noAtualSuave.getIndex();
         if (noAtualBox && noAtualSuavePista) {
             diferencaSualReal = noAtual.getIndex() + (circuito.getEntradaBoxIndex() - noAtualSuave.getIndex());
-
         }
         if (noAtualSuaveBox && noAtualPista) {
             diferencaSualReal = (noAtual.getIndex() - (circuito.getSaidaBoxIndex())
                     + (boxFull.size() - noAtualSuave.getIndex()));
         }
-
         if (diferencaSualReal < 0) {
             diferencaSualReal = (noAtual.getIndex() + nos.size()) - noAtualSuave.getIndex();
         }
         int ganhoSuave;
-
         double multi = diferencaSualReal;
-
-        double fatorFps = .05;
-
-
-        if (gerenciadorVisual.getFpsLimite() == 60D) {
-            fatorFps = .025;
-        }
-
-        if (controleJogo instanceof JogoCliente) {
-            fatorFps = .02;
-        }
-
-        ganhoSuave = Util.inteiro(fatorFps * multi);
-
+        ganhoSuave = Util.inteiro(0.02 * multi);
         int ganhoSuaveAnt = piloto.getGanhoSuave();
         if (ganhoSuave > ganhoSuaveAnt) {
             ganhoSuave = ganhoSuaveAnt + 1;
         }
-
         int incGanhoSuaveAnt = 1;
-
         if (ganhoSuave <= ganhoSuaveAnt) {
             ganhoSuave = ganhoSuaveAnt - incGanhoSuaveAnt;
         }
@@ -742,7 +715,6 @@ public class PainelCircuito {
                 && diferencaSualReal > 1000) {
             ganhoSuave = ganhoSuaveAnt;
         }
-
         if (diferencaSualReal == 0) {
             ganhoSuave = 0;
         }
@@ -758,28 +730,22 @@ public class PainelCircuito {
                 ganhoSuave = 1;
             }
         }
-
         piloto.setGanhoSuave(ganhoSuave);
         if (noAtualBox && noAtualSuavePista && noAtualSuave.getIndex() < entradaBoxIndex) {
             nos = pistaFull;
         }
-
         if (noAtualPista && noAtualSuaveBox) {
             nos = boxFull;
         }
-
         int index = noAtualSuave.getIndex() + ganhoSuave;
-
         if (noAtualBox && noAtualSuave.getIndex() >= entradaBoxIndex) {
             nos = boxFull;
             index = 0;
         }
-
         if (noAtualPista && noAtualSuaveBox && index > (nos.size() - 5)) {
             nos = pistaFull;
             index = saidaBoxIndex + 5;
         }
-
         if (index >= nos.size()) {
             index = index - nos.size();
         }
@@ -791,12 +757,11 @@ public class PainelCircuito {
             limite = 2000;
         }
         if (diferencaSualReal > limite) {
-//            if (piloto instanceof Piloto && ((Piloto) piloto).isJogadorHumano()) {
-//                Logger.logar("atualizacaoSuave diff > 1000 " + diferencaSualReal);
-//            }
+            if (piloto instanceof Piloto && ((Piloto) piloto).isJogadorHumano()) {
+                Logger.logar("atualizacaoSuave diff > 1000 " + diferencaSualReal);
+            }
             noAtualSuave = noAtual;
         }
-
         piloto.setNoAtualSuave(noAtualSuave);
     }
 
@@ -809,9 +774,7 @@ public class PainelCircuito {
                 || pilotoSelecionado.getPtosBox() != 0) {
             return;
         }
-        if (!Logger.ativo) {
-            return;
-        }
+        desenhaAjudaPistaCarroCima(g2d, pilotoSelecionado);
         No noReal = pilotoSelecionado.getNoAtual();
         No noSuave = pilotoSelecionado.getNoAtualSuave();
         if (noReal == null || noSuave == null) {
@@ -860,17 +823,6 @@ public class PainelCircuito {
                 (int) ((p1.x - descontoCentraliza.x) * zoom), (int) ((p1.y - descontoCentraliza.y) * zoom));
         g2d.drawLine((int) ((x - descontoCentraliza.x) * zoom), (int) ((y - descontoCentraliza.y) * zoom),
                 (int) ((p2.x - descontoCentraliza.x) * zoom), (int) ((p2.y - descontoCentraliza.y) * zoom));
-        // p1 = pilotoSelecionado.getP1();
-        // p2 = pilotoSelecionado.getP2();
-        //
-        // g2d.setColor(Color.ORANGE);
-        // g2d.fillOval((int) ((p1.x - descontoCentraliza.x) * zoom),
-        // (int) ((p1.y - descontoCentraliza.y) * zoom), 0, 0);
-        //
-        // g2d.setColor(Color.CYAN);
-        // g2d.fillOval((int) ((p2.x - descontoCentraliza.x) * zoom),
-        // (int) ((p2.y - descontoCentraliza.y) * zoom), 10, 10);
-
         g2d.setStroke(stroke);
     }
 
@@ -1538,11 +1490,9 @@ public class PainelCircuito {
             g2d.drawString(msg, x + 2, y + 26);
             g2d.setFont(fontOri);
         }
-
     }
 
     private void desenhaNarracao(Graphics2D g2d) {
-
         if (!desenhaInfo) {
             return;
         }
@@ -1619,7 +1569,6 @@ public class PainelCircuito {
             }
             g2d.setFont(fontOri);
         }
-
     }
 
     private boolean verificaComponeteNaParteInferior() {
@@ -1797,7 +1746,6 @@ public class PainelCircuito {
         if (pilotoSelecionado == null) {
             return;
         }
-
         List<ObjetoPista> objetos = circuito.getObjetos();
         if (objetos != null) {
             for (Iterator iterator = objetos.iterator(); iterator.hasNext(); ) {
@@ -1812,7 +1760,6 @@ public class PainelCircuito {
                 }
             }
         }
-
         Map<PontoEscape, List<No>> escapeMap = circuito.getEscapeMap();
         for (Iterator<PontoEscape> iterator = escapeMap.keySet().iterator(); iterator.hasNext(); ) {
             PontoEscape key = iterator.next();
@@ -1839,16 +1786,14 @@ public class PainelCircuito {
         }
         No noindexEscape = circuito.getPistaFull().get(pilotoSelecionado.getIndexRefEscape());
         if (noindexEscape != null) {
-            g2d.setColor(ver);
+            g2d.setColor(red);
             g2d.fillOval(noindexEscape.getPoint().x - descontoCentraliza.x,
                     noindexEscape.getPoint().y - descontoCentraliza.y, 10, 10);
         }
         if (pontoClicado != null) {
             g2d.setColor(gre);
             g2d.fillOval(pontoClicado.x, pontoClicado.y, 10, 10);
-
         }
-
     }
 
     private void iniciaPilotoSelecionado() {
@@ -2637,7 +2582,6 @@ public class PainelCircuito {
         maxY += 300;
         BufferedImage image = new BufferedImage(maxX, maxY, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = (Graphics2D) image.getGraphics();
-        setarHints(g2d);
         if (circuito.getCorFundo() != null) {
             g2d.setColor(circuito.getCorFundo());
         } else {
@@ -2776,12 +2720,6 @@ public class PainelCircuito {
             g2d.drawString("" + piloto.getPosicao(), x + xL - ((piloto.getPosicao() < 10) ? 3 : 5), y + yL + 3);
         }
         g2d.setFont(fontOri);
-        if (pilotoSelecionado != null && pilotoSelecionado.isJogadorHumano() && posisRec != null) {
-            g2d.setColor(red);
-            g2d.fillOval(x + Util.inteiro(posisRec.getPoint().x / multiminiPista),
-                    y + Util.inteiro(posisRec.getPoint().y / multiminiPista), Util.inteiro(5 * zoom),
-                    Util.inteiro(5 * zoom));
-        }
         if (controleJogo.isSafetyCarNaPista()) {
             SafetyCar safetyCar = controleJogo.getSafetyCar();
             Point point = safetyCar.getNoAtual().getPoint();
@@ -2960,14 +2898,9 @@ public class PainelCircuito {
             }
             int xCarro = (int) ((noAtual.getX() - descontoCentraliza.x) * zoom);
             int yCarro = (int) ((noAtual.getY() - descontoCentraliza.y) * zoom);
-            atualizacaoSuave(piloto);
             if (!limitesViewPort.contains(((noAtual.getX() - descontoCentraliza.x) * zoom),
                     ((noAtual.getY() - descontoCentraliza.y) * zoom))) {
                 continue;
-            }
-            if (Logger.ativo && piloto.isJogadorHumano() && piloto.getNoAtualSuave() != null) {
-                g2d.setColor(OcilaCor.geraOcila("CompReal", Color.ORANGE));
-                g2d.fillOval(xCarro, yCarro, 10, 10);
             }
             centralizaCarroDesenhar(controleJogo, piloto);
             desenhaCarroCima(g2d, piloto);
@@ -3430,12 +3363,10 @@ public class PainelCircuito {
         }
         if (!temTransparencia) {
             desenhaFumacaTravaRodaCarroCima(g2d, piloto, width, height, carX, carY, afZoom, afRotate);
-            desenhaAjudaPistaCarroCima(g2d, piloto);
         }
         desenhaChuvaFaiscasCarroCima(g2d, piloto, width);
         desenhaDebugCarroCima(g2d, piloto, rad);
         g2d.setStroke(stroke);
-
     }
 
     private void desenhaSetasCarroCima(Graphics2D g2d, Piloto piloto, int width, int height, int imagemCarroX,
@@ -3710,17 +3641,17 @@ public class PainelCircuito {
         /**
          * Desenha Ajuda Pista
          */
-        if (piloto.equals(pilotoSelecionado) && posisRec != null) {
-            if (posisRec.verificaRetaOuLargada()) {
+        if (piloto.equals(pilotoSelecionado) && piloto.getNoAtual() != null) {
+            if (piloto.getNoAtual().verificaRetaOuLargada()) {
                 g2d.setColor(new Color(100, 255, 100, 70));
-            } else if (posisRec.verificaCurvaAlta()) {
+            } else if (piloto.getNoAtual().verificaCurvaAlta()) {
                 g2d.setColor(new Color(255, 255, 100, 70));
-            } else if (posisRec.verificaCurvaBaixa()) {
+            } else if (piloto.getNoAtual().verificaCurvaBaixa()) {
                 g2d.setColor(new Color(255, 100, 100, 70));
             } else {
                 g2d.setColor(new Color(100, 100, 100, 70));
             }
-            Point frenteCarD = posisRec.getPoint();
+            Point frenteCarD = piloto.getNoAtual().getPoint();
             g2d.fillOval(Util.inteiro((frenteCarD.x - 5 - descontoCentraliza.x) * zoom),
                     Util.inteiro((frenteCarD.y - 5 - descontoCentraliza.y) * zoom), Util.inteiro(15 * zoom),
                     Util.inteiro(15 * zoom));
@@ -3737,7 +3668,6 @@ public class PainelCircuito {
         if (piloto.getDiateira() == null || piloto.getCentro() == null || piloto.getTrazeira() == null) {
             return;
         }
-        g2d.setColor(new Color(255, 0, 0, 140));
         g2d.setColor(Color.BLACK);
 
         Point2D.Double frenteCarD = new Point2D.Double(piloto.getDiateira().getCenterX() - descontoCentraliza.x,
@@ -3749,18 +3679,6 @@ public class PainelCircuito {
                 Util.inteiro(5 * zoom));
         g2d.fillOval(Util.inteiro(trazCarD.x * zoom), Util.inteiro(trazCarD.y * zoom), Util.inteiro(5 * zoom),
                 Util.inteiro(5 * zoom));
-        if (posisAtual != null) {
-            g2d.setColor(Color.MAGENTA);
-            g2d.fillOval(Util.inteiro((posisAtual.x - descontoCentraliza.x) * zoom),
-                    Util.inteiro((posisAtual.y - descontoCentraliza.y) * zoom), Util.inteiro(5 * zoom),
-                    Util.inteiro(5 * zoom));
-        }
-        if (posisRec != null) {
-            g2d.setColor(Color.CYAN);
-            g2d.fillOval(Util.inteiro((posisRec.getPoint().x - descontoCentraliza.x) * zoom),
-                    Util.inteiro((posisRec.getPoint().y - descontoCentraliza.y) * zoom), Util.inteiro(5 * zoom),
-                    Util.inteiro(5 * zoom));
-        }
         if (afZoomDebug == null)
             afZoomDebug = new AffineTransform();
         if (translateDebug == null) {
@@ -4766,7 +4684,6 @@ public class PainelCircuito {
         if (safetyCar == null) {
             return;
         }
-        atualizacaoSuave(safetyCar);
         No noAtual = safetyCar.getNoAtualSuave();
         if (noAtual == null) {
             noAtual = safetyCar.getNoAtual();
@@ -5384,32 +5301,6 @@ public class PainelCircuito {
         g2d.drawString(ps.getNome(), Util.inteiro((x) - 2), Util.inteiro((y) - 3));
     }
 
-    private void setarHints(Graphics2D g2d) {
-        if (gerenciadorVisual.getQdtAbaixoFps() < 1000) {
-            g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-            g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-                    RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
-        }else if (gerenciadorVisual.getQdtAbaixoFps() > 1000 && gerenciadorVisual.getQdtAbaixoFps() < 2000) {
-            g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_DEFAULT);
-            g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-                    RenderingHints.VALUE_ALPHA_INTERPOLATION_DEFAULT);
-            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_DEFAULT);
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_DEFAULT);
-            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT);
-        }else{
-            g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
-            g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-                    RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
-            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
-            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
-        }
-    }
-
     public Dimension getPreferredSize() {
         return new Dimension(Util.inteiro((mx + 1000)), Util.inteiro((my + 1000)));
     }
@@ -5641,22 +5532,6 @@ public class PainelCircuito {
             boxCor2[i] = generalPath.createTransformedShape(affineTransformRect);
         }
 
-    }
-
-    public No getPosisRec() {
-        return posisRec;
-    }
-
-    public void setPosisRec(No posisRec) {
-        this.posisRec = posisRec;
-    }
-
-    public Point getPosisAtual() {
-        return posisAtual;
-    }
-
-    public void setPosisAtual(Point posisAtual) {
-        this.posisAtual = posisAtual;
     }
 
     public BufferedImage getBackGround() {
