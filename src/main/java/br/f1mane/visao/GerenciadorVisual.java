@@ -383,7 +383,6 @@ public class GerenciadorVisual {
                     controleJogo.selecionaPilotoJogador();
                 }
                 if (keyCoode == KeyEvent.VK_LEFT) {
-                    Constantes.SUAVE -= 0.001;
                     if (controleJogo.getPilotoJogador() == null) {
                         return;
                     }
@@ -397,7 +396,6 @@ public class GerenciadorVisual {
                     }
                 }
                 if (keyCoode == KeyEvent.VK_RIGHT) {
-                    Constantes.SUAVE += 0.001;
                     if (controleJogo.getPilotoJogador() == null) {
                         return;
                     }
@@ -477,7 +475,6 @@ public class GerenciadorVisual {
                     }
 
                 }
-                System.out.println("Constantes.SUAVE " + Constantes.SUAVE);
             }
         };
     }

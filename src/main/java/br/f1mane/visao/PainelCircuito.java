@@ -142,7 +142,7 @@ public class PainelCircuito {
 
     private final RoundRectangle2D ajuda = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-    private final RoundRectangle2D som = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+    private final RoundRectangle2D debug = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
     private double multiminiPista;
     private Point maiorP;
@@ -612,9 +612,9 @@ public class PainelCircuito {
             verControles = !verControles;
             return true;
         }
-        if (som.contains(e.getPoint())) {
-            ControleSom.ligaDesligaSom();
-            return true;
+        if (debug.contains(e.getPoint())) {
+            Logger.ativo = !Logger.ativo;
+            return Logger.ativo;
         }
 
         return false;
@@ -767,7 +767,7 @@ public class PainelCircuito {
     }
 
     private void desenhaMarcacaoParaCurva(Graphics2D g2d) {
-        if (isExibeResultadoFinal() || controleJogo.isJogoPausado() || pilotoSelecionado == null
+        if (!Logger.ativo || isExibeResultadoFinal() || controleJogo.isJogoPausado() || pilotoSelecionado == null
                 || pilotoSelecionado.getPtosBox() != 0) {
             return;
         }
@@ -1027,7 +1027,7 @@ public class PainelCircuito {
         }
 
         x += ajuda.getWidth() + 50;
-        String txt = Lang.msg("som").toUpperCase();
+        String txt = Lang.msg("Debug").toUpperCase();
         int larguraTexto = Util.larguraTexto(txt, g2d) + 10;
         if (ControleSom.somLigado) {
             g2d.setColor(OcilaCor.geraOcila("mrkSom", yel));
@@ -1037,7 +1037,7 @@ public class PainelCircuito {
             g2d.fillRoundRect(x, y, larguraTexto, 30, 0, 0);
         }
         g2d.setColor(Color.BLACK);
-        som.setFrame(x, y, larguraTexto, 30);
+        debug.setFrame(x, y, larguraTexto, 30);
         g2d.drawString(txt, x + 5, y + 25);
         g2d.setStroke(trilhoMiniPista);
 
@@ -3634,7 +3634,7 @@ public class PainelCircuito {
     }
 
     private void desenhaAjudaPistaCarroCima(Graphics2D g2d, Piloto pilotoSelecionado) {
-        if (pilotoSelecionado == null || pilotoSelecionado.getNoAtual() == null) {
+        if (!Logger.ativo || pilotoSelecionado == null || pilotoSelecionado.getNoAtual() == null) {
             return;
         }
         if (pilotoSelecionado.getNoAtual().verificaRetaOuLargada()) {
