@@ -91,7 +91,6 @@ public class ControleCampeonatoServidor {
 			campeonato
 					.setReabastecimento(temporadasDefault.getReabastecimento().booleanValue());
 			campeonato.setQtdeVoltas(Integer.valueOf(Constantes.MIN_VOLTAS));
-			campeonato.setNivel(ControleJogoLocal.NORMAL);
 			campeonato.setJogadorDadosSrv(jogadorDadosSrv);
 			List<CorridaCampeonatoSrv> corridaCampeonatos = campeonato
 					.getCorridaCampeonatos();

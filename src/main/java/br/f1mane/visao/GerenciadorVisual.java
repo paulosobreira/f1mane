@@ -685,9 +685,8 @@ public class GerenciadorVisual {
         });
         painelInicio.add(boxPilotoSelecionado);
         comboBoxNivelCorrida = new JComboBox();
-        comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.NORMAL));
-        comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.FACIL));
-        comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.DIFICIL));
+        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_AUTOMATICO));
+        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_MANUAL));
         painelInicio.add(new JLabel() {
             public String getText() {
                 return Lang.msg("212");
@@ -857,9 +856,8 @@ public class GerenciadorVisual {
         boxPilotoSelecionado.addItem(Lang.msg("119"));
 
         comboBoxNivelCorrida = new JComboBox();
-        comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.NORMAL));
-        comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.FACIL));
-        comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.DIFICIL));
+        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_AUTOMATICO));
+        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_MANUAL));
         grid.add(new JLabel() {
             public String getText() {
                 return Lang.msg("212");

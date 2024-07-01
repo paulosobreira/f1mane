@@ -1,5 +1,6 @@
 package br.f1mane.controles;
 
+import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.f1mane.entidades.Clima;
@@ -52,7 +53,7 @@ public class ControleClima {
 	}
 
 	public void gerarClimaInicial(Clima climaSel) {
-		if (InterfaceJogo.DEBUG_SEM_CHUVA) {
+		if (Constantes.DEBUG_SEM_CHUVA) {
 			clima = Clima.SOL;
 			return;
 		}
@@ -86,7 +87,7 @@ public class ControleClima {
 	}
 
 	public void processaPossivelMudancaClima() {
-		if (InterfaceJogo.DEBUG_SEM_CHUVA) {
+		if (Constantes.DEBUG_SEM_CHUVA) {
 			clima = Clima.SOL;
 			return;
 		}
@@ -117,8 +118,6 @@ public class ControleClima {
 			controleJogo.infoPrioritaria(Html.msgClima(Lang.msg("006")));
 			Logger.logar("CHUVA");
 		}
-		if (!InterfaceJogo.DIFICIL.equals(controleJogo.getNivelJogo()))
-			controleJogo.informaMudancaClima();
 	}
 
 	public void intervaloNublado() {

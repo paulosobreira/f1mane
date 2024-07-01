@@ -883,17 +883,16 @@ public class PainelCircuito {
         int xOri = x;
         int yOri = y;
 
-        if (!InterfaceJogo.DIFICIL.equals(controleJogo.getNivelJogo())) {
-            y -= 150;
+        y -= 150;
 
-            x -= 25;
+        x -= 25;
 
-            int lagura = desenhaAjudaComandoPiloto(g2d, x, y, "Q : " + Lang.msg("Min").toUpperCase());
-            x += lagura + 10;
-            lagura = desenhaAjudaComandoPiloto(g2d, x, y, "W : " + Lang.msg("Nor").toUpperCase());
-            x += lagura + 10;
-            desenhaAjudaComandoPiloto(g2d, x, y, "E : " + Lang.msg("Max").toUpperCase());
-        }
+        int lagura = desenhaAjudaComandoPiloto(g2d, x, y, "Q : " + Lang.msg("Min").toUpperCase());
+        x += lagura + 10;
+        lagura = desenhaAjudaComandoPiloto(g2d, x, y, "W : " + Lang.msg("Nor").toUpperCase());
+        x += lagura + 10;
+        desenhaAjudaComandoPiloto(g2d, x, y, "E : " + Lang.msg("Max").toUpperCase());
+
         x = xOri;
         y = yOri;
 
@@ -2326,10 +2325,6 @@ public class PainelCircuito {
             return;
         }
         if (isExibeResultadoFinal()) {
-            return;
-        }
-        if (InterfaceJogo.DIFICIL.equals(controleJogo.getNivelJogo())
-                && !pilotoSelecionado.equals(controleJogo.getPilotoJogador())) {
             return;
         }
         int cargaKers = pilotoSelecionado.getCarro().getCargaErs() / 2;
@@ -4213,10 +4208,6 @@ public class PainelCircuito {
         if (pilotoSelecionado == null) {
             return;
         }
-        if (InterfaceJogo.DIFICIL.equals(controleJogo.getNivelJogo())
-                && !pilotoSelecionado.equals(controleJogo.getPilotoJogador())) {
-            return;
-        }
         int pneus = pilotoSelecionado.getCarro().getPorcentagemDesgastePneus();
         int porcentComb = pilotoSelecionado.getCarro().getPorcentagemCombustivel();
         String dano;
@@ -4805,9 +4796,6 @@ public class PainelCircuito {
         if (isExibeResultadoFinal()) {
             return;
         }
-        if (InterfaceJogo.DIFICIL.equals(controleJogo.getNivelJogo())) {
-            return;
-        }
         BufferedImage icon = null;
 
         String clima = controleJogo.getClima();
@@ -5118,10 +5106,6 @@ public class PainelCircuito {
         if (isExibeResultadoFinal()) {
             return;
         }
-        if (InterfaceJogo.DIFICIL.equals(controleJogo.getNivelJogo())
-                && !pilotoSelecionado.equals(controleJogo.getPilotoJogador())) {
-            return;
-        }
         Stroke stroke = g2d.getStroke();
         int x = limitesViewPort.x;
         int y = limitesViewPort.y + 165;
@@ -5181,10 +5165,6 @@ public class PainelCircuito {
             return;
         }
         if (isExibeResultadoFinal()) {
-            return;
-        }
-        if (InterfaceJogo.DIFICIL.equals(controleJogo.getNivelJogo())
-                && !pilotoSelecionado.equals(controleJogo.getPilotoJogador())) {
             return;
         }
         Font fontOri = g2d.getFont();

@@ -8,6 +8,7 @@ import br.f1mane.entidades.TemporadasDefault;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.visao.PainelCircuito;
 import br.f1mane.visao.PainelTabelaResultadoFinal;
+import br.nnpe.Constantes;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
@@ -32,7 +33,6 @@ public class MainFrameSimulacao extends MainFrame {
     private boolean reabastecimento;
     private int turbulencia;
     private String clima;
-    private String nivel;
     private String temporada;
     private boolean abrasivo;
     private boolean boxRapido;
@@ -51,7 +51,6 @@ public class MainFrameSimulacao extends MainFrame {
             PainelCircuito.desenhaPista = false;
             ControleCiclo.VALENDO = false;
             clima = Clima.SOL;
-            nivel = InterfaceJogo.NORMAL;
             List<String> listCircuitos = new ArrayList<String>(controleJogo.getCircuitos().keySet());
             Collections.shuffle(listCircuitos);
 
@@ -78,7 +77,7 @@ public class MainFrameSimulacao extends MainFrame {
             turbulencia = Util.intervalo(0, 500);
             fatorAcidente = 100 - (controleJogo.getFatorAcidente() * 100);
             controleJogo.iniciarJogoMenuLocal(circuito, temporada, voltas,
-                    turbulencia, clima, nivel, null, kers, drs, trocaPneus,
+                    turbulencia, clima, Constantes.CONTROLE_AUTOMATICO, null, kers, drs, trocaPneus,
                     reabastecimento, 0, null, null, false);
             Thread.sleep(5000);
             abrasivo = controleJogo.asfaltoAbrasivoReal();
@@ -122,7 +121,6 @@ public class MainFrameSimulacao extends MainFrame {
         System.out.println("Circuito : " + circuito);
         System.out.println("Temporada : " + temporada);
         System.out.println("Clima : " + clima);
-        System.out.println("Nivel : " + nivel);
         System.out.println("Voltas : " + voltas);
         System.out.println("Drs : " + drs);
         System.out.println("Kers : " + kers);

@@ -216,7 +216,7 @@ public class FormClassificacao extends JPanel {
 			case 9:
 				return decimalFormat.format(corridasDadosSrv.getPontos());
 			case 10:
-				return Lang.msg(corridasDadosSrv.getNivel());
+				return Lang.msg(corridasDadosSrv.getAutomaticoManual());
 			case 11:
 				return Lang.msg(corridasDadosSrv.getTemporada());
 			default:

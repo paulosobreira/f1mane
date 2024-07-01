@@ -268,9 +268,8 @@ public class ControleCampeonatoCliente {
 		spinnerQtdeVoltas.setValue(new Integer(12));
 		grid.add(spinnerQtdeVoltas);
 		JComboBox comboBoxNivelCorrida = new JComboBox();
-		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.NORMAL));
-		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.FACIL));
-		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.DIFICIL));
+		comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_AUTOMATICO));
+		comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_MANUAL));
 		grid.add(new JLabel() {
 			public String getText() {
 				return Lang.msg("212");
