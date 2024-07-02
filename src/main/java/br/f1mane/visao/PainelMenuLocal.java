@@ -332,6 +332,8 @@ public class PainelMenuLocal {
                 controleJogo.verificaDesafioCampeonatoPiloto();
             }
         }
+        Graphics2D g2d = mainFrame.obterGraficos();
+        GerenciadorVisual.setarHints(g2d);
         renderThread.start();
         desenhaCarregando = false;
 
