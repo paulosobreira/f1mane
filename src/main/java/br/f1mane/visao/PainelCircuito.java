@@ -3027,8 +3027,8 @@ public class PainelCircuito {
             }
         }
         if (piloto.getTracado() == 1) {
-            carx = Util.inteiro((p1.x));
-            cary = Util.inteiro((p1.y));
+            carx = Util.inteiro(p1.x);
+            cary = Util.inteiro(p1.y);
             int indTracado = piloto.getIndiceTracado();
             if (indTracado > 0 && piloto.getTracadoAntigo() != 1) {
                 List drawBresenhamLine = null;
@@ -3056,8 +3056,8 @@ public class PainelCircuito {
         }
 
         if (piloto.getTracado() == 5) {
-            carx = Util.inteiro((p5.x));
-            cary = Util.inteiro((p5.y));
+            carx = Util.inteiro(p5.x);
+            cary = Util.inteiro(p5.y);
             int indTracado = piloto.getIndiceTracado();
             if (indTracado > 0 && piloto.getTracadoAntigo() != 5) {
                 List drawBresenhamLine = null;
@@ -3081,8 +3081,8 @@ public class PainelCircuito {
         }
 
         if (piloto.getTracado() == 2) {
-            carx = Util.inteiro((p2.x));
-            cary = Util.inteiro((p2.y));
+            carx = Util.inteiro(p2.x);
+            cary = Util.inteiro(p2.y);
             int indTracado = piloto.getIndiceTracado();
             if (indTracado > 0 && piloto.getTracadoAntigo() != 2) {
                 List drawBresenhamLine = null;
@@ -3110,8 +3110,8 @@ public class PainelCircuito {
         }
 
         if (piloto.getTracado() == 4) {
-            carx = Util.inteiro((p4.x));
-            cary = Util.inteiro((p4.y));
+            carx = Util.inteiro(p4.x);
+            cary = Util.inteiro(p4.y);
             int indTracado = piloto.getIndiceTracado();
             if (indTracado > 0 && piloto.getTracadoAntigo() != 4) {
                 List drawBresenhamLine = null;
