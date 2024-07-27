@@ -98,7 +98,7 @@ public class ControleClassificacao {
 					corridasDadosSrv.setTempoFim(tempoFim);
 					corridasDadosSrv.setCircuito(dadosCriarJogo.getCircuitoSelecionado());
 					corridasDadosSrv.setNumVoltas(dadosCriarJogo.getQtdeVoltas().intValue());
-					corridasDadosSrv.setNivel(dadosCriarJogo.getNivelJogo());
+					corridasDadosSrv.setAutomaticoManual(dadosCriarJogo.getAutomaticoManual());
 					int pts = gerarPontos(piloto);
 					CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
 							.carregaCarreiraJogador(piloto.getTokenJogador(), false, session);
@@ -181,12 +181,6 @@ public class ControleClassificacao {
 			double porcent = voltasConcluidas / numVoltas;
 			corridasDadosSrv.setPorcentConcluida((int) (porcent * 100));
 			double pontos = Math.ceil(porcent * corridasDadosSrv.getPontos());
-			if (InterfaceJogo.FACIL.equals(corridasDadosSrv.getNivel())) {
-				pontos /= 2;
-			}
-			if (InterfaceJogo.DIFICIL.equals(corridasDadosSrv.getNivel())) {
-				pontos *= 2;
-			}
 			int pontosInt = (int) pontos;
 			corridasDadosSrv.setPontos(pontosInt);
 			piloto.setPontosCorrida(pontosInt);

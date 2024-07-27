@@ -108,11 +108,9 @@ public class PainelMenuLocal {
 
     private RoundRectangle2D nubladoRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-    private RoundRectangle2D facilRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+    private RoundRectangle2D automaticoRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-    private RoundRectangle2D normalRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
-
-    private RoundRectangle2D dificilRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+    private RoundRectangle2D manualRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
     private final RoundRectangle2D pneuMoleRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
@@ -155,8 +153,6 @@ public class PainelMenuLocal {
     private String pneuSelecionado = Carro.TIPO_PNEU_MOLE;
 
     private String climaSelecionado = Clima.SOL;
-
-    private String nivelSelecionado = InterfaceJogo.NORMAL;
 
     private Piloto pilotoSelecionado;
 
@@ -233,6 +229,8 @@ public class PainelMenuLocal {
     private boolean safetyCar = true;
 
     private String linguagem;
+
+    private String automaitcoManual = Constantes.CONTROLE_AUTOMATICO;
 
     public PainelMenuLocal(MainFrame mf) throws Exception {
         this.mainFrame = mf;
@@ -334,6 +332,8 @@ public class PainelMenuLocal {
                 controleJogo.verificaDesafioCampeonatoPiloto();
             }
         }
+        Graphics2D g2d = mainFrame.obterGraficos();
+        GerenciadorVisual.setarHints(g2d);
         renderThread.start();
         desenhaCarregando = false;
 
@@ -462,19 +462,12 @@ public class PainelMenuLocal {
             climaSelecionado = Clima.CHUVA;
             return;
         }
-        if (facilRect.contains(e.getPoint())) {
-            nivelSelecionado = InterfaceJogo.FACIL;
-            pilotoSelecionado = null;
+        if (automaticoRect.contains(e.getPoint())) {
+            automaitcoManual = Constantes.CONTROLE_AUTOMATICO;
             return;
         }
-        if (normalRect.contains(e.getPoint())) {
-            nivelSelecionado = InterfaceJogo.NORMAL;
-            pilotoSelecionado = null;
-            return;
-        }
-        if (dificilRect.contains(e.getPoint())) {
-            nivelSelecionado = InterfaceJogo.DIFICIL;
-            pilotoSelecionado = null;
+        if (manualRect.contains(e.getPoint())) {
+            automaitcoManual = Constantes.CONTROLE_MANUAL;
             return;
         }
         if (pneuMoleRect.contains(e.getPoint())) {
@@ -661,7 +654,6 @@ public class PainelMenuLocal {
             if (g2d == null) {
                 return;
             }
-            setarHints(g2d);
             g2d.setColor(g2d.getBackground());
             g2d.fillRect(0, 0, getWidth(), getHeight());
             if (PainelCircuito.desenhaBkg) {
@@ -925,7 +917,6 @@ public class PainelMenuLocal {
         temporadaSelecionada = campeonato.getTemporada();
         circuitoSelecionado = campeonato.getCircuitoVez();
         numVoltasSelecionado = campeonato.getQtdeVoltas().intValue();
-        nivelSelecionado = campeonato.getNivel();
         reabastecimento = campeonato.isReabastecimento();
         kers = campeonato.isDrs();
         drs = campeonato.isDrs();
@@ -1018,7 +1009,7 @@ public class PainelMenuLocal {
 
         x += 40 + tamVoltas;
 
-        String nivel = Lang.msg(nivelSelecionado).toUpperCase();
+        String nivel = Lang.msg(automaitcoManual).toUpperCase();
 
         int tamNivel = Util.calculaLarguraText(nivel, g2d);
         g2d.setColor(lightWhite);
@@ -1727,7 +1718,7 @@ public class PainelMenuLocal {
                             try {
                                 controleJogo.iniciarJogoMenuLocal(circuitoSelecionado, temporadaSelecionada,
                                         numVoltasSelecionado, turbulenciaSelecionado, climaSelecionado,
-                                        nivelSelecionado, pilotoSelecionado, kers, drs, trocaPneus, reabastecimento,
+                                        automaitcoManual, pilotoSelecionado, kers, drs, trocaPneus, reabastecimento,
                                         combustivelSelecionado, asaSelecionado, pneuSelecionado, safetyCar);
                                 renderThreadAlive = false;
                             } catch (Exception e) {
@@ -1775,7 +1766,7 @@ public class PainelMenuLocal {
                 }
                 InterfaceJogo controleJogo = mainFrame.getControleJogo();
                 campeonato = controleJogo.criarCampeonatoPiloto(cirucitosCampeonato, temporadaSelecionada,
-                        numVoltasSelecionado, turbulenciaSelecionado, climaSelecionado, nivelSelecionado,
+                        numVoltasSelecionado, turbulenciaSelecionado, climaSelecionado, automaitcoManual,
                         pilotoSelecionado, kers, drs, trocaPneus, reabastecimento);
                 if (cirucitosCampeonato.size() >= 5) {
                     MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
@@ -2017,19 +2008,9 @@ public class PainelMenuLocal {
         y += 8;
 
         int limite = 0;
-
         if (campeonato) {
-            if (InterfaceJogo.FACIL.equals(nivelSelecionado)) {
-                limite = pilotos.size() - 6;
-            }
-            if (InterfaceJogo.NORMAL.equals(nivelSelecionado)) {
-                limite = pilotos.size() - 4;
-            }
-            if (InterfaceJogo.DIFICIL.equals(nivelSelecionado)) {
-                limite = pilotos.size() - 2;
-            }
+            limite = pilotos.size() - 4;
         }
-
         if (limite < 0) {
             limite = 0;
         }
@@ -2298,46 +2279,31 @@ public class PainelMenuLocal {
         Font fontOri = g2d.getFont();
         g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
 
-        String facil = Lang.msg(InterfaceJogo.FACIL).toUpperCase();
+        String facil = Lang.msg(Constantes.CONTROLE_AUTOMATICO).toUpperCase();
         int tamFacil = Util.calculaLarguraText(facil, g2d);
-        facilRect.setFrame(x - 15, y - 12, tamFacil + 10, 32);
+        automaticoRect.setFrame(x - 15, y - 12, tamFacil + 10, 32);
         g2d.setColor(lightWhite);
-        g2d.fill(facilRect);
-        if (InterfaceJogo.FACIL.equals(nivelSelecionado)) {
+        g2d.fill(automaticoRect);
+        if (Constantes.CONTROLE_AUTOMATICO.equals(automaitcoManual)) {
             g2d.setColor(yel);
-            g2d.draw(facilRect);
+            g2d.draw(automaticoRect);
         }
         g2d.setColor(Color.BLACK);
         g2d.drawString(facil, x - 10, y + 15);
 
         x += (tamFacil + 15);
 
-        String normal = Lang.msg(InterfaceJogo.NORMAL).toUpperCase();
+        String normal = Lang.msg(Constantes.CONTROLE_MANUAL).toUpperCase();
         int tamNormal = Util.calculaLarguraText(normal, g2d);
-        normalRect.setFrame(x - 15, y - 12, tamNormal + 10, 32);
+        manualRect.setFrame(x - 15, y - 12, tamNormal + 10, 32);
         g2d.setColor(lightWhite);
-        g2d.fill(normalRect);
-        if (InterfaceJogo.NORMAL.equals(nivelSelecionado)) {
+        g2d.fill(manualRect);
+        if (Constantes.CONTROLE_MANUAL.equals(automaitcoManual)) {
             g2d.setColor(yel);
-            g2d.draw(normalRect);
+            g2d.draw(manualRect);
         }
         g2d.setColor(Color.BLACK);
         g2d.drawString(normal, x - 10, y + 15);
-
-        x += (tamNormal + 15);
-
-        String dificil = Lang.msg(InterfaceJogo.DIFICIL).toUpperCase();
-        int tamDificil = Util.calculaLarguraText(dificil, g2d);
-        dificilRect.setFrame(x - 15, y - 12, tamDificil + 10, 32);
-        g2d.setColor(lightWhite);
-        g2d.fill(dificilRect);
-        if (InterfaceJogo.DIFICIL.equals(nivelSelecionado)) {
-            g2d.setColor(yel);
-            g2d.draw(dificilRect);
-        }
-        g2d.setColor(Color.BLACK);
-        g2d.drawString(dificil, x - 10, y + 15);
-
         g2d.setFont(fontOri);
     }
 
@@ -2608,12 +2574,6 @@ public class PainelMenuLocal {
 
     }
 
-    private void setarHints(Graphics2D g2d) {
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-    }
 
     private void desenhaMenuPrincipalSelecao(Graphics2D g2d) {
         if (!MENU.equals(MENU_PRINCIPAL)) {
@@ -2830,28 +2790,20 @@ public class PainelMenuLocal {
         this.nubladoRect = nubladoRect;
     }
 
-    public RoundRectangle2D getFacilRect() {
-        return facilRect;
+    public RoundRectangle2D getAutomaticoRect() {
+        return automaticoRect;
     }
 
-    public void setFacilRect(RoundRectangle2D facilRect) {
-        this.facilRect = facilRect;
+    public void setAutomaticoRect(RoundRectangle2D automaticoRect) {
+        this.automaticoRect = automaticoRect;
     }
 
-    public RoundRectangle2D getNormalRect() {
-        return normalRect;
+    public RoundRectangle2D getManualRect() {
+        return manualRect;
     }
 
-    public void setNormalRect(RoundRectangle2D normalRect) {
-        this.normalRect = normalRect;
-    }
-
-    public RoundRectangle2D getDificilRect() {
-        return dificilRect;
-    }
-
-    public void setDificilRect(RoundRectangle2D dificilRect) {
-        this.dificilRect = dificilRect;
+    public void setManualRect(RoundRectangle2D manualRect) {
+        this.manualRect = manualRect;
     }
 
     public RoundRectangle2D getDrsRect() {

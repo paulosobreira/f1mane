@@ -20,12 +20,6 @@ import br.f1mane.entidades.Volta;
 import br.f1mane.visao.PainelTabelaResultadoFinal;
 
 public interface InterfaceJogo {
-    public static boolean DEBUG_SEM_CHUVA = false;
-    public static final String NORMAL = "NORMAL";
-    public static final String FACIL = "FACIL";
-    public static final String DIFICIL = "DIFICIL";
-    public static final int CARGA_ERS = 100;
-    public static final int DURABILIDADE_AREOFOLIO = 4;
 
     public List<String> listaInfo();
 
@@ -50,10 +44,6 @@ public interface InterfaceJogo {
     public MainFrame getMainFrame();
 
     public int getMediaPontecia();
-
-    public String getNivelJogo();
-
-    public void setNivelJogo(String niveljogo);
 
     public Circuito getCircuito();
 
@@ -411,4 +401,6 @@ public interface InterfaceJogo {
     double getFatorConsumoCombustivelSemReabastecimento();
 
     long tempoCicloCircuito();
+
+    String getAutomaticoManual();
 }

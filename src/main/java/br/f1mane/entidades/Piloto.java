@@ -282,6 +282,7 @@ public class Piloto implements Serializable, PilotoSuave {
     private int porcentagemMotor;
     private int porcentagemCorridaRestante;
     private boolean temPneu;
+    private int manualTemporario;
 
     public int getGanhoSuave() {
         return ganhoSuave;
@@ -896,7 +897,7 @@ public class Piloto implements Serializable, PilotoSuave {
             processaUltimosDesgastesPneuECombustivel();
             index = diff;
             if (getNumeroVolta() > 0) {
-                getCarro().setCargaErs(InterfaceJogo.CARGA_ERS);
+                getCarro().setCargaErs(Constantes.CARGA_ERS);
             }
             ativarErs = false;
             controleJogo.processaVoltaRapida(this);
@@ -1189,7 +1190,7 @@ public class Piloto implements Serializable, PilotoSuave {
         if (controleJogo.isModoQualify()) {
             return;
         }
-        int durabilidade = InterfaceJogo.DURABILIDADE_AREOFOLIO / 2;
+        int durabilidade = Constantes.DURABILIDADE_AREOFOLIO / 2;
         if (getCarro().getDurabilidadeAereofolio() <= durabilidade) {
             setAlertaAerefolio(true);
         }
@@ -1618,9 +1619,14 @@ public class Piloto implements Serializable, PilotoSuave {
         if (colisao != null || isRecebeuBanderada() || controleJogo.isModoQualify() || verificaDesconcentrado()) {
             return;
         }
-        if (isJogadorHumano() && !InterfaceJogo.FACIL.equals(controleJogo.getNivelJogo())) {
+        if (isJogadorHumano() && Constantes.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual())) {
             return;
         }
+
+        if(manualTemporario()){
+            return;
+        }
+
         porcentagemDesgastePneus = getCarro().getPorcentagemDesgastePneus();
         porcentagemCombustivel = getCarro().getPorcentagemCombustivel();
         superAquecido = getCarro().verificaMotorSuperAquecido();
@@ -1674,6 +1680,21 @@ public class Piloto implements Serializable, PilotoSuave {
         }
     }
 
+    public void setManualTemporario(){
+        if (!isJogadorHumano()) {
+            return;
+        }
+        manualTemporario = 50;
+    }
+
+    private boolean manualTemporario() {
+        if (manualTemporario>0){
+            manualTemporario--;
+            return true;
+        }
+        return false;
+    }
+
     private void processaMudarTracado(InterfaceJogo controleJogo) {
         if (isRecebeuBanderada()) {
             return;
@@ -1681,7 +1702,7 @@ public class Piloto implements Serializable, PilotoSuave {
         if (controleJogo.isModoQualify()) {
             return;
         }
-        if (isJogadorHumano() && InterfaceJogo.DIFICIL.equals(controleJogo.getNivelJogo())) {
+        if (isJogadorHumano() && Constantes.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual())) {
             return;
         }
         if (!noAtual.verificaRetaOuLargada() && !controleJogo.isSafetyCarNaPista()) {
@@ -1868,7 +1889,7 @@ public class Piloto implements Serializable, PilotoSuave {
             return;
         }
         limiteEvitarBatrCarroFrente = 150;
-        if (getCarro().getDurabilidadeAereofolio() < (InterfaceJogo.DURABILIDADE_AREOFOLIO / 2)) {
+        if (getCarro().getDurabilidadeAereofolio() < (Constantes.DURABILIDADE_AREOFOLIO / 2)) {
             limiteEvitarBatrCarroFrente += 100;
         }
         if (piloto.getColisao() != null) {

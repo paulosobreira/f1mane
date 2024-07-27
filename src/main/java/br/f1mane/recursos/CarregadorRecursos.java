@@ -224,9 +224,6 @@ public class CarregadorRecursos {
             Logger.logar("carregaBackGround backGround nulo");
             return null;
         }
-
-        circuito.setBackGround(backGroundStr);
-
         return backGround;
     }
 

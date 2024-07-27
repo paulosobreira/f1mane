@@ -574,17 +574,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return null;
 	}
 
-	@Override
-	public String getNivelJogo() {
-		return dadosParticiparJogo.getNivelJogo();
-	}
-
 	public void verificaMudancaClima(String climaNovo) {
 		if (clima != null && !clima.equals(climaNovo)) {
 			clima = climaNovo;
-			if (!InterfaceJogo.DIFICIL.equals(getNivelJogo())) {
-				gerenciadorVisual.informaMudancaClima();
-			}
 		}
 	}
 	public void mudarGiroMotor(Object selectedItem) {
@@ -655,11 +647,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public int getMediaPontecia() {
 
 		return 0;
-	}
-
-	@Override
-	public void setNivelJogo(String niveljogo) {
-
 	}
 
 	@Override
@@ -778,22 +765,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			Logger.logarExept(e);
 		}
 		return null;
-	}
-
-	public void setPosisRec(No no) {
-		if (gerenciadorVisual == null) {
-			return;
-		}
-		gerenciadorVisual.setPosisRec(no);
-
-	}
-
-	public void setPosisAtual(Point point) {
-		if (gerenciadorVisual == null) {
-			return;
-		}
-		gerenciadorVisual.setPosisAtual(point);
-
 	}
 
 	public void carregaBackGroundCliente() {
@@ -1389,6 +1360,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	@Override
 	public long tempoCicloCircuito() {
 		return circuitosCiclo.get(circuito.getNome());
+	}
+
+	@Override
+	public String getAutomaticoManual() {
+		return Constantes.CONTROLE_AUTOMATICO;
 	}
 
 

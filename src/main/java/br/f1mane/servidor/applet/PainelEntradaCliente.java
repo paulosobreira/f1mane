@@ -165,9 +165,8 @@ public class PainelEntradaCliente {
         painelInicio.add(pCp);
 
         comboBoxNivelCorrida = new JComboBox();
-        comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.NORMAL));
-        comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.FACIL));
-        comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.DIFICIL));
+        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_AUTOMATICO));
+        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_MANUAL));
 
         JPanel pNv = new JPanel(new GridLayout(1, 2));
 
@@ -480,7 +479,7 @@ public class PainelEntradaCliente {
         dadosCriarJogo.setDiffultrapassagem(Integer.valueOf(sliderDificuldadeUltrapassagem.getValue()));
         String circuitoSelecionado = (String) comboBoxCircuito.getSelectedItem();
         dadosCriarJogo.setCircuitoSelecionado(circuitoSelecionado);
-        dadosCriarJogo.setNivelJogo(Lang.key(comboBoxNivelCorrida.getSelectedItem().toString()));
+        dadosCriarJogo.setAutomaticoManual(Lang.key(comboBoxNivelCorrida.getSelectedItem().toString()));
         dadosCriarJogo.setClima(((Clima) comboBoxClimaInicial.getSelectedItem()).getClima());
         dadosCriarJogo.setReabastecimento(reabastecimento.isSelected());
         dadosCriarJogo.setTrocaPneu(trocaPneu.isSelected());

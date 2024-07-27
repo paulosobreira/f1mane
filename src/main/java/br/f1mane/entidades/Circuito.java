@@ -148,12 +148,8 @@ public class Circuito implements Serializable {
 
     public synchronized void vetorizarPista(double multi, double larg) {
         multiplicadorLarguraPista = larg;
-        multiplicadorPista = multi;
         paradaBoxIndex = 0;
         fimParadaBoxIndex = 0;
-        if (usaBkg) {
-            multi = 1;
-        }
         No noAnt = null;
         pistaFull = new ArrayList<No>();
         pistaKey = new ArrayList<No>();
@@ -174,10 +170,6 @@ public class Circuito implements Serializable {
                 Point p1 = noAnt.getPoint();
                 Point p2 = no.getPoint();
                 Point p3 = new Point(p2.x, p2.y);
-                p1.x *= multi;
-                p1.y *= multi;
-                p2.x *= multi;
-                p2.y *= multi;
                 pistaKey.add(noAnt);
                 pistaFull.addAll(converterPointNo(GeoUtil.drawBresenhamLine(p1, p2), noAnt));
                 no.setPoint(p3);
@@ -189,8 +181,6 @@ public class Circuito implements Serializable {
             No no = (No) pistaTemp.get(0);
             Point p1 = noAnt.getPoint();
             Point p2 = no.getPoint();
-            p1.x *= multi;
-            p1.y *= multi;
             pistaKey.add(noAnt);
             pistaFull.addAll(converterPointNo(GeoUtil.drawBresenhamLine(p1, p2), noAnt));
 
@@ -222,10 +212,6 @@ public class Circuito implements Serializable {
                 Point p1 = noAnt.getPoint();
                 Point p2 = no.getPoint();
                 Point p3 = new Point(p2.x, p2.y);
-                p1.x *= multi;
-                p1.y *= multi;
-                p2.x *= multi;
-                p2.y *= multi;
                 boxKey.add(noAnt);
                 boxFull.addAll(converterPointNo(GeoUtil.drawBresenhamLine(p1, p2), noAnt));
                 no.setPoint(p3);
@@ -236,8 +222,6 @@ public class Circuito implements Serializable {
             No no = (No) boxTemp.get(boxTemp.size() - 1);
             Point p1 = noAnt.getPoint();
             Point p2 = no.getPoint();
-            p1.x *= multi;
-            p1.y *= multi;
             boxKey.add(noAnt);
             boxFull.addAll(converterPointNo(GeoUtil.drawBresenhamLine(p1, p2), noAnt));
 
@@ -769,20 +753,8 @@ public class Circuito implements Serializable {
         BufferedImage image = new BufferedImage(maxX + (int) (maxX * 0.1), maxY + (int) (maxY * 0.1),
                 BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = (Graphics2D) image.getGraphics();
-        setarHints(g2d);
         desenhaMiniCircuito(g2d, 0, 0);
         return image;
-    }
-
-    private void setarHints(Graphics2D g2d) {
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
-        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-
     }
 
     public void desenhaMiniCircuito(Graphics2D g2d, int x, int y) {
@@ -907,10 +879,6 @@ public class Circuito implements Serializable {
 
     public double getVelocidadePista() {
         return Constantes.VELOCIDADE_PISTA;
-//        if (velocidadePista == 0) {
-//            return Constantes.VELOCIDADE_PISTA;
-//        }
-//        return velocidadePista;
     }
 
     public void setVelocidadePista(double velocidadePista) {

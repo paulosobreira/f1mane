@@ -234,8 +234,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	protected void processarEntradaDados() throws Exception {
 		try {
-			this.niveljogo = dadosCriarJogo.getNivelJogo();
-
 			qtdeVoltas = dadosCriarJogo.getQtdeVoltas();
 			if (qtdeVoltas.intValue() <= Constantes.MIN_VOLTAS) {
 				qtdeVoltas = new Integer(Constantes.MIN_VOLTAS);
@@ -306,14 +304,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 		});
 		timer.start();
-	}
-
-	public String getNivelCorrida() {
-		return dadosCriarJogo.getNivelJogo();
-	}
-
-	public String getNiveljogo() {
-		return dadosCriarJogo.getNivelJogo();
 	}
 
 	public void atualizarJogadoresOnline() {
@@ -578,6 +568,11 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		this.travadaRoda.setIdNo(mapaNosIds.get(piloto.getNoAtual()).intValue());
 		this.travadaRoda.setTracado(piloto.getTracado());
 		piloto.setTravouRodas(true);
+	}
+
+	@Override
+	public String getAutomaticoManual() {
+		return Constantes.CONTROLE_AUTOMATICO;
 	}
 
 	public TravadaRoda getTravadaRoda() {

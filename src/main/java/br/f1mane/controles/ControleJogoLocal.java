@@ -35,7 +35,6 @@ public class ControleJogoLocal extends ControleRecursos
     protected ControleCampeonato controleCampeonato;
 
     protected final List pilotosJogadores = new ArrayList();
-    protected String niveljogo = InterfaceJogo.NORMAL;
     protected boolean corridaTerminada;
     protected boolean trocaPneu;
     protected boolean reabastecimento;
@@ -49,6 +48,8 @@ public class ControleJogoLocal extends ControleRecursos
     protected Integer diffultrapassagem = null;
     protected String circuitoSelecionado = null;
     protected boolean atualizacaoSuave = true;
+    private String automaticoManual;
+
 
     private MainFrame mainFrame;
 
@@ -318,10 +319,6 @@ public class ControleJogoLocal extends ControleRecursos
         controleCorrida.verificaAcidente(piloto);
     }
 
-    public String getNiveljogo() {
-        return niveljogo;
-    }
-
     public void efetuarSelecaoPilotoJogador(Object selec, Object tpneu,
                                             Object combust, String nomeJogador, Object asa) {
         pilotoJogador = (Piloto) selec;
@@ -546,7 +543,7 @@ public class ControleJogoLocal extends ControleRecursos
             carregaRecursos((String) getCircuitos().get(circuitoSelecionado),
                     gerenciadorVisual.getListaPilotosCombo(),
                     gerenciadorVisual.getListaCarrosCombo());
-            this.niveljogo = Lang.key(gerenciadorVisual
+            this.automaticoManual = Lang.key(gerenciadorVisual
                     .getComboBoxNivelCorrida().getSelectedItem().toString());
             controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
                     diffultrapassagem.intValue());
@@ -598,7 +595,7 @@ public class ControleJogoLocal extends ControleRecursos
     public void iniciarJogoMenuLocal(String circuitoSelecionado,
                                      String temporadaSelecionada, int numVoltasSelecionado,
                                      int turbulenciaSelecionado, String climaSelecionado,
-                                     String nivelSelecionado, Piloto pilotoSelecionado, boolean ers,
+                                     String automaticoManual, Piloto pilotoSelecionado, boolean ers,
                                      boolean drs, boolean trocaPneus, boolean reabastecimento,
                                      int combustivelSelecionado, String asaSelecionado,
                                      String pneuSelecionado, boolean safetycar) throws Exception {
@@ -610,7 +607,7 @@ public class ControleJogoLocal extends ControleRecursos
         this.ers = ers;
         this.drs = drs;
         this.safetyCar = safetycar;
-        this.niveljogo = nivelSelecionado;
+        this.automaticoManual = automaticoManual;
         setTemporada("t" + temporadaSelecionada);
         carregarPilotosCarros();
         carregaRecursos((String) getCircuitos().get(circuitoSelecionado));
@@ -802,6 +799,7 @@ public class ControleJogoLocal extends ControleRecursos
         String giroMotor = (String) selectedItem;
         if (pilotoJogador != null) {
             pilotoJogador.getCarro().mudarGiroMotor(giroMotor);
+            pilotoJogador.setManualTemporario();
         }
 
     }
@@ -814,8 +812,10 @@ public class ControleJogoLocal extends ControleRecursos
     }
 
     public void mudarModoPilotagem(String modo) {
-        if (pilotoJogador != null)
+        if (pilotoJogador != null){
             pilotoJogador.setModoPilotagem(modo);
+            pilotoJogador.setManualTemporario();
+        }
     }
 
     public String getAsaBox(Piloto piloto) {
@@ -862,17 +862,6 @@ public class ControleJogoLocal extends ControleRecursos
         }
         int mediaPontecia = somaPontecias / (getCarros().size());
         return mediaPontecia;
-    }
-
-    @Override
-    public String getNivelJogo() {
-        return niveljogo;
-    }
-
-    @Override
-    public void setNivelJogo(String niveljogo) {
-        this.niveljogo = niveljogo;
-
     }
 
     @Override
@@ -1484,6 +1473,7 @@ public class ControleJogoLocal extends ControleRecursos
             pilotoJogador.setModoPilotagem(Piloto.LENTO);
             pilotoJogador.getCarro().mudarGiroMotor(Carro.GIRO_MIN);
             pilotoJogador.setAtivarErs(false);
+            pilotoJogador.setManualTemporario();
         }
 
     }
@@ -1494,6 +1484,7 @@ public class ControleJogoLocal extends ControleRecursos
             pilotoJogador.setModoPilotagem(Piloto.NORMAL);
             pilotoJogador.getCarro().mudarGiroMotor(Carro.GIRO_NOR);
             pilotoJogador.setAtivarErs(false);
+            pilotoJogador.setManualTemporario();
         }
 
     }
@@ -1505,6 +1496,7 @@ public class ControleJogoLocal extends ControleRecursos
             pilotoJogador.getCarro().mudarGiroMotor(Carro.GIRO_MAX);
             pilotoJogador.setAtivarErs(true);
             pilotoJogador.setAtivarDRS(true);
+            pilotoJogador.setManualTemporario();
         }
 
     }
@@ -1770,6 +1762,11 @@ public class ControleJogoLocal extends ControleRecursos
     @Override
     public long tempoCicloCircuito() {
         return circuitosCiclo.get(circuito.getNome());
+    }
+
+    @Override
+    public String getAutomaticoManual() {
+        return automaticoManual;
     }
 
     private static class StringComparator implements Comparator<String> {

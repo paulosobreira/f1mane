@@ -219,9 +219,8 @@ public class ControleCampeonato {
         spinnerQtdeVoltas.setValue(new Integer(12));
         grid.add(spinnerQtdeVoltas);
         JComboBox comboBoxNivelCorrida = new JComboBox();
-        comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.NORMAL));
-        comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.FACIL));
-        comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.DIFICIL));
+        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_AUTOMATICO));
+        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_MANUAL));
         grid.add(new JLabel() {
             public String getText() {
                 return Lang.msg("212");
@@ -438,14 +437,7 @@ public class ControleCampeonato {
     }
 
     private void verificaMudancaEquipe() {
-        int qtdeDisputas = 1;
-        if (ControleJogoLocal.NORMAL.equals(campeonato.getNivel())) {
-            qtdeDisputas = Util.intervalo(1, 2);
-        }
-        if (ControleJogoLocal.DIFICIL.equals(campeonato.getNivel())) {
-            qtdeDisputas = Util.intervalo(2, 3);
-        }
-
+        int qtdeDisputas = 2;
         if (campeonato.getVitorias() > qtdeDisputas) {
             if (campeonato.isFoiDesafiado()) {
                 reiniciarDesafio();
@@ -666,9 +658,8 @@ public class ControleCampeonato {
         JPanel nivelPanel = new JPanel(new GridLayout(1, 2));
 
         final JComboBox comboBoxNivelCorrida = new JComboBox();
-        comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.NORMAL));
-        comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.FACIL));
-        comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.DIFICIL));
+        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_AUTOMATICO));
+        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_MANUAL));
         nivelPanel.add(new JLabel() {
             public String getText() {
                 return Lang.msg("212");
@@ -884,49 +875,20 @@ public class ControleCampeonato {
 
         }
 
-        if (ControleJogoLocal.DIFICIL.equals(Lang.key((String) comboBoxNivelCorrida.getSelectedItem()))) {
-            Carro ult = ((Carro) listCarros.get(listCarros.size() - 1));
-            for (Iterator iterator = tempList.iterator(); iterator.hasNext(); ) {
-                Piloto piloto = (Piloto) iterator.next();
-                if (!(piloto.getCarro().equals(ult))) {
-                    iterator.remove();
-                }
-            }
-
-        } else if (ControleJogoLocal.NORMAL.equals(Lang.key((String) comboBoxNivelCorrida.getSelectedItem()))) {
-            Carro penu = ((Carro) listCarros.get(listCarros.size() - 2));
-            Carro ult = ((Carro) listCarros.get(listCarros.size() - 1));
-            for (Iterator iterator = tempList.iterator(); iterator.hasNext(); ) {
-                Piloto piloto = (Piloto) iterator.next();
-                if (!(piloto.getCarro().equals(penu) || piloto.getCarro().equals(ult))) {
-                    iterator.remove();
-                }
-            }
-        } else if (ControleJogoLocal.FACIL.equals(Lang.key((String) comboBoxNivelCorrida.getSelectedItem()))) {
-            Carro antP = ((Carro) listCarros.get(listCarros.size() - 3));
-            Carro penu = ((Carro) listCarros.get(listCarros.size() - 2));
-            Carro ult = ((Carro) listCarros.get(listCarros.size() - 1));
-            for (Iterator iterator = tempList.iterator(); iterator.hasNext(); ) {
-                Piloto piloto = (Piloto) iterator.next();
-                if (!(piloto.getCarro().equals(penu) || piloto.getCarro().equals(ult)
-                        || piloto.getCarro().equals(antP))) {
-                    iterator.remove();
-                }
+        Carro penu = ((Carro) listCarros.get(listCarros.size() - 2));
+        Carro ult = ((Carro) listCarros.get(listCarros.size() - 1));
+        for (Iterator iterator = tempList.iterator(); iterator.hasNext(); ) {
+            Piloto piloto = (Piloto) iterator.next();
+            if (!(piloto.getCarro().equals(penu) || piloto.getCarro().equals(ult))) {
+                iterator.remove();
             }
         }
+
         Piloto prim;
         Piloto last;
         prim = (Piloto) tempList.get(0);
         last = (Piloto) tempList.get(tempList.size() - 1);
-        int ptsPiloto = 0;
-        if (ControleJogoLocal.DIFICIL.equals(Lang.key((String) comboBoxNivelCorrida.getSelectedItem()))) {
-            ptsPiloto = last.getHabilidade();
-        } else if (ControleJogoLocal.NORMAL.equals(Lang.key((String) comboBoxNivelCorrida.getSelectedItem()))) {
-            ptsPiloto = (last.getHabilidade() + prim.getHabilidade()) / 2;
-        } else if (ControleJogoLocal.FACIL.equals(Lang.key((String) comboBoxNivelCorrida.getSelectedItem()))) {
-            ptsPiloto = prim.getHabilidade();
-        }
-
+        int ptsPiloto = (last.getHabilidade() + prim.getHabilidade()) / 2;
         defaultListModelPilotosSelecionados.clear();
         for (Iterator iterator = tempList.iterator(); iterator.hasNext(); ) {
             Piloto piloto = (Piloto) iterator.next();

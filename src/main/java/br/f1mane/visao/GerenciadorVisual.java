@@ -1,76 +1,26 @@
 package br.f1mane.visao;
 
-import java.awt.BasicStroke;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.GridLayout;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-import javax.swing.InputMap;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JEditorPane;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSlider;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
-import javax.swing.border.TitledBorder;
-
+import br.f1mane.controles.InterfaceJogo;
+import br.f1mane.entidades.*;
+import br.f1mane.recursos.CarregadorRecursos;
+import br.f1mane.recursos.idiomas.Lang;
+import br.f1mane.servidor.applet.JogoCliente;
+import br.f1mane.servidor.entidades.TOs.TravadaRoda;
 import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
-import br.f1mane.controles.ControleJogoLocal;
-import br.f1mane.controles.InterfaceJogo;
-import br.f1mane.entidades.Campeonato;
-import br.f1mane.entidades.Carro;
-import br.f1mane.entidades.Circuito;
-import br.f1mane.entidades.Clima;
-import br.f1mane.entidades.No;
-import br.f1mane.entidades.Piloto;
-import br.f1mane.servidor.applet.JogoCliente;
-import br.f1mane.servidor.entidades.TOs.TravadaRoda;
-import br.f1mane.recursos.CarregadorRecursos;
-import br.f1mane.recursos.idiomas.Lang;
+
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.StringReader;
+import java.util.List;
+import java.util.*;
 
 public class GerenciadorVisual {
     private JPanel painelNarracaoText;
@@ -107,15 +57,14 @@ public class GerenciadorVisual {
     protected JCheckBox reabastecimento;
     protected JCheckBox ers;
     protected JCheckBox drs;
-    private Thread thAtualizaPainelSuave;
-    private Thread thAtualizaSom;
+    private Thread thAtualizaPainel;
+    private Thread thAtualizaSuave;
     protected boolean thAtualizaPainelSuaveAlive = true;
     protected boolean thAtualizaPilotosSuaveAlive = true;
     protected boolean thAtualizaSomAlive = true;
     private int fps = 0;
     protected double fpsLimite = 30D;
     private long ultMudaPos;
-
     private long qdtAbaixoFps;
 
     public JComboBox getComboBoxTemporadas() {
@@ -178,7 +127,7 @@ public class GerenciadorVisual {
     }
 
     private void iniciaThreadJogoSuave() {
-        thAtualizaPainelSuave = new Thread(new Runnable() {
+        thAtualizaPainel = new Thread(new Runnable() {
             @Override
             public void run() {
                 int frames = 0;
@@ -197,8 +146,8 @@ public class GerenciadorVisual {
                     }
                     if (render) {
                         List<Piloto> pilotos = controleJogo.getPilotosCopia();
-                        centralizarPiloto();
                         painelCircuito.setPilotosList(pilotos);
+                        centralizarPiloto();
                         painelCircuito.render();
                         controleJogo.getMainFrame().mostrarGraficos();
                         ++frames;
@@ -212,36 +161,24 @@ public class GerenciadorVisual {
                 }
             }
         });
-
-        thAtualizaSom = new Thread(new Runnable() {
+        thAtualizaSuave = new Thread(new Runnable() {
             @Override
             public void run() {
-                if (controleJogo instanceof br.f1mane.servidor.applet.JogoCliente) {
-                    while (!controleJogo.getMainFrame().isVisible()) {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            Logger.logarExept(e);
-                        }
-                    }
+                while (thAtualizaPainelSuaveAlive) {
                     try {
-                        Thread.sleep(15000);
+                        Thread.sleep(15);
                     } catch (InterruptedException e) {
-                        Logger.logarExept(e);
+                        throw new RuntimeException(e);
+                    }
+                    List<Piloto> pilotos = controleJogo.getPilotosCopia();
+                    for (Piloto piloto : pilotos) {
+                        painelCircuito.atualizacaoSuave(piloto);
+                    }
+                    if (controleJogo.isSafetyCarNaPista()) {
+                        painelCircuito.atualizacaoSuave(controleJogo.getSafetyCar());
                     }
                 }
-//                while (thAtualizaSomAlive) {
-//                    ControleSom.processaSom(controleJogo.getPilotoJogador(), controleJogo, painelCircuito);
-//                    try {
-//                        Thread.sleep(Constantes.CICLO_SOM);
-//                    } catch (InterruptedException e) {
-//                        thAtualizaSomAlive = false;
-//                        Logger.logarExept(e);
-//                    }
-//                }
-
             }
-
         });
         Graphics2D g2d = controleJogo.getMainFrame().obterGraficos();
         if (g2d != null) {
@@ -253,10 +190,13 @@ public class GerenciadorVisual {
 
                 }
             }
-            thAtualizaPainelSuave.start();
-            thAtualizaSom.start();
+            List<Piloto> pilotos = controleJogo.getPilotos();
+            painelCircuito.setPilotosList(pilotos);
+            thAtualizaPainel.start();
+            thAtualizaSuave.start();
         }
     }
+
 
     private void gerarLayout() {
         centerPanel.setLayout(new BorderLayout());
@@ -700,9 +640,8 @@ public class GerenciadorVisual {
         });
         painelInicio.add(boxPilotoSelecionado);
         comboBoxNivelCorrida = new JComboBox();
-        comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.NORMAL));
-        comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.FACIL));
-        comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.DIFICIL));
+        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_AUTOMATICO));
+        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_MANUAL));
         painelInicio.add(new JLabel() {
             public String getText() {
                 return Lang.msg("212");
@@ -872,9 +811,8 @@ public class GerenciadorVisual {
         boxPilotoSelecionado.addItem(Lang.msg("119"));
 
         comboBoxNivelCorrida = new JComboBox();
-        comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.NORMAL));
-        comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.FACIL));
-        comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.DIFICIL));
+        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_AUTOMATICO));
+        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_MANUAL));
         grid.add(new JLabel() {
             public String getText() {
                 return Lang.msg("212");
@@ -1110,13 +1048,6 @@ public class GerenciadorVisual {
 
         circuitosLabel.setIcon(new ImageIcon(bufferedImage));
 
-    }
-
-    private void setarHints(Graphics2D g2d) {
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
     }
 
     public JCheckBox getTrocaPneu() {
@@ -1468,20 +1399,6 @@ public class GerenciadorVisual {
         }
     }
 
-    public void setPosisRec(No no) {
-        if (painelCircuito == null)
-            return;
-        painelCircuito.setPosisRec(no);
-
-    }
-
-    public void setPosisAtual(Point point) {
-        if (painelCircuito == null)
-            return;
-        painelCircuito.setPosisAtual(point);
-
-    }
-
     public void carregaBackGroundCliente() {
         if (painelCircuito != null && painelCircuito.getBackGround() == null) {
             painelCircuito.carregaBackGround();
@@ -1594,9 +1511,16 @@ public class GerenciadorVisual {
     }
 
     public long getQdtAbaixoFps() {
-        if(controleJogo.isCorridaIniciada() && fps<fpsLimite){
+        if (controleJogo.isCorridaIniciada() && fps < fpsLimite) {
             GerenciadorVisual.this.qdtAbaixoFps++;
         }
         return qdtAbaixoFps;
+    }
+
+    public static void setarHints(Graphics2D g2d) {
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
     }
 }
