@@ -15,7 +15,6 @@
 - F1 ou A - Giro Baixo Modo Economia de Motor e Combustível
 - F2 ou S - Giro Normal Modo Normal de Motor e Combustível
 - F3 ou D - Giro Alto Modo Extremo de Motor e Combustível
-- F4 - Alterna rapidamente Modo de Pilotagem (Normal/Agressivo)
 - F5 ou Z - Piloto em Modo Cauteloso.
 - F6 ou X - Piloto Normal.
 - F7 ou C - Piloto em Modo Agressivo.
@@ -51,8 +50,8 @@
 
 - mvn clean package
 - mvn war:war
-- docker build -f f1mane.dockerfile . -t sowbreira/f1mane
-- docker push sowbreira/f1mane
+- docker build -f flmane.dockerfile . -t sowbreira/flmane
+- docker push sowbreira/flmane
 
 ## Como testar no Play with Docker
 
@@ -70,4 +69,4 @@ docker compose up
 
 >Url de acesso:
 
-link_gerado_playwithdocker/**f1mane/html5/index.html**
+link_gerado_playwithdocker/**flmane/html5/index.html**

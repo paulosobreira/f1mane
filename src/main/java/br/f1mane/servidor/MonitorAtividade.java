@@ -113,9 +113,9 @@ public class MonitorAtividade implements Runnable {
                     || !jogo.isCorridaIniciada())) {
                 continue;
             }
-            int intervaloAtividade = 400000;
+            int intervaloAtividade = 800000;
             if (sessaoCliente.isGuest()) {
-                intervaloAtividade = 200000;
+                intervaloAtividade = 400000;
             }
             if ((timeNow
                     - sessaoCliente.getUlimaAtividade()) > intervaloAtividade) {
