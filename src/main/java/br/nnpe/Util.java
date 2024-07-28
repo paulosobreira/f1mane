@@ -43,6 +43,8 @@ public class Util {
 	public static final String MASCARA_CPF = "###.###.###-##";
 	public static final String MASCARA_CNPJ = "##.###.###/####-##";
 
+	public static boolean substVogais = true;
+
 	static {
 		conectivos = new Vector();
 		conectivos.addElement("DE");
@@ -361,6 +363,9 @@ public class Util {
 	}
 
 	public static String substVogais(String name) {
+		if(!substVogais){
+			return name;
+		}
 		StringBuilder retorno = new StringBuilder();
 		boolean subst = false;
 		for (int i = 0; i < name.length(); i++) {

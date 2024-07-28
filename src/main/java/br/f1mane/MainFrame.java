@@ -40,6 +40,7 @@ import br.f1mane.visao.ControleSom;
 import br.f1mane.visao.PainelCircuito;
 import br.f1mane.visao.PainelMenuLocal;
 import br.f1mane.visao.PainelTabelaResultadoFinal;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Created on 20/06/2007
@@ -354,8 +355,10 @@ public class MainFrame extends JFrame {
     }
 
     public static void main(String[] args) throws IOException {
-        if (args != null && args.length > 1) {
-            Lang.mudarIdioma(args[1]);
+        if (args != null && args.length > 0) {
+            if("real".equals(args[0])){
+                Util.substVogais = false;
+            }
         }
         MainFrame frame = new MainFrame(null);
     }

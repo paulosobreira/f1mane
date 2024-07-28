@@ -1684,7 +1684,7 @@ public class Piloto implements Serializable, PilotoSuave {
         if (!isJogadorHumano()) {
             return;
         }
-        manualTemporario = 50;
+        manualTemporario = 200;
     }
 
     private boolean manualTemporario() {
