@@ -576,9 +576,9 @@ public class Carro implements Serializable {
             if (no.verificaCurvaBaixa() || no.verificaCurvaAlta()) {
                 if (controleJogo.verificaPistaEmborrachada()
                         && pneuAquecido) {
-                    ganho *= 1.2;
+                    ganho *= 1.3;
                 } else {
-                    ganho *= testeFreios(controleJogo) ? 1.1 : 1.07;
+                    ganho *= testeFreios(controleJogo) ? 1.2 : 1.07;
                 }
             }
         } else if (TIPO_PNEU_DURO.equals(getTipoPneu())) {

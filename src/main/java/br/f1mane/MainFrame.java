@@ -467,7 +467,7 @@ public class MainFrame extends JFrame {
     public void mostrarGraficos() {
         try {
             BufferStrategy strategy = getBufferStrategy();
-            if (strategy != null) {
+            if (strategy != null && strategy.getDrawGraphics()!=null) {
                 strategy.getDrawGraphics().dispose();
                 strategy.show();
             }
