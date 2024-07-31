@@ -1332,7 +1332,7 @@ public class Piloto implements Serializable, PilotoSuave {
             return;
         }
         if (verificaForaPista(this)) {
-            ganho *= 0.70;
+            ganho *= 0.60;
         }
         /**
          * Escapa para os tracados 4 ou 5
