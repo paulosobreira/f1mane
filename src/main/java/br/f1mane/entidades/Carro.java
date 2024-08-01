@@ -548,7 +548,7 @@ public class Carro implements Serializable {
             valConsumo += (testePotencia && testeAerodinamica() ? 80 : 160);
         }
         if (!controleJogo.isModoQualify() && controleJogo.isSemReabastecimento()) {
-            valConsumo *= controleJogo.getFatorConsumoCombustivelSemReabastecimento();
+            valConsumo *= (int) (controleJogo.getFatorConsumoCombustivelSemReabastecimento() * 0.9);
         }
         combustivel -= valConsumo;
         if (combustivel < 0) {
@@ -660,7 +660,7 @@ public class Carro implements Serializable {
         }
         getPiloto().setTravouRodas(false);
         getPiloto().setMarcaPneu(false);
-        int desgPneus = 10;
+        double desgPneus = 10;
         if (no.verificaCurvaBaixa()) {
             int stress = Util.intervalo(5, 10);
             getPiloto().incStress(getPiloto().testeHabilidadePilotoAerodinamicaFreios(controleJogo) ? stress - 1 : stress);
@@ -730,7 +730,7 @@ public class Carro implements Serializable {
         }
 
         if (controleJogo.asfaltoAbrasivo()) {
-            desgPneus *= 1.5;
+            desgPneus *= 1.7;
         }
         double fatorComb = 2 - (1 + porcentagemCombustivel / 1000.0);
         if (no.verificaRetaOuLargada()) {

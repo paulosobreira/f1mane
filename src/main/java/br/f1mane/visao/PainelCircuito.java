@@ -727,8 +727,8 @@ public class PainelCircuito {
                 ganhoSuave = 1;
             }
         }
-        if(ganhoSuave>4){
-            ganhoSuave = 4;
+        if(ganhoSuave>5){
+            ganhoSuave = 5;
         }
         piloto.setGanhoSuave(ganhoSuave);
         if (noAtualBox && noAtualSuavePista && noAtualSuave.getIndex() < entradaBoxIndex) {
