@@ -165,17 +165,26 @@ public class GerenciadorVisual {
             @Override
             public void run() {
                 while (thAtualizaPainelSuaveAlive) {
-                    try {
-                        Thread.sleep(15);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
+                    int diferencaSuavelReal = 1;
                     List<Piloto> pilotos = controleJogo.getPilotosCopia();
                     for (Piloto piloto : pilotos) {
-                        painelCircuito.atualizacaoSuave(piloto);
+                        if (piloto.equals(painelCircuito.getPilotoSelecionado())) {
+                            diferencaSuavelReal = painelCircuito.atualizacaoSuave(piloto);
+                        } else {
+                            painelCircuito.atualizacaoSuave(piloto);
+                        }
                     }
                     if (controleJogo.isSafetyCarNaPista()) {
                         painelCircuito.atualizacaoSuave(controleJogo.getSafetyCar());
+                    }
+                    try {
+                        int sleep = 15 - (diferencaSuavelReal / 100);
+                        if (sleep < 0) {
+                            sleep = 1;
+                        }
+                        Thread.sleep(sleep);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
                     }
                 }
             }

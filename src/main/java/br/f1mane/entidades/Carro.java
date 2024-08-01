@@ -539,7 +539,7 @@ public class Carro implements Serializable {
             return;
         }
         boolean testePotencia = testePotencia();
-        int valConsumo = 0;
+        double valConsumo = 0;
         if (giro == GIRO_MIN_VAL) {
             valConsumo += (testePotencia && testeAerodinamica() ? 0 : 5);
         } else if (giro == GIRO_NOR_VAL) {
@@ -548,7 +548,7 @@ public class Carro implements Serializable {
             valConsumo += (testePotencia && testeAerodinamica() ? 80 : 160);
         }
         if (!controleJogo.isModoQualify() && controleJogo.isSemReabastecimento()) {
-            valConsumo *= (int) (controleJogo.getFatorConsumoCombustivelSemReabastecimento() * 0.9);
+            valConsumo *=  (controleJogo.getFatorConsumoCombustivelSemReabastecimento() * 0.9);
         }
         combustivel -= valConsumo;
         if (combustivel < 0) {

@@ -656,14 +656,14 @@ public class PainelCircuito {
         }
     }
 
-    public void atualizacaoSuave(PilotoSuave piloto) {
+    public int atualizacaoSuave(PilotoSuave piloto) {
         if (!controleJogo.isAtualizacaoSuave()) {
             piloto.setNoAtualSuave(piloto.getNoAtual());
-            return;
+            return 0;
         }
 
         if (piloto.getNoAtual().equals(piloto.getNoAtualSuave())) {
-            return;
+            return 0;
         }
 
         List<No> nos;
@@ -686,19 +686,20 @@ public class PainelCircuito {
         } else {
             nos = pistaFull;
         }
-        int diferencaSualReal = noAtual.getIndex() - noAtualSuave.getIndex();
+        int diferencaSuavelReal = noAtual.getIndex() - noAtualSuave.getIndex();
         if (noAtualBox && noAtualSuavePista) {
-            diferencaSualReal = noAtual.getIndex() + (circuito.getEntradaBoxIndex() - noAtualSuave.getIndex());
+            diferencaSuavelReal = noAtual.getIndex() + (circuito.getEntradaBoxIndex() - noAtualSuave.getIndex());
         }
         if (noAtualSuaveBox && noAtualPista) {
-            diferencaSualReal = (noAtual.getIndex() - (circuito.getSaidaBoxIndex())
+            diferencaSuavelReal = (noAtual.getIndex() - (circuito.getSaidaBoxIndex())
                     + (boxFull.size() - noAtualSuave.getIndex()));
         }
-        if (diferencaSualReal < 0) {
-            diferencaSualReal = (noAtual.getIndex() + nos.size()) - noAtualSuave.getIndex();
+        if (diferencaSuavelReal < 0) {
+            diferencaSuavelReal = (noAtual.getIndex() + nos.size()) - noAtualSuave.getIndex();
         }
+
         int ganhoSuave;
-        double multi = diferencaSualReal;
+        double multi = diferencaSuavelReal;
         ganhoSuave = Util.inteiro(Constantes.SUAVE * multi);
         int ganhoSuaveAnt = piloto.getGanhoSuave();
         if (ganhoSuave > ganhoSuaveAnt) {
@@ -709,26 +710,26 @@ public class PainelCircuito {
             ganhoSuave = ganhoSuaveAnt - incGanhoSuaveAnt;
         }
         if (noAtualSuave.verificaRetaOuLargada() && noAtual.verificaRetaOuLargada() && ganhoSuaveAnt > ganhoSuave
-                && diferencaSualReal > 1000) {
+                && diferencaSuavelReal > 1000) {
             ganhoSuave = ganhoSuaveAnt;
         }
-        if (diferencaSualReal == 0) {
+        if (diferencaSuavelReal == 0) {
             ganhoSuave = 0;
         }
         if (ganhoSuave <= 0) {
             ganhoSuave = 0;
         }
         if (noAtualBox && noAtualSuaveBox) {
-            if (ganhoSuave == 0 && diferencaSualReal > 0) {
+            if (ganhoSuave == 0 && diferencaSuavelReal > 0) {
                 if (piloto instanceof Piloto && ((Piloto) piloto).isJogadorHumano()) {
-                    Logger.logar("diff " + diferencaSualReal + " ganhoSuave " + ganhoSuave + " ganhoSuaveAnt "
+                    Logger.logar("diff " + diferencaSuavelReal + " ganhoSuave " + ganhoSuave + " ganhoSuaveAnt "
                             + ganhoSuaveAnt);
                 }
                 ganhoSuave = 1;
             }
         }
-        if(ganhoSuave>5){
-            ganhoSuave = 5;
+        if(ganhoSuave>3){
+            ganhoSuave = 3;
         }
         piloto.setGanhoSuave(ganhoSuave);
         if (noAtualBox && noAtualSuavePista && noAtualSuave.getIndex() < entradaBoxIndex) {
@@ -756,13 +757,14 @@ public class PainelCircuito {
         if (noAtualSuave.getTracado() == 4 || noAtualSuave.getTracado() == 5) {
             limite = 2000;
         }
-        if (diferencaSualReal > limite) {
+        if (diferencaSuavelReal > limite) {
             if (piloto instanceof Piloto && ((Piloto) piloto).isJogadorHumano()) {
-                Logger.logar("atualizacaoSuave diff > 1000 " + diferencaSualReal);
+                Logger.logar("atualizacaoSuave diff > 1000 " + diferencaSuavelReal);
             }
             noAtualSuave = noAtual;
         }
         piloto.setNoAtualSuave(noAtualSuave);
+        return diferencaSuavelReal;
     }
 
     public int getQtdeLuzesApagadas() {
