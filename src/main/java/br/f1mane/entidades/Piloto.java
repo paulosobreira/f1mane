@@ -1337,7 +1337,7 @@ public class Piloto implements Serializable, PilotoSuave {
         /**
          * Escapa para os tracados 4 ou 5
          */
-        if (getStress() > getValorLimiteStressePararErrarCurva(controleJogo) && !controleJogo.isSafetyCarNaPista() && AGRESSIVO.equals(modoPilotagem) && !testeHabilidadePilotoCarro()) {
+        if (getStress() > getValorLimiteStressePararErrarCurva(controleJogo) && !controleJogo.isSafetyCarNaPista() && AGRESSIVO.equals(modoPilotagem)) {
             if (escapaTracado(controleJogo)) {
                 setCiclosDesconcentrado(25);
                 controleJogo.travouRodas(this);

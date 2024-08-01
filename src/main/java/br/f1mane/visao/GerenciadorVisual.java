@@ -178,7 +178,7 @@ public class GerenciadorVisual {
                         painelCircuito.atualizacaoSuave(controleJogo.getSafetyCar());
                     }
                     try {
-                        int sleep = 15 - (diferencaSuavelReal / 100);
+                        int sleep = 13 - (diferencaSuavelReal / 100);
                         if (sleep < 0) {
                             sleep = 1;
                         }
@@ -382,7 +382,7 @@ public class GerenciadorVisual {
                 }
 
                 if (keyCoode == KeyEvent.VK_F10) {
-                    ligaDesligaSom();
+                    Constantes.DESENHA_DIFF_REAL_SUAVE = !Constantes.DESENHA_DIFF_REAL_SUAVE;
                 }
                 if (keyCoode == KeyEvent.VK_UP) {
                     drs();
