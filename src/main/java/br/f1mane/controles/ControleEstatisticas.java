@@ -350,11 +350,11 @@ public class ControleEstatisticas {
 		tabela1 = tabela1.replaceAll("piloto2",
 				piloto2.getNomeAbreviado() + " " + piloto2.getPosicao());
 		tabela1 = tabela1.replaceAll("volta1",
-				Lang.msg("081") + (piloto2.getNumeroVolta()));
+				Lang.msg("082") + (piloto2.getNumeroVolta()));
 		tabela1 = tabela1.replaceAll("volta2",
-				Lang.msg("081") + (piloto2.getNumeroVolta() - 1));
+				Lang.msg("082") + (piloto2.getNumeroVolta() - 1));
 		tabela1 = tabela1.replaceAll("volta3",
-				Lang.msg("081") + (piloto2.getNumeroVolta() - 2));
+				Lang.msg("082") + (piloto2.getNumeroVolta() - 2));
 		for (int i = 1; i < 4; i++) {
 			int gap = piloto1.getNumeroVolta() - piloto2.getNumeroVolta();
 			List<Volta> voltasP1 = piloto1.getVoltasCopy();
