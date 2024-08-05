@@ -548,7 +548,7 @@ public class Carro implements Serializable {
             valConsumo += (testePotencia && testeAerodinamica() ? 80 : 160);
         }
         if (!controleJogo.isModoQualify() && controleJogo.isSemReabastecimento()) {
-            valConsumo *=  (controleJogo.getFatorConsumoCombustivelSemReabastecimento() * 0.9);
+            valConsumo *= (controleJogo.getFatorConsumoCombustivelSemReabastecimento() * 0.9);
         }
         combustivel -= valConsumo;
         if (combustivel < 0) {
@@ -660,10 +660,11 @@ public class Carro implements Serializable {
         }
         getPiloto().setTravouRodas(false);
         getPiloto().setMarcaPneu(false);
+        int incStress = 10 - (getPiloto().getCarro().getPorcentagemDesgastePneus() / 100);
+        int decStress = (getPiloto().getCarro().getPorcentagemDesgastePneus() / 100);
         double desgPneus = 10;
         if (no.verificaCurvaBaixa()) {
-            int stress = Util.intervalo(5, 10);
-            getPiloto().incStress(getPiloto().testeHabilidadePilotoAerodinamicaFreios(controleJogo) ? stress - 1 : stress);
+            getPiloto().incStress(getPiloto().testeHabilidadePilotoAerodinamicaFreios(controleJogo) ? incStress/2 : incStress);
             if (!controleJogo.isChovendo() && getPiloto().getPtosBox() == 0) {
                 boolean teste = getPiloto().testeHabilidadePilotoAerodinamicaFreios(controleJogo);
                 if (getPiloto().getStress() > 80) {
@@ -671,7 +672,7 @@ public class Carro implements Serializable {
                     if (getPiloto().getStress() > 70 && !no.verificaRetaOuLargada()) {
                         controleJogo.travouRodas(getPiloto(), true);
                     }
-                    getPiloto().decStress(getPiloto().testeHabilidadePiloto() ? stress : 5 + stress);
+                    getPiloto().decStress(getPiloto().testeHabilidadePiloto() ? decStress : decStress/2);
                 }
                 if (controleJogo.asfaltoAbrasivo() && !controleJogo.isChovendo() && !no.verificaRetaOuLargada()
                         && getPiloto().getStress() > 70) {
@@ -686,7 +687,7 @@ public class Carro implements Serializable {
                 if (getPiloto().getStress() > 70) {
                     teste = false;
                     controleJogo.travouRodas(getPiloto(), true);
-                    getPiloto().decStress(getPiloto().testeHabilidadePiloto() ? 4 : 2);
+                    getPiloto().decStress(getPiloto().testeHabilidadePiloto() ? decStress : decStress/2);
                 }
                 if (controleJogo.asfaltoAbrasivo() && !controleJogo.isChovendo() && !no.verificaRetaOuLargada()
                         && getPiloto().getStress() > 50 && Math.random() > 0.5) {
@@ -702,7 +703,7 @@ public class Carro implements Serializable {
                 if (getPiloto().getStress() > 60 && !controleJogo.isChovendo() && getPiloto().getPtosBox() == 0
                         && noFrente.verificaCurvaBaixa()) {
                     controleJogo.travouRodas(getPiloto(), true);
-                    getPiloto().incStress(getPiloto().testeHabilidadePiloto() ? 1 : 3);
+                    getPiloto().incStress(getPiloto().testeHabilidadePiloto() ? incStress/2 : incStress);
                     if (controleJogo.asfaltoAbrasivo() && getPiloto().getStress() > 80 && !controleJogo.isChovendo()
                             && noFrente.verificaCurvaAlta() && Math.random() > 0.7) {
                         controleJogo.travouRodas(getPiloto(), true);

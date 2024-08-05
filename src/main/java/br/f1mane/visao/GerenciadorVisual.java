@@ -178,7 +178,7 @@ public class GerenciadorVisual {
                         painelCircuito.atualizacaoSuave(controleJogo.getSafetyCar());
                     }
                     try {
-                        int sleep = 13 - (diferencaSuavelReal / 100);
+                        int sleep = 15 - (diferencaSuavelReal / 100);
                         if (sleep < 0) {
                             sleep = 1;
                         }
@@ -189,6 +189,7 @@ public class GerenciadorVisual {
                 }
             }
         });
+        thAtualizaSuave.setPriority(Thread.MAX_PRIORITY);
         Graphics2D g2d = controleJogo.getMainFrame().obterGraficos();
         if (g2d != null) {
             if (controleJogo.isCorridaIniciada()) {
@@ -977,7 +978,7 @@ public class GerenciadorVisual {
         BufferedImage bufferedImage = new BufferedImage(400, 200, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = (Graphics2D) bufferedImage.getGraphics();
 
-        setarHints(g2d);
+        Util.setarHints(g2d);
         g2d.setStroke(new BasicStroke(3.0f));
         g2d.setColor(Color.BLACK);
         String circuitoStr = (String) controleJogo.getCircuitos().get(comboBoxCircuito.getSelectedItem());
@@ -1526,10 +1527,4 @@ public class GerenciadorVisual {
         return qdtAbaixoFps;
     }
 
-    public static void setarHints(Graphics2D g2d) {
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-    }
 }

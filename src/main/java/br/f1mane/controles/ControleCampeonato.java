@@ -438,13 +438,13 @@ public class ControleCampeonato {
 
     private void verificaMudancaEquipe() {
         int qtdeDisputas = 2;
-        if (campeonato.getVitorias() > qtdeDisputas) {
+        if (campeonato.getVitorias() >= qtdeDisputas) {
             if (campeonato.isFoiDesafiado()) {
                 reiniciarDesafio();
             } else {
                 campeonato.setPromovidoEquipeRival(true);
             }
-        } else if (campeonato.getDerrotas() > qtdeDisputas) {
+        } else if (campeonato.getDerrotas() >= qtdeDisputas) {
             if (campeonato.isFoiDesafiado()) {
                 campeonato.setRebaixadoEquipeRival(true);
             } else {

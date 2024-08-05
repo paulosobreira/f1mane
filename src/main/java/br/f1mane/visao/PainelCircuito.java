@@ -330,6 +330,7 @@ public class PainelCircuito {
             if (g2d == null) {
                 return;
             }
+            Util.setarHints(g2d);
             descontoCentraliza();
             limitesViewPort = (Rectangle) limitesViewPort();
             limitesViewPortFull = (Rectangle) limitesViewPortFull();

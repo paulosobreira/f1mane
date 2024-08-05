@@ -1313,9 +1313,9 @@ public class Piloto implements Serializable, PilotoSuave {
         if (getColisao() == null) {
             return;
         }
-        incStress(7);
+        incStress(1);
         if (evitaBaterCarroFrente) {
-            incStress(3);
+            incStress(1);
         }
         Piloto pilotoFrente = getColisao();
         pilotoFrente.setCiclosDesconcentrado(0);
@@ -1536,7 +1536,8 @@ public class Piloto implements Serializable, PilotoSuave {
 
         if (getNoAtual().verificaCurvaBaixa() && retardaFreiandoReta) {
             if (getPosicao() <= 3 && Math.random() > 0.9 && !testeHabilidadePilotoFreios(controleJogo)) {
-                incStress(Util.intervalo(1, 5));
+                int incStress = 10 - (getCarro().getPorcentagemDesgastePneus() / 100);
+                incStress(incStress);
                 if (controleJogo.verificaInfoRelevante(this) && Math.random() > 0.7) {
                     controleJogo.info(Lang.msg("014", new String[]{nomeJogadorFormatado(), Html.negrito(getNome())}));
                 }
@@ -1623,7 +1624,7 @@ public class Piloto implements Serializable, PilotoSuave {
             return;
         }
 
-        if(manualTemporario()){
+        if (manualTemporario()) {
             return;
         }
 
@@ -1680,7 +1681,7 @@ public class Piloto implements Serializable, PilotoSuave {
         }
     }
 
-    public void setManualTemporario(){
+    public void setManualTemporario() {
         if (!isJogadorHumano()) {
             return;
         }
@@ -1688,7 +1689,7 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     private boolean manualTemporario() {
-        if (manualTemporario>0){
+        if (manualTemporario > 0) {
             manualTemporario--;
             return true;
         }

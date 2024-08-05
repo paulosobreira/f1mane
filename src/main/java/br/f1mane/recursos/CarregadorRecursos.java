@@ -283,7 +283,7 @@ public class CarregadorRecursos {
                     BufferedImage cor2 = gerarCoresCarros(carro.getCor2(),
                             "CarroCimaC2.png");
                     Graphics graphics = carroCima.getGraphics();
-                    setarHints((Graphics2D) graphics);
+                    Util.setarHints((Graphics2D) graphics);
                     graphics.drawImage(cor2, 0, 0, null);
                     graphics.drawImage(cor1, 0, 0, null);
                     graphics.dispose();
@@ -688,30 +688,13 @@ public class CarregadorRecursos {
         BufferedImage capacete = new BufferedImage(base.getWidth(),
                 base.getHeight(), base.getType());
         Graphics graphics = capacete.getGraphics();
-        setarHints((Graphics2D) graphics);
+        Util.setarHints((Graphics2D) graphics);
         graphics.drawImage(base, 0, 0, null);
         graphics.drawImage(cor2, 0, 0, null);
         graphics.drawImage(cor1, 0, 0, null);
         graphics.dispose();
         ret = capacete;
         return ret;
-    }
-
-    public static void setarHints(Graphics2D g2d) {
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_DITHERING,
-                RenderingHints.VALUE_DITHER_ENABLE);
-        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
-                RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-                RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-                RenderingHints.VALUE_RENDER_QUALITY);
     }
 
     public Object carregarRecurso(String nmRecurso)
@@ -765,7 +748,7 @@ public class CarregadorRecursos {
         BufferedImage cor2 = CarregadorRecursos
                 .gerarCoresCarros(carro.getCor2(), "png/CarroLadoC2.png");
         Graphics graphics = carroLado.getGraphics();
-        setarHints((Graphics2D) graphics);
+        Util.setarHints((Graphics2D) graphics);
         graphics.drawImage(cor1, 0, 0, null);
         graphics.drawImage(cor2, 0, 0, null);
         graphics.dispose();
@@ -805,7 +788,7 @@ public class CarregadorRecursos {
         BufferedImage cor2 = CarregadorRecursos
                 .gerarCoresCarros(carro.getCor2(), "png/CarroLadoC3.png");
         Graphics graphics = carroLado.getGraphics();
-        setarHints((Graphics2D) graphics);
+        Util.setarHints((Graphics2D) graphics);
         graphics.drawImage(cor1, 0, 0, null);
         graphics.drawImage(cor2, 0, 0, null);
         graphics.dispose();
@@ -828,7 +811,7 @@ public class CarregadorRecursos {
                         carro.getImg().replaceAll(nmimg, "nowing_cima.png"));
                 Graphics2D graphics = (Graphics2D) carroCima.getGraphics();
                 graphics.setComposite(composite);
-                setarHints((Graphics2D) graphics);
+                Util.setarHints((Graphics2D) graphics);
                 graphics.drawImage(noWing, 0, 0, null);
                 graphics.dispose();
             }
@@ -845,7 +828,7 @@ public class CarregadorRecursos {
                     carro.getCor2(), modelo + "CarroCimaC3.png",
                     base.getType());
             Graphics graphics = carroCima.getGraphics();
-            setarHints((Graphics2D) graphics);
+            Util.setarHints((Graphics2D) graphics);
             graphics.drawImage(base, 0, 0, null);
             graphics.drawImage(cor2, 0, 0, null);
             graphics.drawImage(cor1, 0, 0, null);
@@ -896,7 +879,7 @@ public class CarregadorRecursos {
         BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
                 carro.getCor2(), modelo + "CarroCimaC2.png", base.getType());
         Graphics graphics = carroCima.getGraphics();
-        setarHints((Graphics2D) graphics);
+        Util.setarHints((Graphics2D) graphics);
         graphics.drawImage(base, 0, 0, null);
         graphics.drawImage(cor2, 0, 0, null);
         graphics.drawImage(cor1, 0, 0, null);

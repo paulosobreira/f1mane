@@ -333,7 +333,7 @@ public class PainelMenuLocal {
             }
         }
         Graphics2D g2d = mainFrame.obterGraficos();
-        GerenciadorVisual.setarHints(g2d);
+        Util.setarHints(g2d);
         renderThread.start();
         desenhaCarregando = false;
 
@@ -678,6 +678,7 @@ public class PainelMenuLocal {
                 desenhaCarregando(g2d);
                 return;
             }
+            Util.setarHints(g2d);
             desenhaMenuPrincipalSelecao(g2d);
             desenhaMenuCorridaSelecao(g2d);
             desenhaMenuNovoCampeonatoPilotos(g2d);

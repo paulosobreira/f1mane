@@ -2,15 +2,8 @@ package br.f1mane;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseWheelListener;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
-import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
@@ -30,6 +23,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import br.f1mane.recursos.CarregadorRecursos;
+import br.f1mane.visao.GerenciadorVisual;
 import br.nnpe.Logger;
 import br.f1mane.controles.ControleJogoLocal;
 import br.f1mane.controles.InterfaceJogo;
@@ -37,7 +31,6 @@ import br.f1mane.entidades.Campeonato;
 import br.f1mane.servidor.applet.AppletPaddock;
 import br.f1mane.recursos.idiomas.Lang;
 import br.f1mane.visao.ControleSom;
-import br.f1mane.visao.PainelCircuito;
 import br.f1mane.visao.PainelMenuLocal;
 import br.f1mane.visao.PainelTabelaResultadoFinal;
 import br.nnpe.Util;
@@ -52,14 +45,11 @@ public class MainFrame extends JFrame {
     protected InterfaceJogo controleJogo;
     private JMenuBar bar;
     private JMenu menuJogo;
-    private JMenu menuIdiomas;
     private JMenu menuInfo;
-    private JCheckBoxMenuItem som;
     private JCheckBoxMenuItem atualizacaoSuave;
     private JMenuItem iniciar;
-    private JMenuItem pausa;
     private JMenuItem verControles;
-    private JFrame menuFrame;
+    private JFrame debugFrame;
     protected Campeonato campeonato;
     boolean adicionouPainelNarracao = false;
     boolean adicionouPainelDebug = false;
@@ -73,8 +63,8 @@ public class MainFrame extends JFrame {
     public MainFrame(AppletPaddock appletPaddock) throws IOException {
         this.appletPaddock = appletPaddock;
         bar = new JMenuBar();
-        menuFrame = new JFrame();
-        menuFrame.setJMenuBar(bar);
+        debugFrame = new JFrame();
+        debugFrame.setJMenuBar(bar);
         menuJogo = new JMenu() {
             public String getText() {
                 return Lang.msg("088");
@@ -91,17 +81,8 @@ public class MainFrame extends JFrame {
         };
         bar.add(menuInfo);
 
-        menuIdiomas = new JMenu() {
-            public String getText() {
-                return Lang.msg("219");
-            }
-
-        };
-        bar.add(menuIdiomas);
         gerarMenusSingle(menuJogo);
         gerarMenusInfo(menuInfo);
-        gerarMenusSobre(menuInfo);
-        gerarMenusidiomas(menuIdiomas);
         pack();
         setSize(1280, 720);
         String title = "Fl-MANE " + getVersao() + " MANager & Engineer";
@@ -120,40 +101,6 @@ public class MainFrame extends JFrame {
 
     public String getVersao() {
         return CarregadorRecursos.getVersaoFormatado();
-    }
-
-    private void gerarMenusidiomas(JMenu menuIdiomas) {
-        JRadioButtonMenuItem pt = new JRadioButtonMenuItem() {
-            public String getText() {
-                return Lang.msg("pt");
-            }
-
-        };
-        JRadioButtonMenuItem en = new JRadioButtonMenuItem() {
-            public String getText() {
-                return Lang.msg("en");
-            }
-
-        };
-        pt.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                Lang.mudarIdioma("pt");
-                SwingUtilities.updateComponentTreeUI(MainFrame.this);
-            }
-        });
-        en.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                Lang.mudarIdioma("en");
-                SwingUtilities.updateComponentTreeUI(MainFrame.this);
-            }
-        });
-
-        ButtonGroup buttonGroup = new ButtonGroup();
-        buttonGroup.add(pt);
-        buttonGroup.add(en);
-        menuIdiomas.add(pt);
-        menuIdiomas.add(en);
-
     }
 
     private void gerarMenusInfo(JMenu menuInfo2) {
@@ -218,30 +165,6 @@ public class MainFrame extends JFrame {
 
     }
 
-    private void gerarMenusSobre(JMenu menu2) {
-        JMenuItem sobre = new JMenuItem("Sobre o autor do jogo") {
-            public String getText() {
-                return Lang.msg("093");
-            }
-
-        };
-        sobre.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                mostraSobre();
-            }
-
-        });
-        menu2.add(sobre);
-    }
-
-    public void mostraSobre() {
-        String msg = Lang.msg("184") + " Paulo Sobreira        ".trim() + "\n" + "- " + Lang.msg("pistas") + " "
-                + " www.miniracingonline.com                   ".trim() + "\n" + "- " + Lang.msg("capacetesCarros")
-                + " " + " spotterguidecentral.com                    ".trim() + "\n"
-                + "- https://sowbreira-26fe1.firebaseapp.com/             ".trim() + "\n"
-                + "- sowbreira@gmail.com                       ".trim() + "\n" + "- 2007-2018";
-        JOptionPane.showMessageDialog(MainFrame.this, msg, Lang.msg("093"), JOptionPane.INFORMATION_MESSAGE);
-    }
 
     private void gerarMenusSingle(JMenu menu1) {
         iniciar = new JMenuItem("Iniciar Jogo") {
@@ -268,41 +191,6 @@ public class MainFrame extends JFrame {
 
         });
         menu1.add(iniciar);
-
-        pausa = new JMenuItem("Pausa Jogo") {
-            public String getText() {
-                return Lang.msg("096");
-            }
-
-        };
-        pausa.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    if (controleJogo != null) {
-                        controleJogo.pausarJogo();
-                    }
-
-                } catch (Exception ex) {
-                    Logger.logarExept(ex);
-                }
-            }
-        });
-        menu1.add(pausa);
-
-        som = new JCheckBoxMenuItem("Som") {
-            public String getText() {
-                return Lang.msg("som");
-            }
-
-        };
-        som.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                ControleSom.somLigado = som.isSelected();
-            }
-        });
-        menu1.add(som);
 
         atualizacaoSuave = new JCheckBoxMenuItem("atualizacaoSuave") {
             public String getText() {
@@ -356,7 +244,7 @@ public class MainFrame extends JFrame {
 
     public static void main(String[] args) throws IOException {
         if (args != null && args.length > 0) {
-            if("real".equals(args[0])){
+            if ("real".equals(args[0])) {
                 Util.substVogais = false;
             }
         }
@@ -410,9 +298,6 @@ public class MainFrame extends JFrame {
         if (iniciar != null) {
             iniciar.setEnabled(false);
         }
-        if (pausa != null) {
-            pausa.setEnabled(false);
-        }
     }
 
     public void setControleJogo(InterfaceJogo controleJogo) {
@@ -437,8 +322,8 @@ public class MainFrame extends JFrame {
     }
 
     private void removePainelNarracaoDebug() {
-        if (menuFrame != null) {
-            menuFrame.getContentPane().removeAll();
+        if (debugFrame != null) {
+            debugFrame.getContentPane().removeAll();
         }
         adicionouPainelDebug = false;
         adicionouPainelNarracao = false;
@@ -467,7 +352,7 @@ public class MainFrame extends JFrame {
     public void mostrarGraficos() {
         try {
             BufferStrategy strategy = getBufferStrategy();
-            if (strategy != null && strategy.getDrawGraphics()!=null) {
+            if (strategy != null && strategy.getDrawGraphics() != null) {
                 strategy.getDrawGraphics().dispose();
                 strategy.show();
             }
@@ -477,41 +362,47 @@ public class MainFrame extends JFrame {
     }
 
     public void mostraDebugFrame() {
-        if (menuFrame == null) {
+        if (debugFrame == null) {
             return;
         }
-        menuFrame.setVisible(!menuFrame.isVisible());
-        if (menuFrame.isVisible()) {
-            menuFrame.setLocation(MainFrame.this.getWidth(), 0);
-            posicionaJanelaDebug();
-            menuFrame.setLayout(new BorderLayout());
-            Thread atualizaDebug = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (menuFrame.isVisible()) {
-                        try {
-                            adicionaPainelNarracaoDebug();
-                            if (controleJogo != null) {
-                                controleJogo.atualizaInfoDebug();
-                            }
-                            Thread.sleep(200);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+        if (debugFrame.isVisible()) {
+            return;
+        }
+        debugFrame.setVisible(true);
+        debugFrame.setLocation(MainFrame.this.getWidth(), 0);
+        posicionaJanelaDebug();
+        debugFrame.setLayout(new BorderLayout());
+        Thread atualizaDebug = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (debugFrame.isVisible()) {
+                    try {
+                        adicionaPainelNarracaoDebug();
+                        if (controleJogo != null) {
+                            controleJogo.atualizaInfoDebug();
                         }
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
-            });
-
-            atualizaDebug.start();
-
-        }
-
+            }
+        });
+        atualizaDebug.start();
+        debugFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        debugFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                removePainelNarracaoDebug();
+                super.windowClosing(e);
+            }
+        });
     }
 
     private void posicionaJanelaDebug() {
-        menuFrame.pack();
-        menuFrame.setSize(300, MainFrame.this.getHeight());
-        menuFrame.setTitle("Fl-Mane Debug");
+        debugFrame.pack();
+        debugFrame.setSize(300, MainFrame.this.getHeight());
+        debugFrame.setTitle("Fl-Mane Debug");
     }
 
     private void adicionaPainelNarracaoDebug() {
@@ -519,14 +410,14 @@ public class MainFrame extends JFrame {
         JPanel painelDebug = controleJogo.painelDebug();
         if (painelNarracao != null && !adicionouPainelNarracao) {
             adicionouPainelNarracao = true;
-            menuFrame.add(painelNarracao, BorderLayout.SOUTH);
-            menuFrame.setSize(menuFrame.getWidth() + 1, MainFrame.this.getHeight());
+            debugFrame.add(painelNarracao, BorderLayout.SOUTH);
+            debugFrame.setSize(debugFrame.getWidth() + 1, MainFrame.this.getHeight());
         }
 
         if (painelDebug != null && !adicionouPainelDebug) {
             adicionouPainelDebug = true;
-            menuFrame.add(painelDebug, BorderLayout.CENTER);
-            menuFrame.setSize(menuFrame.getWidth() + 1, MainFrame.this.getHeight());
+            debugFrame.add(painelDebug, BorderLayout.CENTER);
+            debugFrame.setSize(debugFrame.getWidth() + 1, MainFrame.this.getHeight());
         }
     }
 }

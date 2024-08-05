@@ -1,15 +1,12 @@
 package br.f1mane.entidades;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-import java.io.Serializable;
-
+import br.nnpe.Util;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
 /**
  * @author Paulo Sobreira Criado
@@ -88,14 +85,7 @@ public class No implements Serializable {
 		Graphics g = srcBufferedImage.getGraphics();
 		Color c = new Color(0.0f, 0.0f, 0.0f, 0.0f);
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setRenderingHint(RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_QUALITY);
-		g2.setRenderingHint(RenderingHints.KEY_DITHERING,
-				RenderingHints.VALUE_DITHER_ENABLE);
-		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		Util.setarHints(g2);
 		g2.setColor(c);
 		g2.fillRect(0, 0, 14, 14);
 		g2.setColor(tipo);

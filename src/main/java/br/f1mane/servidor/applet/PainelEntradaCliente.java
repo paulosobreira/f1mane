@@ -48,6 +48,7 @@ import br.f1mane.servidor.entidades.TOs.DadosCriarJogo;
 import br.f1mane.servidor.entidades.persistencia.CampeonatoSrv;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado em 29/07/2007 as 17:41:24
@@ -377,7 +378,7 @@ public class PainelEntradaCliente {
     protected void desenhaMiniCircuito(JLabel circuitosLabel) {
         BufferedImage bufferedImage = new BufferedImage(400, 150, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = (Graphics2D) bufferedImage.getGraphics();
-        setarHints(g2d);
+        Util.setarHints(g2d);
         g2d.setStroke(new BasicStroke(3.0f));
         g2d.setColor(Color.BLACK);
         String circuitoStr = (String) circuitos.get(comboBoxCircuito.getSelectedItem());
@@ -456,13 +457,6 @@ public class PainelEntradaCliente {
 
         circuitosLabel.setIcon(new ImageIcon(bufferedImage));
 
-    }
-
-    private void setarHints(Graphics2D g2d) {
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
     }
 
     private void preecherDadosCriarJogo() {
