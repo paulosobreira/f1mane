@@ -1057,7 +1057,7 @@ public class MainPanelEditor extends JPanel {
     }
 
     private void desenhaBoxes(Graphics2D g2d) {
-        if (circuito.getBoxFull() == null || circuito.getBoxFull().isEmpty() || circuito.getParadaBoxIndex() ==0) {
+        if (circuito.getBoxFull() == null || circuito.getBoxFull().isEmpty() || circuito.getParadaBoxIndex() == 0) {
             return;
         }
         double multi = 1.5;
@@ -1076,13 +1076,13 @@ public class MainPanelEditor extends JPanel {
             int iP = paradas + Util.inteiro(Carro.LARGURA * multi * i) + Carro.LARGURA;
             int n1Idx = iP - Carro.MEIA_LARGURA;
             int n2Idx = iP + Carro.MEIA_LARGURA;
-            if (n1Idx >=circuito.getBoxFull().size()) {
+            if (n1Idx >= circuito.getBoxFull().size()) {
                 continue;
             }
             if (iP >= circuito.getBoxFull().size()) {
                 continue;
             }
-            if (n2Idx >=circuito.getBoxFull().size()) {
+            if (n2Idx >= circuito.getBoxFull().size()) {
                 continue;
             }
             No n1 = (No) circuito.getBoxFull().get(n1Idx);
@@ -1658,6 +1658,8 @@ public class MainPanelEditor extends JPanel {
         String save = new String(byteArrayOutputStream.toByteArray()) + "</java>";
         fileOutputStream.write(save.getBytes());
         fileOutputStream.close();
+        JOptionPane.showMessageDialog(this.getSrcFrame(), circuito.getNome(),
+                "Salvo com sucesso. ", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public Dimension getPreferredSize() {

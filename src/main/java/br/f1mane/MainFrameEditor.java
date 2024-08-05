@@ -246,6 +246,13 @@ public class MainFrameEditor extends JFrame {
                 if (editor == null) {
                     return;
                 }
+                if (keyCoode == KeyEvent.VK_F8) {
+                    try {
+                        editor.salvarPista();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
                 if (e.isAltDown()) {
                     altApertado = true;
                     if (keyCoode == KeyEvent.VK_LEFT) {
