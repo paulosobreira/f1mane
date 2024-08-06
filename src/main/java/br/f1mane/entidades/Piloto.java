@@ -283,6 +283,8 @@ public class Piloto implements Serializable, PilotoSuave {
     private int porcentagemCorridaRestante;
     private boolean temPneu;
     private int manualTemporario;
+    @JsonIgnore
+    private ArrayList<Integer> listaNosSuaves = new ArrayList<>();
 
     public int getGanhoSuave() {
         return ganhoSuave;
@@ -773,6 +775,11 @@ public class Piloto implements Serializable, PilotoSuave {
 
     public No getNoAtual() {
         return noAtual;
+    }
+
+    @Override
+    public ArrayList<Integer> getListaNosSuaves() {
+        return listaNosSuaves;
     }
 
     public void setNoAtual(No no) {
@@ -1332,7 +1339,7 @@ public class Piloto implements Serializable, PilotoSuave {
             return;
         }
         if (verificaForaPista(this)) {
-            ganho *= 0.60;
+            ganho *= 0.70;
         }
         /**
          * Escapa para os tracados 4 ou 5
@@ -1661,9 +1668,11 @@ public class Piloto implements Serializable, PilotoSuave {
         if (getNumeroVolta() > 0 && controleJogo.verificaInfoRelevante(this) && getPtosBox() != 0 && carroPilotoDaFrente.getPiloto().getPtosBox() != 0) {
             if (tentaPassarFrete && calculaDiferencaParaProximo < 100) {
                 String txt = Lang.msg("tentaPassarFrete", new String[]{nomeJogadorFormatado(), Html.negrito(getNome()), Html.negrito(carroPilotoDaFrente.getPiloto().getNome())});
+                ativarErs = true;
                 controleJogo.info(Html.preto(txt));
             } else if (tentarEscaparAtras && calculaDiferencaParaAnterior < 100) {
                 String txt = Lang.msg("tentarEscaparAtras", new String[]{nomeJogadorFormatado(), Html.negrito(getNome()), Html.negrito(carroPilotoAtras.getPiloto().getNome())});
+                ativarErs = true;
                 controleJogo.info(Html.preto(txt));
             }
         }

@@ -58,7 +58,6 @@ public class GerenciadorVisual {
     protected JCheckBox ers;
     protected JCheckBox drs;
     private Thread thAtualizaPainel;
-    private Thread thAtualizaSuave;
     protected boolean thAtualizaPainelSuaveAlive = true;
     protected boolean thAtualizaPilotosSuaveAlive = true;
     protected boolean thAtualizaSomAlive = true;
@@ -161,35 +160,6 @@ public class GerenciadorVisual {
                 }
             }
         });
-        thAtualizaSuave = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (thAtualizaPainelSuaveAlive) {
-                    int diferencaSuavelReal = 1;
-                    List<Piloto> pilotos = controleJogo.getPilotosCopia();
-                    for (Piloto piloto : pilotos) {
-                        if (piloto.equals(painelCircuito.getPilotoSelecionado())) {
-                            diferencaSuavelReal = painelCircuito.atualizacaoSuave(piloto);
-                        } else {
-                            painelCircuito.atualizacaoSuave(piloto);
-                        }
-                    }
-                    if (controleJogo.isSafetyCarNaPista()) {
-                        painelCircuito.atualizacaoSuave(controleJogo.getSafetyCar());
-                    }
-                    try {
-                        int sleep = 15 - (diferencaSuavelReal / 100);
-                        if (sleep < 0) {
-                            sleep = 1;
-                        }
-                        Thread.sleep(sleep);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-        });
-        thAtualizaSuave.setPriority(Thread.MAX_PRIORITY);
         Graphics2D g2d = controleJogo.getMainFrame().obterGraficos();
         if (g2d != null) {
             if (controleJogo.isCorridaIniciada()) {
@@ -203,7 +173,6 @@ public class GerenciadorVisual {
             List<Piloto> pilotos = controleJogo.getPilotos();
             painelCircuito.setPilotosList(pilotos);
             thAtualizaPainel.start();
-            thAtualizaSuave.start();
         }
     }
 
@@ -382,6 +351,15 @@ public class GerenciadorVisual {
                     controleJogo.selecionaPilotoBaixo();
                 }
 
+                if (keyCoode == KeyEvent.VK_F11) {
+                    Constantes.MOD_GANHO_SUAVE--;
+                    System.out.println(Constantes.MOD_GANHO_SUAVE);
+                }
+
+                if (keyCoode == KeyEvent.VK_F12) {
+                    Constantes.MOD_GANHO_SUAVE++;
+                    System.out.println(Constantes.MOD_GANHO_SUAVE);
+                }
                 if (keyCoode == KeyEvent.VK_F10) {
                     Constantes.DESENHA_DIFF_REAL_SUAVE = !Constantes.DESENHA_DIFF_REAL_SUAVE;
                 }
