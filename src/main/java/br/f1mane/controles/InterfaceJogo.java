@@ -185,7 +185,7 @@ public interface InterfaceJogo {
 
     public void setTemporada(String string);
 
-    public void mudarAutoPos(boolean autoPos);
+    public void setManualTemporario();
 
     public BufferedImage obterCarroCima(Piloto piloto);
 

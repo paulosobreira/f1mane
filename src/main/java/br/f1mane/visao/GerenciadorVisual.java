@@ -219,11 +219,11 @@ public class GerenciadorVisual {
         });
     }
 
-    protected void mudarAutoPos(boolean autoPos) {
+    protected void setManualTemporario() {
         if (controleJogo == null) {
             return;
         }
-        controleJogo.mudarAutoPos(autoPos);
+        controleJogo.setManualTemporario();
 
     }
 
@@ -233,7 +233,6 @@ public class GerenciadorVisual {
         }
         controleJogo.mudarTracado(2);
         ultMudaPos = System.currentTimeMillis();
-        controleJogo.mudarAutoPos(false);
     }
 
     protected void mudarPos0() {
@@ -242,7 +241,6 @@ public class GerenciadorVisual {
         }
         controleJogo.mudarTracado(0);
         ultMudaPos = System.currentTimeMillis();
-        controleJogo.mudarAutoPos(false);
     }
 
     protected void mudarPos1() {
@@ -251,7 +249,6 @@ public class GerenciadorVisual {
         }
         controleJogo.mudarTracado(1);
         ultMudaPos = System.currentTimeMillis();
-        controleJogo.mudarAutoPos(false);
     }
 
     protected void mudarModoPilotagem(String modo) {
@@ -313,8 +310,7 @@ public class GerenciadorVisual {
                     controleJogo.ativaVerControles();
                 }
                 if (keyCoode == KeyEvent.VK_G) {
-                    mudarAutoPos(false);
-                    controleJogo.selecionaPilotoJogador();
+                    setManualTemporario();
                 }
                 if (keyCoode == KeyEvent.VK_LEFT) {
                     if (controleJogo.getPilotoJogador() == null) {
@@ -351,16 +347,7 @@ public class GerenciadorVisual {
                     controleJogo.selecionaPilotoBaixo();
                 }
 
-                if (keyCoode == KeyEvent.VK_F11) {
-                    Constantes.MOD_GANHO_SUAVE--;
-                    System.out.println(Constantes.MOD_GANHO_SUAVE);
-                }
-
-                if (keyCoode == KeyEvent.VK_F12) {
-                    Constantes.MOD_GANHO_SUAVE++;
-                    System.out.println(Constantes.MOD_GANHO_SUAVE);
-                }
-                if (keyCoode == KeyEvent.VK_F10) {
+                if (keyCoode == KeyEvent.VK_R) {
                     Constantes.DESENHA_DIFF_REAL_SUAVE = !Constantes.DESENHA_DIFF_REAL_SUAVE;
                 }
                 if (keyCoode == KeyEvent.VK_UP) {
@@ -368,55 +355,6 @@ public class GerenciadorVisual {
                 }
                 if (keyCoode == KeyEvent.VK_DOWN) {
                     kers();
-                }
-
-                if (keyCoode == KeyEvent.VK_2) {
-                    PainelCircuito.desenhaBkg = !PainelCircuito.desenhaBkg;
-                }
-
-                if (keyCoode == KeyEvent.VK_3) {
-                    PainelCircuito.desenhaImagens = !PainelCircuito.desenhaImagens;
-                }
-
-                if (Logger.ativo) {
-                    if (keyCoode == KeyEvent.VK_T) {
-                        controleJogo.tabelaComparativa();
-                    }
-                    if (keyCoode == KeyEvent.VK_EQUALS) {
-                        controleJogo.aumentaFatorAcidade();
-                    }
-                    if (keyCoode == KeyEvent.VK_MINUS) {
-                        controleJogo.diminueFatorAcidade();
-                    }
-                    if (keyCoode == KeyEvent.VK_0) {
-                        controleJogo.forcaSafatyCar();
-                    }
-                    if (keyCoode == KeyEvent.VK_4) {
-                        Piloto pilotoSelecionado = controleJogo.getPilotoSelecionado();
-                        controleJogo.desqualificaPiloto(pilotoSelecionado);
-                    }
-                    if (keyCoode == KeyEvent.VK_5) {
-                        List<Piloto> pilotos = controleJogo.getPilotos();
-                        for (Iterator iterator = pilotos.iterator(); iterator.hasNext(); ) {
-                            Piloto piloto = (Piloto) iterator.next();
-                            controleJogo.forcaQuerbraAereofolio(piloto);
-                        }
-
-                    }
-                    if (keyCoode == KeyEvent.VK_6) {
-                        controleJogo.forcaQuerbraAereofolio(controleJogo.getPilotoSelecionado());
-                    }
-                    if (keyCoode == KeyEvent.VK_7) {
-                        controleJogo.climaChuvoso();
-                    }
-                    if (keyCoode == KeyEvent.VK_8) {
-                        controleJogo.climaLimpo();
-                    }
-                    if (keyCoode == KeyEvent.VK_9) {
-                        Piloto pilotoSelecionado = controleJogo.getPilotoSelecionado();
-                        pilotoSelecionado.escapaTracado(controleJogo);
-                    }
-
                 }
             }
         };
@@ -1489,13 +1427,6 @@ public class GerenciadorVisual {
 
     public boolean naoDesenhouPilotosQualificacao() {
         return !painelCircuito.desenhouPilotosQualificacao();
-    }
-
-    public void voltaPilotoAutomaticaJogador() {
-        if ((ultMudaPos != 0) && controleJogo != null && (System.currentTimeMillis() - ultMudaPos) > 30000) {
-            controleJogo.mudarAutoPos(true);
-        }
-
     }
 
     public long getQdtAbaixoFps() {

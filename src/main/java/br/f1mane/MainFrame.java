@@ -6,6 +6,7 @@ import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.ButtonGroup;
@@ -22,17 +23,16 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import br.f1mane.entidades.Piloto;
 import br.f1mane.recursos.CarregadorRecursos;
-import br.f1mane.visao.GerenciadorVisual;
+import br.f1mane.visao.*;
+import br.nnpe.Constantes;
 import br.nnpe.Logger;
 import br.f1mane.controles.ControleJogoLocal;
 import br.f1mane.controles.InterfaceJogo;
 import br.f1mane.entidades.Campeonato;
 import br.f1mane.servidor.applet.AppletPaddock;
 import br.f1mane.recursos.idiomas.Lang;
-import br.f1mane.visao.ControleSom;
-import br.f1mane.visao.PainelMenuLocal;
-import br.f1mane.visao.PainelTabelaResultadoFinal;
 import br.nnpe.Util;
 
 /**
@@ -46,6 +46,7 @@ public class MainFrame extends JFrame {
     private JMenuBar bar;
     private JMenu menuJogo;
     private JMenu menuInfo;
+    private JMenu menuDebug;
     private JCheckBoxMenuItem atualizacaoSuave;
     private JMenuItem iniciar;
     private JMenuItem verControles;
@@ -81,9 +82,17 @@ public class MainFrame extends JFrame {
         };
         bar.add(menuInfo);
 
+        menuDebug = new JMenu() {
+            public String getText() {
+                return Lang.msg("menuDebug");
+            }
+
+        };
+        bar.add(menuDebug);
+
         gerarMenusSingle(menuJogo);
         gerarMenusInfo(menuInfo);
-        pack();
+        gerarMenusDebug(menuDebug);
         setSize(1280, 720);
         String title = "Fl-MANE " + getVersao() + " MANager & Engineer";
         setTitle(title);
@@ -94,6 +103,196 @@ public class MainFrame extends JFrame {
             setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         }
         removerKeyListeners();
+    }
+
+    private void gerarMenusDebug(JMenu menuDebug) {
+        JMenuItem ativarDebug = new JMenuItem("ativarDebug") {
+            public String getText() {
+                return Lang.msg("ativarDebug");
+            }
+
+        };
+        ativarDebug.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Logger.ativo = !Logger.ativo;
+            }
+        });
+        menuDebug.add(ativarDebug);
+
+
+        JMenuItem forcaSafatyCar = new JMenuItem("forcaSafatyCar") {
+            public String getText() {
+                return Lang.msg("safetyCar");
+            }
+
+        };
+        forcaSafatyCar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controleJogo.forcaSafatyCar();
+            }
+        });
+        menuDebug.add(forcaSafatyCar);
+
+        JMenuItem aumentaFatorAcidade = new JMenuItem("aumentaFatorAcidade") {
+            public String getText() {
+                return Lang.msg("aumentaFatorAcidade");
+            }
+
+        };
+        aumentaFatorAcidade.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controleJogo.aumentaFatorAcidade();
+                controleJogo.adicionarInfoDireto("FatorAcidade " + controleJogo.getFatorAcidente());
+            }
+        });
+        menuDebug.add(aumentaFatorAcidade);
+
+
+        JMenuItem diminueFatorAcidade = new JMenuItem("diminueFatorAcidade") {
+            public String getText() {
+                return Lang.msg("diminueFatorAcidade");
+            }
+
+        };
+        diminueFatorAcidade.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controleJogo.diminueFatorAcidade();
+                controleJogo.adicionarInfoDireto("FatorAcidade " + controleJogo.getFatorAcidente());
+            }
+        });
+
+        menuDebug.add(diminueFatorAcidade);
+
+        JMenuItem desqualificaPiloto = new JMenuItem("desqualificaPiloto") {
+            public String getText() {
+                return Lang.msg("desqualificaPiloto");
+            }
+
+        };
+        desqualificaPiloto.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controleJogo.desqualificaPiloto(controleJogo.getPilotoSelecionado());
+            }
+        });
+
+        menuDebug.add(desqualificaPiloto);
+
+        JMenuItem forcaQuerbraAereofolio = new JMenuItem("forcaQuerbraAereofolio") {
+            public String getText() {
+                return Lang.msg("forcaQuerbraAereofolio");
+            }
+
+        };
+        forcaQuerbraAereofolio.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controleJogo.forcaQuerbraAereofolio(controleJogo.getPilotoSelecionado());
+            }
+        });
+
+        menuDebug.add(forcaQuerbraAereofolio);
+
+        JMenuItem climaChuvoso = new JMenuItem("climaChuvoso") {
+            public String getText() {
+                return Lang.msg("climaChuvoso");
+            }
+
+        };
+        climaChuvoso.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controleJogo.climaChuvoso();
+            }
+        });
+
+        menuDebug.add(climaChuvoso);
+
+        JMenuItem climaLimpo = new JMenuItem("climaLimpo") {
+            public String getText() {
+                return Lang.msg("climaLimpo");
+            }
+
+        };
+        climaLimpo.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controleJogo.climaLimpo();
+            }
+        });
+
+        menuDebug.add(climaLimpo);
+
+        JMenuItem escapaTracado = new JMenuItem("escapaTracado") {
+            public String getText() {
+                return Lang.msg("escapaTracado");
+            }
+
+        };
+        escapaTracado.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controleJogo.getPilotoSelecionado().escapaTracado(controleJogo);
+            }
+        });
+
+        menuDebug.add(escapaTracado);
+
+        JMenuItem desenhaBkg = new JMenuItem("desenhaBkg") {
+            public String getText() {
+                return Lang.msg("desenhaBkg");
+            }
+
+        };
+        desenhaBkg.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                PainelCircuito.desenhaBkg = !PainelCircuito.desenhaBkg;
+            }
+        });
+
+        menuDebug.add(desenhaBkg);
+
+
+        JMenuItem desenhaImagens = new JMenuItem("desenhaImagens") {
+            public String getText() {
+                return Lang.msg("desenhaImagens");
+            }
+
+        };
+        desenhaImagens.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                PainelCircuito.desenhaImagens = !PainelCircuito.desenhaImagens;
+            }
+        });
+
+        menuDebug.add(desenhaImagens);
+
+        JMenuItem maisModGanhoSuave = new JMenuItem("maisModGanhoSuave") {
+            public String getText() {
+                return Lang.msg("maisModGanhoSuave");
+            }
+
+        };
+        maisModGanhoSuave.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Constantes.MOD_GANHO_SUAVE--;
+                controleJogo.adicionarInfoDireto("Constantes.MOD_GANHO_SUAVE " + Constantes.MOD_GANHO_SUAVE);
+            }
+        });
+
+        menuDebug.add(maisModGanhoSuave);
+
+
+        JMenuItem menosModGanhoSuave = new JMenuItem("menosModGanhoSuave") {
+            public String getText() {
+                return Lang.msg("menosModGanhoSuave");
+            }
+
+        };
+        menosModGanhoSuave.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Constantes.MOD_GANHO_SUAVE++;
+                controleJogo.adicionarInfoDireto("Constantes.MOD_GANHO_SUAVE " + Constantes.MOD_GANHO_SUAVE);
+            }
+        });
+
+        menuDebug.add(menosModGanhoSuave);
+
     }
 
     public MainFrame() {
@@ -149,20 +348,18 @@ public class MainFrame extends JFrame {
             }
         });
         menuInfo2.add(logs);
-
-        JMenuItem ligarLogs = new JMenuItem("ativarLogs") {
+        JMenuItem tabelaComparativa = new JMenuItem("tabelaComparativa") {
             public String getText() {
-                return Lang.msg("ativarLogs");
+                return Lang.msg("tabelaComparativa");
             }
 
         };
-        ligarLogs.addActionListener(new ActionListener() {
+        tabelaComparativa.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Logger.ativo = !Logger.ativo;
+                controleJogo.tabelaComparativa();
             }
         });
-        menuInfo2.add(ligarLogs);
-
+        menuInfo2.add(tabelaComparativa);
     }
 
 
@@ -369,8 +566,7 @@ public class MainFrame extends JFrame {
             return;
         }
         debugFrame.setVisible(true);
-        debugFrame.setLocation(MainFrame.this.getWidth(), 0);
-        posicionaJanelaDebug();
+        debugFrame.setLocation(MainFrame.this.getWidth() + 5, 0);
         debugFrame.setLayout(new BorderLayout());
         Thread atualizaDebug = new Thread(new Runnable() {
             @Override
@@ -397,6 +593,7 @@ public class MainFrame extends JFrame {
                 super.windowClosing(e);
             }
         });
+        posicionaJanelaDebug();
     }
 
     private void posicionaJanelaDebug() {

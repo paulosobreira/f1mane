@@ -190,9 +190,6 @@ public class ControleJogoLocal extends ControleRecursos
      */
     public void atualizaIndexTracadoPilotos() {
         decrementaTracado();
-        if (gerenciadorVisual != null) {
-            gerenciadorVisual.voltaPilotoAutomaticaJogador();
-        }
     }
 
     public void decrementaTracado() {
@@ -900,10 +897,10 @@ public class ControleJogoLocal extends ControleRecursos
     }
 
     @Override
-    public void mudarAutoPos(boolean autoPos) {
-        if (pilotoJogador == null)
-            return;
-
+    public void setManualTemporario() {
+        if(getPilotoSelecionado()!=null){
+            pilotoSelecionado.setManualTemporario();
+        }
     }
 
     @Override
@@ -1006,6 +1003,7 @@ public class ControleJogoLocal extends ControleRecursos
         if (pilotoJogador == null)
             return false;
         pilotoJogador.setAtivarErs(!pilotoJogador.isAtivarErs());
+        pilotoJogador.setManualTemporario();
         return pilotoJogador.isAtivarErs();
     }
 

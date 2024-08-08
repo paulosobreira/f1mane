@@ -508,7 +508,7 @@ public class MonitorJogo implements Runnable {
             jogoCliente.matarTodasThreads();
             List<Piloto> pilotos = jogoCliente.getPilotos();
             for (Piloto piloto : pilotos) {
-                if(clientPaddockPack.getSessaoCliente().getToken().equals(piloto.getTokenJogador())){
+                if (clientPaddockPack.getSessaoCliente().getToken().equals(piloto.getTokenJogador())) {
                     piloto.setTokenJogador(null);
                 }
             }
@@ -754,7 +754,7 @@ public class MonitorJogo implements Runnable {
 
     }
 
-    public void mudarAutoPos(final boolean autoPos) {
+    public void setManualTemporario() {
         Logger.logar("mudarAutoPos ");
         if (threadCmd != null && threadCmd.isAlive()) {
             return;
@@ -765,9 +765,7 @@ public class MonitorJogo implements Runnable {
             public void run() {
                 try {
                     ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-                            autoPos
-                                    ? Comandos.MUDAR_MODO_AUTOPOS_S
-                                    : Comandos.MUDAR_MODO_AUTOPOS_N,
+                            Comandos.MUDAR_MODO_AUTOPOS_N,
                             sessaoCliente);
                     clientPaddockPack
                             .setNomeJogo(jogoCliente.getNomeJogoCriado());

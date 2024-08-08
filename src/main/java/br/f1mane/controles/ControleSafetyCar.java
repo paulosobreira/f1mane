@@ -69,8 +69,8 @@ public class ControleSafetyCar {
             }
 
         }
-        if (ganhoSC > 20) {
-            ganhoSC = 20;
+        if (ganhoSC > 30) {
+            ganhoSC = 30;
         }
         if (ganhoSC < 10 && piloto.getDiferencaParaProximo() > 200) {
             ganhoSC = 10;

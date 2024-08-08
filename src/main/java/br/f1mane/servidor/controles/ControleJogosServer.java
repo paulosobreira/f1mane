@@ -884,7 +884,7 @@ public class ControleJogosServer {
 		return null;
 	}
 
-	public Object mudarModoAutoPos(ClientPaddockPack clientPaddockPack,
+	public Object setManualTemporario(ClientPaddockPack clientPaddockPack,
 								   boolean autoPos) {
 		JogoServidor jogoServidor = obterJogoPeloNome(
 				clientPaddockPack.getNomeJogo());
@@ -895,7 +895,7 @@ public class ControleJogosServer {
 		if (piloto == null) {
 			return null;
 		}
-		piloto.setAtivarDRS(true);
+		piloto.setManualTemporario();
 		return null;
 	}
 

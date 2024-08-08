@@ -302,9 +302,9 @@ public class ControlePaddockServidor {
         } else if (Comandos.ALTERAR_OPCOES_BOX.equals(commando)) {
             return alterarOpcoesBox(clientPaddockPack);
         } else if (Comandos.MUDAR_MODO_AUTOPOS_S.equals(commando)) {
-            return mudarModoAutoPos(clientPaddockPack, true);
+            return setManualTemporario(clientPaddockPack, true);
         } else if (Comandos.MUDAR_MODO_AUTOPOS_N.equals(commando)) {
-            return mudarModoAutoPos(clientPaddockPack, false);
+            return setManualTemporario(clientPaddockPack, false);
         } else if (Comandos.ATUALIZAR_VISAO.equals(commando)) {
             return atualizarDadosVisao();
         } else if (Comandos.SAIR_PADDOCK.equals(commando)) {
@@ -407,8 +407,8 @@ public class ControlePaddockServidor {
         return controleJogosServer.mudarTracado(clientPaddockPack);
     }
 
-    private Object mudarModoAutoPos(ClientPaddockPack clientPaddockPack, boolean autoPos) {
-        return controleJogosServer.mudarModoAutoPos(clientPaddockPack, autoPos);
+    private Object setManualTemporario(ClientPaddockPack clientPaddockPack, boolean autoPos) {
+        return controleJogosServer.setManualTemporario(clientPaddockPack, autoPos);
     }
 
     private Object atualizaCarreira(ClientPaddockPack clientPaddockPack) {

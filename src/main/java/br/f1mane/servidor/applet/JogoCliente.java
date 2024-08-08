@@ -207,9 +207,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	public void atualizaIndexTracadoPilotos() {
 		decrementaTracado();
-		if (gerenciadorVisual != null) {
-			gerenciadorVisual.voltaPilotoAutomaticaJogador();
-		}
 	}
 
 	public void atulizaTabelaPosicoes() {
@@ -707,8 +704,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public void mudarAutoPos(boolean autoPos) {
-		monitorJogo.mudarAutoPos(autoPos);
+	public void setManualTemporario() {
+		monitorJogo.setManualTemporario();
 	}
 
 	@Override

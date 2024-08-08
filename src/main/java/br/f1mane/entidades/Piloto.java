@@ -1346,7 +1346,7 @@ public class Piloto implements Serializable, PilotoSuave {
          */
         if (getStress() > getValorLimiteStressePararErrarCurva(controleJogo) && !controleJogo.isSafetyCarNaPista() && AGRESSIVO.equals(modoPilotagem)) {
             if (escapaTracado(controleJogo)) {
-                setCiclosDesconcentrado(25);
+                setCiclosDesconcentrado(15);
                 controleJogo.travouRodas(this);
                 if (controleJogo.verificaInfoRelevante(this)) {
                     controleJogo.info(Lang.msg("saiDaPista", new String[]{Html.vermelho(nomeJogadorFormatado()), Html.vermelho(getNome())}));
@@ -1654,9 +1654,7 @@ public class Piloto implements Serializable, PilotoSuave {
             setModoPilotagem(LENTO);
             return;
         }
-        if (controleJogo.isErs()) {
-            iaTentaUsarErs(controleJogo);
-        }
+        iaTentaUsarErs(controleJogo);
         if (controleJogo.isDrs()) {
             iaTentaUsarDRS(controleJogo);
         }
@@ -1665,15 +1663,19 @@ public class Piloto implements Serializable, PilotoSuave {
         if (!tentaPassarFrete) {
             tentarEscaparAtras = tentarEscaparPilotoAtras(controleJogo, false);
         }
-        if (getNumeroVolta() > 0 && controleJogo.verificaInfoRelevante(this) && getPtosBox() != 0 && carroPilotoDaFrente.getPiloto().getPtosBox() != 0) {
-            if (tentaPassarFrete && calculaDiferencaParaProximo < 100) {
-                String txt = Lang.msg("tentaPassarFrete", new String[]{nomeJogadorFormatado(), Html.negrito(getNome()), Html.negrito(carroPilotoDaFrente.getPiloto().getNome())});
+        if (getNumeroVolta() > 0) {
+            if (tentaPassarFrete && calculaDiferencaParaProximo < 100 && carroPilotoDaFrente.getPiloto().getPtosBox() == 0) {
                 ativarErs = true;
-                controleJogo.info(Html.preto(txt));
-            } else if (tentarEscaparAtras && calculaDiferencaParaAnterior < 100) {
-                String txt = Lang.msg("tentarEscaparAtras", new String[]{nomeJogadorFormatado(), Html.negrito(getNome()), Html.negrito(carroPilotoAtras.getPiloto().getNome())});
+                if (controleJogo.verificaInfoRelevante(this)) {
+                    String txt = Lang.msg("tentaPassarFrete", new String[]{nomeJogadorFormatado(), Html.negrito(getNome()), Html.negrito(carroPilotoDaFrente.getPiloto().getNome())});
+                    controleJogo.info(Html.preto(txt));
+                }
+            } else if (tentarEscaparAtras && calculaDiferencaParaAnterior < 100 && getPtosBox() == 0) {
                 ativarErs = true;
-                controleJogo.info(Html.preto(txt));
+                if (controleJogo.verificaInfoRelevante(this)) {
+                    String txt = Lang.msg("tentarEscaparAtras", new String[]{nomeJogadorFormatado(), Html.negrito(getNome()), Html.negrito(carroPilotoAtras.getPiloto().getNome())});
+                    controleJogo.info(Html.preto(txt));
+                }
             }
         }
 
@@ -1783,11 +1785,11 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     public void desviaPilotoNaFrente(Piloto piloto, Piloto pilotoNaFrente, InterfaceJogo controleJogo) {
-        boolean lento = Piloto.LENTO.equals(piloto.getModoPilotagem()) || Carro.GIRO_MIN_VAL == piloto.getCarro().getGiro();
+        boolean lento = Piloto.LENTO.equals(piloto.getModoPilotagem()) && Carro.GIRO_MIN_VAL == piloto.getCarro().getGiro();
         if (!lento && verificaPassarRetardatario(piloto, pilotoNaFrente, controleJogo)) {
             pilotoNaFrente.getCarro().setGiro(Carro.GIRO_MIN_VAL);
             pilotoNaFrente.setModoPilotagem(Piloto.LENTO);
-            pilotoNaFrente.setCiclosDesconcentrado(10);
+            pilotoNaFrente.setCiclosDesconcentrado(5);
             mensagemRetardatario(piloto, pilotoNaFrente, controleJogo);
         }
         int novapos = 0;
@@ -1856,6 +1858,9 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     private void iaTentaUsarErs(InterfaceJogo controleJogo) {
+        if (!controleJogo.isErs()) {
+            return;
+        }
         if (verificaDesconcentrado()) {
             return;
         }
