@@ -2,27 +2,26 @@
 
 ## Fl-MANE por Paulo Sobreira
 - Fl-MANE (Formula legends MANager & Engineer) é um jogo de gerenciamento de corrida.
-- O jogador poderá configurar sua corrida escolhendo número de voltas, tipo de clima e configuração do carro.
-- O jogador envia comandos sobre como guiar e faz ajustes telemétricos do carro.
+- Configure sua corrida escolhendo número de voltas, tipo de clima e configuração do carro.
+- Envie comandos sobre como guiar e faz ajustes telemétricos do carro.
 - É possível escolher estratégia de box e muda-lá a qualquer momento na corrida.
 - Configuração da corrida com varias opções de como numero de voltas e tipo de clima e etc.
 - O jogo gerencia eventos dinamicos como mudança de clima e acidentes entre os corredores.
 - Várias temporadas e pistas disponíveis
-- No modo campeonato o jogador poderá escolher um piloto/equipe iniciante e desafiar rivais mais promissores  e caso vença poderá assumir o controle da novo piloto/equipe.
+- No modo campeonato, poderá escolher um piloto/equipe iniciante e desafiar rivais mais promissores e caso vença poderá assumir o controle da novo piloto/equipe.
 
 ## Controles:
 
-- F1 ou A - Giro Baixo Modo Economia de Motor e Combustível
-- F2 ou S - Giro Normal Modo Normal de Motor e Combustível
-- F3 ou D - Giro Alto Modo Extremo de Motor e Combustível
-- F5 ou Z - Piloto em Modo Cauteloso.
-- F6 ou X - Piloto Normal.
-- F7 ou C - Piloto em Modo Agressivo.
-- F8 ou G - Força o piloto a seguir um traçado.
-- F12 ou B - Alterna Modo Box.
+- A - Giro Baixo Modo Economia de Motor e Combustível
+- S - Giro Normal Modo Normal de Motor e Combustível
+- D - Giro Alto Modo Extremo de Motor e Combustível
+- Z - Piloto em Modo Cauteloso.
+- X - Piloto Normal.
+- C - Piloto em Modo Agressivo.
+- B - Alterna Modo Box.
 - Esc - Remove Informações extras da tela.
-- W - Ativa o Ers.
-- E - Ativa o DRS (Usado somente em retas ou pertes do ciruito consideradas retas) .
+- Seta Baixo - Ativa o Ers.
+- Seta Cima - Ativa o DRS (Usado somente em retas ou pertes do ciruito consideradas retas) .
 - Setas e mouse - Escolhe umm traçado para o piloto seguir.
 
 # Informação Adicional
