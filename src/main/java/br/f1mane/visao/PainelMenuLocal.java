@@ -1823,9 +1823,6 @@ public class PainelMenuLocal {
         if (intervaloClima == 2) {
             climaSelecionado = Clima.NUBLADO;
         }
-        if (intervaloClima == 3) {
-            climaSelecionado = Clima.CHUVA;
-        }
     }
 
     private void selecionaProximaTemporada() {
