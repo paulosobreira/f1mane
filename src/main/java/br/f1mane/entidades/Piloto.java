@@ -1346,7 +1346,7 @@ public class Piloto implements Serializable, PilotoSuave {
          */
         if (getStress() > getValorLimiteStressePararErrarCurva(controleJogo) && !controleJogo.isSafetyCarNaPista() && AGRESSIVO.equals(modoPilotagem)) {
             if (escapaTracado(controleJogo)) {
-                setCiclosDesconcentrado(15);
+                setCiclosDesconcentrado(testeHabilidadePiloto() ? 5 : 7);
                 controleJogo.travouRodas(this);
                 if (controleJogo.verificaInfoRelevante(this)) {
                     controleJogo.info(Lang.msg("saiDaPista", new String[]{Html.vermelho(nomeJogadorFormatado()), Html.vermelho(getNome())}));
@@ -1567,6 +1567,7 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     private void processaUsoERS(InterfaceJogo controleJogo) {
+        getCarro().setPontenciaErs(false);
         if (controleJogo.isErs() && ativarErs && getPtosBox() == 0) {
             if (getCarro().getCargaErs() <= 0) {
                 ativarErs = false;
@@ -1632,6 +1633,7 @@ public class Piloto implements Serializable, PilotoSuave {
         }
 
         if (isManualTemporario()) {
+            decrementaManualTemporario();
             return;
         }
 
@@ -1696,12 +1698,17 @@ public class Piloto implements Serializable, PilotoSuave {
         if (!isJogadorHumano()) {
             return;
         }
-        manualTemporario = 200;
+        manualTemporario = 150;
+    }
+
+    private void decrementaManualTemporario() {
+        if (manualTemporario > 0) {
+            manualTemporario--;
+        }
     }
 
     public boolean isManualTemporario() {
         if (manualTemporario > 0) {
-            manualTemporario--;
             return true;
         }
         return false;
@@ -1868,10 +1875,10 @@ public class Piloto implements Serializable, PilotoSuave {
             return;
         }
         int percetagemDeVoltaConcluida = controleJogo.percetagemDeVoltaConcluida(this);
-        if (percetagemDeVoltaConcluida > 50 && noAtual.verificaRetaOuLargada()) {
+        if (percetagemDeVoltaConcluida > 40 && noAtual.verificaRetaOuLargada()) {
             ativarErs = true;
         }
-        if (percetagemDeVoltaConcluida > 70) {
+        if (percetagemDeVoltaConcluida > 60) {
             ativarErs = true;
         }
     }

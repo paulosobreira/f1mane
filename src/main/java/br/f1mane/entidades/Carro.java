@@ -112,7 +112,7 @@ public class Carro implements Serializable {
     @JsonIgnore
     private Piloto piloto;
     @JsonIgnore
-    private boolean pontenciaErs;
+    private boolean pontenciaErs = false;
 
     public String getCor1Hex() {
         return String.format("#%02x%02x%02x", Integer.valueOf(cor1.getRed()), Integer.valueOf(cor1.getGreen()), Integer.valueOf(cor1.getBlue()));
@@ -187,14 +187,14 @@ public class Carro implements Serializable {
         this.cor2 = cor2;
     }
 
-    public void setDurabilidadeMaxMotor(int durabilidadeMaxMotor, int mediaPontecia) {
+    public void setDurabilidadeMaxMotor(int durabilidadeMaxMotor, int mediaPontencia) {
         if (this.durabilidadeMaxMotor != 0)
             return;
-        if (mediaPontecia < 800) {
-            mediaPontecia = 800;
+        if (mediaPontencia < 800) {
+            mediaPontencia = 800;
         }
         this.durabilidadeMaxMotor = Util.inteiro(
-                (durabilidadeMaxMotor * (mediaPontecia / 1000.0)) + (durabilidadeMaxMotor * (getPotencia() / 1000.0)));
+                (durabilidadeMaxMotor * (mediaPontencia / 1000.0)) + (durabilidadeMaxMotor * (getPotencia() / 1000.0)));
         this.motor = this.durabilidadeMaxMotor;
     }
 
@@ -664,7 +664,7 @@ public class Carro implements Serializable {
         int decStress = (getPiloto().getCarro().getPorcentagemDesgastePneus() / 100);
         double desgPneus = 10;
         if (no.verificaCurvaBaixa()) {
-            getPiloto().incStress(getPiloto().testeHabilidadePilotoAerodinamicaFreios(controleJogo) ? incStress/2 : incStress);
+            getPiloto().incStress(getPiloto().testeHabilidadePilotoAerodinamicaFreios(controleJogo) ? incStress / 2 : incStress);
             if (!controleJogo.isChovendo() && getPiloto().getPtosBox() == 0) {
                 boolean teste = getPiloto().testeHabilidadePilotoAerodinamicaFreios(controleJogo);
                 if (getPiloto().getStress() > 80) {
@@ -672,7 +672,7 @@ public class Carro implements Serializable {
                     if (getPiloto().getStress() > 70 && !no.verificaRetaOuLargada()) {
                         controleJogo.travouRodas(getPiloto(), true);
                     }
-                    getPiloto().decStress(getPiloto().testeHabilidadePiloto() ? decStress : decStress/2);
+                    getPiloto().decStress(getPiloto().testeHabilidadePiloto() ? decStress : decStress / 2);
                 }
                 if (controleJogo.asfaltoAbrasivo() && !controleJogo.isChovendo() && !no.verificaRetaOuLargada()
                         && getPiloto().getStress() > 70) {
@@ -687,7 +687,7 @@ public class Carro implements Serializable {
                 if (getPiloto().getStress() > 70) {
                     teste = false;
                     controleJogo.travouRodas(getPiloto(), true);
-                    getPiloto().decStress(getPiloto().testeHabilidadePiloto() ? decStress : decStress/2);
+                    getPiloto().decStress(getPiloto().testeHabilidadePiloto() ? decStress : decStress / 2);
                 }
                 if (controleJogo.asfaltoAbrasivo() && !controleJogo.isChovendo() && !no.verificaRetaOuLargada()
                         && getPiloto().getStress() > 50 && Math.random() > 0.5) {
@@ -703,7 +703,7 @@ public class Carro implements Serializable {
                 if (getPiloto().getStress() > 60 && !controleJogo.isChovendo() && getPiloto().getPtosBox() == 0
                         && noFrente.verificaCurvaBaixa()) {
                     controleJogo.travouRodas(getPiloto(), true);
-                    getPiloto().incStress(getPiloto().testeHabilidadePiloto() ? incStress/2 : incStress);
+                    getPiloto().incStress(getPiloto().testeHabilidadePiloto() ? incStress / 2 : incStress);
                     if (controleJogo.asfaltoAbrasivo() && getPiloto().getStress() > 80 && !controleJogo.isChovendo()
                             && noFrente.verificaCurvaAlta() && Math.random() > 0.7) {
                         controleJogo.travouRodas(getPiloto(), true);
@@ -884,11 +884,13 @@ public class Carro implements Serializable {
 
     public void usaErs() {
         if (cargaErs > 0) {
-            cargaErs -= (testePotencia() ? 1 : 2);
+            cargaErs -= (Math.random() < (potencia / 1000.0) ? 0 : 1);
             pontenciaErs = true;
-        } else {
-            pontenciaErs = false;
         }
+    }
+
+    public void setPontenciaErs(boolean pontenciaErs) {
+        this.pontenciaErs = pontenciaErs;
     }
 
     public boolean isPneuFurado() {
