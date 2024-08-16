@@ -328,7 +328,7 @@ public class PainelMenuLocal {
                 String temporada = "t" + campeonato.getTemporada();
                 carregaPilotoSelecionadoCampeonato(temporada, null);
                 MENU = MENU_MUDAR_EQUIPE_CAMPEONATO_PILOTOS;
-            } else {
+            } else if (Util.isNullOrEmpty(campeonato.getRival())) {
                 controleJogo.verificaDesafioCampeonatoPiloto();
             }
         }

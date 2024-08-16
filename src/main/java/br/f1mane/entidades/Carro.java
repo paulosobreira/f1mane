@@ -884,7 +884,7 @@ public class Carro implements Serializable {
 
     public void usaErs() {
         if (cargaErs > 0) {
-            cargaErs -= (Math.random() < (potencia / 1000.0) ? 0 : 1);
+            cargaErs -= (Math.random() < ((potencia+200) / 1000.0) ? 1 : 2);
             pontenciaErs = true;
         }
     }

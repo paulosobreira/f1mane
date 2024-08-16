@@ -1875,7 +1875,7 @@ public class Piloto implements Serializable, PilotoSuave {
             return;
         }
         int percetagemDeVoltaConcluida = controleJogo.percetagemDeVoltaConcluida(this);
-        if (percetagemDeVoltaConcluida > 40 && noAtual.verificaRetaOuLargada()) {
+        if (percetagemDeVoltaConcluida > 20 && noAtual.verificaRetaOuLargada()) {
             ativarErs = true;
         }
         if (percetagemDeVoltaConcluida > 60) {
