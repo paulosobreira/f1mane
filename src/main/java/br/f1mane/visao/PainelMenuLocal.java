@@ -1523,7 +1523,7 @@ public class PainelMenuLocal {
 
         int aerodinamica = piloto.getCarro().getAerodinamica() / 10;
 
-        desenhaBarraPilotoCarro(g2d, y, xbarra, aerodinamica, Lang.msg("aero"));
+        desenhaBarraPilotoCarro(g2d, y, xbarra, aerodinamica, Lang.msg("aerod"));
 
         int freios = piloto.getCarro().getFreios() / 10;
 
@@ -1534,11 +1534,11 @@ public class PainelMenuLocal {
     }
 
     private void desenhaBarraPilotoCarro(Graphics2D g2d, int y, int x, int val, String nome) {
-        g2d.setColor(lightWhite);
+        g2d.setColor(lightWhite2);
         g2d.fillRoundRect(x - 15, y - 24, 100, 14, 0, 0);
-        g2d.setColor(yel);
+        g2d.setColor(lightWhite);
         g2d.drawRoundRect(x - 15, y - 24, val, 14, 0, 0);
-        g2d.setColor(blu);
+        g2d.setColor(yel);
         g2d.fillRoundRect(x - 15, y - 24, val, 14, 0, 0);
         g2d.setColor(Color.BLACK);
         g2d.drawString(nome.toUpperCase(), x - 10, y - 12);

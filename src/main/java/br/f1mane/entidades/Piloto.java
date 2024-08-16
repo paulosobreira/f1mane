@@ -1631,7 +1631,7 @@ public class Piloto implements Serializable, PilotoSuave {
             return;
         }
 
-        if (manualTemporario()) {
+        if (isManualTemporario()) {
             return;
         }
 
@@ -1699,7 +1699,7 @@ public class Piloto implements Serializable, PilotoSuave {
         manualTemporario = 200;
     }
 
-    private boolean manualTemporario() {
+    public boolean isManualTemporario() {
         if (manualTemporario > 0) {
             manualTemporario--;
             return true;

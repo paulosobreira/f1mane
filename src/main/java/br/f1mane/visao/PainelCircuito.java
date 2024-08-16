@@ -719,7 +719,7 @@ public class PainelCircuito {
         for (Integer ganhoMed : piloto.getListaNosSuaves()) {
             novoGanho += ganhoMed;
         }
-        piloto.setGanhoSuave(novoGanho/piloto.getListaNosSuaves().size());
+        piloto.setGanhoSuave(novoGanho / piloto.getListaNosSuaves().size());
         if (noAtualBox && noAtualSuavePista && noAtualSuave.getIndex() < entradaBoxIndex) {
             nos = pistaFull;
         }
@@ -759,10 +759,13 @@ public class PainelCircuito {
     }
 
     private void desenhaMarcacaoParaCurva(Graphics2D g2d) {
-        if (Logger.ativo) {
+        if (Logger.ativo || Constantes.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual())) {
             Constantes.DESENHA_DIFF_REAL_SUAVE = true;
         }
-        if (!Constantes.DESENHA_DIFF_REAL_SUAVE
+        if(pilotoSelecionado==null){
+            return;
+        }
+        if ((!Constantes.DESENHA_DIFF_REAL_SUAVE && !pilotoSelecionado.isManualTemporario())
                 || isExibeResultadoFinal()
                 || controleJogo.isJogoPausado()
                 || pilotoSelecionado == null
@@ -4666,6 +4669,7 @@ public class PainelCircuito {
         if (noAtual == null) {
             noAtual = safetyCar.getNoAtual();
         }
+        atualizacaoSuave(safetyCar);
         Point p = noAtual.getPoint();
 
         if (!limitesViewPort.contains(((noAtual.getX() - descontoCentraliza.x) * zoom),

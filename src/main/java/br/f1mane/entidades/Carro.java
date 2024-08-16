@@ -344,7 +344,7 @@ public class Carro implements Serializable {
     }
 
     public boolean testePotencia() {
-        return Math.random() < ((potencia + (pontenciaErs ? 100 : 0)) / 1000.0);
+        return Math.random() < ((potencia + (pontenciaErs ? 200 : 0)) / 1000.0);
     }
 
     public boolean testeAerodinamica() {

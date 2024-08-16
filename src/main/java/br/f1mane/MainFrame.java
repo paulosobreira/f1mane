@@ -270,7 +270,7 @@ public class MainFrame extends JFrame {
         };
         maisModGanhoSuave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Constantes.MOD_GANHO_SUAVE--;
+                Constantes.MOD_GANHO_SUAVE++;
                 controleJogo.adicionarInfoDireto("Constantes.MOD_GANHO_SUAVE " + Constantes.MOD_GANHO_SUAVE);
             }
         });
@@ -286,7 +286,7 @@ public class MainFrame extends JFrame {
         };
         menosModGanhoSuave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Constantes.MOD_GANHO_SUAVE++;
+                Constantes.MOD_GANHO_SUAVE--;
                 controleJogo.adicionarInfoDireto("Constantes.MOD_GANHO_SUAVE " + Constantes.MOD_GANHO_SUAVE);
             }
         });
