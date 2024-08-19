@@ -12,38 +12,24 @@
 
 ## Controles:
 
-- A - Giro Baixo Modo Economia de Motor e Combustível
-- S - Giro Normal Modo Normal de Motor e Combustível
-- D - Giro Alto Modo Extremo de Motor e Combustível
-- Z - Piloto em Modo Cauteloso.
+- A - Giro Baixo (Menos performance geral assim como menos consumo de Motor e Combustível)
+- S - Giro Normal
+- D - Giro Alto (Mais performance geral assim como mais consumo de Motor e Combustível)
+- Z - Piloto em Modo Cauteloso(Menos performance nas curvas e reduz o stress do piloto).
 - X - Piloto Normal.
-- C - Piloto em Modo Agressivo.
-- B - Alterna Modo Box.
-- Esc - Remove Informações extras da tela.
+- C - Piloto em Modo Agressivo(Mais performance nas curvas e aumenta o stress do piloto).
+- B - Liga desliga Modo Box.
+- Esc - Pausa o jogo.
 - Seta Baixo - Ativa o Ers.
 - Seta Cima - Ativa o DRS (Usado somente em retas ou pertes do ciruito consideradas retas) .
 - Setas e mouse - Escolhe umm traçado para o piloto seguir.
 
-# Informação Adicional
+## Requerimentos
 
-## Editor de objetos de Pista:
+-Para executar o jogo é necessário Java 11
+-No Windows utilize Fl-Mane.bat, no Linux utilize Fl-Mane.sh
 
-- Pra criar uma pista precisa-se ter uma imagem(jpg) de um circuito na pasta bin\sowbreira\f1mane\recursos 
-- No menu "Criar Arquivo Circuito" e escolher esta imagem.
-- Adicionar os nós de largada, reta , curva alta ,box , objetos de sobreposição
-- Salvar a pista (arquivo tipo .f1mane) na pasta bin\sowbreira\f1mane\recursos
-
-- Controle sobre os objetos ao se clicar no botão "Mover/Parar".
-- - Setas : mover pela tela.
-- - Ctrl +Setas :  move objeto selecionado pela tela.
-- - Shift + Page up e down : altera a  largura do objeto .
-- - Ctrl + Page up e down : altera a  altura do objeto.
-- - Page up e down : Gira objeto.
-- - Ctrl + C :  cria uma copia do objeto.
-
-- Atualizar pistas.properties
-- Iniciar o jogo a pista nova deve esta em circuitos.
-
+# Informação técnica
 
 ## Construção Maven e Docker
 
