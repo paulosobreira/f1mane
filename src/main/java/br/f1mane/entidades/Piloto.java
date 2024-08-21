@@ -1183,7 +1183,7 @@ public class Piloto implements Serializable, PilotoSuave {
             if (volta.getTempoNumero() == null && volta.getCiclosFim() == 0 || volta.getTempoNumero().longValue() == 0) {
                 continue;
             }
-            ultimas5Voltas.add(numeroVolta + " - " + volta.getTempoVoltaFormatado());
+            ultimas5Voltas.add((numeroVolta + 1) + " - " + volta.getTempoVoltaFormatado());
             numeroVolta--;
             if (ultimas5Voltas.size() >= 5) {
                 break;

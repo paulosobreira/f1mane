@@ -1525,6 +1525,10 @@ public class PainelCircuito {
             int cont = 1;
             while (indemax > -1) {
                 String info = (String) listaInfo.get(indemax);
+                if (info.contains("<td ")) {
+                    indemax--;
+                    continue;
+                }
                 if (info.contains("FF8C00")) {
                     g2d.setColor(new Color(190, 80, 0));
                 }

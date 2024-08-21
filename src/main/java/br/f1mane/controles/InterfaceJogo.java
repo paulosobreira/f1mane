@@ -1,23 +1,14 @@
 package br.f1mane.controles;
 
-import java.awt.Point;
+import br.f1mane.MainFrame;
+import br.f1mane.entidades.*;
+import br.f1mane.visao.PainelTabelaResultadoFinal;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.JPanel;
-
-import br.f1mane.MainFrame;
-import br.f1mane.entidades.Campeonato;
-import br.f1mane.entidades.Carro;
-import br.f1mane.entidades.Circuito;
-import br.f1mane.entidades.ConstrutoresPontosCampeonato;
-import br.f1mane.entidades.No;
-import br.f1mane.entidades.Piloto;
-import br.f1mane.entidades.PilotosPontosCampeonato;
-import br.f1mane.entidades.SafetyCar;
-import br.f1mane.entidades.Volta;
-import br.f1mane.visao.PainelTabelaResultadoFinal;
 
 public interface InterfaceJogo {
 
