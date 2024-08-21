@@ -575,24 +575,24 @@ public class Carro implements Serializable {
         if (TIPO_PNEU_MOLE.equals(getTipoPneu())) {
             if (no.verificaCurvaBaixa() || no.verificaCurvaAlta()) {
                 if (controleJogo.verificaPistaEmborrachada()
-                        && pneuAquecido) {
-                    ganho *= 1.3;
+                        || pneuAquecido) {
+                    ganho *= 1.2;
                 } else {
-                    ganho *= testeFreios(controleJogo) ? 1.2 : 1.07;
+                    ganho *= getPiloto().testeHabilidadePilotoFreios(controleJogo) ? 1.5 : 1.07;
                 }
             }
         } else if (TIPO_PNEU_DURO.equals(getTipoPneu())) {
             if (no.verificaCurvaAlta()) {
                 if (pneuAquecido
-                        && controleJogo.verificaPistaEmborrachada()) {
-                    ganho *= 1.07;
+                        || controleJogo.verificaPistaEmborrachada()) {
+                    ganho *= 1.09;
                 } else {
                     ganho *= getPiloto().testeHabilidadePilotoFreios(controleJogo) ? 1.05 : 1.03;
                 }
             } else if (no.verificaCurvaBaixa()) {
                 if (pneuAquecido
                         && controleJogo.verificaPistaEmborrachada()) {
-                    ganho *= 1.08;
+                    ganho *= 1.09;
                 } else {
                     ganho *= getPiloto().testeHabilidadePilotoFreios(controleJogo) ? 1.07 : 1.03;
                 }
@@ -884,7 +884,7 @@ public class Carro implements Serializable {
 
     public void usaErs() {
         if (cargaErs > 0) {
-            cargaErs -= (Math.random() < ((potencia+200) / 1000.0) ? 1 : 2);
+            cargaErs -= (Math.random() < ((potencia + 200) / 1000.0) ? 1 : 2);
             pontenciaErs = true;
         }
     }

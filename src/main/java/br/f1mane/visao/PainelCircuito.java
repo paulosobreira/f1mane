@@ -146,8 +146,6 @@ public class PainelCircuito {
 
     private double multiminiPista;
     private Point maiorP;
-    private String infoComp;
-    private int infoCompCont;
 
     private BufferedImage carroimgDano;
     private BufferedImage pneuMoleImg;
@@ -762,7 +760,7 @@ public class PainelCircuito {
         if (Logger.ativo || Constantes.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual())) {
             Constantes.DESENHA_DIFF_REAL_SUAVE = true;
         }
-        if(pilotoSelecionado==null){
+        if (pilotoSelecionado == null) {
             return;
         }
         if ((!Constantes.DESENHA_DIFF_REAL_SUAVE && !pilotoSelecionado.isManualTemporario())
@@ -791,11 +789,12 @@ public class PainelCircuito {
         } else {
             g2d.setColor(new Color(100, 100, 100, 70));
         }
-        Point frenteCarD = pilotoSelecionado.getNoAtual().getPoint();
-        g2d.fillOval(Util.inteiro((frenteCarD.x - 5 - descontoCentraliza.x) * zoom),
-                Util.inteiro((frenteCarD.y - 5 - descontoCentraliza.y) * zoom), Util.inteiro(15 * zoom),
-                Util.inteiro(15 * zoom));
-
+        if (Logger.ativo) {
+            Point frenteCarD = pilotoSelecionado.getNoAtual().getPoint();
+            g2d.fillOval(Util.inteiro((frenteCarD.x - 5 - descontoCentraliza.x) * zoom),
+                    Util.inteiro((frenteCarD.y - 5 - descontoCentraliza.y) * zoom), Util.inteiro(15 * zoom),
+                    Util.inteiro(15 * zoom));
+        }
     }
 
     private void desenhaMarcacaoNo(Graphics2D g2d, No noReal, int index) {
@@ -1525,51 +1524,44 @@ public class PainelCircuito {
             int indemax = listaInfo.size() - 1;
             int cont = 1;
             while (indemax > -1) {
-                String info = (String) controleJogo.listaInfo().get(indemax);
-                if (info.contains("<table style='font-family: sans-serif;'>")) {
-                    if (!info.equals(infoComp)) {
-                        infoComp = info;
-                        infoCompCont = 1000;
+                String info = (String) listaInfo.get(indemax);
+                if (info.contains("FF8C00")) {
+                    g2d.setColor(new Color(190, 80, 0));
+                }
+                if (info.contains("4682B4")) {
+                    g2d.setColor(new Color(45, 98, 168));
+                }
+                if (info.contains("FE0000")) {
+                    g2d.setColor(new Color(121, 0, 0));
+                }
+                if (info.contains("008D25")) {
+                    g2d.setColor(new Color(0, 80, 0));
+                }
+                if (info.contains("2D62A8")) {
+                    g2d.setColor(new Color(0, 0, 100));
+                }
+                info = Html.tagsJava2d(info).trim();
+                g2d.setFont(new Font(fontOri.getName(), Font.BOLD, fontOri.getSize()));
+                if (Util.calculaLarguraText(info, g2d) > 400) {
+                    String[] infoSplit = info.split(" ");
+                    String line1 = "", line2 = "", lineComp = "";
+                    for (String s : infoSplit) {
+                        lineComp += s + " ";
+                        if (Util.calculaLarguraText(lineComp, g2d) < 395) {
+                            line1 += s + " ";
+                        } else {
+                            line2 += s + " ";
+                        }
+                    }
+                    int c = (cont++);
+                    g2d.drawString("" + line1, x + 4, y + (20 * c));
+                    if (y + (20 * (c + 1)) < (y + 110)) {
+                        c = (cont++);
+                        g2d.drawString("" + line2, x + 4, y + (20 * c));
                     }
                 } else {
-                    if (info.contains("FF8C00")) {
-                        g2d.setColor(new Color(190, 80, 0));
-                    }
-                    if (info.contains("4682B4")) {
-                        g2d.setColor(new Color(45, 98, 168));
-                    }
-                    if (info.contains("FE0000")) {
-                        g2d.setColor(new Color(121, 0, 0));
-                    }
-                    if (info.contains("008D25")) {
-                        g2d.setColor(new Color(0, 80, 0));
-                    }
-                    if (info.contains("2D62A8")) {
-                        g2d.setColor(new Color(0, 0, 100));
-                    }
-                    info = Html.tagsJava2d(info).trim();
-                    g2d.setFont(new Font(fontOri.getName(), Font.BOLD, fontOri.getSize()));
-                    if (Util.calculaLarguraText(info, g2d) > 400) {
-                        String[] infoSplit = info.split(" ");
-                        String line1 = "", line2 = "", lineComp = "";
-                        for (String s : infoSplit) {
-                            lineComp += s + " ";
-                            if (Util.calculaLarguraText(lineComp, g2d) < 395) {
-                                line1 += s + " ";
-                            } else {
-                                line2 += s + " ";
-                            }
-                        }
-                        int c = (cont++);
-                        g2d.drawString("" + line1, x + 4, y + (20 * c));
-                        if (y + (20 * (c + 1)) < (y + 110)) {
-                            c = (cont++);
-                            g2d.drawString("" + line2, x + 4, y + (20 * c));
-                        }
-                    } else {
-                        int c = (cont++);
-                        g2d.drawString("" + info, x + 4, y + (20 * c));
-                    }
+                    int c = (cont++);
+                    g2d.drawString("" + info, x + 4, y + (20 * c));
                 }
                 indemax--;
                 if (cont > 5) {
@@ -1604,16 +1596,32 @@ public class PainelCircuito {
     }
 
     private void desenhaTabelaComparativa(Graphics2D g2d) {
-        if (infoCompCont < 0 || Util.isNullOrEmpty(infoComp)) {
-            return;
-        }
         if (isExibeResultadoFinal()) {
             return;
         }
         if (verificaComponeteNaParteInferior()) {
             return;
         }
-        String parte[] = infoComp.split("<td ");
+        String tabela = "";
+
+        if (controleJogo.listaInfo() != null && !controleJogo.listaInfo().isEmpty()) {
+            List listaInfo = controleJogo.listaInfo();
+            int indemax = listaInfo.size() - 1;
+            while (indemax > -1) {
+                String info = (String) listaInfo.get(indemax);
+                if (info.contains("<td ")) {
+                    tabela = info;
+                    break;
+                }
+                indemax--;
+            }
+        }
+
+        if (Util.isNullOrEmpty(tabela)) {
+            return;
+        }
+
+        String[] parte = tabela.split("<td ");
         String volta1 = "";
         volta1 = geraLabelVoltaTabelaComparativa(parte[2], volta1);
         String volta2 = "";
@@ -1745,7 +1753,6 @@ public class PainelCircuito {
         g2d.fill(rectanglePos);
         g2d.setColor(fonte);
         g2d.drawString(t3Diff, x + 321, y + 60);
-        infoCompCont--;
     }
 
     private void desenhaDebugIinfo(Graphics2D g2d) throws IllegalAccessException, InvocationTargetException {

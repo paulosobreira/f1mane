@@ -94,7 +94,7 @@ public class MainFrame extends JFrame {
         gerarMenusInfo(menuInfo);
         gerarMenusDebug(menuDebug);
         setSize(1280, 720);
-        String title = "Fl-MANE " + getVersao() + " MANager & Engineer";
+        String title = "Fl-MANE " + getVersao();
         setTitle(title);
         if (appletPaddock == null) {
             iniciar();

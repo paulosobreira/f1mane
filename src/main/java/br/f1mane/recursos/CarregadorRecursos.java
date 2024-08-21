@@ -43,6 +43,8 @@ public class CarregadorRecursos {
 
     private static String versao;
 
+    private static String versaoGit;
+
     private static URL codeBase;
 
     private static String applet;
@@ -56,6 +58,7 @@ public class CarregadorRecursos {
         Properties properties = new Properties();
         properties.load(CarregadorRecursos.recursoComoStream("application.properties"));
         versao = properties.getProperty("versao");
+        versaoGit = properties.getProperty("versaoGit");
         applet = properties.getProperty("applet");
         String codeBaseStr = properties.getProperty("codeBase");
         if (!Util.isNullOrEmpty(codeBaseStr)) {
@@ -77,6 +80,7 @@ public class CarregadorRecursos {
         }
         return applet;
     }
+
     public static String getVersao() {
         if (versao == null) {
             try {
@@ -88,8 +92,19 @@ public class CarregadorRecursos {
         return versao;
     }
 
+    public static String getVersaoGit() {
+        if (versaoGit == null) {
+            try {
+                initProperties();
+            } catch (IOException e) {
+                Logger.logarExept(e);
+            }
+        }
+        return versaoGit;
+    }
+
     public static String getVersaoFormatado() {
-        return decimalFormat.format(new Integer(CarregadorRecursos.getVersao()));
+        return decimalFormat.format(new Integer(getVersao())) + " " + getVersaoGit();
     }
 
     public static synchronized CarregadorRecursos getCarregadorRecursos(

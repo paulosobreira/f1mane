@@ -40,7 +40,7 @@ public class MainFrameSimulacao extends MainFrame {
 
     public MainFrameSimulacao(String temporadaParam) {
         setSize(1030, 720);
-        String title = "Fl-Mane " + getVersao() + " MANager & Engineer";
+        String title = "Fl-Mane " + getVersao();
         setTitle(title);
         try {
             Logger.ativo = true;
@@ -61,9 +61,9 @@ public class MainFrameSimulacao extends MainFrame {
             Collections.shuffle(listTemporadas);
 
             circuito = listCircuitos.get(0);
-            if(temporadaParam!=null){
+            if (temporadaParam != null) {
                 temporada = temporadaParam;
-            }else{
+            } else {
                 temporada = listTemporadas.get(0);
             }
             Map<String, TemporadasDefault> temporadasDefaultMap =
@@ -90,9 +90,9 @@ public class MainFrameSimulacao extends MainFrame {
 
     public static void main(String[] args) {
         MainFrameSimulacao frame = null;
-        if(args.length>0){
+        if (args.length > 0) {
             frame = new MainFrameSimulacao(args[0]);
-        }else{
+        } else {
             frame = new MainFrameSimulacao(null);
         }
 
