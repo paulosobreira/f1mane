@@ -2,12 +2,11 @@ package br.f1mane.servidor.controles;
 
 import br.f1mane.entidades.Carro;
 import br.f1mane.entidades.Piloto;
-import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
 import br.f1mane.servidor.entidades.TOs.MsgSrv;
 import br.f1mane.servidor.entidades.persistencia.*;
 import br.f1mane.servidor.util.HibernateUtil;
-import br.nnpe.Constantes;
+import br.nnpe.Global;
 import br.nnpe.Dia;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -18,16 +17,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
-import javax.swing.*;
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
 /**
  * @author Paulo Sobreira Criado em 20/10/2007 as 14:19:54
@@ -39,7 +29,7 @@ public class ControlePersistencia {
     private final static String lock = "lock";
 
     public Session getSession() {
-        if (!Constantes.DATABASE) {
+        if (!Global.DATABASE) {
             return null;
         }
         return HibernateUtil.getSession();
@@ -201,7 +191,7 @@ public class ControlePersistencia {
     }
 
     public List<CorridasDadosSrv> obterClassificacaoCircuito(String circuito, Session session) {
-        if (!Constantes.DATABASE) {
+        if (!Global.DATABASE) {
             return null;
         }
         Criteria criteria = session.createCriteria(CorridasDadosSrv.class);
@@ -212,7 +202,7 @@ public class ControlePersistencia {
     }
 
     public List<CorridasDadosSrv> obterClassificacaoTemporada(String temporadaSelecionada, Session session) {
-        if (!Constantes.DATABASE) {
+        if (!Global.DATABASE) {
             return null;
         }
         Criteria criteria = session.createCriteria(CorridasDadosSrv.class);
@@ -223,7 +213,7 @@ public class ControlePersistencia {
     }
 
     public CarreiraDadosSrv carregaCarreiraJogador(String token, boolean vaiCliente, Session session) {
-        if (!Constantes.DATABASE) {
+        if (!Global.DATABASE) {
             return null;
         }
         Logger.logar("Buacar Carreira token " + token);
@@ -324,7 +314,7 @@ public class ControlePersistencia {
     }
 
     public MsgSrv modoCarreira(String token, boolean modo) {
-        if (!Constantes.DATABASE) {
+        if (!Global.DATABASE) {
             return null;
         }
         Session session = getSession();
@@ -367,7 +357,7 @@ public class ControlePersistencia {
     }
 
     public List<CorridasDadosSrv> obterClassificacaoGeral(Session session) {
-        if (!Constantes.DATABASE) {
+        if (!Global.DATABASE) {
             return null;
         }
         Criteria criteria = session.createCriteria(CorridasDadosSrv.class);

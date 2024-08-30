@@ -6,10 +6,9 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import br.nnpe.Constantes;
+import br.nnpe.Global;
 import br.nnpe.Logger;
 import br.nnpe.Util;
-import br.f1mane.controles.ControleJogoLocal;
 import br.f1mane.controles.ControleRecursos;
 import br.f1mane.entidades.Circuito;
 import br.f1mane.entidades.Clima;
@@ -40,7 +39,7 @@ public class DadosCriarJogo implements Serializable {
     private String circuitoSelecionado = null;
     private String clima = null;
     private Integer qtdeVoltas = null;
-    private String automaticoManual = Constantes.CONTROLE_AUTOMATICO;
+    private String automaticoManual = Global.CONTROLE_AUTOMATICO;
     private List pilotosCarreira;
     private boolean reabastecimento;
     private boolean trocaPneu;
@@ -66,7 +65,7 @@ public class DadosCriarJogo implements Serializable {
             dadosCriarJogo
                     .setQtdeVoltas(new Integer(Util.extrairNumeros(numVoltas)));
         }
-        dadosCriarJogo.setQtdeVoltas(Integer.valueOf(Constantes.MIN_VOLTAS));
+        dadosCriarJogo.setQtdeVoltas(Integer.valueOf(Global.MIN_VOLTAS));
         dadosCriarJogo.setDiffultrapassagem(Integer.valueOf(Util.intervalo(5, 250)));
 
         String pista = ControleRecursos

@@ -6,7 +6,7 @@ import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
 import br.f1mane.servidor.applet.JogoCliente;
 import br.f1mane.servidor.entidades.TOs.TravadaRoda;
-import br.nnpe.Constantes;
+import br.nnpe.Global;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -348,7 +348,7 @@ public class GerenciadorVisual {
                 }
 
                 if (keyCoode == KeyEvent.VK_R) {
-                    Constantes.DESENHA_DIFF_REAL_SUAVE = !Constantes.DESENHA_DIFF_REAL_SUAVE;
+                    Global.DESENHA_DIFF_REAL_SUAVE = !Global.DESENHA_DIFF_REAL_SUAVE;
                 }
                 if (keyCoode == KeyEvent.VK_UP) {
                     drs();
@@ -536,7 +536,7 @@ public class GerenciadorVisual {
 
             public String getText() {
                 return Lang.msg("110",
-                        new String[]{String.valueOf(Constantes.MIN_VOLTAS), String.valueOf(Constantes.MAX_VOLTAS)});
+                        new String[]{String.valueOf(Global.MIN_VOLTAS), String.valueOf(Global.MAX_VOLTAS)});
             }
         };
         painelInicio.add(label);
@@ -566,8 +566,8 @@ public class GerenciadorVisual {
         });
         painelInicio.add(boxPilotoSelecionado);
         comboBoxNivelCorrida = new JComboBox();
-        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_AUTOMATICO));
-        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_MANUAL));
+        comboBoxNivelCorrida.addItem(Lang.msg(Global.CONTROLE_AUTOMATICO));
+        comboBoxNivelCorrida.addItem(Lang.msg(Global.CONTROLE_MANUAL));
         painelInicio.add(new JLabel() {
             public String getText() {
                 return Lang.msg("212");
@@ -725,7 +725,7 @@ public class GerenciadorVisual {
 
             public String getText() {
                 return Lang.msg("110",
-                        new String[]{String.valueOf(Constantes.MIN_VOLTAS), String.valueOf(Constantes.MAX_VOLTAS)});
+                        new String[]{String.valueOf(Global.MIN_VOLTAS), String.valueOf(Global.MAX_VOLTAS)});
             }
         };
         grid.add(label);
@@ -737,8 +737,8 @@ public class GerenciadorVisual {
         boxPilotoSelecionado.addItem(Lang.msg("119"));
 
         comboBoxNivelCorrida = new JComboBox();
-        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_AUTOMATICO));
-        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_MANUAL));
+        comboBoxNivelCorrida.addItem(Lang.msg(Global.CONTROLE_AUTOMATICO));
+        comboBoxNivelCorrida.addItem(Lang.msg(Global.CONTROLE_MANUAL));
         grid.add(new JLabel() {
             public String getText() {
                 return Lang.msg("212");

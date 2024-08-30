@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import br.nnpe.Constantes;
+import br.nnpe.Global;
 import br.nnpe.GeoUtil;
 import br.nnpe.Html;
 import br.nnpe.Logger;
@@ -338,7 +338,7 @@ public class ControleBox {
             }
         }
 
-        if (carro.getDurabilidadeAereofolio() < Constantes.DURABILIDADE_AREOFOLIO) {
+        if (carro.getDurabilidadeAereofolio() < Global.DURABILIDADE_AREOFOLIO) {
             penalidade = Util.inteiro(penalidade * (2 - (carro.getPotencia() / 1000)));
         }
 
@@ -359,11 +359,11 @@ public class ControleBox {
             }
         }
         carro.setDanificado(null, controleJogo);
-        if (carro.getDurabilidadeAereofolio() < Constantes.DURABILIDADE_AREOFOLIO) {
-            carro.setDurabilidadeAereofolio(Constantes.DURABILIDADE_AREOFOLIO);
+        if (carro.getDurabilidadeAereofolio() < Global.DURABILIDADE_AREOFOLIO) {
+            carro.setDurabilidadeAereofolio(Global.DURABILIDADE_AREOFOLIO);
         }
         if (controleJogo.isErs()) {
-            piloto.getCarro().setCargaErs(Constantes.CARGA_ERS);
+            piloto.getCarro().setCargaErs(Global.CARGA_ERS);
             piloto.setAtivarErs(false);
         }
         carro.setTemperaturaMotor(0);

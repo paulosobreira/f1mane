@@ -1,6 +1,5 @@
 package br.f1mane.servidor.controles;
 
-import br.f1mane.controles.InterfaceJogo;
 import br.f1mane.entidades.Piloto;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
@@ -76,7 +75,7 @@ public class ControleClassificacao {
 
 	public void processaCorrida(long tempoInicio, long tempoFim, Map mapVoltasJogadoresOnline, List pilotos,
 								DadosCriarJogo dadosCriarJogo) {
-		if (!Constantes.DATABASE) {
+		if (!Global.DATABASE) {
 			return;
 		}
 		Session session = controlePersistencia.getSession();
@@ -286,7 +285,7 @@ public class ControleClassificacao {
 	}
 
 	public Object verCarreira(ClientPaddockPack clientPaddockPack, Session session) {
-		if (!Constantes.DATABASE) {
+		if (!Global.DATABASE) {
 			return null;
 		}
 		return verCarreira(clientPaddockPack.getSessaoCliente().getToken(), session);
@@ -489,7 +488,7 @@ public class ControleClassificacao {
 	}
 
 	public CarreiraDadosSrv obterCarreiraSrv(String token) {
-		if (!Constantes.DATABASE) {
+		if (!Global.DATABASE) {
 			return null;
 		}
 		Session session = controlePersistencia.getSession();

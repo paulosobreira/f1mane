@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
 
-import br.nnpe.Constantes;
+import br.nnpe.Global;
 import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -271,7 +271,7 @@ public class ControleQualificacao {
             Carro carro = piloto.getCarro();
             carro.setTempMax(carro.getPotencia() / 4);
             carro.setDurabilidadeAereofolio(
-                    Constantes.DURABILIDADE_AREOFOLIO);
+                    Global.DURABILIDADE_AREOFOLIO);
             piloto.calculaCarrosAdjacentes(controleJogo);
             Logger.logar(" Posição Largada :" + piloto.getPosicao() + " Nome : "
                     + piloto.getNome() + " Pneu : "

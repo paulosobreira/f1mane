@@ -523,6 +523,9 @@ public class Carro implements Serializable {
         if (verificaDano()) {
             valDesgaste /= 2;
         }
+        if (controleJogo.isErs()) {
+            valDesgaste *= 0.9;
+        }
         if (porcentagemDesgasteMotor < 5 && (GIRO_MIN_VAL == giro)) {
             valDesgaste *= 0.1;
         }

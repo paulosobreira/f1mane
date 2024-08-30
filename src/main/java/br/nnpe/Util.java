@@ -132,7 +132,7 @@ public class Util {
 	public static void validaIntervaloData(String dataInicial, String dataFinal)
 			throws Exception {
 		if (!validaIntervaloData(dataInicial, dataFinal,
-				Constantes.DATA_FORMATO)) {
+				Global.DATA_FORMATO)) {
 			throw new Exception("Intervalo de datas invalido");
 		}
 	}
@@ -150,7 +150,7 @@ public class Util {
 		String inicio = FormatDate.format(data_inicio);
 		String fim = FormatDate.format(data_fim);
 
-		return validaIntervaloData(inicio, fim, Constantes.DATA_FORMATO);
+		return validaIntervaloData(inicio, fim, Global.DATA_FORMATO);
 	}
 
 	public static String removeQuotes(String text) {

@@ -2,8 +2,6 @@ package br.f1mane.controles;
 
 import java.util.Iterator;
 
-import br.f1mane.recursos.CarregadorRecursos;
-import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.f1mane.entidades.Piloto;

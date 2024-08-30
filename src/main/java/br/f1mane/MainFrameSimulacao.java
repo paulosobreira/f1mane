@@ -2,13 +2,12 @@ package br.f1mane;
 
 import br.f1mane.controles.ControleCiclo;
 import br.f1mane.controles.ControleJogoLocal;
-import br.f1mane.controles.InterfaceJogo;
 import br.f1mane.entidades.Clima;
 import br.f1mane.entidades.TemporadasDefault;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.visao.PainelCircuito;
 import br.f1mane.visao.PainelTabelaResultadoFinal;
-import br.nnpe.Constantes;
+import br.nnpe.Global;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
@@ -77,7 +76,7 @@ public class MainFrameSimulacao extends MainFrame {
             turbulencia = Util.intervalo(0, 500);
             fatorAcidente = 100 - (controleJogo.getFatorAcidente() * 100);
             controleJogo.iniciarJogoMenuLocal(circuito, temporada, voltas,
-                    turbulencia, clima, Constantes.CONTROLE_AUTOMATICO, null, kers, drs, trocaPneus,
+                    turbulencia, clima, Global.CONTROLE_AUTOMATICO, null, kers, drs, trocaPneus,
                     reabastecimento, 0, null, null, false);
             Thread.sleep(5000);
             abrasivo = controleJogo.asfaltoAbrasivoReal();

@@ -11,7 +11,7 @@ import br.f1mane.servidor.entidades.TOs.*;
 import br.f1mane.servidor.entidades.persistencia.CampeonatoSrv;
 import br.f1mane.servidor.entidades.persistencia.CarreiraDadosSrv;
 import br.f1mane.servidor.util.ZipUtil;
-import br.nnpe.Constantes;
+import br.nnpe.Global;
 import br.nnpe.Dia;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -44,7 +44,7 @@ public class ControlePaddockCliente {
     private JogoCliente jogoCliente;
     private MainFrame mainFrame;
     private boolean comunicacaoServer = true;
-    private int latenciaMinima = Constantes.LATENCIA_MIN;
+    private int latenciaMinima = Global.LATENCIA_MIN;
     private int latenciaReal;
     private long ultRetornoSucedido;
     private String versaoServidor = "";
@@ -186,14 +186,14 @@ public class ControlePaddockCliente {
                 somatorio += longElement.longValue();
             }
             int media = (int) (somatorio / 10);
-            if (media > Constantes.LATENCIA_MAX) {
-                setLatenciaMinima(Constantes.LATENCIA_MAX);
+            if (media > Global.LATENCIA_MAX) {
+                setLatenciaMinima(Global.LATENCIA_MAX);
             } else {
                 setLatenciaMinima(media);
             }
-            if (media < Constantes.LATENCIA_MIN)
-                setLatenciaMinima(Constantes.LATENCIA_MIN);
-            else if (media < Constantes.LATENCIA_MAX) {
+            if (media < Global.LATENCIA_MIN)
+                setLatenciaMinima(Global.LATENCIA_MIN);
+            else if (media < Global.LATENCIA_MAX) {
                 setLatenciaMinima(media);
             }
             setLatenciaReal(media);

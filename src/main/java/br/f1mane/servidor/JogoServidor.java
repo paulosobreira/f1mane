@@ -15,7 +15,7 @@ import br.f1mane.servidor.entidades.BufferTexto;
 import br.f1mane.servidor.entidades.Comandos;
 import br.f1mane.servidor.entidades.TOs.*;
 import br.f1mane.servidor.entidades.persistencia.CarreiraDadosSrv;
-import br.nnpe.Constantes;
+import br.nnpe.Global;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -235,11 +235,11 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	protected void processarEntradaDados() throws Exception {
 		try {
 			qtdeVoltas = dadosCriarJogo.getQtdeVoltas();
-			if (qtdeVoltas.intValue() <= Constantes.MIN_VOLTAS) {
-				qtdeVoltas = new Integer(Constantes.MIN_VOLTAS);
+			if (qtdeVoltas.intValue() <= Global.MIN_VOLTAS) {
+				qtdeVoltas = new Integer(Global.MIN_VOLTAS);
 			}
-			if (qtdeVoltas.intValue() >= Constantes.MAX_VOLTAS) {
-				qtdeVoltas = new Integer(Constantes.MAX_VOLTAS);
+			if (qtdeVoltas.intValue() >= Global.MAX_VOLTAS) {
+				qtdeVoltas = new Integer(Global.MAX_VOLTAS);
 			}
 			diffultrapassagem = dadosCriarJogo.getDiffultrapassagem();
 			circuitoSelecionado = dadosCriarJogo.getCircuitoSelecionado();
@@ -478,7 +478,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 										.limpaSelecao();
 							}
 						}
-						if (getNumVoltaAtual() >= Constantes.MIN_VOLTAS) {
+						if (getNumVoltaAtual() >= Global.MIN_VOLTAS) {
 							controleClassificacao.processaCorrida(tempoInicio,
 									tempoFim, mapVoltasJogadoresOnline, pilotos,
 									dadosCriarJogo);
@@ -572,7 +572,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	@Override
 	public String getAutomaticoManual() {
-		return Constantes.CONTROLE_AUTOMATICO;
+		return Global.CONTROLE_AUTOMATICO;
 	}
 
 	public TravadaRoda getTravadaRoda() {

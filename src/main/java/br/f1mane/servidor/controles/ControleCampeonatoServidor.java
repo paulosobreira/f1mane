@@ -2,9 +2,8 @@ package br.f1mane.servidor.controles;
 
 import java.util.*;
 
-import br.f1mane.controles.ControleJogoLocal;
 import br.f1mane.servidor.entidades.TOs.*;
-import br.nnpe.Constantes;
+import br.nnpe.Global;
 import br.nnpe.Logger;
 import org.hibernate.Session;
 
@@ -90,7 +89,7 @@ public class ControleCampeonatoServidor {
 			campeonato.setErs(temporadasDefault.getErs().booleanValue());
 			campeonato
 					.setReabastecimento(temporadasDefault.getReabastecimento().booleanValue());
-			campeonato.setQtdeVoltas(Integer.valueOf(Constantes.MIN_VOLTAS));
+			campeonato.setQtdeVoltas(Integer.valueOf(Global.MIN_VOLTAS));
 			campeonato.setJogadorDadosSrv(jogadorDadosSrv);
 			List<CorridaCampeonatoSrv> corridaCampeonatos = campeonato
 					.getCorridaCampeonatos();

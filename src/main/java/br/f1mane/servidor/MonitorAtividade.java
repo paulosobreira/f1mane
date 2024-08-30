@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import br.f1mane.servidor.controles.ControlePaddockServidor;
-import br.nnpe.Constantes;
+import br.nnpe.Global;
 import br.nnpe.Logger;
 import br.f1mane.controles.InterfaceJogo;
 import br.f1mane.servidor.entidades.TOs.SessaoCliente;
@@ -92,7 +92,7 @@ public class MonitorAtividade implements Runnable {
             SessaoCliente key = iter.next();
             JogoServidor jogoServidor = (JogoServidor) jogos.get(key);
             if ((timeNow - jogoServidor
-                    .getTempoCriacao()) > (Constantes.SEGUNDOS_PARA_INICIAR_CORRRIDA.intValue()
+                    .getTempoCriacao()) > (Global.SEGUNDOS_PARA_INICIAR_CORRRIDA.intValue()
                     * 1000)) {
                 jogoServidor.iniciarJogo();
             }

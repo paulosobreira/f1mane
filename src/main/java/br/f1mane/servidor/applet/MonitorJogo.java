@@ -9,7 +9,7 @@ import java.util.Map;
 
 import javax.swing.JOptionPane;
 
-import br.nnpe.Constantes;
+import br.nnpe.Global;
 import br.nnpe.Logger;
 import br.f1mane.controles.ControleCorrida;
 import br.f1mane.entidades.Carro;
@@ -167,7 +167,7 @@ public class MonitorJogo implements Runnable {
             try {
                 jogoCliente.setAtualizacaoSuave(getLatenciaReal() <= 1000);
                 if (controlePaddockCliente
-                        .getLatenciaReal() > Constantes.LATENCIA_MAX) {
+                        .getLatenciaReal() > Global.LATENCIA_MAX) {
                     jogoCliente.autoDrs();
                 }
                 atualizarDados();

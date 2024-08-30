@@ -1,6 +1,6 @@
 package br.f1mane.controles;
 
-import br.nnpe.Constantes;
+import br.nnpe.Global;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.f1mane.entidades.Clima;
@@ -53,7 +53,7 @@ public class ControleClima {
 	}
 
 	public void gerarClimaInicial(Clima climaSel) {
-		if (Constantes.DEBUG_SEM_CHUVA) {
+		if (Global.DEBUG_SEM_CHUVA) {
 			clima = Clima.SOL;
 			return;
 		}
@@ -87,7 +87,7 @@ public class ControleClima {
 	}
 
 	public void processaPossivelMudancaClima() {
-		if (Constantes.DEBUG_SEM_CHUVA) {
+		if (Global.DEBUG_SEM_CHUVA) {
 			clima = Clima.SOL;
 			return;
 		}

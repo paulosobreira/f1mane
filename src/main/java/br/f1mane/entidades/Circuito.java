@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
@@ -22,7 +21,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import br.nnpe.Constantes;
+import br.nnpe.Global;
 import br.nnpe.GeoUtil;
 import br.nnpe.Util;
 
@@ -878,7 +877,7 @@ public class Circuito implements Serializable {
     }
 
     public double getVelocidadePista() {
-        return Constantes.VELOCIDADE_PISTA;
+        return Global.VELOCIDADE_PISTA;
     }
 
     public void setVelocidadePista(double velocidadePista) {

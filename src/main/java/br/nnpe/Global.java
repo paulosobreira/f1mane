@@ -1,6 +1,6 @@
 package br.nnpe;
 
-public final class Constantes {
+public final class Global {
 
     public static final String DATA_FORMATO = "dd/MM/yyyy";
     public static final int MAX_VOLTAS = 72;
@@ -25,9 +25,10 @@ public final class Constantes {
     public static final String CONTROLE_AUTOMATICO = "CONTROLE_AUTOMATICO";
 
     public static final String CONTROLE_MANUAL = "CONTROLE_MANUAL";
+    public static boolean setarHints = true;
 
 
-    private Constantes() {
+    private Global() {
     }
 
 }

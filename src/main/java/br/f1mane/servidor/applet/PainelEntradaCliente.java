@@ -8,7 +8,6 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Point;
-import java.awt.RenderingHints;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
@@ -34,10 +33,9 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import br.nnpe.Constantes;
+import br.nnpe.Global;
 import br.nnpe.Logger;
 import br.f1mane.MainFrame;
-import br.f1mane.controles.ControleJogoLocal;
 import br.f1mane.controles.ControleRecursos;
 import br.f1mane.entidades.Carro;
 import br.f1mane.entidades.Circuito;
@@ -116,7 +114,7 @@ public class PainelEntradaCliente {
         JLabel label = new JLabel() {
             public String getText() {
                 return Lang.msg("110",
-                        new String[]{String.valueOf(Constantes.MIN_VOLTAS), String.valueOf(Constantes.MAX_VOLTAS)});
+                        new String[]{String.valueOf(Global.MIN_VOLTAS), String.valueOf(Global.MAX_VOLTAS)});
             }
         };
 
@@ -166,8 +164,8 @@ public class PainelEntradaCliente {
         painelInicio.add(pCp);
 
         comboBoxNivelCorrida = new JComboBox();
-        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_AUTOMATICO));
-        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_MANUAL));
+        comboBoxNivelCorrida.addItem(Lang.msg(Global.CONTROLE_AUTOMATICO));
+        comboBoxNivelCorrida.addItem(Lang.msg(Global.CONTROLE_MANUAL));
 
         JPanel pNv = new JPanel(new GridLayout(1, 2));
 
@@ -461,11 +459,11 @@ public class PainelEntradaCliente {
 
     private void preecherDadosCriarJogo() {
         Integer qtdeVoltas = (Integer) spinnerQtdeVoltas.getValue();
-        if (qtdeVoltas.intValue() >= Constantes.MAX_VOLTAS) {
-            qtdeVoltas = new Integer(Constantes.MAX_VOLTAS);
+        if (qtdeVoltas.intValue() >= Global.MAX_VOLTAS) {
+            qtdeVoltas = new Integer(Global.MAX_VOLTAS);
         }
-        if (qtdeVoltas.intValue() <= Constantes.MIN_VOLTAS) {
-            qtdeVoltas = new Integer(Constantes.MIN_VOLTAS);
+        if (qtdeVoltas.intValue() <= Global.MIN_VOLTAS) {
+            qtdeVoltas = new Integer(Global.MIN_VOLTAS);
         }
         String temporada = (String) comboTemporada.getSelectedItem();
         dadosCriarJogo.setTemporada("t" + temporada);

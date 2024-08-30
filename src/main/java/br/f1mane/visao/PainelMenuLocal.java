@@ -230,7 +230,7 @@ public class PainelMenuLocal {
 
     private String linguagem;
 
-    private String automaitcoManual = Constantes.CONTROLE_AUTOMATICO;
+    private String automaitcoManual = Global.CONTROLE_AUTOMATICO;
 
     public PainelMenuLocal(MainFrame mf) throws Exception {
         this.mainFrame = mf;
@@ -463,11 +463,11 @@ public class PainelMenuLocal {
             return;
         }
         if (automaticoRect.contains(e.getPoint())) {
-            automaitcoManual = Constantes.CONTROLE_AUTOMATICO;
+            automaitcoManual = Global.CONTROLE_AUTOMATICO;
             return;
         }
         if (manualRect.contains(e.getPoint())) {
-            automaitcoManual = Constantes.CONTROLE_MANUAL;
+            automaitcoManual = Global.CONTROLE_MANUAL;
             return;
         }
         if (pneuMoleRect.contains(e.getPoint())) {
@@ -1876,14 +1876,14 @@ public class PainelMenuLocal {
     }
 
     private void menosVoltas() {
-        if (numVoltasSelecionado > Constantes.MIN_VOLTAS) {
+        if (numVoltasSelecionado > Global.MIN_VOLTAS) {
             numVoltasSelecionado--;
         }
 
     }
 
     private void maisVoltas() {
-        if (numVoltasSelecionado < Constantes.MAX_VOLTAS) {
+        if (numVoltasSelecionado < Global.MAX_VOLTAS) {
             numVoltasSelecionado++;
         }
 
@@ -2277,12 +2277,12 @@ public class PainelMenuLocal {
         Font fontOri = g2d.getFont();
         g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
 
-        String facil = Lang.msg(Constantes.CONTROLE_AUTOMATICO).toUpperCase();
+        String facil = Lang.msg(Global.CONTROLE_AUTOMATICO).toUpperCase();
         int tamFacil = Util.calculaLarguraText(facil, g2d);
         automaticoRect.setFrame(x - 15, y - 12, tamFacil + 10, 32);
         g2d.setColor(lightWhite);
         g2d.fill(automaticoRect);
-        if (Constantes.CONTROLE_AUTOMATICO.equals(automaitcoManual)) {
+        if (Global.CONTROLE_AUTOMATICO.equals(automaitcoManual)) {
             g2d.setColor(yel);
             g2d.draw(automaticoRect);
         }
@@ -2291,12 +2291,12 @@ public class PainelMenuLocal {
 
         x += (tamFacil + 15);
 
-        String normal = Lang.msg(Constantes.CONTROLE_MANUAL).toUpperCase();
+        String normal = Lang.msg(Global.CONTROLE_MANUAL).toUpperCase();
         int tamNormal = Util.calculaLarguraText(normal, g2d);
         manualRect.setFrame(x - 15, y - 12, tamNormal + 10, 32);
         g2d.setColor(lightWhite);
         g2d.fill(manualRect);
-        if (Constantes.CONTROLE_MANUAL.equals(automaitcoManual)) {
+        if (Global.CONTROLE_MANUAL.equals(automaitcoManual)) {
             g2d.setColor(yel);
             g2d.draw(manualRect);
         }

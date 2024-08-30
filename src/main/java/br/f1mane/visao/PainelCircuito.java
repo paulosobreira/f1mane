@@ -328,7 +328,9 @@ public class PainelCircuito {
             if (g2d == null) {
                 return;
             }
-            Util.setarHints(g2d);
+            if(Global.setarHints){
+                Util.setarHints(g2d);
+            }
             descontoCentraliza();
             limitesViewPort = (Rectangle) limitesViewPort();
             limitesViewPortFull = (Rectangle) limitesViewPortFull();
@@ -696,7 +698,7 @@ public class PainelCircuito {
             diferencaSuavelReal = (noAtual.getIndex() + nos.size()) - noAtualSuave.getIndex();
         }
 
-        int ganhoSuave = (int) (Constantes.MOD_GANHO_SUAVE * Math.round(diferencaSuavelReal / 100.0));
+        int ganhoSuave = (int) (Global.MOD_GANHO_SUAVE * Math.round(diferencaSuavelReal / 100.0));
 
         if (diferencaSuavelReal == 0) {
             ganhoSuave = 0;
@@ -757,13 +759,13 @@ public class PainelCircuito {
     }
 
     private void desenhaMarcacaoParaCurva(Graphics2D g2d) {
-        if (Logger.ativo || Constantes.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual())) {
-            Constantes.DESENHA_DIFF_REAL_SUAVE = true;
+        if (Logger.ativo || Global.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual())) {
+            Global.DESENHA_DIFF_REAL_SUAVE = true;
         }
         if (pilotoSelecionado == null) {
             return;
         }
-        if ((!Constantes.DESENHA_DIFF_REAL_SUAVE && !pilotoSelecionado.isManualTemporario())
+        if ((!Global.DESENHA_DIFF_REAL_SUAVE && !pilotoSelecionado.isManualTemporario())
                 || isExibeResultadoFinal()
                 || controleJogo.isJogoPausado()
                 || pilotoSelecionado == null

@@ -6,10 +6,8 @@ import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -17,16 +15,13 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import br.f1mane.entidades.Piloto;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.visao.*;
-import br.nnpe.Constantes;
+import br.nnpe.Global;
 import br.nnpe.Logger;
 import br.f1mane.controles.ControleJogoLocal;
 import br.f1mane.controles.InterfaceJogo;
@@ -270,8 +265,8 @@ public class MainFrame extends JFrame {
         };
         maisModGanhoSuave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Constantes.MOD_GANHO_SUAVE++;
-                controleJogo.adicionarInfoDireto("Constantes.MOD_GANHO_SUAVE " + Constantes.MOD_GANHO_SUAVE);
+                Global.MOD_GANHO_SUAVE++;
+                controleJogo.adicionarInfoDireto("Constantes.MOD_GANHO_SUAVE " + Global.MOD_GANHO_SUAVE);
             }
         });
 
@@ -286,8 +281,8 @@ public class MainFrame extends JFrame {
         };
         menosModGanhoSuave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Constantes.MOD_GANHO_SUAVE--;
-                controleJogo.adicionarInfoDireto("Constantes.MOD_GANHO_SUAVE " + Constantes.MOD_GANHO_SUAVE);
+                Global.MOD_GANHO_SUAVE--;
+                controleJogo.adicionarInfoDireto("Constantes.MOD_GANHO_SUAVE " + Global.MOD_GANHO_SUAVE);
             }
         });
 
@@ -441,9 +436,15 @@ public class MainFrame extends JFrame {
 
     public static void main(String[] args) throws IOException {
         if (args != null && args.length > 0) {
-            if ("real".equals(args[0])) {
-                Util.substVogais = false;
+            for (int i = 0; i < args.length; i++) {
+                if ("real".equals(args[i])) {
+                    Util.substVogais = false;
+                }
+                if ("fast".equals(args[i])) {
+                    Global.setarHints = false;
+                }
             }
+
         }
         MainFrame frame = new MainFrame(null);
     }

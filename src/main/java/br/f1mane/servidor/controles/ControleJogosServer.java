@@ -1,13 +1,12 @@
 package br.f1mane.servidor.controles;
 
 import br.f1mane.controles.ControleEstatisticas;
-import br.f1mane.controles.InterfaceJogo;
 import br.f1mane.recursos.idiomas.Lang;
 import br.f1mane.servidor.JogoServidor;
 import br.f1mane.servidor.entidades.BufferTexto;
 import br.f1mane.servidor.entidades.TOs.*;
 import br.f1mane.servidor.entidades.persistencia.CarreiraDadosSrv;
-import br.nnpe.Constantes;
+import br.nnpe.Global;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import org.hibernate.Session;
@@ -332,7 +331,7 @@ public class ControleJogosServer {
 		dadosJogo.setArquivoCircuito(jogoServidor.getCircuitos()
 				.get(jogoServidor.getCircuito().getNome()));
 		dadosJogo.setTemporada(jogoServidor.getTemporada().replaceAll("t", ""));
-		Integer segundosParaIniciar = Integer.valueOf(Constantes.SEGUNDOS_PARA_INICIAR_CORRRIDA.intValue()
+		Integer segundosParaIniciar = Integer.valueOf(Global.SEGUNDOS_PARA_INICIAR_CORRRIDA.intValue()
 				- Util.inteiro(((System.currentTimeMillis()
 				- jogoServidor.getTempoCriacao()) / 1000)));
 		if (segundosParaIniciar.intValue() < 0) {

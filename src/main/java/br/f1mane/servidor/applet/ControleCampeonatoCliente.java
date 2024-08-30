@@ -8,17 +8,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -37,9 +34,8 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 import br.f1mane.controles.ControleRecursos;
-import br.nnpe.Constantes;
+import br.nnpe.Global;
 import br.nnpe.Logger;
-import br.f1mane.controles.ControleJogoLocal;
 import br.f1mane.entidades.ConstrutoresPontosCampeonato;
 import br.f1mane.entidades.PilotosPontosCampeonato;
 import br.f1mane.servidor.entidades.Comandos;
@@ -261,15 +257,15 @@ public class ControleCampeonatoCliente {
 		grid.add(new JLabel() {
 			public String getText() {
 				return Lang.msg("110",
-						new String[]{String.valueOf(Constantes.MIN_VOLTAS), String.valueOf(Constantes.MAX_VOLTAS)});
+						new String[]{String.valueOf(Global.MIN_VOLTAS), String.valueOf(Global.MAX_VOLTAS)});
 			}
 		});
 		spinnerQtdeVoltas = new JSpinner();
 		spinnerQtdeVoltas.setValue(new Integer(12));
 		grid.add(spinnerQtdeVoltas);
 		JComboBox comboBoxNivelCorrida = new JComboBox();
-		comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_AUTOMATICO));
-		comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_MANUAL));
+		comboBoxNivelCorrida.addItem(Lang.msg(Global.CONTROLE_AUTOMATICO));
+		comboBoxNivelCorrida.addItem(Lang.msg(Global.CONTROLE_MANUAL));
 		grid.add(new JLabel() {
 			public String getText() {
 				return Lang.msg("212");
@@ -330,13 +326,13 @@ public class ControleCampeonatoCliente {
 			return;
 		}
 		Integer qtdeVolta = (Integer) spinnerQtdeVoltas.getValue();
-		if (qtdeVolta == null || qtdeVolta.intValue() < Constantes.MIN_VOLTAS) {
+		if (qtdeVolta == null || qtdeVolta.intValue() < Global.MIN_VOLTAS) {
 			JOptionPane.showMessageDialog(compPai,
 					Lang.msg("110",
-							new String[]{String.valueOf(Constantes.MIN_VOLTAS),
-									String.valueOf(Constantes.MAX_VOLTAS)}),
-					Lang.msg("110", new String[]{String.valueOf(Constantes.MIN_VOLTAS),
-							String.valueOf(Constantes.MAX_VOLTAS)}),
+							new String[]{String.valueOf(Global.MIN_VOLTAS),
+									String.valueOf(Global.MAX_VOLTAS)}),
+					Lang.msg("110", new String[]{String.valueOf(Global.MIN_VOLTAS),
+							String.valueOf(Global.MAX_VOLTAS)}),
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}

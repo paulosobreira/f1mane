@@ -1,6 +1,5 @@
 package br.f1mane.servidor.applet;
 
-import java.awt.Point;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
@@ -14,7 +13,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import br.nnpe.Constantes;
+import br.nnpe.Global;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -742,7 +741,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public BufferedImage carregaBackGround(String backGround) {
-		if (isCorridaIniciada() && monitorJogo.getLatenciaReal() > Constantes.LATENCIA_MAX) {
+		if (isCorridaIniciada() && monitorJogo.getLatenciaReal() > Global.LATENCIA_MAX) {
 			try {
 				Thread.sleep(Util.intervalo(5000, 10000));
 			} catch (InterruptedException e) {
@@ -960,7 +959,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		if (monitorJogo == null) {
 			return false;
 		}
-		return monitorJogo.getLatenciaReal() > Constantes.LATENCIA_MIN;
+		return monitorJogo.getLatenciaReal() > Global.LATENCIA_MIN;
 	}
 
 	@Override
@@ -1361,7 +1360,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public String getAutomaticoManual() {
-		return Constantes.CONTROLE_AUTOMATICO;
+		return Global.CONTROLE_AUTOMATICO;
 	}
 
 

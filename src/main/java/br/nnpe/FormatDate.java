@@ -365,7 +365,7 @@ public class FormatDate extends Object {
 	 */
 	public static java.sql.Timestamp parseTimestamp(Date DATE) throws Exception {
 		java.sql.Timestamp date;
-		date = parseTimestamp(DATE, Constantes.DATA_FORMATO);
+		date = parseTimestamp(DATE, Global.DATA_FORMATO);
 
 		return date;
 	}

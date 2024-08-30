@@ -8,14 +8,13 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import br.f1mane.servidor.JogoServidor;
 import br.f1mane.servidor.entidades.TOs.DadosPaddock;
 import br.f1mane.servidor.entidades.TOs.SessaoCliente;
 import org.hibernate.Session;
 
-import br.nnpe.Constantes;
+import br.nnpe.Global;
 import br.nnpe.Logger;
 import br.nnpe.PassGenerator;
 import br.nnpe.TokenGenerator;
@@ -720,7 +719,7 @@ public class ControlePaddockServidor {
     }
 
     private void salvarAcessoSessaoGoogle(SessaoCliente sessaoCliente) {
-        if (!Constantes.DATABASE) {
+        if (!Global.DATABASE) {
             return;
         }
         JogadorDadosSrv jogadorDadosSrv;

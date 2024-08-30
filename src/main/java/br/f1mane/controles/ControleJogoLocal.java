@@ -7,7 +7,6 @@ import br.f1mane.servidor.JogoServidor;
 import br.f1mane.servidor.entidades.TOs.TravadaRoda;
 import br.f1mane.visao.GerenciadorVisual;
 import br.f1mane.visao.PainelTabelaResultadoFinal;
-import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;

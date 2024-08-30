@@ -5,7 +5,7 @@ import br.f1mane.entidades.*;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
 import br.f1mane.visao.PainelCampeonato;
-import br.nnpe.Constantes;
+import br.nnpe.Global;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
@@ -212,15 +212,15 @@ public class ControleCampeonato {
 
             public String getText() {
                 return Lang.msg("110",
-                        new String[]{String.valueOf(Constantes.MIN_VOLTAS), String.valueOf(Constantes.MAX_VOLTAS)});
+                        new String[]{String.valueOf(Global.MIN_VOLTAS), String.valueOf(Global.MAX_VOLTAS)});
             }
         });
         JSpinner spinnerQtdeVoltas = new JSpinner();
         spinnerQtdeVoltas.setValue(new Integer(12));
         grid.add(spinnerQtdeVoltas);
         JComboBox comboBoxNivelCorrida = new JComboBox();
-        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_AUTOMATICO));
-        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_MANUAL));
+        comboBoxNivelCorrida.addItem(Lang.msg(Global.CONTROLE_AUTOMATICO));
+        comboBoxNivelCorrida.addItem(Lang.msg(Global.CONTROLE_MANUAL));
         grid.add(new JLabel() {
             public String getText() {
                 return Lang.msg("212");
@@ -261,13 +261,13 @@ public class ControleCampeonato {
             return;
         }
         Integer qtdeVolta = (Integer) spinnerQtdeVoltas.getValue();
-        if (qtdeVolta == null || qtdeVolta.intValue() < Constantes.MIN_VOLTAS) {
+        if (qtdeVolta == null || qtdeVolta.intValue() < Global.MIN_VOLTAS) {
             JOptionPane.showMessageDialog(mainFrame,
                     Lang.msg("110",
-                            new String[]{String.valueOf(Constantes.MIN_VOLTAS),
-                                    String.valueOf(Constantes.MAX_VOLTAS)}),
-                    Lang.msg("110", new String[]{String.valueOf(Constantes.MIN_VOLTAS),
-                            String.valueOf(Constantes.MAX_VOLTAS)}),
+                            new String[]{String.valueOf(Global.MIN_VOLTAS),
+                                    String.valueOf(Global.MAX_VOLTAS)}),
+                    Lang.msg("110", new String[]{String.valueOf(Global.MIN_VOLTAS),
+                            String.valueOf(Global.MAX_VOLTAS)}),
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -658,8 +658,8 @@ public class ControleCampeonato {
         JPanel nivelPanel = new JPanel(new GridLayout(1, 2));
 
         final JComboBox comboBoxNivelCorrida = new JComboBox();
-        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_AUTOMATICO));
-        comboBoxNivelCorrida.addItem(Lang.msg(Constantes.CONTROLE_MANUAL));
+        comboBoxNivelCorrida.addItem(Lang.msg(Global.CONTROLE_AUTOMATICO));
+        comboBoxNivelCorrida.addItem(Lang.msg(Global.CONTROLE_MANUAL));
         nivelPanel.add(new JLabel() {
             public String getText() {
                 return Lang.msg("212");
@@ -783,7 +783,7 @@ public class ControleCampeonato {
 
             public String getText() {
                 return Lang.msg("110",
-                        new String[]{String.valueOf(Constantes.MIN_VOLTAS), String.valueOf(Constantes.MAX_VOLTAS)});
+                        new String[]{String.valueOf(Global.MIN_VOLTAS), String.valueOf(Global.MAX_VOLTAS)});
             }
         });
         JSpinner spinnerQtdeVoltas = new JSpinner();
@@ -907,13 +907,13 @@ public class ControleCampeonato {
             return;
         }
         Integer qtdeVolta = (Integer) spinnerQtdeVoltas.getValue();
-        if (qtdeVolta == null || qtdeVolta.intValue() < Constantes.MIN_VOLTAS) {
+        if (qtdeVolta == null || qtdeVolta.intValue() < Global.MIN_VOLTAS) {
             JOptionPane.showMessageDialog(mainFrame,
                     Lang.msg("110",
-                            new String[]{String.valueOf(Constantes.MIN_VOLTAS),
-                                    String.valueOf(Constantes.MAX_VOLTAS)}),
-                    Lang.msg("110", new String[]{String.valueOf(Constantes.MIN_VOLTAS),
-                            String.valueOf(Constantes.MAX_VOLTAS)}),
+                            new String[]{String.valueOf(Global.MIN_VOLTAS),
+                                    String.valueOf(Global.MAX_VOLTAS)}),
+                    Lang.msg("110", new String[]{String.valueOf(Global.MIN_VOLTAS),
+                            String.valueOf(Global.MAX_VOLTAS)}),
                     JOptionPane.ERROR_MESSAGE);
             return;
         }

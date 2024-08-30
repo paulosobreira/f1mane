@@ -900,11 +900,11 @@ public class Piloto implements Serializable, PilotoSuave {
             }
             setNumeroVolta(getNumeroVolta() + 1);
             setBoxSaiuNestaVolta(false);
-            processaAjustesPosQualificacao(Constantes.MAX_VOLTAS / (controleJogo.totalVoltasCorrida() == 0 ? 1 : controleJogo.totalVoltasCorrida()));
+            processaAjustesPosQualificacao(Global.MAX_VOLTAS / (controleJogo.totalVoltasCorrida() == 0 ? 1 : controleJogo.totalVoltasCorrida()));
             processaUltimosDesgastesPneuECombustivel();
             index = diff;
             if (getNumeroVolta() > 0) {
-                getCarro().setCargaErs(Constantes.CARGA_ERS);
+                getCarro().setCargaErs(Global.CARGA_ERS);
             }
             ativarErs = false;
             controleJogo.processaVoltaRapida(this);
@@ -1197,7 +1197,7 @@ public class Piloto implements Serializable, PilotoSuave {
         if (controleJogo.isModoQualify()) {
             return;
         }
-        int durabilidade = Constantes.DURABILIDADE_AREOFOLIO / 2;
+        int durabilidade = Global.DURABILIDADE_AREOFOLIO / 2;
         if (getCarro().getDurabilidadeAereofolio() <= durabilidade) {
             setAlertaAerefolio(true);
         }
@@ -1405,7 +1405,7 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     public double getValorLimiteStressePararErrarCurva(InterfaceJogo controleJogo) {
-        return Constantes.LIMITE_ESTRESSE_PARA_RERRAR_CURVA;
+        return Global.LIMITE_ESTRESSE_PARA_RERRAR_CURVA;
     }
 
     private void processaGanhoDanificado() {
@@ -1592,7 +1592,11 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     private boolean verificaPodeUsarDRS(InterfaceJogo controleJogo) {
-        if (controleJogo.isDrs() && getPtosBox() == 0 && getNumeroVolta() > 1 && !controleJogo.isSafetyCarNaPista() && !controleJogo.isChovendo() && !controleJogo.isCorridaTerminada() && carroPilotoDaFrenteRetardatario != null && getNoAtual().verificaRetaOuLargada() && calculaDiffParaProximoRetardatario < Constantes.LIMITE_DRS) {
+        if (getPtosBox() != 0) {
+            podeUsarDRS = false;
+            return false;
+        }
+        if (controleJogo.isDrs() && getNumeroVolta() > 1 && !controleJogo.isSafetyCarNaPista() && !controleJogo.isChovendo() && !controleJogo.isCorridaTerminada() && carroPilotoDaFrenteRetardatario != null && getNoAtual().verificaRetaOuLargada() && calculaDiffParaProximoRetardatario < Global.LIMITE_DRS) {
             No obterCurvaAnterior = controleJogo.obterCurvaAnterior(getNoAtual());
             No obterProxCurva = controleJogo.obterProxCurva(getNoAtual());
             if (obterCurvaAnterior == null || obterProxCurva == null) {
@@ -1603,7 +1607,7 @@ public class Piloto implements Serializable, PilotoSuave {
             if (indexProxCurva < indexCurvaAnterior) {
                 indexProxCurva += controleJogo.getNosDaPista().size();
             }
-            if ((indexProxCurva - indexCurvaAnterior) >= Constantes.TAMANHO_RETA_DRS) {
+            if ((indexProxCurva - indexCurvaAnterior) >= Global.TAMANHO_RETA_DRS) {
                 if (getNoAtual().getIndex() > indexCurvaAnterior && getNoAtual().getIndex() < indexCurvaAnterior + 40) {
                     podeUsarDRS = true;
                 }
@@ -1628,7 +1632,7 @@ public class Piloto implements Serializable, PilotoSuave {
         if (colisao != null || isRecebeuBanderada() || controleJogo.isModoQualify() || verificaDesconcentrado()) {
             return;
         }
-        if (isJogadorHumano() && Constantes.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual())) {
+        if (isJogadorHumano() && Global.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual())) {
             return;
         }
 
@@ -1721,7 +1725,7 @@ public class Piloto implements Serializable, PilotoSuave {
         if (controleJogo.isModoQualify()) {
             return;
         }
-        if (isJogadorHumano() && Constantes.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual())) {
+        if (isJogadorHumano() && Global.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual())) {
             return;
         }
         if (!noAtual.verificaRetaOuLargada() && !controleJogo.isSafetyCarNaPista()) {
@@ -1911,7 +1915,7 @@ public class Piloto implements Serializable, PilotoSuave {
             return;
         }
         limiteEvitarBatrCarroFrente = 150;
-        if (getCarro().getDurabilidadeAereofolio() < (Constantes.DURABILIDADE_AREOFOLIO / 2)) {
+        if (getCarro().getDurabilidadeAereofolio() < (Global.DURABILIDADE_AREOFOLIO / 2)) {
             limiteEvitarBatrCarroFrente += 100;
         }
         if (piloto.getColisao() != null) {
