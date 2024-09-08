@@ -395,8 +395,9 @@ public class Carro implements Serializable {
         boolean testeAerodinamica = testeAerodinamica();
         boolean testePotencia = testePotencia();
         boolean testeFreios = testeFreios(controleJogo);
+
         if (no.verificaRetaOuLargada()) {
-            if (MENOS_ASA.equals(getAsa())) {
+            if (MENOS_ASA.equals(getAsa()) && !getPiloto().isAlertaAerefolio()) {
                 ganho *= testeAerodinamica && testePotencia ? 1.05 : 1.01;
             } else if (MAIS_ASA.equals(getAsa())) {
                 ganho *= testeAerodinamica ? 0.97 : 0.95;
@@ -405,7 +406,7 @@ public class Carro implements Serializable {
         if (no.verificaCurvaAlta() || no.verificaCurvaBaixa()) {
             if (MENOS_ASA.equals(getAsa())) {
                 ganho *= testeAerodinamica ? 0.93 : 0.9;
-            } else if (MAIS_ASA.equals(getAsa())) {
+            } else if (MAIS_ASA.equals(getAsa()) && !getPiloto().isAlertaAerefolio()) {
                 ganho *= testeAerodinamica && testeFreios ? 1.09 : 1.07;
             }
         }
