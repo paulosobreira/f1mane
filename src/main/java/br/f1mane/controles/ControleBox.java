@@ -194,6 +194,12 @@ public class ControleBox {
 
     public void processarPilotoBox(Piloto piloto) {
         int cont = piloto.getNoAtual().getIndex();
+        piloto.setFaiscas(false);
+        piloto.setTravouRodas(false);
+        piloto.setAtivarDRS(false);
+        piloto.setAtivarDRS(false);
+        piloto.setMarcaPneu(false);
+        piloto.setColisao(null);
         if (!(cont > (circuito.getEntradaBoxIndex() - 50) && cont < (circuito.getEntradaBoxIndex() + 50))
                 && (piloto.getPtosBox() <= 0)) {
             return;

@@ -2,6 +2,7 @@ package br.f1mane.entidades;
 
 import java.io.Serializable;
 
+import br.f1mane.controles.ControleCiclo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -86,6 +87,9 @@ public class Volta implements Serializable {
 
 	public String getTempoVoltaFormatado() {
 		Long fullnum = obterTempoVolta();
+		if(!ControleCiclo.VALENDO){
+			fullnum *= 900;
+		}
 		return ControleEstatisticas.formatarTempo(fullnum);
 	}
 
