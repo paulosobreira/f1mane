@@ -3,12 +3,12 @@
 ## Fl-MANE por Paulo Sobreira
 - Fl-MANE (Formula legends MANager & Engineer) é um jogo de gerenciamento de corrida.
 - Configure sua corrida escolhendo número de voltas, tipo de clima e configuração do carro.
-- Envie comandos sobre como guiar e faz ajustes telemétricos do carro.
-- É possível escolher estratégia de box e muda-lá a qualquer momento na corrida.
-- Configuração da corrida com varias opções de como numero de voltas e tipo de clima e etc.
-- O jogo gerencia eventos dinamicos como mudança de clima e acidentes entre os corredores.
+- Envie comandos sobre como guiar e fazer ajustes de potência do carro.
+- É possível escolher estratégia de box e mudá-la a qualquer momento na corrida.
+- Configuração da corrida com várias opções de como número de voltas e tipo de clima e etc.
+- O jogo gera eventos dinâmicos como mudança de clima e acidentes entre os corredores.
 - Várias temporadas e pistas disponíveis
-- No modo campeonato, poderá escolher um piloto/equipe iniciante e desafiar rivais mais promissores e caso vença poderá assumir o controle da novo piloto/equipe.
+- No modo campeonato, poderá escolher um piloto/equipe iniciante e desafiar rivais mais promissores e caso vença poderá assumir o controle do novo piloto/equipe.
 
 ## Controles:
 
