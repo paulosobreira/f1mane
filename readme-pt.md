@@ -1,8 +1,6 @@
-# Fl-Mane
-
-## Fl-MANE
+# Fl-MANE
 Fl-MANE (Formula Legends Manager & Engineer) é um jogo de gerenciamento de corridas de Fórmula 1 desenvolvido por Paulo Sobreira. No jogo, os jogadores assumem o papel de gerente e engenheiro de uma equipe de corrida, tomando decisões estratégicas e técnicas para otimizar o desempenho do carro e do piloto durante as corridas.
-### Principais características do Fl-MANE:
+## Principais características do Fl-MANE:
 - Configuração da Corrida: Os jogadores podem personalizar diversos aspectos da corrida, como o número de voltas, condições climáticas e configurações do carro.
 - Comandos de Pilotagem: Durante a corrida, é possível enviar comandos ao piloto, ajustando o estilo de condução e a potência do motor para equilibrar desempenho e conservação de recursos.
 - Estratégia de Pit Stop: O jogo permite que os jogadores definam e modifiquem a estratégia de pit stop a qualquer momento, considerando fatores como desgaste de pneus, consumo de combustível e condições da pista.
@@ -54,5 +52,6 @@ docker compose up
 ```
 
 >Url de acesso:
-
+```
 link_gerado_playwithdocker/**flmane/html5/index.html**
+```

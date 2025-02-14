@@ -1,8 +1,6 @@
-#Fl-Mane
-
-##Fl-MANE
+# Fl-MANE
 Fl-MANE (Formula Legends Manager & Engineer) is a Formula 1 racing management game developed by Paulo Sobreira. In the game, players take on the role of a racing team manager and engineer, making strategic and technical decisions to improve the performance of the car and driver during races.
-### Main features of Fl-MANE:
+## Main features of Fl-MANE:
 - Race Setup: Players can customize various aspects of the race, such as the number of laps, weather conditions and car settings.
 - Driving Commands: During the race, it is possible to send commands to the driver, adjusting the driving style and engine power to balance performance and resource management.
 - Pit Stop Strategy: The game allows players to define and modify a pit stop strategy at any time, considering factors such as tire wear, fuel consumption and track conditions.
@@ -29,7 +27,7 @@ Fl-MANE (Formula Legends Manager & Engineer) is a Formula 1 racing management ga
 - Java 11 is required to run the game
 - No Windows uses Fl-Mane.bat, no Linux uses Fl-Mane.sh
 
-#Technical information
+# Technical information
 
 ## Maven and Docker construction
 
@@ -53,5 +51,6 @@ docker compose
 ```
 
 >Access URL:
-
+```
 link_generated_by_playwithdocker/**flmane/html5/index.html**
+```
