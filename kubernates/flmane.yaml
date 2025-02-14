@@ -1,0 +1,32 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "flmane"
+  namespace: "default"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "flmane"
+  template:
+    metadata:
+      labels:
+        app: "flmane"
+    spec:
+      containers:
+        - name: "flmane"
+          image: "sowbreira/flmane"
+
+---
+apiVersion: "autoscaling/v2"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "flmane-hpa"
+  namespace: "default"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "flmane"
+    apiVersion: "apps/v1"
+  minReplicas: 1
+  maxReplicas: 1
