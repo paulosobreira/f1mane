@@ -493,7 +493,6 @@ public class ControleJogosServer {
 			piloto.setAtivarDRS(true);
 			int giroAntes = piloto.getCarro().getGiro();
 			piloto.getCarro().mudarGiroMotor(giro);
-			piloto.setManualTemporario();
 			return Boolean.valueOf(giroAntes != piloto.getCarro().getGiro());
 		} catch (Exception e) {
 			Logger.logarExept(e);
@@ -516,7 +515,6 @@ public class ControleJogosServer {
 			}
 			piloto.setAtivarDRS(true);
 			piloto.setModoPilotagem(agressividade);
-			piloto.setManualTemporario();
 			return Boolean.valueOf(agressividade.equals(piloto.getModoPilotagem()));
 		} catch (Exception e) {
 			Logger.logarExept(e);
@@ -894,7 +892,6 @@ public class ControleJogosServer {
 		if (piloto == null) {
 			return null;
 		}
-		piloto.setManualTemporario();
 		return null;
 	}
 
@@ -926,7 +923,6 @@ public class ControleJogosServer {
 				return Boolean.FALSE;
 			}
 			piloto.setAtivarDRS(true);
-			piloto.setManualTemporario();
 			return Boolean.valueOf(piloto.mudarTracado(Integer.parseInt(tracado),
 					obterJogoPeloNome(sessaoCliente.getJogoAtual())));
 		} catch (Exception e) {
@@ -1135,7 +1131,6 @@ public class ControleJogosServer {
 				return Boolean.FALSE;
 			}
 			piloto.setAtivarDRS(true);
-			piloto.setManualTemporario();
 			return Boolean.valueOf(Carro.MENOS_ASA.equals(piloto.getCarro().getAsa()));
 		} catch (Exception e) {
 			Logger.logarExept(e);
@@ -1150,7 +1145,6 @@ public class ControleJogosServer {
 				return Boolean.FALSE;
 			}
 			piloto.setAtivarErs(!piloto.isAtivarErs());
-			piloto.setManualTemporario();
 			return Boolean.valueOf(piloto.isAtivarErs());
 		} catch (Exception e) {
 			Logger.logarExept(e);

@@ -2,6 +2,7 @@ package br.f1mane.entidades;
 
 import br.f1mane.controles.InterfaceJogo;
 import br.f1mane.recursos.idiomas.Lang;
+import br.f1mane.servidor.JogoServidor;
 import br.f1mane.visao.PainelCircuito;
 import br.nnpe.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -1632,9 +1633,11 @@ public class Piloto implements Serializable, PilotoSuave {
         if (colisao != null || isRecebeuBanderada() || controleJogo.isModoQualify() || verificaDesconcentrado()) {
             return;
         }
-        if (isJogadorHumano() && Global.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual())) {
+        if (isJogadorHumano() &&
+                (Global.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual()) || controleJogo instanceof JogoServidor)) {
             return;
         }
+
 
         if (isManualTemporario()) {
             decrementaManualTemporario();
