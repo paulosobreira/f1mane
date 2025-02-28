@@ -16,7 +16,8 @@ spec:
       containers:
         - name: "flmane"
           image: "sowbreira/flmane"
-
+          ports:
+            - containerPort: 8080  # A porta que o Tomcat escuta          
 ---
 apiVersion: "autoscaling/v2"
 kind: "HorizontalPodAutoscaler"
@@ -30,3 +31,18 @@ spec:
     apiVersion: "apps/v1"
   minReplicas: 1
   maxReplicas: 1
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "flmane-service"
+  namespace: "default"
+spec:
+  selector:
+    app: "flmane"
+  ports:
+    - protocol: TCP
+      port: 80         # A porta externa do Service
+      targetPort: 8080    # A porta do contêiner
+  type: LoadBalancer  # Você pode mudar para ClusterIP ou NodePort conforme necessário
