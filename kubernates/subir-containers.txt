@@ -3,6 +3,7 @@ kubectl delete all --all -A
 kubectl delete pvc --all
 kubectl delete configmap --all
 kubectl delete secret --all
+kubectl delete services --all
 kubectl create -f mysql.yaml
 kubectl create -f flmane.yaml
 
