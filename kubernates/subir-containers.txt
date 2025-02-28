@@ -1,10 +1,12 @@
 GCloud Kubernates
-kubectl create -f statefulset.yaml
-kubectl create -f servico-banco.yaml
-kubectl create -f permissoes.yaml
+kubectl delete all --all -A
+kubectl delete pvc --all
+kubectl delete configmap --all
+kubectl delete secret --all
+kubectl create -f mysql.yaml
 kubectl create -f flmane.yaml
 
 Bkp base
-kubectl exec -ti statefulset-mysql-0 -- sh -c 'exec mysqldump f1mane -uroot'  > ./f1mane.sql
+kubectl exec -ti mysql-statefulset-0 -- sh -c 'exec mysqldump f1mane -uroot'  > ./f1mane.sql
 
 
