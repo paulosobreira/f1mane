@@ -1086,7 +1086,7 @@ public class Piloto implements Serializable, PilotoSuave {
             setPtosPista(Util.inteiro(novoModificador + getPtosPista()));
             setVelocidade(Util.intervalo(50, 65));
             if (carroPilotoDaFrenteRetardatario != null && getTracado() == carroPilotoDaFrenteRetardatario.getPiloto().getTracado()) {
-                mudarTracado(Util.intervalo(0, 2), controleJogo, true);
+                mudarTracado(Util.intervalo(0, 2), controleJogo);
             }
             return index;
         }
@@ -1638,7 +1638,6 @@ public class Piloto implements Serializable, PilotoSuave {
             return;
         }
 
-
         if (isManualTemporario()) {
             decrementaManualTemporario();
             return;
@@ -1775,7 +1774,7 @@ public class Piloto implements Serializable, PilotoSuave {
 
         } else if ((evitaBaterCarroFrente && carroPilotoDaFrenteRetardatario != null && getTracado() == carroPilotoDaFrenteRetardatario.getPiloto().getTracado()) || calculaDiffParaProximoRetardatario < (testeHabilidadePiloto() ? 100 : 150)) {
             desviaPilotoNaFrente(this, carroPilotoDaFrenteRetardatario.getPiloto(), controleJogo);
-        } else if (!isJogadorHumano() && testeHabilidadePiloto() && pontoEscape != null && calculaDiffParaProximoRetardatario > 150 && distanciaEscape < (Carro.RAIO_DERRAPAGEM)) {
+        } else if (controleJogo.getNumVoltaAtual() > 1 && !isJogadorHumano() && testeHabilidadePiloto() && pontoEscape != null && calculaDiffParaProximoRetardatario > 150 && distanciaEscape < (Carro.RAIO_DERRAPAGEM)) {
             if (getTracado() != 0) {
                 mudarTracado(0, controleJogo);
             } else {
