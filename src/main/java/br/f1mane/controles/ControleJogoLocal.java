@@ -1600,7 +1600,7 @@ public class ControleJogoLocal extends ControleRecursos
     }
 
     @Override
-    public void forcaQuerbraAereofolio(Piloto piloto) {
+    public void forcaQuebraAereofolio(Piloto piloto) {
         if (piloto == null) {
             return;
         }

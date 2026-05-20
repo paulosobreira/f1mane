@@ -486,9 +486,9 @@ public class MainPanelEditor extends JPanel {
         });
         pistaJList.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
-                int keyCoode = e.getKeyCode();
+                int keyCode = e.getKeyCode();
 
-                if (keyCoode == KeyEvent.VK_DELETE) {
+                if (keyCode == KeyEvent.VK_DELETE) {
                     if (pistaJList.getSelectedValue() == null) {
                         return;
                     }
@@ -547,9 +547,9 @@ public class MainPanelEditor extends JPanel {
         });
         boxJList.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
-                int keyCoode = e.getKeyCode();
+                int keyCode = e.getKeyCode();
 
-                if (keyCoode == KeyEvent.VK_DELETE) {
+                if (keyCode == KeyEvent.VK_DELETE) {
                     if (boxJList.getSelectedValue() == null) {
                         return;
                     }

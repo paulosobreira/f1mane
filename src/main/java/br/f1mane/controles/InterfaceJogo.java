@@ -361,7 +361,7 @@ public interface InterfaceJogo {
 
     public void atualizaInfoDebug(StringBuilder buffer);
 
-    public void forcaQuerbraAereofolio(Piloto piloto);
+    public void forcaQuebraAereofolio(Piloto piloto);
 
     public boolean isAtualizacaoSuave();
 

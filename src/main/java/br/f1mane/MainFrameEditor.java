@@ -242,11 +242,11 @@ public class MainFrameEditor extends JFrame {
         removerKeyListeners();
         this.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
-                int keyCoode = e.getKeyCode();
+                int keyCode = e.getKeyCode();
                 if (editor == null) {
                     return;
                 }
-                if (keyCoode == KeyEvent.VK_F8) {
+                if (keyCode == KeyEvent.VK_F8) {
                     try {
                         editor.salvarPista();
                     } catch (IOException ex) {
@@ -255,15 +255,15 @@ public class MainFrameEditor extends JFrame {
                 }
                 if (e.isAltDown()) {
                     altApertado = true;
-                    if (keyCoode == KeyEvent.VK_LEFT) {
+                    if (keyCode == KeyEvent.VK_LEFT) {
                         editor.esquerdaObj();
-                    } else if (keyCoode == KeyEvent.VK_RIGHT) {
+                    } else if (keyCode == KeyEvent.VK_RIGHT) {
                         editor.direitaObj();
-                    } else if (keyCoode == KeyEvent.VK_UP) {
+                    } else if (keyCode == KeyEvent.VK_UP) {
                         editor.cimaObj();
-                    } else if (keyCoode == KeyEvent.VK_DOWN) {
+                    } else if (keyCode == KeyEvent.VK_DOWN) {
                         editor.baixoObj();
-                    } else if (keyCoode == KeyEvent.VK_C) {
+                    } else if (keyCode == KeyEvent.VK_C) {
                         editor.copiarObjeto();
                     }
                     return;
@@ -272,30 +272,30 @@ public class MainFrameEditor extends JFrame {
                 }
                 if (e.isShiftDown()) {
                     shiftApertado = true;
-                    if (keyCoode == KeyEvent.VK_RIGHT) {
+                    if (keyCode == KeyEvent.VK_RIGHT) {
                         editor.maisLargura();
-                    } else if (keyCoode == KeyEvent.VK_LEFT) {
+                    } else if (keyCode == KeyEvent.VK_LEFT) {
                         editor.menosLargura();
-                    } else if (keyCoode == KeyEvent.VK_UP) {
+                    } else if (keyCode == KeyEvent.VK_UP) {
                         editor.maisAltura();
-                    } else if (keyCoode == KeyEvent.VK_DOWN) {
+                    } else if (keyCode == KeyEvent.VK_DOWN) {
                         editor.menosAltura();
                     }
                     return;
                 } else {
                     shiftApertado = false;
                 }
-                if (keyCoode == KeyEvent.VK_LEFT) {
+                if (keyCode == KeyEvent.VK_LEFT) {
                     editor.esquerda();
-                } else if (keyCoode == KeyEvent.VK_RIGHT) {
+                } else if (keyCode == KeyEvent.VK_RIGHT) {
                     editor.direita();
-                } else if (keyCoode == KeyEvent.VK_UP) {
+                } else if (keyCode == KeyEvent.VK_UP) {
                     editor.cima();
-                } else if (keyCoode == KeyEvent.VK_DOWN) {
+                } else if (keyCode == KeyEvent.VK_DOWN) {
                     editor.baixo();
-                } else if (keyCoode == KeyEvent.VK_Z) {
+                } else if (keyCode == KeyEvent.VK_Z) {
                     editor.menosAngulo();
-                } else if (keyCoode == KeyEvent.VK_X) {
+                } else if (keyCode == KeyEvent.VK_X) {
                     editor.maisAngulo();
                 }
             }

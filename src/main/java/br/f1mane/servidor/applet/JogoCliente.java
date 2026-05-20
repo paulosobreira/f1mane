@@ -1327,7 +1327,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public void forcaQuerbraAereofolio(Piloto piloto) {
+	public void forcaQuebraAereofolio(Piloto piloto) {
 		// TODO Auto-generated method stub
 
 	}

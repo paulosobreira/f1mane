@@ -9,7 +9,7 @@ import br.f1mane.recursos.idiomas.Lang;
 /**
  * @author Paulo Sobreira
  */
-public class ThreadRecolihimentoCarro extends Thread {
+public class ThreadRecolhimentoCarro extends Thread {
 	private final ControleJogoLocal controleJogo;
 	private final Piloto piloto;
 	private final SafetyCar safetyCar;
@@ -20,8 +20,8 @@ public class ThreadRecolihimentoCarro extends Thread {
 	 * @param piloto
 	 * @param safetyCar
 	 */
-	public ThreadRecolihimentoCarro(ControleJogoLocal controleJogo,
-			Piloto piloto, SafetyCar safetyCar) {
+	public ThreadRecolhimentoCarro(ControleJogoLocal controleJogo,
+								   Piloto piloto, SafetyCar safetyCar) {
 		super();
 		this.controleJogo = controleJogo;
 		this.piloto = piloto;
