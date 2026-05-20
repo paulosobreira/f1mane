@@ -267,52 +267,52 @@ public class GerenciadorVisual {
                     return;
                 }
                 lastPress = now;
-                int keyCoode = e.getKeyCode();
+                int keyCode = e.getKeyCode();
 
-                if (keyCoode == KeyEvent.VK_A) {
+                if (keyCode == KeyEvent.VK_A) {
                     controleJogo.mudarGiroMotor(Carro.GIRO_MIN);
                 }
-                if (keyCoode == KeyEvent.VK_S) {
+                if (keyCode == KeyEvent.VK_S) {
                     controleJogo.mudarGiroMotor(Carro.GIRO_NOR);
                 }
-                if (keyCoode == KeyEvent.VK_D) {
+                if (keyCode == KeyEvent.VK_D) {
                     controleJogo.mudarGiroMotor(Carro.GIRO_MAX);
                 }
-                if (keyCoode == KeyEvent.VK_B) {
+                if (keyCode == KeyEvent.VK_B) {
                     if (painelCircuito != null) {
                         painelCircuito.mudarModoBox();
                     } else {
                         mudarModoBox();
                     }
                 }
-                if (keyCoode == KeyEvent.VK_Z) {
+                if (keyCode == KeyEvent.VK_Z) {
                     mudarModoPilotagem(Piloto.LENTO);
                 }
-                if (keyCoode == KeyEvent.VK_X) {
+                if (keyCode == KeyEvent.VK_X) {
                     mudarModoPilotagem(Piloto.NORMAL);
                 }
-                if (keyCoode == KeyEvent.VK_C) {
+                if (keyCode == KeyEvent.VK_C) {
                     mudarModoPilotagem(Piloto.AGRESSIVO);
                 }
 
-                if (keyCoode == KeyEvent.VK_Q) {
+                if (keyCode == KeyEvent.VK_Q) {
                     controleJogo.pilotoSelecionadoMinimo();
                 }
-                if (keyCoode == KeyEvent.VK_W) {
+                if (keyCode == KeyEvent.VK_W) {
                     controleJogo.pilotoSelecionadoNormal();
                 }
-                if (keyCoode == KeyEvent.VK_E) {
+                if (keyCode == KeyEvent.VK_E) {
                     controleJogo.pilotoSelecionadoMaximo();
                 }
 
-                if (keyCoode == KeyEvent.VK_ESCAPE) {
+                if (keyCode == KeyEvent.VK_ESCAPE) {
                     controleJogo.pausarJogo();
                     controleJogo.ativaVerControles();
                 }
-                if (keyCoode == KeyEvent.VK_G) {
+                if (keyCode == KeyEvent.VK_G) {
                     setManualTemporario();
                 }
-                if (keyCoode == KeyEvent.VK_LEFT) {
+                if (keyCode == KeyEvent.VK_LEFT) {
                     if (controleJogo.getPilotoJogador() == null) {
                         return;
                     }
@@ -325,7 +325,7 @@ public class GerenciadorVisual {
                         mudarPos1();
                     }
                 }
-                if (keyCoode == KeyEvent.VK_RIGHT) {
+                if (keyCode == KeyEvent.VK_RIGHT) {
                     if (controleJogo.getPilotoJogador() == null) {
                         return;
                     }
@@ -339,21 +339,21 @@ public class GerenciadorVisual {
                     }
                 }
 
-                if (keyCoode == KeyEvent.VK_PAGE_UP) {
+                if (keyCode == KeyEvent.VK_PAGE_UP) {
                     controleJogo.selecionaPilotoCima();
                 }
 
-                if (keyCoode == KeyEvent.VK_PAGE_DOWN) {
+                if (keyCode == KeyEvent.VK_PAGE_DOWN) {
                     controleJogo.selecionaPilotoBaixo();
                 }
 
-                if (keyCoode == KeyEvent.VK_R) {
+                if (keyCode == KeyEvent.VK_R) {
                     Global.DESENHA_DIFF_REAL_SUAVE = !Global.DESENHA_DIFF_REAL_SUAVE;
                 }
-                if (keyCoode == KeyEvent.VK_UP) {
+                if (keyCode == KeyEvent.VK_UP) {
                     drs();
                 }
-                if (keyCoode == KeyEvent.VK_DOWN) {
+                if (keyCode == KeyEvent.VK_DOWN) {
                     kers();
                 }
             }

@@ -58,7 +58,7 @@ public class ControlePaddockCliente {
         try {
             mainFrame = new MainFrame(applet);
             mainFrame.setVisible(false);
-            mainFrame.desbilitarMenusModoOnline();
+            mainFrame.desabilitarMenusModoOnline();
             threadAtualizadora = new Thread(new Runnable() {
                 public void run() {
                     try {

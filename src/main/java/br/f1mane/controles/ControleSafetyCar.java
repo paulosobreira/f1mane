@@ -20,7 +20,7 @@ public class ControleSafetyCar {
     private final ControleCorrida controleCorrida;
     private final ControleJogoLocal controleJogo;
     private final SafetyCar safetyCar;
-    private ThreadRecolihimentoCarro recolihimentoCarro;
+    private ThreadRecolhimentoCarro recolihimentoCarro;
     private Piloto pilotoBateu;
 
     /**
@@ -107,7 +107,7 @@ public class ControleSafetyCar {
         Logger.logar("SAFETY CAR");
         safetyCar.setVaiProBox(false);
         controleJogo.infoPrioritaria(Html.saftyCar(Lang.msg("029")));
-        recolihimentoCarro = new ThreadRecolihimentoCarro(controleJogo, piloto, safetyCar);
+        recolihimentoCarro = new ThreadRecolhimentoCarro(controleJogo, piloto, safetyCar);
         recolihimentoCarro.start();
 
     }

@@ -167,8 +167,8 @@ public abstract class ControleRecursos {
             idsNoBox.add(boxId);
         }
         No primiraCurva = null;
-        for (int iindex = 0; iindex < listaDeRetas.size(); iindex++) {
-            No no = listaDeRetas.get(iindex);
+        for (int indexLista = 0; indexLista < listaDeRetas.size(); indexLista++) {
+            No no = listaDeRetas.get(indexLista);
             int index = no.getIndex();
             for (int i = index; i < nosDaPista.size(); i++) {
                 No noCurva = (No) nosDaPista.get(i);
@@ -183,8 +183,8 @@ public abstract class ControleRecursos {
             }
         }
         No ultimaCurva = null;
-        for (int iindex = listaDeRetas.size() - 1; iindex >= 0; iindex--) {
-            No no = listaDeRetas.get(iindex);
+        for (int indexLista = listaDeRetas.size() - 1; indexLista >= 0; indexLista--) {
+            No no = listaDeRetas.get(indexLista);
             int index = no.getIndex();
             for (int i = index; i >= 0; i--) {
                 No noCurva = (No) nosDaPista.get(i);

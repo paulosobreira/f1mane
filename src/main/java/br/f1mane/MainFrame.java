@@ -172,19 +172,19 @@ public class MainFrame extends JFrame {
 
         menuDebug.add(desqualificaPiloto);
 
-        JMenuItem forcaQuerbraAereofolio = new JMenuItem("forcaQuerbraAereofolio") {
+        JMenuItem forcaQuebraAereofolio = new JMenuItem("forcaQuebraAereofolio") {
             public String getText() {
-                return Lang.msg("forcaQuerbraAereofolio");
+                return Lang.msg("forcaQuebraAereofolio");
             }
 
         };
-        forcaQuerbraAereofolio.addActionListener(new ActionListener() {
+        forcaQuebraAereofolio.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                controleJogo.forcaQuerbraAereofolio(controleJogo.getPilotoSelecionado());
+                controleJogo.forcaQuebraAereofolio(controleJogo.getPilotoSelecionado());
             }
         });
 
-        menuDebug.add(forcaQuerbraAereofolio);
+        menuDebug.add(forcaQuebraAereofolio);
 
         JMenuItem climaChuvoso = new JMenuItem("climaChuvoso") {
             public String getText() {
@@ -424,8 +424,8 @@ public class MainFrame extends JFrame {
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                int keyCoode = e.getKeyCode();
-                if (keyCoode == KeyEvent.VK_F1) {
+                int keyCode = e.getKeyCode();
+                if (keyCode == KeyEvent.VK_F1) {
                     mostraDebugFrame();
                 }
                 super.keyPressed(e);
@@ -492,7 +492,7 @@ public class MainFrame extends JFrame {
         return null;
     }
 
-    public void desbilitarMenusModoOnline() {
+    public void desabilitarMenusModoOnline() {
         if (iniciar != null) {
             iniciar.setEnabled(false);
         }
