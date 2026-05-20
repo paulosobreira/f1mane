@@ -382,14 +382,9 @@ public class CarregadorRecursos {
             piloto.setNome(Util.substVogais(name));
             piloto.setNomeCarro(Util.substVogais(prop.split(",")[0]));
             int duasCasas = Integer.parseInt(prop.split(",")[1]);
-            int habilidade = Integer
-                    .parseInt(String.valueOf(duasCasas) + Util.intervalo(0, 9));
-            if (habilidade > 999) {
-                habilidade = 999;
-            }
-            piloto.setHabilidade(habilidade);
             piloto.setHabilidadeReal(
                     Integer.parseInt(String.valueOf(duasCasas) + "0"));
+            piloto.setHabilidade(piloto.getHabilidadeReal());
             retorno.add(piloto);
         }
         Collections.sort(retorno, new PilotoComparator());

@@ -222,7 +222,7 @@ public class MainFrame extends JFrame {
         };
         escapaTracado.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                controleJogo.getPilotoSelecionado().escapaTracado(controleJogo);
+                controleJogo.getPilotoSelecionado().escapaTracado();
             }
         });
 
@@ -453,7 +453,7 @@ public class MainFrame extends JFrame {
         removerListeners();
         setVisible(true);
         try {
-            controleJogo = new ControleJogoLocal();
+            controleJogo = new ControleJogoLocal(System.currentTimeMillis());
             controleJogo.setMainFrame(this);
             PainelMenuLocal painelMenuSigle = new PainelMenuLocal(this);
             removePainelNarracaoDebug();
@@ -513,7 +513,7 @@ public class MainFrame extends JFrame {
             }
             controleJogo.matarTodasThreads();
         }
-        controleJogo = new ControleJogoLocal(this);
+        controleJogo = new ControleJogoLocal(this,System.currentTimeMillis());
         controleJogo.setMainFrame(this);
         removePainelNarracaoDebug();
         return true;

@@ -230,19 +230,6 @@ public class ControleEstatisticas {
 	}
 
 	public static void main(String[] args) {
-		// List allInfo = new ArrayList();
-		// allInfo.add("1");
-		// allInfo.add("2");
-		// allInfo.add("3");
-		// allInfo.add("4");
-		// allInfo.add("5");
-		// allInfo.add("6");
-		// allInfo.add("7");
-		// if (allInfo.size() > 5) {
-		// for (int i = allInfo.size() - 1; i > allInfo.size() - 6; i--) {
-		// }
-		// }
-		System.out.println(formatarTempo(Long.valueOf(1342l)));
 	}
 
 	public void info(String info, boolean prioritaria) {
@@ -562,7 +549,7 @@ public class ControleEstatisticas {
 
 	private Long diferecaParaSegundos(long diff) {
 		return Long.valueOf(Math
-                .round((diff / new Double(Util.intervalo(30, 40)).doubleValue())
+                .round((diff / new Double(controleJogo.getRandom().intervalo(30, 40)).doubleValue())
                         * controleJogo.tempoCicloCircuito()));
 	}
 }

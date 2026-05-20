@@ -394,4 +394,6 @@ public interface InterfaceJogo {
     long tempoCicloCircuito();
 
     String getAutomaticoManual();
+
+    public GameRandom getRandom();
 }

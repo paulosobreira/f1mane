@@ -53,21 +53,21 @@ public class ControleJogoLocal extends ControleRecursos
     private MainFrame mainFrame;
 
     public ControleJogoLocal(String temporada) throws Exception {
-        super(temporada);
+        super(temporada, System.currentTimeMillis());
         if (!(this instanceof JogoServidor)) {
             gerenciadorVisual = new GerenciadorVisual(this);
         }
         controleEstatisticas = new ControleEstatisticas(this);
     }
 
-    public ControleJogoLocal() throws Exception {
-        super();
+    public ControleJogoLocal(long seed) throws Exception {
+        super(seed);
         gerenciadorVisual = new GerenciadorVisual(this);
         controleEstatisticas = new ControleEstatisticas(this);
     }
 
-    public ControleJogoLocal(MainFrame mainFrame) throws Exception {
-        super();
+    public ControleJogoLocal(MainFrame mainFrame, long seed) throws Exception {
+        super(seed);
         gerenciadorVisual = new GerenciadorVisual(this);
         controleEstatisticas = new ControleEstatisticas(this);
     }
@@ -194,7 +194,7 @@ public class ControleJogoLocal extends ControleRecursos
     public void decrementaTracado() {
         for (Iterator iterator = pilotos.iterator(); iterator.hasNext(); ) {
             Piloto piloto = (Piloto) iterator.next();
-            piloto.decIndiceTracado(this);
+            piloto.decIndiceTracado();
         }
     }
 
@@ -579,7 +579,7 @@ public class ControleJogoLocal extends ControleRecursos
         }
         iniciarJogoMenuLocal(campeonato.getCircuitoVez(),
                 campeonato.getTemporada(), campeonato.getQtdeVoltas().intValue(),
-                Util.intervalo(50, 500), clima, campeonato.getNivel(),
+                getRandom().intervalo(50, 500), clima, campeonato.getNivel(),
                 pilotoSel, campeonato.isKers(), campeonato.isDrs(),
                 campeonato.isTrocaPneus(), campeonato.isReabastecimento(),
                 combustivelSelecionado, asaSelecionado, pneuSelecionado, campeonato.isSafetycar());
@@ -698,7 +698,7 @@ public class ControleJogoLocal extends ControleRecursos
      */
     public void abandonar() {
         if (pilotoJogador != null) {
-            pilotoJogador.getCarro().setDanificado(Carro.ABANDONOU, this);
+            pilotoJogador.getCarro().setDanificado(Carro.ABANDONOU);
         }
     }
 
@@ -752,7 +752,7 @@ public class ControleJogoLocal extends ControleRecursos
         if (isSemReabastecimento()) {
             qtdeCombustPorcent = 100;
         }
-        pilotoJogador.getCarro().trocarPneus(this, tipoPneu,
+        pilotoJogador.getCarro().trocarPneus(tipoPneu,
                 controleCorrida.getDistaciaCorrida());
         int undsComnustAbastecer = (controleCorrida.getTanqueCheio()
                 * qtdeCombustPorcent.intValue()) / 100;
@@ -808,7 +808,7 @@ public class ControleJogoLocal extends ControleRecursos
     }
 
     public void mudarModoPilotagem(String modo) {
-        if (pilotoJogador != null){
+        if (pilotoJogador != null) {
             pilotoJogador.setModoPilotagem(modo);
             pilotoJogador.setManualTemporario();
         }
@@ -881,7 +881,7 @@ public class ControleJogoLocal extends ControleRecursos
     public void mudarTracado(int pos) {
         if (pilotoJogador == null)
             return;
-        pilotoJogador.mudarTracado(pos, this);
+        pilotoJogador.mudarTracado(pos);
     }
 
     /**
@@ -897,7 +897,7 @@ public class ControleJogoLocal extends ControleRecursos
 
     @Override
     public void setManualTemporario() {
-        if(getPilotoSelecionado()!=null){
+        if (getPilotoSelecionado() != null) {
             pilotoSelecionado.setManualTemporario();
         }
     }
@@ -932,7 +932,7 @@ public class ControleJogoLocal extends ControleRecursos
         if (asfaltoAbrasivo()) {
             lim = 0.5;
         }
-        if (Math.random() > lim) {
+        if (getRandom().nextDouble() > lim) {
             return;
         }
         TravadaRoda travadaRoda = new TravadaRoda();
@@ -940,11 +940,11 @@ public class ControleJogoLocal extends ControleRecursos
         travadaRoda.setTracado(piloto.getTracado());
         int qtdeFumaca = 0;
         if (piloto.getNoAtual().verificaRetaOuLargada()) {
-            qtdeFumaca = Util.intervalo(10, 25);
+            qtdeFumaca = getRandom().intervalo(10, 25);
         } else if (piloto.getNoAtual().verificaCurvaAlta()) {
-            qtdeFumaca = Util.intervalo(10, 30);
+            qtdeFumaca = getRandom().intervalo(10, 30);
         } else if (piloto.getNoAtual().verificaCurvaBaixa()) {
-            qtdeFumaca = Util.intervalo(10, 20);
+            qtdeFumaca = getRandom().intervalo(10, 20);
         }
         if (semFumaca) {
             piloto.setMarcaPneu(true);
@@ -1156,7 +1156,7 @@ public class ControleJogoLocal extends ControleRecursos
         while (Carro.BATEU_FORTE.equals(piloto.getCarro().getDanificado())) {
             piloto = pilotos.get(pilotos.size() - (++i));
         }
-        piloto.getCarro().setDanificado(Carro.BATEU_FORTE, this);
+        piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
         controleCorrida.safetyCarNaPista(piloto);
     }
 
@@ -1273,8 +1273,8 @@ public class ControleJogoLocal extends ControleRecursos
             }
             indicativoEmborrachamentoPista -= emborrachamento;
         }
-        return Math.random() > 0.5
-                || Math.random() > indicativoEmborrachamentoPista;
+        return getRandom().nextDouble() > 0.5
+                || getRandom().nextDouble() > indicativoEmborrachamentoPista;
     }
 
     @Override
@@ -1604,8 +1604,7 @@ public class ControleJogoLocal extends ControleRecursos
         if (piloto == null) {
             return;
         }
-        piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO,
-                this);
+        piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
         piloto.getCarro().setDurabilidadeAereofolio(0);
     }
 

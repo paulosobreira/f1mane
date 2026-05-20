@@ -3449,7 +3449,7 @@ public class PainelCircuito {
 
         boolean rabeadaAgressivo = Piloto.AGRESSIVO.equals(piloto.getModoPilotagem()) && piloto.getCarro().getGiro() == Carro.GIRO_MAX_VAL
                 && (noAtual.verificaCurvaAlta() || noAtual.verificaCurvaBaixa()) && Math.random() > .9;
-        boolean rabeadaPneuErrado = piloto.getCarro().verificaPneusIncompativeisClima(controleJogo)
+        boolean rabeadaPneuErrado = piloto.getCarro().verificaPneusIncompativeisClima()
                 && Math.random() > .95;
 
         if (rabeadaAgressivo || rabeadaPneuErrado) {
