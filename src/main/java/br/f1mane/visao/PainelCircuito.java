@@ -5289,7 +5289,7 @@ public class PainelCircuito {
         return new Dimension(Util.inteiro((mx + 1000)), Util.inteiro((my + 1000)));
     }
 
-    public void acendeLuz() {
+    public void apagarLuz() {
         if (qtdeLuzesApagadas <= 0) {
             return;
         }

@@ -497,7 +497,10 @@ public class GerenciadorVisual {
     }
 
     public void apagarLuz() {
-        painelCircuito.acendeLuz();
+        if (painelCircuito == null) {
+            return;
+        }
+        painelCircuito.apagarLuz();
     }
 
     public JTextField getNomeJogador() {
@@ -1258,6 +1261,9 @@ public class GerenciadorVisual {
 
     public void adicionarInfoDireto(String string) {
         if (string == null) {
+            return;
+        }
+        if (bufferTextual == null) {
             return;
         }
         try {

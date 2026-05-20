@@ -102,7 +102,4 @@ public class ControleCiclo extends Thread {
 		}
 	}
 
-	public static void main(String[] args) {
-		Logger.logar((int) (.7 * 5));
-	}
 }

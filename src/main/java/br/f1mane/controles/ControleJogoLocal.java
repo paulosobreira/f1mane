@@ -582,7 +582,7 @@ public class ControleJogoLocal extends ControleRecursos
                 getRandom().intervalo(50, 500), clima, campeonato.getNivel(),
                 pilotoSel, campeonato.isKers(), campeonato.isDrs(),
                 campeonato.isTrocaPneus(), campeonato.isReabastecimento(),
-                combustivelSelecionado, asaSelecionado, pneuSelecionado, campeonato.isSafetycar());
+                combustivelSelecionado, asaSelecionado, pneuSelecionado, campeonato.isSafetycar(), false);
         this.controleCampeonato = new ControleCampeonato(campeonato, mainFrame);
         controleCampeonato.iniciaCorrida(campeonato.getCircuitoVez());
     }
@@ -594,7 +594,7 @@ public class ControleJogoLocal extends ControleRecursos
                                      String automaticoManual, Piloto pilotoSelecionado, boolean ers,
                                      boolean drs, boolean trocaPneus, boolean reabastecimento,
                                      int combustivelSelecionado, String asaSelecionado,
-                                     String pneuSelecionado, boolean safetycar) throws Exception {
+                                     String pneuSelecionado, boolean safetycar, boolean simulacao) throws Exception {
         this.qtdeVoltas = new Integer(numVoltasSelecionado);
         this.diffultrapassagem = new Integer(turbulenciaSelecionado);
         this.reabastecimento = reabastecimento;
@@ -622,7 +622,9 @@ public class ControleJogoLocal extends ControleRecursos
         controleCorrida.getControleClima()
                 .gerarClimaInicial(new Clima(climaSelecionado));
         controleCorrida.gerarGridLargada();
-        gerenciadorVisual.iniciarInterfaceGraficaJogo();
+        if (!simulacao) {
+            gerenciadorVisual.iniciarInterfaceGraficaJogo();
+        }
         controleCorrida.iniciarCorrida();
         controleEstatisticas.inicializarThreadConsumidoraInfo();
     }
@@ -673,9 +675,6 @@ public class ControleJogoLocal extends ControleRecursos
      */
     public void exibirResultadoFinal() {
         gerenciadorVisual.exibirResultadoFinal();
-        if (Logger.ativo)
-            mainFrame.exibirResultadoFinal(
-                    gerenciadorVisual.exibirResultadoFinal());
         controleCorrida.pararThreads();
         controleEstatisticas.setConsumidorAtivo(false);
         if (controleCampeonato != null) {
@@ -683,14 +682,20 @@ public class ControleJogoLocal extends ControleRecursos
                     "controleCampeonato.processaFimCorrida(getPilotos());");
             controleCampeonato.processaFimCorrida(getPilotos());
         }
+        Logger.logar("========final corrida============");
         for (int i = 0; i < pilotos.size(); i++) {
             Piloto piloto = (Piloto) pilotos.get(i);
             Logger.logar((i + 1) + " Posicao " + piloto.getPosicao() + " - "
                     + piloto.getNome() + "-" + piloto.getCarro().getNome() + " Volta :" + piloto.getNumeroVolta()
                     + " Paradas Box :" + piloto.getQtdeParadasBox()
-                    + " Vantagem :" + piloto.getVantagem());
+                    + " MelhorVolta :" + piloto.obterVoltaMaisRapida().getTempoVoltaFormatado()
+                    + " PtosPista :" + piloto.getPtosPista()
+                    + " Pneus :" + piloto.getCarro().getPorcentagemDesgastePneus()
+                    + " Combustivel :" + piloto.getCarro().getPorcentagemCombustivel()
+                    + " Motor :" + piloto.getCarro().getPorcentagemDesgasteMotor());
 
         }
+        Logger.logar("Seed usada " + getRandom().getSeed());
     }
 
     /**

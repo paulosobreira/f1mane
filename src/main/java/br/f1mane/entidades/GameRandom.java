@@ -6,8 +6,15 @@ public class GameRandom {
 
     private final SplittableRandom random;
 
+    private long seed;
+
     public GameRandom(long seed) {
         this.random = new SplittableRandom(seed);
+        this.seed = seed;
+    }
+
+    public long getSeed() {
+        return seed;
     }
 
     public double nextDouble() {
