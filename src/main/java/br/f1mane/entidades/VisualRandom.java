@@ -2,13 +2,13 @@ package br.f1mane.entidades;
 
 import java.util.SplittableRandom;
 
-public class GameRandom {
+public class VisualRandom {
 
     private final SplittableRandom random;
 
     private long seed;
 
-    public GameRandom(long seed) {
+    public VisualRandom(long seed) {
         this.random = new SplittableRandom(seed);
         this.seed = seed;
     }

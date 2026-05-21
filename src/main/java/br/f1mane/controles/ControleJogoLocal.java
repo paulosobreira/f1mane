@@ -685,17 +685,18 @@ public class ControleJogoLocal extends ControleRecursos
         Logger.logar("========final corrida============");
         for (int i = 0; i < pilotos.size(); i++) {
             Piloto piloto = (Piloto) pilotos.get(i);
-            Logger.logar((i + 1) + " Posicao " + piloto.getPosicao() + " - "
-                    + piloto.getNome() + "-" + piloto.getCarro().getNome() + " Volta :" + piloto.getNumeroVolta()
-                    + " Paradas Box :" + piloto.getQtdeParadasBox()
-                    + " MelhorVolta :" + piloto.obterVoltaMaisRapida().getTempoVoltaFormatado()
-                    + " PtosPista :" + piloto.getPtosPista()
-                    + " Pneus :" + piloto.getCarro().getPorcentagemDesgastePneus()
-                    + " Combustivel :" + piloto.getCarro().getPorcentagemCombustivel()
-                    + " Motor :" + piloto.getCarro().getPorcentagemDesgasteMotor());
+            Logger.logar((i + 1) + " Posicao : " + piloto.getPosicao()
+                    + " Nom : " + piloto.getNome()
+                    + " Hab : " + piloto.getHabilidade()
+                    + " Pot : " + piloto.getCarro().getPotencia()
+                    + " Vol :" + piloto.getNumeroVolta()
+                    + " Par :" + piloto.getQtdeParadasBox()
+                    + " Pts :" + piloto.getPtosPista()
+                    + " Pne :" + piloto.getCarro().getPorcentagemDesgastePneus()
+                    + " Com :" + piloto.getCarro().getPorcentagemCombustivel()
+                    + " Mot :" + piloto.getCarro().getPorcentagemDesgasteMotor());
 
         }
-        Logger.logar("Seed usada " + getRandom().getSeed());
     }
 
     /**
@@ -940,7 +941,7 @@ public class ControleJogoLocal extends ControleRecursos
         if (getRandom().nextDouble() > lim) {
             return;
         }
-        TravadaRoda travadaRoda = new TravadaRoda();
+        TravadaRoda travadaRoda = new TravadaRoda(gerenciadorVisual.getRandom());
         travadaRoda.setIdNo(mapaNosIds.get(piloto.getNoAtual()).intValue());
         travadaRoda.setTracado(piloto.getTracado());
         int qtdeFumaca = 0;

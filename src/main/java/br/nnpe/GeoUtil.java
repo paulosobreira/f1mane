@@ -205,27 +205,4 @@ public class GeoUtil {
 		return points;
 	}
 
-	public static void main(String[] args) {
-		// int x2 = 10;
-		// int y2 = 10;
-		// int x1 = 0;
-		// int y1 = 0;
-		// System.out.println("drawBresenhamLine "
-		// + drawBresenhamLine(x1, y1, x2, y2).size());
-		// System.out.println("distaciaEntrePontos "
-		// + distaciaEntrePontos(x1, y1, x2, y2));
-		int media = 0;
-		for (int i = 0; i < 100; i++) {
-			int x1 = Util.intervalo(10, 20000);
-			int x2 = Util.intervalo(10, 20000);
-			int y1 = Util.intervalo(10, 20000);
-			int y2 = Util.intervalo(10, 20000);
-			int drawBresenhamLine = drawBresenhamLine(x1, y1, x2, y2).size();
-			int distaciaEntrePontos = (int) distaciaEntrePontos(x1, y1, x2, y2);
-			Logger.logar("distaciaEntrePontos " + distaciaEntrePontos);
-			media += (distaciaEntrePontos - drawBresenhamLine);
-		}
-		Logger.logar("media " + (media / 100));
-	}
-
 }

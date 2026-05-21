@@ -1043,13 +1043,9 @@ public class PainelCircuito {
         x += ajuda.getWidth() + 50;
         String txt = Lang.msg("Debug").toUpperCase();
         int larguraTexto = Util.larguraTexto(txt, g2d) + 10;
-        if (ControleSom.somLigado) {
-            g2d.setColor(OcilaCor.geraOcila("mrkSom", yel));
-            g2d.fillRoundRect(x, y, larguraTexto, 30, 0, 0);
-        } else {
-            g2d.setColor(transpMenus);
-            g2d.fillRoundRect(x, y, larguraTexto, 30, 0, 0);
-        }
+
+        g2d.setColor(transpMenus);
+        g2d.fillRoundRect(x, y, larguraTexto, 30, 0, 0);
         g2d.setColor(Color.BLACK);
         debug.setFrame(x, y, larguraTexto, 30);
         g2d.drawString(txt, x + 5, y + 25);
@@ -1098,8 +1094,6 @@ public class PainelCircuito {
         if (!isExibeResultadoFinal()) {
             return;
         }
-        ControleSom.somLigado = false;
-        ControleSom.paraTudo();
         int x = limitesViewPort.x + (limitesViewPort.width / 2) - 450;
         int y = limitesViewPort.y + (limitesViewPort.height / 2) - 260;
         int xOri = x;
@@ -2875,8 +2869,8 @@ public class PainelCircuito {
         if (graphics == null) {
             return;
         }
-        graphics.drawImage(travada, Util.inteiro(carx + Util.intervalo(-15, 15)),
-                Util.inteiro(cary + Util.intervalo(-15, 15)), null);
+        graphics.drawImage(travada, Util.inteiro(carx + gerenciadorVisual.getRandom().intervalo(-15, 15)),
+                Util.inteiro(cary + gerenciadorVisual.getRandom().intervalo(-15, 15)), null);
     }
 
     public double getMouseZoom() {
@@ -3448,18 +3442,18 @@ public class PainelCircuito {
         }
 
         boolean rabeadaAgressivo = Piloto.AGRESSIVO.equals(piloto.getModoPilotagem()) && piloto.getCarro().getGiro() == Carro.GIRO_MAX_VAL
-                && (noAtual.verificaCurvaAlta() || noAtual.verificaCurvaBaixa()) && Math.random() > .9;
+                && (noAtual.verificaCurvaAlta() || noAtual.verificaCurvaBaixa()) && gerenciadorVisual.getRandom().nextDouble() > .9;
         boolean rabeadaPneuErrado = piloto.getCarro().verificaPneusIncompativeisClima()
-                && Math.random() > .95;
+                && gerenciadorVisual.getRandom().nextDouble() > .95;
 
         if (rabeadaAgressivo || rabeadaPneuErrado) {
             if (noAtual.verificaCurvaAlta())
-                calculaAngulo = Double.valueOf(calculaAngulo.doubleValue() + Util.intervalo(-variacao1, variacao1));
+                calculaAngulo = Double.valueOf(calculaAngulo.doubleValue() + gerenciadorVisual.getRandom().intervalo(-variacao1, variacao1));
             if (noAtual.verificaCurvaBaixa())
-                calculaAngulo = Double.valueOf(calculaAngulo.doubleValue() + Util.intervalo(-variacao2, variacao2));
+                calculaAngulo = Double.valueOf(calculaAngulo.doubleValue() + gerenciadorVisual.getRandom().intervalo(-variacao2, variacao2));
         }
-        if ((piloto.getTracado() == 4 || piloto.getTracado() == 5) && Math.random() > 0.9) {
-            calculaAngulo = Double.valueOf(calculaAngulo.doubleValue() + Util.intervalo(-20, 20));
+        if ((piloto.getTracado() == 4 || piloto.getTracado() == 5) && gerenciadorVisual.getRandom().nextDouble() > 0.9) {
+            calculaAngulo = Double.valueOf(calculaAngulo.doubleValue() + gerenciadorVisual.getRandom().intervalo(-20, 20));
         }
         return calculaAngulo;
     }
@@ -3477,17 +3471,17 @@ public class PainelCircuito {
         if (pontoDerrapada != null && distancia < (2 * Carro.RAIO_DERRAPAGEM)) {
             int ladoDerrapa = controleJogo.obterLadoEscape(piloto.getPontoDerrapada());
             if (ladoDerrapa == 5) {
-                if (Math.random() > 0.5) {
+                if (gerenciadorVisual.getRandom().nextDouble() > 0.5) {
                     desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosD1);
                 } else {
                     desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosD2);
                 }
-                if (Math.random() > 0.5) {
+                if (gerenciadorVisual.getRandom().nextDouble() > 0.5) {
                     desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosD3);
                 } else {
                     desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosD4);
                 }
-                if (Math.random() > 0.5) {
+                if (gerenciadorVisual.getRandom().nextDouble() > 0.5) {
                     desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosD5);
                 } else {
                     desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosD1);
@@ -3495,52 +3489,52 @@ public class PainelCircuito {
 
             }
             if (ladoDerrapa == 4) {
-                if (Math.random() > 0.5) {
+                if (gerenciadorVisual.getRandom().nextDouble() > 0.5) {
                     desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosE1);
                 } else {
                     desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosE2);
                 }
-                if (Math.random() > 0.5) {
+                if (gerenciadorVisual.getRandom().nextDouble() > 0.5) {
                     desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosE3);
                 } else {
                     desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosE4);
                 }
-                if (Math.random() > 0.5) {
+                if (gerenciadorVisual.getRandom().nextDouble() > 0.5) {
                     desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosE5);
                 } else {
                     desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosE1);
                 }
             }
-        } else if (Math.random() > 0.7) {
+        } else if (gerenciadorVisual.getRandom().nextDouble() > 0.7) {
             desenhaFumacaTravarRodasRandom(g2d, width, height, carx, cary, afZoom, afRotate);
         }
     }
 
     private void desenhaFumacaTravarRodasRandom(Graphics2D g2d, int width, int height, int carx, int cary,
                                                 AffineTransform afZoom, AffineTransform afRotate) {
-        if (Math.random() > 0.5) {
+        if (gerenciadorVisual.getRandom().nextDouble() > 0.5) {
             desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosD1);
         } else {
             desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosE1);
         }
-        if (Math.random() > 0.5) {
+        if (gerenciadorVisual.getRandom().nextDouble() > 0.5) {
             desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosD2);
         } else {
             desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosE2);
         }
-        if (Math.random() > 0.5) {
+        if (gerenciadorVisual.getRandom().nextDouble() > 0.5) {
             desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosD3);
         } else {
             desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosE3);
         }
-        if (Math.random() > 0.5) {
+        if (gerenciadorVisual.getRandom().nextDouble() > 0.5) {
             desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
 
                     cary, g2d, carroCimaFreiosD4);
         } else {
             desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosE4);
         }
-        if (Math.random() > 0.5) {
+        if (gerenciadorVisual.getRandom().nextDouble() > 0.5) {
             desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosD5);
         } else {
             desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosE5);
@@ -3591,23 +3585,23 @@ public class PainelCircuito {
         if (controleJogo.isChovendo() && piloto.getVelocidade() != 0 && !piloto.isDesqualificado()) {
             g2d.setColor(lightWhiteRain);
             for (int i = 0; i < 50; i++) {
-                if (Math.random() > qtdeGotas) {
+                if (gerenciadorVisual.getRandom().nextDouble() > qtdeGotas) {
                     continue;
                 }
                 int eixoDiatero = (int) (eixo / 2);
                 Point origem = new Point(
-                        (int) Util.intervalo(eixoDianteras.x - eixoDiatero, eixoDianteras.x + eixoDiatero),
-                        (int) Util.intervalo(eixoDianteras.y - eixoDiatero, eixoDianteras.y + eixoDiatero));
+                        (int) gerenciadorVisual.getRandom().intervalo(eixoDianteras.x - eixoDiatero, eixoDianteras.x + eixoDiatero),
+                        (int) gerenciadorVisual.getRandom().intervalo(eixoDianteras.y - eixoDiatero, eixoDianteras.y + eixoDiatero));
 
                 Point dest = new Point(
-                        (int) Util.intervalo(piloto.getTrazeira().getX(),
+                        (int) gerenciadorVisual.getRandom().intervalo(piloto.getTrazeira().getX(),
                                 (int) piloto.getTrazeira().getX() + piloto.getTrazeira().getWidth()),
-                        (int) Util.intervalo(piloto.getTrazeira().getY(),
+                        (int) gerenciadorVisual.getRandom().intervalo(piloto.getTrazeira().getY(),
                                 piloto.getTrazeira().getY() + piloto.getTrazeira().getHeight()));
                 double max = 6.0 * (piloto.getVelocidade() / 320.0);
 
                 Point destN = GeoUtil.calculaPonto(GeoUtil.calculaAngulo(origem, dest, 90),
-                        (int) (Util.intervalo(width * .25, width * max) * qtdeGotas), origem);
+                        (int) (gerenciadorVisual.getRandom().intervalo(width * .25, width * max) * qtdeGotas), origem);
 
                 g2d.drawLine(Util.inteiro((origem.x - descontoCentraliza.x) * zoom),
                         Util.inteiro((origem.y - descontoCentraliza.y) * zoom),
@@ -3627,18 +3621,18 @@ public class PainelCircuito {
             g2d.setColor(Color.YELLOW);
             g2d.setStroke(strokeFaisca);
             for (int i = 0; i < 15; i++) {
-                Point origem = new Point((int) Util.intervalo(eixoDianteras.x - eixo, eixoDianteras.x + eixo),
-                        (int) Util.intervalo(eixoDianteras.y - eixo, eixoDianteras.y + eixo));
+                Point origem = new Point((int) gerenciadorVisual.getRandom().intervalo(eixoDianteras.x - eixo, eixoDianteras.x + eixo),
+                        (int) gerenciadorVisual.getRandom().intervalo(eixoDianteras.y - eixo, eixoDianteras.y + eixo));
 
                 Point dest = new Point(
-                        (int) Util.intervalo(piloto.getTrazeira().getX() - Util.intervalo(2.5, 15),
+                        (int) gerenciadorVisual.getRandom().intervalo(piloto.getTrazeira().getX() - gerenciadorVisual.getRandom().intervalo(2.5, 15),
                                 piloto.getTrazeira().getX() + piloto.getTrazeira().getWidth()
-                                        + Util.intervalo(2.5, 15)),
-                        (int) Util.intervalo(piloto.getTrazeira().getY() - Util.intervalo(2.5, 15),
+                                        + gerenciadorVisual.getRandom().intervalo(2.5, 15)),
+                        (int) gerenciadorVisual.getRandom().intervalo(piloto.getTrazeira().getY() - gerenciadorVisual.getRandom().intervalo(2.5, 15),
                                 piloto.getTrazeira().getY() + piloto.getTrazeira().getHeight()
-                                        + Util.intervalo(2.5, 15)));
+                                        + gerenciadorVisual.getRandom().intervalo(2.5, 15)));
                 Point destN = GeoUtil.calculaPonto(GeoUtil.calculaAngulo(origem, dest, 90),
-                        (int) Util.intervalo(width * .2, width), origem);
+                        (int) gerenciadorVisual.getRandom().intervalo(width * .2, width), origem);
                 Point2D.Double trazCarD = new Point2D.Double(piloto.getTrazeira().getCenterX(),
                         piloto.getTrazeira().getCenterY());
                 g2d.fillOval(Util.inteiro((trazCarD.x - descontoCentraliza.x) * zoom),
@@ -3931,14 +3925,14 @@ public class PainelCircuito {
 
         if (Clima.NUBLADO.equals(controleJogo.getClima())) {
             if (Clima.CHUVA.equals(climaAnterior)) {
-                if (Math.random() > 0.7) {
+                if (gerenciadorVisual.getRandom().nextDouble() > 0.7) {
                     indiceNublado--;
                     if (indiceNublado < 0) {
                         indiceNublado = 0;
                     }
                 }
             } else {
-                if (Math.random() > 0.9) {
+                if (gerenciadorVisual.getRandom().nextDouble() > 0.9) {
                     if (indiceNublado > 700) {
                         indiceNublado--;
                     } else {
@@ -3951,7 +3945,7 @@ public class PainelCircuito {
             g2d.fill(limitesViewPortFull.getBounds());
         }
         if (Clima.SOL.equals(controleJogo.getClima())) {
-            if (Math.random() > 0.7) {
+            if (gerenciadorVisual.getRandom().nextDouble() > 0.7) {
                 indiceNublado--;
                 if (indiceNublado < 0) {
                     indiceNublado = 0;
@@ -3963,12 +3957,12 @@ public class PainelCircuito {
         }
 
         if ((Clima.CHUVA.equals(controleJogo.getClima())) && limitesViewPort() != null) {
-            if (indiceNublado > 1500 && Math.random() > 0.9) {
+            if (indiceNublado > 1500 && gerenciadorVisual.getRandom().nextDouble() > 0.9) {
                 indiceNublado++;
                 if (indiceNublado > 2000) {
                     indiceNublado = 2000;
                 }
-            } else if (Math.random() > 0.7 && indiceNublado <= 1500) {
+            } else if (gerenciadorVisual.getRandom().nextDouble() > 0.7 && indiceNublado <= 1500) {
                 indiceNublado++;
             }
             if (indiceNublado < 700) {
@@ -3994,18 +3988,18 @@ public class PainelCircuito {
         Point p1;
         Point p2;
         double qtdeGotas = indiceNublado / 2000.0;
-        if (Math.random() > qtdeGotas) {
+        if (gerenciadorVisual.getRandom().nextDouble() > qtdeGotas) {
             return;
         }
         for (int i = 0; i < limitesViewPortFull.getWidth(); i += 20) {
-            if (Math.random() > qtdeGotas) {
+            if (gerenciadorVisual.getRandom().nextDouble() > qtdeGotas) {
                 continue;
             }
             for (int j = 0; j < limitesViewPortFull.getHeight(); j += 20) {
-                if (Math.random() > qtdeGotas) {
+                if (gerenciadorVisual.getRandom().nextDouble() > qtdeGotas) {
                     continue;
                 }
-                if (Math.random() > .8) {
+                if (gerenciadorVisual.getRandom().nextDouble() > .8) {
 
                     p1 = new Point(i + 10, j + 10);
                     p2 = new Point(i + 15, j + 20);
@@ -4025,16 +4019,16 @@ public class PainelCircuito {
         if (controleJogo.isJogoPausado()) {
             return;
         }
-        if (Math.random() > .9) {
+        if (gerenciadorVisual.getRandom().nextDouble() > .9) {
             return;
         }
         Color color = g2d.getColor();
         g2d.setColor(Color.YELLOW);
         for (int i = 0; i < 7; i++) {
-            if (Math.random() > .5) {
-                int valx = Util.intervalo(5, 15);
-                int valy = Util.intervalo(-5, 15);
-                g2d.drawLine(p.x + valx, p.y + valy, p.x + i * valx, p.y + valy - Util.intervalo(10, 20));
+            if (gerenciadorVisual.getRandom().nextDouble() > .5) {
+                int valx = gerenciadorVisual.getRandom().intervalo(5, 15);
+                int valy = gerenciadorVisual.getRandom().intervalo(-5, 15);
+                g2d.drawLine(p.x + valx, p.y + valy, p.x + i * valx, p.y + valy - gerenciadorVisual.getRandom().intervalo(10, 20));
             }
         }
         g2d.setColor(color);
@@ -4510,7 +4504,7 @@ public class PainelCircuito {
             } else if (diferencaParaProximo <= 1.0) {
                 g2d.setColor(red);
             }
-            if (Math.random() > 0.5) {
+            if (gerenciadorVisual.getRandom().nextDouble() > 0.5) {
                 carSelX += bounce;
             } else {
                 carSelX -= bounce;
@@ -4556,7 +4550,7 @@ public class PainelCircuito {
         bounce = calculaBalancoCarroLado(psel.getCarro());
         g2d.setColor(this.transpMenus);
         g2d.fillRoundRect(carSelX - 5, carSelY - 5, carroimg.getWidth() + 5, carroimg.getHeight() + 5, 0, 0);
-        if (Math.random() > 0.5) {
+        if (gerenciadorVisual.getRandom().nextDouble() > 0.5) {
             carSelX += bounce;
         } else {
             carSelX -= bounce;
@@ -4600,7 +4594,7 @@ public class PainelCircuito {
             } else {
                 g2d.setColor(red);
             }
-            if (Math.random() > 0.5) {
+            if (gerenciadorVisual.getRandom().nextDouble() > 0.5) {
                 carSelX += bounce;
             } else {
                 carSelX -= bounce;
@@ -4660,11 +4654,11 @@ public class PainelCircuito {
         if (qtdeLuzesApagadas > 0 || carro.getPiloto().isBox()) {
             return 0;
         } else if (!Piloto.AGRESSIVO.equals(carro.getPiloto().getModoPilotagem())) {
-            return Math.random() > .5 ? 1 : 0;
+            return gerenciadorVisual.getRandom().nextDouble() > .5 ? 1 : 0;
         } else if (Piloto.AGRESSIVO.equals(carro.getPiloto().getModoPilotagem()) && carro.getGiro() != Carro.GIRO_MAX_VAL) {
             return 1;
         } else if (Piloto.AGRESSIVO.equals(carro.getPiloto().getModoPilotagem()) && carro.getGiro() == Carro.GIRO_MAX_VAL) {
-            return Math.random() > .5 ? 2 : 1;
+            return gerenciadorVisual.getRandom().nextDouble() > .5 ? 2 : 1;
         }
         return 0;
     }
@@ -4786,7 +4780,7 @@ public class PainelCircuito {
         g2d.setColor(Color.LIGHT_GRAY);
         g2d.fillOval(Util.inteiro(carx + (w2 * zoom)), Util.inteiro(cary + (h2 * zoom)), 8, 8);
         if (!safetyCar.isVaiProBox()) {
-            if (Math.random() > .5) {
+            if (gerenciadorVisual.getRandom().nextDouble() > .5) {
                 g2d.setColor(Color.YELLOW);
             } else {
                 g2d.setColor(Color.BLACK);
@@ -5215,7 +5209,7 @@ public class PainelCircuito {
         g2d.fillRoundRect(limitesViewPort.x + inico + 10, limitesViewPort.y + y - incremetAlt, 4, incremetAlt, 0, 0);
         incremetAlt += 3;
         if (varia) {
-            int val = 1 + (int) (Math.random() * 3);
+            int val = 1 + (int) (gerenciadorVisual.getRandom().nextDouble() * 3);
             switch (val) {
                 case 1:
                     g2d.fillRoundRect(limitesViewPort.x + inico + 15, limitesViewPort.y + y - incremetAlt, 4, incremetAlt,

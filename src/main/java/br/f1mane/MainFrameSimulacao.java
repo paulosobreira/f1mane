@@ -36,6 +36,8 @@ public class MainFrameSimulacao extends MainFrame {
     private boolean abrasivo;
     private boolean boxRapido;
     private double fatorAcidente;
+    private long seed;
+
 
     public MainFrameSimulacao(String[] args) {
         String temporadaParam = null;
@@ -45,6 +47,9 @@ public class MainFrameSimulacao extends MainFrame {
         String circuitoParam = null;
         if (args.length > 1) {
             circuitoParam = args[1];
+        }
+        if (args.length > 2) {
+            voltas = Integer.parseInt(args[2]);
         }
         setSize(1030, 720);
         String title = "Fl-Mane " + getVersao();
@@ -81,7 +86,9 @@ public class MainFrameSimulacao extends MainFrame {
             Map<String, TemporadasDefault> temporadasDefaultMap =
                     carregadorRecursos.carregarTemporadasPilotosDefauts();
             TemporadasDefault temporadaDefault = temporadasDefaultMap.get("t" + temporada);
-            voltas = controleJogo.getRandom().intervalo(12, 72);
+            if (voltas == 0) {
+                voltas = 12;
+            }
             kers = temporadaDefault.getErs().booleanValue();
             drs = temporadaDefault.getDrs().booleanValue();
             trocaPneus = temporadaDefault.getTrocaPneu().booleanValue();
@@ -94,6 +101,7 @@ public class MainFrameSimulacao extends MainFrame {
             Thread.sleep(5000);
             abrasivo = controleJogo.asfaltoAbrasivoReal();
             boxRapido = controleJogo.isBoxRapido();
+            seed = controleJogo.getRandom().getSeed();
             mostraDadosSimulacao();
         } catch (Exception e) {
             Logger.logarExept(e);
@@ -136,6 +144,7 @@ public class MainFrameSimulacao extends MainFrame {
         System.out.println("Abrasivo : " + abrasivo);
         System.out.println("Box Rapido : " + boxRapido);
         System.out.println("Fator Acidente : " + fatorAcidente);
+        System.out.println("Seed usada " + seed);
         System.out
                 .println("#########################################################################");
     }
