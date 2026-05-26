@@ -70,7 +70,7 @@ public class ControleBox {
         if (saidaBox == null) {
             throw new Exception("Saida box não encontrada!");
         }
-        if (Math.random() < .5) {
+        if (controleJogo.getRandom().nextDouble() < .5) {
             boxRapido = true;
         }
         geraBoxesEquipes(carrosBox);
@@ -226,7 +226,7 @@ public class ControleBox {
             } else {
                 box = piloto.getNoAtual();
                 No nobox = (No) boxEquipes.get(piloto.getCarro());
-                int indexParada = piloto.obterPista(controleJogo).indexOf(nobox);
+                int indexParada = piloto.obterPista().indexOf(nobox);
                 int ptosBox = 0;
                 int indexParadaMenos10 = indexParada - 10;
                 int indexParadaMais10 = indexParada + 10;
@@ -237,7 +237,7 @@ public class ControleBox {
                      */
                     ptosBox += (boxRapido ? 20 : 15);
                 } else if (box.verificaRetaOuLargada()) {
-                    ptosBox += (boxRapido? 25 : 20);
+                    ptosBox += (boxRapido ? 25 : 20);
                 } else if (box.verificaCurvaAlta()) {
                     ptosBox += (boxRapido ? 20 : 15);
                 } else {
@@ -245,19 +245,19 @@ public class ControleBox {
                 }
                 int novosPtsBox = Util.inteiro(ptosBox) + piloto.getPtosBox();
                 piloto.setPtosBox(novosPtsBox);
-                piloto.setVelocidade(Util.intervalo(50, 60) + ptosBox);
+                piloto.setVelocidade(controleJogo.getRandom().intervalo(50, 60) + ptosBox);
                 if (novosPtsBox >= (indexParada - (3 * Carro.LARGURA)) && novosPtsBox <= (indexParada)) {
-                    piloto.mudarTracado((controleJogo.getCircuito().getLadoBox() == 1 ? 2 : 1), controleJogo);
+                    piloto.mudarTracado((controleJogo.getCircuito().getLadoBox() == 1 ? 2 : 1));
                 }
 
-                piloto.mudarTracado(0, controleJogo);
+                piloto.mudarTracado(0);
             }
 
             if (piloto.getPtosBox() < boxList.size()) {
                 piloto.decStress(2);
                 piloto.setNoAtual((No) boxList.get(piloto.getPtosBox()));
             } else {
-                processarPilotoSairBox(piloto, controleJogo);
+                processarPilotoSairBox(piloto);
             }
         }
 
@@ -310,8 +310,8 @@ public class ControleBox {
         }
 
         int porcentCombust = (100 * qtdeCombust) / controleCorrida.getTanqueCheio();
-        long penalidade = piloto.testeHabilidadePilotoAerodinamicaFreios(controleJogo)
-                && piloto.getCarro().testePotencia() ? Util.intervalo(30, 35) : Util.intervalo(35, 40);
+        long penalidade = piloto.testeHabilidadePilotoAerodinamicaFreios()
+                && piloto.getCarro().testePotencia() ? controleJogo.getRandom().intervalo(30, 35) : controleJogo.getRandom().intervalo(35, 40);
         Carro carro = (Carro) boxEquipesOcupado.get(piloto.getCarro());
         if (carro != null && !carro.getPiloto().equals(piloto)) {
             if (controleJogo.verificaInfoRelevante(piloto)) {
@@ -322,14 +322,14 @@ public class ControleBox {
         carro = piloto.getCarro();
 
         carro.setMotor(
-                carro.getMotor() + (Util.inteiro(carro.getDurabilidadeMaxMotor() * Util.intervalo(1, 15) / 100.0)));
+                carro.getMotor() + (Util.inteiro(carro.getDurabilidadeMaxMotor() * controleJogo.getRandom().intervalo(1, 15) / 100.0)));
         if (carro.getMotor() > carro.getDurabilidadeMaxMotor()) {
             carro.setMotor(carro.getDurabilidadeMaxMotor());
         }
 
-        carro.setPotencia(carro.getPotencia() + Util.intervalo(-5, +5));
+        carro.setPotencia(carro.getPotencia() + controleJogo.getRandom().intervalo(-5, +5));
 
-        if ((piloto.getPosicao() / controleJogo.getPilotos().size() < Math.random())) {
+        if ((piloto.getPosicao() / controleJogo.getPilotos().size() < controleJogo.getRandom().nextDouble())) {
             if (piloto.getHabilidadeAntesQualify() > piloto.getHabilidade()) {
                 piloto.setHabilidade(piloto.getHabilidadeAntesQualify());
             }
@@ -364,7 +364,7 @@ public class ControleBox {
                         new String[]{"", piloto.getNome(), String.valueOf(controleJogo.getNumVoltaAtual())})));
             }
         }
-        carro.setDanificado(null, controleJogo);
+        carro.setDanificado(null);
         if (carro.getDurabilidadeAereofolio() < Global.DURABILIDADE_AREOFOLIO) {
             carro.setDurabilidadeAereofolio(Global.DURABILIDADE_AREOFOLIO);
         }
@@ -382,7 +382,7 @@ public class ControleBox {
         piloto.setBox(false);
     }
 
-    private void processarPilotoSairBox(Piloto piloto, InterfaceJogo interfaceJogo) {
+    private void processarPilotoSairBox(Piloto piloto) {
         if (piloto.isDriveThrough()) {
             piloto.limparDriveThrough();
             piloto.setBox(false);
@@ -421,7 +421,7 @@ public class ControleBox {
         if (controleJogo.isSafetyCarNaPista() && piloto.getVoltaAtual() != null) {
             piloto.getVoltaAtual().setVoltaSafetyCar(true);
         }
-        piloto.efetuarSaidaBox(interfaceJogo);
+        piloto.efetuarSaidaBox();
         Logger.logar(piloto.getNome() + " Saiu do Box : " + piloto.getNumeroVolta());
     }
 
@@ -443,16 +443,16 @@ public class ControleBox {
 
     public int setupParadaUnica(Piloto piloto) {
         if (controleJogo.isChovendo()) {
-            piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_CHUVA, controleCorrida.getDistaciaCorrida());
+            piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_CHUVA, controleCorrida.getDistaciaCorrida());
             piloto.setSetUpIncial(UMA_OU_MAIS_PARADAS);
         } else {
             if (controleJogo.isSemTrocaPneu()) {
-                piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_DURO, controleCorrida.getDistaciaCorrida());
-            } else if (!controleJogo.asfaltoAbrasivo() && piloto.testeHabilidadePilotoAerodinamicaFreios(controleJogo)
+                piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_DURO, controleCorrida.getDistaciaCorrida());
+            } else if (!controleJogo.asfaltoAbrasivo() && piloto.testeHabilidadePilotoAerodinamicaFreios()
                     && controleCorrida.porcentagemCorridaConcluida() > 65) {
-                piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_MOLE, controleCorrida.getDistaciaCorrida());
+                piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_MOLE, controleCorrida.getDistaciaCorrida());
             } else {
-                piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_DURO, controleCorrida.getDistaciaCorrida());
+                piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_DURO, controleCorrida.getDistaciaCorrida());
             }
         }
         processarTipoAsaAutomatico(piloto);
@@ -461,11 +461,11 @@ public class ControleBox {
         piloto.limparConsumoMedioCombust();
         if (consumoMedio == 0) {
             if (piloto.getQtdeParadasBox() == 0) {
-                percentagem = 50 + ((int) (Math.random() * 60));
+                percentagem = 50 + ((int) (controleJogo.getRandom().nextDouble() * 60));
             } else if (piloto.getQtdeParadasBox() == 1) {
-                percentagem = 40 + ((int) (Math.random() * 50));
+                percentagem = 40 + ((int) (controleJogo.getRandom().nextDouble() * 50));
             } else {
-                percentagem = 30 + ((int) (Math.random() * 40));
+                percentagem = 30 + ((int) (controleJogo.getRandom().nextDouble() * 40));
             }
 
             if (piloto.getCarro().verificaDano()) {
@@ -501,11 +501,11 @@ public class ControleBox {
                     controleJogo.getAsaBox(piloto));
         } else {
             if (controleJogo.isChovendo()) {
-                piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_CHUVA, controleCorrida.getDistaciaCorrida());
+                piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_CHUVA, controleCorrida.getDistaciaCorrida());
             } else if (controleJogo.isSemTrocaPneu()) {
-                piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_DURO, controleCorrida.getDistaciaCorrida());
+                piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_DURO, controleCorrida.getDistaciaCorrida());
             } else {
-                piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_MOLE, controleCorrida.getDistaciaCorrida());
+                piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_MOLE, controleCorrida.getDistaciaCorrida());
             }
             processarTipoAsaAutomatico(piloto);
             if (controleJogo.isSemReabastecimento()) {
@@ -537,15 +537,15 @@ public class ControleBox {
 
     public int setupDuasOuMaisParadas(Piloto piloto) {
         if (controleJogo.isChovendo()) {
-            piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_CHUVA, controleCorrida.getDistaciaCorrida());
+            piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_CHUVA, controleCorrida.getDistaciaCorrida());
         } else {
             if (controleJogo.isSemTrocaPneu()) {
-                piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_DURO, controleCorrida.getDistaciaCorrida());
-            } else if (controleJogo.asfaltoAbrasivo() && piloto.testeHabilidadePilotoAerodinamicaFreios(controleJogo)
+                piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_DURO, controleCorrida.getDistaciaCorrida());
+            } else if (controleJogo.asfaltoAbrasivo() && piloto.testeHabilidadePilotoAerodinamicaFreios()
                     && controleCorrida.porcentagemCorridaConcluida() < 65) {
-                piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_DURO, controleCorrida.getDistaciaCorrida());
+                piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_DURO, controleCorrida.getDistaciaCorrida());
             } else {
-                piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_MOLE, controleCorrida.getDistaciaCorrida());
+                piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_MOLE, controleCorrida.getDistaciaCorrida());
             }
         }
         processarTipoAsaAutomatico(piloto);
@@ -561,14 +561,14 @@ public class ControleBox {
 
         if (consumoMedioCombustivel == 0) {
             if (controleJogo.getNumVoltaAtual() == 0) {
-                percentagem = Util.intervalo(40, 50);
+                percentagem = controleJogo.getRandom().intervalo(40, 50);
             } else {
                 if (piloto.getQtdeParadasBox() == 0) {
-                    percentagem = 50 + ((int) (Math.random() * 50));
+                    percentagem = 50 + ((int) (controleJogo.getRandom().nextDouble() * 50));
                 } else if (piloto.getQtdeParadasBox() == 1) {
-                    percentagem = 40 + ((int) (Math.random() * 40));
+                    percentagem = 40 + ((int) (controleJogo.getRandom().nextDouble() * 40));
                 } else {
-                    percentagem = 20 + ((int) (Math.random() * 30));
+                    percentagem = 20 + ((int) (controleJogo.getRandom().nextDouble() * 30));
                 }
             }
             if (piloto.getCarro().verificaDano()) {

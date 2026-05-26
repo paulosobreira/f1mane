@@ -36,14 +36,27 @@ public class MainFrameSimulacao extends MainFrame {
     private boolean abrasivo;
     private boolean boxRapido;
     private double fatorAcidente;
+    private long seed;
 
-    public MainFrameSimulacao(String temporadaParam) {
+
+    public MainFrameSimulacao(String[] args) {
+        String temporadaParam = null;
+        if (args.length > 0) {
+            temporadaParam = args[0];
+        }
+        String circuitoParam = null;
+        if (args.length > 1) {
+            circuitoParam = args[1];
+        }
+        if (args.length > 2) {
+            voltas = Integer.parseInt(args[2]);
+        }
         setSize(1030, 720);
         String title = "Fl-Mane " + getVersao();
         setTitle(title);
         try {
             Logger.ativo = true;
-            controleJogo = new ControleJogoLocal();
+            controleJogo = new ControleJogoLocal(1);
             controleJogo.setMainFrame(this);
             PainelCircuito.desenhaBkg = false;
             PainelCircuito.desenhaImagens = false;
@@ -51,36 +64,44 @@ public class MainFrameSimulacao extends MainFrame {
             ControleCiclo.VALENDO = false;
             clima = Clima.SOL;
             List<String> listCircuitos = new ArrayList<String>(controleJogo.getCircuitos().keySet());
-            Collections.shuffle(listCircuitos);
 
             CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);
-            carregadorRecursos.carregarTemporadas();
+            CarregadorRecursos.carregarTemporadas();
             carregadorRecursos.carregarTemporadasPilotos();
             List<String> listTemporadas = new ArrayList<String>(carregadorRecursos.getVectorTemps());
-            Collections.shuffle(listTemporadas);
 
-            circuito = listCircuitos.get(0);
+            if (circuitoParam != null) {
+                circuito = circuitoParam;
+            } else {
+                Collections.shuffle(listCircuitos);
+                circuito = listCircuitos.get(0);
+            }
+
             if (temporadaParam != null) {
                 temporada = temporadaParam;
             } else {
+                Collections.shuffle(listTemporadas);
                 temporada = listTemporadas.get(0);
             }
             Map<String, TemporadasDefault> temporadasDefaultMap =
                     carregadorRecursos.carregarTemporadasPilotosDefauts();
             TemporadasDefault temporadaDefault = temporadasDefaultMap.get("t" + temporada);
-            voltas = Util.intervalo(12, 72);
+            if (voltas == 0) {
+                voltas = 12;
+            }
             kers = temporadaDefault.getErs().booleanValue();
             drs = temporadaDefault.getDrs().booleanValue();
             trocaPneus = temporadaDefault.getTrocaPneu().booleanValue();
             reabastecimento = temporadaDefault.getReabastecimento().booleanValue();
-            turbulencia = Util.intervalo(0, 500);
+            turbulencia = controleJogo.getRandom().intervalo(0, 500);
             fatorAcidente = 100 - (controleJogo.getFatorAcidente() * 100);
             controleJogo.iniciarJogoMenuLocal(circuito, temporada, voltas,
                     turbulencia, clima, Global.CONTROLE_AUTOMATICO, null, kers, drs, trocaPneus,
-                    reabastecimento, 0, null, null, false);
+                    reabastecimento, 0, null, null, false, true);
             Thread.sleep(5000);
             abrasivo = controleJogo.asfaltoAbrasivoReal();
             boxRapido = controleJogo.isBoxRapido();
+            seed = controleJogo.getRandom().getSeed();
             mostraDadosSimulacao();
         } catch (Exception e) {
             Logger.logarExept(e);
@@ -88,13 +109,7 @@ public class MainFrameSimulacao extends MainFrame {
     }
 
     public static void main(String[] args) {
-        MainFrameSimulacao frame = null;
-        if (args.length > 0) {
-            frame = new MainFrameSimulacao(args[0]);
-        } else {
-            frame = new MainFrameSimulacao(null);
-        }
-
+        MainFrameSimulacao frame = new MainFrameSimulacao(args);
     }
 
     public void mostrarGraficos() {
@@ -129,6 +144,7 @@ public class MainFrameSimulacao extends MainFrame {
         System.out.println("Abrasivo : " + abrasivo);
         System.out.println("Box Rapido : " + boxRapido);
         System.out.println("Fator Acidente : " + fatorAcidente);
+        System.out.println("Seed usada " + seed);
         System.out
                 .println("#########################################################################");
     }

@@ -65,6 +65,7 @@ public class GerenciadorVisual {
     protected double fpsLimite = 30D;
     private long ultMudaPos;
     private long qdtAbaixoFps;
+    private VisualRandom random;
 
     public JComboBox getComboBoxTemporadas() {
         return comboBoxTemporadas;
@@ -72,6 +73,7 @@ public class GerenciadorVisual {
 
     public GerenciadorVisual(InterfaceJogo controleJogo) throws IOException {
         this.controleJogo = controleJogo;
+        random = new VisualRandom(controleJogo.getRandom().getSeed());
     }
 
     private void disableKeys(InputMap inputMap) {
@@ -189,7 +191,6 @@ public class GerenciadorVisual {
         thAtualizaPainelSuaveAlive = false;
         thAtualizaPilotosSuaveAlive = false;
         thAtualizaSomAlive = false;
-        ControleSom.paraTudo();
         super.finalize();
     }
 
@@ -375,7 +376,6 @@ public class GerenciadorVisual {
     }
 
     protected void ligaDesligaSom() {
-        ControleSom.ligaDesligaSom();
     }
 
     protected void mudaPilotoSelecionado() {
@@ -497,7 +497,10 @@ public class GerenciadorVisual {
     }
 
     public void apagarLuz() {
-        painelCircuito.acendeLuz();
+        if (painelCircuito == null) {
+            return;
+        }
+        painelCircuito.apagarLuz();
     }
 
     public JTextField getNomeJogador() {
@@ -634,7 +637,7 @@ public class GerenciadorVisual {
             }
         });
         spinnerDificuldadeUltrapassagem = new JSlider(000, 500);
-        spinnerDificuldadeUltrapassagem.setValue(new Integer(Util.intervalo(000, 500)).intValue());
+        spinnerDificuldadeUltrapassagem.setValue(new Integer(getRandom().intervalo(000, 500)).intValue());
         Hashtable labelTable = new Hashtable();
         labelTable.put(new Integer(000), new JLabel("") {
             @Override
@@ -774,7 +777,7 @@ public class GerenciadorVisual {
             }
         });
         spinnerDificuldadeUltrapassagem = new JSlider(000, 500);
-        spinnerDificuldadeUltrapassagem.setValue(new Integer(Util.intervalo(000, 500)).intValue());
+        spinnerDificuldadeUltrapassagem.setValue(new Integer(getRandom().intervalo(000, 500)).intValue());
         Hashtable labelTable = new Hashtable();
         labelTable.put(new Integer(000), new JLabel("") {
             @Override
@@ -1104,7 +1107,7 @@ public class GerenciadorVisual {
             spinnerSkillPadraoPilotos.setEnabled(false);
             spinnerPotenciaPadraoCarros.setEnabled(false);
             spinnerDificuldadeUltrapassagem.setEnabled(false);
-            int val = 1 + (int) (Math.random() * 3);
+            int val = getRandom().intervalo(1,3);
 
             Clima climaTmp = null;
             switch (val) {
@@ -1258,6 +1261,9 @@ public class GerenciadorVisual {
 
     public void adicionarInfoDireto(String string) {
         if (string == null) {
+            return;
+        }
+        if (bufferTextual == null) {
             return;
         }
         try {
@@ -1434,6 +1440,10 @@ public class GerenciadorVisual {
             GerenciadorVisual.this.qdtAbaixoFps++;
         }
         return qdtAbaixoFps;
+    }
+
+    public VisualRandom getRandom() {
+        return random;
     }
 
 }

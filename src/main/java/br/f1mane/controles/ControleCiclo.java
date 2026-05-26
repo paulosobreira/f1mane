@@ -73,18 +73,18 @@ public class ControleCiclo extends Thread {
 						}
 
 						if (piloto.getPtosBox() == 0) {
-							piloto.processarCiclo(controleJogo);
-							piloto.calculaVelocidadeExibir(controleJogo);
+							piloto.processarCiclo();
+							piloto.calculaVelocidadeExibir();
 							controleJogo.calculaSegundosParaLider(piloto);
 						}
 						if (!piloto.isDesqualificado()
 								&& (piloto.isBox() || controleJogo
 										.verificaNoPitLane(piloto))) {
 							controleCorrida.processarPilotoBox(piloto);
-							piloto.calculaVelocidadeExibir(controleJogo);
+							piloto.calculaVelocidadeExibir();
 						}
-						piloto.processaAlertaMotor(controleJogo);
-						piloto.processaAlertaAerefolio(controleJogo);
+						piloto.processaAlertaMotor();
+						piloto.processaAlertaAerefolio();
 					}
 					controleCorrida.atualizaClassificacao();
 					controleCorrida.verificaFinalCorrida();
@@ -102,7 +102,4 @@ public class ControleCiclo extends Thread {
 		}
 	}
 
-	public static void main(String[] args) {
-		Logger.logar((int) (.7 * 5));
-	}
 }

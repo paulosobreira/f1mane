@@ -1720,7 +1720,7 @@ public class PainelMenuLocal {
                                 controleJogo.iniciarJogoMenuLocal(circuitoSelecionado, temporadaSelecionada,
                                         numVoltasSelecionado, turbulenciaSelecionado, climaSelecionado,
                                         automaitcoManual, pilotoSelecionado, kers, drs, trocaPneus, reabastecimento,
-                                        combustivelSelecionado, asaSelecionado, pneuSelecionado, safetyCar);
+                                        combustivelSelecionado, asaSelecionado, pneuSelecionado, safetyCar,false);
                                 renderThreadAlive = false;
                             } catch (Exception e) {
                                 Logger.logarExept(e);

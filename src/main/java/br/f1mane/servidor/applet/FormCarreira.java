@@ -254,7 +254,7 @@ public class FormCarreira extends JPanel {
 
 	public static void main(String[] args) {
 		FormCarreira formCarreira = new FormCarreira();
-		int ptsCarreira = 3;// Util.intervalo(1000, 5000);
+		int ptsCarreira = 3;
 		formCarreira.ptsCarreira = Integer.valueOf(ptsCarreira);
 		formCarreira.ptsAeroDinamica.setValue(Integer.valueOf(600));
 		formCarreira.ptsCarro.setValue(Integer.valueOf(850));

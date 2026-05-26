@@ -355,22 +355,20 @@ public class MonitorJogo implements Runnable {
                     } else if ("T".equals(statusPilotos)
                             || "M".equals(statusPilotos)) {
                         if (piloto.getNoAtual() != null && jogoCliente.obterIdPorNo(piloto.getNoAtual()) != null) {
-                            TravadaRoda travadaRoda = new TravadaRoda();
+                            TravadaRoda travadaRoda = new TravadaRoda(null);
                             travadaRoda.setIdNo(
                                     jogoCliente.obterIdPorNo(piloto.getNoAtual()).intValue());
                             jogoCliente.travouRodas(travadaRoda);
                         }
                     } else if ("A".equals(statusPilotos)) {
-                        piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO,
-                                null);
+                        piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
                         piloto.getCarro().setDurabilidadeAereofolio(0);
                     } else if ("R".equals(statusPilotos)) {
                         piloto.getCarro().setRecolhido(true);
                     } else if ("B".equals(statusPilotos)) {
                         piloto.setRecebeuBanderada(true);
                     } else if ("BA".equals(statusPilotos)) {
-                        piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO,
-                                null);
+                        piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
                         piloto.getCarro().setDurabilidadeAereofolio(0);
                         piloto.setRecebeuBanderada(true);
                     }
@@ -380,7 +378,7 @@ public class MonitorJogo implements Runnable {
 
                 if (piloto.getIndiceTracado() > 0
                         && pos != piloto.getTracado()) {
-                    piloto.decIndiceTracado(jogoCliente);
+                    piloto.decIndiceTracado();
                 } else {
                     if (piloto.getIndiceTracado() <= 0) {
                         piloto.setTracadoAntigo(piloto.getTracado());
@@ -388,11 +386,11 @@ public class MonitorJogo implements Runnable {
                     piloto.setTracado(pos);
                     if (piloto.getIndiceTracado() <= 0 && piloto
                             .getTracado() != piloto.getTracadoAntigo()) {
-                        piloto.calculaIndiceTracado(jogoCliente);
+                        piloto.calculaIndiceTracado();
                     }
                 }
                 jogoCliente.calculaSegundosParaLider(piloto);
-                piloto.calculaCarrosAdjacentes(jogoCliente);
+                piloto.calculaCarrosAdjacentes();
                 Map<Integer, No> mapaIdsNos = jogoCliente.getMapaIdsNos();
                 List nosDoBox = jogoCliente.getNosDoBox();
                 if (posis.getIdNo() >= -1) {
@@ -408,15 +406,6 @@ public class MonitorJogo implements Runnable {
         }
     }
 
-    private void calculaNumeroVoltaPorPontosPontosPista(Piloto piloto) {
-        int volta = ((int) Math.floor(
-                piloto.getPtosPista() / jogoCliente.getNosDaPista().size()))
-                - 1;
-        if (volta < 0) {
-            volta = 0;
-        }
-        piloto.setNumeroVolta(volta);
-    }
 
     public static void main(String[] args) {
         // int valor = 2000;
@@ -567,7 +556,7 @@ public class MonitorJogo implements Runnable {
                 piloto.setNomeJogador(dadosParciais.nomeJogador);
                 piloto.setQtdeParadasBox(dadosParciais.paradas);
                 piloto.setJogadorHumano(piloto.getTokenJogador() != null);
-                piloto.getCarro().setDanificado(dadosParciais.dano, null);
+                piloto.getCarro().setDanificado(dadosParciais.dano);
                 if (!jogoCliente.isSafetyCarNaPista()
                         && piloto.isDesqualificado()) {
                     piloto.getCarro().setRecolhido(true);

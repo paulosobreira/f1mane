@@ -38,6 +38,7 @@ public class ControleQualificacao {
         List<Piloto> pilotos = controleJogo.getPilotos();
         for (int i = 0; i < pilotos.size(); i++) {
             Piloto piloto = pilotos.get(i);
+            piloto.setControleJogo(controleJogo);
             controleBox.setupCorridaQualificacao(piloto);
         }
     }
@@ -64,7 +65,7 @@ public class ControleQualificacao {
             int combustivel = piloto.getCarro().getCombustivel();
             while ((Double.valueOf(piloto.getPtosPista()).doubleValue() / Double
                     .valueOf(controleJogo.getNosDaPista().size()).doubleValue()) <= 1) {
-                piloto.processarCiclo(controleJogo);
+                piloto.processarCiclo();
                 contCiclosQualificacao++;
             }
             consumoMedioPneu += (pneus - piloto.getCarro().getPneus());
@@ -103,8 +104,8 @@ public class ControleQualificacao {
             piloto.setCiclosVoltaQualificacao(
                     pilotoAnt.getCiclosVoltaQualificacao()
                             + (i < (pilotos.size() / 2)
-                            ? Util.intervalo(0, 150)
-                            : Util.intervalo(0, 750)));
+                            ? controleJogo.getRandom().intervalo(0, 150)
+                            : controleJogo.getRandom().intervalo(0, 750)));
         }
     }
 
@@ -123,11 +124,11 @@ public class ControleQualificacao {
             if (piloto.getHabilidade() > valor) {
                 diff = piloto.getHabilidade() - valor;
                 piloto.setHabilidade(piloto.getHabilidade()
-                        - Util.intervalo(diff / 2, diff));
+                        - controleJogo.getRandom().intervalo(diff / 2, diff));
             } else {
                 diff = valor - piloto.getHabilidade();
                 piloto.setHabilidade(piloto.getHabilidade()
-                        + Util.intervalo(diff / 2, diff));
+                        + controleJogo.getRandom().intervalo(diff / 2, diff));
             }
 
         }
@@ -166,31 +167,31 @@ public class ControleQualificacao {
             if (piloto.getCarro().getPotencia() > valorPotencia) {
                 diffPotencia = piloto.getCarro().getPotencia() - valorPotencia;
                 piloto.getCarro().setPotencia(piloto.getCarro().getPotencia()
-                        - Util.intervalo(diffPotencia / 2, diffPotencia));
+                        - controleJogo.getRandom().intervalo(diffPotencia / 2, diffPotencia));
             } else {
                 diffPotencia = valorPotencia - piloto.getCarro().getPotencia();
                 piloto.getCarro().setPotencia(piloto.getCarro().getPotencia()
-                        + Util.intervalo(diffPotencia / 2, diffPotencia));
+                        + controleJogo.getRandom().intervalo(diffPotencia / 2, diffPotencia));
             }
             int diffAero;
             if (piloto.getCarro().getPotencia() > valorAero) {
                 diffAero = piloto.getCarro().getAerodinamica() - valorAero;
                 piloto.getCarro().setAerodinamica(piloto.getCarro().getAerodinamica()
-                        - Util.intervalo(diffAero / 2, diffAero));
+                        - controleJogo.getRandom().intervalo(diffAero / 2, diffAero));
             } else {
                 diffAero = valorAero - piloto.getCarro().getAerodinamica();
                 piloto.getCarro().setAerodinamica(piloto.getCarro().getAerodinamica()
-                        + Util.intervalo(diffAero / 2, diffAero));
+                        + controleJogo.getRandom().intervalo(diffAero / 2, diffAero));
             }
             int diffFreios;
             if (piloto.getCarro().getFreios() > valorFreios) {
                 diffFreios = piloto.getCarro().getFreios() - valorFreios;
                 piloto.getCarro().setFreios(piloto.getCarro().getFreios()
-                        - Util.intervalo(diffFreios / 2, diffFreios));
+                        - controleJogo.getRandom().intervalo(diffFreios / 2, diffFreios));
             } else {
                 diffFreios = valorFreios - piloto.getCarro().getFreios();
                 piloto.getCarro().setFreios(piloto.getCarro().getFreios()
-                        + Util.intervalo(diffFreios / 2, diffFreios));
+                        + controleJogo.getRandom().intervalo(diffFreios / 2, diffFreios));
             }
         }
         Logger.logar(
@@ -264,15 +265,15 @@ public class ControleQualificacao {
             piloto.setPtosPista(nM.getIndex() - noFim.getIndex());
             if (!piloto.isJogadorHumano()
                     && !piloto.testeHabilidadePilotoCarro()
-                    && Math.random() > 0.95) {
-                piloto.setCiclosDesconcentrado(Util.intervalo(500, 700));
+                    && controleJogo.getRandom().nextDouble() > 0.95) {
+                piloto.setCiclosDesconcentrado(controleJogo.getRandom().intervalo(500, 700));
                 piloto.setProblemaLargada(true);
             }
             Carro carro = piloto.getCarro();
             carro.setTempMax(carro.getPotencia() / 4);
             carro.setDurabilidadeAereofolio(
                     Global.DURABILIDADE_AREOFOLIO);
-            piloto.calculaCarrosAdjacentes(controleJogo);
+            piloto.calculaCarrosAdjacentes();
             Logger.logar(" Posição Largada :" + piloto.getPosicao() + " Nome : "
                     + piloto.getNome() + " Pneu : "
                     + piloto.getCarro().getTipoPneu() + " Combustivel : "

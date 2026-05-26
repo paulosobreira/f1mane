@@ -31,6 +31,11 @@ public abstract class ControleRecursos {
     private String temporada;
     private final Set<Integer> idsNoPista = new HashSet<Integer>();
     private final Set<Integer> idsNoBox = new HashSet<Integer>();
+    private GameRandom random;
+
+    public GameRandom getRandom() {
+        return random;
+    }
 
     public BufferedImage obterCapacete(Piloto piloto) {
         return carregadorRecursos.obterCapacete(piloto, this.getTemporada());
@@ -85,12 +90,14 @@ public abstract class ControleRecursos {
         this.mapaNosIds = mapaNosIds;
     }
 
-    public ControleRecursos() throws Exception {
+
+    public ControleRecursos(long seed) throws Exception {
         carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);
         circuitos = carregarCircuitos();
+        this.random = new GameRandom(seed);
     }
 
-    public ControleRecursos(String temporada) throws Exception {
+    public ControleRecursos(String temporada,long seed) throws Exception {
         if (temporada != null) {
             this.temporada = temporada;
         }
