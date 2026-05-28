@@ -84,8 +84,8 @@ public class ControlePersistencia {
 
     }
 
-    public JogadorDadosSrv carregaDadosJogador(String tokenJogador, Session session) {
-        List jogador = session.createCriteria(JogadorDadosSrv.class).add(Restrictions.eq("token", tokenJogador)).list();
+    public JogadorDadosSrv carregaDadosJogador(String idUsuario, Session session) {
+        List jogador = session.createCriteria(JogadorDadosSrv.class).add(Restrictions.eq("idUsuario", idUsuario)).list();
         JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) (jogador.isEmpty() ? null : jogador.get(0));
         return jogadorDadosSrv;
     }
@@ -96,14 +96,14 @@ public class ControlePersistencia {
         return jogadorDadosSrv;
     }
 
-    public JogadorDadosSrv carregaDadosJogadorId(Long id, Session session) {
-        List jogador = session.createCriteria(JogadorDadosSrv.class).add(Restrictions.eq("id", id)).list();
+    public JogadorDadosSrv carregaDadosJogadorIdUsuario(String idUsuario, Session session) {
+        List jogador = session.createCriteria(JogadorDadosSrv.class).add(Restrictions.eq("idUsuario", idUsuario)).list();
         JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) (jogador.isEmpty() ? null : jogador.get(0));
         return jogadorDadosSrv;
     }
 
-    public JogadorDadosSrv carregaDadosJogadorIdGoogle(String idGoogle, Session session) {
-        List jogador = session.createCriteria(JogadorDadosSrv.class).add(Restrictions.eq("idGoogle", idGoogle)).list();
+    public JogadorDadosSrv carregaDadosJogadorId(Long id, Session session) {
+        List jogador = session.createCriteria(JogadorDadosSrv.class).add(Restrictions.eq("id", id)).list();
         JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) (jogador.isEmpty() ? null : jogador.get(0));
         return jogadorDadosSrv;
     }
@@ -113,7 +113,7 @@ public class ControlePersistencia {
         List jogador = session.createCriteria(JogadorDadosSrv.class).list();
         for (Iterator iterator = jogador.iterator(); iterator.hasNext(); ) {
             JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) iterator.next();
-            nomes.add(jogadorDadosSrv.getToken());
+            nomes.add(jogadorDadosSrv.getIdUsuario());
         }
         return nomes;
     }
@@ -125,7 +125,7 @@ public class ControlePersistencia {
                 .add(Restrictions.le("tempoFim", Long.valueOf(fim.toTimestamp().getTime()))).list();
         for (Iterator iterator = corridas.iterator(); iterator.hasNext(); ) {
             CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator.next();
-            nomes.add(corridasDadosSrv.getJogadorDadosSrv().getToken());
+            nomes.add(corridasDadosSrv.getJogadorDadosSrv().getIdUsuario());
         }
         return nomes;
     }
@@ -212,13 +212,13 @@ public class ControlePersistencia {
         return corridas;
     }
 
-    public CarreiraDadosSrv carregaCarreiraJogador(String token, boolean vaiCliente, Session session) {
+    public CarreiraDadosSrv carregaCarreiraJogador(String idUsuario, boolean vaiCliente, Session session) {
         if (!Global.DATABASE) {
             return null;
         }
-        Logger.logar("Buacar Carreira token " + token);
+        Logger.logar("Buacar Carreira idUsuario " + idUsuario);
         List list = session.createCriteria(CarreiraDadosSrv.class).createAlias("jogadorDadosSrv", "j")
-                .add(Restrictions.eq("j.token", token)).list();
+                .add(Restrictions.eq("j.idUsuario", idUsuario)).list();
         CarreiraDadosSrv carreiraDadosSrv = null;
         if (!list.isEmpty()) {
             carreiraDadosSrv = (CarreiraDadosSrv) list.get(0);
@@ -258,9 +258,9 @@ public class ControlePersistencia {
 
     }
 
-    public List pesquisaCampeonatos(String token, Session session, boolean cliente) {
+    public List pesquisaCampeonatos(String idUsuario, Session session, boolean cliente) {
         List campeonatos = session.createCriteria(CampeonatoSrv.class).createAlias("jogadorDadosSrv", "j")
-                .add(Restrictions.eq("j.token", token)).list();
+                .add(Restrictions.eq("j.idUsuario", idUsuario)).list();
         if (cliente) {
             for (Iterator iterator = campeonatos.iterator(); iterator.hasNext(); ) {
                 CampeonatoSrv campeonato = (CampeonatoSrv) iterator.next();
@@ -270,9 +270,9 @@ public class ControlePersistencia {
         return campeonatos;
     }
 
-    public List pesquisaCampeonatosEmAberto(String token, Session session, boolean cliente) {
+    public List pesquisaCampeonatosEmAberto(String idUsuario, Session session, boolean cliente) {
         List campeonatos = session.createCriteria(CampeonatoSrv.class).createAlias("jogadorDadosSrv", "j")
-                .add(Restrictions.eq("j.token", token)).add(Restrictions.eq("finalizado", Boolean.FALSE)).list();
+                .add(Restrictions.eq("j.idUsuario", idUsuario)).add(Restrictions.eq("finalizado", Boolean.FALSE)).list();
         if (cliente) {
             for (Iterator iterator = campeonatos.iterator(); iterator.hasNext(); ) {
                 CampeonatoSrv campeonato = (CampeonatoSrv) iterator.next();
@@ -313,13 +313,13 @@ public class ControlePersistencia {
         return campeonatos;
     }
 
-    public MsgSrv modoCarreira(String token, boolean modo) {
+    public MsgSrv modoCarreira(String idUsuario, boolean modo) {
         if (!Global.DATABASE) {
             return null;
         }
         Session session = getSession();
         try {
-            CarreiraDadosSrv carreiraDadosSrv = carregaCarreiraJogador(token, false, session);
+            CarreiraDadosSrv carreiraDadosSrv = carregaCarreiraJogador(idUsuario, false, session);
             if (carreiraDadosSrv != null) {
                 if (modo && (Util.isNullOrEmpty(carreiraDadosSrv.getNomeCarro())
                         || Util.isNullOrEmpty(carreiraDadosSrv.getNomePiloto())

@@ -8,7 +8,7 @@
 	<link rel="stylesheet" href="css/mdb-btns.css?v={versao}">
 	<script src="../jquery/jquery-3.2.1.min.js"></script>
 	<script src="../jwtdecode/jwt-decode.js"></script>
-	<script src="https://accounts.google.com/gsi/client" async defer></script>
+	<!--  <script src="https://accounts.google.com/gsi/client" async defer></script> -->
 	<title>Fl-Mane</title>
 </head>
 <body class="body">
@@ -31,6 +31,16 @@
 	</section>
 	<section id="mainContainer" class="container">
 		<div id="botoes" class="list-group">
+			<div class="list-group-item transparent">
+				<input
+						type="text"
+						id="nomeJogadorSessao"
+						class="form-control bgTransparent"
+						placeholder="Informe seu nome"
+						maxlength="30"
+						onkeyup="localStorage.setItem('nomeJogadorSessao', this.value)"
+				/>
+			</div>
 			<a href="jogar.html?v={versao}" class="list-group-item transparent">
 				<button type="button" id="btnJogar" class="btn btn-default btn-block btn-raised bgTransparent"></button>
 			</a>

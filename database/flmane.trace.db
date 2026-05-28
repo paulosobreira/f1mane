@@ -1,490 +1,447 @@
-2026-05-27 08:33:36.575063-03:00 jdbc[3]: exception
+2026-05-28 14:36:20.364519-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CAMPEONATOSRV" not found (this database is empty); SQL statement:
 alter table f1_campeonatosrv drop foreign key FKdrvia3ajmqj32sj650g2v5p55 [42104-224]
-2026-05-27 08:33:36.576072-03:00 jdbc[3]: exception
+2026-05-28 14:36:20.365751-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CARREIRADADOSSRV" not found (this database is empty); SQL statement:
 alter table f1_carreiradadossrv drop foreign key FKsova6or6uvgs6g2r54dogaf7m [42104-224]
-2026-05-27 08:33:36.576246-03:00 jdbc[3]: exception
+2026-05-28 14:36:20.366040-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDACAMPEONATOSRV" not found (this database is empty); SQL statement:
 alter table f1_corridacampeonatosrv drop foreign key FKnnhx3cittvxjktbk4yedfww57 [42104-224]
-2026-05-27 08:33:36.576385-03:00 jdbc[3]: exception
+2026-05-28 14:36:20.366250-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDASDADOSSRV" not found (this database is empty); SQL statement:
 alter table f1_corridasdadossrv drop foreign key FK4kqh14f1xgm07e2kdurf467bh [42104-224]
-2026-05-27 08:33:36.576537-03:00 jdbc[3]: exception
+2026-05-28 14:36:20.366462-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_DADOSCORRIDACAMPEONATOSRV" not found (this database is empty); SQL statement:
 alter table f1_dadoscorridacampeonatosrv drop foreign key FKevq9pjywc7sndqkitg15uc05f [42104-224]
-2026-05-27 08:33:36.581656-03:00 jdbc[3]: exception
+2026-05-28 14:36:20.372229-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_campeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, drs bit not null, ers bit not null, finalizado bit not null, idPiloto varchar(255) not null, nivel varchar(255) not null, nome varchar(255) not null, qtdeVoltas integer not null, reabastecimento bit not null, temporada varchar(255) not null, trocaPneus bit not null, jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
 create table f1_campeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, drs bit not null, ers bit not null, finalizado bit not null, idPiloto varchar(255) not null, nivel varchar(255) not null, nome varchar(255) not null, qtdeVoltas integer not null, reabastecimento bit not null, temporada varchar(255) not null, trocaPneus bit not null, jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:33:36.582531-03:00 jdbc[3]: exception
+2026-05-28 14:36:20.373158-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_carreiradadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, c1B integer not null, c1G integer not null, c1R integer not null, c2B integer not null, c2G integer not null, c2R integer not null, idCapaceteLivery integer, idCarroLivery integer, modoCarreira bit not null, nomeCarro varchar(255), nomePiloto varchar(255), nomePilotoAbreviado varchar(255), ptsAerodinamica integer not null, ptsCarro integer not null, ptsConstrutores integer not null, ptsConstrutoresGanhos integer not null, ptsFreio integer not null, ptsPiloto integer not null, temporadaCapaceteLivery integer, temporadaCarroLivery integer, jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
 create table f1_carreiradadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, c1B integer not null, c1G integer not null, c1R integer not null, c2B integer not null, c2G integer not null, c2R integer not null, idCapaceteLivery integer, idCarroLivery integer, modoCarreira bit not null, nomeCarro varchar(255), nomePiloto varchar(255), nomePilotoAbreviado varchar(255), ptsAerodinamica integer not null, ptsCarro integer not null, ptsConstrutores integer not null, ptsConstrutoresGanhos integer not null, ptsFreio integer not null, ptsPiloto integer not null, temporadaCapaceteLivery integer, temporadaCarroLivery integer, jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:33:36.583021-03:00 jdbc[3]: exception
+2026-05-28 14:36:20.373624-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_corridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, arquivoCircuito varchar(255), nomeCircuito varchar(255), rodada bigint, tempoFim bigint, tempoInicio bigint, campeonato_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
 create table f1_corridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, arquivoCircuito varchar(255), nomeCircuito varchar(255), rodada bigint, tempoFim bigint, tempoInicio bigint, campeonato_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:33:36.583543-03:00 jdbc[3]: exception
+2026-05-28 14:36:20.374141-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_corridasdadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, automaticoManual varchar(255), carro varchar(255), circuito varchar(255), mudouCarro bit not null, numVoltas integer not null, piloto varchar(255), pontos integer not null, porcentConcluida integer not null, posicao integer not null, tempoFim bigint not null, tempoInicio bigint not null, temporada varchar(255), jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
 create table f1_corridasdadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, automaticoManual varchar(255), carro varchar(255), circuito varchar(255), mudouCarro bit not null, numVoltas integer not null, piloto varchar(255), pontos integer not null, porcentConcluida integer not null, posicao integer not null, tempoFim bigint not null, tempoInicio bigint not null, temporada varchar(255), jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:33:36.584051-03:00 jdbc[3]: exception
+2026-05-28 14:36:20.374661-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_dadoscorridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, carro varchar(255), combustivelRestante varchar(255), corPiloto varchar(255), desgasteMotor varchar(255), desgastePneus varchar(255), jogador bigint, numVoltas integer not null, piloto varchar(255), pontos integer not null, posicao integer not null, qtdeParadasBox integer not null, tpPneu varchar(255), voltaMaisRapida varchar(255), corridaCampeonato_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
 create table f1_dadoscorridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, carro varchar(255), combustivelRestante varchar(255), corPiloto varchar(255), desgasteMotor varchar(255), desgastePneus varchar(255), jogador bigint, numVoltas integer not null, piloto varchar(255), pontos integer not null, posicao integer not null, qtdeParadasBox integer not null, tpPneu varchar(255), voltaMaisRapida varchar(255), corridaCampeonato_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:33:36.584340-03:00 jdbc[3]: exception
+2026-05-28 14:36:20.374928-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table hibernate_sequence (next_val bigint) engine[*]=InnoDB"; expected "identifier"; SQL statement:
 create table hibernate_sequence (next_val bigint) engine=InnoDB [42001-224]
-2026-05-27 08:33:36.584726-03:00 jdbc[3]: exception
+2026-05-28 14:36:20.375309-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HIBERNATE_SEQUENCE" not found (this database is empty); SQL statement:
 insert into hibernate_sequence values ( 1 ) [42104-224]
-2026-05-27 08:33:36.585598-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table usuario (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, email varchar(255), idGoogle varchar(255) not null, imagemJogador varchar(255), nome varchar(255), senha varchar(255), token varchar(255), ultimaRecuperacao bigint not null, ultimoLogon bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table usuario (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, email varchar(255), idGoogle varchar(255) not null, imagemJogador varchar(255), nome varchar(255), senha varchar(255), token varchar(255), ultimaRecuperacao bigint not null, ultimoLogon bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:33:36.586064-03:00 jdbc[3]: exception
+2026-05-28 14:36:20.376148-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table usuario (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, email varchar(255), idUsuario varchar(255) not null, imagemJogador varchar(255), nome varchar(255), senha varchar(255), ultimaRecuperacao bigint not null, ultimoLogon bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
+create table usuario (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, email varchar(255), idUsuario varchar(255) not null, imagemJogador varchar(255), nome varchar(255), senha varchar(255), ultimaRecuperacao bigint not null, ultimoLogon bigint not null, primary key (id)) engine=InnoDB [42001-224]
+2026-05-28 14:36:20.376567-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USUARIO" not found; SQL statement:
-alter table usuario add constraint UK_msj33ttsh1kyxq25pk62kiuoh unique (idGoogle) [42102-224]
-2026-05-27 08:33:36.586403-03:00 jdbc[3]: exception
+alter table usuario add constraint UK_b0ikbuq9st7elg691heo9huci unique (idUsuario) [42102-224]
+2026-05-28 14:36:20.376892-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CAMPEONATOSRV" not found; SQL statement:
 alter table f1_campeonatosrv add constraint FKdrvia3ajmqj32sj650g2v5p55 foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 08:33:36.586661-03:00 jdbc[3]: exception
+2026-05-28 14:36:20.377134-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CARREIRADADOSSRV" not found; SQL statement:
 alter table f1_carreiradadossrv add constraint FKsova6or6uvgs6g2r54dogaf7m foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 08:33:36.586911-03:00 jdbc[3]: exception
+2026-05-28 14:36:20.377377-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDACAMPEONATOSRV" not found; SQL statement:
 alter table f1_corridacampeonatosrv add constraint FKnnhx3cittvxjktbk4yedfww57 foreign key (campeonato_id) references f1_campeonatosrv (id) [42102-224]
-2026-05-27 08:33:36.587177-03:00 jdbc[3]: exception
+2026-05-28 14:36:20.377605-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDASDADOSSRV" not found; SQL statement:
 alter table f1_corridasdadossrv add constraint FK4kqh14f1xgm07e2kdurf467bh foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 08:33:36.587419-03:00 jdbc[3]: exception
+2026-05-28 14:36:20.377836-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_DADOSCORRIDACAMPEONATOSRV" not found; SQL statement:
 alter table f1_dadoscorridacampeonatosrv add constraint FKevq9pjywc7sndqkitg15uc05f foreign key (corridaCampeonato_id) references f1_corridacampeonatosrv (id) [42102-224]
-2026-05-27 08:41:54.531651-03:00 database: flush
-org.h2.message.DbException: General error: "org.h2.mvstore.MVStoreException: The file is locked: /home/sobreira/git/f1mane/database/flmane.mv.db [2.2.224/7]" [50000-224]
-	at org.h2.message.DbException.get(DbException.java:212)
-	at org.h2.message.DbException.convert(DbException.java:407)
-	at org.h2.mvstore.db.Store.lambda$new$0(Store.java:122)
-	at org.h2.mvstore.MVStore.handleException(MVStore.java:1546)
-	at org.h2.mvstore.MVStore.panic(MVStore.java:371)
-	at org.h2.mvstore.MVStore.<init>(MVStore.java:291)
-	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:2035)
-	at org.h2.mvstore.db.Store.<init>(Store.java:133)
-	at org.h2.engine.Database.<init>(Database.java:326)
-	at org.h2.engine.Engine.openSession(Engine.java:92)
-	at org.h2.engine.Engine.openSession(Engine.java:222)
-	at org.h2.engine.Engine.createSession(Engine.java:201)
-	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:343)
-	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:125)
+2026-05-28 14:36:29.312975-03:00 jdbc[4]: null
+org.h2.message.DbException: The connection was not closed by the application and is garbage collected [90018-224]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:218)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:135)
 	at org.h2.Driver.connect(Driver.java:59)
-	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:677)
-	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:228)
-	at br.f1mane.servidor.servlet.ServletPaddock.getMetaData(ServletPaddock.java:231)
+	at org.hibernate.engine.jdbc.connections.internal.DriverConnectionCreator.makeConnection(DriverConnectionCreator.java:39)
+	at org.hibernate.engine.jdbc.connections.internal.BasicConnectionCreator.createConnection(BasicConnectionCreator.java:62)
+	at org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections.addConnections(DriverManagerConnectionProviderImpl.java:457)
+	at org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections.<init>(DriverManagerConnectionProviderImpl.java:323)
+	at org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections.<init>(DriverManagerConnectionProviderImpl.java:297)
+	at org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections$Builder.build(DriverManagerConnectionProviderImpl.java:501)
+	at org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl.buildPool(DriverManagerConnectionProviderImpl.java:101)
+	at org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl.configure(DriverManagerConnectionProviderImpl.java:76)
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.configureService(StandardServiceRegistryImpl.java:107)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:255)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:223)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.buildJdbcConnectionAccess(JdbcEnvironmentInitiator.java:146)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:66)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:35)
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:101)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:272)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:246)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:223)
+	at org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory.injectServices(DefaultIdentifierGeneratorFactory.java:175)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.injectDependencies(AbstractServiceRegistryImpl.java:295)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:252)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:223)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:173)
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:127)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1460)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1494)
+	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
+	at br.f1mane.servidor.util.HibernateUtil.getSession(HibernateUtil.java:15)
+	at br.f1mane.servidor.controles.ControlePersistencia.getSession(ControlePersistencia.java:35)
+	at br.f1mane.servidor.controles.ControlePaddockServidor.salvarAcessoSessaoId(ControlePaddockServidor.java:765)
+	at br.f1mane.servidor.controles.ControlePaddockServidor.criarSessaoNome(ControlePaddockServidor.java:751)
+	at br.f1mane.servidor.rest.LetsRace.criarSessaoGoogle(LetsRace.java:134)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory.lambda$static$0(ResourceMethodInvocationHandlerFactory.java:52)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher$1.run(AbstractJavaResourceMethodDispatcher.java:146)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.invoke(AbstractJavaResourceMethodDispatcher.java:189)
+	at org.glassfish.jersey.server.model.internal.JavaResourceMethodDispatcherProvider$ResponseOutInvoker.doDispatch(JavaResourceMethodDispatcherProvider.java:176)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.dispatch(AbstractJavaResourceMethodDispatcher.java:93)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:478)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:400)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:81)
+	at org.glassfish.jersey.server.ServerRuntime$1.run(ServerRuntime.java:256)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:248)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:244)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:292)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:274)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:244)
+	at org.glassfish.jersey.process.internal.RequestScope.runInScope(RequestScope.java:265)
+	at org.glassfish.jersey.server.ServerRuntime.process(ServerRuntime.java:235)
+	at org.glassfish.jersey.server.ApplicationHandler.handle(ApplicationHandler.java:684)
+	at org.glassfish.jersey.servlet.WebComponent.serviceImpl(WebComponent.java:394)
+	at org.glassfish.jersey.servlet.WebComponent.service(WebComponent.java:346)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:358)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:311)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:199)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:168)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:481)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:130)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:346)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:388)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:928)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1791)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection was not closed by the application and is garbage collected [90018-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 84 more
+2026-05-28 14:40:02.370085-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table f1_campeonatosrv drop [*]foreign key FKdrvia3ajmqj32sj650g2v5p55"; expected "identifier"; SQL statement:
+alter table f1_campeonatosrv drop foreign key FKdrvia3ajmqj32sj650g2v5p55 [42001-224]
+2026-05-28 14:40:02.371099-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table f1_carreiradadossrv drop [*]foreign key FKsova6or6uvgs6g2r54dogaf7m"; expected "identifier"; SQL statement:
+alter table f1_carreiradadossrv drop foreign key FKsova6or6uvgs6g2r54dogaf7m [42001-224]
+2026-05-28 14:40:02.371354-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table f1_corridacampeonatosrv drop [*]foreign key FKnnhx3cittvxjktbk4yedfww57"; expected "identifier"; SQL statement:
+alter table f1_corridacampeonatosrv drop foreign key FKnnhx3cittvxjktbk4yedfww57 [42001-224]
+2026-05-28 14:40:02.371597-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table f1_corridasdadossrv drop [*]foreign key FK4kqh14f1xgm07e2kdurf467bh"; expected "identifier"; SQL statement:
+alter table f1_corridasdadossrv drop foreign key FK4kqh14f1xgm07e2kdurf467bh [42001-224]
+2026-05-28 14:40:02.371832-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table f1_dadoscorridacampeonatosrv drop [*]foreign key FKevq9pjywc7sndqkitg15uc05f"; expected "identifier"; SQL statement:
+alter table f1_dadoscorridacampeonatosrv drop foreign key FKevq9pjywc7sndqkitg15uc05f [42001-224]
+2026-05-28 14:40:02.372639-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Cannot drop "F1_CAMPEONATOSRV" because "FKNNHX3CITTVXJKTBK4YEDFWW57" depends on it; SQL statement:
+drop table if exists f1_campeonatosrv [90107-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.command.ddl.DropTable.prepareDrop(DropTable.java:108)
+	at org.h2.command.ddl.DropTable.update(DropTable.java:133)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:169)
+	at org.h2.command.Command.executeUpdate(Command.java:256)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:262)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.applySqlString(SchemaDropperImpl.java:387)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.applySqlStrings(SchemaDropperImpl.java:371)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.dropFromMetadata(SchemaDropperImpl.java:246)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.performDrop(SchemaDropperImpl.java:156)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:128)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:114)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.doExecution(SchemaExport.java:305)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:267)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:241)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.create(SchemaExport.java:233)
 	at br.f1mane.servidor.servlet.ServletPaddock.createSchema(ServletPaddock.java:203)
 	at br.f1mane.servidor.servlet.ServletPaddock$1.run(ServletPaddock.java:65)
 	at java.base/java.lang.Thread.run(Thread.java:829)
-Caused by: org.h2.jdbc.JdbcSQLNonTransientException: General error: "org.h2.mvstore.MVStoreException: The file is locked: /home/sobreira/git/f1mane/database/flmane.mv.db [2.2.224/7]" [50000-224]
-	at org.h2.message.DbException.getJdbcSQLException(DbException.java:566)
+2026-05-28 14:40:02.375173-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Cannot drop "F1_CORRIDACAMPEONATOSRV" because "FKEVQ9PJYWC7SNDQKITG15UC05F" depends on it; SQL statement:
+drop table if exists f1_corridacampeonatosrv [90107-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
-	... 21 more
-Caused by: org.h2.mvstore.MVStoreException: The file is locked: /home/sobreira/git/f1mane/database/flmane.mv.db [2.2.224/7]
-	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:996)
-	at org.h2.mvstore.SingleFileStore.lockFileChannel(SingleFileStore.java:143)
-	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:117)
-	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
-	at org.h2.mvstore.MVStore.<init>(MVStore.java:286)
-	... 15 more
-2026-05-27 08:43:50.982639-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CAMPEONATOSRV" not found (this database is empty); SQL statement:
-alter table f1_campeonatosrv drop foreign key FKdrvia3ajmqj32sj650g2v5p55 [42104-224]
-2026-05-27 08:43:50.983568-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CARREIRADADOSSRV" not found (this database is empty); SQL statement:
-alter table f1_carreiradadossrv drop foreign key FKsova6or6uvgs6g2r54dogaf7m [42104-224]
-2026-05-27 08:43:50.983743-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDACAMPEONATOSRV" not found (this database is empty); SQL statement:
-alter table f1_corridacampeonatosrv drop foreign key FKnnhx3cittvxjktbk4yedfww57 [42104-224]
-2026-05-27 08:43:50.983886-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDASDADOSSRV" not found (this database is empty); SQL statement:
-alter table f1_corridasdadossrv drop foreign key FK4kqh14f1xgm07e2kdurf467bh [42104-224]
-2026-05-27 08:43:50.984024-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_DADOSCORRIDACAMPEONATOSRV" not found (this database is empty); SQL statement:
-alter table f1_dadoscorridacampeonatosrv drop foreign key FKevq9pjywc7sndqkitg15uc05f [42104-224]
-2026-05-27 08:43:50.988378-03:00 jdbc[3]: exception
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.command.ddl.DropTable.prepareDrop(DropTable.java:108)
+	at org.h2.command.ddl.DropTable.update(DropTable.java:133)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:169)
+	at org.h2.command.Command.executeUpdate(Command.java:256)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:262)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.applySqlString(SchemaDropperImpl.java:387)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.applySqlStrings(SchemaDropperImpl.java:371)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.dropFromMetadata(SchemaDropperImpl.java:246)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.performDrop(SchemaDropperImpl.java:156)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:128)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:114)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.doExecution(SchemaExport.java:305)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:267)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:241)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.create(SchemaExport.java:233)
+	at br.f1mane.servidor.servlet.ServletPaddock.createSchema(ServletPaddock.java:203)
+	at br.f1mane.servidor.servlet.ServletPaddock$1.run(ServletPaddock.java:65)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2026-05-28 14:40:02.377704-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Cannot drop "USUARIO" because "FKDRVIA3AJMQJ32SJ650G2V5P55" depends on it; SQL statement:
+drop table if exists usuario [90107-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.command.ddl.DropTable.prepareDrop(DropTable.java:108)
+	at org.h2.command.ddl.DropTable.update(DropTable.java:133)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:169)
+	at org.h2.command.Command.executeUpdate(Command.java:256)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:262)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.applySqlString(SchemaDropperImpl.java:387)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.applySqlStrings(SchemaDropperImpl.java:371)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.dropFromMetadata(SchemaDropperImpl.java:246)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.performDrop(SchemaDropperImpl.java:156)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:128)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:114)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.doExecution(SchemaExport.java:305)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:267)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:241)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.create(SchemaExport.java:233)
+	at br.f1mane.servidor.servlet.ServletPaddock.createSchema(ServletPaddock.java:203)
+	at br.f1mane.servidor.servlet.ServletPaddock$1.run(ServletPaddock.java:65)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2026-05-28 14:40:02.380487-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_campeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, drs bit not null, ers bit not null, finalizado bit not null, idPiloto varchar(255) not null, nivel varchar(255) not null, nome varchar(255) not null, qtdeVoltas integer not null, reabastecimento bit not null, temporada varchar(255) not null, trocaPneus bit not null, jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
 create table f1_campeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, drs bit not null, ers bit not null, finalizado bit not null, idPiloto varchar(255) not null, nivel varchar(255) not null, nome varchar(255) not null, qtdeVoltas integer not null, reabastecimento bit not null, temporada varchar(255) not null, trocaPneus bit not null, jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:43:50.989284-03:00 jdbc[3]: exception
+2026-05-28 14:40:02.381464-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_carreiradadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, c1B integer not null, c1G integer not null, c1R integer not null, c2B integer not null, c2G integer not null, c2R integer not null, idCapaceteLivery integer, idCarroLivery integer, modoCarreira bit not null, nomeCarro varchar(255), nomePiloto varchar(255), nomePilotoAbreviado varchar(255), ptsAerodinamica integer not null, ptsCarro integer not null, ptsConstrutores integer not null, ptsConstrutoresGanhos integer not null, ptsFreio integer not null, ptsPiloto integer not null, temporadaCapaceteLivery integer, temporadaCarroLivery integer, jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
 create table f1_carreiradadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, c1B integer not null, c1G integer not null, c1R integer not null, c2B integer not null, c2G integer not null, c2R integer not null, idCapaceteLivery integer, idCarroLivery integer, modoCarreira bit not null, nomeCarro varchar(255), nomePiloto varchar(255), nomePilotoAbreviado varchar(255), ptsAerodinamica integer not null, ptsCarro integer not null, ptsConstrutores integer not null, ptsConstrutoresGanhos integer not null, ptsFreio integer not null, ptsPiloto integer not null, temporadaCapaceteLivery integer, temporadaCarroLivery integer, jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:43:50.989755-03:00 jdbc[3]: exception
+2026-05-28 14:40:02.381961-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_corridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, arquivoCircuito varchar(255), nomeCircuito varchar(255), rodada bigint, tempoFim bigint, tempoInicio bigint, campeonato_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
 create table f1_corridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, arquivoCircuito varchar(255), nomeCircuito varchar(255), rodada bigint, tempoFim bigint, tempoInicio bigint, campeonato_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:43:50.990293-03:00 jdbc[3]: exception
+2026-05-28 14:40:02.382570-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_corridasdadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, automaticoManual varchar(255), carro varchar(255), circuito varchar(255), mudouCarro bit not null, numVoltas integer not null, piloto varchar(255), pontos integer not null, porcentConcluida integer not null, posicao integer not null, tempoFim bigint not null, tempoInicio bigint not null, temporada varchar(255), jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
 create table f1_corridasdadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, automaticoManual varchar(255), carro varchar(255), circuito varchar(255), mudouCarro bit not null, numVoltas integer not null, piloto varchar(255), pontos integer not null, porcentConcluida integer not null, posicao integer not null, tempoFim bigint not null, tempoInicio bigint not null, temporada varchar(255), jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:43:50.990847-03:00 jdbc[3]: exception
+2026-05-28 14:40:02.383253-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_dadoscorridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, carro varchar(255), combustivelRestante varchar(255), corPiloto varchar(255), desgasteMotor varchar(255), desgastePneus varchar(255), jogador bigint, numVoltas integer not null, piloto varchar(255), pontos integer not null, posicao integer not null, qtdeParadasBox integer not null, tpPneu varchar(255), voltaMaisRapida varchar(255), corridaCampeonato_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
 create table f1_dadoscorridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, carro varchar(255), combustivelRestante varchar(255), corPiloto varchar(255), desgasteMotor varchar(255), desgastePneus varchar(255), jogador bigint, numVoltas integer not null, piloto varchar(255), pontos integer not null, posicao integer not null, qtdeParadasBox integer not null, tpPneu varchar(255), voltaMaisRapida varchar(255), corridaCampeonato_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:43:50.991224-03:00 jdbc[3]: exception
+2026-05-28 14:40:02.383612-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table hibernate_sequence (next_val bigint) engine[*]=InnoDB"; expected "identifier"; SQL statement:
 create table hibernate_sequence (next_val bigint) engine=InnoDB [42001-224]
-2026-05-27 08:43:50.991607-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HIBERNATE_SEQUENCE" not found (this database is empty); SQL statement:
-insert into hibernate_sequence values ( 1 ) [42104-224]
-2026-05-27 08:43:50.992435-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table usuario (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, email varchar(255), idGoogle varchar(255) not null, imagemJogador varchar(255), nome varchar(255), senha varchar(255), token varchar(255), ultimaRecuperacao bigint not null, ultimoLogon bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table usuario (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, email varchar(255), idGoogle varchar(255) not null, imagemJogador varchar(255), nome varchar(255), senha varchar(255), token varchar(255), ultimaRecuperacao bigint not null, ultimoLogon bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:43:50.992839-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USUARIO" not found; SQL statement:
-alter table usuario add constraint UK_msj33ttsh1kyxq25pk62kiuoh unique (idGoogle) [42102-224]
-2026-05-27 08:43:50.993156-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CAMPEONATOSRV" not found; SQL statement:
-alter table f1_campeonatosrv add constraint FKdrvia3ajmqj32sj650g2v5p55 foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 08:43:50.993415-03:00 jdbc[3]: exception
+2026-05-28 14:40:02.384245-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HIBERNATE_SEQUENCE" not found; SQL statement:
+insert into hibernate_sequence values ( 1 ) [42102-224]
+2026-05-28 14:40:02.385240-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table usuario (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, email varchar(255), idUsuario varchar(255) not null, imagemJogador varchar(255), nome varchar(255), senha varchar(255), ultimaRecuperacao bigint not null, ultimoLogon bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
+create table usuario (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, email varchar(255), idUsuario varchar(255) not null, imagemJogador varchar(255), nome varchar(255), senha varchar(255), ultimaRecuperacao bigint not null, ultimoLogon bigint not null, primary key (id)) engine=InnoDB [42001-224]
+2026-05-28 14:40:02.385714-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Constraint "UK_B0IKBUQ9ST7ELG691HEO9HUCI" already exists; SQL statement:
+alter table usuario add constraint UK_b0ikbuq9st7elg691heo9huci unique (idUsuario) [90045-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.command.ddl.AlterTableAddConstraint.tryUpdate(AlterTableAddConstraint.java:111)
+	at org.h2.command.ddl.AlterTableAddConstraint.update(AlterTableAddConstraint.java:74)
+	at org.h2.command.ddl.AlterTable.update(AlterTable.java:46)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:169)
+	at org.h2.command.Command.executeUpdate(Command.java:256)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:262)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applySqlString(SchemaCreatorImpl.java:458)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applySqlStrings(SchemaCreatorImpl.java:442)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.createFromMetadata(SchemaCreatorImpl.java:361)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.performCreation(SchemaCreatorImpl.java:169)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:138)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:124)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.doExecution(SchemaExport.java:314)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:267)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:241)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.create(SchemaExport.java:233)
+	at br.f1mane.servidor.servlet.ServletPaddock.createSchema(ServletPaddock.java:203)
+	at br.f1mane.servidor.servlet.ServletPaddock$1.run(ServletPaddock.java:65)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2026-05-28 14:40:02.386662-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Constraint "FKDRVIA3AJMQJ32SJ650G2V5P55" already exists; SQL statement:
+alter table f1_campeonatosrv add constraint FKdrvia3ajmqj32sj650g2v5p55 foreign key (jogadorDadosSrv_id) references usuario (id) [90045-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.command.ddl.AlterTableAddConstraint.tryUpdate(AlterTableAddConstraint.java:111)
+	at org.h2.command.ddl.AlterTableAddConstraint.update(AlterTableAddConstraint.java:74)
+	at org.h2.command.ddl.AlterTable.update(AlterTable.java:46)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:169)
+	at org.h2.command.Command.executeUpdate(Command.java:256)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:262)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applySqlString(SchemaCreatorImpl.java:458)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applySqlStrings(SchemaCreatorImpl.java:442)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.createFromMetadata(SchemaCreatorImpl.java:389)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.performCreation(SchemaCreatorImpl.java:169)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:138)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:124)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.doExecution(SchemaExport.java:314)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:267)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:241)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.create(SchemaExport.java:233)
+	at br.f1mane.servidor.servlet.ServletPaddock.createSchema(ServletPaddock.java:203)
+	at br.f1mane.servidor.servlet.ServletPaddock$1.run(ServletPaddock.java:65)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2026-05-28 14:40:02.387543-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CARREIRADADOSSRV" not found; SQL statement:
 alter table f1_carreiradadossrv add constraint FKsova6or6uvgs6g2r54dogaf7m foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 08:43:50.993704-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDACAMPEONATOSRV" not found; SQL statement:
-alter table f1_corridacampeonatosrv add constraint FKnnhx3cittvxjktbk4yedfww57 foreign key (campeonato_id) references f1_campeonatosrv (id) [42102-224]
-2026-05-27 08:43:50.993930-03:00 jdbc[3]: exception
+2026-05-28 14:40:02.387854-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Constraint "FKNNHX3CITTVXJKTBK4YEDFWW57" already exists; SQL statement:
+alter table f1_corridacampeonatosrv add constraint FKnnhx3cittvxjktbk4yedfww57 foreign key (campeonato_id) references f1_campeonatosrv (id) [90045-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.command.ddl.AlterTableAddConstraint.tryUpdate(AlterTableAddConstraint.java:111)
+	at org.h2.command.ddl.AlterTableAddConstraint.update(AlterTableAddConstraint.java:74)
+	at org.h2.command.ddl.AlterTable.update(AlterTable.java:46)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:169)
+	at org.h2.command.Command.executeUpdate(Command.java:256)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:262)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applySqlString(SchemaCreatorImpl.java:458)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applySqlStrings(SchemaCreatorImpl.java:442)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.createFromMetadata(SchemaCreatorImpl.java:389)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.performCreation(SchemaCreatorImpl.java:169)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:138)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:124)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.doExecution(SchemaExport.java:314)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:267)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:241)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.create(SchemaExport.java:233)
+	at br.f1mane.servidor.servlet.ServletPaddock.createSchema(ServletPaddock.java:203)
+	at br.f1mane.servidor.servlet.ServletPaddock$1.run(ServletPaddock.java:65)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2026-05-28 14:40:02.388414-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDASDADOSSRV" not found; SQL statement:
 alter table f1_corridasdadossrv add constraint FK4kqh14f1xgm07e2kdurf467bh foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 08:43:50.994157-03:00 jdbc[3]: exception
+2026-05-28 14:40:02.388631-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_DADOSCORRIDACAMPEONATOSRV" not found; SQL statement:
 alter table f1_dadoscorridacampeonatosrv add constraint FKevq9pjywc7sndqkitg15uc05f foreign key (corridaCampeonato_id) references f1_corridacampeonatosrv (id) [42102-224]
-2026-05-27 08:47:30.697005-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CAMPEONATOSRV" not found (this database is empty); SQL statement:
-alter table f1_campeonatosrv drop foreign key FKdrvia3ajmqj32sj650g2v5p55 [42104-224]
-2026-05-27 08:47:30.697944-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CARREIRADADOSSRV" not found (this database is empty); SQL statement:
-alter table f1_carreiradadossrv drop foreign key FKsova6or6uvgs6g2r54dogaf7m [42104-224]
-2026-05-27 08:47:30.698151-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDACAMPEONATOSRV" not found (this database is empty); SQL statement:
-alter table f1_corridacampeonatosrv drop foreign key FKnnhx3cittvxjktbk4yedfww57 [42104-224]
-2026-05-27 08:47:30.698305-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDASDADOSSRV" not found (this database is empty); SQL statement:
-alter table f1_corridasdadossrv drop foreign key FK4kqh14f1xgm07e2kdurf467bh [42104-224]
-2026-05-27 08:47:30.698449-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_DADOSCORRIDACAMPEONATOSRV" not found (this database is empty); SQL statement:
-alter table f1_dadoscorridacampeonatosrv drop foreign key FKevq9pjywc7sndqkitg15uc05f [42104-224]
-2026-05-27 08:47:30.702824-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_campeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, drs bit not null, ers bit not null, finalizado bit not null, idPiloto varchar(255) not null, nivel varchar(255) not null, nome varchar(255) not null, qtdeVoltas integer not null, reabastecimento bit not null, temporada varchar(255) not null, trocaPneus bit not null, jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_campeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, drs bit not null, ers bit not null, finalizado bit not null, idPiloto varchar(255) not null, nivel varchar(255) not null, nome varchar(255) not null, qtdeVoltas integer not null, reabastecimento bit not null, temporada varchar(255) not null, trocaPneus bit not null, jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:47:30.703676-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_carreiradadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, c1B integer not null, c1G integer not null, c1R integer not null, c2B integer not null, c2G integer not null, c2R integer not null, idCapaceteLivery integer, idCarroLivery integer, modoCarreira bit not null, nomeCarro varchar(255), nomePiloto varchar(255), nomePilotoAbreviado varchar(255), ptsAerodinamica integer not null, ptsCarro integer not null, ptsConstrutores integer not null, ptsConstrutoresGanhos integer not null, ptsFreio integer not null, ptsPiloto integer not null, temporadaCapaceteLivery integer, temporadaCarroLivery integer, jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_carreiradadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, c1B integer not null, c1G integer not null, c1R integer not null, c2B integer not null, c2G integer not null, c2R integer not null, idCapaceteLivery integer, idCarroLivery integer, modoCarreira bit not null, nomeCarro varchar(255), nomePiloto varchar(255), nomePilotoAbreviado varchar(255), ptsAerodinamica integer not null, ptsCarro integer not null, ptsConstrutores integer not null, ptsConstrutoresGanhos integer not null, ptsFreio integer not null, ptsPiloto integer not null, temporadaCapaceteLivery integer, temporadaCarroLivery integer, jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:47:30.704101-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_corridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, arquivoCircuito varchar(255), nomeCircuito varchar(255), rodada bigint, tempoFim bigint, tempoInicio bigint, campeonato_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_corridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, arquivoCircuito varchar(255), nomeCircuito varchar(255), rodada bigint, tempoFim bigint, tempoInicio bigint, campeonato_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:47:30.704615-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_corridasdadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, automaticoManual varchar(255), carro varchar(255), circuito varchar(255), mudouCarro bit not null, numVoltas integer not null, piloto varchar(255), pontos integer not null, porcentConcluida integer not null, posicao integer not null, tempoFim bigint not null, tempoInicio bigint not null, temporada varchar(255), jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_corridasdadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, automaticoManual varchar(255), carro varchar(255), circuito varchar(255), mudouCarro bit not null, numVoltas integer not null, piloto varchar(255), pontos integer not null, porcentConcluida integer not null, posicao integer not null, tempoFim bigint not null, tempoInicio bigint not null, temporada varchar(255), jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:47:30.705132-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_dadoscorridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, carro varchar(255), combustivelRestante varchar(255), corPiloto varchar(255), desgasteMotor varchar(255), desgastePneus varchar(255), jogador bigint, numVoltas integer not null, piloto varchar(255), pontos integer not null, posicao integer not null, qtdeParadasBox integer not null, tpPneu varchar(255), voltaMaisRapida varchar(255), corridaCampeonato_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_dadoscorridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, carro varchar(255), combustivelRestante varchar(255), corPiloto varchar(255), desgasteMotor varchar(255), desgastePneus varchar(255), jogador bigint, numVoltas integer not null, piloto varchar(255), pontos integer not null, posicao integer not null, qtdeParadasBox integer not null, tpPneu varchar(255), voltaMaisRapida varchar(255), corridaCampeonato_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:47:30.705388-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table hibernate_sequence (next_val bigint) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table hibernate_sequence (next_val bigint) engine=InnoDB [42001-224]
-2026-05-27 08:47:30.705763-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HIBERNATE_SEQUENCE" not found (this database is empty); SQL statement:
-insert into hibernate_sequence values ( 1 ) [42104-224]
-2026-05-27 08:47:30.706562-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table usuario (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, email varchar(255), idGoogle varchar(255) not null, imagemJogador varchar(255), nome varchar(255), senha varchar(255), token varchar(255), ultimaRecuperacao bigint not null, ultimoLogon bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table usuario (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, email varchar(255), idGoogle varchar(255) not null, imagemJogador varchar(255), nome varchar(255), senha varchar(255), token varchar(255), ultimaRecuperacao bigint not null, ultimoLogon bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:47:30.706970-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USUARIO" not found; SQL statement:
-alter table usuario add constraint UK_msj33ttsh1kyxq25pk62kiuoh unique (idGoogle) [42102-224]
-2026-05-27 08:47:30.707294-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CAMPEONATOSRV" not found; SQL statement:
-alter table f1_campeonatosrv add constraint FKdrvia3ajmqj32sj650g2v5p55 foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 08:47:30.707549-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CARREIRADADOSSRV" not found; SQL statement:
-alter table f1_carreiradadossrv add constraint FKsova6or6uvgs6g2r54dogaf7m foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 08:47:30.707815-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDACAMPEONATOSRV" not found; SQL statement:
-alter table f1_corridacampeonatosrv add constraint FKnnhx3cittvxjktbk4yedfww57 foreign key (campeonato_id) references f1_campeonatosrv (id) [42102-224]
-2026-05-27 08:47:30.708056-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDASDADOSSRV" not found; SQL statement:
-alter table f1_corridasdadossrv add constraint FK4kqh14f1xgm07e2kdurf467bh foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 08:47:30.708290-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_DADOSCORRIDACAMPEONATOSRV" not found; SQL statement:
-alter table f1_dadoscorridacampeonatosrv add constraint FKevq9pjywc7sndqkitg15uc05f foreign key (corridaCampeonato_id) references f1_corridacampeonatosrv (id) [42102-224]
-2026-05-27 08:51:58.127091-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CAMPEONATOSRV" not found (this database is empty); SQL statement:
-alter table f1_campeonatosrv drop foreign key FKdrvia3ajmqj32sj650g2v5p55 [42104-224]
-2026-05-27 08:51:58.128034-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CARREIRADADOSSRV" not found (this database is empty); SQL statement:
-alter table f1_carreiradadossrv drop foreign key FKsova6or6uvgs6g2r54dogaf7m [42104-224]
-2026-05-27 08:51:58.128247-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDACAMPEONATOSRV" not found (this database is empty); SQL statement:
-alter table f1_corridacampeonatosrv drop foreign key FKnnhx3cittvxjktbk4yedfww57 [42104-224]
-2026-05-27 08:51:58.128392-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDASDADOSSRV" not found (this database is empty); SQL statement:
-alter table f1_corridasdadossrv drop foreign key FK4kqh14f1xgm07e2kdurf467bh [42104-224]
-2026-05-27 08:51:58.128548-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_DADOSCORRIDACAMPEONATOSRV" not found (this database is empty); SQL statement:
-alter table f1_dadoscorridacampeonatosrv drop foreign key FKevq9pjywc7sndqkitg15uc05f [42104-224]
-2026-05-27 08:51:58.133174-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_campeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, drs bit not null, ers bit not null, finalizado bit not null, idPiloto varchar(255) not null, nivel varchar(255) not null, nome varchar(255) not null, qtdeVoltas integer not null, reabastecimento bit not null, temporada varchar(255) not null, trocaPneus bit not null, jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_campeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, drs bit not null, ers bit not null, finalizado bit not null, idPiloto varchar(255) not null, nivel varchar(255) not null, nome varchar(255) not null, qtdeVoltas integer not null, reabastecimento bit not null, temporada varchar(255) not null, trocaPneus bit not null, jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:51:58.134052-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_carreiradadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, c1B integer not null, c1G integer not null, c1R integer not null, c2B integer not null, c2G integer not null, c2R integer not null, idCapaceteLivery integer, idCarroLivery integer, modoCarreira bit not null, nomeCarro varchar(255), nomePiloto varchar(255), nomePilotoAbreviado varchar(255), ptsAerodinamica integer not null, ptsCarro integer not null, ptsConstrutores integer not null, ptsConstrutoresGanhos integer not null, ptsFreio integer not null, ptsPiloto integer not null, temporadaCapaceteLivery integer, temporadaCarroLivery integer, jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_carreiradadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, c1B integer not null, c1G integer not null, c1R integer not null, c2B integer not null, c2G integer not null, c2R integer not null, idCapaceteLivery integer, idCarroLivery integer, modoCarreira bit not null, nomeCarro varchar(255), nomePiloto varchar(255), nomePilotoAbreviado varchar(255), ptsAerodinamica integer not null, ptsCarro integer not null, ptsConstrutores integer not null, ptsConstrutoresGanhos integer not null, ptsFreio integer not null, ptsPiloto integer not null, temporadaCapaceteLivery integer, temporadaCarroLivery integer, jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:51:58.134534-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_corridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, arquivoCircuito varchar(255), nomeCircuito varchar(255), rodada bigint, tempoFim bigint, tempoInicio bigint, campeonato_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_corridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, arquivoCircuito varchar(255), nomeCircuito varchar(255), rodada bigint, tempoFim bigint, tempoInicio bigint, campeonato_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:51:58.135043-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_corridasdadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, automaticoManual varchar(255), carro varchar(255), circuito varchar(255), mudouCarro bit not null, numVoltas integer not null, piloto varchar(255), pontos integer not null, porcentConcluida integer not null, posicao integer not null, tempoFim bigint not null, tempoInicio bigint not null, temporada varchar(255), jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_corridasdadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, automaticoManual varchar(255), carro varchar(255), circuito varchar(255), mudouCarro bit not null, numVoltas integer not null, piloto varchar(255), pontos integer not null, porcentConcluida integer not null, posicao integer not null, tempoFim bigint not null, tempoInicio bigint not null, temporada varchar(255), jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:51:58.135636-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_dadoscorridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, carro varchar(255), combustivelRestante varchar(255), corPiloto varchar(255), desgasteMotor varchar(255), desgastePneus varchar(255), jogador bigint, numVoltas integer not null, piloto varchar(255), pontos integer not null, posicao integer not null, qtdeParadasBox integer not null, tpPneu varchar(255), voltaMaisRapida varchar(255), corridaCampeonato_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_dadoscorridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, carro varchar(255), combustivelRestante varchar(255), corPiloto varchar(255), desgasteMotor varchar(255), desgastePneus varchar(255), jogador bigint, numVoltas integer not null, piloto varchar(255), pontos integer not null, posicao integer not null, qtdeParadasBox integer not null, tpPneu varchar(255), voltaMaisRapida varchar(255), corridaCampeonato_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:51:58.136000-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table hibernate_sequence (next_val bigint) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table hibernate_sequence (next_val bigint) engine=InnoDB [42001-224]
-2026-05-27 08:51:58.136426-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HIBERNATE_SEQUENCE" not found (this database is empty); SQL statement:
-insert into hibernate_sequence values ( 1 ) [42104-224]
-2026-05-27 08:51:58.137303-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table usuario (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, email varchar(255), idGoogle varchar(255) not null, imagemJogador varchar(255), nome varchar(255), senha varchar(255), token varchar(255), ultimaRecuperacao bigint not null, ultimoLogon bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table usuario (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, email varchar(255), idGoogle varchar(255) not null, imagemJogador varchar(255), nome varchar(255), senha varchar(255), token varchar(255), ultimaRecuperacao bigint not null, ultimoLogon bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:51:58.137743-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USUARIO" not found; SQL statement:
-alter table usuario add constraint UK_msj33ttsh1kyxq25pk62kiuoh unique (idGoogle) [42102-224]
-2026-05-27 08:51:58.138090-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CAMPEONATOSRV" not found; SQL statement:
-alter table f1_campeonatosrv add constraint FKdrvia3ajmqj32sj650g2v5p55 foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 08:51:58.138389-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CARREIRADADOSSRV" not found; SQL statement:
-alter table f1_carreiradadossrv add constraint FKsova6or6uvgs6g2r54dogaf7m foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 08:51:58.138707-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDACAMPEONATOSRV" not found; SQL statement:
-alter table f1_corridacampeonatosrv add constraint FKnnhx3cittvxjktbk4yedfww57 foreign key (campeonato_id) references f1_campeonatosrv (id) [42102-224]
-2026-05-27 08:51:58.138968-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDASDADOSSRV" not found; SQL statement:
-alter table f1_corridasdadossrv add constraint FK4kqh14f1xgm07e2kdurf467bh foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 08:51:58.139218-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_DADOSCORRIDACAMPEONATOSRV" not found; SQL statement:
-alter table f1_dadoscorridacampeonatosrv add constraint FKevq9pjywc7sndqkitg15uc05f foreign key (corridaCampeonato_id) references f1_corridacampeonatosrv (id) [42102-224]
-2026-05-27 08:57:25.021915-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CAMPEONATOSRV" not found (this database is empty); SQL statement:
-alter table f1_campeonatosrv drop foreign key FKdrvia3ajmqj32sj650g2v5p55 [42104-224]
-2026-05-27 08:57:25.022700-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CARREIRADADOSSRV" not found (this database is empty); SQL statement:
-alter table f1_carreiradadossrv drop foreign key FKsova6or6uvgs6g2r54dogaf7m [42104-224]
-2026-05-27 08:57:25.022874-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDACAMPEONATOSRV" not found (this database is empty); SQL statement:
-alter table f1_corridacampeonatosrv drop foreign key FKnnhx3cittvxjktbk4yedfww57 [42104-224]
-2026-05-27 08:57:25.023001-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDASDADOSSRV" not found (this database is empty); SQL statement:
-alter table f1_corridasdadossrv drop foreign key FK4kqh14f1xgm07e2kdurf467bh [42104-224]
-2026-05-27 08:57:25.023145-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_DADOSCORRIDACAMPEONATOSRV" not found (this database is empty); SQL statement:
-alter table f1_dadoscorridacampeonatosrv drop foreign key FKevq9pjywc7sndqkitg15uc05f [42104-224]
-2026-05-27 08:57:25.027355-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_campeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, drs bit not null, ers bit not null, finalizado bit not null, idPiloto varchar(255) not null, nivel varchar(255) not null, nome varchar(255) not null, qtdeVoltas integer not null, reabastecimento bit not null, temporada varchar(255) not null, trocaPneus bit not null, jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_campeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, drs bit not null, ers bit not null, finalizado bit not null, idPiloto varchar(255) not null, nivel varchar(255) not null, nome varchar(255) not null, qtdeVoltas integer not null, reabastecimento bit not null, temporada varchar(255) not null, trocaPneus bit not null, jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:57:25.028291-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_carreiradadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, c1B integer not null, c1G integer not null, c1R integer not null, c2B integer not null, c2G integer not null, c2R integer not null, idCapaceteLivery integer, idCarroLivery integer, modoCarreira bit not null, nomeCarro varchar(255), nomePiloto varchar(255), nomePilotoAbreviado varchar(255), ptsAerodinamica integer not null, ptsCarro integer not null, ptsConstrutores integer not null, ptsConstrutoresGanhos integer not null, ptsFreio integer not null, ptsPiloto integer not null, temporadaCapaceteLivery integer, temporadaCarroLivery integer, jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_carreiradadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, c1B integer not null, c1G integer not null, c1R integer not null, c2B integer not null, c2G integer not null, c2R integer not null, idCapaceteLivery integer, idCarroLivery integer, modoCarreira bit not null, nomeCarro varchar(255), nomePiloto varchar(255), nomePilotoAbreviado varchar(255), ptsAerodinamica integer not null, ptsCarro integer not null, ptsConstrutores integer not null, ptsConstrutoresGanhos integer not null, ptsFreio integer not null, ptsPiloto integer not null, temporadaCapaceteLivery integer, temporadaCarroLivery integer, jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:57:25.028709-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_corridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, arquivoCircuito varchar(255), nomeCircuito varchar(255), rodada bigint, tempoFim bigint, tempoInicio bigint, campeonato_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_corridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, arquivoCircuito varchar(255), nomeCircuito varchar(255), rodada bigint, tempoFim bigint, tempoInicio bigint, campeonato_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:57:25.029229-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_corridasdadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, automaticoManual varchar(255), carro varchar(255), circuito varchar(255), mudouCarro bit not null, numVoltas integer not null, piloto varchar(255), pontos integer not null, porcentConcluida integer not null, posicao integer not null, tempoFim bigint not null, tempoInicio bigint not null, temporada varchar(255), jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_corridasdadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, automaticoManual varchar(255), carro varchar(255), circuito varchar(255), mudouCarro bit not null, numVoltas integer not null, piloto varchar(255), pontos integer not null, porcentConcluida integer not null, posicao integer not null, tempoFim bigint not null, tempoInicio bigint not null, temporada varchar(255), jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:57:25.029763-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_dadoscorridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, carro varchar(255), combustivelRestante varchar(255), corPiloto varchar(255), desgasteMotor varchar(255), desgastePneus varchar(255), jogador bigint, numVoltas integer not null, piloto varchar(255), pontos integer not null, posicao integer not null, qtdeParadasBox integer not null, tpPneu varchar(255), voltaMaisRapida varchar(255), corridaCampeonato_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_dadoscorridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, carro varchar(255), combustivelRestante varchar(255), corPiloto varchar(255), desgasteMotor varchar(255), desgastePneus varchar(255), jogador bigint, numVoltas integer not null, piloto varchar(255), pontos integer not null, posicao integer not null, qtdeParadasBox integer not null, tpPneu varchar(255), voltaMaisRapida varchar(255), corridaCampeonato_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:57:25.030037-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table hibernate_sequence (next_val bigint) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table hibernate_sequence (next_val bigint) engine=InnoDB [42001-224]
-2026-05-27 08:57:25.030434-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HIBERNATE_SEQUENCE" not found (this database is empty); SQL statement:
-insert into hibernate_sequence values ( 1 ) [42104-224]
-2026-05-27 08:57:25.031268-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table usuario (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, email varchar(255), idGoogle varchar(255) not null, imagemJogador varchar(255), nome varchar(255), senha varchar(255), token varchar(255), ultimaRecuperacao bigint not null, ultimoLogon bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table usuario (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, email varchar(255), idGoogle varchar(255) not null, imagemJogador varchar(255), nome varchar(255), senha varchar(255), token varchar(255), ultimaRecuperacao bigint not null, ultimoLogon bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 08:57:25.031703-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USUARIO" not found; SQL statement:
-alter table usuario add constraint UK_msj33ttsh1kyxq25pk62kiuoh unique (idGoogle) [42102-224]
-2026-05-27 08:57:25.032005-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CAMPEONATOSRV" not found; SQL statement:
-alter table f1_campeonatosrv add constraint FKdrvia3ajmqj32sj650g2v5p55 foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 08:57:25.032238-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CARREIRADADOSSRV" not found; SQL statement:
-alter table f1_carreiradadossrv add constraint FKsova6or6uvgs6g2r54dogaf7m foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 08:57:25.032467-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDACAMPEONATOSRV" not found; SQL statement:
-alter table f1_corridacampeonatosrv add constraint FKnnhx3cittvxjktbk4yedfww57 foreign key (campeonato_id) references f1_campeonatosrv (id) [42102-224]
-2026-05-27 08:57:25.032697-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDASDADOSSRV" not found; SQL statement:
-alter table f1_corridasdadossrv add constraint FK4kqh14f1xgm07e2kdurf467bh foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 08:57:25.032926-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_DADOSCORRIDACAMPEONATOSRV" not found; SQL statement:
-alter table f1_dadoscorridacampeonatosrv add constraint FKevq9pjywc7sndqkitg15uc05f foreign key (corridaCampeonato_id) references f1_corridacampeonatosrv (id) [42102-224]
-2026-05-27 09:39:26.707862-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CAMPEONATOSRV" not found (this database is empty); SQL statement:
-alter table f1_campeonatosrv drop foreign key FKdrvia3ajmqj32sj650g2v5p55 [42104-224]
-2026-05-27 09:39:26.708728-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CARREIRADADOSSRV" not found (this database is empty); SQL statement:
-alter table f1_carreiradadossrv drop foreign key FKsova6or6uvgs6g2r54dogaf7m [42104-224]
-2026-05-27 09:39:26.708964-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDACAMPEONATOSRV" not found (this database is empty); SQL statement:
-alter table f1_corridacampeonatosrv drop foreign key FKnnhx3cittvxjktbk4yedfww57 [42104-224]
-2026-05-27 09:39:26.709122-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDASDADOSSRV" not found (this database is empty); SQL statement:
-alter table f1_corridasdadossrv drop foreign key FK4kqh14f1xgm07e2kdurf467bh [42104-224]
-2026-05-27 09:39:26.709269-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_DADOSCORRIDACAMPEONATOSRV" not found (this database is empty); SQL statement:
-alter table f1_dadoscorridacampeonatosrv drop foreign key FKevq9pjywc7sndqkitg15uc05f [42104-224]
-2026-05-27 09:39:26.713970-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_campeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, drs bit not null, ers bit not null, finalizado bit not null, idPiloto varchar(255) not null, nivel varchar(255) not null, nome varchar(255) not null, qtdeVoltas integer not null, reabastecimento bit not null, temporada varchar(255) not null, trocaPneus bit not null, jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_campeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, drs bit not null, ers bit not null, finalizado bit not null, idPiloto varchar(255) not null, nivel varchar(255) not null, nome varchar(255) not null, qtdeVoltas integer not null, reabastecimento bit not null, temporada varchar(255) not null, trocaPneus bit not null, jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 09:39:26.714849-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_carreiradadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, c1B integer not null, c1G integer not null, c1R integer not null, c2B integer not null, c2G integer not null, c2R integer not null, idCapaceteLivery integer, idCarroLivery integer, modoCarreira bit not null, nomeCarro varchar(255), nomePiloto varchar(255), nomePilotoAbreviado varchar(255), ptsAerodinamica integer not null, ptsCarro integer not null, ptsConstrutores integer not null, ptsConstrutoresGanhos integer not null, ptsFreio integer not null, ptsPiloto integer not null, temporadaCapaceteLivery integer, temporadaCarroLivery integer, jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_carreiradadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, c1B integer not null, c1G integer not null, c1R integer not null, c2B integer not null, c2G integer not null, c2R integer not null, idCapaceteLivery integer, idCarroLivery integer, modoCarreira bit not null, nomeCarro varchar(255), nomePiloto varchar(255), nomePilotoAbreviado varchar(255), ptsAerodinamica integer not null, ptsCarro integer not null, ptsConstrutores integer not null, ptsConstrutoresGanhos integer not null, ptsFreio integer not null, ptsPiloto integer not null, temporadaCapaceteLivery integer, temporadaCarroLivery integer, jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 09:39:26.715313-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_corridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, arquivoCircuito varchar(255), nomeCircuito varchar(255), rodada bigint, tempoFim bigint, tempoInicio bigint, campeonato_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_corridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, arquivoCircuito varchar(255), nomeCircuito varchar(255), rodada bigint, tempoFim bigint, tempoInicio bigint, campeonato_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 09:39:26.715815-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_corridasdadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, automaticoManual varchar(255), carro varchar(255), circuito varchar(255), mudouCarro bit not null, numVoltas integer not null, piloto varchar(255), pontos integer not null, porcentConcluida integer not null, posicao integer not null, tempoFim bigint not null, tempoInicio bigint not null, temporada varchar(255), jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_corridasdadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, automaticoManual varchar(255), carro varchar(255), circuito varchar(255), mudouCarro bit not null, numVoltas integer not null, piloto varchar(255), pontos integer not null, porcentConcluida integer not null, posicao integer not null, tempoFim bigint not null, tempoInicio bigint not null, temporada varchar(255), jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 09:39:26.716325-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_dadoscorridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, carro varchar(255), combustivelRestante varchar(255), corPiloto varchar(255), desgasteMotor varchar(255), desgastePneus varchar(255), jogador bigint, numVoltas integer not null, piloto varchar(255), pontos integer not null, posicao integer not null, qtdeParadasBox integer not null, tpPneu varchar(255), voltaMaisRapida varchar(255), corridaCampeonato_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_dadoscorridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, carro varchar(255), combustivelRestante varchar(255), corPiloto varchar(255), desgasteMotor varchar(255), desgastePneus varchar(255), jogador bigint, numVoltas integer not null, piloto varchar(255), pontos integer not null, posicao integer not null, qtdeParadasBox integer not null, tpPneu varchar(255), voltaMaisRapida varchar(255), corridaCampeonato_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 09:39:26.716615-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table hibernate_sequence (next_val bigint) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table hibernate_sequence (next_val bigint) engine=InnoDB [42001-224]
-2026-05-27 09:39:26.717019-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HIBERNATE_SEQUENCE" not found (this database is empty); SQL statement:
-insert into hibernate_sequence values ( 1 ) [42104-224]
-2026-05-27 09:39:26.718141-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table usuario (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, email varchar(255), idGoogle varchar(255) not null, imagemJogador varchar(255), nome varchar(255), senha varchar(255), token varchar(255), ultimaRecuperacao bigint not null, ultimoLogon bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table usuario (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, email varchar(255), idGoogle varchar(255) not null, imagemJogador varchar(255), nome varchar(255), senha varchar(255), token varchar(255), ultimaRecuperacao bigint not null, ultimoLogon bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 09:39:26.718590-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USUARIO" not found; SQL statement:
-alter table usuario add constraint UK_msj33ttsh1kyxq25pk62kiuoh unique (idGoogle) [42102-224]
-2026-05-27 09:39:26.718893-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CAMPEONATOSRV" not found; SQL statement:
-alter table f1_campeonatosrv add constraint FKdrvia3ajmqj32sj650g2v5p55 foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 09:39:26.719123-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CARREIRADADOSSRV" not found; SQL statement:
-alter table f1_carreiradadossrv add constraint FKsova6or6uvgs6g2r54dogaf7m foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 09:39:26.719341-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDACAMPEONATOSRV" not found; SQL statement:
-alter table f1_corridacampeonatosrv add constraint FKnnhx3cittvxjktbk4yedfww57 foreign key (campeonato_id) references f1_campeonatosrv (id) [42102-224]
-2026-05-27 09:39:26.719565-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDASDADOSSRV" not found; SQL statement:
-alter table f1_corridasdadossrv add constraint FK4kqh14f1xgm07e2kdurf467bh foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 09:39:26.719795-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_DADOSCORRIDACAMPEONATOSRV" not found; SQL statement:
-alter table f1_dadoscorridacampeonatosrv add constraint FKevq9pjywc7sndqkitg15uc05f foreign key (corridaCampeonato_id) references f1_corridacampeonatosrv (id) [42102-224]
-2026-05-27 09:46:06.172604-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CAMPEONATOSRV" not found (this database is empty); SQL statement:
-alter table f1_campeonatosrv drop foreign key FKdrvia3ajmqj32sj650g2v5p55 [42104-224]
-2026-05-27 09:46:06.173485-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CARREIRADADOSSRV" not found (this database is empty); SQL statement:
-alter table f1_carreiradadossrv drop foreign key FKsova6or6uvgs6g2r54dogaf7m [42104-224]
-2026-05-27 09:46:06.173703-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDACAMPEONATOSRV" not found (this database is empty); SQL statement:
-alter table f1_corridacampeonatosrv drop foreign key FKnnhx3cittvxjktbk4yedfww57 [42104-224]
-2026-05-27 09:46:06.173860-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDASDADOSSRV" not found (this database is empty); SQL statement:
-alter table f1_corridasdadossrv drop foreign key FK4kqh14f1xgm07e2kdurf467bh [42104-224]
-2026-05-27 09:46:06.174002-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_DADOSCORRIDACAMPEONATOSRV" not found (this database is empty); SQL statement:
-alter table f1_dadoscorridacampeonatosrv drop foreign key FKevq9pjywc7sndqkitg15uc05f [42104-224]
-2026-05-27 09:46:06.179124-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_campeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, drs bit not null, ers bit not null, finalizado bit not null, idPiloto varchar(255) not null, nivel varchar(255) not null, nome varchar(255) not null, qtdeVoltas integer not null, reabastecimento bit not null, temporada varchar(255) not null, trocaPneus bit not null, jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_campeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, drs bit not null, ers bit not null, finalizado bit not null, idPiloto varchar(255) not null, nivel varchar(255) not null, nome varchar(255) not null, qtdeVoltas integer not null, reabastecimento bit not null, temporada varchar(255) not null, trocaPneus bit not null, jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 09:46:06.179968-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_carreiradadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, c1B integer not null, c1G integer not null, c1R integer not null, c2B integer not null, c2G integer not null, c2R integer not null, idCapaceteLivery integer, idCarroLivery integer, modoCarreira bit not null, nomeCarro varchar(255), nomePiloto varchar(255), nomePilotoAbreviado varchar(255), ptsAerodinamica integer not null, ptsCarro integer not null, ptsConstrutores integer not null, ptsConstrutoresGanhos integer not null, ptsFreio integer not null, ptsPiloto integer not null, temporadaCapaceteLivery integer, temporadaCarroLivery integer, jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_carreiradadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, c1B integer not null, c1G integer not null, c1R integer not null, c2B integer not null, c2G integer not null, c2R integer not null, idCapaceteLivery integer, idCarroLivery integer, modoCarreira bit not null, nomeCarro varchar(255), nomePiloto varchar(255), nomePilotoAbreviado varchar(255), ptsAerodinamica integer not null, ptsCarro integer not null, ptsConstrutores integer not null, ptsConstrutoresGanhos integer not null, ptsFreio integer not null, ptsPiloto integer not null, temporadaCapaceteLivery integer, temporadaCarroLivery integer, jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 09:46:06.180397-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_corridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, arquivoCircuito varchar(255), nomeCircuito varchar(255), rodada bigint, tempoFim bigint, tempoInicio bigint, campeonato_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_corridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, arquivoCircuito varchar(255), nomeCircuito varchar(255), rodada bigint, tempoFim bigint, tempoInicio bigint, campeonato_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 09:46:06.180978-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_corridasdadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, automaticoManual varchar(255), carro varchar(255), circuito varchar(255), mudouCarro bit not null, numVoltas integer not null, piloto varchar(255), pontos integer not null, porcentConcluida integer not null, posicao integer not null, tempoFim bigint not null, tempoInicio bigint not null, temporada varchar(255), jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_corridasdadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, automaticoManual varchar(255), carro varchar(255), circuito varchar(255), mudouCarro bit not null, numVoltas integer not null, piloto varchar(255), pontos integer not null, porcentConcluida integer not null, posicao integer not null, tempoFim bigint not null, tempoInicio bigint not null, temporada varchar(255), jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 09:46:06.181513-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_dadoscorridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, carro varchar(255), combustivelRestante varchar(255), corPiloto varchar(255), desgasteMotor varchar(255), desgastePneus varchar(255), jogador bigint, numVoltas integer not null, piloto varchar(255), pontos integer not null, posicao integer not null, qtdeParadasBox integer not null, tpPneu varchar(255), voltaMaisRapida varchar(255), corridaCampeonato_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_dadoscorridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, carro varchar(255), combustivelRestante varchar(255), corPiloto varchar(255), desgasteMotor varchar(255), desgastePneus varchar(255), jogador bigint, numVoltas integer not null, piloto varchar(255), pontos integer not null, posicao integer not null, qtdeParadasBox integer not null, tpPneu varchar(255), voltaMaisRapida varchar(255), corridaCampeonato_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 09:46:06.181790-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table hibernate_sequence (next_val bigint) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table hibernate_sequence (next_val bigint) engine=InnoDB [42001-224]
-2026-05-27 09:46:06.182193-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HIBERNATE_SEQUENCE" not found (this database is empty); SQL statement:
-insert into hibernate_sequence values ( 1 ) [42104-224]
-2026-05-27 09:46:06.183057-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table usuario (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, email varchar(255), idGoogle varchar(255) not null, imagemJogador varchar(255), nome varchar(255), senha varchar(255), token varchar(255), ultimaRecuperacao bigint not null, ultimoLogon bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table usuario (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, email varchar(255), idGoogle varchar(255) not null, imagemJogador varchar(255), nome varchar(255), senha varchar(255), token varchar(255), ultimaRecuperacao bigint not null, ultimoLogon bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 09:46:06.183476-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USUARIO" not found; SQL statement:
-alter table usuario add constraint UK_msj33ttsh1kyxq25pk62kiuoh unique (idGoogle) [42102-224]
-2026-05-27 09:46:06.183807-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CAMPEONATOSRV" not found; SQL statement:
-alter table f1_campeonatosrv add constraint FKdrvia3ajmqj32sj650g2v5p55 foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 09:46:06.184542-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CARREIRADADOSSRV" not found; SQL statement:
-alter table f1_carreiradadossrv add constraint FKsova6or6uvgs6g2r54dogaf7m foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 09:46:06.184756-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDACAMPEONATOSRV" not found; SQL statement:
-alter table f1_corridacampeonatosrv add constraint FKnnhx3cittvxjktbk4yedfww57 foreign key (campeonato_id) references f1_campeonatosrv (id) [42102-224]
-2026-05-27 09:46:06.184963-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDASDADOSSRV" not found; SQL statement:
-alter table f1_corridasdadossrv add constraint FK4kqh14f1xgm07e2kdurf467bh foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 09:46:06.185167-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_DADOSCORRIDACAMPEONATOSRV" not found; SQL statement:
-alter table f1_dadoscorridacampeonatosrv add constraint FKevq9pjywc7sndqkitg15uc05f foreign key (corridaCampeonato_id) references f1_corridacampeonatosrv (id) [42102-224]
-2026-05-27 09:54:49.794390-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CAMPEONATOSRV" not found (this database is empty); SQL statement:
-alter table f1_campeonatosrv drop foreign key FKdrvia3ajmqj32sj650g2v5p55 [42104-224]
-2026-05-27 09:54:49.795813-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CARREIRADADOSSRV" not found (this database is empty); SQL statement:
-alter table f1_carreiradadossrv drop foreign key FKsova6or6uvgs6g2r54dogaf7m [42104-224]
-2026-05-27 09:54:49.796108-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDACAMPEONATOSRV" not found (this database is empty); SQL statement:
-alter table f1_corridacampeonatosrv drop foreign key FKnnhx3cittvxjktbk4yedfww57 [42104-224]
-2026-05-27 09:54:49.796337-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDASDADOSSRV" not found (this database is empty); SQL statement:
-alter table f1_corridasdadossrv drop foreign key FK4kqh14f1xgm07e2kdurf467bh [42104-224]
-2026-05-27 09:54:49.796573-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_DADOSCORRIDACAMPEONATOSRV" not found (this database is empty); SQL statement:
-alter table f1_dadoscorridacampeonatosrv drop foreign key FKevq9pjywc7sndqkitg15uc05f [42104-224]
-2026-05-27 09:54:49.803067-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_campeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, drs bit not null, ers bit not null, finalizado bit not null, idPiloto varchar(255) not null, nivel varchar(255) not null, nome varchar(255) not null, qtdeVoltas integer not null, reabastecimento bit not null, temporada varchar(255) not null, trocaPneus bit not null, jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_campeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, drs bit not null, ers bit not null, finalizado bit not null, idPiloto varchar(255) not null, nivel varchar(255) not null, nome varchar(255) not null, qtdeVoltas integer not null, reabastecimento bit not null, temporada varchar(255) not null, trocaPneus bit not null, jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 09:54:49.804339-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_carreiradadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, c1B integer not null, c1G integer not null, c1R integer not null, c2B integer not null, c2G integer not null, c2R integer not null, idCapaceteLivery integer, idCarroLivery integer, modoCarreira bit not null, nomeCarro varchar(255), nomePiloto varchar(255), nomePilotoAbreviado varchar(255), ptsAerodinamica integer not null, ptsCarro integer not null, ptsConstrutores integer not null, ptsConstrutoresGanhos integer not null, ptsFreio integer not null, ptsPiloto integer not null, temporadaCapaceteLivery integer, temporadaCarroLivery integer, jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_carreiradadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, c1B integer not null, c1G integer not null, c1R integer not null, c2B integer not null, c2G integer not null, c2R integer not null, idCapaceteLivery integer, idCarroLivery integer, modoCarreira bit not null, nomeCarro varchar(255), nomePiloto varchar(255), nomePilotoAbreviado varchar(255), ptsAerodinamica integer not null, ptsCarro integer not null, ptsConstrutores integer not null, ptsConstrutoresGanhos integer not null, ptsFreio integer not null, ptsPiloto integer not null, temporadaCapaceteLivery integer, temporadaCarroLivery integer, jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 09:54:49.805035-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_corridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, arquivoCircuito varchar(255), nomeCircuito varchar(255), rodada bigint, tempoFim bigint, tempoInicio bigint, campeonato_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_corridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, arquivoCircuito varchar(255), nomeCircuito varchar(255), rodada bigint, tempoFim bigint, tempoInicio bigint, campeonato_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 09:54:49.805789-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_corridasdadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, automaticoManual varchar(255), carro varchar(255), circuito varchar(255), mudouCarro bit not null, numVoltas integer not null, piloto varchar(255), pontos integer not null, porcentConcluida integer not null, posicao integer not null, tempoFim bigint not null, tempoInicio bigint not null, temporada varchar(255), jogadorDadosSrv_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_corridasdadossrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, automaticoManual varchar(255), carro varchar(255), circuito varchar(255), mudouCarro bit not null, numVoltas integer not null, piloto varchar(255), pontos integer not null, porcentConcluida integer not null, posicao integer not null, tempoFim bigint not null, tempoInicio bigint not null, temporada varchar(255), jogadorDadosSrv_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 09:54:49.806563-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table f1_dadoscorridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, carro varchar(255), combustivelRestante varchar(255), corPiloto varchar(255), desgasteMotor varchar(255), desgastePneus varchar(255), jogador bigint, numVoltas integer not null, piloto varchar(255), pontos integer not null, posicao integer not null, qtdeParadasBox integer not null, tpPneu varchar(255), voltaMaisRapida varchar(255), corridaCampeonato_id bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table f1_dadoscorridacampeonatosrv (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, carro varchar(255), combustivelRestante varchar(255), corPiloto varchar(255), desgasteMotor varchar(255), desgastePneus varchar(255), jogador bigint, numVoltas integer not null, piloto varchar(255), pontos integer not null, posicao integer not null, qtdeParadasBox integer not null, tpPneu varchar(255), voltaMaisRapida varchar(255), corridaCampeonato_id bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 09:54:49.806969-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table hibernate_sequence (next_val bigint) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table hibernate_sequence (next_val bigint) engine=InnoDB [42001-224]
-2026-05-27 09:54:49.807544-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HIBERNATE_SEQUENCE" not found (this database is empty); SQL statement:
-insert into hibernate_sequence values ( 1 ) [42104-224]
-2026-05-27 09:54:49.808875-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table usuario (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, email varchar(255), idGoogle varchar(255) not null, imagemJogador varchar(255), nome varchar(255), senha varchar(255), token varchar(255), ultimaRecuperacao bigint not null, ultimoLogon bigint not null, primary key (id)) engine[*]=InnoDB"; expected "identifier"; SQL statement:
-create table usuario (id bigint not null, dataCriacao datetime(6) not null, loginCriador varchar(255) not null, email varchar(255), idGoogle varchar(255) not null, imagemJogador varchar(255), nome varchar(255), senha varchar(255), token varchar(255), ultimaRecuperacao bigint not null, ultimoLogon bigint not null, primary key (id)) engine=InnoDB [42001-224]
-2026-05-27 09:54:49.809519-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USUARIO" not found; SQL statement:
-alter table usuario add constraint UK_msj33ttsh1kyxq25pk62kiuoh unique (idGoogle) [42102-224]
-2026-05-27 09:54:49.810018-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CAMPEONATOSRV" not found; SQL statement:
-alter table f1_campeonatosrv add constraint FKdrvia3ajmqj32sj650g2v5p55 foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 09:54:49.810408-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CARREIRADADOSSRV" not found; SQL statement:
-alter table f1_carreiradadossrv add constraint FKsova6or6uvgs6g2r54dogaf7m foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 09:54:49.810765-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDACAMPEONATOSRV" not found; SQL statement:
-alter table f1_corridacampeonatosrv add constraint FKnnhx3cittvxjktbk4yedfww57 foreign key (campeonato_id) references f1_campeonatosrv (id) [42102-224]
-2026-05-27 09:54:49.811109-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_CORRIDASDADOSSRV" not found; SQL statement:
-alter table f1_corridasdadossrv add constraint FK4kqh14f1xgm07e2kdurf467bh foreign key (jogadorDadosSrv_id) references usuario (id) [42102-224]
-2026-05-27 09:54:49.811456-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "F1_DADOSCORRIDACAMPEONATOSRV" not found; SQL statement:
-alter table f1_dadoscorridacampeonatosrv add constraint FKevq9pjywc7sndqkitg15uc05f foreign key (corridaCampeonato_id) references f1_corridacampeonatosrv (id) [42102-224]
+2026-05-28 14:40:04.507776-03:00 jdbc[4]: null
+org.h2.message.DbException: The connection was not closed by the application and is garbage collected [90018-224]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:218)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:135)
+	at org.h2.Driver.connect(Driver.java:59)
+	at org.hibernate.engine.jdbc.connections.internal.DriverConnectionCreator.makeConnection(DriverConnectionCreator.java:39)
+	at org.hibernate.engine.jdbc.connections.internal.BasicConnectionCreator.createConnection(BasicConnectionCreator.java:62)
+	at org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections.addConnections(DriverManagerConnectionProviderImpl.java:457)
+	at org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections.<init>(DriverManagerConnectionProviderImpl.java:323)
+	at org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections.<init>(DriverManagerConnectionProviderImpl.java:297)
+	at org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections$Builder.build(DriverManagerConnectionProviderImpl.java:501)
+	at org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl.buildPool(DriverManagerConnectionProviderImpl.java:101)
+	at org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl.configure(DriverManagerConnectionProviderImpl.java:76)
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.configureService(StandardServiceRegistryImpl.java:107)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:255)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:223)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.buildJdbcConnectionAccess(JdbcEnvironmentInitiator.java:146)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:66)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:35)
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:101)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:272)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:246)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:223)
+	at org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory.injectServices(DefaultIdentifierGeneratorFactory.java:175)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.injectDependencies(AbstractServiceRegistryImpl.java:295)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:252)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:223)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:173)
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:127)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1460)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1494)
+	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
+	at br.f1mane.servidor.util.HibernateUtil.getSession(HibernateUtil.java:15)
+	at br.f1mane.servidor.controles.ControlePersistencia.getSession(ControlePersistencia.java:35)
+	at br.f1mane.servidor.controles.ControlePaddockServidor.salvarAcessoSessaoId(ControlePaddockServidor.java:765)
+	at br.f1mane.servidor.controles.ControlePaddockServidor.criarSessaoNome(ControlePaddockServidor.java:751)
+	at br.f1mane.servidor.rest.LetsRace.criarSessaoGoogle(LetsRace.java:134)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory.lambda$static$0(ResourceMethodInvocationHandlerFactory.java:52)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher$1.run(AbstractJavaResourceMethodDispatcher.java:146)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.invoke(AbstractJavaResourceMethodDispatcher.java:189)
+	at org.glassfish.jersey.server.model.internal.JavaResourceMethodDispatcherProvider$ResponseOutInvoker.doDispatch(JavaResourceMethodDispatcherProvider.java:176)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.dispatch(AbstractJavaResourceMethodDispatcher.java:93)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:478)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:400)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:81)
+	at org.glassfish.jersey.server.ServerRuntime$1.run(ServerRuntime.java:256)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:248)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:244)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:292)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:274)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:244)
+	at org.glassfish.jersey.process.internal.RequestScope.runInScope(RequestScope.java:265)
+	at org.glassfish.jersey.server.ServerRuntime.process(ServerRuntime.java:235)
+	at org.glassfish.jersey.server.ApplicationHandler.handle(ApplicationHandler.java:684)
+	at org.glassfish.jersey.servlet.WebComponent.serviceImpl(WebComponent.java:394)
+	at org.glassfish.jersey.servlet.WebComponent.service(WebComponent.java:346)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:358)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:311)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:199)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:144)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:168)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:481)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:130)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:346)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:388)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:928)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1791)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection was not closed by the application and is garbage collected [90018-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 84 more

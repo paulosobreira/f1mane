@@ -55,7 +55,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
     private ControleEstatisticas controleEstatisticas;
     private SafetyCar safetyCar = new SafetyCar();
     private boolean safetyCarNaPista;
-    private String tokenJogador;
+    private String idUsuario;
     private Piloto pilotoSelecionado;
     private DadosJogo dadosJogo;
     private String clima;
@@ -119,7 +119,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
         this.nomeJogoCriado = nomeJogoCriado;
         this.nomePilotoJogador = nomePilotoJogador;
         monitorJogo = new MonitorJogo(this, controlePaddockCliente, sessaoCliente);
-        tokenJogador = sessaoCliente.getToken();
+        idUsuario = sessaoCliente.getIdUsuario();
         clima = dadosParticiparJogo.getClima();
         mainFrame.setControleJogo(this);
         selecionaPilotoJogador();
@@ -445,7 +445,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
         }
         for (Iterator iter = pilotos.iterator(); iter.hasNext(); ) {
             Piloto piloto = (Piloto) iter.next();
-            if (tokenJogador.equals(piloto.getTokenJogador())) {
+            if (idUsuario.equals(piloto.getIdUsuario())) {
                 pilotoSelecionado = piloto;
                 break;
             }
@@ -939,10 +939,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
         if (pilotoSelecionado == null) {
             return;
         }
-        if (tokenJogador == null) {
+        if (idUsuario == null) {
             return;
         }
-        if (!tokenJogador.equals(pilotoSelecionado.getTokenJogador())) {
+        if (!idUsuario.equals(pilotoSelecionado.getIdUsuario())) {
             return;
         }
         if (pilotoSelecionado.getNoAtual() != null && !isChovendo()

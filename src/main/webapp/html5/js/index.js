@@ -24,6 +24,12 @@ localStorage.removeItem("nomeJogador");
 localStorage.removeItem("imagemJogador");
 localStorage.setItem("modoCarreira", false);
 localStorage.setItem("modoCampeonato", false);
+$(document).ready(function () {
+	var nome = localStorage.getItem('nomeJogadorSessao');
+	if (nome) {
+		$('#nomeJogadorSessao').val(nome);
+	}
+});
 
 var token = getParameter('token');
 

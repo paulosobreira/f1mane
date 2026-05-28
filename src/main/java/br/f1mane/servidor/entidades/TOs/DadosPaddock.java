@@ -8,54 +8,52 @@ import java.util.Map;
 
 /**
  * @author paulo.sobreira
- * 
  */
 public class DadosPaddock implements Serializable {
-	private static final long serialVersionUID = 2200481566401284586L;
-	private Long dataTime;
-	private final Map<String, SessaoCliente> clientes = new HashMap<String, SessaoCliente>();
-	private List<String> jogosCriados = new ArrayList<String>();
-	private String linhaChat = "";
+    private static final long serialVersionUID = 2200481566401284586L;
+    private Long dataTime;
+    private final Map<String, SessaoCliente> clientes = new HashMap<String, SessaoCliente>();
+    private List<String> jogosCriados = new ArrayList<String>();
+    private String linhaChat = "";
 
-	public Long getDataTime() {
-		return dataTime;
-	}
+    public Long getDataTime() {
+        return dataTime;
+    }
 
-	public void setDataTime(Long dataTime) {
-		this.dataTime = dataTime;
-	}
+    public void setDataTime(Long dataTime) {
+        this.dataTime = dataTime;
+    }
 
-	public String getLinhaChat() {
-		return linhaChat;
-	}
+    public String getLinhaChat() {
+        return linhaChat;
+    }
 
-	public void setLinhaChat(String linhaChat) {
-		this.linhaChat = linhaChat;
-	}
+    public void setLinhaChat(String linhaChat) {
+        this.linhaChat = linhaChat;
+    }
 
-	public List<SessaoCliente> getClientes() {
-		return new ArrayList<SessaoCliente>(clientes.values());
-	}
+    public List<SessaoCliente> getClientes() {
+        return new ArrayList<SessaoCliente>(clientes.values());
+    }
 
-	public List<String> getJogosCriados() {
-		return jogosCriados;
-	}
+    public List<String> getJogosCriados() {
+        return jogosCriados;
+    }
 
-	public void setJogosCriados(List<String> jogosCriados) {
-		this.jogosCriados = jogosCriados;
-	}
+    public void setJogosCriados(List<String> jogosCriados) {
+        this.jogosCriados = jogosCriados;
+    }
 
-	public void add(SessaoCliente sessaoCliente) {
-		clientes.put(sessaoCliente.getToken(), sessaoCliente);
+    public void add(SessaoCliente sessaoCliente) {
+        clientes.put(sessaoCliente.getIdUsuario(), sessaoCliente);
+    }
 
-	}
+    public void remove(SessaoCliente cliente) {
+        clientes.remove(cliente.getIdUsuario());
+    }
 
-	public void remove(SessaoCliente cliente) {
-		clientes.remove(cliente.getToken());
-	}
-
-	public SessaoCliente obterPorToken(String token) {
-		return clientes.get(token);
-	}
+    public SessaoCliente obterPorToken(String token) {
+        return clientes.get(token);
+    }
 
 }

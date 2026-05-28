@@ -30,7 +30,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
     private final static String lock = "lock";
     private String nomeJogoServidor;
     private String nomeCriador;
-    private String tokenCriador;
+    private String idUsuarioCriador;
     private long tempoCriacao, tempoInicio, tempoFim;
     /* mapJogadoresOnline.put(token, dadosParticiparJogo) */
     private Map<String, DadosCriarJogo> mapJogadoresOnline = new HashMap<String, DadosCriarJogo>();
@@ -83,16 +83,16 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
             Piloto piloto = (Piloto) iter.next();
 
             if (piloto.isJogadorHumano()
-                    && !Util.isNullOrEmpty(piloto.getTokenJogador())) {
+                    && !Util.isNullOrEmpty(piloto.getIdUsuario())) {
 
                 SessaoCliente sessao = controleJogosServer
                         .getControlePaddockServidor()
-                        .obterSessaoPorToken(piloto.getTokenJogador());
+                        .obterSessao(piloto.getIdUsuario());
                 if (sessao == null || sessao.isGuest()) {
                     continue;
                 }
                 VoltaJogadorOnline voltaJogadorOnline = new VoltaJogadorOnline();
-                voltaJogadorOnline.setJogador(piloto.getTokenJogador());
+                voltaJogadorOnline.setJogador(piloto.getIdUsuario());
                 voltaJogadorOnline.setPiloto(piloto.getNome());
                 voltasJogadoresOnline.add(voltaJogadorOnline);
             }
@@ -189,9 +189,9 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
             }
         }
         if (pilotoDisponivel) {
-            mapJogadoresOnline.put(sessaoCliente.getToken(),
+            mapJogadoresOnline.put(sessaoCliente.getIdUsuario(),
                     dadosParticiparJogo);
-            mapJogadoresOnlineTexto.put(sessaoCliente.getToken(),
+            mapJogadoresOnlineTexto.put(sessaoCliente.getIdUsuario(),
                     new BufferTexto());
         } else {
             return new MsgSrv(Lang.msg("260",
@@ -325,12 +325,12 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
                                     .getSessaoCliente().getNomeJogador());
                             piloto.setImgJogador(srvPaddockPack
                                     .getSessaoCliente().getImagemJogador());
-                            piloto.setTokenJogador(srvPaddockPack
-                                    .getSessaoCliente().getToken());
+                            piloto.setIdUsuario(srvPaddockPack
+                                    .getSessaoCliente().getIdUsuario());
                             piloto.setJogadorHumano(true);
                         }
                         if (piloto.isJogadorHumano() && mapJogadoresOnline
-                                .get(piloto.getTokenJogador()) == null) {
+                                .get(piloto.getIdUsuario()) == null) {
                             removeJogadroPiloto(piloto);
                         }
                     }
@@ -366,10 +366,10 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
     public String getTipoPneuBox(Piloto piloto) {
         DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
-                .get(piloto.getTokenJogador());
+                .get(piloto.getIdUsuario());
         if (dadosParticiparJogo == null) {
             piloto.setNomeJogador(null);
-            piloto.setTokenJogador(null);
+            piloto.setIdUsuario(null);
             piloto.setJogadorHumano(false);
             return Carro.TIPO_PNEU_DURO;
         }
@@ -378,7 +378,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
     public String getAsaBox(Piloto piloto) {
         DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
-                .get(piloto.getTokenJogador());
+                .get(piloto.getIdUsuario());
         if (dadosParticiparJogo == null) {
             piloto.setNomeJogador(null);
             piloto.setJogadorHumano(false);
@@ -389,10 +389,10 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
     public Integer getCombustBox(Piloto piloto) {
         DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
-                .get(piloto.getTokenJogador());
+                .get(piloto.getIdUsuario());
         if (dadosParticiparJogo == null) {
             piloto.setNomeJogador(null);
-            piloto.setTokenJogador(null);
+            piloto.setIdUsuario(null);
             piloto.setJogadorHumano(false);
             return new Integer(100);
         }
@@ -517,19 +517,19 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
     public void atulizaTabelaPosicoes() {
     }
 
-    public boolean removerJogador(String token) {
-        if (token == null) {
+    public boolean removerJogador(String idUsuario) {
+        if (idUsuario == null) {
             return false;
         }
-        if (!mapJogadoresOnline.containsKey(token)) {
+        if (!mapJogadoresOnline.containsKey(idUsuario)) {
             return false;
         }
         List pilotos = getPilotos();
         for (Iterator iter = pilotos.iterator(); iter.hasNext(); ) {
             Piloto piloto = (Piloto) iter.next();
-            if (token.equals(piloto.getTokenJogador())) {
+            if (idUsuario.equals(piloto.getIdUsuario())) {
                 removeJogadroPiloto(piloto);
-                mapJogadoresOnline.remove(token);
+                mapJogadoresOnline.remove(idUsuario);
                 return true;
             }
         }
@@ -539,7 +539,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
     private void removeJogadroPiloto(Piloto piloto) {
         piloto.setNomeJogador(null);
-        piloto.setTokenJogador(null);
+        piloto.setIdUsuario(null);
         piloto.setImgJogador(null);
         piloto.setJogadorHumano(false);
     }
@@ -605,12 +605,12 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
         setCorridaTerminada(true);
     }
 
-    public String getTokenCriador() {
-        return tokenCriador;
+    public String getIdUsuarioCriador() {
+        return idUsuarioCriador;
     }
 
-    public void setTokenCriador(String tokenCriador) {
-        this.tokenCriador = tokenCriador;
+    public void setIdUsuarioCriador(String idUsuarioCriador) {
+        this.idUsuarioCriador = idUsuarioCriador;
     }
 
 }

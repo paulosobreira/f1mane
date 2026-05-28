@@ -497,8 +497,8 @@ public class MonitorJogo implements Runnable {
             jogoCliente.matarTodasThreads();
             List<Piloto> pilotos = jogoCliente.getPilotos();
             for (Piloto piloto : pilotos) {
-                if (clientPaddockPack.getSessaoCliente().getToken().equals(piloto.getTokenJogador())) {
-                    piloto.setTokenJogador(null);
+                if (clientPaddockPack.getSessaoCliente().getIdUsuario().equals(piloto.getIdUsuario())) {
+                    piloto.setIdUsuario(null);
                 }
             }
         } catch (Exception e) {
@@ -517,7 +517,7 @@ public class MonitorJogo implements Runnable {
                                        Piloto pilotoSelecionado, boolean atualizaPosicoes) {
         try {
             String dataSend = jogoCliente.getNomeJogoCriado() + "#"
-                    + sessaoCliente.getToken();
+                    + sessaoCliente.getIdUsuario();
             if (pilotoSelecionado != null) {
                 dataSend += "#" + pilotoSelecionado.getId();
             }
@@ -555,7 +555,7 @@ public class MonitorJogo implements Runnable {
                 piloto.setNumeroVolta(dadosParciais.voltaAtual);
                 piloto.setNomeJogador(dadosParciais.nomeJogador);
                 piloto.setQtdeParadasBox(dadosParciais.paradas);
-                piloto.setJogadorHumano(piloto.getTokenJogador() != null);
+                piloto.setJogadorHumano(piloto.getIdUsuario() != null);
                 piloto.getCarro().setDanificado(dadosParciais.dano);
                 if (!jogoCliente.isSafetyCarNaPista()
                         && piloto.isDesqualificado()) {
@@ -857,8 +857,8 @@ public class MonitorJogo implements Runnable {
 
     public void driveThru(final Piloto pilotoSelecionado) {
         if (pilotoSelecionado == null || !pilotoSelecionado.isJogadorHumano()
-                || sessaoCliente.getToken()
-                .equals(pilotoSelecionado.getTokenJogador())) {
+                || sessaoCliente.getIdUsuario()
+                .equals(pilotoSelecionado.getIdUsuario())) {
             jogoCliente
                     .adicionarInfoDireto(Lang.msg("selecionePilotoDriveThru"));
             return;
@@ -872,7 +872,7 @@ public class MonitorJogo implements Runnable {
                     clientPaddockPack
                             .setNomeJogo(jogoCliente.getNomeJogoCriado());
                     clientPaddockPack
-                            .setDataObject(pilotoSelecionado.getTokenJogador());
+                            .setDataObject(pilotoSelecionado.getIdUsuario());
                     Object ret = controlePaddockCliente
                             .enviarObjeto(clientPaddockPack, true);
                 } catch (Exception e) {

@@ -18,9 +18,8 @@ import javax.persistence.Table;
 @Table(name = "usuario")
 public class JogadorDadosSrv extends F1ManeDados implements Serializable {
 
-	@Column(name = "idGoogle", nullable = false, unique = true)
-	private String idGoogle;
-	private String token;
+	@Column(name = "idUsuario", nullable = false, unique = true)
+	private String idUsuario;
 	private String nome;
 	private String imagemJogador;
 	private String email;
@@ -29,14 +28,6 @@ public class JogadorDadosSrv extends F1ManeDados implements Serializable {
 	private List<CorridasDadosSrv> corridas = new LinkedList<CorridasDadosSrv>();
 	private long ultimoLogon = 0;
 	private long ultimaRecuperacao = 0;
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
 
 	public String getEmail() {
 		return email;
@@ -86,14 +77,6 @@ public class JogadorDadosSrv extends F1ManeDados implements Serializable {
 		this.ultimaRecuperacao = ultimaRecuperacao;
 	}
 
-	public String getIdGoogle() {
-		return idGoogle;
-	}
-
-	public void setIdGoogle(String idGoogle) {
-		this.idGoogle = idGoogle;
-	}
-
 	public String getImagemJogador() {
 		return imagemJogador;
 	}
@@ -102,4 +85,11 @@ public class JogadorDadosSrv extends F1ManeDados implements Serializable {
 		this.imagemJogador = imagemJogador;
 	}
 
+	public String getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(String idUsuario) {
+		this.idUsuario = idUsuario;
+	}
 }

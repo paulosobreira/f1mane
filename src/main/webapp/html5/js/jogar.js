@@ -474,10 +474,17 @@ function jogar() {
 }
 
 function criarSessao() {
+    var nome = localStorage.getItem('nomeJogadorSessao');
 	var urlServico = "/flmane/rest/letsRace/criarSessaoVisitante";
+	var headers = {};
+	if (nome && nome.trim() !== '') {
+		urlServico = "/flmane/rest/letsRace/criarSessaoNome";
+		headers.nome = nome.trim();
+	}
 	$.ajax({
 		type : "GET",
 		url : urlServico,
+		headers : headers,
 		contentType : "application/json",
 		dataType : "json",
 		success : function(sessaoVisitante) {
