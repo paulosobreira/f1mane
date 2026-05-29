@@ -48,16 +48,10 @@ public class AppletPaddock {
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    if (getCodeBase() == null) {
-                        String host = JOptionPane.showInputDialog(AppletPaddock.this.getFrame(), "Host. Esc to localhost.");
-                        if (Util.isNullOrEmpty(host)) {
-                            host = "http://localhost";
-                        }
-                        try {
-                            setCodeBase(new URL(host));
-                        } catch (MalformedURLException e) {
-                            throw new RuntimeException(e);
-                        }
+                    try {
+                        setCodeBase(new URL("http://localhost:8080"));
+                    } catch (MalformedURLException e) {
+                        throw new RuntimeException(e);
                     }
                     controlePaddockCliente.logar();
                 }

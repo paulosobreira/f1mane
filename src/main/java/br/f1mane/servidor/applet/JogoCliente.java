@@ -65,7 +65,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
     private String vantagem;
 
     public JogoCliente(String temporada) throws Exception {
-        super(temporada, 0);
+        super(temporada, System.currentTimeMillis());
     }
 
     public DadosJogo getDadosJogo() {
@@ -82,11 +82,12 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
             }
             List pilotosList = dadosJogo.getPilotos();
             for (Iterator iterator = pilotosList.iterator(); iterator.hasNext(); ) {
-                Piloto object = (Piloto) iterator.next();
-                if (pilotos.contains(object)) {
+                Piloto piloto = (Piloto) iterator.next();
+                piloto.setControleJogo(this);
+                if (pilotos.contains(piloto)) {
                     throw new Exception("Piloto Repetido");
                 } else {
-                    pilotos.add(object);
+                    pilotos.add(piloto);
                 }
             }
 
@@ -983,7 +984,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
     @Override
     public int calculaDiffParaProximoRetardatario(Piloto piloto, boolean analisaTracado) {
         if (controleEstatisticas == null) {
-            System.out.println("controleEstatisticas null");
+            Logger.logar("controleEstatisticas null");
         }
         return controleEstatisticas.calculaDiffParaProximoRetardatario(piloto, analisaTracado);
     }

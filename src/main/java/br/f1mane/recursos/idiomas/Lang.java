@@ -35,8 +35,6 @@ public class Lang {
 	}
 
 	public static void main(String[] args) throws IOException {
-		sufix = "it";
-		System.out.println(Lang.msg("TIPO_PNEU_MOLE"));
 	}
 
 	public static void mudarIdioma(String sufix_) {

@@ -253,17 +253,6 @@ public abstract class ControleRecursos {
     }
 
     public static void main(String[] args) throws Exception {
-
-        Map<String, String> carregarCircuitos = carregarCircuitos();
-        for (Iterator iterator = carregarCircuitos.keySet().iterator(); iterator
-                .hasNext(); ) {
-            String nmCircuito = (String) iterator.next();
-            String circuito = carregarCircuitos.get(nmCircuito);
-            //circuito = "indianapoles_mro.xml";
-            Circuito circuitoObj = CarregadorRecursos.carregarCircuito(circuito);
-            circuitoObj.vetorizarPista();
-            System.out.println(circuitoObj);
-        }
     }
 
     public static Map<String, String> carregarCircuitos() {

@@ -1,6 +1,7 @@
 package br.f1mane.servidor.entidades.TOs;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -32,6 +33,12 @@ public class ClientPaddockPack implements Serializable {
     private Object dataObject;
     private byte[] dataBytes;
 
+    public ClientPaddockPack(String commando, SessaoCliente sessaoCliente) {
+        super();
+        this.comando = commando;
+        this.sessaoCliente = sessaoCliente;
+    }
+
     public Object getDataObject() {
         return dataObject;
     }
@@ -56,11 +63,6 @@ public class ClientPaddockPack implements Serializable {
         this.tracado = tracado;
     }
 
-    public ClientPaddockPack(String commando, SessaoCliente sessaoCliente) {
-        super();
-        this.comando = commando;
-        this.sessaoCliente = sessaoCliente;
-    }
 
     public String getTexto() {
         return texto;

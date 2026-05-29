@@ -93,30 +93,20 @@ public class MainLauncher {
 
 
     private static void mostrarLauncher(String url) throws Exception {
-
         JFrame frame = new JFrame();
-
         frame.setSize(1280, 720);
-
         frame.setLocationRelativeTo(null);
-
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
         frame.setTitle(
                 "Fl-MANE " +
                         CarregadorRecursos.getVersaoFormatado());
-
         BufferedImage bg1 = ImageUtil.gerarFade(
                 CarregadorRecursos.carregaBufferedImage("bg/bg1.jpg"),
                 40);
-
         JPanel backgroundPanel = new JPanel() {
-
             @Override
             protected void paintComponent(Graphics g) {
-
                 super.paintComponent(g);
-
                 g.drawImage(
                         bg1,
                         0,
@@ -126,107 +116,98 @@ public class MainLauncher {
                         null);
             }
         };
-
         backgroundPanel.setLayout(new GridBagLayout());
-
         frame.setContentPane(backgroundPanel);
-
         JPanel painel = new JPanel();
-
         painel.setOpaque(false);
-
         painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
-
         painel.setBorder(
                 BorderFactory.createEmptyBorder(
                         20,
                         20,
                         20,
                         20));
-
         JLabel titulo = new JLabel("Fl-MANE");
-
         titulo.setFont(new Font("Arial", Font.BOLD, 72));
-
         titulo.setForeground(Color.BLACK);
-
         titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
-
         painel.add(titulo);
-
-        painel.add(Box.createVerticalStrut(20));
-
+        painel.add(Box.createVerticalStrut(18));
         BufferedImage qrImage = gerarQRCode(url, 300, 300);
-
         JLabel qrLabel = new JLabel(new ImageIcon(qrImage));
-
         qrLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
         painel.add(qrLabel);
-
-        painel.add(Box.createVerticalStrut(20));
-
+        painel.add(Box.createVerticalStrut(18));
         JTextField campo = new JTextField(url);
-
         campo.setEditable(false);
-
         campo.setMaximumSize(new Dimension(700, 35));
-
         campo.setHorizontalAlignment(JTextField.CENTER);
-
         painel.add(campo);
-
-        painel.add(Box.createVerticalStrut(20));
-
+        painel.add(Box.createVerticalStrut(18));
         JLabel copiar = criarMenuLabel(
-                "COPIAR LINK",
+                "Copy link",
                 () -> {
-
                     Toolkit.getDefaultToolkit()
                             .getSystemClipboard()
                             .setContents(
                                     new StringSelection(url),
                                     null);
                 });
-
         painel.add(copiar);
-
-        painel.add(Box.createVerticalStrut(10));
-
+        painel.add(Box.createVerticalStrut(8));
         JLabel abrirWeb = criarMenuLabel(
-                "ABRIR NO NAVEGADOR",
+                "Open in browser",
                 () -> {
-
                     try {
-
                         Desktop.getDesktop()
                                 .browse(new URI(url));
-
                     } catch (Exception ex) {
-
                         ex.printStackTrace();
                     }
                 });
-
         painel.add(abrirWeb);
-
-        painel.add(Box.createVerticalStrut(10));
-
+        painel.add(Box.createVerticalStrut(8));
         JLabel abrirDesktop = criarMenuLabel(
-                "ABRIR JOGO DESKTOP",
+                "Java solo game",
                 () -> {
-
                     try {
-
-                        new MainFrame(null);
-
+                        ProcessBuilder pb =
+                                new ProcessBuilder(
+                                        "java",
+                                        "-Xms64m",
+                                        "-Xmx512m",
+                                        "-cp",
+                                        "target/flmane.jar",
+                                        "br.f1mane.MainFrame"
+                                );
+                        pb.inheritIO();
+                        pb.start();
                     } catch (Exception ex) {
-
                         ex.printStackTrace();
                     }
                 });
-
         painel.add(abrirDesktop);
+
+        painel.add(Box.createVerticalStrut(8));
+        JLabel abrirDesktopMulti = criarMenuLabel(
+                "Java multiplayer game",
+                () -> {
+                    try {
+                        ProcessBuilder pb =
+                                new ProcessBuilder(
+                                        "java",
+                                        "-Xms64m",
+                                        "-Xmx512m",
+                                        "-cp",
+                                        "target/flmane.jar",
+                                        "br.f1mane.servidor.applet.AppletPaddock"
+                                );
+                        pb.start();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                });
+        painel.add(abrirDesktopMulti);
 
         backgroundPanel.add(painel);
 

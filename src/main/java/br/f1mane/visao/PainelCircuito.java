@@ -2459,9 +2459,9 @@ public class PainelCircuito {
                     }
 
                     rectangle = new Rectangle(x, y, largura, altura);
-
-                    subimage = bg.getSubimage(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-
+                    if(rectangle.width>0 && rectangle.height> 0){
+                        subimage = bg.getSubimage(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+                    }
                 }
             } catch (Exception e) {
                 Logger.logarExept(e);

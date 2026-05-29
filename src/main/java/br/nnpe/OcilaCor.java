@@ -120,9 +120,6 @@ public class OcilaCor {
 	}
 
 	public static void main(String[] args) {
-		for (int i = 100; i > 0; i--) {
-			System.out.println(i + " " + porcentVerde100Vermelho0(i));
-		}
 	}
 
 	public static Color porcentVermelho100Verde0(int porcent) {

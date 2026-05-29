@@ -486,13 +486,6 @@ public class Circuito implements Serializable {
     }
 
     public static void main(String[] args) {
-        List<String> teste = new ArrayList<String>();
-        teste.add("ASD");
-        teste.add(null);
-        teste.add("BLA");
-        for (int i = 0; i < teste.size(); i++) {
-            System.out.println(teste.get(i));
-        }
     }
 
     private void gerarEscapeList() {

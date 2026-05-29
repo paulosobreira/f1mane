@@ -2099,8 +2099,6 @@ public class MainPanelEditor extends JPanel {
 
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        Circuito circuito1 = CarregadorRecursos.carregarCircuito("indianapoles_mro.xml");
-        System.out.println(circuito1);
     }
 
     public void novo() {

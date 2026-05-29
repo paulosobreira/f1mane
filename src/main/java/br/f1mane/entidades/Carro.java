@@ -476,13 +476,6 @@ public class Carro implements Serializable {
         this.temperaturaPneus = temperaturaPneus;
     }
 
-    public static void main(String[] args) {
-        for (int i = 100; i > 0; i -= 1) {
-            System.out.println(i);
-            double indicativo = 2 - (1 + i / 1000.0);
-            System.out.println("ind " + indicativo);
-        }
-    }
 
     private double calculaModificadorCombustivel(double ganho, No no) {
         double indicativo = 2 - (1 + porcentagemCombustivel / 1000.0);

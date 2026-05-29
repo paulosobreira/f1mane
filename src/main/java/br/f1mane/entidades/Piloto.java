@@ -286,7 +286,7 @@ public class Piloto implements Serializable, PilotoSuave {
     @JsonIgnore
     private ArrayList<Integer> listaNosSuaves = new ArrayList<>();
     @JsonIgnore
-    private InterfaceJogo controleJogo;
+    private transient InterfaceJogo controleJogo;
 
     public String getIdUsuario() {
         return idUsuario;
@@ -296,11 +296,11 @@ public class Piloto implements Serializable, PilotoSuave {
         this.idUsuario = idUsuario;
     }
 
-
+    @JsonIgnore
     public InterfaceJogo getControleJogo() {
         return controleJogo;
     }
-
+    @JsonIgnore
     public void setControleJogo(InterfaceJogo controleJogo) {
         this. controleJogo = controleJogo;
     }

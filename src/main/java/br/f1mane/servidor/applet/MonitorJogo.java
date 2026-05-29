@@ -355,7 +355,7 @@ public class MonitorJogo implements Runnable {
                     } else if ("T".equals(statusPilotos)
                             || "M".equals(statusPilotos)) {
                         if (piloto.getNoAtual() != null && jogoCliente.obterIdPorNo(piloto.getNoAtual()) != null) {
-                            TravadaRoda travadaRoda = new TravadaRoda(null);
+                            TravadaRoda travadaRoda = new TravadaRoda(jogoCliente.getRandom());
                             travadaRoda.setIdNo(
                                     jogoCliente.obterIdPorNo(piloto.getNoAtual()).intValue());
                             jogoCliente.travouRodas(travadaRoda);
@@ -408,18 +408,6 @@ public class MonitorJogo implements Runnable {
 
 
     public static void main(String[] args) {
-        // int valor = 2000;
-        // System.out.println(valor > 1500 && valor <= 2000);
-
-        for (int i = 0; i < 200; i += 5) {
-            System.out.println(
-                    "if (diffINdex >=" + i + "&& diffINdex <" + (i + 5));
-        }
-        // int cont = 0;
-        // for (int i = 0; i < 2000; i += 20) {
-        // cont++;
-        // }
-        // System.out.println(cont);
     }
 
     private void apagarLuz() {

@@ -51,7 +51,6 @@ public class ObjetoEscapada extends ObjetoPista {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(220 / 10);
 	}
 
 	@Override

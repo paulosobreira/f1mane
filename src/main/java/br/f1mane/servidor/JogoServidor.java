@@ -564,7 +564,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
         if (piloto.getPtosBox() != 0) {
             return;
         }
-        this.travadaRoda = new TravadaRoda(gerenciadorVisual.getControleJogo().getRandom());
+        this.travadaRoda = new TravadaRoda(getRandom());
         this.travadaRoda.setIdNo(mapaNosIds.get(piloto.getNoAtual()).intValue());
         this.travadaRoda.setTracado(piloto.getTracado());
         piloto.setTravouRodas(true);
