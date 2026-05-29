@@ -101,6 +101,7 @@ public abstract class ControleRecursos {
         if (temporada != null) {
             this.temporada = temporada;
         }
+        this.random = new GameRandom(seed);
         carregarPilotosCarros();
         circuitos = carregarCircuitos();
     }

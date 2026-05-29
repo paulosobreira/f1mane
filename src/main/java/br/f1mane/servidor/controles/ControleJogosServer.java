@@ -1190,6 +1190,23 @@ public class ControleJogosServer {
         return Boolean.FALSE;
     }
 
+    public SrvPaddockPack obterDados(String idUsuario) {
+        try {
+            List<SessaoCliente> clientes = dadosPaddock.getClientes();
+            for (Iterator iterator = clientes.iterator(); iterator.hasNext(); ) {
+                SessaoCliente sessaoCliente = (SessaoCliente) iterator.next();
+                if (sessaoCliente.getIdUsuario().equals(idUsuario)) {
+                    SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
+                    srvPaddockPack.setSessaoCliente(sessaoCliente);
+                    return srvPaddockPack;
+                }
+            }
+        } catch (Exception e) {
+            Logger.logarExept(e);
+        }
+        return null;
+    }
+
     public SrvPaddockPack obterDadosToken(String token) {
         try {
             List<SessaoCliente> clientes = dadosPaddock.getClientes();
@@ -1205,7 +1222,6 @@ public class ControleJogosServer {
             Logger.logarExept(e);
         }
         return null;
-
     }
 
     public Object equipe(SessaoCliente sessaoCliente) {

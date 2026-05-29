@@ -217,7 +217,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
                 piloto = valor.getPiloto();
             }
             SrvPaddockPack obterDadosToken = controleJogosServer
-                    .obterDadosToken(key);
+                    .obterDados(key);
             if (obterDadosToken != null
                     && obterDadosToken.getSessaoCliente() != null
                     && obterDadosToken.getSessaoCliente()
@@ -313,7 +313,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
                         .iterator(); iter.hasNext(); ) {
                     String key = iter.next();
                     SrvPaddockPack srvPaddockPack = controleJogosServer
-                            .obterDadosToken(key);
+                            .obterDados(key);
                     DadosCriarJogo dadosParticiparJogo = mapJogadoresOnline
                             .get(key);
                     for (Iterator<Piloto> iterator = pilotos
@@ -472,7 +472,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
                                 .iterator(); iter.hasNext(); ) {
                             String key = (String) iter.next();
                             SrvPaddockPack obterDadosToken = controleJogosServer
-                                    .obterDadosToken(key);
+                                    .obterDados(key);
                             if (obterDadosToken != null) {
                                 obterDadosToken.getSessaoCliente()
                                         .limpaSelecao();
@@ -564,7 +564,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
         if (piloto.getPtosBox() != 0) {
             return;
         }
-        this.travadaRoda = new TravadaRoda(gerenciadorVisual.getRandom());
+        this.travadaRoda = new TravadaRoda(gerenciadorVisual.getControleJogo().getRandom());
         this.travadaRoda.setIdNo(mapaNosIds.get(piloto.getNoAtual()).intValue());
         this.travadaRoda.setTracado(piloto.getTracado());
         piloto.setTravouRodas(true);

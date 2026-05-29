@@ -2,6 +2,7 @@ package br.f1mane.servidor.entidades.TOs;
 
 import java.io.Serializable;
 
+import br.f1mane.entidades.GameRandom;
 import br.f1mane.entidades.VisualRandom;
 import br.nnpe.Util;
 
@@ -10,7 +11,7 @@ public class TravadaRoda implements Serializable {
     private int tracado;
     private int tipo;
 
-    public TravadaRoda(VisualRandom random) {
+    public TravadaRoda(GameRandom random) {
         if (random == null && random.nextDouble() > .9) {
             setTipo(0);
         } else {

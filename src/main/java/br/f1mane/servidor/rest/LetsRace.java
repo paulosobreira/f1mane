@@ -129,14 +129,14 @@ public class LetsRace {
     @GET
     @Path("/criarSessaoNome")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response criarSessaoGoogle(
+    public Response criarSessaoNome(
             @HeaderParam("nome") String nome) {
-        Object criarSessaoGoogle = controlePaddock.criarSessaoNome(
+        Object criarSessaoNome = controlePaddock.criarSessaoNome(
                 nome);
-        if (criarSessaoGoogle instanceof ErroServ) {
-            return Response.status(500).entity(criarSessaoGoogle).build();
+        if (criarSessaoNome instanceof ErroServ) {
+            return Response.status(500).entity(criarSessaoNome).build();
         } else {
-            return Response.status(200).entity(criarSessaoGoogle).build();
+            return Response.status(200).entity(criarSessaoNome).build();
         }
     }
 
