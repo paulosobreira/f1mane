@@ -114,6 +114,11 @@
                 </includes>
                 <filtering>true</filtering>
             </resource>
+            <resource>
+                <directory>src/main/webapp</directory>
+                <targetPath>webapp</targetPath>
+                <filtering>false</filtering>
+            </resource>
         </resources>
         <plugins>
             <plugin>

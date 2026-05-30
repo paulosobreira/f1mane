@@ -14,11 +14,18 @@ import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.InputStream;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.security.CodeSource;
 import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 public class MainLauncher {
 
@@ -29,11 +36,12 @@ public class MainLauncher {
 
             int port = 8080;
 
-            String webappDir = "src/main/webapp";
+            File base = extrairWebapp();
 
-            File base = new File(webappDir);
+            System.out.println(
+                    "WEBAPP: " +
+                            base.getAbsolutePath());
 
-            System.out.println("WEBAPP: " + base.getAbsolutePath());
 
             if (!base.exists()) {
                 throw new RuntimeException(
@@ -70,17 +78,7 @@ public class MainLauncher {
             System.out.println(url);
             System.out.println("=================================");
 
-            boolean abrirJanela = false;
-
-            if (args != null) {
-                for (String arg : args) {
-                    if ("qr".equalsIgnoreCase(arg)) {
-                        abrirJanela = true;
-                    }
-                }
-            }
-
-            if (abrirJanela) {
+            if (args == null || args.length == 0) {
                 mostrarLauncher(url);
             }
 
@@ -89,6 +87,62 @@ public class MainLauncher {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static File extrairWebapp() throws Exception {
+
+        Path destino = Files.createTempDirectory("flmane-webapp");
+
+        CodeSource src =
+                MainLauncher.class
+                        .getProtectionDomain()
+                        .getCodeSource();
+
+        try (JarFile jar =
+                     new JarFile(
+                             new File(
+                                     src.getLocation().toURI()))) {
+
+            Enumeration<JarEntry> entries = jar.entries();
+
+            while (entries.hasMoreElements()) {
+
+                JarEntry entry = entries.nextElement();
+
+                if (!entry.getName().startsWith("webapp/")) {
+                    continue;
+                }
+
+                String relative =
+                        entry.getName()
+                                .substring("webapp/".length());
+
+                if (relative.isEmpty()) {
+                    continue;
+                }
+
+                Path target =
+                        destino.resolve(relative);
+
+                if (entry.isDirectory()) {
+                    Files.createDirectories(target);
+                    continue;
+                }
+
+                Files.createDirectories(target.getParent());
+
+                try (InputStream in =
+                             jar.getInputStream(entry)) {
+
+                    Files.copy(
+                            in,
+                            target,
+                            StandardCopyOption.REPLACE_EXISTING);
+                }
+            }
+        }
+
+        return destino.toFile();
     }
 
 
@@ -177,7 +231,7 @@ public class MainLauncher {
                                         "-Xms64m",
                                         "-Xmx512m",
                                         "-cp",
-                                        "target/flmane.jar",
+                                        "app/flmane.jar",
                                         "br.f1mane.MainFrame"
                                 );
                         pb.inheritIO();
@@ -199,7 +253,7 @@ public class MainLauncher {
                                         "-Xms64m",
                                         "-Xmx512m",
                                         "-cp",
-                                        "target/flmane.jar",
+                                        "app/flmane.jar",
                                         "br.f1mane.servidor.applet.AppletPaddock"
                                 );
                         pb.start();
