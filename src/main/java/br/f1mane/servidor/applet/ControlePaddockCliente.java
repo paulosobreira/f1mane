@@ -75,9 +75,9 @@ public class ControlePaddockCliente {
             atualizaVisao(paddockWindow);
             applet.getFrame().setLayout(new BorderLayout());
             applet.getFrame().add(paddockWindow.getMainPanel(), BorderLayout.CENTER);
-            applet.getFrame().setSize(800, 410);
             applet.getFrame().pack();
-            applet.getFrame().setTitle("Fl-Mane Paddock");
+            applet.getFrame().setTitle("Fl-MANE " + getVersao());
+            applet.getFrame().setSize(1280, 720);
             applet.getFrame().setResizable(false);
             applet.getFrame().setVisible(true);
             threadAtualizadora.start();

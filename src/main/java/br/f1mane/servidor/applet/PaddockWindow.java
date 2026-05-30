@@ -90,13 +90,6 @@ public class PaddockWindow {
         }
     };
 
-    private final JButton carreira = new JButton("Modo Carreira") {
-
-        public String getText() {
-
-            return Lang.msg("221");
-        }
-    };
     private final JButton construtores = new JButton("Construtores") {
 
         public String getText() {
@@ -109,14 +102,6 @@ public class PaddockWindow {
         public String getText() {
 
             return Lang.msg("223");
-        }
-    };
-
-    private final JButton campeonato = new JButton("campeonato") {
-
-        public String getText() {
-
-            return Lang.msg("268");
         }
     };
 
@@ -153,14 +138,25 @@ public class PaddockWindow {
         paddockWindow.listaClientes.setModel(clientesModel);
         JFrame frame = new JFrame();
         frame.getContentPane().add(paddockWindow.getMainPanel());
-        frame.setSize(800, 400);
+        frame.setSize(1280, 720);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     public PaddockWindow(ControlePaddockCliente controlePaddockApplet) {
         if (PainelCircuito.desenhaBkg) {
-            img = ImageUtil.geraResize(ImageUtil.gerarFade(CarregadorRecursos.carregaBufferedImage("bg/bg" + Util.intervalo(1, 3) + ".jpg"), 40), 0.6, 0.6);
+            // 1. Carrega a imagem e aplica o efeito fade original
+            BufferedImage imgFade = ImageUtil.gerarFade(
+                    CarregadorRecursos.carregaBufferedImage("bg/bg" + Util.intervalo(1, 3) + ".jpg"), 40);
+
+            // 2. Redimensiona nativamente para 1280x720 usando o algoritmo de alta qualidade (SCALE_SMOOTH)
+            Image imagemRedimensionada = imgFade.getScaledInstance(1280, 720, Image.SCALE_SMOOTH);
+
+            // 3. Converte o objeto Image de volta para BufferedImage para manter a compatibilidade com seu código
+            img = new BufferedImage(1280, 720, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = img.createGraphics();
+            g2d.drawImage(imagemRedimensionada, 0, 0, null);
+            g2d.dispose();
         }
         CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);
         carregadorRecursos.carregarTemporadasPilotos();
@@ -168,9 +164,15 @@ public class PaddockWindow {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                Graphics2D graphics2d = (Graphics2D) g;
                 if (img != null) {
-                    graphics2d.drawImage(img, null, 0, 0);
+                    Graphics2D graphics2d = (Graphics2D) g.create(); // Cria uma cópia para não afetar outros componentes
+
+                    // Ativa a interpolação bicúbica para suavizar o redimensionamento da imagem
+                    graphics2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+                    graphics2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+
+                    graphics2d.drawImage(img, 0, 0, getWidth(), getHeight(), null);
+                    graphics2d.dispose(); // Libera os recursos gráficos da cópia
                 }
             }
         };
@@ -191,9 +193,6 @@ public class PaddockWindow {
     }
 
     private void gerarAcoes() {
-        campeonato.setEnabled(false);
-        carreira.setEnabled(false);
-
         ActionListener actionListener = new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
@@ -298,13 +297,6 @@ public class PaddockWindow {
             }
 
         });
-        carreira.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                controlePaddockCliente.modoCarreira();
-
-            }
-
-        });
         sobre.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 List<String> carregarCreditosJogo = CarregadorRecursos
@@ -326,13 +318,6 @@ public class PaddockWindow {
             public void actionPerformed(ActionEvent e) {
                 verLogs();
             }
-        });
-        campeonato.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                controlePaddockCliente.criarCampeonato();
-            }
-
         });
         verCampeonato.addActionListener(new ActionListener() {
 
@@ -362,43 +347,52 @@ public class PaddockWindow {
 
     private void gerarLayout() {
         JPanel cPanel = new JPanel(new BorderLayout());
+        JPanel ePanel = new JPanel(new BorderLayout());
         JPanel sPanel = new JPanel(new BorderLayout());
         mainPanel.add(compTransp(cPanel), BorderLayout.CENTER);
         mainPanel.add(compTransp(sPanel), BorderLayout.SOUTH);
+        mainPanel.add(compTransp(ePanel), BorderLayout.EAST);
         JPanel chatPanel = new JPanel();
         if (controlePaddockCliente != null) {
             chatPanel.setBorder(
                     new TitledBorder("Fl-MANager Engineer Chat Room Ver "
                             + controlePaddockCliente.getVersaoFormatado()));
         }
-        JPanel usersPanel = new JPanel();
+
+        // 1. CORREÇÃO: Definindo explicitamente o BorderLayout para o painel de usuários
+        JPanel usersPanel = new JPanel(new BorderLayout());
         usersPanel.setBorder(new TitledBorder("Jogadores Online") {
             public String getTitle() {
                 return Lang.msg("186");
             }
         });
         cPanel.add(compTransp(chatPanel), BorderLayout.CENTER);
-        cPanel.add(compTransp(usersPanel), BorderLayout.EAST);
-        JPanel jogsPanel = new JPanel();
+        ePanel.add(compTransp(usersPanel), BorderLayout.CENTER);
+
+        // 2. CORREÇÃO OPCEONAL: Fazer o mesmo com o painel de Lista de Jogos se quiser que ele também estique
+        JPanel jogsPanel = new JPanel(new BorderLayout());
         jogsPanel.setBorder((new TitledBorder("Lista de Jogos") {
             public String getTitle() {
                 return Lang.msg("187");
             }
         }));
-        sPanel.add(compTransp(jogsPanel), BorderLayout.EAST);
+        ePanel.add(compTransp(jogsPanel), BorderLayout.SOUTH);
         JPanel inputPanel = new JPanel();
         sPanel.add(compTransp(inputPanel), BorderLayout.CENTER);
+
         /**
          * adicionar componentes.
          */
         JScrollPane jogsPane = new JScrollPane(compTransp(listaClientes));
-        jogsPane.setPreferredSize(new Dimension(150, 235));
-        usersPanel.add(compTransp(jogsPane));
+        // Garante que o scroll pane use o centro do BorderLayout criado acima
+        usersPanel.add(compTransp(jogsPane), BorderLayout.CENTER);
+
         JScrollPane jogsCriados = new JScrollPane(compTransp(listaJogosCriados));
-        jogsCriados.setPreferredSize(new Dimension(150, 100));
-        jogsPanel.add(compTransp(jogsCriados));
+        // Garante que a lista de jogos criados também use o centro do layout do jogsPanel
+        jogsPanel.add(compTransp(jogsCriados), BorderLayout.CENTER);
+
         JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new GridLayout(3, 4));
+        buttonsPanel.setLayout(new GridLayout(2, 6));
         buttonsPanel.add(entrarJogo);
         buttonsPanel.add(sairJogo);
         buttonsPanel.add(criarJogo);
@@ -426,8 +420,6 @@ public class PaddockWindow {
             }
         });
         conta.setEnabled(false);
-        buttonsPanel.add(carreira);
-        buttonsPanel.add(campeonato);
         buttonsPanel.add(logs);
         buttonsPanel.add(sobre);
         JPanel panelTextoEnviar = new JPanel();

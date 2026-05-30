@@ -1,6 +1,9 @@
-FROM tomcat:9.0.82-jdk11
-MAINTAINER Paulo Sobreira
-WORKDIR /usr/local/tomcat/webapps
-RUN  rm -rf *
-ADD target/flmane.war /usr/local/tomcat/webapps/flmane.war
+FROM eclipse-temurin:21-jre-alpine
+
+WORKDIR /app
+
+COPY target/flmane.jar app.jar
+
 EXPOSE 8080
+
+ENTRYPOINT ["java","-jar","app.jar","--headless"]

@@ -1,27 +1,45 @@
 services:
   flmane:
-    image: sowbreira/flmane
-    restart: always
+    image: sowbreira/flmane:latest
+    container_name: flmane
+    restart: unless-stopped
     ports:
       - "80:8080"
+    environment:
+      JDBC_URL: jdbc:mysql://db:3306/flmane?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      JDBC_USER: root
+      JDBC_PASSWORD: flmane
+    depends_on:
+      db:
+        condition: service_healthy
+
   db:
-    image: mysql:8.2.0
-    # NOTE: use of "mysql_native_password" is not recommended: https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password
-    # (this is just an example, not intended to be a production configuration)
-    command: --default-authentication-plugin=mysql_native_password
+    image: mysql:8.4
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: flmane
       MYSQL_DATABASE: flmane
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pflmane"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   phpmyadmin:
-    image: phpmyadmin
-    restart: always
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: unless-stopped
     ports:
       - "8080:80"
     environment:
-      - PMA_ARBITRARY=1
+      PMA_HOST: db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: flmane
 
+volumes:
+  mysql_data:
 networks:
   default:
     ipam:
