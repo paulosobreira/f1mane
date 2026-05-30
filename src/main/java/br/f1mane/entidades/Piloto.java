@@ -55,9 +55,8 @@ public class Piloto implements Serializable, PilotoSuave {
     private String temporadaCarroLivery;
     private String idCapaceteLivery;
     private String idCarroLivery;
-
     @JsonIgnore
-    private String tokenJogador;
+    private String idUsuario;
     @JsonIgnore
     private boolean boxSaiuNestaVolta = false;
     @JsonIgnore
@@ -287,12 +286,21 @@ public class Piloto implements Serializable, PilotoSuave {
     @JsonIgnore
     private ArrayList<Integer> listaNosSuaves = new ArrayList<>();
     @JsonIgnore
-    private InterfaceJogo controleJogo;
+    private transient InterfaceJogo controleJogo;
 
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    @JsonIgnore
     public InterfaceJogo getControleJogo() {
         return controleJogo;
     }
-
+    @JsonIgnore
     public void setControleJogo(InterfaceJogo controleJogo) {
         this. controleJogo = controleJogo;
     }
@@ -3224,14 +3232,6 @@ public class Piloto implements Serializable, PilotoSuave {
 
     public void setMarcaPneu(boolean marcaPneu) {
         this.marcaPneu = marcaPneu;
-    }
-
-    public String getTokenJogador() {
-        return tokenJogador;
-    }
-
-    public void setTokenJogador(String tokenJogador) {
-        this.tokenJogador = tokenJogador;
     }
 
     public String nomeJogadorFormatado() {

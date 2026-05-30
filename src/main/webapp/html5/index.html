@@ -4,17 +4,20 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/flmane.css?v=6.676">
-	<link rel="stylesheet" href="css/mdb-btns.css?v=6.676">
+	<link rel="stylesheet" href="css/flmane.css?v=6.779">
+	<link rel="stylesheet" href="css/mdb-btns.css?v=6.779">
 	<script src="../jquery/jquery-3.2.1.min.js"></script>
 	<script src="../jwtdecode/jwt-decode.js"></script>
-	<script src="https://accounts.google.com/gsi/client" async defer></script>
+	<!--  <script src="https://accounts.google.com/gsi/client" async defer></script> -->
 	<title>Fl-Mane</title>
 </head>
 <body class="body">
 <div id="f1body">
 	<a class="sair  black" id="sair">
 		<span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+	</a>
+	<a class="sair  black" id="entrar">
+		<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
 	</a>
 	<section id="head" class="container">
 		<a class="voltar voltarIndex black" id="voltar">
@@ -31,18 +34,23 @@
 	</section>
 	<section id="mainContainer" class="container">
 		<div id="botoes" class="list-group">
-			<a href="jogar.html?v=6.676" class="list-group-item transparent">
+			<div class="list-group-item transparent">
+				<input
+						type="text"
+						id="nomeJogadorSessao"
+						class="form-control bgTransparent"
+						placeholder="Informe seu nome"
+						maxlength="30"
+				/>
+			</div>
+			<a href="jogar.html?v=6.779" class="list-group-item transparent">
 				<button type="button" id="btnJogar" class="btn btn-default btn-block btn-raised bgTransparent"></button>
 			</a>
-			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JD9VNY3HUFRV4&source=url"
-			   class="list-group-item transparent">
-				<button type="button" id="btnCafe" class="btn btn-default btn-block btn-raised bgTransparent"></button>
-			</a>
-			<a href="classificacao.html?v=6.676" class="list-group-item transparent">
+			<a href="classificacao.html?v=6.779" class="list-group-item transparent">
 				<button type="button" id="btnClassificacao"
 						class="btn btn-default btn-block btn-raised bgTransparent"></button>
 			</a>
-			<a href="equipe.html?v=6.676" class="list-group-item transparent ">
+			<a href="equipe.html?v=6.779" class="list-group-item transparent ">
 				<button type="button" id="btnEquipe"
 						class="btn btn-default btn-block btn-raised bgTransparent"></button>
 			</a>
@@ -50,29 +58,33 @@
 				<button type="button" id="btnCampeonato"
 						class="btn btn-default btn-block btn-raised bgTransparent"></button>
 			</a>
-			<a href="controles.html?v=6.676" class="list-group-item transparent">
+			<a href="controles.html?v=6.779" class="list-group-item transparent">
 				<button type="button" id="btnControles"
 						class="btn btn-default btn-block btn-raised bgTransparent"></button>
 			</a>
-			<a href="configuracao.html?v=6.676" class="list-group-item transparent">
+			<a href="configuracao.html?v=6.779" class="list-group-item transparent">
 				<button type="button" id="btnConfiguracao"
 						class="btn btn-default btn-block btn-raised bgTransparent"></button>
 			</a>
 			<a class="list-group-item transparent">
 				<button type="button" id="btnSobre" class="btn btn-default btn-block btn-raised bgTransparent"></button>
 			</a>
+			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JD9VNY3HUFRV4&source=url"
+			   class="list-group-item transparent">
+				<button type="button" id="btnCafe" class="btn btn-default btn-block btn-raised bgTransparent"></button>
+			</a>
 		</div>
 	</section>
 	<footer class="footer">
 		<div class="container">
-			<p>Build: 6.676</p>
-			<input id="versao" type="hidden" value="6.676"/>
+			<p>Build: 6.779</p>
+			<input id="versao" type="hidden" value="6.779"/>
 		</div>
 	</footer>
 </div>
 </body>
-<script src="js/util.js?v=6.676"></script>
-<script src="js/loader.js?v=6.676"></script>
-<script src="js/lang.js?v=6.676"></script>
-<script src="js/index.js?v=6.676"></script>
+<script src="js/util.js?v=6.779"></script>
+<script src="js/loader.js?v=6.779"></script>
+<script src="js/lang.js?v=6.779"></script>
+<script src="js/index.js?v=6.779"></script>
 </html>

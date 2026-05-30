@@ -15,7 +15,6 @@ public class HibernateUtil {
             factory = Persistence.createEntityManagerFactory("flmane-jpa");
         }
         EntityManager entityManager = factory.createEntityManager();
-        System.out.println(factory.getProperties());
         return entityManager.unwrap(org.hibernate.Session.class);
     }
 

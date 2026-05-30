@@ -1,56 +1,213 @@
 # Fl-MANE
-Fl-MANE (Formula Legends Manager & Engineer) é um jogo de gerenciamento de corridas de Fórmula 1 desenvolvido por Paulo Sobreira. No jogo, os jogadores assumem o papel de gerente e engenheiro de uma equipe de corrida, tomando decisões estratégicas e técnicas para otimizar o desempenho do carro e do piloto durante as corridas.
-## Principais características:
-- Configuração da Corrida: Os jogadores podem personalizar diversos aspectos da corrida, como o número de voltas, condições climáticas e configurações do carro.
-- Comandos de Pilotagem: Durante a corrida, é possível enviar comandos ao piloto, ajustando o estilo de condução e a potência do motor para equilibrar desempenho e conservação de recursos.
-- Estratégia de Pit Stop: O jogo permite que os jogadores definam e modifiquem a estratégia de pit stop a qualquer momento, considerando fatores como desgaste de pneus, consumo de combustível e condições da pista.
-- Eventos Dinâmicos: Fl-MANE simula eventos dinâmicos, incluindo mudanças climáticas e acidentes, adicionando um elemento de imprevisibilidade às corridas.
-- Múltiplas Temporadas e Pistas: O jogo oferece várias temporadas e pistas, proporcionando uma experiência diversificada e desafiadora.
-- Modo Campeonato: No modo campeonato, os jogadores podem começar com uma equipe iniciante e, ao vencer corridas, progredir para equipes mais promissoras, enfrentando rivais cada vez mais desafiadores.
 
+**Fl-MANE (Formula Legends Manager & Engineer)** é um simulador de gerenciamento e estratégia de Fórmula 1 desenvolvido por **Paulo Sobreira**.
 
-## Controles:
+No jogo, você assume os papéis de **Chefe de Equipe** e **Engenheiro de Corrida**, tomando decisões estratégicas e técnicas para maximizar o desempenho do carro e do piloto durante as corridas.
 
-- A - Giro Baixo (Menos performance geral assim como menos consumo de Motor e Combustível)
-- S - Giro Normal
-- D - Giro Alto (Mais performance geral assim como mais consumo de Motor e Combustível)
-- Z - Piloto em Modo Cauteloso(Menos performance nas curvas e reduz o stress do piloto).
-- X - Piloto Normal.
-- C - Piloto em Modo Agressivo(Mais performance nas curvas e aumenta o stress do piloto).
-- B - Liga desliga Modo Box.
-- Esc - Pausa o jogo.
-- Seta Baixo - Ativa o Ers.
-- Seta Cima - Ativa o DRS (Usado somente em retas ou pertes do ciruito consideradas retas) .
-- Setas e mouse - Escolhe umm traçado para o piloto seguir.
+## Principais Funcionalidades
 
-## Requerimentos
+### 🏎️ Configuração de Corridas
 
--Para executar o jogo é necessário Java 11
--No Windows utilize Fl-Mane.bat, no Linux utilize Fl-Mane.sh
+Personalize diversos aspectos da corrida:
 
-# Informação técnica
+* Escolha do circuito
+* Número de voltas
+* Condições climáticas
+* Acertos do carro
 
-## Construção Maven e Docker
+### 🎮 Comandos para o Piloto
 
-- mvn clean package
-- mvn war:war
-- docker build -f flmane.dockerfile . -t sowbreira/flmane
-- docker push sowbreira/flmane
+Durante a corrida, envie instruções em tempo real:
 
-## Como testar no Play with Docker
+* Ajuste do regime do motor
+* Nível de agressividade do piloto
+* Gerenciamento de combustível
+* Conservação do equipamento
 
-Pode ser executado no [Play with Docker](https://labs.play-with-docker.com/)
+### 🔧 Estratégia de Pit Stop
 
->Baixar o aqruivo do docker compose
+Defina e altere estratégias a qualquer momento:
+
+* Escolha dos pneus
+* Momento ideal para parada
+* Adaptação às condições da pista
+* Reação a eventos inesperados
+
+### 🌦️ Eventos Dinâmicos
+
+As corridas são influenciadas por diversos fatores:
+
+* Mudanças climáticas
+* Acidentes
+* Quebras mecânicas
+* Situações de corrida imprevisíveis
+
+### 🏆 Modo Campeonato
+
+Construa sua carreira ao longo das temporadas:
+
+* Comece em equipes menores
+* Conquiste melhores contratos
+* Enfrente adversários cada vez mais competitivos
+* Dispute títulos mundiais
+
+### 🌍 Diversas Temporadas e Circuitos
+
+Corra em diferentes épocas da Fórmula 1, com carros, equipes e desafios variados.
+
+---
+
+# Controles
+
+| Tecla         | Função                                                 |
+| ------------- | ------------------------------------------------------ |
+| A             | Giro baixo do motor (menor desempenho e menor consumo) |
+| S             | Giro normal do motor                                   |
+| D             | Giro alto do motor (maior desempenho e maior consumo)  |
+| Z             | Piloto em modo cauteloso                               |
+| X             | Piloto em modo normal                                  |
+| C             | Piloto em modo agressivo                               |
+| B             | Ativar/desativar modo Pit Stop                         |
+| ↓             | Ativar ERS                                             |
+| ↑             | Ativar DRS (apenas em retas)                           |
+| Setas / Mouse | Escolher trajetória do piloto                          |
+| ESC           | Pausar o jogo                                          |
+
+---
+
+# Requisitos
+
+## Versão Desktop
+
+* Java 21 ou superior
+* Windows, Linux ou macOS
+
+### Windows
+
+```bash
+Fl-Mane.bat
 ```
-curl -LfO 'https://raw.githubusercontent.com/paulosobreira/f1mane/master/docker-compose.yaml'
+
+### Linux
+
+```bash
+./Fl-Mane.sh
 ```
 
->Iniciar containers do Mysql,PhpMyAdmin e FlMane
-```
-docker compose up
+---
+
+# Compilação
+
+## Maven
+
+Gerar o projeto:
+
+```bash
+mvn clean package
 ```
 
->Url de acesso:
+Gerar o arquivo WAR:
 
-link_gerado_playwithdocker/**flmane/html5/index.html**
+```bash
+mvn war:war
+```
+
+---
+
+# Docker
+
+Construir a imagem:
+
+```bash
+docker build -f flmane.dockerfile -t sowbreira/flmane .
+```
+
+Enviar para o Docker Hub:
+
+```bash
+docker push sowbreira/flmane
+```
+
+Executar localmente:
+
+```bash
+docker run -p 8080:8080 sowbreira/flmane
+```
+
+---
+
+# Docker Compose
+
+Baixe o arquivo de configuração:
+
+```bash
+curl -LfO https://raw.githubusercontent.com/paulosobreira/f1mane/master/docker-compose.yaml
+```
+
+Inicie os serviços:
+
+```bash
+docker compose up -d
+```
+
+Serviços incluídos:
+
+* Fl-MANE
+* MySQL 8.4
+* phpMyAdmin
+
+---
+
+# Acessando a Aplicação
+
+### Jogo
+
+```text
+http://localhost/flmane/html5/index.html
+```
+
+### phpMyAdmin
+
+```text
+http://localhost:8080
+```
+
+---
+
+# Executando no Play With Docker
+
+O Fl-MANE pode ser executado diretamente no ambiente Play With Docker.
+
+1. Crie uma sessão no Play With Docker.
+2. Baixe o arquivo `docker-compose.yaml`.
+3. Execute:
+
+```bash
+docker compose up -d
+```
+
+4. Acesse:
+
+```text
+http://<url-gerada>/flmane/html5/index.html
+```
+
+---
+
+# Tecnologias Utilizadas
+
+* Java 21
+* Tomcat Embedded
+* Maven
+* MySQL
+* Docker
+* HTML5
+* JavaScript
+
+---
+
+# Autor
+
+**Paulo Sobreira**
+
+Projeto independente de simulação e gerenciamento de Fórmula 1 desenvolvido para fins educacionais e de entretenimento.

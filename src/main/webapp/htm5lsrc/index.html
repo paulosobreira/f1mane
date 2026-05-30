@@ -8,13 +8,16 @@
 	<link rel="stylesheet" href="css/mdb-btns.css?v={versao}">
 	<script src="../jquery/jquery-3.2.1.min.js"></script>
 	<script src="../jwtdecode/jwt-decode.js"></script>
-	<script src="https://accounts.google.com/gsi/client" async defer></script>
+	<!--  <script src="https://accounts.google.com/gsi/client" async defer></script> -->
 	<title>Fl-Mane</title>
 </head>
 <body class="body">
 <div id="f1body">
 	<a class="sair  black" id="sair">
 		<span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+	</a>
+	<a class="sair  black" id="entrar">
+		<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
 	</a>
 	<section id="head" class="container">
 		<a class="voltar voltarIndex black" id="voltar">
@@ -31,12 +34,17 @@
 	</section>
 	<section id="mainContainer" class="container">
 		<div id="botoes" class="list-group">
+			<div class="list-group-item transparent">
+				<input
+						type="text"
+						id="nomeJogadorSessao"
+						class="form-control bgTransparent"
+						placeholder="Informe seu nome"
+						maxlength="30"
+				/>
+			</div>
 			<a href="jogar.html?v={versao}" class="list-group-item transparent">
 				<button type="button" id="btnJogar" class="btn btn-default btn-block btn-raised bgTransparent"></button>
-			</a>
-			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JD9VNY3HUFRV4&source=url"
-			   class="list-group-item transparent">
-				<button type="button" id="btnCafe" class="btn btn-default btn-block btn-raised bgTransparent"></button>
 			</a>
 			<a href="classificacao.html?v={versao}" class="list-group-item transparent">
 				<button type="button" id="btnClassificacao"
@@ -60,6 +68,10 @@
 			</a>
 			<a class="list-group-item transparent">
 				<button type="button" id="btnSobre" class="btn btn-default btn-block btn-raised bgTransparent"></button>
+			</a>
+			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JD9VNY3HUFRV4&source=url"
+			   class="list-group-item transparent">
+				<button type="button" id="btnCafe" class="btn btn-default btn-block btn-raised bgTransparent"></button>
 			</a>
 		</div>
 	</section>

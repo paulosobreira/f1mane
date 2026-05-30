@@ -941,7 +941,7 @@ public class ControleJogoLocal extends ControleRecursos
         if (getRandom().nextDouble() > lim) {
             return;
         }
-        TravadaRoda travadaRoda = new TravadaRoda(gerenciadorVisual.getRandom());
+        TravadaRoda travadaRoda = new TravadaRoda(getRandom());
         travadaRoda.setIdNo(mapaNosIds.get(piloto.getNoAtual()).intValue());
         travadaRoda.setTracado(piloto.getTracado());
         int qtdeFumaca = 0;

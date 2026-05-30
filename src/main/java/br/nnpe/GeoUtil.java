@@ -144,8 +144,6 @@ public class GeoUtil {
 		double ang = Math.toRadians(angulo);
 		x = (int) (comprimento * Math.sin(ang));
 		y = (int) (comprimento * Math.cos(ang));
-		// System.out.println("Angulo : "+ang);
-		// System.out.println("Pontos x="+x+" y="+y);
 		return new Point(p1.x + x, p1.y - y);
 	}
 

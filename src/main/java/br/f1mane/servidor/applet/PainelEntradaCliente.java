@@ -270,10 +270,6 @@ public class PainelEntradaCliente {
     }
 
     public static void main(String[] args) {
-        PainelEntradaCliente painelEntradaCliente = new PainelEntradaCliente(null, "teste");
-        painelEntradaCliente.gerarDadosCriarJogo(new DadosCriarJogo());
-        // String t = "t2015";
-        // System.out.println(t.substring(1, t.length()));
     }
 
     public boolean gerarDadosCriarJogo(DadosCriarJogo dadosCriarJogo) {

@@ -14,7 +14,6 @@ import br.f1mane.servidor.util.ZipUtil;
 import br.nnpe.Global;
 import br.nnpe.Dia;
 import br.nnpe.Logger;
-import br.nnpe.Util;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -76,9 +75,9 @@ public class ControlePaddockCliente {
             atualizaVisao(paddockWindow);
             applet.getFrame().setLayout(new BorderLayout());
             applet.getFrame().add(paddockWindow.getMainPanel(), BorderLayout.CENTER);
-            applet.getFrame().setSize(800, 410);
             applet.getFrame().pack();
-            applet.getFrame().setTitle("Fl-Mane Paddock");
+            applet.getFrame().setTitle("Fl-MANE " + getVersao());
+            applet.getFrame().setSize(1280, 720);
             applet.getFrame().setResizable(false);
             applet.getFrame().setVisible(true);
             threadAtualizadora.start();
@@ -449,57 +448,25 @@ public class ControlePaddockCliente {
         atualizaVisao(paddockWindow);
     }
 
-    public boolean registrarUsuario(FormEntrada formEntrada) {
+    public boolean loginAppletNome(FormEntrada formEntrada) {
         ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
-        clientPaddockPack.setComando(Comandos.REGISTRAR_LOGIN);
-        clientPaddockPack.setNomeJogador(formEntrada.getNome().getText());
+        clientPaddockPack.setComando(Comandos.LOGIN_APPLET);
+        clientPaddockPack.setNomeJogador(formEntrada.getNome());
         if ("IA".equals(clientPaddockPack.getNomeJogador()) || "Ia".equals(clientPaddockPack.getNomeJogador())
                 || "ia".equals(clientPaddockPack.getNomeJogador()) || "iA".equals(clientPaddockPack.getNomeJogador())) {
             JOptionPane.showMessageDialog(applet.getFrame(), Lang.msg("064"), Lang.msg("064"),
                     JOptionPane.ERROR_MESSAGE);
             return false;
         }
-
-        try {
-            if (!Util.isNullOrEmpty(new String(formEntrada.getSenha().getPassword()))) {
-                clientPaddockPack.setSenhaJogador(Util.md5(new String(formEntrada.getSenha().getPassword())));
-            }
-        } catch (Exception e) {
-            Logger.logarExept(e);
-            JOptionPane.showMessageDialog(applet.getFrame(), e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-        }
-        if (!Util.isNullOrEmpty(formEntrada.getNomeRegistrar().getText())
-                || !Util.isNullOrEmpty(formEntrada.getEmailRegistrar().getText())) {
-            int resultado;
-            try {
-                resultado = Integer.parseInt(formEntrada.getResultadorConta().getText());
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(applet.getFrame(), Lang.msg("resultadoContaErrado"), Lang.msg("erro"),
-                        JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-
-            if ((formEntrada.getConta1() + formEntrada.getConta2()) != resultado) {
-                JOptionPane.showMessageDialog(applet.getFrame(), Lang.msg("resultadoContaErrado"), Lang.msg("erro"),
-                        JOptionPane.ERROR_MESSAGE);
-                return false;
-
-            }
-            clientPaddockPack.setNomeJogador(formEntrada.getNomeRegistrar().getText());
-            clientPaddockPack.setEmailJogador(formEntrada.getEmailRegistrar().getText());
-        }
         Object ret = enviarObjeto(clientPaddockPack);
         if (ret == null) {
-            Logger.logar("REGISTRAR_LOGIN ret == null");
+            Logger.logar("LOGIN_APPLET ret == null");
             return false;
         }
         if (ret instanceof SrvPaddockPack) {
             SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
             SessaoCliente cliente = srvPaddockPack.getSessaoCliente();
             this.sessaoCliente = cliente;
-            if (srvPaddockPack.getSenhaCriada() != null) {
-                paddockWindow.getTextAreaChat().append(Lang.msg("guardeSenhaGerada") + " - " + Lang.msg("senhaGerada", new String[]{cliente.getNomeJogador(), srvPaddockPack.getSenhaCriada()}));
-            }
             return true;
         } else {
             return false;
@@ -597,7 +564,7 @@ public class ControlePaddockCliente {
                 JOptionPane.OK_CANCEL_OPTION);
 
         if (JOptionPane.OK_OPTION == result) {
-            boolean registrarUsuario = registrarUsuario(formEntrada);
+            boolean registrarUsuario = loginAppletNome(formEntrada);
             if (registrarUsuario) {
                 atualizaVisao(paddockWindow);
             }

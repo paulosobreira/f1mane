@@ -79,13 +79,6 @@ public class LetsRace {
         return null;
     }
 
-    @GET
-    @Path("/criarSessaoVisitante")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response criarSessaoVisitante() {
-        return Response.status(200)
-                .entity(controlePaddock.criarSessaoVisitante()).build();
-    }
 
     @GET
     @Path("/renovarSessaoVisitante/{token}")
@@ -122,6 +115,28 @@ public class LetsRace {
             return Response.status(500).entity(criarSessaoGoogle).build();
         } else {
             return Response.status(200).entity(criarSessaoGoogle).build();
+        }
+    }
+
+    @GET
+    @Path("/criarSessaoVisitante")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response criarSessaoVisitante() {
+        return Response.status(200)
+                .entity(controlePaddock.criarSessaoVisitante()).build();
+    }
+
+    @GET
+    @Path("/criarSessaoNome")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response criarSessaoNome(
+            @HeaderParam("nome") String nome) {
+        Object criarSessaoNome = controlePaddock.criarSessaoNome(
+                nome);
+        if (criarSessaoNome instanceof ErroServ) {
+            return Response.status(500).entity(criarSessaoNome).build();
+        } else {
+            return Response.status(200).entity(criarSessaoNome).build();
         }
     }
 
@@ -231,7 +246,7 @@ public class LetsRace {
             return Response.status(401).build();
         }
         DadosParciais dadosParciais = controlePaddock.obterDadosParciaisPilotos(
-                nomeJogo, sessaoCliente.getToken(), idPiloto);
+                nomeJogo, sessaoCliente.getIdUsuario(), idPiloto);
         if (dadosParciais == null) {
             return Response.status(401).build();
         }

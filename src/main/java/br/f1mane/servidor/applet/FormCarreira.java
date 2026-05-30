@@ -253,27 +253,6 @@ public class FormCarreira extends JPanel {
 	}
 
 	public static void main(String[] args) {
-		FormCarreira formCarreira = new FormCarreira();
-		int ptsCarreira = 3;
-		formCarreira.ptsCarreira = Integer.valueOf(ptsCarreira);
-		formCarreira.ptsAeroDinamica.setValue(Integer.valueOf(600));
-		formCarreira.ptsCarro.setValue(Integer.valueOf(850));
-		formCarreira.ptsFreio.setValue(Integer.valueOf(600));
-		formCarreira.ptsPiloto.setValue(Integer.valueOf(850));
-		JOptionPane.showMessageDialog(null, formCarreira);
-		CarreiraDadosSrv carreiraDadosSrv = new CarreiraDadosSrv();
-		carreiraDadosSrv.setPtsCarro(850);
-		carreiraDadosSrv.setPtsAerodinamica(600);
-		carreiraDadosSrv.setPtsFreio(600);
-		carreiraDadosSrv.setPtsPiloto(850);
-		carreiraDadosSrv.setPtsConstrutores(ptsCarreira);
-
-		System.out.println(ControleClassificacao.validadeDistribuicaoPontos(
-				carreiraDadosSrv,
-                ((Integer) formCarreira.getPtsAeroDinamica().getValue()).intValue(),
-                ((Integer) formCarreira.getPtsCarro().getValue()).intValue(),
-                ((Integer) formCarreira.getPtsFreio().getValue()).intValue(),
-                ((Integer) formCarreira.getPtsPiloto().getValue()).intValue()));
 	}
 
 	public int getPtsCarreira() {

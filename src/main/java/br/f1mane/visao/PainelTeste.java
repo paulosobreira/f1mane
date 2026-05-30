@@ -88,8 +88,6 @@ public class PainelTeste {
 				if (y < 0) {
 					y = 0;
 				}
-				System.out.println("shx" + shx);
-				System.out.println("shy" + shy);
 				BufferedImage sub = bg.getSubimage(x, y, width, height);
 				BufferedImage dst = new BufferedImage(width, height,
 						BufferedImage.TYPE_INT_ARGB);

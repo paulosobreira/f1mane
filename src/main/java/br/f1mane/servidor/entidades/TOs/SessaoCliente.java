@@ -25,7 +25,7 @@ public class SessaoCliente implements Serializable {
 
 	private String email;
 
-	private String id;
+	private String idUsuario;
 
 	private String jogoAtual;
 
@@ -134,12 +134,12 @@ public class SessaoCliente implements Serializable {
 		this.email = email;
 	}
 
-	public String getId() {
-		return id;
+	public String getIdUsuario() {
+		return idUsuario;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setIdUsuario(String idUsuario) {
+		this.idUsuario = idUsuario;
 	}
 
 	public void limpaSelecao() {

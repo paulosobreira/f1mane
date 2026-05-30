@@ -287,7 +287,6 @@ public class Util {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		System.out.println(md5("f1mane"));
 	}
 
 	public static int intervalo(int val1, int val2) {

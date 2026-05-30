@@ -473,6 +473,7 @@ function jogar() {
 	});
 }
 
+
 function criarSessao() {
 	var urlServico = "/flmane/rest/letsRace/criarSessaoVisitante";
 	$.ajax({

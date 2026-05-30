@@ -3,6 +3,7 @@
  */
 $('#voltar').hide();
 $('#sair').hide();
+$('#entrar').show();
 $('#painelLogado').hide();
 if (localStorage.getItem("versao") != $("#versao").val()) {
 	console.log('Limpando localStorage versao: ' + $("#versao").val());
@@ -24,6 +25,12 @@ localStorage.removeItem("nomeJogador");
 localStorage.removeItem("imagemJogador");
 localStorage.setItem("modoCarreira", false);
 localStorage.setItem("modoCampeonato", false);
+$(document).ready(function () {
+	var nome = localStorage.getItem('nomeJogadorSessao');
+	if (nome) {
+		$('#nomeJogadorSessao').val(nome);
+	}
+});
 
 var token = getParameter('token');
 
@@ -43,6 +50,7 @@ if (token != null) {
 	dadosJogador();
     $('#buttonDiv').remove();
     $('#sair').show();
+    $('#entrar').hide();
     $('#painelLogado').show();
 }
 
@@ -80,6 +88,8 @@ $('#btnClassificacao').html(lang_text('ranking'));
 $('#btnEquipe').html(lang_text('221'));
 $('#btnCampeonato').html(lang_text('268'));
 $('#btnCafe').html(lang_text('cafe'));
+$("#nomeJogadorSessao")
+        .attr("placeholder", lang_text('nomeJogadorSessao'));
 
 $('#btnSobre').bind("click", function() {
 	$('#botoes').hide();
@@ -102,6 +112,39 @@ $('#sair').bind("click", function() {
     localStorage.removeItem("token");
     location.reload();
 });
+
+$('#entrar').bind("click", function() {
+    criarSessao();
+});
+
+function criarSessao() {
+    var nome = $('#nomeJogadorSessao').val();
+	var urlServico = "/flmane/rest/letsRace/criarSessaoNome";
+	var headers = {};
+	if (nome && nome.trim() !== '') {
+		headers.nome = nome.trim();
+	}else{
+	    return;
+	}
+	$.ajax({
+		type : "GET",
+		url : urlServico,
+		headers : headers,
+		contentType : "application/json",
+		dataType : "json",
+		success : function(sessaoVisitante) {
+			token = sessaoVisitante.sessaoCliente.token;
+			localStorage.setItem("token", token);
+			$('#entrar').hide();
+			$('#sair').show();
+		},
+		error : function(xhRequest, ErrorText, thrownError) {
+			tratamentoErro(xhRequest);
+			console.log('criarSessao() ' + xhRequest.status + '  ' + xhRequest.responseText);
+		}
+	});
+}
+
 
 function dadosJogador() {
 	var urlServico = "/flmane/rest/letsRace/dadosToken/";
@@ -194,6 +237,8 @@ function sobre() {
         })
     })(jQuery);
 
+    /**
+    precisa dominio valido para login com gooogle
     function handleCredentialResponse(response) {
         const data = jwt_decode(response.credential)
         var urlServico = "/flmane/rest/letsRace/criarSessaoGoogle";
@@ -221,6 +266,7 @@ function sobre() {
                     }
                     $('#buttonDiv').remove();
                     $('#sair').show();
+                    $('#entrar').hide();
                     $('#painelLogado').show();
                 }
             },
@@ -253,3 +299,4 @@ function sobre() {
           google.accounts.id.prompt(); // also display the One Tap dialog
         }
     }
+    **/

@@ -11,7 +11,5 @@ public final class TokenGenerator {
 	}
 
 	public static void main(String[] args) {
-		TokenGenerator sessionIdentifierGenerator = new TokenGenerator();
-		System.out.println(sessionIdentifierGenerator.nextSessionId());
 	}
 }

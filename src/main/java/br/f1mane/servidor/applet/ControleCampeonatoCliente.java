@@ -351,12 +351,12 @@ public class ControleCampeonatoCliente {
 			corridaCampeonato.setCampeonato(campeonato);
 			corridaCampeonato.setNomeCircuito((String) corridas.get(i));
 			if (controlePaddockCliente != null) {
-				corridaCampeonato.setLoginCriador(controlePaddockCliente.getSessaoCliente().getToken());
+				corridaCampeonato.setLoginCriador(controlePaddockCliente.getSessaoCliente().getIdUsuario());
 			}
 			campeonato.getCorridaCampeonatos().add(corridaCampeonato);
 		}
 		if (controlePaddockCliente != null) {
-			campeonato.setLoginCriador(controlePaddockCliente.getSessaoCliente().getToken());
+			campeonato.setLoginCriador(controlePaddockCliente.getSessaoCliente().getIdUsuario());
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(Comandos.CRIAR_CAMPEONATO,
 					controlePaddockCliente.getSessaoCliente());
 			clientPaddockPack.setDataObject(campeonato);

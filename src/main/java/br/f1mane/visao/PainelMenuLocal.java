@@ -1672,8 +1672,6 @@ public class PainelMenuLocal {
     }
 
     public static void main(String[] args) throws IOException, Exception {
-        int porcetNumVolta = Util.inteiro((55 - 12) * 1.66);
-        System.out.println(porcetNumVolta);
     }
 
     private void resetaRects() {

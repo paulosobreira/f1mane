@@ -88,6 +88,7 @@ public class ServletPaddock extends HttpServlet {
 
     public void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
+        Object escrever = null;
         try {
             ObjectInputStream inputStream = null;
             try {
@@ -100,7 +101,7 @@ public class ServletPaddock extends HttpServlet {
 
                 object = inputStream.readObject();
 
-                Object escrever = controlePaddock
+                escrever = controlePaddock
                         .processarObjetoRecebido(object);
 
                 if (PaddockConstants.modoZip) {
