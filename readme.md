@@ -6,7 +6,7 @@ Take control of a Formula 1 team as both Team Principal and Race Engineer. Manag
 
 ## Features
 
-### Race Configuration
+### 🏎️ Race Configuration
 
 Customize races with different:
 
@@ -15,7 +15,7 @@ Customize races with different:
 * Number of laps
 * Car setups
 
-### Driver Commands
+### 🎮 Driver Commands
 
 Issue real-time commands during the race:
 
@@ -24,7 +24,7 @@ Issue real-time commands during the race:
 * Overtaking strategies
 * Resource management
 
-### Pit Stop Strategy
+### 🔧 Pit Stop Strategy
 
 Plan and adjust pit stops at any time:
 
@@ -33,7 +33,7 @@ Plan and adjust pit stops at any time:
 * Reaction to weather changes
 * Safety car and race incidents
 
-### Dynamic Race Events
+### 🌦️ Dynamic Race Events
 
 Experience realistic race conditions:
 
@@ -42,7 +42,7 @@ Experience realistic race conditions:
 * Accidents
 * Strategic opportunities
 
-### Career and Championship Mode
+### 🏆 Career and Championship Mode
 
 Start with a lower-tier team and work your way up:
 
@@ -50,7 +50,7 @@ Start with a lower-tier team and work your way up:
 * Compete against stronger opponents
 * Fight for championship titles
 
-### Multiple Seasons and Circuits
+### 🌍 Multiple Seasons and Circuits
 
 Race across different Formula 1 eras and circuits with varying challenges and characteristics.
 
@@ -102,15 +102,8 @@ Fl-Mane.bat
 ## Maven
 
 ```bash
-mvn clean package
+mvn clean package -Pmysql or mvn clean package -Ph2 
 ```
-
-Generate WAR:
-
-```bash
-mvn war:war
-```
-
 ---
 
 # Docker
