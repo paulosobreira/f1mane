@@ -100,16 +100,10 @@ Fl-Mane.bat
 
 ## Maven
 
-Gerar o projeto:
+Gerar o fatjar do projeto:
 
 ```bash
-mvn clean package
-```
-
-Gerar o arquivo WAR:
-
-```bash
-mvn war:war
+mvn clean package -Pmysql ou mvn clean package -Ph2 
 ```
 
 ---
