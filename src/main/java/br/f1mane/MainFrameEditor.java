@@ -30,6 +30,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import br.f1mane.editor.ExampleFileFilter;
+import br.nnpe.Global;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.f1mane.controles.InterfaceJogo;
@@ -190,7 +191,7 @@ public class MainFrameEditor extends JFrame {
         };
         ligarLogs.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Logger.ativo = !Logger.ativo;
+                Global.DEBUG = !Global.DEBUG;
             }
         });
         menuInfo2.add(ligarLogs);

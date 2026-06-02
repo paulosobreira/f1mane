@@ -55,8 +55,8 @@ public class MainFrameSimulacao extends MainFrame {
         String title = "Fl-Mane " + getVersao();
         setTitle(title);
         try {
-            Logger.ativo = true;
-            controleJogo = new ControleJogoLocal(1);
+            Global.DEBUG = true;
+            controleJogo = new ControleJogoLocal(3);
             controleJogo.setMainFrame(this);
             PainelCircuito.desenhaBkg = false;
             PainelCircuito.desenhaImagens = false;
@@ -124,29 +124,27 @@ public class MainFrameSimulacao extends MainFrame {
         try {
             mostraDadosSimulacao();
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.logarExept(e);
         }
         super.exibirResultadoFinal(resultadoFinal);
     }
 
     private void mostraDadosSimulacao() throws IOException, ClassNotFoundException {
-        System.out
-                .println("############################ Dados Simulação ############################");
-        System.out.println("Circuito : " + circuito);
-        System.out.println("Temporada : " + temporada);
-        System.out.println("Clima : " + clima);
-        System.out.println("Voltas : " + voltas);
-        System.out.println("Drs : " + drs);
-        System.out.println("Kers : " + kers);
-        System.out.println("Reabastecimento : " + reabastecimento);
-        System.out.println("Turbulencia : " + turbulencia);
-        System.out.println("TrocaPneus : " + trocaPneus);
-        System.out.println("Abrasivo : " + abrasivo);
-        System.out.println("Box Rapido : " + boxRapido);
-        System.out.println("Fator Acidente : " + fatorAcidente);
-        System.out.println("Seed usada " + seed);
-        System.out
-                .println("#########################################################################");
+        Logger.logar("############################ Dados Simulação ############################");
+        Logger.logar("Circuito : " + circuito);
+        Logger.logar("Temporada : " + temporada);
+        Logger.logar("Clima : " + clima);
+        Logger.logar("Voltas : " + voltas);
+        Logger.logar("Drs : " + drs);
+        Logger.logar("Kers : " + kers);
+        Logger.logar("Reabastecimento : " + reabastecimento);
+        Logger.logar("Turbulencia : " + turbulencia);
+        Logger.logar("TrocaPneus : " + trocaPneus);
+        Logger.logar("Abrasivo : " + abrasivo);
+        Logger.logar("Box Rapido : " + boxRapido);
+        Logger.logar("Fator Acidente : " + fatorAcidente);
+        Logger.logar("Seed usada " + seed);
+        Logger.logar("#########################################################################");
     }
 
 }

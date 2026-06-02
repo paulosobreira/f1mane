@@ -116,6 +116,7 @@ public class MainLauncher {
 
     private static void mostrarLauncher(String url) throws Exception {
         JFrame frame = new JFrame();
+        String jar = localizarJar();
         frame.setSize(1280, 720);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -201,7 +202,7 @@ public class MainLauncher {
                                         "-Xms64m",
                                         "-Xmx512m",
                                         "-cp",
-                                        "app/flmane.jar",
+                                        jar,
                                         "br.f1mane.MainFrame"
                                 );
                         pb.inheritIO();
@@ -223,7 +224,7 @@ public class MainLauncher {
                                         "-Xms64m",
                                         "-Xmx512m",
                                         "-cp",
-                                        "app/flmane.jar",
+                                        jar,
                                         "br.f1mane.servidor.applet.AppletPaddock"
                                 );
                         pb.start();
@@ -236,6 +237,22 @@ public class MainLauncher {
         backgroundPanel.add(painel);
 
         frame.setVisible(true);
+    }
+
+    private static String localizarJar() {
+
+        File appJar = new File("app/flmane.jar");
+        if (appJar.exists()) {
+            return appJar.getPath();
+        }
+
+        File targetJar = new File("target/flmane.jar");
+        if (targetJar.exists()) {
+            return targetJar.getPath();
+        }
+
+        throw new RuntimeException(
+                "Nao foi encontrado app/flmane.jar nem target/flmane.jar");
     }
 
     private static JLabel criarMenuLabel(
