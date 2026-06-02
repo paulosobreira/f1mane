@@ -932,13 +932,6 @@ public class Piloto implements Serializable, PilotoSuave {
             if (posicao == 1) {
                 controleJogo.processaNovaVolta();
             }
-            if (Logger.ativo && !controleJogo.isModoQualify()) {
-                String tempoVolta = "";
-                if (getUltimaVolta() != null) {
-                    tempoVolta = getUltimaVolta().getTempoVoltaFormatado();
-                }
-                //Logger.logar(" Numero Volta " + getNumeroVolta() + " " + getNome() + " Posição " + getPosicao() + " Tempo " + tempoVolta);
-            }
             if (numeroVolta > controleJogo.totalVoltasCorrida()) {
                 numeroVolta = controleJogo.totalVoltasCorrida();
                 return;

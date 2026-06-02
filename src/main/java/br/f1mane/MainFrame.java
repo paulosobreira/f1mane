@@ -109,7 +109,7 @@ public class MainFrame extends JFrame {
         };
         ativarDebug.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Logger.ativo = !Logger.ativo;
+                Global.DEBUG = !Global.DEBUG;
             }
         });
         menuDebug.add(ativarDebug);

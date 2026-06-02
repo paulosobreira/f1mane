@@ -2,14 +2,15 @@ package br.nnpe;
 
 public final class Global {
 
+    public static boolean DEBUG = false;
     public static final String DATA_FORMATO = "dd/MM/yyyy";
     public static final int MAX_VOLTAS = 72;
-    public static final int MIN_VOLTAS = Logger.ativo ? 1 : 12;
+    public static final int MIN_VOLTAS = Global.DEBUG ? 1 : 12;
     public static final boolean DATABASE = true;
     public static final int LATENCIA_MAX = 500;
     public static final int LATENCIA_MIN = 100;
     public static final int LIMITE_DRS = 300;
-    public static final Integer SEGUNDOS_PARA_INICIAR_CORRRIDA = Integer.valueOf(Logger.ativo
+    public static final Integer SEGUNDOS_PARA_INICIAR_CORRRIDA = Integer.valueOf(Global.DEBUG
             ? 30
             : 60);
     public static final double VELOCIDADE_PISTA = 1;

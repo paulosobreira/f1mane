@@ -1,6 +1,7 @@
 package br.f1mane;
 
 import br.f1mane.recursos.CarregadorRecursos;
+import br.f1mane.visao.PainelCircuito;
 import br.nnpe.ImageUtil;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -33,107 +34,75 @@ public class MainLauncher {
     public static void main(String[] args) {
 
         try {
-
             int port = 8080;
-
             File base = extrairWebapp();
-
             System.out.println(
                     "WEBAPP: " +
                             base.getAbsolutePath());
-
-
             if (!base.exists()) {
                 throw new RuntimeException(
                         "Diretorio webapp nao encontrado: "
                                 + base.getAbsolutePath());
             }
-
             Tomcat tomcat = new Tomcat();
-
             tomcat.setPort(port);
-
             tomcat.getConnector();
-
             Context context = tomcat.addWebapp(
                     "/flmane",
                     base.getAbsolutePath());
-
             File webXml = new File(base, "WEB-INF/web.xml");
-
             if (webXml.exists()) {
                 context.setConfigFile(webXml.toURI().toURL());
                 System.out.println("WEB.XML: " + webXml.getAbsolutePath());
             }
-
             tomcat.start();
-
             String ip = descobrirIP();
-
             String url = "http://" + ip + ":" + port
                     + "/flmane/html5/index.html";
-
             System.out.println("=================================");
             System.out.println("SERVER STARTED");
             System.out.println(url);
             System.out.println("=================================");
-
             if (args == null || args.length == 0) {
                 mostrarLauncher(url);
             }
-
             tomcat.getServer().await();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private static File extrairWebapp() throws Exception {
-
         Path destino = Files.createTempDirectory("flmane-webapp");
-
         CodeSource src =
                 MainLauncher.class
                         .getProtectionDomain()
                         .getCodeSource();
-
         try (JarFile jar =
                      new JarFile(
                              new File(
                                      src.getLocation().toURI()))) {
-
             Enumeration<JarEntry> entries = jar.entries();
-
             while (entries.hasMoreElements()) {
-
                 JarEntry entry = entries.nextElement();
-
                 if (!entry.getName().startsWith("webapp/")) {
                     continue;
                 }
-
                 String relative =
                         entry.getName()
                                 .substring("webapp/".length());
-
                 if (relative.isEmpty()) {
                     continue;
                 }
-
                 Path target =
                         destino.resolve(relative);
-
                 if (entry.isDirectory()) {
                     Files.createDirectories(target);
                     continue;
                 }
-
                 Files.createDirectories(target.getParent());
-
                 try (InputStream in =
                              jar.getInputStream(entry)) {
-
                     Files.copy(
                             in,
                             target,
@@ -141,13 +110,13 @@ public class MainLauncher {
                 }
             }
         }
-
         return destino.toFile();
     }
 
 
     private static void mostrarLauncher(String url) throws Exception {
         JFrame frame = new JFrame();
+        String jar = localizarJar();
         frame.setSize(1280, 720);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -161,13 +130,15 @@ public class MainLauncher {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(
-                        bg1,
-                        0,
-                        0,
-                        getWidth(),
-                        getHeight(),
-                        null);
+                if (PainelCircuito.desenhaBkg) {
+                    g.drawImage(
+                            bg1,
+                            0,
+                            0,
+                            getWidth(),
+                            getHeight(),
+                            null);
+                }
             }
         };
         backgroundPanel.setLayout(new GridBagLayout());
@@ -231,7 +202,7 @@ public class MainLauncher {
                                         "-Xms64m",
                                         "-Xmx512m",
                                         "-cp",
-                                        "app/flmane.jar",
+                                        jar,
                                         "br.f1mane.MainFrame"
                                 );
                         pb.inheritIO();
@@ -253,7 +224,7 @@ public class MainLauncher {
                                         "-Xms64m",
                                         "-Xmx512m",
                                         "-cp",
-                                        "app/flmane.jar",
+                                        jar,
                                         "br.f1mane.servidor.applet.AppletPaddock"
                                 );
                         pb.start();
@@ -266,6 +237,22 @@ public class MainLauncher {
         backgroundPanel.add(painel);
 
         frame.setVisible(true);
+    }
+
+    private static String localizarJar() {
+
+        File appJar = new File("app/flmane.jar");
+        if (appJar.exists()) {
+            return appJar.getPath();
+        }
+
+        File targetJar = new File("target/flmane.jar");
+        if (targetJar.exists()) {
+            return targetJar.getPath();
+        }
+
+        throw new RuntimeException(
+                "Nao foi encontrado app/flmane.jar nem target/flmane.jar");
     }
 
     private static JLabel criarMenuLabel(

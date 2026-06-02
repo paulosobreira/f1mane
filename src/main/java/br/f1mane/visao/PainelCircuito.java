@@ -613,8 +613,8 @@ public class PainelCircuito {
             return true;
         }
         if (debug.contains(e.getPoint())) {
-            Logger.ativo = !Logger.ativo;
-            return Logger.ativo;
+            Global.DEBUG = !Global.DEBUG;
+            return Global.DEBUG;
         }
 
         return false;
@@ -759,7 +759,7 @@ public class PainelCircuito {
     }
 
     private void desenhaMarcacaoParaCurva(Graphics2D g2d) {
-        if (Logger.ativo || Global.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual())) {
+        if (Global.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual())) {
             Global.DESENHA_DIFF_REAL_SUAVE = true;
         }
         if (pilotoSelecionado == null) {
@@ -791,7 +791,7 @@ public class PainelCircuito {
         } else {
             g2d.setColor(new Color(100, 100, 100, 70));
         }
-        if (Logger.ativo) {
+        if (Global.DEBUG) {
             Point frenteCarD = pilotoSelecionado.getNoAtual().getPoint();
             g2d.fillOval(Util.inteiro((frenteCarD.x - 5 - descontoCentraliza.x) * zoom),
                     Util.inteiro((frenteCarD.y - 5 - descontoCentraliza.y) * zoom), Util.inteiro(15 * zoom),
@@ -1756,7 +1756,7 @@ public class PainelCircuito {
     }
 
     private void desenhaDebugIinfo(Graphics2D g2d) throws IllegalAccessException, InvocationTargetException {
-        if (!Logger.ativo) {
+        if (!Global.DEBUG) {
             return;
         }
         if (pilotoSelecionado == null) {
@@ -3654,7 +3654,7 @@ public class PainelCircuito {
         /**
          * DEBUG
          */
-        if (!Logger.ativo) {
+        if (!Global.DEBUG) {
             return;
         }
         if (piloto.getDiateira() == null || piloto.getCentro() == null || piloto.getTrazeira() == null) {
