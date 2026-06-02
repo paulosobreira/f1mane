@@ -759,7 +759,7 @@ public class PainelCircuito {
     }
 
     private void desenhaMarcacaoParaCurva(Graphics2D g2d) {
-        if (Global.DEBUG || Global.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual())) {
+        if (Global.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual())) {
             Global.DESENHA_DIFF_REAL_SUAVE = true;
         }
         if (pilotoSelecionado == null) {
@@ -3654,7 +3654,7 @@ public class PainelCircuito {
         /**
          * DEBUG
          */
-        if (Global.DEBUG) {
+        if (!Global.DEBUG) {
             return;
         }
         if (piloto.getDiateira() == null || piloto.getCentro() == null || piloto.getTrazeira() == null) {
