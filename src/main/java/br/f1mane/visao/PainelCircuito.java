@@ -28,8 +28,8 @@ import java.util.*;
  */
 public class PainelCircuito {
 
-    public static boolean desenhaBkg = true;
-    public static boolean desenhaPista = true;
+    public static boolean desenhaBkg = false;
+    public static boolean desenhaPista = false;
     public static boolean desenhaImagens = true;
 
     private boolean verControles = true;
