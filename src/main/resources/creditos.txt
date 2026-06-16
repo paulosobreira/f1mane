@@ -16,7 +16,7 @@ Fl-Mane é um protótipo e seus gráficos
     e jogabilidade podem mudar com novas versões
 Fl-Mane is a prototype and its graphics 
     and gameplay game can change in new versions
--Sobreira 2007-2024
+-Sobreira 2007-2026
  Obrigado por jogar  Thanks for playing
 
  Audaces Fortuna Juvat.
