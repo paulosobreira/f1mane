@@ -687,6 +687,7 @@ public class ControleJogoLocal extends ControleRecursos
             Piloto piloto = (Piloto) pilotos.get(i);
             Logger.logar((i + 1) + " Posicao : " + piloto.getPosicao()
                     + " Nom : " + piloto.getNome()
+                    + " - " + piloto.getCarro().getNome()
                     + " Hab : " + piloto.getHabilidade()
                     + " Pot : " + piloto.getCarro().getPotencia()
                     + " Vol :" + piloto.getNumeroVolta()

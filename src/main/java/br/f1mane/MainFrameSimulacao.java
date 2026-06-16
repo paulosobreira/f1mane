@@ -9,8 +9,6 @@ import br.f1mane.visao.PainelCircuito;
 import br.f1mane.visao.PainelTabelaResultadoFinal;
 import br.nnpe.Global;
 import br.nnpe.Logger;
-import br.nnpe.Util;
-
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
