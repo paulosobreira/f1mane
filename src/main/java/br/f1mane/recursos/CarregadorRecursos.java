@@ -51,6 +51,8 @@ public class CarregadorRecursos {
 
     private static String applet;
 
+    public static boolean carregaApenasSprites = true;
+
     final static DecimalFormat decimalFormat = new DecimalFormat("#,###");
 
     private CarregadorRecursos() {
@@ -742,7 +744,7 @@ public class CarregadorRecursos {
                         ret = SpriteSheet.getCapacete(temporada, idx);
                     }
                 }
-                if (ret == null) {
+                if (ret == null && !carregaApenasSprites) {
                     try {
                         ret = CarregadorRecursos.carregaImagem("capacetes/"
                                 + temporada + "/" + driverKey + ".png");
@@ -790,6 +792,12 @@ public class CarregadorRecursos {
     }
 
     public BufferedImage obterCarroLado(Piloto piloto, String temporada) {
+        if (temporada == null) {
+            Vector<String> temps = getVectorTemps();
+            if (temps != null && !temps.isEmpty()) {
+                temporada = "t"+temps.lastElement();
+            }
+        }
         Carro carro = piloto.getCarro();
         if (Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro().getDanificado())) {
             return obterCarroLadoSemAreofolio(piloto, temporada);
@@ -803,7 +811,7 @@ public class CarregadorRecursos {
                     carroLado = SpriteSheet.getCarroLado(temporada, idx);
                 }
             }
-            if (carroLado == null && carro.getImg() != null) {
+            if (carroLado == null && !carregaApenasSprites && carro.getImg() != null) {
                 try {
                     BufferedImage carroLadoPng;
                     if (carro.getImg().endsWith(".png")) {
@@ -859,7 +867,7 @@ public class CarregadorRecursos {
                     carroLado = SpriteSheet.getCarroLado(temporada, idx);
                 }
             }
-            if (carroLado == null && carro.getImg() != null) {
+            if (carroLado == null && !carregaApenasSprites && carro.getImg() != null) {
                 try {
                     BufferedImage carroLadoPng;
                     carroLadoPng = CarregadorRecursos
@@ -904,7 +912,9 @@ public class CarregadorRecursos {
                 && carro.getImg() != null) {
             int idx = indiceTime(temporada, extrairTime(carro.getImg()));
             BufferedImage top = SpriteSheet.getCarroCima(temporada, idx);
-            BufferedImage noWing = SpriteSheet.getNowing(temporada);
+            List<String> times = getTimesOrdenados(temporada);
+            int noWingIdx = (times != null && times.size() > 10) ? times.size() : 10;
+            BufferedImage noWing = SpriteSheet.getNowing(temporada, noWingIdx);
             if (top != null && noWing != null) {
                 carroCima = ImageUtil.copiaImagem(top);
                 Graphics2D graphics = (Graphics2D) carroCima.getGraphics();
@@ -914,7 +924,7 @@ public class CarregadorRecursos {
                 graphics.dispose();
             }
         }
-        if (carroCima == null && carro.getImg() != null) {
+        if (carroCima == null && !carregaApenasSprites && carro.getImg() != null) {
             carroCima = CarregadorRecursos.carregaImagemSemCache(
                     carro.getImg().replaceAll(".png", "_cima.png"));
             if (carroCima != null) {
@@ -974,7 +984,7 @@ public class CarregadorRecursos {
                     carroCima = SpriteSheet.getCarroCima(temporada, idx);
                 }
             }
-            if (carroCima == null && carro.getImg() != null
+            if (carroCima == null && !carregaApenasSprites && carro.getImg() != null
                     && carro.getImg().endsWith("png")) {
                 carroCima = CarregadorRecursos.carregaImagem(
                         carro.getImg().replaceAll(".png", "_cima.png"));
