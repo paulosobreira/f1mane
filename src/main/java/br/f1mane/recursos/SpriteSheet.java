@@ -63,18 +63,18 @@ public class SpriteSheet {
         }
     }
 
-    public static BufferedImage getNowing(String temporada, int noWingIdx) {
+    public static BufferedImage getWingOverlay(String temporada, int wingOverlayIdx) {
         BufferedImage sheet = cache.get(temporada);
         if (sheet == null) return null;
         try {
-            return sheet.getSubimage(noWingIdx * CIMA_W, Y_CIMA, CIMA_W, CIMA_H);
+            return sheet.getSubimage(wingOverlayIdx * CIMA_W, Y_CIMA, CIMA_W, CIMA_H);
         } catch (Exception e) {
             return null;
         }
     }
 
-    public static BufferedImage getNowing(String temporada) {
-        return getNowing(temporada, 10);
+    public static BufferedImage getWingOverlay(String temporada) {
+        return getWingOverlay(temporada, 10);
     }
 
     public static BufferedImage getCapacete(String temporada, int idx) {

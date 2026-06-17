@@ -921,14 +921,14 @@ public class CarregadorRecursos {
             int idx = indiceTime(temporada, extrairTime(carro.getImg()));
             BufferedImage top = SpriteSheet.getCarroCima(temporada, idx);
             List<String> times = getTimesOrdenados(temporada);
-            int noWingIdx = (times != null && times.size() > 10) ? times.size() : 10;
-            BufferedImage noWing = SpriteSheet.getNowing(temporada, noWingIdx);
-            if (top != null && noWing != null) {
+            int wingOverlayIdx = (times != null && times.size() > 10) ? times.size() : 10;
+            BufferedImage wingOverlay = SpriteSheet.getWingOverlay(temporada, wingOverlayIdx);
+            if (top != null && wingOverlay != null) {
                 carroCima = ImageUtil.copiaImagem(top);
                 Graphics2D graphics = (Graphics2D) carroCima.getGraphics();
                 graphics.setComposite(composite);
                 Util.setarHints(graphics);
-                graphics.drawImage(noWing, 0, 0, null);
+                graphics.drawImage(wingOverlay, 0, 0, null);
                 graphics.dispose();
             }
         }
@@ -938,12 +938,12 @@ public class CarregadorRecursos {
             if (carroCima != null) {
                 String[] split = carro.getImg().split("/");
                 String nmimg = split[split.length - 1];
-                BufferedImage noWing = CarregadorRecursos.carregaImagem(
-                        carro.getImg().replaceAll(nmimg, "nowing_cima.png"));
+                BufferedImage wingOverlay = CarregadorRecursos.carregaImagem(
+                        carro.getImg().replaceAll(nmimg, "wing_overlay_cima.png"));
                 Graphics2D graphics = (Graphics2D) carroCima.getGraphics();
                 graphics.setComposite(composite);
                 Util.setarHints((Graphics2D) graphics);
-                graphics.drawImage(noWing, 0, 0, null);
+                graphics.drawImage(wingOverlay, 0, 0, null);
                 graphics.dispose();
             }
         }

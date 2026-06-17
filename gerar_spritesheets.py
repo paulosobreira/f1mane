@@ -95,17 +95,24 @@ def generate_carro_cima_fallback(cor1, cor2, modelo, output_size=(90, 90)):
     return result
 
 
-def generate_nowing(modelo, output_size=(90, 90)):
-    """Generate NOWING mask: base + C1(white) + C3(white)."""
+def generate_wing_overlay(modelo, output_size=(90, 90)):
+    """Generate wing-only overlay: white pixels only where the aero foil is.
+    The wing is the difference between C2 (includes wing) and C3 (excludes wing).
+    """
     model_dir = os.path.join(PNG, modelo)
-    white = (255, 255, 255)
-    base = Image.open(os.path.join(model_dir, "CarroCima.png")).convert("RGBA")
-    if base.size != output_size:
-        base = base.resize(output_size, Image.NEAREST)
-    c1 = tint_image(os.path.join(model_dir, "CarroCimaC1.png"), white, output_size)
-    c3 = tint_image(os.path.join(model_dir, "CarroCimaC3.png"), white, output_size)
-    result = composite_layer(base, c1)
-    result = composite_layer(result, c3)
+    c2 = Image.open(os.path.join(model_dir, "CarroCimaC2.png")).convert("RGBA")
+    c3 = Image.open(os.path.join(model_dir, "CarroCimaC3.png")).convert("RGBA")
+    if c2.size != output_size:
+        c2 = c2.resize(output_size, Image.NEAREST)
+    if c3.size != output_size:
+        c3 = c3.resize(output_size, Image.NEAREST)
+    result = Image.new("RGBA", output_size, (0, 0, 0, 0))
+    for x in range(output_size[0]):
+        for y in range(output_size[1]):
+            _, _, _, a2 = c2.getpixel((x, y))
+            _, _, _, a3 = c3.getpixel((x, y))
+            if a2 > 0 and a3 == 0:
+                result.putpixel((x, y), (255, 255, 255, 255))
     return result
 
 
@@ -248,13 +255,13 @@ def generate_spritesheet(temporada):
         img = load_carro_lado(temporada, img_field, cor1, cor2, (lado_w, lado_h))
         sheet.paste(img, (idx * lado_w, 0), img)
 
-    # Row 1: Carros CIMA + NOWING
+    # Row 1: Carros CIMA + WING OVERLAY
     for idx, (_, cor1, cor2, img_field) in enumerate(parsed_cars):
         img = load_carro_cima(temporada, img_field, cor1, cor2, modelo, (cima_w, cima_h))
         sheet.paste(img, (idx * cima_w, 40), img)
 
-    nowing = generate_nowing(modelo, (cima_w, cima_h))
-    sheet.paste(nowing, (no_wing_idx * cima_w, 40), nowing)
+    wing_overlay = generate_wing_overlay(modelo, (cima_w, cima_h))
+    sheet.paste(wing_overlay, (no_wing_idx * cima_w, 40), wing_overlay)
 
     # Row 2-3: Capacetes
     for idx, (pkey, cor1, cor2) in enumerate(pilot_car_colors):
