@@ -544,19 +544,23 @@ public class CarregadorRecursos {
         if (times != null) return times;
         times = new ArrayList<>();
         try {
-            Properties props = new Properties();
-            props.load(recursoComoStream(
-                    "properties/" + temporada + "/carros.properties"));
-            Enumeration names = props.propertyNames();
-            while (names.hasMoreElements()) {
-                String name = (String) names.nextElement();
-                String prop = props.getProperty(name);
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(recursoComoStream(
+                            "properties/" + temporada + "/carros.properties")));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty() || line.startsWith("#")) continue;
+                int eqIdx = line.indexOf('=');
+                if (eqIdx < 0) continue;
+                String prop = line.substring(eqIdx + 1);
                 String[] values = prop.split(",");
+                if (values.length < 5) continue;
                 String[] tnsCarros = values[4].split(";");
                 String time = tnsCarros[0].replaceAll("\\.png", "");
                 times.add(time);
             }
-            Collections.sort(times);
+            reader.close();
         } catch (Exception e) {
             Logger.logarExept(e);
         }
@@ -569,15 +573,19 @@ public class CarregadorRecursos {
         if (pilotos != null) return pilotos;
         pilotos = new ArrayList<>();
         try {
-            Properties props = new Properties();
-            props.load(recursoComoStream(
-                    "properties/" + temporada + "/pilotos.properties"));
-            Enumeration names = props.propertyNames();
-            while (names.hasMoreElements()) {
-                String name = (String) names.nextElement();
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(recursoComoStream(
+                            "properties/" + temporada + "/pilotos.properties")));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty() || line.startsWith("#")) continue;
+                int eqIdx = line.indexOf('=');
+                if (eqIdx < 0) continue;
+                String name = line.substring(0, eqIdx);
                 pilotos.add(name.replaceAll("\\.", ""));
             }
-            Collections.sort(pilotos);
+            reader.close();
         } catch (Exception e) {
             Logger.logarExept(e);
         }
