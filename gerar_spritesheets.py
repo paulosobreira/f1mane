@@ -127,6 +127,51 @@ def generate_capacete_fallback(cor1, cor2, output_size=(55, 55)):
     return result
 
 
+def remove_white_background(img, threshold=240):
+    """Replace near-white pixels with transparency."""
+    pixels = img.load()
+    for x in range(img.width):
+        for y in range(img.height):
+            r, g, b, a = pixels[x, y]
+            if a > 0 and r >= threshold and g >= threshold and b >= threshold:
+                pixels[x, y] = (r, g, b, 0)
+    return img
+
+
+def remove_white_background_bleed(img, threshold=230, spread=5):
+    """Remove white background and bleed interior colors into anti-aliased edge pixels."""
+    pixels = img.load()
+    w, h = img.size
+
+    # Step 1: mark white/near-white as transparent
+    for x in range(w):
+        for y in range(h):
+            r, g, b, a = pixels[x, y]
+            if a > 0 and r >= threshold and g >= threshold and b >= threshold:
+                pixels[x, y] = (r, g, b, 0)
+
+    # Step 2: iteratively spread car colors into adjacent transparent edge pixels
+    for _ in range(spread):
+        todo = {}
+        for x in range(w):
+            for y in range(h):
+                r, g, b, a = pixels[x, y]
+                if a == 0:
+                    nr = ng = nb = count = 0
+                    for dx, dy in [(-1,0),(1,0),(0,-1),(0,1),(-1,-1),(-1,1),(1,-1),(1,1)]:
+                        nx, ny = x + dx, y + dy
+                        if 0 <= nx < w and 0 <= ny < h:
+                            pr, pg, pb, pa = pixels[nx, ny]
+                            if pa > 0:
+                                nr += pr; ng += pg; nb += pb; count += 1
+                    if count > 0:
+                        todo[(x, y)] = (nr // count, ng // count, nb // count, min(255, count * 48))
+        for (x, y), c in todo.items():
+            pixels[x, y] = c
+
+    return img
+
+
 def load_carro_lado(season, img_field, cor1, cor2, output_size=(180, 40)):
     """
     Load side car image from individual PNG in carros/{season}/{img_field}.
@@ -137,7 +182,7 @@ def load_carro_lado(season, img_field, cor1, cor2, output_size=(180, 40)):
         img = Image.open(img_path).convert("RGBA")
         if img.size != output_size:
             img = img.resize(output_size, Image.NEAREST)
-        return img
+        return remove_white_background(img)
     return generate_carro_lado_fallback(cor1, cor2, output_size)
 
 
@@ -169,8 +214,8 @@ def load_capacete(season, pilot_key, cor1, cor2, output_size=(55, 55)):
             # Create output-sized canvas and paste centered at top
             canvas = Image.new("RGBA", output_size, (0, 0, 0, 0))
             canvas.paste(img, (0, 0), img)
-            return canvas
-        return img
+            return remove_white_background(canvas)
+        return remove_white_background(img)
     return generate_capacete_fallback(cor1, cor2, output_size)
 
 
