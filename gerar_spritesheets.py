@@ -279,7 +279,10 @@ def generate_spritesheet(temporada):
 
 
 def main():
-    seasons = sorted([d for d in os.listdir(PROPERTIES) if d.startswith("t") and os.path.isdir(os.path.join(PROPERTIES, d))])
+    if len(sys.argv) > 1:
+        seasons = [s for s in sys.argv[1:] if s.startswith("t")]
+    else:
+        seasons = sorted([d for d in os.listdir(PROPERTIES) if d.startswith("t") and os.path.isdir(os.path.join(PROPERTIES, d))])
     print(f"Regenerating {len(seasons)} spritesheets using individual PNG images...\n")
     for s in seasons:
         generate_spritesheet(s)

@@ -142,7 +142,7 @@
                 <executions>
                     <execution>
                         <id>ver_prop</id>
-                        <phase>compile</phase>
+                        <phase>package</phase>
                         <configuration>
                             <target>
                                 <propertyfile file="src/main/resources/application.properties">
@@ -156,7 +156,7 @@
                     </execution>
                     <execution>
                         <id>src_html</id>
-                        <phase>compile</phase>
+                        <phase>package</phase>
                         <configuration>
                             <target>
                                 <copy overwrite="true" todir="src/main/webapp/html5">

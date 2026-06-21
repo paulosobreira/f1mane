@@ -51,7 +51,7 @@ public class CarregadorRecursos {
 
     private static String applet;
 
-    public static boolean carregaApenasSprites = true;
+    public static boolean carregaApenasSprites = false;
 
     final static DecimalFormat decimalFormat = new DecimalFormat("#,###");
 
