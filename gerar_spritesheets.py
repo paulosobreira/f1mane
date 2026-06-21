@@ -82,14 +82,17 @@ def generate_carro_lado_fallback(cor1, cor2, output_size=(180, 40)):
     return result
 
 
-def generate_carro_cima_fallback(cor1, cor2, modelo, output_size=(90, 90)):
+def generate_carro_cima_fallback(cor1, cor2, modelo, output_size=(90, 90), base_path=None):
     """Fallback: composite model_base + C1(cor1) + C2(cor2)."""
-    model_dir = os.path.join(PNG, modelo)
-    base = Image.open(os.path.join(model_dir, "CarroCima.png")).convert("RGBA")
+    if base_path and os.path.exists(base_path):
+        base = Image.open(base_path).convert("RGBA")
+    else:
+        model_dir = os.path.join(PNG, modelo)
+        base = Image.open(os.path.join(model_dir, "CarroCima.png")).convert("RGBA")
     if base.size != output_size:
         base = base.resize(output_size, Image.NEAREST)
-    c1 = tint_image(os.path.join(model_dir, "CarroCimaC1.png"), cor1, output_size)
-    c2 = tint_image(os.path.join(model_dir, "CarroCimaC2.png"), cor2, output_size)
+    c1 = tint_image(os.path.join(PNG, modelo, "CarroCimaC1.png"), cor1, output_size)
+    c2 = tint_image(os.path.join(PNG, modelo, "CarroCimaC2.png"), cor2, output_size)
     result = composite_layer(base, c1)
     result = composite_layer(result, c2)
     return result
@@ -127,50 +130,6 @@ def generate_capacete_fallback(cor1, cor2, output_size=(55, 55)):
     return result
 
 
-def remove_white_background(img, threshold=240):
-    """Replace near-white pixels with transparency."""
-    pixels = img.load()
-    for x in range(img.width):
-        for y in range(img.height):
-            r, g, b, a = pixels[x, y]
-            if a > 0 and r >= threshold and g >= threshold and b >= threshold:
-                pixels[x, y] = (r, g, b, 0)
-    return img
-
-
-def remove_white_background_bleed(img, threshold=230, spread=5):
-    """Remove white background and bleed interior colors into anti-aliased edge pixels."""
-    pixels = img.load()
-    w, h = img.size
-
-    # Step 1: mark white/near-white as transparent
-    for x in range(w):
-        for y in range(h):
-            r, g, b, a = pixels[x, y]
-            if a > 0 and r >= threshold and g >= threshold and b >= threshold:
-                pixels[x, y] = (r, g, b, 0)
-
-    # Step 2: iteratively spread car colors into adjacent transparent edge pixels
-    for _ in range(spread):
-        todo = {}
-        for x in range(w):
-            for y in range(h):
-                r, g, b, a = pixels[x, y]
-                if a == 0:
-                    nr = ng = nb = count = 0
-                    for dx, dy in [(-1,0),(1,0),(0,-1),(0,1),(-1,-1),(-1,1),(1,-1),(1,1)]:
-                        nx, ny = x + dx, y + dy
-                        if 0 <= nx < w and 0 <= ny < h:
-                            pr, pg, pb, pa = pixels[nx, ny]
-                            if pa > 0:
-                                nr += pr; ng += pg; nb += pb; count += 1
-                    if count > 0:
-                        todo[(x, y)] = (nr // count, ng // count, nb // count, min(255, count * 48))
-        for (x, y), c in todo.items():
-            pixels[x, y] = c
-
-    return img
-
 
 def load_carro_lado(season, img_field, cor1, cor2, output_size=(180, 40)):
     """
@@ -182,7 +141,7 @@ def load_carro_lado(season, img_field, cor1, cor2, output_size=(180, 40)):
         img = Image.open(img_path).convert("RGBA")
         if img.size != output_size:
             img = img.resize(output_size, Image.NEAREST)
-        return remove_white_background(img)
+        return img
     return generate_carro_lado_fallback(cor1, cor2, output_size)
 
 
@@ -190,6 +149,7 @@ def load_carro_cima(season, img_field, cor1, cor2, modelo, output_size=(90, 90))
     """
     Load top car image from individual PNG in carros/{season}/{name}_cima.png.
     Falls back to template compositing if PNG not found.
+    If nowing_cima.png exists in the season directory, uses it as the base template.
     """
     base_name = img_field.rsplit(".", 1)[0]
     cima_name = base_name + "_cima.png"
@@ -199,6 +159,9 @@ def load_carro_cima(season, img_field, cor1, cor2, modelo, output_size=(90, 90))
         if img.size != output_size:
             img = img.resize(output_size, Image.NEAREST)
         return img
+    nowing_path = os.path.join(RESOURCES, "carros", season, "nowing_cima.png")
+    if os.path.exists(nowing_path):
+        return generate_carro_cima_fallback(cor1, cor2, modelo, output_size, nowing_path)
     return generate_carro_cima_fallback(cor1, cor2, modelo, output_size)
 
 
@@ -211,11 +174,10 @@ def load_capacete(season, pilot_key, cor1, cor2, output_size=(55, 55)):
     if os.path.exists(helmet_path):
         img = Image.open(helmet_path).convert("RGBA")
         if img.size != output_size:
-            # Create output-sized canvas and paste centered at top
             canvas = Image.new("RGBA", output_size, (0, 0, 0, 0))
             canvas.paste(img, (0, 0), img)
-            return remove_white_background(canvas)
-        return remove_white_background(img)
+            return canvas
+        return img
     return generate_capacete_fallback(cor1, cor2, output_size)
 
 
@@ -305,7 +267,13 @@ def generate_spritesheet(temporada):
         img = load_carro_cima(temporada, img_field, cor1, cor2, modelo, (cima_w, cima_h))
         sheet.paste(img, (idx * cima_w, 40), img)
 
-    wing_overlay = generate_wing_overlay(modelo, (cima_w, cima_h))
+    nowing_path = os.path.join(RESOURCES, "carros", temporada, "nowing_cima.png")
+    if os.path.exists(nowing_path):
+        wing_overlay = Image.open(nowing_path).convert("RGBA")
+        if wing_overlay.size != (cima_w, cima_h):
+            wing_overlay = wing_overlay.resize((cima_w, cima_h), Image.NEAREST)
+    else:
+        wing_overlay = generate_wing_overlay(modelo, (cima_w, cima_h))
     sheet.paste(wing_overlay, (no_wing_idx * cima_w, 40), wing_overlay)
 
     # Row 2-3: Capacetes
