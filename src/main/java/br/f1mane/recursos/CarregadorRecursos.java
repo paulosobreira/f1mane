@@ -34,6 +34,8 @@ public class CarregadorRecursos {
     private static final Map<String, BufferedImage> bufferCarrosLado = new HashMap<String, BufferedImage>();
     private static final Map<String, BufferedImage> bufferCarrosLadoSemAreofolio = new HashMap<String, BufferedImage>();
     private static final Map<String, BufferedImage> bufferCapacete = new HashMap<String, BufferedImage>();
+    private static final Map<String, List<String>> cacheTimes = new HashMap<>();
+    private static final Map<String, List<String>> cachePilotos = new HashMap<>();
     private static final AlphaComposite composite = AlphaComposite
             .getInstance(AlphaComposite.DST_OUT, 1);
 
@@ -48,6 +50,8 @@ public class CarregadorRecursos {
     private static URL codeBase;
 
     private static String applet;
+
+    public static boolean carregaApenasSprites = false;
 
     final static DecimalFormat decimalFormat = new DecimalFormat("#,###");
 
@@ -526,6 +530,79 @@ public class CarregadorRecursos {
         return temporadasPilotosDefauts;
     }
 
+    private static String extrairTime(String imgPath) {
+        if (imgPath == null) return null;
+        String nome = imgPath.substring(imgPath.lastIndexOf('/') + 1);
+        if (nome.endsWith(".png")) {
+            nome = nome.substring(0, nome.length() - 4);
+        }
+        return nome;
+    }
+
+    private static List<String> getTimesOrdenados(String temporada) {
+        List<String> times = cacheTimes.get(temporada);
+        if (times != null) return times;
+        times = new ArrayList<>();
+        try {
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(recursoComoStream(
+                            "properties/" + temporada + "/carros.properties")));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty() || line.startsWith("#")) continue;
+                int eqIdx = line.indexOf('=');
+                if (eqIdx < 0) continue;
+                String prop = line.substring(eqIdx + 1);
+                String[] values = prop.split(",");
+                if (values.length < 5) continue;
+                String[] tnsCarros = values[4].split(";");
+                String time = tnsCarros[0].replaceAll("\\.png", "");
+                times.add(time);
+            }
+            reader.close();
+        } catch (Exception e) {
+            Logger.logarExept(e);
+        }
+        cacheTimes.put(temporada, times);
+        return times;
+    }
+
+    private static List<String> getPilotosOrdenados(String temporada) {
+        List<String> pilotos = cachePilotos.get(temporada);
+        if (pilotos != null) return pilotos;
+        pilotos = new ArrayList<>();
+        try {
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(recursoComoStream(
+                            "properties/" + temporada + "/pilotos.properties")));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty() || line.startsWith("#")) continue;
+                int eqIdx = line.indexOf('=');
+                if (eqIdx < 0) continue;
+                String name = line.substring(0, eqIdx);
+                pilotos.add(name.replaceAll("\\.", ""));
+            }
+            reader.close();
+        } catch (Exception e) {
+            Logger.logarExept(e);
+        }
+        cachePilotos.put(temporada, pilotos);
+        return pilotos;
+    }
+
+    private static int indiceTime(String temporada, String teamName) {
+        List<String> times = getTimesOrdenados(temporada);
+        return times.indexOf(teamName);
+    }
+
+    private static int indicePiloto(String temporada, String driverKey) {
+        List<String> pilotos = getPilotosOrdenados(temporada);
+        return pilotos.indexOf(driverKey);
+    }
+
     public static BufferedImage carregaImgSemCache(String img) {
         return ImageUtil.toBufferedImage(img);
     }
@@ -668,11 +745,19 @@ public class CarregadorRecursos {
             String chave = nomeOriginal + temporada;
             BufferedImage ret = bufferCapacete.get(chave);
             if (ret == null) {
-                try {
-                    ret = CarregadorRecursos.carregaImagem("capacetes/"
-                            + temporada + "/"
-                            + nomeOriginal.replaceAll("\\.", "") + ".png");
-                } catch (Exception e) {
+                String driverKey = nomeOriginal.replaceAll("\\.", "");
+                if (SpriteSheet.isDisponivel(temporada)) {
+                    int idx = indicePiloto(temporada, driverKey);
+                    if (idx >= 0) {
+                        ret = SpriteSheet.getCapacete(temporada, idx);
+                    }
+                }
+                if (ret == null && !carregaApenasSprites) {
+                    try {
+                        ret = CarregadorRecursos.carregaImagem("capacetes/"
+                                + temporada + "/" + driverKey + ".png");
+                    } catch (Exception e) {
+                    }
                 }
                 if (ret == null) {
                     ret = desenhaCapacete(piloto);
@@ -715,6 +800,12 @@ public class CarregadorRecursos {
     }
 
     public BufferedImage obterCarroLado(Piloto piloto, String temporada) {
+        if (temporada == null) {
+            Vector<String> temps = getVectorTemps();
+            if (temps != null && !temps.isEmpty()) {
+                temporada = "t"+temps.lastElement();
+            }
+        }
         Carro carro = piloto.getCarro();
         if (Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro().getDanificado())) {
             return obterCarroLadoSemAreofolio(piloto, temporada);
@@ -722,7 +813,13 @@ public class CarregadorRecursos {
         }
         BufferedImage carroLado = bufferCarrosLado.get(carro.getNome());
         if (carroLado == null) {
-            if (carro.getImg() != null) {
+            if (SpriteSheet.isDisponivel(temporada) && carro.getImg() != null) {
+                int idx = indiceTime(temporada, extrairTime(carro.getImg()));
+                if (idx >= 0) {
+                    carroLado = SpriteSheet.getCarroLado(temporada, idx);
+                }
+            }
+            if (carroLado == null && !carregaApenasSprites && carro.getImg() != null) {
                 try {
                     BufferedImage carroLadoPng;
                     if (carro.getImg().endsWith(".png")) {
@@ -740,7 +837,8 @@ public class CarregadorRecursos {
                 } catch (Exception e) {
                     carroLado = desenhaCarroLado(carro);
                 }
-            } else {
+            }
+            if (carroLado == null) {
                 carroLado = desenhaCarroLado(carro);
             }
         }
@@ -771,7 +869,13 @@ public class CarregadorRecursos {
         BufferedImage carroLado = bufferCarrosLadoSemAreofolio
                 .get(carro.getNome());
         if (carroLado == null) {
-            if (carro.getImg() != null) {
+            if (SpriteSheet.isDisponivel(temporada) && carro.getImg() != null) {
+                int idx = indiceTime(temporada, extrairTime(carro.getImg()));
+                if (idx >= 0) {
+                    carroLado = SpriteSheet.getCarroLado(temporada, idx);
+                }
+            }
+            if (carroLado == null && !carregaApenasSprites && carro.getImg() != null) {
                 try {
                     BufferedImage carroLadoPng;
                     carroLadoPng = CarregadorRecursos
@@ -780,7 +884,8 @@ public class CarregadorRecursos {
                 } catch (Exception e) {
                     carroLado = desenhaCArroladoSemAereofolio(carro);
                 }
-            } else {
+            }
+            if (carroLado == null) {
                 carroLado = desenhaCArroladoSemAereofolio(carro);
             }
         }
@@ -811,18 +916,34 @@ public class CarregadorRecursos {
         Carro carro = piloto.getCarro();
         BufferedImage carroCima = bufferCarrosCimaSemAreofolio
                 .get(carro.getNome());
-        if (carro.getImg() != null) {
+        if (carroCima == null && SpriteSheet.isDisponivel(temporada)
+                && carro.getImg() != null) {
+            int idx = indiceTime(temporada, extrairTime(carro.getImg()));
+            BufferedImage top = SpriteSheet.getCarroCima(temporada, idx);
+            List<String> times = getTimesOrdenados(temporada);
+            int wingOverlayIdx = (times != null && times.size() > 10) ? times.size() : 10;
+            BufferedImage wingOverlay = SpriteSheet.getWingOverlay(temporada, wingOverlayIdx);
+            if (top != null && wingOverlay != null) {
+                carroCima = ImageUtil.copiaImagem(top);
+                Graphics2D graphics = (Graphics2D) carroCima.getGraphics();
+                graphics.setComposite(composite);
+                Util.setarHints(graphics);
+                graphics.drawImage(wingOverlay, 0, 0, null);
+                graphics.dispose();
+            }
+        }
+        if (carroCima == null && !carregaApenasSprites && carro.getImg() != null) {
             carroCima = CarregadorRecursos.carregaImagemSemCache(
                     carro.getImg().replaceAll(".png", "_cima.png"));
             if (carroCima != null) {
                 String[] split = carro.getImg().split("/");
                 String nmimg = split[split.length - 1];
-                BufferedImage noWing = CarregadorRecursos.carregaImagem(
-                        carro.getImg().replaceAll(nmimg, "nowing_cima.png"));
+                BufferedImage wingOverlay = CarregadorRecursos.carregaImagem(
+                        carro.getImg().replaceAll(nmimg, "wing_overlay_cima.png"));
                 Graphics2D graphics = (Graphics2D) carroCima.getGraphics();
                 graphics.setComposite(composite);
                 Util.setarHints((Graphics2D) graphics);
-                graphics.drawImage(noWing, 0, 0, null);
+                graphics.drawImage(wingOverlay, 0, 0, null);
                 graphics.dispose();
             }
         }
@@ -864,10 +985,18 @@ public class CarregadorRecursos {
             return obterCarroCimaSemAreofolio(piloto, temporada);
         }
         BufferedImage carroCima = bufferCarrosCima.get(carro.getNome());
-        if (carroCima == null && carro.getImg() != null
-                && carro.getImg().endsWith("png")) {
-            carroCima = CarregadorRecursos.carregaImagem(
-                    carro.getImg().replaceAll(".png", "_cima.png"));
+        if (carroCima == null) {
+            if (SpriteSheet.isDisponivel(temporada) && carro.getImg() != null) {
+                int idx = indiceTime(temporada, extrairTime(carro.getImg()));
+                if (idx >= 0) {
+                    carroCima = SpriteSheet.getCarroCima(temporada, idx);
+                }
+            }
+            if (carroCima == null && !carregaApenasSprites && carro.getImg() != null
+                    && carro.getImg().endsWith("png")) {
+                carroCima = CarregadorRecursos.carregaImagem(
+                        carro.getImg().replaceAll(".png", "_cima.png"));
+            }
         }
         if (carroCima == null) {
             carroCima = desenhaCarroCima(modelo, carro);

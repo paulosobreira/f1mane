@@ -1,6 +1,6 @@
 # Fl-MANE
 
-**Fl-MANE (Formula Legends Manager & Engineer)** is a Formula 1 racing management and engineering simulation game developed by **Paulo Sobreira**.
+**Fl-MANE (Formula livre Manager & Engineer)** is a Formula 1 racing management and engineering simulation game developed by **Paulo Sobreira**.
 
 Take control of a Formula 1 team as both Team Principal and Race Engineer. Manage race strategy, configure your car, guide your driver, and make critical decisions during dynamic and unpredictable races.
 
