@@ -813,9 +813,6 @@ public class Piloto implements Serializable, PilotoSuave {
         if (getNoAtual() != null) {
             atual = getNoAtual().getPoint();
         }
-        if (getNoAtualSuave() != null) {
-            atual = getNoAtualSuave().getPoint();
-        }
         if (atual == null) {
             return true;
         }
@@ -1319,8 +1316,9 @@ public class Piloto implements Serializable, PilotoSuave {
             pilotoFrente.centralizaCarroColisao();
             colisaoDiantera = getDiateiraColisao().intersects(pilotoFrente.getTrazeiraColisao()) || getDiateiraColisao().intersects(pilotoFrente.getCentroColisao());
             colisaoCentro = getCentroColisao().intersects(pilotoFrente.getTrazeiraColisao());
-            colisao = (colisaoDiantera || colisaoCentro) ? pilotoFrente : null;
+            Piloto colisao = (colisaoDiantera || colisaoCentro) ? pilotoFrente : null;
             if (colisao != null) {
+                setColisao(colisao);
                 return;
             }
         }
@@ -1469,15 +1467,15 @@ public class Piloto implements Serializable, PilotoSuave {
         double diff = calculaDiferencaParaProximo;
         double multiplicadoGanhoTurbulencia = (controleJogo.getFatorUtrapassagem());
         if (controleJogo.getNumVoltaAtual() <= 0) {
-            multiplicadoGanhoTurbulencia = 1;
+            multiplicadoGanhoTurbulencia = 0.7;
         }
         double distLimiteTurbulencia = 100.0 / multiplicadoGanhoTurbulencia;
         if (diff < distLimiteTurbulencia && !verificaForaPista(carroPilotoDaFrenteRetardatario.getPiloto())) {
             if (getTracado() != carroPilotoDaFrenteRetardatario.getPiloto().getTracado()) {
                 if (getNoAtual().verificaRetaOuLargada()) {
-                    multiplicadoGanhoTurbulencia += (getCarro().testePotencia() && getCarro().testeAerodinamica()) ? 0.2 : 0.0;
+                    multiplicadoGanhoTurbulencia += (getCarro().testePotencia() && getCarro().testeAerodinamica()) ? 0.3 : 0.1;
                 } else {
-                    multiplicadoGanhoTurbulencia += (testeHabilidadePilotoAerodinamicaFreios() ? 0.1 : 0.0);
+                    multiplicadoGanhoTurbulencia += (testeHabilidadePilotoAerodinamicaFreios() ? 0.2 : 0.1);
                 }
             }
             if (multiplicadoGanhoTurbulencia > 1) {
@@ -1569,6 +1567,14 @@ public class Piloto implements Serializable, PilotoSuave {
             ganho = 0;
         }
         if (verificaForaPista(this)) {
+            return;
+        }
+        if (isColisaoCentro()) {
+            ganho *= 0.3;
+            return;
+        }
+        if (isColisaoDiantera()) {
+            ganho *= 0.5;
             return;
         }
         if (evitaBaterCarroFrente) {
@@ -1926,7 +1932,7 @@ public class Piloto implements Serializable, PilotoSuave {
         if (piloto.getPtosBox() > 0) {
             return;
         }
-        limiteEvitarBatrCarroFrente = 150;
+        limiteEvitarBatrCarroFrente = 100;
         if (getCarro().getDurabilidadeAereofolio() < (Global.DURABILIDADE_AREOFOLIO / 2)) {
             limiteEvitarBatrCarroFrente += 100;
         }
@@ -1936,7 +1942,7 @@ public class Piloto implements Serializable, PilotoSuave {
         if (piloto.getColisao() != null && piloto.getTracado() == getTracado()) {
             limiteEvitarBatrCarroFrente += 100;
         }
-        if (calculaDiffParaProximoRetardatarioMesmoTracado < limiteEvitarBatrCarroFrente) {
+        if (calculaDiffParaProximoRetardatarioMesmoTracado < limiteEvitarBatrCarroFrente && piloto.getTracado() == getTracado()) {
             evitaBaterCarroFrente = true;
         }
     }

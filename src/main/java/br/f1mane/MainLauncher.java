@@ -311,39 +311,39 @@ public class MainLauncher {
     }
 
     private static String descobrirIP() {
-
         try {
-
             Enumeration<NetworkInterface> interfaces =
                     NetworkInterface.getNetworkInterfaces();
-
             while (interfaces.hasMoreElements()) {
-
                 NetworkInterface ni = interfaces.nextElement();
-
-                if (!ni.isUp() || ni.isLoopback()) {
+                if (!ni.isUp() || ni.isLoopback() || ni.isVirtual()) {
                     continue;
                 }
-
+                if (nomeVirtual(ni)) {
+                    continue;
+                }
                 Enumeration<InetAddress> addresses =
                         ni.getInetAddresses();
-
                 while (addresses.hasMoreElements()) {
-
                     InetAddress addr = addresses.nextElement();
-
                     if (addr instanceof Inet4Address
                             && !addr.isLoopbackAddress()) {
-
                         return addr.getHostAddress();
                     }
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return "localhost";
+    }
+
+    private static boolean nomeVirtual(NetworkInterface ni) {
+        String name = ni.getName().toLowerCase();
+        String display = ni.getDisplayName().toLowerCase();
+        return name.contains("vmware") || name.contains("virtualbox")
+                || name.contains("hyper-v") || name.contains("virtual")
+                || display.contains("vmware") || display.contains("virtualbox")
+                || display.contains("hyper-v") || display.contains("virtual");
     }
 }
