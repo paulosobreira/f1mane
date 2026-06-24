@@ -1570,11 +1570,11 @@ public class Piloto implements Serializable, PilotoSuave {
             return;
         }
         if (isColisaoCentro()) {
-            ganho *= 0.3;
+            ganho *= 0.5;
             return;
         }
         if (isColisaoDiantera()) {
-            ganho *= 0.5;
+            ganho *= 0.7;
             return;
         }
         if (evitaBaterCarroFrente) {

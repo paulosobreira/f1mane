@@ -265,9 +265,12 @@ public class MainFrame extends JFrame {
         };
         maisModGanhoSuave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Global.MOD_GANHO_SUAVE++;
-                controleJogo.adicionarInfoDireto("Constantes.MOD_GANHO_SUAVE " + Global.MOD_GANHO_SUAVE);
-            }
+                Global.MOD_GANHO_SUAVE+=0.1;
+                Global.MOD_GANHO_SUAVE_MULTIPLAYER +=0.1;
+                double modGanho = controleJogo instanceof br.f1mane.servidor.applet.JogoCliente
+                ? Global.MOD_GANHO_SUAVE_MULTIPLAYER
+                : Global.MOD_GANHO_SUAVE;
+                controleJogo.adicionarInfoDireto("Constantes.MOD_GANHO_SUAVE " + modGanho);            }
         });
 
         menuDebug.add(maisModGanhoSuave);
@@ -281,8 +284,12 @@ public class MainFrame extends JFrame {
         };
         menosModGanhoSuave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Global.MOD_GANHO_SUAVE--;
-                controleJogo.adicionarInfoDireto("Constantes.MOD_GANHO_SUAVE " + Global.MOD_GANHO_SUAVE);
+                Global.MOD_GANHO_SUAVE-=0.1;
+                Global.MOD_GANHO_SUAVE_MULTIPLAYER-=0.1;
+                double modGanho = controleJogo instanceof br.f1mane.servidor.applet.JogoCliente
+                ? Global.MOD_GANHO_SUAVE_MULTIPLAYER
+                : Global.MOD_GANHO_SUAVE;
+                controleJogo.adicionarInfoDireto("Constantes.MOD_GANHO_SUAVE " + modGanho);
             }
         });
 

@@ -77,6 +77,12 @@ var funqueue = [];
 
 var fps;
 
+// Constantes de atualização suave
+var SUAVE_MULT_RETA = 3;
+var SUAVE_MULT_CURVA_ALTA = 2.5;
+var SUAVE_MULT_CURVA_BAIXA = 2;
+var SUAVE_INC_ACEL = 1;
+
 function vdp_desenha(fps_p) {
     fps = fps_p;
     vdp_processaAlturaLargura();
@@ -332,20 +338,20 @@ function vdp_atualizaSuave() {
         // var ganhoSuave = vdp_loopCalculaGanhoSuave(diff, piloto);
         var multi = diff / 100;
 
-        var ganhoSuave = 2.5 * multi;
+        var ganhoSuave = SUAVE_MULT_RETA * multi;
 
         if (noSuave.tipoJson == 'A') {
-            ganhoSuave = 2.5 * multi;
+            ganhoSuave = SUAVE_MULT_CURVA_ALTA * multi;
         }
         if (noSuave.tipoJson == 'B') {
-            ganhoSuave = 2 * multi
+            ganhoSuave = SUAVE_MULT_CURVA_BAIXA * multi
         }
 
         var ganhoSuaveAnt = mapaGanhoSuave.get(piloto.idPiloto)
         if (ganhoSuaveAnt == null) {
             ganhoSuaveAnt = 0;
         }
-        var incGanhoSuaveAnt = 1;
+        var incGanhoSuaveAnt = SUAVE_INC_ACEL;
 
         if (ganhoSuave > ganhoSuaveAnt) {
             ganhoSuave = ganhoSuaveAnt + incGanhoSuaveAnt;

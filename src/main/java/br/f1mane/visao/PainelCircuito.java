@@ -346,6 +346,7 @@ public class PainelCircuito {
             desenhaGrid(g2d);
             iniciaPilotoSelecionado();
             desenhaMarcacaoParaCurva(g2d);
+            desenhaNoRealDebug(g2d);
             desenhaCarros(g2d);
             desenharSafetyCarCima(g2d);
             desenhaChuva(g2d);
@@ -698,7 +699,10 @@ public class PainelCircuito {
             diferencaSuavelReal = (noAtual.getIndex() + nos.size()) - noAtualSuave.getIndex();
         }
 
-        int ganhoSuave = (int) (Global.MOD_GANHO_SUAVE * Math.round(diferencaSuavelReal / 100.0));
+        double modGanho = controleJogo instanceof br.f1mane.servidor.applet.JogoCliente
+                ? Global.MOD_GANHO_SUAVE_MULTIPLAYER
+                : Global.MOD_GANHO_SUAVE;
+        int ganhoSuave = (int) Math.round(modGanho * diferencaSuavelReal / 100.0);
 
         if (diferencaSuavelReal == 0) {
             ganhoSuave = 0;
@@ -782,21 +786,18 @@ public class PainelCircuito {
         desenhaMarcacaoNo(g2d, noReal, index + 225);
         desenhaMarcacaoNo(g2d, noReal, index + 200);
         desenhaMarcacaoNo(g2d, noReal, index + 175);
-        if (pilotoSelecionado.getNoAtual().verificaRetaOuLargada()) {
-            g2d.setColor(new Color(100, 255, 100, 70));
-        } else if (pilotoSelecionado.getNoAtual().verificaCurvaAlta()) {
-            g2d.setColor(new Color(255, 255, 100, 70));
-        } else if (pilotoSelecionado.getNoAtual().verificaCurvaBaixa()) {
-            g2d.setColor(new Color(255, 100, 100, 70));
-        } else {
-            g2d.setColor(new Color(100, 100, 100, 70));
+    }
+
+    private void desenhaNoRealDebug(Graphics2D g2d) {
+        if (!Global.DEBUG) {
+            return;
         }
-        if (Global.DEBUG) {
-            Point frenteCarD = pilotoSelecionado.getNoAtual().getPoint();
-            g2d.fillOval(Util.inteiro((frenteCarD.x - 5 - descontoCentraliza.x) * zoom),
-                    Util.inteiro((frenteCarD.y - 5 - descontoCentraliza.y) * zoom), Util.inteiro(15 * zoom),
-                    Util.inteiro(15 * zoom));
-        }
+        g2d.setColor(new Color(0, 255, 0));
+        Point frenteCarD = pilotoSelecionado.getNoAtual().getPoint();
+        g2d.fillOval(Util.inteiro((frenteCarD.x - 5 - descontoCentraliza.x) * zoom),
+                Util.inteiro((frenteCarD.y - 5 - descontoCentraliza.y) * zoom), Util.inteiro(15 * zoom),
+                Util.inteiro(15 * zoom));
+        
     }
 
     private void desenhaMarcacaoNo(Graphics2D g2d, No noReal, int index) {
