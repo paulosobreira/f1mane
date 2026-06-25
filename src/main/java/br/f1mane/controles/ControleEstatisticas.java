@@ -448,9 +448,9 @@ public class ControleEstatisticas {
                 continue;
             }
             int indexFrente = pilotoFrente.getNoAtual().getIndex();
-            if (indexFrente > indexAtual
-                    && (indexFrente - indexAtual) < menorDistancia) {
-                menorDistancia = (indexFrente - indexAtual);
+            if (indexFrente >= indexAtual
+                    && Math.max(1, indexFrente - indexAtual) < menorDistancia) {
+                menorDistancia = Math.max(1, indexFrente - indexAtual);
             }
 
             int tamPista = controleJogo.getCircuito().getPistaFull().size();
