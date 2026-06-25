@@ -667,7 +667,6 @@ public class PainelCircuito {
             return;
         }
 
-        List<No> nos;
         No noAtual = piloto.getNoAtual();
 
         No noAtualSuave = piloto.getNoAtualSuave();
@@ -678,14 +677,17 @@ public class PainelCircuito {
         boolean noAtualSuaveBox = noAtualSuave.isBox();
         boolean noAtualSuavePista = !noAtualSuave.isBox();
         boolean noAtualPista = !noAtual.isBox();
+
+        // nosCalculo: lista usada apenas para calcular o tamanho no wrap negativo
+        List<No> nosCalculo;
         if (noAtualBox && noAtualSuaveBox) {
-            nos = boxFull;
+            nosCalculo = boxFull;
         } else if (noAtualBox && noAtualSuavePista) {
-            nos = pistaFull;
+            nosCalculo = pistaFull;
         } else if (noAtualSuaveBox && noAtualPista) {
-            nos = boxFull;
+            nosCalculo = boxFull;
         } else {
-            nos = pistaFull;
+            nosCalculo = pistaFull;
         }
         int diferencaSuavelReal = noAtual.getIndex() - noAtualSuave.getIndex();
         if (noAtualBox && noAtualSuavePista) {
@@ -696,54 +698,44 @@ public class PainelCircuito {
                     + (boxFull.size() - noAtualSuave.getIndex()));
         }
         if (diferencaSuavelReal < 0) {
-            diferencaSuavelReal = (noAtual.getIndex() + nos.size()) - noAtualSuave.getIndex();
+            diferencaSuavelReal = (noAtual.getIndex() + nosCalculo.size()) - noAtualSuave.getIndex();
         }
 
         double modGanho = controleJogo instanceof br.f1mane.servidor.applet.JogoCliente
                 ? Global.MOD_GANHO_SUAVE_MULTIPLAYER
                 : Global.MOD_GANHO_SUAVE;
         int ganhoSuave = (int) Math.round(modGanho * diferencaSuavelReal / 100.0);
+        ganhoSuave = Math.min(ganhoSuave, diferencaSuavelReal); // nunca avança além de noAtual
 
         if (diferencaSuavelReal == 0) {
             ganhoSuave = 0;
+        } else if (ganhoSuave == 0) {
+            ganhoSuave = 1;
         }
-        if (ganhoSuave <= 0) {
-            ganhoSuave = 0;
-        }
-        if (noAtualBox && noAtualSuaveBox) {
-            if (ganhoSuave == 0 && diferencaSuavelReal > 0) {
-                ganhoSuave = 1;
-            }
-        }
-        piloto.getListaNosSuaves().add(ganhoSuave);
-        if (piloto.getListaNosSuaves().size() > 200) {
-            piloto.getListaNosSuaves().remove(0);
-        }
-        int novoGanho = 0;
-        for (Integer ganhoMed : piloto.getListaNosSuaves()) {
-            novoGanho += ganhoMed;
-        }
-        piloto.setGanhoSuave(novoGanho / piloto.getListaNosSuaves().size());
+
+        // nosLookup: lista usada para buscar o nó após aplicar ganhoSuave
+        List<No> nosLookup;
         if (noAtualBox && noAtualSuavePista && noAtualSuave.getIndex() < entradaBoxIndex) {
-            nos = pistaFull;
-        }
-        if (noAtualPista && noAtualSuaveBox) {
-            nos = boxFull;
+            nosLookup = pistaFull;
+        } else if (noAtualPista && noAtualSuaveBox) {
+            nosLookup = boxFull;
+        } else {
+            nosLookup = nosCalculo;
         }
         int index = noAtualSuave.getIndex() + ganhoSuave;
         if (noAtualBox && noAtualSuave.getIndex() >= entradaBoxIndex) {
-            nos = boxFull;
+            nosLookup = boxFull;
             index = 0;
         }
-        if (noAtualPista && noAtualSuaveBox && index > (nos.size() - 5)) {
-            nos = pistaFull;
+        if (noAtualPista && noAtualSuaveBox && index > (nosLookup.size() - 5)) {
+            nosLookup = pistaFull;
             index = saidaBoxIndex + 5;
         }
-        if (index >= nos.size()) {
-            index = index - nos.size();
+        if (index >= nosLookup.size()) {
+            index = index - nosLookup.size();
         }
-        if (index < nos.size()) {
-            noAtualSuave = nos.get(index);
+        if (index < nosLookup.size()) {
+            noAtualSuave = nosLookup.get(index);
         }
         int limite = 1000;
         if (noAtualSuave.getTracado() == 4 || noAtualSuave.getTracado() == 5) {
@@ -790,6 +782,9 @@ public class PainelCircuito {
 
     private void desenhaNoRealDebug(Graphics2D g2d) {
         if (!Global.DEBUG) {
+            return;
+        }
+        if (pilotoSelecionado == null) {
             return;
         }
         g2d.setColor(new Color(0, 255, 0));

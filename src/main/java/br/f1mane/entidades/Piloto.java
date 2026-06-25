@@ -333,7 +333,6 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     public void setNoAtualSuave(No noAtualSuave) {
-        setNoAnterior(getNoAtualSuave());
         this.noAtualSuave = noAtualSuave;
     }
 
