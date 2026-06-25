@@ -59,7 +59,6 @@ maneCanvas.width = 0;
 maneCanvas.height = 0;
 var alertaAerefolioPow = null;
 var mapaPow = new Map();
-var loopPilotos = false;
 var ajsChuvaX = 54;
 var ajsChuvaY = 54;
 var ajsFxX = 40;
@@ -264,29 +263,6 @@ function vdp_desenhaMarcasLargadaGrid() {
     }
     desenhouMarcasLargadaGrid = true;
 }
-//@Deprecated
-function vdp_loopCalculaGanhoSuave(diff, piloto) {
-    var ganho = 0;
-    var maxLoop = 1000;
-    var no = vdp_no_suave(piloto);
-    if (no.tipoJson == 'A') {
-        maxLoop = 500;
-    }
-    if (no.tipoJson == 'B') {
-        maxLoop = 250;
-    }
-    var inc = 45;
-    for (var i = 0; i < maxLoop; i += inc) {
-        // if (piloto.idPiloto == idPilotoSelecionado) {
-        // console.log(' vdp_loopCalculaGanhoSuave '+i);
-        // }
-        ganho += 1;
-        if (diff >= i && diff < i + inc) {
-            break;
-        }
-    }
-    return ganho;
-}
 
 function vdp_atualizaSuave() {
     if (circuito == null || circuito.objetosNoTransparencia == null ||
@@ -335,7 +311,6 @@ function vdp_atualizaSuave() {
                 (circuito.boxFull.length - 1);
         }
         var diff = (indexReal - indexSuave);
-        // var ganhoSuave = vdp_loopCalculaGanhoSuave(diff, piloto);
         var multi = diff / 100;
 
         var ganhoSuave = SUAVE_MULT_RETA * multi;
@@ -395,7 +370,7 @@ function vdp_atualizaSuave() {
             }
         } else {
             if (novoIndex > (circuito.pistaFull.length - 1)) {
-                novoIndex = novoIndex - circuito.pistaFull.length - 1;
+                novoIndex = novoIndex - circuito.pistaFull.length;
             }
         }
         if (novoIndex < 0) {
@@ -426,37 +401,21 @@ function vdp_atualizaSuave() {
         // }
         mapaIdPilotosNosSuave.set(piloto.idPiloto, noSuaveNovo);
         if (diff >= 1200) {
-            // console.log(piloto.idPiloto + ' diff >= 1000 ' + novoIndex);
-            // mapaIdPilotosNosSuave.set(piloto.idPiloto, noReal);
-            mapaIdPilotosNosSuave.clear();
+            mapaIdPilotosNosSuave.set(piloto.idPiloto, noReal);
+            mapaGanhoSuave.delete(piloto.idPiloto);
         }
-        if (loopPilotos) {
-            var piloto = posicaoPilotos.posis[i];
-            var noSuave = mapaIdPilotosNosSuave.get(piloto.idPiloto);
-            var noReal = mapaIdNos.get(piloto.idNo);
-            var tracadoSuave = mapaTracadoSuave.get(piloto.idPiloto);
-            if (tracadoSuave == null) {
-                tracadoSuave = piloto.tracado;
-            }
-            mapaPontoSuave.set(piloto.idPiloto, vdp_pontoTracadoSuave(piloto,
-                noSuave, noReal));
-        }
-
     }
-    if (!loopPilotos) {
-        var posicaoPilotos = dadosParciais.posisPack;
-        for (var i = 0; i < posicaoPilotos.posis.length; i++) {
-            var piloto = posicaoPilotos.posis[i];
-            var noSuave = mapaIdPilotosNosSuave.get(piloto.idPiloto);
-            var noReal = mapaIdNos.get(piloto.idNo);
-            var tracadoSuave = mapaTracadoSuave.get(piloto.idPiloto);
-            if (tracadoSuave == null) {
-                tracadoSuave = piloto.tracado;
-            }
-            mapaPontoSuave.set(piloto.idPiloto, vdp_pontoTracadoSuave(piloto,
-                noSuave, noReal));
+    var posicaoPilotos2 = dadosParciais.posisPack;
+    for (var i = 0; i < posicaoPilotos2.posis.length; i++) {
+        var piloto2 = posicaoPilotos2.posis[i];
+        var noSuave2 = mapaIdPilotosNosSuave.get(piloto2.idPiloto);
+        var noReal2 = mapaIdNos.get(piloto2.idNo);
+        var tracadoSuave2 = mapaTracadoSuave.get(piloto2.idPiloto);
+        if (tracadoSuave2 == null) {
+            tracadoSuave2 = piloto2.tracado;
         }
-        loopPilotos = true;
+        mapaPontoSuave.set(piloto2.idPiloto, vdp_pontoTracadoSuave(piloto2,
+            noSuave2, noReal2));
     }
 }
 
