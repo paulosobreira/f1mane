@@ -395,7 +395,7 @@ function vdp_atualizaSuave() {
             }
         } else {
             if (novoIndex > (circuito.pistaFull.length - 1)) {
-                novoIndex = novoIndex - circuito.pistaFull.length;
+                novoIndex = novoIndex - circuito.pistaFull.length - 1;
             }
         }
         if (novoIndex < 0) {
