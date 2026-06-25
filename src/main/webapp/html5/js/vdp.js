@@ -404,18 +404,9 @@ function vdp_atualizaSuave() {
             mapaIdPilotosNosSuave.set(piloto.idPiloto, noReal);
             mapaGanhoSuave.delete(piloto.idPiloto);
         }
-    }
-    var posicaoPilotos2 = dadosParciais.posisPack;
-    for (var i = 0; i < posicaoPilotos2.posis.length; i++) {
-        var piloto2 = posicaoPilotos2.posis[i];
-        var noSuave2 = mapaIdPilotosNosSuave.get(piloto2.idPiloto);
-        var noReal2 = mapaIdNos.get(piloto2.idNo);
-        var tracadoSuave2 = mapaTracadoSuave.get(piloto2.idPiloto);
-        if (tracadoSuave2 == null) {
-            tracadoSuave2 = piloto2.tracado;
-        }
-        mapaPontoSuave.set(piloto2.idPiloto, vdp_pontoTracadoSuave(piloto2,
-            noSuave2, noReal2));
+        var noSuaveFinal = mapaIdPilotosNosSuave.get(piloto.idPiloto);
+        mapaPontoSuave.set(piloto.idPiloto, vdp_pontoTracadoSuave(piloto,
+            noSuaveFinal, noReal));
     }
 }
 
