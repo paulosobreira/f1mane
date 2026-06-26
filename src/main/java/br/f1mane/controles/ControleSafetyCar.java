@@ -203,7 +203,7 @@ public class ControleSafetyCar {
         if (listGanho.size() > 10) {
             listGanho.remove(0);
         }
-        listGanho.add(new Double(bonus));
+        listGanho.add(Double.valueOf(bonus));
         double soma = 0;
         for (Iterator iterator = listGanho.iterator(); iterator.hasNext(); ) {
             Double val = (Double) iterator.next();

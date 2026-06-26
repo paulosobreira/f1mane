@@ -97,7 +97,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
                 voltasJogadoresOnline.add(voltaJogadorOnline);
             }
         }
-        mapVoltasJogadoresOnline.put(new Integer(contadorVolta++),
+        mapVoltasJogadoresOnline.put(Integer.valueOf(contadorVolta++),
                 voltasJogadoresOnline);
     }
 
@@ -236,10 +236,10 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
         try {
             qtdeVoltas = dadosCriarJogo.getQtdeVoltas();
             if (qtdeVoltas.intValue() <= Global.MIN_VOLTAS) {
-                qtdeVoltas = new Integer(Global.MIN_VOLTAS);
+                qtdeVoltas = Integer.valueOf(Global.MIN_VOLTAS);
             }
             if (qtdeVoltas.intValue() >= Global.MAX_VOLTAS) {
-                qtdeVoltas = new Integer(Global.MAX_VOLTAS);
+                qtdeVoltas = Integer.valueOf(Global.MAX_VOLTAS);
             }
             diffultrapassagem = dadosCriarJogo.getDiffultrapassagem();
             circuitoSelecionado = dadosCriarJogo.getCircuitoSelecionado();
@@ -394,7 +394,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
             piloto.setNomeJogador(null);
             piloto.setIdUsuario(null);
             piloto.setJogadorHumano(false);
-            return new Integer(100);
+            return Integer.valueOf(100);
         }
         return dadosParticiparJogo.getCombustivel();
     }

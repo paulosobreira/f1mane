@@ -63,7 +63,7 @@ public class DadosCriarJogo implements Serializable {
         dadosCriarJogo.setTemporada("t" + temporada);
         if (!Util.isNullOrEmpty(numVoltas)) {
             dadosCriarJogo
-                    .setQtdeVoltas(new Integer(Util.extrairNumeros(numVoltas)));
+                    .setQtdeVoltas(Integer.parseInt(Util.extrairNumeros(numVoltas)));
         }
         dadosCriarJogo.setQtdeVoltas(Integer.valueOf(Global.MIN_VOLTAS));
         dadosCriarJogo.setDiffultrapassagem(Integer.valueOf(Util.intervalo(5, 250)));
@@ -88,7 +88,7 @@ public class DadosCriarJogo implements Serializable {
                 .get("t" + temporada);
 
         if (!Util.isNullOrEmpty(combustivel)) {
-            int fuel = new Integer(Util.extrairNumeros(combustivel)).intValue();
+            int fuel = Integer.parseInt(Util.extrairNumeros(combustivel));
             if (fuel > 100) {
                 fuel = 100;
             }
@@ -108,7 +108,7 @@ public class DadosCriarJogo implements Serializable {
         dadosCriarJogo.setTrocaPneu(temporadasDefault.getTrocaPneu().booleanValue());
         dadosCriarJogo.setErs(temporadasDefault.getErs().booleanValue());
         dadosCriarJogo.setDrs(temporadasDefault.getDrs().booleanValue());
-        dadosCriarJogo.setIdPiloto(new Integer(idPiloto).intValue());
+        dadosCriarJogo.setIdPiloto(Integer.parseInt(idPiloto));
         dadosCriarJogo.setSafetyCar(temporadasDefault.getSafetyCar().booleanValue());
         return dadosCriarJogo;
     }

@@ -115,7 +115,7 @@ public class PainelCampeonato extends JPanel {
 				case 0:
 					return construtoresPontosCampeonato.getNomeEquipe();
 				case 1:
-					return new Integer(construtoresPontosCampeonato.getPontos());
+					return Integer.valueOf(construtoresPontosCampeonato.getPontos());
 				default:
 					return "";
 				}
@@ -187,9 +187,9 @@ public class PainelCampeonato extends JPanel {
 				case 0:
 					return pilotosPontosCampeonato.getNome();
 				case 1:
-					return new Integer(pilotosPontosCampeonato.getPontos());
+					return Integer.valueOf(pilotosPontosCampeonato.getPontos());
 				case 2:
-					return new Integer(pilotosPontosCampeonato.getVitorias());
+					return Integer.valueOf(pilotosPontosCampeonato.getVitorias());
 				default:
 					return "";
 				}
@@ -265,9 +265,9 @@ public class PainelCampeonato extends JPanel {
 				case 0:
 					return pilotosPontosCampeonato.getNome();
 				case 1:
-					return new Integer(pilotosPontosCampeonato.getPontos());
+					return Integer.valueOf(pilotosPontosCampeonato.getPontos());
 				case 2:
-					return new Integer(pilotosPontosCampeonato.getVitorias());
+					return Integer.valueOf(pilotosPontosCampeonato.getVitorias());
 				default:
 					return "";
 				}
@@ -447,7 +447,7 @@ public class PainelCampeonato extends JPanel {
 			public int compare(Object o1, Object o2) {
 				DadosCorridaCampeonatoSrv c1 = (DadosCorridaCampeonatoSrv) o1;
 				DadosCorridaCampeonatoSrv c2 = (DadosCorridaCampeonatoSrv) o2;
-				return new Integer(c1.getPosicao()).compareTo(new Integer(c2.getPosicao()));
+				return Integer.compare(c1.getPosicao(), c2.getPosicao());
 			}
 		});
 

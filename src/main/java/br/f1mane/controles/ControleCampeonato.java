@@ -216,7 +216,7 @@ public class ControleCampeonato {
             }
         });
         JSpinner spinnerQtdeVoltas = new JSpinner();
-        spinnerQtdeVoltas.setValue(new Integer(12));
+        spinnerQtdeVoltas.setValue(Integer.valueOf(12));
         grid.add(spinnerQtdeVoltas);
         JComboBox comboBoxNivelCorrida = new JComboBox();
         comboBoxNivelCorrida.addItem(Lang.msg(Global.CONTROLE_AUTOMATICO));
@@ -505,9 +505,9 @@ public class ControleCampeonato {
                 PilotosPontosCampeonato p1 = (PilotosPontosCampeonato) o1;
                 PilotosPontosCampeonato p2 = (PilotosPontosCampeonato) o2;
                 if (p1.getPontos() != p2.getPontos()) {
-                    return new Integer(p2.getPontos()).compareTo(new Integer(p1.getPontos()));
+                    return Integer.compare(p2.getPontos(), p1.getPontos());
                 } else {
-                    return new Integer(p2.getVitorias()).compareTo(new Integer(p1.getVitorias()));
+                    return Integer.compare(p2.getVitorias(), p1.getVitorias());
                 }
             }
         });
@@ -570,7 +570,7 @@ public class ControleCampeonato {
             public int compare(Object o1, Object o2) {
                 ConstrutoresPontosCampeonato c1 = (ConstrutoresPontosCampeonato) o1;
                 ConstrutoresPontosCampeonato c2 = (ConstrutoresPontosCampeonato) o2;
-                return new Integer(c2.getPontos()).compareTo(new Integer(c1.getPontos()));
+                return Integer.compare(c2.getPontos(), c1.getPontos());
             }
         });
 
@@ -787,7 +787,7 @@ public class ControleCampeonato {
             }
         });
         JSpinner spinnerQtdeVoltas = new JSpinner();
-        spinnerQtdeVoltas.setValue(new Integer(12));
+        spinnerQtdeVoltas.setValue(Integer.valueOf(12));
         grid.add(spinnerQtdeVoltas);
         grid.add(new JLabel() {
             @Override
@@ -861,8 +861,7 @@ public class ControleCampeonato {
             public int compare(Object o1, Object o2) {
                 Piloto p1 = (Piloto) o1;
                 Piloto p2 = (Piloto) o2;
-                return new Integer(p2.getCarro().getPotenciaReal())
-                        .compareTo(new Integer(p1.getCarro().getPotenciaReal()));
+                return Integer.compare(p2.getCarro().getPotenciaReal(), p1.getCarro().getPotenciaReal());
             }
 
         });
@@ -1020,7 +1019,7 @@ public class ControleCampeonato {
         campeonato.setTrocaPneus(trocaPneus);
         campeonato.setTemporada(temporadaSelecionada);
         campeonato.setNivel(nivelSelecionado);
-        campeonato.setQtdeVoltas(new Integer(numVoltasSelecionado));
+        campeonato.setQtdeVoltas(Integer.valueOf(numVoltasSelecionado));
         campeonato.setMenuLocal(true);
         Map<String, TemporadasDefault> carregarTemporadasPilotosDefauts = carregadorRecursos
                 .carregarTemporadasPilotosDefauts();

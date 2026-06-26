@@ -164,14 +164,14 @@ public class ControleJogoLocal extends ControleRecursos
     public void matarTodasThreads() {
         try {
             if (controleCorrida != null) {
-                controleCorrida.finalize();
+                controleCorrida.dispose();
             }
             if (gerenciadorVisual != null) {
-                gerenciadorVisual.finalize();
+                gerenciadorVisual.dispose();
             }
             if (controleEstatisticas != null) {
                 controleEstatisticas.setConsumidorAtivo(false);
-                controleEstatisticas.finalize();
+                controleEstatisticas.dispose();
             }
         } catch (Throwable e) {
             Logger.logarExept(e);
@@ -595,8 +595,8 @@ public class ControleJogoLocal extends ControleRecursos
                                      boolean drs, boolean trocaPneus, boolean reabastecimento,
                                      int combustivelSelecionado, String asaSelecionado,
                                      String pneuSelecionado, boolean safetycar, boolean simulacao) throws Exception {
-        this.qtdeVoltas = new Integer(numVoltasSelecionado);
-        this.diffultrapassagem = new Integer(turbulenciaSelecionado);
+        this.qtdeVoltas = Integer.valueOf(numVoltasSelecionado);
+        this.diffultrapassagem = Integer.valueOf(turbulenciaSelecionado);
         this.reabastecimento = reabastecimento;
         this.trocaPneu = trocaPneus;
         this.circuitoSelecionado = circuitoSelecionado;
@@ -612,7 +612,7 @@ public class ControleJogoLocal extends ControleRecursos
             Piloto piloto = (Piloto) iterator.next();
             if (piloto.equals(pilotoSelecionado)) {
                 efetuarSelecaoPilotoJogador(piloto, pneuSelecionado,
-                        new Integer(combustivelSelecionado), "Fl-Mane",
+                        Integer.valueOf(combustivelSelecionado), "Fl-Mane",
                         asaSelecionado);
                 break;
             }
@@ -642,7 +642,7 @@ public class ControleJogoLocal extends ControleRecursos
                     .getValue();
             if (qtdeVoltas.intValue() != 0) {
                 if (qtdeVoltas.intValue() >= 72) {
-                    qtdeVoltas = new Integer(72);
+                    qtdeVoltas = Integer.valueOf(72);
                 }
             }
             diffultrapassagem = Integer.valueOf(gerenciadorVisual

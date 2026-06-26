@@ -165,9 +165,7 @@ public class ControleCorrida {
         corridaIniciada = true;
     }
 
-    protected void finalize() throws Throwable {
-        super.finalize();
-
+    public void dispose() {
         if (controleCiclo != null) {
             controleCiclo.setProcessadoCilcos(false);
         }
@@ -183,7 +181,7 @@ public class ControleCorrida {
     public static int compare(Piloto piloto0, Piloto piloto1) {
         long ptosPista0 = piloto0.getPtosPista();
         long ptosPista1 = piloto1.getPtosPista();
-        return new Long(ptosPista1).compareTo(new Long(ptosPista0));
+        return Long.compare(ptosPista1, ptosPista0);
     }
 
     public void atualizaClassificacao() {
@@ -422,7 +420,7 @@ public class ControleCorrida {
     protected static int compareBandeirada(Piloto piloto0, Piloto piloto1) {
         long ptosPista0 = piloto0.getPosicaoBandeirada();
         long ptosPista1 = piloto1.getPosicaoBandeirada();
-        return new Long(ptosPista0).compareTo(new Long(ptosPista1));
+        return Long.compare(ptosPista0, ptosPista1);
     }
 
     public boolean verificaBoxOcupado(Carro carro) {
@@ -577,27 +575,27 @@ public class ControleCorrida {
 
     private Integer calculaPontos25(Piloto p) {
         if (p.getPosicao() == 1) {
-            return new Integer(25);
+            return 25;
         } else if (p.getPosicao() == 2) {
-            return new Integer(18);
+            return 18;
         } else if (p.getPosicao() == 3) {
-            return new Integer(15);
+            return 15;
         } else if (p.getPosicao() == 4) {
-            return new Integer(12);
+            return 12;
         } else if (p.getPosicao() == 5) {
-            return new Integer(10);
+            return 10;
         } else if (p.getPosicao() == 6) {
-            return new Integer(8);
+            return 8;
         } else if (p.getPosicao() == 7) {
-            return new Integer(6);
+            return 6;
         } else if (p.getPosicao() == 8) {
-            return new Integer(4);
+            return 4;
         } else if (p.getPosicao() == 9) {
-            return new Integer(2);
+            return 2;
         } else if (p.getPosicao() == 10) {
-            return new Integer(1);
+            return 1;
         } else {
-            return new Integer(0);
+            return 0;
         }
     }
 

@@ -177,7 +177,7 @@ public class ControlePaddockCliente {
         if (pacotes.size() > 10) {
             pacotes.remove(0);
         }
-        pacotes.add(new Long(retornoT - envioT));
+        pacotes.add(Long.valueOf(retornoT - envioT));
         if (pacotes.size() >= 10) {
             long somatorio = 0;
             for (Iterator iter = pacotes.iterator(); iter.hasNext(); ) {
@@ -482,7 +482,7 @@ public class ControlePaddockCliente {
         Dia dia = new Dia();
         int anoAutual = dia.getYear();
         while (anoAutual >= 2009) {
-            anos.addItem(new Integer(anoAutual));
+            anos.addItem(Integer.valueOf(anoAutual));
             anoAutual--;
         }
         JOptionPane.showMessageDialog(this.mainFrame, anos, Lang.msg("anoRanking"), JOptionPane.QUESTION_MESSAGE);
@@ -640,10 +640,10 @@ public class ControlePaddockCliente {
         formCarreira.getNomePiloto().setText(carreiraDadosSrv.getNomePiloto());
         formCarreira.getNomeCarro().setText(carreiraDadosSrv.getNomeCarro());
         formCarreira.getModoCarreira().setSelected(carreiraDadosSrv.isModoCarreira());
-        formCarreira.getPtsPiloto().setValue(new Integer((int) carreiraDadosSrv.getPtsPiloto()));
-        formCarreira.getPtsAeroDinamica().setValue(new Integer((int) carreiraDadosSrv.getPtsAerodinamica()));
-        formCarreira.getPtsFreio().setValue(new Integer((int) carreiraDadosSrv.getPtsFreio()));
-        formCarreira.getPtsCarro().setValue(new Integer((int) carreiraDadosSrv.getPtsCarro()));
+        formCarreira.getPtsPiloto().setValue(Integer.valueOf((int) carreiraDadosSrv.getPtsPiloto()));
+        formCarreira.getPtsAeroDinamica().setValue(Integer.valueOf((int) carreiraDadosSrv.getPtsAerodinamica()));
+        formCarreira.getPtsFreio().setValue(Integer.valueOf((int) carreiraDadosSrv.getPtsFreio()));
+        formCarreira.getPtsCarro().setValue(Integer.valueOf((int) carreiraDadosSrv.getPtsCarro()));
         formCarreira.setPtsCarreira(carreiraDadosSrv.getPtsConstrutores());
         formCarreira.getNomePiloto().setText(carreiraDadosSrv.getNomePiloto());
         formCarreira.setCor1(carreiraDadosSrv.geraCor1());

@@ -261,7 +261,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
     }
 
     public Integer getCombustBox(Piloto piloto) {
-        return new Integer(piloto.getQtdeCombustBox());
+        return Integer.valueOf(piloto.getQtdeCombustBox());
     }
 
     public double getIndexVelcidadeDaPista() {
@@ -368,7 +368,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
         try {
             matarThreadsResultadoFnal();
             if (gerenciadorVisual != null) {
-                gerenciadorVisual.finalize();
+                gerenciadorVisual.dispose();
             }
         } catch (Throwable e) {
             Logger.logarExept(e);
@@ -538,7 +538,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
     }
 
     public void atualizaPosSafetyCar(int safetyId, boolean safetySair) {
-        No no = (No) mapaIdsNos.get(new Integer(safetyId));
+        No no = (No) mapaIdsNos.get(Integer.valueOf(safetyId));
         safetyCar = new SafetyCar();
         safetyCar.setNoAtual(no);
         safetyCar.setVaiProBox(safetySair);

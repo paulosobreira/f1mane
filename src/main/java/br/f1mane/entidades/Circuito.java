@@ -831,7 +831,7 @@ public class Circuito implements Serializable {
     public BufferedImage desenhaObjetoPista(String indice) {
         Integer i = null;
         try {
-            i = new Integer(indice);
+            i = Integer.parseInt(indice);
         } catch (Exception e) {
         }
         if (i == null) {

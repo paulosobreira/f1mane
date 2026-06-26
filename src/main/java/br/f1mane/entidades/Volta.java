@@ -20,11 +20,11 @@ public class Volta implements Serializable {
 	@JsonIgnore
 	private Long tempoNumero;
 	@JsonIgnore
-	private Long ciclosInicio = new Long(0);
+	private Long ciclosInicio = Long.valueOf(0);
 	@JsonIgnore
-	private Long ciclosFim = new Long(0);
+	private Long ciclosFim = Long.valueOf(0);
 	@JsonIgnore
-	private Long tempoPausado = new Long(0);
+	private Long tempoPausado = Long.valueOf(0);
 	@JsonIgnore
 	private boolean voltaBox;
 	@JsonIgnore
@@ -112,7 +112,7 @@ public class Volta implements Serializable {
 	public Long getTempoNumero() {
 		tempoNumero = obterTempoVolta();
 		if (tempoNumero == null) {
-			tempoNumero = new Long(0);
+			tempoNumero = Long.valueOf(0);
 		}
 		return tempoNumero;
 	}

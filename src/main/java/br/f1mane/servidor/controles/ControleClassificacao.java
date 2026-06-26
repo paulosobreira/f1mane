@@ -240,17 +240,17 @@ public class ControleClassificacao {
                     CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator.next();
                     Integer ptsCarro = (Integer) mapaCarros.get(corridasDadosSrv.getCarro());
                     if (ptsCarro == null) {
-                        mapaCarros.put(corridasDadosSrv.getCarro(), new Integer(corridasDadosSrv.getPontos()));
+                        mapaCarros.put(corridasDadosSrv.getCarro(), Integer.valueOf(corridasDadosSrv.getPontos()));
                     } else {
                         mapaCarros.put(corridasDadosSrv.getCarro(),
-                                new Integer(corridasDadosSrv.getPontos() + ptsCarro.intValue()));
+                                Integer.valueOf(corridasDadosSrv.getPontos() + ptsCarro.intValue()));
                     }
                     Integer ptsPiloto = (Integer) mapaPilotos.get(corridasDadosSrv.getPiloto());
                     if (ptsPiloto == null) {
-                        mapaPilotos.put(corridasDadosSrv.getPiloto(), new Integer(corridasDadosSrv.getPontos()));
+                        mapaPilotos.put(corridasDadosSrv.getPiloto(), Integer.valueOf(corridasDadosSrv.getPontos()));
                     } else {
                         mapaPilotos.put(corridasDadosSrv.getPiloto(),
-                                new Integer(corridasDadosSrv.getPontos() + ptsPiloto.intValue()));
+                                Integer.valueOf(corridasDadosSrv.getPontos() + ptsPiloto.intValue()));
                     }
 
                 }
@@ -722,8 +722,7 @@ public class ControleClassificacao {
         public int compare(Object arg0, Object arg1) {
             DadosJogador d0 = (DadosJogador) arg0;
             DadosJogador d1 = (DadosJogador) arg1;
-            return new Long(d1.getPontos() * d1.getCorridas())
-                    .compareTo(new Long(d0.getPontos() * d0.getCorridas()));
+            return Long.compare(d1.getPontos() * d1.getCorridas(), d0.getPontos() * d0.getCorridas());
         }
     }
 

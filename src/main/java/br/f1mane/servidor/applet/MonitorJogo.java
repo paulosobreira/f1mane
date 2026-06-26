@@ -394,7 +394,7 @@ public class MonitorJogo implements Runnable {
                 Map<Integer, No> mapaIdsNos = jogoCliente.getMapaIdsNos();
                 List nosDoBox = jogoCliente.getNosDoBox();
                 if (posis.getIdNo() >= -1) {
-                    No no = (No) mapaIdsNos.get(new Integer(posis.getIdNo()));
+                    No no = (No) mapaIdsNos.get(Integer.valueOf(posis.getIdNo()));
                     piloto.setNoAtual(no);
                     if (nosDoBox.contains(no)) {
                         piloto.setPtosBox(1);
