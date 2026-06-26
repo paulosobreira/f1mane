@@ -16,7 +16,7 @@ public final class Global {
     public static final double VELOCIDADE_PISTA = 1;
     public static final int TAMANHO_RETA_DRS = 1500;
     public static final double LIMITE_ESTRESSE_PARA_RERRAR_CURVA = 90;
-    public static double MOD_GANHO_SUAVE = 3.5;
+    public static double MOD_GANHO_SUAVE = 4;
     public static double MOD_GANHO_SUAVE_MULTIPLAYER = 2.0;
     public static boolean DESENHA_DIFF_REAL_SUAVE = false;
 
