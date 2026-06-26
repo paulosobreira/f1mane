@@ -151,7 +151,7 @@ public class ControleEstatisticas {
     }
 
     public double calculaDiferencaParaProximoDouble(Piloto psel) {
-        return new Double(calculaDiferencaParaProximo(psel)).doubleValue();
+        return (double) calculaDiferencaParaProximo(psel);
 
     }
 
@@ -267,8 +267,7 @@ public class ControleEstatisticas {
         info(info, false);
     }
 
-    protected void finalize() throws Throwable {
-        super.finalize();
+    public void dispose() {
         if (infoConsumer != null) {
             infoConsumer.interrupt();
         }
@@ -548,7 +547,7 @@ public class ControleEstatisticas {
 
     private Long diferecaParaSegundos(long diff) {
         return Long.valueOf(Math
-                .round((diff / new Double(controleJogo.getRandom().intervalo(30, 40)).doubleValue())
+                .round((diff / (double) controleJogo.getRandom().intervalo(30, 40))
                         * controleJogo.tempoCicloCircuito()));
     }
 }

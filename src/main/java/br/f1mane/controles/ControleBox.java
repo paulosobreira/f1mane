@@ -291,7 +291,7 @@ public class ControleBox {
         if (piloto.isJogadorHumano()) {
             Integer combust = controleJogo.getCombustBox(piloto);
             if (controleJogo.isSemReabastecimento()) {
-                combust = new Integer(0);
+                combust = Integer.valueOf(0);
             }
             qtdeCombust = controleJogo.setUpJogadorHumano(piloto, controleJogo.getTipoPneuBox(piloto), combust,
                     controleJogo.getAsaBox(piloto));
@@ -495,7 +495,7 @@ public class ControleBox {
         if (piloto.isJogadorHumano()) {
             Integer combustBox = controleJogo.getCombustBox(piloto);
             if (combustBox.intValue() <= 10) {
-                combustBox = new Integer(10);
+                combustBox = Integer.valueOf(10);
             }
             controleJogo.setUpJogadorHumano(piloto, controleJogo.getTipoPneuBox(piloto), combustBox,
                     controleJogo.getAsaBox(piloto));
@@ -638,7 +638,7 @@ public class ControleBox {
             Carro carro0 = (Carro) arg0;
             Carro carro1 = (Carro) arg1;
 
-            return new Integer(carro1.getPotencia()).compareTo(new Integer(carro0.getPotencia()));
+            return Integer.compare(carro1.getPotencia(), carro0.getPotencia());
         }
     }
 }

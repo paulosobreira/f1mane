@@ -2888,7 +2888,7 @@ public class PainelMenuLocal {
             double val2 = (p2.getCarro().getPotenciaReal() + p2.getCarro().getAerodinamica()
                     + p2.getCarro().getFreios()) / 3.0;
 
-            return new Double(val2).compareTo(new Double(val1));
+            return Double.compare(val2, val1);
         }
 
     }

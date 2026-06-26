@@ -108,7 +108,7 @@ public class CarregadorRecursos {
     }
 
     public static String getVersaoFormatado() {
-        return decimalFormat.format(new Integer(getVersao())) + " " + getVersaoMesAno();
+        return decimalFormat.format(Integer.parseInt(getVersao())) + " " + getVersaoMesAno();
     }
 
     public static synchronized CarregadorRecursos getCarregadorRecursos(

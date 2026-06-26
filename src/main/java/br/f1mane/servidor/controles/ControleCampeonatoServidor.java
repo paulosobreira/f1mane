@@ -491,11 +491,11 @@ public class ControleCampeonatoServidor {
                         .get(dadosCorridaCampeonatoSrv.getCarro());
                 if (ptsCarro == null) {
                     mapaCarros.put(dadosCorridaCampeonatoSrv.getCarro(),
-                            new Integer(dadosCorridaCampeonatoSrv.getPontos()));
+                            Integer.valueOf(dadosCorridaCampeonatoSrv.getPontos()));
                 } else {
                     mapaCarros
                             .put(dadosCorridaCampeonatoSrv.getCarro(),
-                                    new Integer(dadosCorridaCampeonatoSrv
+                                    Integer.valueOf(dadosCorridaCampeonatoSrv
                                             .getPontos()
                                             + ptsCarro.intValue()));
                 }
@@ -506,11 +506,11 @@ public class ControleCampeonatoServidor {
                         .get(dadosCorridaCampeonatoSrv.getPiloto());
                 if (ptsPiloto == null) {
                     mapaPilotos.put(dadosCorridaCampeonatoSrv.getPiloto(),
-                            new Integer(dadosCorridaCampeonatoSrv.getPontos()));
+                            Integer.valueOf(dadosCorridaCampeonatoSrv.getPontos()));
                 } else {
                     mapaPilotos
                             .put(dadosCorridaCampeonatoSrv.getPiloto(),
-                                    new Integer(dadosCorridaCampeonatoSrv
+                                    Integer.valueOf(dadosCorridaCampeonatoSrv
                                             .getPontos()
                                             + ptsPiloto.intValue()));
                 }
@@ -523,12 +523,11 @@ public class ControleCampeonatoServidor {
                     if (ptsJogador == null) {
                         mapaJogadores.put(
                                 dadosCorridaCampeonatoSrv.getJogador(),
-                                new Integer(
-                                        dadosCorridaCampeonatoSrv.getPontos()));
+                                Integer.valueOf(dadosCorridaCampeonatoSrv.getPontos()));
                     } else {
                         mapaJogadores
                                 .put(dadosCorridaCampeonatoSrv.getJogador(),
-                                        new Integer(dadosCorridaCampeonatoSrv
+                                        Integer.valueOf(dadosCorridaCampeonatoSrv
                                                 .getPontos()
                                                 + ptsJogador.intValue()));
                     }
@@ -537,11 +536,11 @@ public class ControleCampeonatoServidor {
                     if (corrida == null) {
                         mapaJogadoresCorridas.put(
                                 dadosCorridaCampeonatoSrv.getJogador(),
-                                new Integer(1));
+                                Integer.valueOf(1));
                     } else {
                         mapaJogadoresCorridas.put(
                                 dadosCorridaCampeonatoSrv.getJogador(),
-                                new Integer(corrida.intValue() + 1));
+                                Integer.valueOf(corrida.intValue() + 1));
                     }
                 }
 
@@ -650,16 +649,14 @@ public class ControleCampeonatoServidor {
     private static class DadosClassificacaoCarrosComparator implements Comparator<DadosClassificacaoCarros> {
         public int compare(DadosClassificacaoCarros arg0,
                            DadosClassificacaoCarros arg1) {
-            return new Integer(arg1.getPontos())
-                    .compareTo(Integer.valueOf(arg0.getPontos()));
+            return Integer.compare(arg1.getPontos(), arg0.getPontos());
         }
     }
 
     private static class DadosClassificacaoPilotosComparator implements Comparator<DadosClassificacaoPilotos> {
         public int compare(DadosClassificacaoPilotos arg0,
                            DadosClassificacaoPilotos arg1) {
-            return new Integer(arg1.getPontos())
-                    .compareTo(Integer.valueOf(arg0.getPontos()));
+            return Integer.compare(arg1.getPontos(), arg0.getPontos());
         }
     }
 

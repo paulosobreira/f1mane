@@ -289,8 +289,7 @@ public class ControleQualificacao {
         public int compare(Object arg0, Object arg1) {
             Piloto piloto0 = (Piloto) arg0;
             Piloto piloto1 = (Piloto) arg1;
-            return new Long(piloto0.getCiclosVoltaQualificacao()).compareTo(
-                    new Long(piloto1.getCiclosVoltaQualificacao()));
+            return Long.compare(piloto0.getCiclosVoltaQualificacao(), piloto1.getCiclosVoltaQualificacao());
         }
     }
 }

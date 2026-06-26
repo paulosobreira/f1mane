@@ -208,8 +208,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <release>11</release>
                 </configuration>
             </plugin>
             <plugin>
@@ -224,6 +223,15 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <artifactSet>
+                                <excludes>
+                                    <!-- duplicados: substituídos pelas versões jakarta/tomcat incluídas -->
+                                    <exclude>javax.servlet:javax.servlet-api</exclude>
+                                    <exclude>javax.ws.rs:javax.ws.rs-api</exclude>
+                                    <exclude>javax.xml.bind:jaxb-api</exclude>
+                                    <exclude>jakarta.annotation:jakarta.annotation-api</exclude>
+                                </excludes>
+                            </artifactSet>
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>
@@ -231,6 +239,17 @@
                                         <exclude>META-INF/*.SF</exclude>
                                         <exclude>META-INF/*.DSA</exclude>
                                         <exclude>META-INF/*.RSA</exclude>
+                                        <exclude>META-INF/versions/*/module-info.class</exclude>
+                                        <exclude>module-info.class</exclude>
+                                        <exclude>META-INF/LICENSE</exclude>
+                                        <exclude>META-INF/LICENSE.txt</exclude>
+                                        <exclude>META-INF/LICENSE.md</exclude>
+                                        <exclude>META-INF/NOTICE</exclude>
+                                        <exclude>META-INF/NOTICE.txt</exclude>
+                                        <exclude>META-INF/NOTICE.md</exclude>
+                                        <exclude>META-INF/NOTICE.markdown</exclude>
+                                        <exclude>META-INF/MANIFEST.MF</exclude>
+                                        <exclude>META-INF/web-fragment.xml</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
@@ -239,9 +258,7 @@
                                         implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>
-                                        br.f1mane.MainLauncher
-                                    </mainClass>
+                                    <mainClass>br.f1mane.MainLauncher</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
@@ -251,8 +268,7 @@
         </plugins>
     </build>
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.release>11</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <env>h2</env>
     </properties>

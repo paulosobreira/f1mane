@@ -119,7 +119,7 @@ public class PainelEntradaCliente {
         };
 
         spinnerQtdeVoltas = new JSpinner();
-        spinnerQtdeVoltas.setValue(new Integer(12));
+        spinnerQtdeVoltas.setValue(Integer.valueOf(12));
         JPanel pNome = new JPanel(new GridLayout(1, 2));
         pNome.add(new JLabel() {
 
@@ -193,15 +193,15 @@ public class PainelEntradaCliente {
             }
         });
         sliderDificuldadeUltrapassagem = new JSlider(000, 500);
-        sliderDificuldadeUltrapassagem.setValue(new Integer(250).intValue());
+        sliderDificuldadeUltrapassagem.setValue(250);
         Hashtable labelTable = new Hashtable();
-        labelTable.put(new Integer(000), new JLabel("") {
+        labelTable.put(Integer.valueOf(000), new JLabel("") {
             @Override
             public String getText() {
                 return Lang.msg("FACIL");
             }
         });
-        labelTable.put(new Integer(500), new JLabel("") {
+        labelTable.put(Integer.valueOf(500), new JLabel("") {
             @Override
             public String getText() {
                 return Lang.msg("DIFICIL");
@@ -263,9 +263,9 @@ public class PainelEntradaCliente {
         painelInicio.add(p4);
 
         spinnerSkillPadraoPilotos = new JSpinner();
-        spinnerSkillPadraoPilotos.setValue(new Integer(0));
+        spinnerSkillPadraoPilotos.setValue(Integer.valueOf(0));
         spinnerPotenciaPadraoCarros = new JSpinner();
-        spinnerPotenciaPadraoCarros.setValue(new Integer(0));
+        spinnerPotenciaPadraoCarros.setValue(Integer.valueOf(0));
 
     }
 
@@ -288,7 +288,7 @@ public class PainelEntradaCliente {
 
         Integer qtdeVoltas = (Integer) spinnerQtdeVoltas.getValue();
         if (qtdeVoltas.intValue() < 12) {
-            spinnerQtdeVoltas.setValue(new Integer(12));
+            spinnerQtdeVoltas.setValue(Integer.valueOf(12));
         }
         preecherDadosCriarJogo();
         return true;
@@ -456,10 +456,10 @@ public class PainelEntradaCliente {
     private void preecherDadosCriarJogo() {
         Integer qtdeVoltas = (Integer) spinnerQtdeVoltas.getValue();
         if (qtdeVoltas.intValue() >= Global.MAX_VOLTAS) {
-            qtdeVoltas = new Integer(Global.MAX_VOLTAS);
+            qtdeVoltas = Integer.valueOf(Global.MAX_VOLTAS);
         }
         if (qtdeVoltas.intValue() <= Global.MIN_VOLTAS) {
-            qtdeVoltas = new Integer(Global.MIN_VOLTAS);
+            qtdeVoltas = Integer.valueOf(Global.MIN_VOLTAS);
         }
         String temporada = (String) comboTemporada.getSelectedItem();
         dadosCriarJogo.setTemporada("t" + temporada);
@@ -481,10 +481,10 @@ public class PainelEntradaCliente {
         String asa = Lang.key((String) comboBoxAsa.getSelectedItem());
         Integer combustivel = Integer.valueOf(sliderCombustivelInicial.getValue());
         if (combustivel.intValue() > 100) {
-            combustivel = new Integer(100);
+            combustivel = Integer.valueOf(100);
         }
         if (combustivel.intValue() < 10) {
-            combustivel = new Integer(10);
+            combustivel = Integer.valueOf(10);
         }
         dadosParticiparJogo.setTpPneu(tpPneu);
         dadosParticiparJogo.setAsa(asa);
@@ -559,13 +559,13 @@ public class PainelEntradaCliente {
         JLabel qtdeComustivel = new JLabel(Lang.msg("011"));
         sliderCombustivelInicial = new JSlider(0, 100);
         Hashtable labelTable = new Hashtable();
-        labelTable.put(new Integer(000), new JLabel("") {
+        labelTable.put(Integer.valueOf(000), new JLabel("") {
             @Override
             public String getText() {
                 return Lang.msg("MENOS");
             }
         });
-        labelTable.put(new Integer(100), new JLabel("") {
+        labelTable.put(Integer.valueOf(100), new JLabel("") {
             @Override
             public String getText() {
                 return Lang.msg("MAIS");
@@ -574,7 +574,7 @@ public class PainelEntradaCliente {
         sliderCombustivelInicial.setLabelTable(labelTable);
         sliderCombustivelInicial.setPaintLabels(true);
 
-        sliderCombustivelInicial.setValue(new Integer(50).intValue());
+        sliderCombustivelInicial.setValue(50);
 
         painelInicio.add(tipoPneu);
         painelInicio.add(comboBoxPneuInicial);

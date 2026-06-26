@@ -43,8 +43,7 @@ public class FormConstrutores extends JPanel {
 			public int compare(Object arg0, Object arg1) {
 				DadosClassificacaoCarros d0 = (DadosClassificacaoCarros) arg0;
 				DadosClassificacaoCarros d1 = (DadosClassificacaoCarros) arg1;
-				return new Long(d1.getPontos()).compareTo(new Long(d0
-						.getPontos()));
+				return Long.compare(d1.getPontos(), d0.getPontos());
 			}
 
 		});
@@ -53,8 +52,7 @@ public class FormConstrutores extends JPanel {
 			public int compare(Object arg0, Object arg1) {
 				DadosClassificacaoPilotos d0 = (DadosClassificacaoPilotos) arg0;
 				DadosClassificacaoPilotos d1 = (DadosClassificacaoPilotos) arg1;
-				return new Long(d1.getPontos()).compareTo(new Long(d0
-						.getPontos()));
+				return Long.compare(d1.getPontos(), d0.getPontos());
 			}
 
 		});

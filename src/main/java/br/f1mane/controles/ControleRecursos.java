@@ -156,7 +156,7 @@ public abstract class ControleRecursos {
         List<No> listaDeRetas = new ArrayList<No>();
         for (Iterator<No> iter = nosDaPista.iterator(); iter.hasNext(); ) {
             No noPsita = iter.next();
-            Integer pistaId = new Integer(contId);
+            Integer pistaId = Integer.valueOf(contId);
             contId++;
             mapaIdsNos.put(pistaId, noPsita);
             mapaNosIds.put(noPsita, pistaId);
@@ -168,7 +168,7 @@ public abstract class ControleRecursos {
 
         for (Iterator iter = nosDoBox.iterator(); iter.hasNext(); ) {
             No noDoBox = (No) iter.next();
-            Integer boxId = new Integer(contId);
+            Integer boxId = Integer.valueOf(contId);
             contId++;
             mapaIdsNos.put(boxId, noDoBox);
             mapaNosIds.put(noDoBox, boxId);
@@ -321,7 +321,7 @@ public abstract class ControleRecursos {
         if (id == null) {
             return null;
         }
-        int idInt = new Integer(id).intValue();
+        int idInt = Integer.parseInt(id);
 
         for (Iterator iterator = pilotos.iterator(); iterator.hasNext(); ) {
             Piloto piloto = (Piloto) iterator.next();

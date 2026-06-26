@@ -271,7 +271,7 @@ public class PainelCampeonato extends JPanel {
 				case 0:
 					return construtoresPontosCampeonato.getNomeEquipe();
 				case 1:
-					return new Integer(construtoresPontosCampeonato.getPontos());
+					return Integer.valueOf(construtoresPontosCampeonato.getPontos());
 				default:
 					return "";
 				}
@@ -344,9 +344,9 @@ public class PainelCampeonato extends JPanel {
 				case 0:
 					return pilotosPontosCampeonato.getNome();
 				case 1:
-					return new Integer(pilotosPontosCampeonato.getPontos());
+					return Integer.valueOf(pilotosPontosCampeonato.getPontos());
 				case 2:
-					return new Integer(pilotosPontosCampeonato.getVitorias());
+					return Integer.valueOf(pilotosPontosCampeonato.getVitorias());
 				default:
 					return "";
 				}

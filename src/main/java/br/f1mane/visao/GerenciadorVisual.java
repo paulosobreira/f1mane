@@ -187,11 +187,10 @@ public class GerenciadorVisual {
         centerPanel.revalidate();
     }
 
-    public void finalize() throws Throwable {
+    public void dispose() {
         thAtualizaPainelSuaveAlive = false;
         thAtualizaPilotosSuaveAlive = false;
         thAtualizaSomAlive = false;
-        super.finalize();
     }
 
     private void addiconarListenerComandos() {
@@ -544,7 +543,7 @@ public class GerenciadorVisual {
         };
         painelInicio.add(label);
         spinnerQtdeVoltas = new JSpinner();
-        spinnerQtdeVoltas.setValue(new Integer(12));
+        spinnerQtdeVoltas.setValue(Integer.valueOf(12));
         painelInicio.add(spinnerQtdeVoltas);
         painelInicio.add(new JLabel() {
             public String getText() {
@@ -623,7 +622,7 @@ public class GerenciadorVisual {
             }
         };
         spinnerCombustivel = new JSlider(0, 100);
-        spinnerCombustivel.setValue(new Integer(50).intValue());
+        spinnerCombustivel.setValue(50);
         spinnerCombustivel.setPaintLabels(true);
         painelInicio.add(tipoPneu);
         painelInicio.add(boxPneuInicial);
@@ -637,15 +636,15 @@ public class GerenciadorVisual {
             }
         });
         spinnerDificuldadeUltrapassagem = new JSlider(000, 500);
-        spinnerDificuldadeUltrapassagem.setValue(new Integer(getRandom().intervalo(000, 500)).intValue());
+        spinnerDificuldadeUltrapassagem.setValue(getRandom().intervalo(000, 500));
         Hashtable labelTable = new Hashtable();
-        labelTable.put(new Integer(000), new JLabel("") {
+        labelTable.put(Integer.valueOf(000), new JLabel("") {
             @Override
             public String getText() {
                 return Lang.msg("FACIL");
             }
         });
-        labelTable.put(new Integer(500), new JLabel("") {
+        labelTable.put(Integer.valueOf(500), new JLabel("") {
             @Override
             public String getText() {
                 return Lang.msg("DIFICIL");
@@ -655,9 +654,9 @@ public class GerenciadorVisual {
         spinnerDificuldadeUltrapassagem.setPaintLabels(true);
         painelInicio.add(spinnerDificuldadeUltrapassagem);
         spinnerSkillPadraoPilotos = new JSpinner();
-        spinnerSkillPadraoPilotos.setValue(new Integer(0));
+        spinnerSkillPadraoPilotos.setValue(Integer.valueOf(0));
         spinnerPotenciaPadraoCarros = new JSpinner();
-        spinnerPotenciaPadraoCarros.setValue(new Integer(0));
+        spinnerPotenciaPadraoCarros.setValue(Integer.valueOf(0));
 
     }
 
@@ -733,7 +732,7 @@ public class GerenciadorVisual {
         };
         grid.add(label);
         spinnerQtdeVoltas = new JSpinner();
-        spinnerQtdeVoltas.setValue(new Integer(12));
+        spinnerQtdeVoltas.setValue(Integer.valueOf(12));
         grid.add(spinnerQtdeVoltas);
 
         boxPilotoSelecionado = new JComboBox();
@@ -777,15 +776,15 @@ public class GerenciadorVisual {
             }
         });
         spinnerDificuldadeUltrapassagem = new JSlider(000, 500);
-        spinnerDificuldadeUltrapassagem.setValue(new Integer(getRandom().intervalo(000, 500)).intValue());
+        spinnerDificuldadeUltrapassagem.setValue(getRandom().intervalo(000, 500));
         Hashtable labelTable = new Hashtable();
-        labelTable.put(new Integer(000), new JLabel("") {
+        labelTable.put(Integer.valueOf(000), new JLabel("") {
             @Override
             public String getText() {
                 return Lang.msg("FACIL");
             }
         });
-        labelTable.put(new Integer(500), new JLabel("") {
+        labelTable.put(Integer.valueOf(500), new JLabel("") {
             @Override
             public String getText() {
                 return Lang.msg("DIFICIL");
@@ -795,9 +794,9 @@ public class GerenciadorVisual {
         spinnerDificuldadeUltrapassagem.setPaintLabels(true);
         grid.add(spinnerDificuldadeUltrapassagem);
         spinnerSkillPadraoPilotos = new JSpinner();
-        spinnerSkillPadraoPilotos.setValue(new Integer(0));
+        spinnerSkillPadraoPilotos.setValue(Integer.valueOf(0));
         spinnerPotenciaPadraoCarros = new JSpinner();
-        spinnerPotenciaPadraoCarros.setValue(new Integer(0));
+        spinnerPotenciaPadraoCarros.setValue(Integer.valueOf(0));
 
         JPanel p1 = new JPanel(new GridLayout(1, 2));
 
@@ -998,7 +997,7 @@ public class GerenciadorVisual {
     public boolean iniciarJogoSingle() {
         JPanel painelInicio = new JPanel();
         gerarPainelJogoSingle(painelInicio);
-        spinnerQtdeVoltas.setValue(new Integer(12));
+        spinnerQtdeVoltas.setValue(Integer.valueOf(12));
         int ret = JOptionPane.showConfirmDialog(controleJogo.getMainFrame(), painelInicio, Lang.msg("127"),
                 JOptionPane.YES_NO_OPTION);
         if (ret != JOptionPane.YES_OPTION) {
@@ -1007,14 +1006,14 @@ public class GerenciadorVisual {
 
         Integer qtdeVoltas = (Integer) spinnerQtdeVoltas.getValue();
         if (qtdeVoltas.intValue() < 12) {
-            spinnerQtdeVoltas.setValue(new Integer(12));
+            spinnerQtdeVoltas.setValue(Integer.valueOf(12));
         }
         Integer combustivelInicial = Integer.valueOf(spinnerCombustivel.getValue());
         if (combustivelInicial.intValue() <= 0) {
             if (reabastecimento.isSelected()) {
-                spinnerCombustivel.setValue(new Integer(1).intValue());
+                spinnerCombustivel.setValue(1);
             } else {
-                spinnerCombustivel.setValue(new Integer(20).intValue());
+                spinnerCombustivel.setValue(20);
             }
 
         }
@@ -1033,7 +1032,7 @@ public class GerenciadorVisual {
     public boolean iniciarJogoMulti(Campeonato campeonato) {
         JPanel painelInicio = new JPanel(new BorderLayout());
         gerarPainelJogoMulti(painelInicio);
-        spinnerQtdeVoltas.setValue(new Integer(12));
+        spinnerQtdeVoltas.setValue(Integer.valueOf(12));
         if (campeonato != null) {
 
             reabastecimento.setSelected(campeonato.isReabastecimento());
@@ -1063,7 +1062,7 @@ public class GerenciadorVisual {
                 Piloto piloto = (Piloto) defaultListModel.get(i);
                 if (Util.isNullOrEmpty(campeonato.getNomePiloto())) {
                     if (campeonato.getPilotos().contains(piloto.toString())) {
-                        indices.add(new Integer(i));
+                        indices.add(Integer.valueOf(i));
                     }
                 } else {
                     String carro = campeonato.getPilotosEquipesCampeonato().get(piloto.getNome());
@@ -1091,7 +1090,7 @@ public class GerenciadorVisual {
                 for (int i = 0; i < defaultListModel.getSize(); i++) {
                     Piloto piloto = (Piloto) defaultListModel.get(i);
                     if (piloto.isJogadorHumano()) {
-                        indices.add(new Integer(i));
+                        indices.add(Integer.valueOf(i));
                     }
                 }
             }
@@ -1190,13 +1189,13 @@ public class GerenciadorVisual {
             spinnerCombustivel = new JSlider(0, 100);
             spinnerCombustivel.setPaintLabels(true);
             Hashtable labelTable = new Hashtable();
-            labelTable.put(new Integer(000), new JLabel("") {
+            labelTable.put(Integer.valueOf(000), new JLabel("") {
                 @Override
                 public String getText() {
                     return Lang.msg("MENOS");
                 }
             });
-            labelTable.put(new Integer(100), new JLabel("") {
+            labelTable.put(Integer.valueOf(100), new JLabel("") {
                 @Override
                 public String getText() {
                     return Lang.msg("MAIS");
@@ -1205,7 +1204,7 @@ public class GerenciadorVisual {
             spinnerCombustivel.setLabelTable(labelTable);
             spinnerCombustivel.setPaintLabels(true);
 
-            spinnerCombustivel.setValue(new Integer(50).intValue());
+            spinnerCombustivel.setValue(50);
             painelJogSel.add(tipoPneu);
             painelJogSel.add(boxPneuInicial);
             painelJogSel.add(tipoAsa);
@@ -1236,14 +1235,14 @@ public class GerenciadorVisual {
 
         Integer qtdeVoltas = (Integer) spinnerQtdeVoltas.getValue();
         if (qtdeVoltas.intValue() < 12) {
-            spinnerQtdeVoltas.setValue(new Integer(12));
+            spinnerQtdeVoltas.setValue(Integer.valueOf(12));
         }
         Integer combustivelInicial = Integer.valueOf(spinnerCombustivel.getValue());
         if (combustivelInicial.intValue() <= 0) {
             if (reabastecimento.isSelected()) {
-                spinnerCombustivel.setValue(new Integer(1).intValue());
+                spinnerCombustivel.setValue(1);
             } else {
-                spinnerCombustivel.setValue(new Integer(20).intValue());
+                spinnerCombustivel.setValue(20);
             }
 
         }

@@ -174,9 +174,9 @@ public class Piloto implements Serializable, PilotoSuave {
     @JsonIgnore
     private boolean processouVoltaBox;
     @JsonIgnore
-    private Double maxGanhoBaixa = new Double(0);
+    private Double maxGanhoBaixa = Double.valueOf(0);
     @JsonIgnore
-    private Double maxGanhoAlta = new Double(0);
+    private Double maxGanhoAlta = Double.valueOf(0);
     @JsonIgnore
     private int contTravouRodas;
     @JsonIgnore
@@ -967,21 +967,21 @@ public class Piloto implements Serializable, PilotoSuave {
     private void processaUltimosDesgastesPneuECombustivel() {
         int pCombust = getCarro().getPorcentagemCombustivel();
         if (ultimoConsumoCombust == null) {
-            ultimoConsumoCombust = new Integer(pCombust);
+            ultimoConsumoCombust = Integer.valueOf(pCombust);
         } else {
             if (ultimoConsumoCombust.intValue() > pCombust) {
                 ultsConsumosCombustivel.add(Integer.valueOf(ultimoConsumoCombust.intValue() - pCombust));
-                ultimoConsumoCombust = new Integer(pCombust);
+                ultimoConsumoCombust = Integer.valueOf(pCombust);
 
             }
         }
         int pPneu = getCarro().getPorcentagemDesgastePneus();
         if (ultimoConsumoPneu == null) {
-            ultimoConsumoPneu = new Integer(pPneu);
+            ultimoConsumoPneu = Integer.valueOf(pPneu);
         } else {
             if (ultimoConsumoPneu.intValue() > pPneu) {
                 ultsConsumosPneu.add(Integer.valueOf(ultimoConsumoCombust.intValue() - pPneu));
-                ultimoConsumoPneu = new Integer(pPneu);
+                ultimoConsumoPneu = Integer.valueOf(pPneu);
             }
         }
     }
