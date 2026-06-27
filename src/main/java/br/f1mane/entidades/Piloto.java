@@ -1300,6 +1300,15 @@ public class Piloto implements Serializable, PilotoSuave {
             return;
         }
         centralizaCarroColisao();
+        if (Global.LOG_COLISAO && diateiraColisao != null && centroColisao != null && trazeiraColisao != null) {
+            Logger.logar("[COLISAO] piloto=" + getNome()
+                    + " noIndex=" + (noAtual != null ? noAtual.getIndex() : -1)
+                    + " tracado=" + tracado
+                    + " diant=[" + diateiraColisao.x + "," + diateiraColisao.y + "," + diateiraColisao.width + "," + diateiraColisao.height + "]"
+                    + " centro=[" + centroColisao.x + "," + centroColisao.y + "," + centroColisao.width + "," + centroColisao.height + "]"
+                    + " traz=[" + trazeiraColisao.x + "," + trazeiraColisao.y + "," + trazeiraColisao.width + "," + trazeiraColisao.height + "]"
+                    + " ganho=" + ganho);
+        }
         List<Piloto> pilotos = controleJogo.getPilotos();
         for (Iterator iterator = pilotos.iterator(); iterator.hasNext(); ) {
             Piloto pilotoFrente = (Piloto) iterator.next();
@@ -1313,10 +1322,22 @@ public class Piloto implements Serializable, PilotoSuave {
                 continue;
             }
             pilotoFrente.centralizaCarroColisao();
-            colisaoDiantera = getDiateiraColisao().intersects(pilotoFrente.getTrazeiraColisao()) || getDiateiraColisao().intersects(pilotoFrente.getCentroColisao());
+            boolean diantTraz = getDiateiraColisao().intersects(pilotoFrente.getTrazeiraColisao());
+            boolean diantCentro = getDiateiraColisao().intersects(pilotoFrente.getCentroColisao());
+            colisaoDiantera = diantTraz || diantCentro;
             colisaoCentro = getCentroColisao().intersects(pilotoFrente.getTrazeiraColisao());
             Piloto colisao = (colisaoDiantera || colisaoCentro) ? pilotoFrente : null;
             if (colisao != null) {
+                if (Global.LOG_COLISAO) {
+                    String tipo = colisaoDiantera
+                            ? (diantCentro ? "DIANTEIRA_CENTRO" : "DIANTEIRA_TRAZEIRA")
+                            : "CENTRO_TRAZEIRA";
+                    Logger.logar("[COLISAO_EVENTO] atras=" + getNome()
+                            + "(idx=" + (noAtual != null ? noAtual.getIndex() : -1) + ")"
+                            + " frente=" + pilotoFrente.getNome()
+                            + "(idx=" + (pilotoFrente.getNoAtual() != null ? pilotoFrente.getNoAtual().getIndex() : -1) + ")"
+                            + " tipo=" + tipo);
+                }
                 setColisao(colisao);
                 return;
             }
@@ -1334,6 +1355,16 @@ public class Piloto implements Serializable, PilotoSuave {
         }
         Piloto pilotoFrente = getColisao();
         pilotoFrente.setCiclosDesconcentrado(0);
+        if (pilotoFrente.getTracado() == this.tracado) {
+            double ganhoFrente = pilotoFrente.getGanho();
+            if (colisaoDiantera && getCentroColisao().intersects(pilotoFrente.getCentroColisao())) {
+                ganho = Math.min(ganho, ganhoFrente);
+            } else if (colisaoDiantera) {
+                ganho = Math.min(ganho * 0.7, ganhoFrente);
+            } else if (colisaoCentro) {
+                ganho = Math.min(ganho, ganhoFrente);
+            }
+        }
     }
 
     public void processaEscapadaDaPista() {

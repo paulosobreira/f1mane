@@ -29,6 +29,8 @@ public final class Global {
     public static final String CONTROLE_MANUAL = "CONTROLE_MANUAL";
     public static boolean setarHints = true;
 
+    public static boolean LOG_COLISAO = false;
+
 
     private Global() {
     }
