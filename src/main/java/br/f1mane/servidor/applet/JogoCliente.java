@@ -244,7 +244,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
     }
 
     public int getCicloAtual() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
@@ -265,7 +264,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
     }
 
     public double getIndexVelcidadeDaPista() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
@@ -308,21 +306,17 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
     }
 
     public void infoPrioritaria(String info) {
-        // TODO Auto-generated method stub
 
     }
 
     public void informaMudancaClima() {
-        // TODO Auto-generated method stub
     }
 
     public void iniciarJogo() throws Exception {
-        // TODO Auto-generated method stub
 
     }
 
     public void iniciarJogoSingle() throws Exception {
-        // TODO Auto-generated method stub
 
     }
 
@@ -404,7 +398,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
     }
 
     public double obterIndicativoCorridaCompleta() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
@@ -422,21 +415,17 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
     }
 
     public void pausarJogo() {
-        // TODO Auto-generated method stub
 
     }
 
     public int porcentagemCorridaConcluida() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     public void processaNovaVolta() {
-        // TODO Auto-generated method stub
     }
 
     public void processaVoltaRapida(Piloto piloto) {
-        // TODO Auto-generated method stub
 
     }
 
@@ -465,17 +454,14 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
     }
 
     public void setCorridaTerminada(boolean corridaTerminada) {
-        // TODO Auto-generated method stub
 
     }
 
     public void setNivelCorrida(String nivelCorrida) {
-        // TODO Auto-generated method stub
 
     }
 
     public void setNiveljogo(double niveljogo) {
-        // TODO Auto-generated method stub
 
     }
 
@@ -486,31 +472,25 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
     }
 
     public boolean verificaBoxOcupado(Carro carro) {
-        // TODO Auto-generated method stub
         return false;
     }
 
     public boolean verificaNivelJogo() {
-        // TODO Auto-generated method stub
         return false;
     }
 
     public boolean verificaUltimaVolta() {
-        // TODO Auto-generated method stub
         return false;
     }
 
     public void verificaAcidente(Piloto piloto) {
-        // TODO Auto-generated method stub
     }
 
     public void verificaVoltaMaisRapidaCorrida(Piloto piloto) {
-        // TODO Auto-generated method stub
 
     }
 
     public void zerarMelhorVolta() {
-        // TODO Auto-generated method stub
 
     }
 
@@ -611,22 +591,18 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
     }
 
     public int verificaRetardatario(Piloto piloto, int novoModificador) {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     public boolean isModoQualify() {
-        // TODO Auto-generated method stub
         return false;
     }
 
     public void tabelaComparativa() {
-        // TODO Auto-generated method stub
 
     }
 
     public int getQtdeTotalVoltas() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
@@ -649,13 +625,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
     @Override
     public void iniciarJogo(ControleCampeonato controleCampeonato) throws Exception {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void mudaPilotoSelecionado() {
-        // TODO Auto-generated method stub
 
     }
 
@@ -700,7 +674,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
     @Override
     public double getFatorUtrapassagem() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
@@ -711,7 +684,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
     @Override
     public void ajusteUltrapassagem(Piloto piloto, Piloto pilotoFrente) {
-        // TODO Auto-generated method stub
 
     }
 
@@ -780,7 +752,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
     @Override
     public void setErs(boolean Ers) {
-        // TODO Auto-generated method stub
 
     }
 
@@ -791,7 +762,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
     @Override
     public void setDrs(boolean drs) {
-        // TODO Auto-generated method stub
 
     }
 
@@ -815,31 +785,26 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
     @Override
     public int calculaDiferencaParaAnterior(Piloto piloto) {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
     public int percetagemDeVoltaConcluida(Piloto pilotoSelecionado) {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
     public boolean verirficaDesafiandoCampeonato(Piloto piloto) {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public boolean verificaCampeonatoComRival() {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public String calculaSegundosParaRival(Piloto pilotoSelecionado) {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -850,31 +815,26 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
     @Override
     public void verificaDesafioCampeonatoPiloto() {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void aumentaFatorAcidade() {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void diminueFatorAcidade() {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void setPontosPilotoLargada(long ptosPista) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public boolean asfaltoAbrasivo() {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -885,7 +845,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
     @Override
     public double ganhoComSafetyCar(double ganho, InterfaceJogo controleJogo, Piloto p) {
-        // TODO Auto-generated method stub
         return 0;
     }
 
@@ -896,13 +855,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
     @Override
     public int porcentagemChuvaCircuito() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
     public boolean isBoxRapido() {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -916,13 +873,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
     @Override
     public void forcaSafatyCar() {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public No obterProxCurva(No noAtual) {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -1013,37 +968,31 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
     @Override
     public void descontaTempoPausado(Volta volta) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void criarCampeonato() throws Exception {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void criarCampeonatoPiloto() throws Exception {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void proximaCorridaCampeonato() {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void climaChuvoso() {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void climaLimpo() {
-        // TODO Auto-generated method stub
 
     }
 
@@ -1058,13 +1007,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
                                      int turbulenciaSelecionado, String climaSelecionado, String nivelSelecionado, Piloto pilotoSelecionado,
                                      boolean kers, boolean drs, boolean trocaPneus, boolean reabastecimento, int combustivelSelecionado,
                                      String asaSelecionado, String pneuSelecionado, boolean safetyCar, boolean simulacao) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public boolean verificaPistaEmborrachada() {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -1077,7 +1024,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
     @Override
     public void voltaMenuPrincipal() {
-        // TODO Auto-generated method stub
 
     }
 
@@ -1088,44 +1034,37 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
     @Override
     public List<ConstrutoresPontosCampeonato> geraListaContrutoresPontos() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public void iniciarJogoCapeonatoMenuLocal(Campeonato campeonato, int combustivelSelecionado, String asaSelecionado,
                                               String pneuSelecionado, String clima) throws Exception {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public Campeonato continuarCampeonato() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public void dadosPersistenciaCampeonato(Campeonato campeonato) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void continuarCampeonato(Campeonato campeonato) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public Piloto obterRivalCampeonato() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public Carro obterCarroNaFrenteRetardatario(Piloto piloto, boolean analisaTracado) {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -1144,19 +1083,16 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
     @Override
     public void detalhesCorridaCampeonato() {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public boolean safetyCarUltimas3voltas() {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public double getFatorAcidente() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
@@ -1167,25 +1103,21 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
     @Override
     public Campeonato continuarCampeonatoXml() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public void processaMudancaEquipeCampeontato() {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public Campeonato continuarCampeonatoXmlDisco() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public No obterCurvaAnterior(No noAtual) {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -1280,7 +1212,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
     @Override
     public void setRecebeuBanderada(Piloto piloto) {
-        // TODO Auto-generated method stub
 
     }
 
@@ -1294,43 +1225,36 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
     @Override
     public Piloto getPilotoBateu() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public boolean verificaSaidaBox(Piloto piloto) {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public boolean verificaEntradaBox(Piloto piloto) {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public Double getFatorBoxTemporada() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public void travouRodas(Piloto piloto, boolean semFumaca) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void desqualificaPiloto(Piloto piloto) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void forcaQuebraAereofolio(Piloto piloto) {
-        // TODO Auto-generated method stub
 
     }
 

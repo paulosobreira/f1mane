@@ -641,9 +641,6 @@ public class PainelCampeonato extends JPanel {
 			jogListModel.addElement(jogador);
 
 		}
-		// if (!Util.isNullOrEmpty(campeonato.getNomePiloto())) {
-		// jogListModel.addElement(campeonato.getNomePiloto());
-		// }
 		JList jogadores = new JList(jogListModel);
 		jogadores.setEnabled(false);
 		jogadores.setLayoutOrientation(JList.HORIZONTAL_WRAP);

@@ -72,30 +72,6 @@ public class PainelCampeonato extends JPanel {
 		panelBorder.add(grid, BorderLayout.SOUTH);
 		this.add(panelBorder, BorderLayout.CENTER);
 		JOptionPane.showMessageDialog(compPai, this, Lang.msg("286"), JOptionPane.INFORMATION_MESSAGE);
-		// JPanel label = new JPanel();
-//		label.add(new JLabel("Jogar a proxima corrida?") {
-//			@Override
-//			public String getText() {
-//				return Lang.msg("292");
-//			}
-//		});
-//		this.add(label, BorderLayout.SOUTH);
-//		int ret = JOptionPane.showConfirmDialog(compPai, this, Lang.msg("286"),
-//				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-//		if (ret == JOptionPane.YES_OPTION) {
-//			try {
-//				if (controleCampeonato.verificaCampeonatoConcluido()) {
-//					JOptionPane.showMessageDialog(compPai, Lang.msg("293"));
-//				} else {
-//					/**
-//					 * Criar Corrida;
-//					 */
-//					controleCampeonato.proximaCorrida();
-//				}
-//			} catch (Exception e) {
-//				Logger.logarExept(e);
-//			}
-//		}
 	}
 
 	private JPanel gerarPanelConstrutores() {
