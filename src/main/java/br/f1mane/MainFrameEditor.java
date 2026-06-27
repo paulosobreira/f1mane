@@ -38,7 +38,6 @@ import br.f1mane.editor.MainPanelEditor;
 import br.f1mane.servidor.applet.AppletPaddock;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
-import br.f1mane.visao.PainelTabelaResultadoFinal;
 
 /**
  * @author Paulo Sobreira Created on 14/06/2014
@@ -405,13 +404,6 @@ public class MainFrameEditor extends JFrame {
         for (int i = 0; i < mouseListeners.length; i++) {
             removeMouseListener(mouseListeners[i]);
         }
-    }
-
-    public void exibirResiltadoFinal(PainelTabelaResultadoFinal resultadoFinal) {
-
-        JOptionPane.showMessageDialog(this, new JScrollPane(resultadoFinal),
-                "Resultado Final. ", JOptionPane.INFORMATION_MESSAGE);
-
     }
 
     public void setControleJogo(InterfaceJogo controleJogo) {

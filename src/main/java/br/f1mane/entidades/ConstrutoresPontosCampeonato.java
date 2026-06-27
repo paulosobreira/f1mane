@@ -16,7 +16,6 @@ public class ConstrutoresPontosCampeonato implements Serializable {
 	}
 
 	public ConstrutoresPontosCampeonato() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

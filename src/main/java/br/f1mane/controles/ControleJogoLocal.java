@@ -842,8 +842,6 @@ public class ControleJogoLocal extends ControleRecursos
     }
 
     public void iniciaJanela() {
-        // TODO Auto-generated method stub
-
     }
 
     public boolean isCorridaIniciada() {
@@ -1742,14 +1740,11 @@ public class ControleJogoLocal extends ControleRecursos
 
     @Override
     public String getVantagem() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public void setVantagem(String vantagem) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override

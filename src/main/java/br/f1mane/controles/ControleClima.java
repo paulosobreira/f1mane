@@ -48,10 +48,6 @@ public class ControleClima {
         this.clima = clima;
     }
 
-    public boolean isClimaAleatorio() {
-        return climaAleatorio;
-    }
-
     public void gerarClimaInicial(Clima climaSel) {
         if (Global.DEBUG_SEM_CHUVA) {
             clima = Clima.SOL;

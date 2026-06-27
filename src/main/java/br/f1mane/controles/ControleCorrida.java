@@ -220,28 +220,6 @@ public class ControleCorrida {
         verificaAcidente(piloto, pilotoNaFrente);
     }
 
-    public boolean verificaCarroLentoOuDanificado(Piloto pilotoNaFrente) {
-        return (Carro.BATEU_FORTE.equals(pilotoNaFrente.getCarro().getDanificado())
-                && !pilotoNaFrente.getCarro().isRecolhido())
-                || Carro.PERDEU_AEREOFOLIO.equals(pilotoNaFrente.getCarro().getDanificado())
-                || Carro.PNEU_FURADO.equals(pilotoNaFrente.getCarro().getDanificado())
-                || pilotoNaFrente.isDesqualificado();
-    }
-
-    public Piloto acharPilotoDaFrente(Piloto piloto) {
-        List piList = controleJogo.getPilotosCopia();
-        for (int i = 0; i < piList.size(); i++) {
-            Piloto elementPiloto = (Piloto) piList.get(i);
-
-            if (elementPiloto == piloto) {
-                break;
-            } else if (elementPiloto.getPosicao() == (piloto.getPosicao() - 1)) {
-                return elementPiloto;
-            }
-        }
-        return piloto;
-    }
-
     public void verificaAcidente(Piloto piloto, Piloto pilotoNaFrente) {
         double fatorAcidenteMomento = fatorAcidente;
         if (controleJogo.isChovendo()) {

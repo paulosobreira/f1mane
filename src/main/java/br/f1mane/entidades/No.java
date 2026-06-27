@@ -127,17 +127,6 @@ public class No implements Serializable {
 		return point.y;
 	}
 
-	public String getTipoJson() {
-		if ((LARGADA.equals(tipo)) || (RETA.equals(tipo))) {
-			return "R";
-		} else if (CURVA_ALTA.equals(tipo)) {
-			return "A";
-		} else if (CURVA_BAIXA.equals(tipo)) {
-			return "B";
-		}
-		return null;
-	}
-
 	public boolean verificaRetaOuLargada() {
 		return (LARGADA.equals(tipo)) || (RETA.equals(tipo));
 	}

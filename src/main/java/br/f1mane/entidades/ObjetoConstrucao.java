@@ -30,7 +30,6 @@ public class ObjetoConstrucao extends ObjetoPista {
 		g2d.setColor(new Color(getCorPimaria().getRed(), getCorPimaria()
 				.getGreen(), getCorPimaria().getBlue(), getTransparencia()));
 		g2d.fill(generalPath.createTransformedShape(affineTransform));
-		//affineTransform = AffineTransform.getScaleInstance(1, 1);
 		affineTransform.setToRotation(rad, interno.getBounds().getCenterX(),
 				interno.getBounds().getCenterY());
 		generalPath = new GeneralPath(interno);

@@ -123,10 +123,6 @@ public class Carro implements Serializable {
         return String.format("#%02x%02x%02x", Integer.valueOf(cor1.getRed()), Integer.valueOf(cor1.getGreen()), Integer.valueOf(cor1.getBlue()));
     }
 
-    public String getCor2Hex() {
-        return String.format("#%02x%02x%02x", Integer.valueOf(cor2.getRed()), Integer.valueOf(cor2.getGreen()), Integer.valueOf(cor2.getBlue()));
-    }
-
     public int getPotenciaAntesQualify() {
         return potenciaAntesQualify;
     }

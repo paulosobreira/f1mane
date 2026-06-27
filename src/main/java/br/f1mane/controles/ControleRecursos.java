@@ -78,16 +78,8 @@ public abstract class ControleRecursos {
         return mapaIdsNos;
     }
 
-    public void setMapaIdsNos(Map<Integer, No> mapaIdsNos) {
-        this.mapaIdsNos = mapaIdsNos;
-    }
-
     public Map<No, Integer> getMapaNosIds() {
         return mapaNosIds;
-    }
-
-    public void setMapaNosIds(Map<No, Integer> mapaNosIds) {
-        this.mapaNosIds = mapaNosIds;
     }
 
 

@@ -203,9 +203,4 @@ public class FormularioListaObjetos {
 	public void setObjetos(JPanel objetos) {
 		this.objetos = objetos;
 	}
-
-	public static void main(String[] args) {
-		FormularioListaObjetos formularioListaObjetos = new FormularioListaObjetos(
-				null);
-	}
 }
