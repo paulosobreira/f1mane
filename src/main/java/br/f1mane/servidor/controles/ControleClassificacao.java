@@ -11,7 +11,6 @@ import br.f1mane.servidor.entidades.persistencia.JogadorDadosSrv;
 import br.nnpe.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
 
 import java.util.*;
 
@@ -43,10 +42,12 @@ public class ControleClassificacao {
             for (Iterator iter = jogadores.iterator(); iter.hasNext(); ) {
                 String key = (String) iter.next();
                 JogadorDadosSrv jogadorDadosSrv = controlePersistencia.carregaDadosJogador(key, session);
-                List corridas = session.createCriteria(CorridasDadosSrv.class)
-                        .add(Restrictions.eq("jogadorDadosSrv", jogadorDadosSrv))
-                        .add(Restrictions.ge("tempoFim", Long.valueOf(ini.toTimestamp().getTime())))
-                        .add(Restrictions.le("tempoFim", Long.valueOf(fim.toTimestamp().getTime()))).list();
+                List<CorridasDadosSrv> corridas = session.createQuery(
+                        "from CorridasDadosSrv where jogadorDadosSrv = :jogador " +
+                        "and tempoFim >= :ini and tempoFim <= :fim", CorridasDadosSrv.class)
+                        .setParameter("jogador", jogadorDadosSrv)
+                        .setParameter("ini", ini.toTimestamp().getTime())
+                        .setParameter("fim", fim.toTimestamp().getTime()).list();
                 DadosJogador dadosJogador = new DadosJogador();
                 dadosJogador.setNome(jogadorDadosSrv.getNome());
                 dadosJogador.setUltimoAceso(jogadorDadosSrv.getUltimoLogon());
@@ -117,10 +118,8 @@ public class ControleClassificacao {
                     JogadorDadosSrv idJog = new JogadorDadosSrv();
                     idJog.setId(jogadorDadosSrv.getId());
                     corridasDadosSrv.setJogadorDadosSrv(idJog);
-                    jogadorDadosSrv.getCorridas().add(corridasDadosSrv);
-                    session.saveOrUpdate(corridasDadosSrv);
-                    session.saveOrUpdate(carreiraDadosSrv);
-                    session.saveOrUpdate(jogadorDadosSrv);
+                    session.merge(corridasDadosSrv);
+                    session.merge(carreiraDadosSrv);
                 }
             }
             transaction.commit();
@@ -334,11 +333,11 @@ public class ControleClassificacao {
                 if (i > 2) {
                     break;
                 }
-                Character character = new Character(carreiraDados.getNomePilotoAbreviado().charAt(i));
+                char c = carreiraDados.getNomePilotoAbreviado().charAt(i);
                 if (i == 0) {
-                    nmAbrv.append(character.toString().toUpperCase());
+                    nmAbrv.append(String.valueOf(c).toUpperCase());
                 } else {
-                    nmAbrv.append(character.toString().toLowerCase());
+                    nmAbrv.append(String.valueOf(c).toLowerCase());
                 }
 
             }

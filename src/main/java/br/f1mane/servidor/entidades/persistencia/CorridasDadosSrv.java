@@ -2,13 +2,11 @@ package br.f1mane.servidor.entidades.persistencia;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
-import br.nnpe.Util;
-import br.f1mane.controles.InterfaceJogo;
 
 /**
  * @author Paulo Sobreira Criado em 27/10/2007 as 18:47:15

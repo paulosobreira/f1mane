@@ -104,6 +104,9 @@ public class ControleCampeonatoServidor {
 
             }
             campeonato.setFinalizado(false);
+            if (campeonato.getNivel() == null) {
+                campeonato.setNivel(Global.CONTROLE_AUTOMATICO);
+            }
             controlePersistencia.gravarDados(session, campeonato);
             return (new MsgSrv(Lang.msg("campeonatoCriado")));
         } catch (Exception e) {
@@ -613,11 +616,11 @@ public class ControleCampeonatoServidor {
                 new DadosClassificacaoJogadorComparator());
     }
 
-    public Object finalizaCampeonato(CampeonatoTO campeonato, String token) {
+    public Object finalizaCampeonato(CampeonatoTO campeonato, String idUsuario) {
         Session session = controlePersistencia.getSession();
         try {
             List pesquisaCampeonatosEmAberto = controlePersistencia
-                    .pesquisaCampeonatosEmAberto(token, session, false);
+                    .pesquisaCampeonatosEmAberto(idUsuario, session, false);
             if (pesquisaCampeonatosEmAberto.isEmpty()) {
                 return null;
             }

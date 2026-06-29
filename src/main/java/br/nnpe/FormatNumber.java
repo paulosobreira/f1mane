@@ -278,7 +278,7 @@ public class FormatNumber extends Object {
 				NUMBER1 = NUMBER1.substring(0, NUMBER1.indexOf("."));
 			}
 			try {
-				resultado = (new Integer(NUMBER1)).intValue();
+				resultado = Integer.parseInt(NUMBER1);
 			} catch (Exception e) {
 				resultado = 0;
 			}
@@ -300,7 +300,7 @@ public class FormatNumber extends Object {
 				NUMBER1 = NUMBER1.substring(0, NUMBER1.indexOf("."));
 			}
 			try {
-				resultado = new Integer(NUMBER1);
+				resultado = Integer.valueOf(NUMBER1);
 			} catch (Exception e) {
 				resultado = null;
 			}
@@ -322,7 +322,7 @@ public class FormatNumber extends Object {
 				NUMBER1 = NUMBER1.substring(0, NUMBER1.indexOf("."));
 			}
 			try {
-				resultado = (new Long(NUMBER1)).longValue();
+				resultado = Long.parseLong(NUMBER1);
 			} catch (Exception e) {
 				resultado = 0;
 			}
@@ -344,7 +344,7 @@ public class FormatNumber extends Object {
 				NUMBER1 = NUMBER1.substring(0, NUMBER1.indexOf("."));
 			}
 			try {
-				resultado = new Long(NUMBER1);
+				resultado = Long.valueOf(NUMBER1);
 			} catch (Exception e) {
 				resultado = null;
 			}
@@ -377,7 +377,7 @@ public class FormatNumber extends Object {
 	 */
 	public static int parseInt(double NUMBER) {
 		try {
-			Double D = new Double(NUMBER);
+			Double D = Double.valueOf(NUMBER);
 			return D.intValue();
 		} catch (Exception e) {
 			return 0;
@@ -395,7 +395,7 @@ public class FormatNumber extends Object {
 			NUMBER1 = NUMBER1.trim();
 			NUMBER1 = checkDouble(NUMBER1);
 			try {
-				resultado = (new Double(NUMBER1)).doubleValue();
+				resultado = Double.parseDouble(NUMBER1);
 			} catch (Exception e) {
 				resultado = 0;
 			}
@@ -414,7 +414,7 @@ public class FormatNumber extends Object {
 			NUMBER1 = NUMBER1.trim();
 			NUMBER1 = checkDouble(NUMBER1);
 			try {
-				resultado = new Double(NUMBER1);
+				resultado = Double.valueOf(NUMBER1);
 			} catch (Exception e) {
 				resultado = null;
 			}
@@ -472,7 +472,7 @@ public class FormatNumber extends Object {
 		if (NUMBER1 != null && NUMBER1.length() > 0) {
 			NUMBER1 = NUMBER1.trim();
 			NUMBER1 = checkInt(NUMBER1);
-			resultado = new Integer(NUMBER1);
+			resultado = Integer.valueOf(NUMBER1);
 		}
 		return resultado;
 	}
@@ -483,7 +483,7 @@ public class FormatNumber extends Object {
 		if (NUMBER1 != null && NUMBER1.length() > 0) {
 			NUMBER1 = NUMBER1.trim();
 			NUMBER1 = checkInt(NUMBER1);
-			resultado = new Integer(NUMBER1);
+			resultado = Integer.valueOf(NUMBER1);
 		}
 		return resultado;
 	}
@@ -494,7 +494,7 @@ public class FormatNumber extends Object {
 		if (NUMBER1 != null && NUMBER1.length() > 0) {
 			NUMBER1 = NUMBER1.trim();
 			NUMBER1 = checkDouble(NUMBER1);
-			resultado = new Double(NUMBER1);
+			resultado = Double.valueOf(NUMBER1);
 		}
 		return resultado;
 	}
@@ -505,7 +505,7 @@ public class FormatNumber extends Object {
 		if (NUMBER1 != null && NUMBER1.length() > 0) {
 			NUMBER1 = NUMBER1.trim();
 			NUMBER1 = checkInt(NUMBER1);
-			resultado = new Long(NUMBER1);
+			resultado = Long.valueOf(NUMBER1);
 		}
 		return resultado;
 	}
