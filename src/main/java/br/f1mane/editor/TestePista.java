@@ -147,12 +147,7 @@ public class TestePista {
 
 	}
 
-	protected void finalize() throws Throwable {
-		alive = false;
-		super.finalize();
-	}
-
-	public void testarBox() {
+public void testarBox() {
 		irProBox = !irProBox;
 	}
 

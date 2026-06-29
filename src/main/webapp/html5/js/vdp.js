@@ -77,9 +77,9 @@ var funqueue = [];
 var fps;
 
 // Constantes de atualização suave
-var SUAVE_MULT_RETA = 3;
-var SUAVE_MULT_CURVA_ALTA = 2.5;
-var SUAVE_MULT_CURVA_BAIXA = 2;
+var SUAVE_MULT_RETA = 2.7;
+var SUAVE_MULT_CURVA_ALTA = 2.3;
+var SUAVE_MULT_CURVA_BAIXA = 1.7;
 var SUAVE_INC_ACEL = 1;
 
 function vdp_desenha(fps_p) {

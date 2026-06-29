@@ -19,24 +19,15 @@
             <version>1.11.0</version>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.6.15.Final</version>
+            <version>7.4.0.Final</version>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>5.6.15.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-            <version>2.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.1.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.mysql</groupId>
@@ -46,22 +37,22 @@
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-server</artifactId>
-            <version>2.41</version>
+            <version>4.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
-            <artifactId>jersey-container-servlet-core</artifactId>
-            <version>2.41</version>
+            <artifactId>jersey-container-servlet</artifactId>
+            <version>4.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.inject</groupId>
             <artifactId>jersey-hk2</artifactId>
-            <version>2.41</version>
+            <version>4.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-json-jackson</artifactId>
-            <version>2.41</version>
+            <version>4.0.2</version>
         </dependency>
         <dependency>
             <groupId>commons-lang</groupId>
@@ -71,7 +62,7 @@
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
-            <version>9.0.89</version>
+            <version>11.0.3</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -208,7 +199,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <release>11</release>
+                    <release>21</release>
                 </configuration>
             </plugin>
             <plugin>
@@ -225,10 +216,11 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <artifactSet>
                                 <excludes>
-                                    <!-- duplicados: substituídos pelas versões jakarta/tomcat incluídas -->
+                                    <!-- excluir artefatos javax legados caso venham como transitivas -->
                                     <exclude>javax.servlet:javax.servlet-api</exclude>
                                     <exclude>javax.ws.rs:javax.ws.rs-api</exclude>
                                     <exclude>javax.xml.bind:jaxb-api</exclude>
+                                    <exclude>javax.persistence:javax.persistence-api</exclude>
                                     <exclude>jakarta.annotation:jakarta.annotation-api</exclude>
                                 </excludes>
                             </artifactSet>
@@ -250,6 +242,8 @@
                                         <exclude>META-INF/NOTICE.markdown</exclude>
                                         <exclude>META-INF/MANIFEST.MF</exclude>
                                         <exclude>META-INF/web-fragment.xml</exclude>
+                                        <exclude>about.html</exclude>
+                                        <exclude>LICENSE</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
@@ -268,7 +262,7 @@
         </plugins>
     </build>
     <properties>
-        <maven.compiler.release>11</maven.compiler.release>
+        <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <env>h2</env>
     </properties>
@@ -310,7 +304,7 @@
                     flmane
                 </jdbc.password>
                 <hibernate.dialect>
-                    org.hibernate.dialect.MySQL8Dialect
+                    org.hibernate.dialect.MySQLDialect
                 </hibernate.dialect>
             </properties>
         </profile>

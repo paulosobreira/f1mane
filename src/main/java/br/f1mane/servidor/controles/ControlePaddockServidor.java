@@ -909,8 +909,8 @@ public class ControlePaddockServidor {
         }
     }
 
-    public Object finalizaCampeonato(CampeonatoTO campeonato, String token) {
-        return controleCampeonatoServidor.finalizaCampeonato(campeonato, token);
+    public Object finalizaCampeonato(CampeonatoTO campeonato, String idUsuario) {
+        return controleCampeonatoServidor.finalizaCampeonato(campeonato, idUsuario);
     }
 
     public Object jogar(String temporada, String circuito, String idPiloto, String numVoltas, String tipoPneu,

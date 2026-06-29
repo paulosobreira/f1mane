@@ -6,33 +6,17 @@ import br.f1mane.servidor.PaddockConstants;
 import br.f1mane.servidor.PaddockServer;
 import br.f1mane.servidor.controles.ControlePaddockServidor;
 import br.f1mane.servidor.entidades.TOs.SessaoCliente;
-import br.f1mane.servidor.entidades.persistencia.*;
 import br.f1mane.servidor.util.ZipUtil;
 import br.nnpe.FormatDate;
 import br.nnpe.Logger;
 import br.nnpe.Util;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
-import org.hibernate.tool.hbm2ddl.SchemaExport;
-import org.hibernate.tool.schema.TargetType;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import jakarta.persistence.Persistence;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -198,52 +182,10 @@ public class ServletPaddock extends HttpServlet {
         res.flushBuffer();
     }
 
-    private void createSchema(PrintWriter printWriter)
-            throws Exception {
-        SchemaExport export = new SchemaExport();
-        export.create(EnumSet.of(TargetType.DATABASE), getMetaData().buildMetadata());
-    }
-
-    private MetadataSources getMetaData() throws Exception {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-        DocumentBuilder db = dbf.newDocumentBuilder();
-        Document doc = db.parse(CarregadorRecursos.recursoComoStream("META-INF/persistence.xml"));
-        NodeList list = doc.getElementsByTagName("property");
-        String url = null, pass = null, user = null, driver = null;
-        for (int temp = 0; temp < list.getLength(); temp++) {
-            Node node = list.item(temp);
-            if (node.getNodeType() == Node.ELEMENT_NODE) {
-                Element element = (Element) node;
-                String attr = element.getAttribute("name");
-                if ("javax.persistence.jdbc.url".equals(attr)) {
-                    url = element.getAttribute("value");
-                } else if ("javax.persistence.jdbc.user".equals(attr)) {
-                    user = element.getAttribute("value");
-                } else if ("javax.persistence.jdbc.password".equals(attr)) {
-                    pass = element.getAttribute("value");
-                } else if ("javax.persistence.jdbc.driver".equals(attr)) {
-                    driver = element.getAttribute("value");
-                }
-            }
-        }
-        Class.forName(driver);
-        Connection connection =
-                DriverManager.getConnection(url, user, pass);
-        MetadataSources metadata = new MetadataSources(
-                new StandardServiceRegistryBuilder()
-                        .applySetting("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect")
-                        .applySetting(AvailableSettings.CONNECTION_PROVIDER, new MyConnectionProvider(connection))
-                        .build());
-        metadata.addAnnotatedClass(F1ManeDados.class);
-        metadata.addAnnotatedClass(JogadorDadosSrv.class);
-        metadata.addAnnotatedClass(CampeonatoSrv.class);
-        metadata.addAnnotatedClass(CarreiraDadosSrv.class);
-        metadata.addAnnotatedClass(CorridaCampeonatoSrv.class);
-        metadata.addAnnotatedClass(CorridasDadosSrv.class);
-        metadata.addAnnotatedClass(DadosCorridaCampeonatoSrv.class);
-        metadata.addAnnotatedClass(PaddockDadosSrv.class);
-        return metadata;
+    private void createSchema(PrintWriter printWriter) throws Exception {
+        Map<String, Object> props = new HashMap<>();
+        props.put("jakarta.persistence.schema-generation.database.action", "create");
+        Persistence.generateSchema("flmane-jpa", props);
     }
 
     private void topExceptions(HttpServletResponse res) throws IOException {
@@ -301,38 +243,5 @@ public class ServletPaddock extends HttpServlet {
         printWriter.write("<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>");
         printWriter.write("<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>");
         printWriter.write("</head>");
-    }
-
-
-    private static class MyConnectionProvider implements ConnectionProvider {
-        private final Connection connection;
-
-        public MyConnectionProvider(Connection connection) {
-            this.connection = connection;
-        }
-
-        @Override
-        public boolean isUnwrappableAs(Class unwrapType) {
-            return false;
-        }
-
-        @Override
-        public <T> T unwrap(Class<T> unwrapType) {
-            return null;
-        }
-
-        @Override
-        public Connection getConnection() {
-            return connection; // Interesting part here
-        }
-
-        @Override
-        public void closeConnection(Connection conn) throws SQLException {
-        }
-
-        @Override
-        public boolean supportsAggressiveRelease() {
-            return true;
-        }
     }
 }
