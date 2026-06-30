@@ -25,14 +25,20 @@ public class ControleCampeonatoServidor {
 
     private final ControlePersistencia controlePersistencia;
     private final ControlePaddockServidor controlePaddockServidor;
-    private final CarregadorRecursos carregadorRecursos = CarregadorRecursos
-            .getCarregadorRecursos(false);
+    private final CarregadorRecursos carregadorRecursos;
 
     public ControleCampeonatoServidor(ControlePersistencia controlePersistencia,
                                       ControlePaddockServidor controlePaddockServidor) {
+        this(controlePersistencia, controlePaddockServidor, CarregadorRecursos.getCarregadorRecursos(false));
+    }
+
+    ControleCampeonatoServidor(ControlePersistencia controlePersistencia,
+                               ControlePaddockServidor controlePaddockServidor,
+                               CarregadorRecursos carregadorRecursos) {
         super();
         this.controlePersistencia = controlePersistencia;
         this.controlePaddockServidor = controlePaddockServidor;
+        this.carregadorRecursos = carregadorRecursos;
     }
 
     public Object criarCampeonato(ClientPaddockPack clientPaddockPack) {

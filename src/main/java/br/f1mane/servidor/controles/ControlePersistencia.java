@@ -6,7 +6,6 @@ import br.f1mane.recursos.idiomas.Lang;
 import br.f1mane.servidor.entidades.TOs.MsgSrv;
 import br.f1mane.servidor.entidades.persistencia.*;
 import br.f1mane.servidor.util.HibernateUtil;
-import br.nnpe.Global;
 import br.nnpe.Dia;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -25,9 +24,6 @@ public class ControlePersistencia {
     private final static String lock = "lock";
 
     public Session getSession() {
-        if (!Global.DATABASE) {
-            return null;
-        }
         return HibernateUtil.getSession();
     }
 
@@ -200,9 +196,6 @@ public class ControlePersistencia {
     }
 
     public List<CorridasDadosSrv> obterClassificacaoCircuito(String circuito, Session session) {
-        if (!Global.DATABASE) {
-            return null;
-        }
         return session.createQuery(
                 "from CorridasDadosSrv where circuito = :circuito and pontos > 0",
                 CorridasDadosSrv.class)
@@ -210,9 +203,6 @@ public class ControlePersistencia {
     }
 
     public List<CorridasDadosSrv> obterClassificacaoTemporada(String temporadaSelecionada, Session session) {
-        if (!Global.DATABASE) {
-            return null;
-        }
         return session.createQuery(
                 "from CorridasDadosSrv where temporada = :temporada and pontos > 0",
                 CorridasDadosSrv.class)
@@ -220,9 +210,6 @@ public class ControlePersistencia {
     }
 
     public CarreiraDadosSrv carregaCarreiraJogador(String idUsuario, boolean vaiCliente, Session session) {
-        if (!Global.DATABASE) {
-            return null;
-        }
         Logger.logar("Buscar Carreira idUsuario " + idUsuario);
         List<CarreiraDadosSrv> list = session.createQuery(
                 "from CarreiraDadosSrv c join fetch c.jogadorDadosSrv j where j.idUsuario = :idUsuario",
@@ -326,9 +313,6 @@ public class ControlePersistencia {
     }
 
     public MsgSrv modoCarreira(String idUsuario, boolean modo) {
-        if (!Global.DATABASE) {
-            return null;
-        }
         Session session = getSession();
         try {
             CarreiraDadosSrv carreiraDadosSrv = carregaCarreiraJogador(idUsuario, false, session);
@@ -379,9 +363,6 @@ public class ControlePersistencia {
     }
 
     public List<CorridasDadosSrv> obterClassificacaoGeral(Session session) {
-        if (!Global.DATABASE) {
-            return null;
-        }
         return session.createQuery(
                 "from CorridasDadosSrv where pontos > 0", CorridasDadosSrv.class).list();
     }
