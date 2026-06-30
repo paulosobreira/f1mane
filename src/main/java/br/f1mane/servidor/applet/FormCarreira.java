@@ -2,7 +2,6 @@ package br.f1mane.servidor.applet;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -28,6 +27,7 @@ import br.nnpe.Numero;
 import br.nnpe.Util;
 import br.f1mane.servidor.entidades.persistencia.CarreiraDadosSrv;
 import br.f1mane.recursos.CarregadorRecursos;
+import br.f1mane.recursos.SpriteSheet;
 import br.f1mane.recursos.idiomas.Lang;
 
 /**
@@ -224,32 +224,17 @@ public class FormCarreira extends JPanel {
 	}
 
 	protected void gerarCarroCima() {
-		BufferedImage carroLado = CarregadorRecursos
-				.carregaImagem("png/cima20092016/CarroCima.png");
-		BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-				labelCor1.getBackground(), "png/cima20092016/CarroCimaC1.png");
-		BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-				labelCor2.getBackground(), "png/cima20092016/CarroCimaC2.png");
-		Graphics graphics = carroLado.getGraphics();
-		graphics.drawImage(cor1, 0, 0, null);
-		graphics.drawImage(cor2, 0, 0, null);
-		graphics.dispose();
-		imgCarroCima.setIcon(new ImageIcon(carroLado));
-
+		BufferedImage img = CarregadorRecursos.pintarModeloV2(
+				"png/carro-cima-v2.png", labelCor1.getBackground(), labelCor2.getBackground(),
+				SpriteSheet.CIMA_W, SpriteSheet.CIMA_H);
+		imgCarroCima.setIcon(new ImageIcon(img));
 	}
 
 	protected void gerarCarroLado() {
-		BufferedImage carroLado = CarregadorRecursos
-				.carregaImagem("png/CarroLado.png");
-		BufferedImage cor1 = CarregadorRecursos
-				.gerarCoresCarros(labelCor1.getBackground(), "png/CarroLadoC1.png");
-		BufferedImage cor2 = CarregadorRecursos
-				.gerarCoresCarros(labelCor2.getBackground(), "png/CarroLadoC2.png");
-		Graphics graphics = carroLado.getGraphics();
-		graphics.drawImage(cor1, 0, 0, null);
-		graphics.drawImage(cor2, 0, 0, null);
-		graphics.dispose();
-		imgCarroLado.setIcon(new ImageIcon(carroLado));
+		BufferedImage img = CarregadorRecursos.pintarModeloV2(
+				"png/carro-lado-v2.png", labelCor1.getBackground(), labelCor2.getBackground(),
+				SpriteSheet.LADO_W, SpriteSheet.LADO_H);
+		imgCarroLado.setIcon(new ImageIcon(img));
 	}
 
 	public static void main(String[] args) {

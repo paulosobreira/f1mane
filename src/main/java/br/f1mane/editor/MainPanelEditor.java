@@ -222,7 +222,9 @@ public class MainPanelEditor extends JPanel {
 
     private void iniciaEditor() {
 
-        carroCima = CarregadorRecursos.carregaBufferedImage("png/CarroCima.png");
+        carroCima = CarregadorRecursos.pintarModeloV2("png/carro-cima-v2.png",
+                new java.awt.Color(60, 60, 60), new java.awt.Color(120, 120, 120),
+                br.f1mane.recursos.SpriteSheet.CIMA_W, br.f1mane.recursos.SpriteSheet.CIMA_H);
 
         JPanel controlPanel = gerarListsNosPistaBox();
 

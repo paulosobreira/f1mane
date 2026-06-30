@@ -2,6 +2,7 @@ package br.f1mane.recursos;
 
 import br.f1mane.controles.ControleRecursos;
 import br.f1mane.entidades.*;
+import br.nnpe.Global;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -9,6 +10,7 @@ import br.nnpe.Util;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
@@ -352,6 +354,111 @@ public class CarregadorRecursos {
         }
 
         return bufferedImageRetorno;
+    }
+
+    private static final Map<String, BufferedImage> cacheModeloV2 = new HashMap<>();
+
+    public static void invalidarCacheModeloV2() {
+        cacheModeloV2.clear();
+    }
+
+    public static BufferedImage pintarModeloV2(String assetPath, Color cor1, Color cor2, int targetW, int targetH) {
+        return pintarModeloV2(assetPath, cor1, cor2, targetW, targetH, null);
+    }
+
+    public static BufferedImage pintarModeloV2(String assetPath, Color cor1, Color cor2, int targetW, int targetH, String knockoutMaskPath) {
+        String chave = assetPath + cor1.getRGB() + "_" + cor2.getRGB() + "_" + targetW + "_" + targetH
+                + (knockoutMaskPath != null ? "_" + knockoutMaskPath : "");
+        BufferedImage cached = cacheModeloV2.get(chave);
+        if (cached != null) return cached;
+
+        BufferedImage src = carregaBufferedImageTransparecia(assetPath);
+        int srcW = src.getWidth();
+        int srcH = src.getHeight();
+
+        // Substituição de matiz HSB: preserva o brilho (shading artístico) pixel a pixel
+        // e substitui apenas matiz+saturação pela de cor1 (verde) ou cor2 (branco).
+        float[] hsbCor1 = Color.RGBtoHSB(cor1.getRed(), cor1.getGreen(), cor1.getBlue(), null);
+        float[] hsbCor2 = Color.RGBtoHSB(cor2.getRed(), cor2.getGreen(), cor2.getBlue(), null);
+        float[] hsbPx = new float[3];
+        BufferedImage painted = new BufferedImage(srcW, srcH, BufferedImage.TYPE_INT_ARGB);
+        for (int x = 0; x < srcW; x++) {
+            for (int y = 0; y < srcH; y++) {
+                int argb = src.getRGB(x, y);
+                int a = (argb >> 24) & 0xFF;
+                if (a == 0) { painted.setRGB(x, y, 0); continue; }
+                int r = (argb >> 16) & 0xFF;
+                int g = (argb >> 8) & 0xFF;
+                int b = argb & 0xFF;
+                Color.RGBtoHSB(r, g, b, hsbPx);
+                if (hsbPx[0] >= 0.22f && hsbPx[0] <= 0.45f && hsbPx[1] > 0.20f) {
+                    // brilho do alvo × brilho do pixel: preto permanece preto, cores claras mantêm shading
+                    int rgb = Color.HSBtoRGB(hsbCor1[0], hsbCor1[1], hsbCor1[2] * hsbPx[2]);
+                    painted.setRGB(x, y, (a << 24) | (rgb & 0x00FFFFFF));
+                } else if (hsbPx[1] < 0.20f && hsbPx[2] > 0.70f) {
+                    int rgb = Color.HSBtoRGB(hsbCor2[0], hsbCor2[1], hsbCor2[2] * hsbPx[2]);
+                    painted.setRGB(x, y, (a << 24) | (rgb & 0x00FFFFFF));
+                } else {
+                    painted.setRGB(x, y, argb);
+                }
+            }
+        }
+
+        // Aplicar máscara de knockout (DST_OUT) na resolução nativa, antes de escalar
+        if (knockoutMaskPath != null) {
+            BufferedImage mask = carregaBufferedImageTransparecia(knockoutMaskPath);
+            if (mask.getWidth() != srcW || mask.getHeight() != srcH) {
+                BufferedImage maskScaled = new BufferedImage(srcW, srcH, BufferedImage.TYPE_INT_ARGB);
+                Graphics2D gm = maskScaled.createGraphics();
+                gm.drawImage(mask, 0, 0, srcW, srcH, null);
+                gm.dispose();
+                mask = maskScaled;
+            }
+            Graphics2D gk = painted.createGraphics();
+            gk.setComposite(AlphaComposite.getInstance(AlphaComposite.DST_OUT));
+            gk.drawImage(mask, 0, 0, null);
+            gk.dispose();
+        }
+
+        // Redimensionamento progressivo por halvings para evitar serrilhado,
+        // seguido de passo final com BICUBIC centralizado no canvas alvo.
+        BufferedImage result;
+        if (srcW == targetW && srcH == targetH) {
+            result = painted;
+        } else {
+            double escala = Math.min((double) targetW / srcW, (double) targetH / srcH);
+            int scaledW = (int) (srcW * escala);
+            int scaledH = (int) (srcH * escala);
+
+            BufferedImage current = painted;
+            int curW = srcW, curH = srcH;
+            while (curW > scaledW * 2 || curH > scaledH * 2) {
+                int nextW = Math.max(curW / 2, scaledW);
+                int nextH = Math.max(curH / 2, scaledH);
+                BufferedImage half = new BufferedImage(nextW, nextH, BufferedImage.TYPE_INT_ARGB);
+                Graphics2D gh = half.createGraphics();
+                gh.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                gh.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+                gh.drawImage(current, 0, 0, nextW, nextH, null);
+                gh.dispose();
+                current = half;
+                curW = nextW;
+                curH = nextH;
+            }
+
+            result = new BufferedImage(targetW, targetH, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2 = result.createGraphics();
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+            g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            int offsetX = (targetW - scaledW) / 2;
+            int offsetY = (targetH - scaledH) / 2;
+            g2.drawImage(current, offsetX, offsetY, scaledW, scaledH, null);
+            g2.dispose();
+        }
+
+        cacheModeloV2.put(chave, result);
+        return result;
     }
 
     public static BufferedImage carregaImgCarro(String img) {
@@ -740,6 +847,9 @@ public class CarregadorRecursos {
         if (temporada == null) {
             return desenhaCapacete(piloto);
         }
+        if (Global.FORCE_MODELO_V2) {
+            return desenhaCapacete(piloto);
+        }
         try {
             String nomeOriginal = piloto.getNomeOriginal();
             String chave = nomeOriginal + temporada;
@@ -773,23 +883,8 @@ public class CarregadorRecursos {
     }
 
     public BufferedImage desenhaCapacete(Piloto piloto) {
-        BufferedImage ret;
         Carro carro = piloto.getCarro();
-        BufferedImage base = CarregadorRecursos.carregaImagem("png/Capacete.png");
-        BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-                carro.getCor1(), "png/CapaceteC1.png", base.getType());
-        BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-                carro.getCor2(), "png/CapaceteC2.png", base.getType());
-        BufferedImage capacete = new BufferedImage(base.getWidth(),
-                base.getHeight(), base.getType());
-        Graphics graphics = capacete.getGraphics();
-        Util.setarHints((Graphics2D) graphics);
-        graphics.drawImage(base, 0, 0, null);
-        graphics.drawImage(cor2, 0, 0, null);
-        graphics.drawImage(cor1, 0, 0, null);
-        graphics.dispose();
-        ret = capacete;
-        return ret;
+        return pintarModeloV2("png/capacete-v2.png", carro.getCor1(), carro.getCor2(), SpriteSheet.CAP_W, SpriteSheet.CAP_H);
     }
 
     public Object carregarRecurso(String nmRecurso)
@@ -809,7 +904,9 @@ public class CarregadorRecursos {
         Carro carro = piloto.getCarro();
         if (Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro().getDanificado())) {
             return obterCarroLadoSemAreofolio(piloto, temporada);
-
+        }
+        if (Global.FORCE_MODELO_V2) {
+            return desenhaCarroLado(carro);
         }
         BufferedImage carroLado = bufferCarrosLado.get(carro.getNome());
         if (carroLado == null) {
@@ -849,18 +946,7 @@ public class CarregadorRecursos {
     }
 
     private BufferedImage desenhaCarroLado(Carro carro) {
-        BufferedImage carroLado = CarregadorRecursos
-                .carregaImagem("png/CarroLado.png");
-        BufferedImage cor1 = CarregadorRecursos
-                .gerarCoresCarros(carro.getCor1(), "png/CarroLadoC1.png");
-        BufferedImage cor2 = CarregadorRecursos
-                .gerarCoresCarros(carro.getCor2(), "png/CarroLadoC2.png");
-        Graphics graphics = carroLado.getGraphics();
-        Util.setarHints((Graphics2D) graphics);
-        graphics.drawImage(cor1, 0, 0, null);
-        graphics.drawImage(cor2, 0, 0, null);
-        graphics.dispose();
-        return carroLado;
+        return pintarModeloV2("png/carro-lado-v2.png", carro.getCor1(), carro.getCor2(), SpriteSheet.LADO_W, SpriteSheet.LADO_H);
     }
 
     public BufferedImage obterCarroLadoSemAreofolio(Piloto piloto,
@@ -896,24 +982,15 @@ public class CarregadorRecursos {
     }
 
     private BufferedImage desenhaCArroladoSemAereofolio(Carro carro) {
-        BufferedImage carroLado = CarregadorRecursos
-                .carregaImagem("png/CarroLado.png");
-        BufferedImage cor1 = CarregadorRecursos
-                .gerarCoresCarros(carro.getCor1(), "png/CarroLadoC1.png");
-        BufferedImage cor2 = CarregadorRecursos
-                .gerarCoresCarros(carro.getCor2(), "png/CarroLadoC3.png");
-        Graphics graphics = carroLado.getGraphics();
-        Util.setarHints((Graphics2D) graphics);
-        graphics.drawImage(cor1, 0, 0, null);
-        graphics.drawImage(cor2, 0, 0, null);
-        graphics.dispose();
-        return carroLado;
+        return pintarModeloV2("png/carro-lado-v2.png", carro.getCor1(), carro.getCor2(), SpriteSheet.LADO_W, SpriteSheet.LADO_H);
     }
 
     public BufferedImage obterCarroCimaSemAreofolio(Piloto piloto,
                                                     String temporada) {
-        String modelo = obterModeloCarroCima(temporada);
         Carro carro = piloto.getCarro();
+        if (Global.FORCE_MODELO_V2) {
+            return desenhaCarroCimaSemAsa(carro);
+        }
         BufferedImage carroCima = bufferCarrosCimaSemAreofolio
                 .get(carro.getNome());
         if (carroCima == null && SpriteSheet.isDisponivel(temporada)
@@ -948,22 +1025,7 @@ public class CarregadorRecursos {
             }
         }
         if (carroCima == null) {
-            BufferedImage base = CarregadorRecursos
-                    .carregaImagem(modelo + "CarroCima.png");
-            carroCima = new BufferedImage(base.getWidth(), base.getHeight(),
-                    base.getType());
-            BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-                    carro.getCor1(), modelo + "CarroCimaC1.png",
-                    base.getType());
-            BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-                    carro.getCor2(), modelo + "CarroCimaC3.png",
-                    base.getType());
-            Graphics graphics = carroCima.getGraphics();
-            Util.setarHints((Graphics2D) graphics);
-            graphics.drawImage(base, 0, 0, null);
-            graphics.drawImage(cor2, 0, 0, null);
-            graphics.drawImage(cor1, 0, 0, null);
-            graphics.dispose();
+            carroCima = desenhaCarroCimaSemAsa(carro);
         }
         if (cache) {
             bufferCarrosCimaSemAreofolio.put(carro.getNome(), carroCima);
@@ -979,10 +1041,13 @@ public class CarregadorRecursos {
         if (piloto.getCarro() == null) {
             return null;
         }
-        String modelo = obterModeloCarroCima(temporada);
         Carro carro = piloto.getCarro();
         if (Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro().getDanificado())) {
             return obterCarroCimaSemAreofolio(piloto, temporada);
+        }
+        if (Global.FORCE_MODELO_V2) {
+            preAquecerSemAsa(carro);
+            return desenhaCarroCima(carro);
         }
         BufferedImage carroCima = bufferCarrosCima.get(carro.getNome());
         if (carroCima == null) {
@@ -999,7 +1064,8 @@ public class CarregadorRecursos {
             }
         }
         if (carroCima == null) {
-            carroCima = desenhaCarroCima(modelo, carro);
+            carroCima = desenhaCarroCima(carro);
+            preAquecerSemAsa(carro);
         }
         if (cache) {
             bufferCarrosCima.put(carro.getNome(), carroCima);
@@ -1007,44 +1073,21 @@ public class CarregadorRecursos {
         return carroCima;
     }
 
-    public BufferedImage desenhaCarroCima(String modelo, Carro carro) {
-        BufferedImage carroCima;
-        BufferedImage base = CarregadorRecursos
-                .carregaImagem(modelo + "CarroCima.png");
-        carroCima = new BufferedImage(base.getWidth(), base.getHeight(),
-                base.getType());
-        BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-                carro.getCor1(), modelo + "CarroCimaC1.png", base.getType());
-        BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-                carro.getCor2(), modelo + "CarroCimaC2.png", base.getType());
-        Graphics graphics = carroCima.getGraphics();
-        Util.setarHints((Graphics2D) graphics);
-        graphics.drawImage(base, 0, 0, null);
-        graphics.drawImage(cor2, 0, 0, null);
-        graphics.drawImage(cor1, 0, 0, null);
-        graphics.dispose();
-        return carroCima;
+    public BufferedImage desenhaCarroCima(Carro carro) {
+        return pintarModeloV2("png/carro-cima-v2.png", carro.getCor1(), carro.getCor2(), SpriteSheet.CIMA_W, SpriteSheet.CIMA_H);
     }
 
-    private String obterModeloCarroCima(String temporada) {
-        String modelo = "png/cima2017/";
-        if (temporada == null) {
-            return modelo;
+    public BufferedImage desenhaCarroCimaSemAsa(Carro carro) {
+        return pintarModeloV2("png/carro-cima-v2.png", carro.getCor1(), carro.getCor2(),
+                SpriteSheet.CIMA_W, SpriteSheet.CIMA_H, "png/carro-cima-sem_asa-v2.png");
+    }
+
+    private void preAquecerSemAsa(Carro carro) {
+        if (bufferCarrosCimaSemAreofolio.containsKey(carro.getNome())) return;
+        BufferedImage semAsa = desenhaCarroCimaSemAsa(carro);
+        if (cache) {
+            bufferCarrosCimaSemAreofolio.put(carro.getNome(), semAsa);
         }
-        int anoTemporada = Integer.parseInt(temporada.replace("t", ""));
-        if (anoTemporada < 2017) {
-            modelo = "png/cima20092016/";
-        }
-        if (anoTemporada < 2009) {
-            modelo = "png/cima19982008/";
-        }
-        if (anoTemporada < 1997) {
-            modelo = "png/cima19801997/";
-        }
-        if (anoTemporada <= 1980) {
-            modelo = "png/cima19701979/";
-        }
-        return modelo;
     }
 
     public synchronized List<CircuitosDefault> carregarCircuitosDefaults()

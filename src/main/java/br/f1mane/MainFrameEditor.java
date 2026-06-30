@@ -97,9 +97,8 @@ public class MainFrameEditor extends JFrame {
         removerListeners();
         removerKeyListeners();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        final BufferedImage bg = ImageUtil.gerarFade(
-                CarregadorRecursos.carregaBufferedImage("png/bg-monaco.png"), 25);
-        setSize(bg.getWidth(), bg.getHeight());
+        final BufferedImage bg = ImageUtil.gerarFade(carregarBgAleatorio(), 25);
+        setSize(bg != null ? bg.getWidth() : 1024, bg != null ? bg.getHeight() : 768);
         JPanel jPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -110,6 +109,23 @@ public class MainFrameEditor extends JFrame {
         getContentPane().add(jPanel);
         this.setVisible(true);
 
+    }
+
+    private BufferedImage carregarBgAleatorio() {
+        try {
+            java.net.URL dir = CarregadorRecursos.class.getResource("/bg");
+            if (dir != null) {
+                File pasta = new File(dir.toURI());
+                File[] jpgs = pasta.listFiles(f -> f.getName().endsWith(".jpg"));
+                if (jpgs != null && jpgs.length > 0) {
+                    File escolhido = jpgs[new java.util.Random().nextInt(jpgs.length)];
+                    return javax.imageio.ImageIO.read(escolhido);
+                }
+            }
+        } catch (Exception e) {
+            Logger.logarExept(e);
+        }
+        return new BufferedImage(1024, 768, BufferedImage.TYPE_INT_RGB);
     }
 
     private String getVersao() {

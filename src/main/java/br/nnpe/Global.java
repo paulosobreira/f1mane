@@ -21,6 +21,7 @@ public final class Global {
     public static boolean DESENHA_DIFF_REAL_SUAVE = false;
 
     public static boolean DEBUG_SEM_CHUVA = false;
+    public static boolean FORCE_MODELO_V2 = true;
     public static final int CARGA_ERS = 100;
     public static final int DURABILIDADE_AREOFOLIO = 5;
 
