@@ -1,8 +1,8 @@
-# Software Design Document — F1 Mane
+# Software Design Document — Fl Mane
 
-**Versão:** 1.0  
-**Data:** 2026-06-27  
-**Projeto:** F1 Mane — Simulador de Fórmula 1 em Java
+**Versão:** 1.1  
+**Data:** 2026-06-30  
+**Projeto:** Fl Mane — Simulador de gerenciamento de corrida de monopostos em Java
 
 ---
 
@@ -38,12 +38,15 @@
 8. [Recursos e Internacionalização](#8-recursos-e-internacionalização)
    - 8.1 [CarregadorRecursos](#81-carregadorrecursos)
    - 8.2 [Internacionalização — Lang](#82-internacionalização--lang)
+9. [Qualidade e Testes](#9-qualidade-e-testes)
 
 ---
 
 ## 1. Introdução
 
-O F1 Mane é um simulador de corridas de Fórmula 1 desenvolvido em Java. Ele simula temporadas completas de F1 com pit stops, safety car, mudanças climáticas, desgaste de pneus e motor, ERS/DRS e modo campeonato. O jogo suporta tanto o modo solo (um jogador contra a IA) quanto o modo multiplayer via servidor web.
+O Fl Mane é um simulador de gerenciamento de corrida de monopostos desenvolvido em Java. Ele simula temporadas completas com pit stops, safety car, mudanças climáticas, desgaste de pneus e motor, ERS/DRS e modo campeonato. O jogo suporta tanto o modo solo (um jogador contra a IA) quanto o modo multiplayer via servidor web.
+
+> **Nota sobre o nome**: "F1" é o nome legado do projeto, preservado no pacote Java (`br.f1mane`), no nome do JAR (`flmane.jar`) e em identificadores de código (ex.: `F1ManeDados`). Esses artefatos técnicos não são renomeados; a marca do produto e a documentação usam "Fl Mane".
 
 A arquitetura central é deliberadamente compacta: um único JAR (`flmane.jar`) serve três modos de execução distintos — servidor web com Tomcat embutido, jogo solo em Swing e cliente multiplayer. Essa unificação foi obtida extraindo o diretório `webapp/` do próprio JAR em tempo de execução.
 
@@ -88,7 +91,7 @@ A partida é iniciada via menu, que chama `controleJogo.iniciarJogoMenuLocal(cir
 
 ### 2.4 AppletPaddock — Modo Multiplayer Cliente
 
-`br.f1mane.servidor.applet.AppletPaddock` é o cliente Java para jogar partidas hospedadas num servidor F1 Mane. Em `init()`:
+`br.f1mane.servidor.applet.AppletPaddock` é o cliente Java para jogar partidas hospedadas num servidor Fl Mane. Em `init()`:
 
 - Instancia `ControlePaddockCliente`
 - Chama `controlePaddockCliente.init()` e `controlePaddockCliente.logar()`
@@ -507,9 +510,13 @@ O projeto usa dois perfis Maven para alternar entre bancos de dados:
 
 O arquivo `META-INF/persistence.xml` contém placeholders `${jdbc.url}`, `${jdbc.driver}` etc. O **filtro de recursos do Maven** (`<filtering>true</filtering>` em `pom.xml`) injeta os valores do perfil ativo durante o `mvn package`, antes de empacotar o JAR. Não há seleção de perfil em runtime — o banco é definido no momento do build.
 
-Para o build com H2:
+O perfil `h2` é `activeByDefault`: um build sem `-P` (ex.: `mvn clean package -DskipTests`) já resolve os placeholders para H2 automaticamente. Isso evita o erro clássico de `persistence.xml` com placeholders não resolvidos (`Unable to determine Dialect without JDBC metadata`) quando alguém esquece de passar o profile. Passar `-Pmysql` explicitamente desativa o `h2` (regra padrão do Maven: um profile `activeByDefault` é desligado assim que qualquer outro profile é ativado).
+
+Para o build com H2 (local, explícito ou implícito):
 ```bash
 mvn clean package -Ph2 -DskipTests
+# equivalente, já que h2 é o default:
+mvn clean package -DskipTests
 ```
 
 Para o build com MySQL (Docker):
@@ -686,3 +693,33 @@ Isso adia a tradução para o cliente: o servidor envia as chaves encoded, e a t
 Lang.msg("chave", new Object[]{ param1, param2 })
 // → MessageFormat.format(bundle.getString("chave"), params)
 ```
+
+---
+
+## 9. Qualidade e Testes
+
+O projeto usa JUnit 5 + Mockito (escopo `test` no `pom.xml`, sem impacto no JAR de produção) e `maven-surefire-plugin` para execução. Toda a suíte roda com:
+
+```bash
+mvn test
+```
+
+Cobertura de código via JaCoCo é gerada automaticamente na mesma execução, em `target/site/jacoco/index.html`.
+
+**Escopo atual (124 testes):** os testes priorizam classes com ramificação real de regra de negócio, não cobertura por cobertura — getters/setters e delegações triviais de uma linha não recebem teste dedicado.
+
+| Classe testada | O que cobre |
+|---|---|
+| `LetsRace` | Autenticação/autorização por sessão (401/403), mapeamento de `MsgSrv`/`ErroServ` para status HTTP (400/500), delegação de parâmetros pros controllers |
+| `ControleClassificacao` | Tabela de pontos por posição, redistribuição de pontos de carreira (`Util.processaValorPontosCarreira`), validação de nome/duplicidade e de livery/capacete em `atualizaCarreira` |
+| `ControleCampeonatoServidor` | Validações de criação de campeonato, ciclo de vida de `finalizaCampeonato` |
+| `ControlePaddockServidor` | Criação/reaproveitamento de sessão por nome, Google e visitante |
+| `ControleJogosServer` | Resolução de piloto por ID, controles de giro de motor, agressividade e box |
+| `ControlePersistencia` | Mapeamento carreira→piloto, validação de modo carreira |
+| `Util` | Custo/refund de pontos de carreira por faixa de nível |
+
+**Testabilidade via injeção de dependência**: `LetsRace`, `ControleClassificacao`, `ControleCampeonatoServidor` e `ControlePaddockServidor` ganharam um construtor pacote-privado adicional que aceita as dependências antes resolvidas via singleton estático (`PaddockServer.getControlePaddock()`, `CarregadorRecursos.getCarregadorRecursos(false)`). O construtor público usado em produção (pelo Jersey, no caso de `LetsRace`) preserva o comportamento original, delegando para o construtor de teste com os valores reais — não há mudança de comportamento em runtime, só um ponto de entrada a mais para injetar mocks.
+
+**Limitações conhecidas:**
+- Caminhos que dependem de `CarregadorRecursos` carregando dados reais de classpath (ex.: validação de livery contra a temporada inteira) são cobertos parcialmente, quando o custo de simular o cenário com mocks é razoável.
+- A camada de motor de jogo local (`ControleCorrida`, `ControleSafetyCar`, `ControleBox`, rendering) ainda não tem cobertura de teste — é o próximo alvo natural, mas exige isolar lógica hoje acoplada ao hub `ControleJogoLocal`.
