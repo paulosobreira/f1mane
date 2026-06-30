@@ -414,7 +414,6 @@ public class ControleClassificacao {
             carreiraDadosSrv.setC2B(carreiraDados.getC2B());
             carreiraDadosSrv.setIdCarroLivery(carreiraDados.getIdCarroLivery());
             carreiraDadosSrv.setIdCapaceteLivery(carreiraDados.getIdCapaceteLivery());
-            carreiraDadosSrv.setIdCarroLivery(carreiraDados.getIdCarroLivery());
             carreiraDadosSrv.setTemporadaCapaceteLivery(carreiraDados.getTemporadaCapaceteLivery());
             carreiraDadosSrv.setTemporadaCarroLivery(carreiraDados.getTemporadaCarroLivery());
 
