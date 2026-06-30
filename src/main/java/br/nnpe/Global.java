@@ -6,7 +6,6 @@ public final class Global {
     public static final String DATA_FORMATO = "dd/MM/yyyy";
     public static final int MAX_VOLTAS = 72;
     public static final int MIN_VOLTAS = Global.DEBUG ? 1 : 12;
-    public static final boolean DATABASE = true;
     public static final int LATENCIA_MAX = 500;
     public static final int LATENCIA_MIN = 100;
     public static final int LIMITE_DRS = 300;

@@ -20,16 +20,23 @@ import java.util.*;
 public class ControleClassificacao {
     private final ControlePersistencia controlePersistencia;
     private final ControleCampeonatoServidor controleCampeonatoServidor;
-    private final CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);
+    private final CarregadorRecursos carregadorRecursos;
 
     /**
      * @param controlePersistencia
      */
     public ControleClassificacao(ControlePersistencia controlePersistencia,
                                  ControleCampeonatoServidor controleCampeonatoServidor) {
+        this(controlePersistencia, controleCampeonatoServidor, CarregadorRecursos.getCarregadorRecursos(false));
+    }
+
+    ControleClassificacao(ControlePersistencia controlePersistencia,
+                          ControleCampeonatoServidor controleCampeonatoServidor,
+                          CarregadorRecursos carregadorRecursos) {
         super();
         this.controlePersistencia = controlePersistencia;
         this.controleCampeonatoServidor = controleCampeonatoServidor;
+        this.carregadorRecursos = carregadorRecursos;
     }
 
     public List obterListaClassificacao(Integer ano) {
@@ -76,9 +83,6 @@ public class ControleClassificacao {
 
     public void processaCorrida(long tempoInicio, long tempoFim, Map mapVoltasJogadoresOnline, List pilotos,
                                 DadosCriarJogo dadosCriarJogo) {
-        if (!Global.DATABASE) {
-            return;
-        }
         Session session = controlePersistencia.getSession();
         Transaction transaction = session.beginTransaction();
         try {
@@ -284,9 +288,6 @@ public class ControleClassificacao {
     }
 
     public Object verCarreira(ClientPaddockPack clientPaddockPack, Session session) {
-        if (!Global.DATABASE) {
-            return null;
-        }
         return verCarreira(clientPaddockPack.getSessaoCliente().getIdUsuario(), session);
     }
 
@@ -486,9 +487,6 @@ public class ControleClassificacao {
     }
 
     public CarreiraDadosSrv obterCarreiraSrv(String idUsuario) {
-        if (!Global.DATABASE) {
-            return null;
-        }
         Session session = controlePersistencia.getSession();
         try {
             CarreiraDadosSrv carreiraDadosSrv = controlePersistencia.carregaCarreiraJogador(idUsuario, false, session);

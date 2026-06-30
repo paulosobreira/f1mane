@@ -5,6 +5,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Build & Run
 
 ```bash
+# Rodar a suíte de testes unitários (JUnit 5 + Mockito)
+mvn test
+
 # Fat jar com H2 (desenvolvimento local)
 mvn clean package -Ph2 -DskipTests
 

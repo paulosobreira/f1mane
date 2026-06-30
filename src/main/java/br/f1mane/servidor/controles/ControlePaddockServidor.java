@@ -14,7 +14,6 @@ import br.f1mane.servidor.entidades.TOs.DadosPaddock;
 import br.f1mane.servidor.entidades.TOs.SessaoCliente;
 import org.hibernate.Session;
 
-import br.nnpe.Global;
 import br.nnpe.Logger;
 import br.nnpe.PassGenerator;
 import br.nnpe.TokenGenerator;
@@ -51,7 +50,7 @@ public class ControlePaddockServidor {
     private final ControleCampeonatoServidor controleCampeonatoServidor;
     private int versao;
     private int contadorVistantes = 1;
-    private final CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);
+    private final CarregadorRecursos carregadorRecursos;
 
     public DadosPaddock getDadosPaddock() {
         return dadosPaddock;
@@ -62,9 +61,14 @@ public class ControlePaddockServidor {
     }
 
     public ControlePaddockServidor(ControlePersistencia controlePersistencia) {
+        this(controlePersistencia, CarregadorRecursos.getCarregadorRecursos(false));
+    }
+
+    ControlePaddockServidor(ControlePersistencia controlePersistencia, CarregadorRecursos carregadorRecursos) {
         this.controlePersistencia = controlePersistencia;
-        controleCampeonatoServidor = new ControleCampeonatoServidor(controlePersistencia, this);
-        controleClassificacao = new ControleClassificacao(controlePersistencia, controleCampeonatoServidor);
+        this.carregadorRecursos = carregadorRecursos;
+        controleCampeonatoServidor = new ControleCampeonatoServidor(controlePersistencia, this, carregadorRecursos);
+        controleClassificacao = new ControleClassificacao(controlePersistencia, controleCampeonatoServidor, carregadorRecursos);
         controleJogosServer = new ControleJogosServer(dadosPaddock, controleClassificacao, controleCampeonatoServidor,
                 controlePersistencia, this);
         try {
@@ -638,9 +642,6 @@ public class ControlePaddockServidor {
     }
 
     private void salvarAcessoSessaoId(SessaoCliente sessaoCliente) {
-        if (!Global.DATABASE) {
-            return;
-        }
         JogadorDadosSrv jogadorDadosSrv;
         Session session = controlePersistencia.getSession();
         try {
