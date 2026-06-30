@@ -269,6 +269,9 @@
     <profiles>
         <profile>
             <id>h2</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <env>h2</env>
                 <jdbc.driver>

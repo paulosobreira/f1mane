@@ -1,9 +1,12 @@
 package br.f1mane.servidor.entidades.TOs;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 public class ErroServ implements Serializable {
 
+	@JsonProperty
 	private final String erroInfo;
 
 	public ErroServ(String desc) {

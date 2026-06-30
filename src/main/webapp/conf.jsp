@@ -170,18 +170,8 @@ h4 {
 	</tbody>
 </table>
 <br>
-<div style="padding: 10px">
-	<input type="password" id="senha" style="width: 100%"/>
-</div>
-<br>
-<h4><a href="#" onclick="criar();">Criar Schema</a></h4><br>
 <h4><a href="ServletPaddock?tipo=X">Exceptions</a></h4><br>
 <h4><a href="ServletPaddock?tipo=S">Sess&otilde;es</a></h4><br>
 </body>
-<script>
-	function criar(){
-		window.location = "ServletPaddock?tipo=create_schema&senha=" + document.getElementById('senha').value;
-	}
-</script>
 </html>
 
