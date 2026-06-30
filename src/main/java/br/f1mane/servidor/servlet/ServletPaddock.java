@@ -1,6 +1,5 @@
 package br.f1mane.servidor.servlet;
 
-import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.servidor.MonitorAtividade;
 import br.f1mane.servidor.PaddockConstants;
 import br.f1mane.servidor.PaddockServer;
@@ -9,8 +8,6 @@ import br.f1mane.servidor.entidades.TOs.SessaoCliente;
 import br.f1mane.servidor.util.ZipUtil;
 import br.nnpe.FormatDate;
 import br.nnpe.Logger;
-import br.nnpe.Util;
-import jakarta.persistence.Persistence;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,7 +24,6 @@ public class ServletPaddock extends HttpServlet {
     private final static String lock = "lock";
     private ControlePaddockServidor controlePaddock;
     private static MonitorAtividade monitorAtividade;
-    String senha;
 
     @Override
     public void init() throws ServletException {
@@ -35,29 +31,6 @@ public class ServletPaddock extends HttpServlet {
         PaddockServer.init(getServletContext().getRealPath(""));
         controlePaddock = PaddockServer.getControlePaddock();
         monitorAtividade = PaddockServer.getMonitorAtividade();
-        try {
-            Properties properties = new Properties();
-            properties.load(CarregadorRecursos.recursoComoStream("application.properties"));
-            senha = properties.getProperty("senha");
-            String createSchema = properties.getProperty("createSchema");
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(15000);
-                        Logger.logar("createSchema(null);");
-                        createSchema(null);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            if("true".equalsIgnoreCase(createSchema)){
-                thread.start();
-            }
-        } catch (Exception e) {
-            Logger.logarExept(e);
-        }
     }
 
     public void destroy() {
@@ -89,15 +62,12 @@ public class ServletPaddock extends HttpServlet {
                         .processarObjetoRecebido(object);
 
                 if (PaddockConstants.modoZip) {
-                    dumparDadosZip(ZipUtil.compactarObjeto(
-                            PaddockConstants.dumparDados, escrever,
-                            res.getOutputStream()));
+                    ZipUtil.compactarObjeto(false, escrever, res.getOutputStream());
                 } else {
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                     ObjectOutputStream oos = new ObjectOutputStream(bos);
                     oos.writeObject(escrever);
                     oos.flush();
-                    dumparDados(escrever);
                     res.getOutputStream().write(bos.toByteArray());
                 }
 
@@ -111,38 +81,6 @@ public class ServletPaddock extends HttpServlet {
         }
     }
 
-    private void dumparDadosZip(ByteArrayOutputStream byteArrayOutputStream)
-            throws IOException {
-        if (PaddockConstants.dumparDados) {
-            String basePath = getServletContext().getRealPath("")
-                    + File.separator + "WEB-INF" + File.separator;
-            FileOutputStream fileOutputStream = new FileOutputStream(
-                    basePath + "Pack-" + System.currentTimeMillis() + ".zip");
-            fileOutputStream.write(byteArrayOutputStream.toByteArray());
-            fileOutputStream.close();
-
-        }
-
-    }
-
-    private void dumparDados(Object escrever) throws IOException {
-        if (PaddockConstants.dumparDados && (escrever != null)) {
-            ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(
-                    arrayOutputStream);
-            objectOutputStream.writeObject(escrever);
-            String basePath = getServletContext().getRealPath("")
-                    + File.separator + "WEB-INF" + File.separator;
-            FileOutputStream fileOutputStream = new FileOutputStream(
-                    basePath + escrever.getClass().getSimpleName() + "-"
-                            + System.currentTimeMillis() + ".txt");
-            fileOutputStream.write(arrayOutputStream.toByteArray());
-            fileOutputStream.close();
-
-        }
-
-    }
-
     public void doGetHtml(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
         PrintWriter printWriter = res.getWriter();
@@ -152,26 +90,12 @@ public class ServletPaddock extends HttpServlet {
             printWriter.println("<body>");
             String tipo = req.getParameter("tipo");
 
-            String senhaP = req.getParameter("senha");
-
-            boolean precisaSenha = "create_schema".equals(tipo)
-                    || "update_schema".equals(tipo);
-
-            if (precisaSenha
-                    && (senhaP == null || !senha.equals(Util.md5(senhaP)))) {
-                printWriter.println("<br/><a href='conf.jsp'>Voltar</a>");
-                printWriter.println("</body></html>");
-                return;
-            }
-
             if (tipo == null) {
                 return;
             } else if ("X".equals(tipo)) {
                 topExceptions(res);
             } else if ("S".equals(tipo)) {
                 sessoesAtivas(res);
-            } else if ("create_schema".equals(tipo)) {
-                createSchema(printWriter);
             }
             printWriter.println("<br/> ");
         } catch (Exception e) {
@@ -180,12 +104,6 @@ public class ServletPaddock extends HttpServlet {
         printWriter.println("<br/><a href='conf.jsp'>back</a>");
         printWriter.println("</body></html>");
         res.flushBuffer();
-    }
-
-    private void createSchema(PrintWriter printWriter) throws Exception {
-        Map<String, Object> props = new HashMap<>();
-        props.put("jakarta.persistence.schema-generation.database.action", "create");
-        Persistence.generateSchema("flmane-jpa", props);
     }
 
     private void topExceptions(HttpServletResponse res) throws IOException {
