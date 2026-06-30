@@ -420,7 +420,7 @@ public class Util {
 			if (valorAutal == 900) {
 				inc = 50;
 			}
-		} else if (proximoValor < 999) {
+		} else if (proximoValor <= 999) {
 			inc = 50;
 		}
 		if ((proximoValor - valorAutal) > 0) {
