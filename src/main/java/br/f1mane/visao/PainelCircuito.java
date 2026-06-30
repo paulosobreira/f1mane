@@ -441,6 +441,11 @@ public class PainelCircuito {
 
     private void carregaRecursos() {
         carroimgDano = CarregadorRecursos.carregaImagem("png/CarroLadoDef.png");
+        if (carroimgDano == null) {
+            carroimgDano = CarregadorRecursos.pintarModeloV2("png/carro-lado-v2.png",
+                    new java.awt.Color(80, 80, 80), new java.awt.Color(50, 50, 50),
+                    br.f1mane.recursos.SpriteSheet.LADO_W, br.f1mane.recursos.SpriteSheet.LADO_H);
+        }
         setaCarroCima = CarregadorRecursos.carregaBufferedImage("png/SetaCarroCima.png");
         setaCarroBaixo = CarregadorRecursos.carregaBufferedImage("png/SetaCarroBaixo.png");
 
