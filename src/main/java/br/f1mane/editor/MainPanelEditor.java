@@ -60,7 +60,6 @@ import javax.swing.event.ListSelectionListener;
 import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
-import br.f1mane.MainFrameEditor;
 import br.f1mane.entidades.Carro;
 import br.f1mane.entidades.Circuito;
 import br.f1mane.entidades.No;
@@ -1619,8 +1618,7 @@ public class MainPanelEditor extends JPanel {
 
     public void salvarPista() throws IOException {
         if (file == null) {
-            JFileChooser fileChooser = new JFileChooser(
-                    CarregadorRecursos.class.getResource("CarregadorRecursos.class").getFile());
+            JFileChooser fileChooser = new JFileChooser(new File("src/main/resources/circuitos"));
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
             ExampleFileFilter exampleFileFilter = new ExampleFileFilter("xml");
@@ -2104,9 +2102,7 @@ public class MainPanelEditor extends JPanel {
     }
 
     public void novo() {
-        JFileChooser fileChooser = new JFileChooser(
-                CarregadorRecursos.class.getResource(
-                        "CarregadorRecursos.class").getFile());
+        JFileChooser fileChooser = new JFileChooser(new File("src/main/resources/circuitos"));
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         ExampleFileFilter exampleFileFilter = new ExampleFileFilter("jpg");
         fileChooser.setFileFilter(exampleFileFilter);
@@ -2129,8 +2125,7 @@ public class MainPanelEditor extends JPanel {
     }
 
     public void editar() throws IOException, ClassNotFoundException {
-        JFileChooser fileChooser = new JFileChooser(
-                CarregadorRecursos.class.getResource("CarregadorRecursos.class").getFile());
+        JFileChooser fileChooser = new JFileChooser(new File("src/main/resources/circuitos"));
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
         ExampleFileFilter exampleFileFilter = new ExampleFileFilter("xml");

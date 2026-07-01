@@ -1,4 +1,4 @@
-package br.f1mane.util;
+package br.f1mane.editor;
 
 import br.f1mane.entidades.Carro;
 import br.f1mane.recursos.CarregadorRecursos;
@@ -11,7 +11,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
@@ -20,7 +19,9 @@ import java.util.List;
  * Utilitário visual para editar as cores (cor1 / cor2) de cada carro de uma temporada.
  * Lê e salva diretamente no carros.properties da temporada selecionada.
  *
- * Uso: java -cp target/flmane.jar br.f1mane.util.EditorCoresCarros
+ * Uso: execute a partir da raiz do projeto (working directory), pois grava
+ * diretamente em src/main/resources/properties — mesmo padrão de SpriteSheet.main.
+ * java -cp target/classes br.f1mane.editor.EditorCoresCarros
  */
 public class EditorCoresCarros extends JFrame {
 
@@ -36,9 +37,13 @@ public class EditorCoresCarros extends JFrame {
     // ── estado ───────────────────────────────────────────────────────────────
     private String temporadaAtual;
     private List<CarroEntry> entradas = new ArrayList<>();
+    private final List<String> temporadas = new ArrayList<>();
+    private int indiceTemporada = -1;
 
     // ── componentes principais ────────────────────────────────────────────────
-    private final JComboBox<String> comboTemporada = new JComboBox<>();
+    private final JLabel lblTemporada = new JLabel();
+    private final JButton btnTemporadaAnterior = new JButton("◀ Anterior");
+    private final JButton btnTemporadaProxima = new JButton("Próxima ▶");
     private final JPanel painelCarros = new JPanel();
     private final JScrollPane scroll;
 
@@ -52,7 +57,11 @@ public class EditorCoresCarros extends JFrame {
         JPanel topo = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 8));
         topo.setBorder(new EmptyBorder(4, 8, 4, 8));
         topo.add(new JLabel("Temporada:"));
-        topo.add(comboTemporada);
+        btnTemporadaAnterior.addActionListener(e -> navegarTemporada(-1));
+        topo.add(btnTemporadaAnterior);
+        topo.add(lblTemporada);
+        btnTemporadaProxima.addActionListener(e -> navegarTemporada(1));
+        topo.add(btnTemporadaProxima);
 
         JButton btnSalvarTodos = new JButton("Salvar Todos");
         btnSalvarTodos.addActionListener(e -> salvarTodos());
@@ -72,15 +81,34 @@ public class EditorCoresCarros extends JFrame {
 
         // ── popular temporadas ────────────────────────────────────────────────
         popularTemporadas();
-        comboTemporada.addActionListener(e -> carregarTemporada((String) comboTemporada.getSelectedItem()));
+        indiceTemporada = temporadas.size() - 1;
+        atualizarNavegacaoTemporada();
+    }
 
-        if (comboTemporada.getItemCount() > 0) {
-            comboTemporada.setSelectedIndex(comboTemporada.getItemCount() - 1);
+    // ── navegação anterior/próxima entre temporadas ───────────────────────────
+    private void navegarTemporada(int delta) {
+        int novoIndice = indiceTemporada + delta;
+        if (novoIndice < 0 || novoIndice >= temporadas.size()) return;
+        indiceTemporada = novoIndice;
+        atualizarNavegacaoTemporada();
+    }
+
+    private void atualizarNavegacaoTemporada() {
+        boolean temTemporada = indiceTemporada >= 0 && indiceTemporada < temporadas.size();
+        btnTemporadaAnterior.setEnabled(temTemporada && indiceTemporada > 0);
+        btnTemporadaProxima.setEnabled(temTemporada && indiceTemporada < temporadas.size() - 1);
+        if (temTemporada) {
+            String temporada = temporadas.get(indiceTemporada);
+            lblTemporada.setText(temporada);
+            carregarTemporada(temporada);
+        } else {
+            lblTemporada.setText("—");
         }
     }
 
-    // ── carregar lista de temporadas do classpath ─────────────────────────────
+    // ── carregar lista de temporadas a partir dos recursos-fonte ─────────────
     private void popularTemporadas() {
+        temporadas.clear();
         try {
             Properties p = new Properties();
             InputStream is = CarregadorRecursos.recursoComoStream("properties/temporadas.properties");
@@ -91,24 +119,19 @@ public class EditorCoresCarros extends JFrame {
                     anos.add(k);
                 }
                 Collections.sort(anos);
-                for (String a : anos) comboTemporada.addItem(a);
+                temporadas.addAll(anos);
             }
         } catch (Exception ex) {
-            // fallback: varredura por diretório de recursos no classpath
-            try {
-                URL base = CarregadorRecursos.class.getResource("/properties");
-                if (base != null) {
-                    File dir = new File(base.toURI());
-                    if (dir.isDirectory()) {
-                        List<String> dirs = new ArrayList<>();
-                        for (File f : Objects.requireNonNull(dir.listFiles())) {
-                            if (f.isDirectory() && f.getName().startsWith("t")) dirs.add(f.getName());
-                        }
-                        Collections.sort(dirs);
-                        for (String d : dirs) comboTemporada.addItem(d);
-                    }
+            // fallback: varredura do diretório de recursos-fonte do projeto
+            File dir = new File("src/main/resources/properties");
+            if (dir.isDirectory()) {
+                List<String> dirs = new ArrayList<>();
+                for (File f : Objects.requireNonNull(dir.listFiles())) {
+                    if (f.isDirectory() && f.getName().startsWith("t")) dirs.add(f.getName());
                 }
-            } catch (Exception ignored) {}
+                Collections.sort(dirs);
+                temporadas.addAll(dirs);
+            }
         }
     }
 
@@ -182,22 +205,42 @@ public class EditorCoresCarros extends JFrame {
             entry.modificado = true;
             canvas.repaint();
         });
-        // linha 1: botões de cor (metade da largura cada)
-        int btnW = (CARD_W - 20) / 2;
-        btnCor1.setBounds(6, 86, btnW, 26);
+        // linha 1: Cor1 | ⇄ | Cor2
+        int swapW = 50;
+        int corBtnW = (CARD_W - 20 - swapW - 8) / 2; // 8 = 2 gaps de 4px
+        btnCor1.setBounds(6, 86, corBtnW, 26);
         card.add(btnCor1);
         entry.btnCor1 = btnCor1;
+
+        JButton btnTrocar = new JButton("⇄");
+        btnTrocar.setToolTipText("Trocar Cor 1 ↔ Cor 2");
+        btnTrocar.setMargin(new Insets(0, 0, 0, 0));
+        btnTrocar.setBounds(6 + corBtnW + 4, 86, swapW, 26);
+        btnTrocar.addActionListener(e -> {
+            Color tmp = entry.carro.getCor1();
+            entry.carro.setCor1(entry.carro.getCor2());
+            entry.carro.setCor2(tmp);
+            entry.modificado = true;
+            btnCor1.setBackground(entry.carro.getCor1());
+            btnCor1.setForeground(luminancia(entry.carro.getCor1()) > 128 ? Color.BLACK : Color.WHITE);
+            entry.btnCor2.setBackground(entry.carro.getCor2());
+            entry.btnCor2.setForeground(luminancia(entry.carro.getCor2()) > 128 ? Color.BLACK : Color.WHITE);
+            CarregadorRecursos.invalidarCacheModeloV2();
+            canvas.repaint();
+        });
+        card.add(btnTrocar);
 
         JButton btnCor2 = criarBotaoCor("Cor 2", entry.carro.getCor2(), c -> {
             entry.carro.setCor2(c);
             entry.modificado = true;
             canvas.repaint();
         });
-        btnCor2.setBounds(btnW + 14, 86, btnW, 26);
+        btnCor2.setBounds(6 + corBtnW + 4 + swapW + 4, 86, corBtnW, 26);
         card.add(btnCor2);
         entry.btnCor2 = btnCor2;
 
         // linha 2: editar e salvar
+        int btnW = (CARD_W - 20) / 2;
         JButton btnEditar = new JButton("Editar");
         btnEditar.setBounds(6, 118, btnW, 26);
         btnEditar.addActionListener(e -> abrirEditor(entry));
@@ -387,11 +430,12 @@ public class EditorCoresCarros extends JFrame {
      * fornecidos e reescreve o arquivo mantendo comentários e ordem original.
      */
     private void salvarNoArquivo(List<CarroEntry> lista) throws Exception {
-        // localizar o arquivo físico no classpath (só funciona em dev com recursos no filesystem)
-        URL url = CarregadorRecursos.class.getResource("/properties/" + temporadaAtual + "/carros.properties");
-        if (url == null) throw new IOException("Arquivo não encontrado no classpath: " + temporadaAtual);
-
-        File arquivo = new File(url.toURI());
+        // grava direto no recurso-fonte; assume working directory = raiz do projeto (ver Javadoc da classe)
+        File arquivo = new File("src/main/resources/properties/" + temporadaAtual + "/carros.properties");
+        if (!arquivo.isFile()) {
+            throw new IOException("Arquivo não encontrado em " + arquivo.getPath()
+                    + " — execute a ferramenta a partir da raiz do projeto.");
+        }
         List<String> linhas = new ArrayList<>(java.nio.file.Files.readAllLines(arquivo.toPath(), StandardCharsets.ISO_8859_1));
 
         // montar mapa de chave → entry para lookup rápido

@@ -1,4 +1,4 @@
-package br.f1mane;
+package br.f1mane.editor;
 
 import java.awt.Container;
 import java.awt.Graphics;
@@ -29,12 +29,10 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import br.f1mane.editor.ExampleFileFilter;
 import br.nnpe.Global;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.f1mane.controles.InterfaceJogo;
-import br.f1mane.editor.MainPanelEditor;
 import br.f1mane.servidor.applet.AppletPaddock;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
