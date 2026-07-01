@@ -1,9 +1,11 @@
 package br.f1mane.editor;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Composite;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -91,7 +93,7 @@ public class MainPanelEditor extends JPanel {
     private JList boxJList;
     private EditorCircuitos srcFrame;
     private boolean desenhaTracado = true;
-    private boolean mostraBG = false;
+    private boolean mostraBG = true;
     private boolean creditos = false;
     private boolean pontosEscape = false;
     public final static Color oran = new Color(255, 188, 40, 180);
@@ -1000,18 +1002,24 @@ public class MainPanelEditor extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         Util.setarHints(g2d);
+
+        // 1. Cor de fundo
+        g2d.setColor(circuito.getCorFundo() != null ? circuito.getCorFundo() : getBackground());
+        g2d.fillRect(0, 0, getWidth(), getHeight());
+
+        // 2. Imagem de referência (*_mro.jpg), semitransparente por cima da cor de fundo
         if (mostraBG && backGround != null) {
+            Composite composicaoOriginal = g2d.getComposite();
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
             g2d.drawImage(backGround, 0, 0, null);
+            g2d.setComposite(composicaoOriginal);
         }
 
         if (larguraPistaPixeis == 0)
             larguraPistaPixeis = Util.inteiro(Carro.LARGURA * 1.5 * multiplicadorLarguraPista * zoom);
 
-        if (!mostraBG) {
-            g2d.setColor(circuito.getCorFundo() != null ? circuito.getCorFundo() : getBackground());
-            g2d.fillRect(0, 0, getWidth(), getHeight());
-            DesenhoProceduralCircuito.desenhaPistaZebraEBox(g2d, circuito, zoom);
-        }
+        // 3. Sequência de desenho existente
+        DesenhoProceduralCircuito.desenhaPistaZebraEBox(g2d, circuito, zoom);
         desenhaCarroTeste(g2d);
         desenhaEntradaParadaSaidaBox(g2d);
         desenhaLargada(g2d);

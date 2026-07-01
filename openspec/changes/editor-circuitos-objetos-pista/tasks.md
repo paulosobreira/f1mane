@@ -73,3 +73,9 @@
 - [x] 8.7 Correção: `paintComponent` (modo `!mostraBG`) nunca preenchia o fundo com `circuito.getCorFundo()` antes de desenhar pista/zebra/box — só `DesenhoProceduralCircuito.geraImagem()` (usado na geração em memória para corrida) fazia esse preenchimento. Alterar `corFundo` não tinha efeito visual no editor. Corrigido adicionando `g2d.fillRect(...)` com `corFundo` (fallback para a cor padrão do painel) logo antes da chamada a `desenhaPistaZebraEBox`
 - [x] 8.8 Ajuste: as caixas de cor mostravam o texto "Clique" antes de qualquer cor ser escolhida. Trocado para um indicador de cor puro (sem texto, tamanho fixo 30x20, borda preta, cursor de mão), preenchido diretamente com a cor atual — o próprio retângulo colorido é o elemento clicável
 - [ ] 8.9 Teste manual no editor: abrir um circuito, clicar nas duas caixas de cor, escolher cores, confirmar atualização visual imediata na pré-visualização (fundo inteiro para "Cor de Fundo do Cenário", só a pista para "Cor do Asfalto") — **requer sessão interativa, não disponível neste ambiente de execução do agente**
+
+## 9. Nova ordem de renderização em paintComponent (editor)
+
+- [x] 9.1 Reordenar `MainPanelEditor.paintComponent`: 1) preencher com `corFundo` (sempre, não só quando `!mostraBG`); 2) desenhar a imagem de referência `*_mro.jpg` por cima, a 50% de transparência (`AlphaComposite`), quando `mostraBG` estiver ativo; 3) continuar com a sequência de desenho existente (pista/zebra/box procedural + carros de teste + objetos + etc.), agora sempre executada, não mais exclusiva com a exibição da imagem de referência
+- [x] 9.2 Compilar e rodar `mvn test`, confirmando que a suíte continua passando — 132/132 passando
+- [ ] 9.3 Teste manual no editor: alternar "mostrar BG" e confirmar que a imagem de referência aparece semitransparente por cima da cor de fundo, com a pista/zebra/box/objetos sempre visíveis por cima de tudo — **requer sessão interativa, não disponível neste ambiente de execução do agente**
