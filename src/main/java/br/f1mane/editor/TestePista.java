@@ -2,10 +2,12 @@ package br.f1mane.editor;
 
 import java.awt.Point;
 import java.util.List;
+import java.util.Map;
 
 import br.nnpe.Logger;
 import br.f1mane.entidades.Circuito;
 import br.f1mane.entidades.No;
+import br.f1mane.entidades.PontoEscape;
 
 public class TestePista {
 	protected static final long SEEP_TIME = 100;
@@ -87,7 +89,7 @@ public class TestePista {
 
 							}
 
-							posicionaCarro(cont, no, pontosPista);
+							posicionaCarroConsiderandoEscapada(cont, pontosPista);
 							centralizaTestCar();
 							if (No.RETA.equals(no.getTipo())
 									|| No.LARGADA.equals(no.getTipo())) {
@@ -127,6 +129,66 @@ public class TestePista {
 
 		testCar = no.getPoint();
 
+	}
+
+	/**
+	 * Posiciona o carro de teste no índice {@code cont}, seguindo o traçado
+	 * de escapada (nós de {@code Circuito.getEscapeMap()}) em vez da pista
+	 * normal quando esse índice cai dentro de uma zona de escapada — assim
+	 * o carro de teste "anda" pela escapada, igual acontece com a pista
+	 * normal e o box.
+	 */
+	protected void posicionaCarroConsiderandoEscapada(int cont, List pontosPista) {
+		List tracadoEscapada = obterTracadoEscapadaAtivo(cont);
+		if (tracadoEscapada == null) {
+			posicionaCarro(cont, (No) pontosPista.get(cont), pontosPista);
+			return;
+		}
+
+		int traz = cont - 44;
+		int frente = cont + 44;
+		if (traz < 0) {
+			traz = (pontosPista.size() - 1) + traz;
+		}
+		if (frente > pontosPista.size()) {
+			frente = frente - (pontosPista.size() - 1);
+		}
+
+		trazCar = noNaListaOuFallback(tracadoEscapada, pontosPista, traz).getPoint();
+		frenteCar = noNaListaOuFallback(tracadoEscapada, pontosPista, frente).getPoint();
+		testCar = noNaListaOuFallback(tracadoEscapada, pontosPista, cont).getPoint();
+	}
+
+	/**
+	 * Retorna o traçado de escapada (lista de nós do mesmo tamanho da
+	 * pista, com {@code null} fora da zona) que tem um nó não nulo no
+	 * índice informado, ou {@code null} se nenhuma zona de escapada cobre
+	 * esse índice.
+	 */
+	private List obterTracadoEscapadaAtivo(int index) {
+		Map<PontoEscape, List<No>> escapeMap = circuito.getEscapeMap();
+		if (escapeMap == null) {
+			return null;
+		}
+		for (List<No> tracado : escapeMap.values()) {
+			if (index >= 0 && index < tracado.size() && tracado.get(index) != null) {
+				return tracado;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Lê o nó no índice informado em {@code preferida}; se estiver fora dos
+	 * limites da zona de escapada ({@code null} ali, ex.: nas bordas da
+	 * janela de 44 nós usada para calcular a orientação do carro), usa
+	 * {@code fallback} (a pista normal) nesse índice.
+	 */
+	private No noNaListaOuFallback(List preferida, List fallback, int index) {
+		if (index >= 0 && index < preferida.size() && preferida.get(index) != null) {
+			return (No) preferida.get(index);
+		}
+		return (No) fallback.get(index);
 	}
 
 	protected void posicionaCarroBox(int cont, No no, List lista) {

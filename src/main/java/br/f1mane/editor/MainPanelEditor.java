@@ -93,7 +93,7 @@ public class MainPanelEditor extends JPanel {
     private JList boxJList;
     private EditorCircuitos srcFrame;
     private boolean desenhaTracado = true;
-    private boolean mostraBG = true;
+    private boolean mostraBG = false;
     private boolean creditos = false;
     private boolean pontosEscape = false;
     public final static Color oran = new Color(255, 188, 40, 180);
