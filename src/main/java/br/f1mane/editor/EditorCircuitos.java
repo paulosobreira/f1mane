@@ -16,7 +16,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.ButtonGroup;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -29,18 +28,17 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import br.f1mane.controles.InterfaceJogo;
+import br.f1mane.recursos.CarregadorRecursos;
+import br.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Global;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
-import br.f1mane.controles.InterfaceJogo;
-import br.f1mane.servidor.applet.AppletPaddock;
-import br.f1mane.recursos.CarregadorRecursos;
-import br.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author Paulo Sobreira Created on 14/06/2014
  */
-public class MainFrameEditor extends JFrame {
+public class EditorCircuitos extends JFrame {
     /**
      *
      */
@@ -59,7 +57,7 @@ public class MainFrameEditor extends JFrame {
         return controleJogo;
     }
 
-    public MainFrameEditor() throws IOException {
+    public EditorCircuitos() throws IOException {
         bar = new JMenuBar();
         this.setJMenuBar(bar);
 
@@ -146,13 +144,13 @@ public class MainFrameEditor extends JFrame {
         pt.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Lang.mudarIdioma("pt");
-                SwingUtilities.updateComponentTreeUI(MainFrameEditor.this);
+                SwingUtilities.updateComponentTreeUI(EditorCircuitos.this);
             }
         });
         en.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Lang.mudarIdioma("en");
-                SwingUtilities.updateComponentTreeUI(MainFrameEditor.this);
+                SwingUtilities.updateComponentTreeUI(EditorCircuitos.this);
             }
         });
 
@@ -185,7 +183,7 @@ public class MainFrameEditor extends JFrame {
                         area.append("\n");
                     }
                     area.setCaretPosition(0);
-                    JOptionPane.showMessageDialog(MainFrameEditor.this,
+                    JOptionPane.showMessageDialog(EditorCircuitos.this,
                             new JScrollPane(area), Lang.msg("listaDeErros"),
                             JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception ex) {
@@ -242,13 +240,11 @@ public class MainFrameEditor extends JFrame {
     public void mostraSobre() {
         String msg = Lang.msg("184") + " Paulo Sobreira        ".trim() + "\n"
                 + "- " + Lang.msg("pistas") + " "
-                + " www.miniracingonline.com                   ".trim() + "\n"
                 + "- " + Lang.msg("capacetesCarros") + " "
-                + " spotterguidecentral.com                    ".trim() + "\n"
-                + "- http://sowbreira.appspot.com              ".trim() + "\n"
+                + "- https://sowbreira-26fe1.firebaseapp.com             ".trim() + "\n"
                 + "- sowbreira@gmail.com                       ".trim() + "\n"
-                + "- 2007-2024";
-        JOptionPane.showMessageDialog(MainFrameEditor.this, msg,
+                + "- 2007-2026";
+        JOptionPane.showMessageDialog(EditorCircuitos.this, msg,
                 Lang.msg("093"), JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -346,7 +342,7 @@ public class MainFrameEditor extends JFrame {
                         controleJogo.matarTodasThreads();
                     }
                     editor = new MainPanelEditor(
-                            MainFrameEditor.this);
+                            EditorCircuitos.this);
                     editor.novo();
                     ativarKeysEditor();
                 } catch (Exception e1) {
@@ -367,7 +363,7 @@ public class MainFrameEditor extends JFrame {
                     if (controleJogo != null) {
                         controleJogo.matarTodasThreads();
                     }
-                    editor = new MainPanelEditor(MainFrameEditor.this);
+                    editor = new MainPanelEditor(EditorCircuitos.this);
                     editor.editar();
                     ativarKeysEditor();
                 } catch (Exception e1) {
@@ -401,7 +397,7 @@ public class MainFrameEditor extends JFrame {
         if (args != null && args.length > 1) {
             Lang.mudarIdioma(args[1]);
         }
-        MainFrameEditor frame = new MainFrameEditor();
+        EditorCircuitos frame = new EditorCircuitos();
     }
 
     private void removerListeners() {

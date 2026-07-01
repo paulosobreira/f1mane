@@ -10,7 +10,15 @@ import java.awt.geom.RoundRectangle2D;
 
 public class ObjetoPneus extends ObjetoPista {
 
-	RoundRectangle2D externo;
+	RoundRectangle2D externo = new RoundRectangle2D.Double();
+
+	public ObjetoPneus() {
+		setLargura(4);
+		setAltura(2);
+		setCorPimaria(new Color(40, 40, 40));
+		setCorSecundaria(new Color(230, 230, 230));
+		setTransparencia(255);
+	}
 
 	@Override
 	public void desenha(Graphics2D g2d, double zoom) {

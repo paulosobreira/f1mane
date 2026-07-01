@@ -9,8 +9,16 @@ import java.awt.geom.RoundRectangle2D;
 
 public class ObjetoConstrucao extends ObjetoPista {
 
-	RoundRectangle2D externo;
-	RoundRectangle2D interno;
+	RoundRectangle2D externo = new RoundRectangle2D.Double();
+	RoundRectangle2D interno = new RoundRectangle2D.Double();
+
+	public ObjetoConstrucao() {
+		setLargura(100);
+		setAltura(80);
+		setCorPimaria(new Color(120, 120, 140));
+		setCorSecundaria(new Color(200, 200, 210));
+		setTransparencia(255);
+	}
 
 	@Override
 	public void desenha(Graphics2D g2d, double zoom) {

@@ -67,11 +67,15 @@ public class Circuito implements Serializable {
     @JsonIgnore
     private List<ObjetoPista> objetos;
     @JsonIgnore
+    private List<ObjetoPista> objetosCenario;
+    @JsonIgnore
     private Point creditos;
     @JsonIgnore
     private List<Point> escapeList = new ArrayList<Point>();
     @JsonIgnore
     private Color corFundo;
+    @JsonIgnore
+    private Color corAsfalto;
 
     public Point getCreditos() {
         return creditos;
@@ -607,12 +611,28 @@ public class Circuito implements Serializable {
         this.objetos = objetos;
     }
 
+    public List<ObjetoPista> getObjetosCenario() {
+        return objetosCenario;
+    }
+
+    public void setObjetosCenario(List<ObjetoPista> objetosCenario) {
+        this.objetosCenario = objetosCenario;
+    }
+
     public Color getCorFundo() {
         return corFundo;
     }
 
     public void setCorFundo(Color corFundo) {
         this.corFundo = corFundo;
+    }
+
+    public Color getCorAsfalto() {
+        return corAsfalto;
+    }
+
+    public void setCorAsfalto(Color corAsfalto) {
+        this.corAsfalto = corAsfalto;
     }
 
     public boolean isNoite() {

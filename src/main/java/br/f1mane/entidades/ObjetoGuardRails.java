@@ -7,9 +7,17 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.RoundRectangle2D;
 
-public class ObjetoGuadRails extends ObjetoPista {
+public class ObjetoGuardRails extends ObjetoPista {
 
-	RoundRectangle2D externo;
+	RoundRectangle2D externo = new RoundRectangle2D.Double();
+
+	public ObjetoGuardRails() {
+		setLargura(2);
+		setAltura(100);
+		setCorPimaria(new Color(220, 220, 220));
+		setCorSecundaria(new Color(220, 220, 220));
+		setTransparencia(255);
+	}
 
 	@Override
 	public void desenha(Graphics2D g2d, double zoom) {

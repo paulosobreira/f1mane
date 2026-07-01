@@ -28,12 +28,14 @@ import jakarta.ws.rs.core.Response;
 import br.f1mane.servidor.controles.ControleJogosServer;
 import br.f1mane.servidor.controles.ControlePaddockServidor;
 import br.f1mane.servidor.util.Compress;
+import br.nnpe.Global;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.f1mane.controles.ControleRecursos;
 import br.f1mane.controles.InterfaceJogo;
 import br.f1mane.entidades.Circuito;
 import br.f1mane.entidades.CircuitosDefault;
+import br.f1mane.entidades.DesenhoProceduralCircuito;
 import br.f1mane.entidades.TemporadasDefault;
 import br.f1mane.servidor.PaddockServer;
 import br.f1mane.servidor.entidades.TOs.CampeonatoTO;
@@ -418,8 +420,16 @@ public class LetsRace {
     @Produces("image/jpg")
     public Response circuitoJpg(@PathParam("nmCircuito") String nmCircuito) {
         try {
-            BufferedImage buffer = CarregadorRecursos
-                    .carregaBufferedImage("circuitos/" + nmCircuito);
+            BufferedImage buffer;
+            if (Global.GERAR_IMAGEM_CIRCUITO_EM_MEMORIA && nmCircuito.endsWith(".jpg")) {
+                String nomeArquivoCircuito = nmCircuito.substring(0,
+                        nmCircuito.length() - ".jpg".length()) + ".xml";
+                Circuito circuito = CarregadorRecursos.carregarCircuito(nomeArquivoCircuito);
+                circuito.vetorizarPista();
+                buffer = DesenhoProceduralCircuito.geraImagem(circuito);
+            } else {
+                buffer = CarregadorRecursos.carregaBufferedImage("circuitos/" + nmCircuito);
+            }
             if (buffer == null) {
                 return Response.status(200).entity("null").build();
             }

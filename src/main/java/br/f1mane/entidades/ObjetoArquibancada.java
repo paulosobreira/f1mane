@@ -9,7 +9,15 @@ import java.awt.geom.RoundRectangle2D;
 
 public class ObjetoArquibancada extends ObjetoPista {
 
-	RoundRectangle2D externo;
+	RoundRectangle2D externo = new RoundRectangle2D.Double();
+
+	public ObjetoArquibancada() {
+		setLargura(100);
+		setAltura(60);
+		setCorPimaria(new Color(150, 150, 150));
+		setCorSecundaria(new Color(90, 90, 90));
+		setTransparencia(255);
+	}
 
 	@Override
 	public void desenha(Graphics2D g2d, double zoom) {

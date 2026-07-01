@@ -4,14 +4,13 @@ import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,17 +26,22 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.beans.Transient;
 import java.beans.XMLEncoder;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -45,6 +49,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -57,11 +62,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import br.nnpe.GeoUtil;
-import br.nnpe.Logger;
-import br.nnpe.Util;
 import br.f1mane.entidades.Carro;
 import br.f1mane.entidades.Circuito;
+import br.f1mane.entidades.DesenhoProceduralCircuito;
 import br.f1mane.entidades.No;
 import br.f1mane.entidades.ObjetoEscapada;
 import br.f1mane.entidades.ObjetoLivre;
@@ -71,6 +74,9 @@ import br.f1mane.entidades.PontoEscape;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
 import br.f1mane.visao.PainelCircuito;
+import br.nnpe.GeoUtil;
+import br.nnpe.Logger;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira
@@ -83,9 +89,9 @@ public class MainPanelEditor extends JPanel {
     private No ultimoNo = null;
     private JList pistaJList;
     private JList boxJList;
-    private MainFrameEditor srcFrame;
+    private EditorCircuitos srcFrame;
     private boolean desenhaTracado = true;
-    private boolean mostraBG = true;
+    private boolean mostraBG = false;
     private boolean creditos = false;
     private boolean pontosEscape = false;
     public final static Color oran = new Color(255, 188, 40, 180);
@@ -112,7 +118,6 @@ public class MainPanelEditor extends JPanel {
     private static final String LADO_COMBO_2 = "BOX LADO 2";
     private static final String SAIDA_LADO_COMBO_1 = "SAIDA BOX LADO 1";
     private static final String SAIDA_LADO_COMBO_2 = "SAIDA BOX LADO 2";
-    private static final Color COR_PISTA = new Color(192, 192, 192);
     public final double zoom = 1;
     private BufferedImage carroCima;
     private int mx;
@@ -124,36 +129,35 @@ public class MainPanelEditor extends JPanel {
     private JTextField nomePistaText;
     private JTextField probalidadeChuvaText;
     private final BasicStroke trilho = new BasicStroke(1);
-    private BasicStroke pista;
-    private BasicStroke pistaTinta;
-    private BasicStroke box;
     private int larguraPistaPixeis;
-    private BasicStroke zebra;
     private JComboBox ladoBoxCombo;
     private JComboBox ladoBoxSaidaBoxCombo;
     private ObjetoPista objetoPista;
     private boolean desenhandoObjetoLivre;
     private boolean posicionaObjetoPista;
+    private boolean criandoObjetoCenario;
+    private ObjetoPista objetoArrastando;
+    private Point offsetArraste;
+    private boolean arrastouObjeto;
     private Point ultimoClicado;
     private FormularioListaObjetos formularioListaObjetos;
+    private FormularioListaObjetos formularioListaObjetosCenario;
     protected final DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
     JCheckBox noite = new JCheckBox();
+    private final JLabel corFundoLabel = criaIndicadorDeCor();
+    private final JLabel corAsfaltoLabel = criaIndicadorDeCor();
     File file;
 
     public MainPanelEditor() {
     }
 
-    public MainPanelEditor(MainFrameEditor frame) {
+    public MainPanelEditor(EditorCircuitos frame) {
         this.srcFrame = frame;
     }
 
     private boolean vetorizarCircuito() {
         mx = 0;
         my = 0;
-        pista = null;
-        pistaTinta = null;
-        box = null;
-        zebra = null;
         larguraPistaPixeis = 0;
         testePista.pararTeste();
 
@@ -414,17 +418,16 @@ public class MainPanelEditor extends JPanel {
                     semSelecaoButton.setSelected(true);
                     FormularioObjetos formularioObjetos = new FormularioObjetos(MainPanelEditor.this);
                     formularioObjetos.mostrarPainelModal();
-                    if (FormularioObjetos.OBJETO_ESCAPADA
-                            .equals(formularioObjetos.getTipoComboBox().getSelectedItem())) {
-                        objetoPista = new ObjetoEscapada();
-                        posicionaObjetoPista = true;
-                    } else if (FormularioObjetos.OBJETO_TRANSPARENCIA
-                            .equals(formularioObjetos.getTipoComboBox().getSelectedItem())) {
-                        objetoPista = new ObjetoTransparencia();
+                    TipoObjetoPista tipoSelecionado = (TipoObjetoPista) formularioObjetos
+                            .getTipoComboBox().getSelectedItem();
+                    objetoPista = tipoSelecionado.criar();
+                    posicionaObjetoPista = true;
+                    criandoObjetoCenario = tipoSelecionado.isCenario();
+                    if (objetoPista instanceof ObjetoTransparencia) {
                         objetoPista.setTransparencia(125);
-                        posicionaObjetoPista = true;
                         desenhandoObjetoLivre = true;
                     }
+                    formularioObjetos.carregarCampos(objetoPista);
                     formularioObjetos.formularioObjetoPista(objetoPista);
                 } catch (Exception e2) {
                     e2.printStackTrace();
@@ -620,7 +623,12 @@ public class MainPanelEditor extends JPanel {
         frame.getContentPane().add(iniciaEditorVetorizado(), BorderLayout.SOUTH);
         formularioListaObjetos = new FormularioListaObjetos(this);
         formularioListaObjetos.listarObjetos();
-        frame.getContentPane().add(formularioListaObjetos.getObjetos(), BorderLayout.EAST);
+        formularioListaObjetosCenario = new FormularioListaObjetos(this, Circuito::getObjetosCenario);
+        formularioListaObjetosCenario.listarObjetos();
+        JPanel listasObjetosPanel = new JPanel(new GridLayout(2, 1));
+        listasObjetosPanel.add(formularioListaObjetos.getObjetos());
+        listasObjetosPanel.add(formularioListaObjetosCenario.getObjetos());
+        frame.getContentPane().add(listasObjetosPanel, BorderLayout.EAST);
 
     }
 
@@ -690,14 +698,47 @@ public class MainPanelEditor extends JPanel {
     }
 
     private void adicionaEventosMouse(final JFrame frame) {
-        this.addMouseListener(new MouseAdapter() {
+        MouseAdapter mouseAdapter = new MouseAdapter() {
 
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
                 frame.requestFocus();
             }
 
+            public void mousePressed(MouseEvent e) {
+                if (!semSelecaoButton.isSelected() || !SwingUtilities.isLeftMouseButton(e)
+                        || posicionaObjetoPista || desenhandoObjetoLivre) {
+                    return;
+                }
+                ObjetoPista encontrado = encontraObjetoPista(e.getPoint());
+                if (encontrado == null || encontrado.getPosicaoQuina() == null) {
+                    return;
+                }
+                objetoPista = encontrado;
+                objetoArrastando = encontrado;
+                offsetArraste = new Point(e.getX() - encontrado.getPosicaoQuina().x,
+                        e.getY() - encontrado.getPosicaoQuina().y);
+            }
+
+            public void mouseDragged(MouseEvent e) {
+                if (objetoArrastando == null) {
+                    return;
+                }
+                arrastouObjeto = true;
+                objetoArrastando.setPosicaoQuina(
+                        new Point(e.getX() - offsetArraste.x, e.getY() - offsetArraste.y));
+                repaint();
+            }
+
+            public void mouseReleased(MouseEvent e) {
+                objetoArrastando = null;
+            }
+
             public void mouseClicked(MouseEvent e) {
+                if (arrastouObjeto) {
+                    arrastouObjeto = false;
+                    return;
+                }
                 if (semSelecaoButton.isSelected()) {
                     clickEditarObjetos(e);
                 } else {
@@ -712,6 +753,10 @@ public class MainPanelEditor extends JPanel {
 
             private void clickEditarObjetos(MouseEvent e) {
                 ultimoClicado = e.getPoint();
+                if (SwingUtilities.isRightMouseButton(e) && !posicionaObjetoPista && !desenhandoObjetoLivre) {
+                    mostraMenuContextoObjeto(e);
+                    return;
+                }
                 if (e.getClickCount() > 1) {
                     editaObjetoPista(ultimoClicado);
                     return;
@@ -734,16 +779,28 @@ public class MainPanelEditor extends JPanel {
                     repaint();
                     return;
                 } else if (posicionaObjetoPista && objetoPista != null) {
-                    if (circuito.getObjetos() == null) {
-                        circuito.setObjetos(new ArrayList<ObjetoPista>());
+                    List<ObjetoPista> listaAlvo;
+                    FormularioListaObjetos formularioListaAlvo;
+                    if (criandoObjetoCenario) {
+                        if (circuito.getObjetosCenario() == null) {
+                            circuito.setObjetosCenario(new ArrayList<ObjetoPista>());
+                        }
+                        listaAlvo = circuito.getObjetosCenario();
+                        formularioListaAlvo = formularioListaObjetosCenario;
+                    } else {
+                        if (circuito.getObjetos() == null) {
+                            circuito.setObjetos(new ArrayList<ObjetoPista>());
+                        }
+                        listaAlvo = circuito.getObjetos();
+                        formularioListaAlvo = formularioListaObjetos;
                     }
                     Point quina = new Point(ultimoClicado);
                     quina.x -= objetoPista.getLargura() / 2;
                     quina.y -= objetoPista.getAltura() / 2;
                     objetoPista.setPosicaoQuina(quina);
-                    circuito.getObjetos().add(objetoPista);
-                    formularioListaObjetos.listarObjetos();
-                    objetoPista.setNome("Objeto " + circuito.getObjetos().size());
+                    listaAlvo.add(objetoPista);
+                    formularioListaAlvo.listarObjetos();
+                    objetoPista.setNome("Objeto " + listaAlvo.size());
                     repaint();
                     posicionaObjetoPista = false;
                     return;
@@ -765,20 +822,123 @@ public class MainPanelEditor extends JPanel {
                     return;
                 }
             }
+
+            private void mostraMenuContextoObjeto(MouseEvent e) {
+                ObjetoPista encontrado = encontraObjetoPista(e.getPoint());
+                if (encontrado == null) {
+                    return;
+                }
+                objetoPista = encontrado;
+                JPopupMenu menu = new JPopupMenu();
+                menu.add(criaPainelAjusteRapido(encontrado));
+                menu.show(MainPanelEditor.this, e.getX(), e.getY());
+            }
+        };
+        this.addMouseListener(mouseAdapter);
+        this.addMouseMotionListener(mouseAdapter);
+    }
+
+    private JPanel criaPainelAjusteRapido(final ObjetoPista alvo) {
+        JPanel panel = new JPanel(new GridLayout(3, 2));
+        JSpinner larguraSpinner = new JSpinner(new SpinnerNumberModel(alvo.getLargura(), 0, 10000, 1));
+        JSpinner alturaSpinner = new JSpinner(new SpinnerNumberModel(alvo.getAltura(), 0, 10000, 1));
+        JSpinner anguloSpinner = new JSpinner(
+                new SpinnerNumberModel((int) alvo.getAngulo(), -360, 360, 1));
+        panel.add(new JLabel("Largura"));
+        panel.add(larguraSpinner);
+        panel.add(new JLabel("Altura"));
+        panel.add(alturaSpinner);
+        panel.add(new JLabel("Angulo"));
+        panel.add(anguloSpinner);
+        larguraSpinner.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                alvo.setLargura(((Integer) larguraSpinner.getValue()).intValue());
+                repaint();
+            }
         });
+        alturaSpinner.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                alvo.setAltura(((Integer) alturaSpinner.getValue()).intValue());
+                repaint();
+            }
+        });
+        anguloSpinner.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                alvo.setAngulo(((Integer) anguloSpinner.getValue()).doubleValue());
+                repaint();
+            }
+        });
+        return panel;
+    }
+
+    private static JLabel criaIndicadorDeCor() {
+        JLabel label = new JLabel() {
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(30, 20);
+            }
+        };
+        label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        return label;
+    }
+
+    private void atualizaCorLabel(JLabel label, Color cor, Color corPadrao) {
+        Color corExibida = cor != null ? cor : corPadrao;
+        label.setOpaque(true);
+        label.setBackground(corExibida);
+        int luminancia = (corExibida.getRed() + corExibida.getGreen() + corExibida.getBlue()) / 3;
+        label.setForeground(luminancia > 128 ? Color.BLACK : Color.WHITE);
+        label.repaint();
     }
 
     protected void editaObjetoPista(Point point) {
-        if (circuito.getObjetos() == null) {
-            return;
+        ObjetoPista encontrado = encontraObjetoPista(point);
+        if (encontrado != null) {
+            FormularioObjetos formularioObjetos = new FormularioObjetos(MainPanelEditor.this);
+            formularioObjetos.objetoLivreFormulario(encontrado);
         }
-        for (ObjetoPista objetoPista : circuito.getObjetos()) {
+    }
+
+    /**
+     * Busca, nas duas listas de objetos do circuito (objetos e
+     * objetosCenario), o primeiro objeto cuja área contenha o ponto
+     * informado. Usado por edição por duplo-clique, menu de contexto e
+     * início de arraste.
+     */
+    private ObjetoPista encontraObjetoPista(Point point) {
+        ObjetoPista encontrado = encontraObjetoPistaNaLista(circuito.getObjetos(), point);
+        if (encontrado != null) {
+            return encontrado;
+        }
+        return encontraObjetoPistaNaLista(circuito.getObjetosCenario(), point);
+    }
+
+    private ObjetoPista encontraObjetoPistaNaLista(List<ObjetoPista> lista, Point point) {
+        if (lista == null) {
+            return null;
+        }
+        for (ObjetoPista objetoPista : lista) {
             if (objetoPista.obterArea().contains(point)) {
-                FormularioObjetos formularioObjetos = new FormularioObjetos(MainPanelEditor.this);
-                formularioObjetos.objetoLivreFormulario(objetoPista);
-                break;
+                return objetoPista;
             }
         }
+        return null;
+    }
+
+    /**
+     * Concatena objetos e objetosCenario numa única lista (nunca nula), para
+     * os loops de desenho do editor, que precisam considerar as duas listas.
+     */
+    private List<ObjetoPista> todosObjetos() {
+        List<ObjetoPista> todos = new ArrayList<ObjetoPista>();
+        if (circuito.getObjetos() != null) {
+            todos.addAll(circuito.getObjetos());
+        }
+        if (circuito.getObjetosCenario() != null) {
+            todos.addAll(circuito.getObjetosCenario());
+        }
+        return todos;
     }
 
     private void inserirNoNasJList(No no) {
@@ -848,20 +1008,9 @@ public class MainPanelEditor extends JPanel {
             larguraPistaPixeis = Util.inteiro(Carro.LARGURA * 1.5 * multiplicadorLarguraPista * zoom);
 
         if (!mostraBG) {
-            if (pista == null)
-                pista = new BasicStroke(larguraPistaPixeis, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-            if (pistaTinta == null)
-                pistaTinta = new BasicStroke(Util.inteiro(larguraPistaPixeis * 1.05), BasicStroke.CAP_ROUND,
-                        BasicStroke.JOIN_ROUND);
-            if (box == null)
-                box = new BasicStroke(Util.inteiro(larguraPistaPixeis * .4), BasicStroke.CAP_ROUND,
-                        BasicStroke.JOIN_ROUND);
-            if (zebra == null)
-                zebra = new BasicStroke(Util.inteiro(larguraPistaPixeis * 1.05), BasicStroke.CAP_BUTT,
-                        BasicStroke.JOIN_MITER, 10f, new float[]{10, 10}, 0);
-            desenhaTintaPistaEZebra(g2d);
-            desenhaPista(g2d);
-            desenhaPistaBox(g2d);
+            g2d.setColor(circuito.getCorFundo() != null ? circuito.getCorFundo() : getBackground());
+            g2d.fillRect(0, 0, getWidth(), getHeight());
+            DesenhoProceduralCircuito.desenhaPistaZebraEBox(g2d, circuito, zoom);
         }
         desenhaCarroTeste(g2d);
         desenhaEntradaParadaSaidaBox(g2d);
@@ -958,9 +1107,9 @@ public class MainPanelEditor extends JPanel {
         g2d.drawString("Multi Largura Pista : " + PainelCircuito.df4.format(multiplicadorLarguraPista), x, y);
         y += 20;
         g2d.drawString("Box : " + testePista.isIrProBox(), x, y);
-        if (circuito.getObjetos() != null) {
+        if (circuito.getObjetos() != null || circuito.getObjetosCenario() != null) {
             y += 20;
-            g2d.drawString("Num Objetos : " + circuito.getObjetos().size(), x, y);
+            g2d.drawString("Num Objetos : " + todosObjetos().size(), x, y);
         }
         int noAlta = 0;
         int noMedia = 0;
@@ -1001,10 +1150,7 @@ public class MainPanelEditor extends JPanel {
         if (circuito == null) {
             return;
         }
-        if (circuito.getObjetos() == null) {
-            return;
-        }
-        for (ObjetoPista objetoPista : circuito.getObjetos()) {
+        for (ObjetoPista objetoPista : todosObjetos()) {
             if (!objetoPista.isPintaEmcima())
                 continue;
             objetoPista.desenha(g2d, zoom);
@@ -1347,34 +1493,12 @@ public class MainPanelEditor extends JPanel {
         if (circuito == null) {
             return;
         }
-        if (circuito.getObjetos() == null) {
-            return;
-        }
-        for (ObjetoPista objetoPista : circuito.getObjetos()) {
+        for (ObjetoPista objetoPista : todosObjetos()) {
             if (objetoPista.isPintaEmcima())
                 continue;
             objetoPista.desenha(g2d, zoom);
         }
 
-    }
-
-    private void desenhaPista(Graphics2D g2d) {
-        No oldNo = null;
-        g2d.setColor(COR_PISTA);
-        g2d.setStroke(pista);
-        for (Iterator iter = circuito.getPistaKey().iterator(); iter.hasNext(); ) {
-            No no = (No) iter.next();
-            if (oldNo != null) {
-                g2d.drawLine(Util.inteiro(oldNo.getX() * zoom), Util.inteiro(oldNo.getY() * zoom),
-                        Util.inteiro(no.getX() * zoom), Util.inteiro(no.getY() * zoom));
-
-            }
-            oldNo = no;
-        }
-
-        No noFinal = (No) circuito.getPistaKey().get(0);
-        g2d.drawLine(Util.inteiro(oldNo.getX() * zoom), Util.inteiro(oldNo.getY() * zoom),
-                Util.inteiro(noFinal.getX() * zoom), Util.inteiro(noFinal.getY() * zoom));
     }
 
     public Shape limitesViewPort() {
@@ -1384,54 +1508,6 @@ public class MainPanelEditor extends JPanel {
         rectangle.x = scrollPane.getViewport().getViewPosition().x;
         rectangle.y = scrollPane.getViewport().getViewPosition().y;
         return rectangle;
-    }
-
-    private void desenhaPistaBox(Graphics2D g2d) {
-        g2d.setColor(Color.LIGHT_GRAY);
-        g2d.setStroke(box);
-        No oldNo = null;
-        for (Iterator iter = circuito.getBoxKey().iterator(); iter.hasNext(); ) {
-            No no = (No) iter.next();
-            if (oldNo != null) {
-                g2d.drawLine(Util.inteiro(oldNo.getX() * zoom), Util.inteiro(oldNo.getY() * zoom),
-                        Util.inteiro(no.getX() * zoom), Util.inteiro(no.getY() * zoom));
-
-            }
-            oldNo = no;
-        }
-        if (circuito.getBoxKey() != null && !circuito.getBoxKey().isEmpty()) {
-            No noFinal = (No) circuito.getBoxKey().get(circuito.getBoxKey().size() - 1);
-
-            g2d.drawLine(Util.inteiro(oldNo.getX() * zoom), Util.inteiro(oldNo.getY() * zoom),
-                    Util.inteiro(noFinal.getX() * zoom), Util.inteiro(noFinal.getY() * zoom));
-        }
-    }
-
-    private void desenhaTintaPistaEZebra(Graphics2D g2d) {
-        g2d.setColor(Color.WHITE);
-        g2d.setStroke(pistaTinta);
-
-        No oldNo = null;
-        for (Iterator iter = circuito.getPistaKey().iterator(); iter.hasNext(); ) {
-            No no = (No) iter.next();
-            if (oldNo != null) {
-                g2d.setColor(Color.WHITE);
-                g2d.setStroke(pistaTinta);
-                g2d.drawLine(Util.inteiro(oldNo.getX() * zoom), Util.inteiro(oldNo.getY() * zoom),
-                        Util.inteiro(no.getX() * zoom), Util.inteiro(no.getY() * zoom));
-                if (No.CURVA_ALTA.equals(oldNo.getTipo()) || No.CURVA_BAIXA.equals(oldNo.getTipo())) {
-                    g2d.setColor(Color.RED);
-                    g2d.setStroke(zebra);
-                    g2d.drawLine(Util.inteiro(oldNo.getX() * zoom), Util.inteiro(oldNo.getY() * zoom),
-                            Util.inteiro(no.getX() * zoom), Util.inteiro(no.getY() * zoom));
-
-                }
-            }
-            oldNo = no;
-        }
-        No noFinal = (No) circuito.getPistaKey().get(0);
-        g2d.drawLine(Util.inteiro(oldNo.getX() * zoom), Util.inteiro(oldNo.getY() * zoom),
-                Util.inteiro(noFinal.getX() * zoom), Util.inteiro(noFinal.getY() * zoom));
     }
 
     private void desenhaPainelClassico(Graphics g2d) {
@@ -1857,7 +1933,7 @@ public class MainPanelEditor extends JPanel {
         p2.add(new JLabel() {
             @Override
             public String getText() {
-                return Lang.msg("probalidaDeChuva");
+                return "% Chuva";
             }
         });
         p2.add(probalidadeChuvaText);
@@ -1888,7 +1964,7 @@ public class MainPanelEditor extends JPanel {
         p2.add(new JLabel() {
             @Override
             public String getText() {
-                return Lang.msg("larguraPista");
+                return "Largura";
             }
         });
         p2.add(larguraPistaSpinner);
@@ -1898,7 +1974,7 @@ public class MainPanelEditor extends JPanel {
         p2.add(new JLabel("Noite") {
             @Override
             public String getText() {
-                return Lang.msg("noite");
+                return "Noite";
             }
         });
 
@@ -1911,6 +1987,42 @@ public class MainPanelEditor extends JPanel {
         });
         p2.add(noite);
         buttonsPanel2.add(p2);
+
+        p2 = new JPanel();
+        p2.add(new JLabel("Cor de Fundo"));
+        atualizaCorLabel(corFundoLabel, circuito != null ? circuito.getCorFundo() : null, Color.WHITE);
+        corFundoLabel.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                Color nova = JColorChooser.showDialog(MainPanelEditor.this,
+                        "Cor de Fundo", corFundoLabel.getBackground());
+                if (nova != null) {
+                    circuito.setCorFundo(nova);
+                    atualizaCorLabel(corFundoLabel, nova, Color.WHITE);
+                    repaint();
+                }
+            }
+        });
+        p2.add(corFundoLabel);
+        buttonsPanel2.add(p2);
+
+        p2 = new JPanel();
+        p2.add(new JLabel("Cor do Asfalto"));
+        atualizaCorLabel(corAsfaltoLabel, circuito != null ? circuito.getCorAsfalto() : null,
+                DesenhoProceduralCircuito.COR_PISTA);
+        corAsfaltoLabel.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                Color nova = JColorChooser.showDialog(MainPanelEditor.this,
+                        "Cor do Asfalto", corAsfaltoLabel.getBackground());
+                if (nova != null) {
+                    circuito.setCorAsfalto(nova);
+                    atualizaCorLabel(corAsfaltoLabel, nova, DesenhoProceduralCircuito.COR_PISTA);
+                    repaint();
+                }
+            }
+        });
+        p2.add(corAsfaltoLabel);
+        buttonsPanel2.add(p2);
+
         buttonsPanel.add(buttonsPanel1);
         buttonsPanel.add(buttonsPanel2);
         return buttonsPanel;
@@ -2053,8 +2165,16 @@ public class MainPanelEditor extends JPanel {
                     }
                     dst.gerar();
                 }
-                circuito.getObjetos().add(objetoPistaNovo);
-                objetoPistaNovo.setNome("Objeto " + circuito.getObjetos().size());
+                boolean origemCenario = circuito.getObjetosCenario() != null
+                        && circuito.getObjetosCenario().contains(objetoPista);
+                List<ObjetoPista> listaAlvo = origemCenario ? circuito.getObjetosCenario() : circuito.getObjetos();
+                listaAlvo.add(objetoPistaNovo);
+                objetoPistaNovo.setNome("Objeto " + listaAlvo.size());
+                if (origemCenario) {
+                    formularioListaObjetosCenario.listarObjetos();
+                } else {
+                    formularioListaObjetos.listarObjetos();
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -2147,6 +2267,8 @@ public class MainPanelEditor extends JPanel {
         probalidadeChuvaText.setText(String.valueOf(circuito.getProbalidadeChuva()));
         nomePistaText.setText(circuito.getNome());
         noite.setSelected(circuito.isNoite());
+        atualizaCorLabel(corFundoLabel, circuito.getCorFundo(), Color.WHITE);
+        atualizaCorLabel(corAsfaltoLabel, circuito.getCorAsfalto(), DesenhoProceduralCircuito.COR_PISTA);
         srcFrame.pack();
         srcFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         if (circuito.getPistaFull() != null && !circuito.getPistaFull().isEmpty()) {
