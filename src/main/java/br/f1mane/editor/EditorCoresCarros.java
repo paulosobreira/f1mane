@@ -205,22 +205,42 @@ public class EditorCoresCarros extends JFrame {
             entry.modificado = true;
             canvas.repaint();
         });
-        // linha 1: botões de cor (metade da largura cada)
-        int btnW = (CARD_W - 20) / 2;
-        btnCor1.setBounds(6, 86, btnW, 26);
+        // linha 1: Cor1 | ⇄ | Cor2
+        int swapW = 50;
+        int corBtnW = (CARD_W - 20 - swapW - 8) / 2; // 8 = 2 gaps de 4px
+        btnCor1.setBounds(6, 86, corBtnW, 26);
         card.add(btnCor1);
         entry.btnCor1 = btnCor1;
+
+        JButton btnTrocar = new JButton("⇄");
+        btnTrocar.setToolTipText("Trocar Cor 1 ↔ Cor 2");
+        btnTrocar.setMargin(new Insets(0, 0, 0, 0));
+        btnTrocar.setBounds(6 + corBtnW + 4, 86, swapW, 26);
+        btnTrocar.addActionListener(e -> {
+            Color tmp = entry.carro.getCor1();
+            entry.carro.setCor1(entry.carro.getCor2());
+            entry.carro.setCor2(tmp);
+            entry.modificado = true;
+            btnCor1.setBackground(entry.carro.getCor1());
+            btnCor1.setForeground(luminancia(entry.carro.getCor1()) > 128 ? Color.BLACK : Color.WHITE);
+            entry.btnCor2.setBackground(entry.carro.getCor2());
+            entry.btnCor2.setForeground(luminancia(entry.carro.getCor2()) > 128 ? Color.BLACK : Color.WHITE);
+            CarregadorRecursos.invalidarCacheModeloV2();
+            canvas.repaint();
+        });
+        card.add(btnTrocar);
 
         JButton btnCor2 = criarBotaoCor("Cor 2", entry.carro.getCor2(), c -> {
             entry.carro.setCor2(c);
             entry.modificado = true;
             canvas.repaint();
         });
-        btnCor2.setBounds(btnW + 14, 86, btnW, 26);
+        btnCor2.setBounds(6 + corBtnW + 4 + swapW + 4, 86, corBtnW, 26);
         card.add(btnCor2);
         entry.btnCor2 = btnCor2;
 
         // linha 2: editar e salvar
+        int btnW = (CARD_W - 20) / 2;
         JButton btnEditar = new JButton("Editar");
         btnEditar.setBounds(6, 118, btnW, 26);
         btnEditar.addActionListener(e -> abrirEditor(entry));
