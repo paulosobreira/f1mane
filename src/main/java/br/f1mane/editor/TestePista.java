@@ -2,10 +2,12 @@ package br.f1mane.editor;
 
 import java.awt.Point;
 import java.util.List;
+import java.util.Map;
 
 import br.nnpe.Logger;
 import br.f1mane.entidades.Circuito;
 import br.f1mane.entidades.No;
+import br.f1mane.entidades.PontoEscape;
 
 public class TestePista {
 	protected static final long SEEP_TIME = 100;
@@ -15,6 +17,7 @@ public class TestePista {
 	public Point frenteCar;
 	private boolean alive;
 	private boolean irProBox;
+	private boolean modoEscapada;
 	private List pontosPista;
 	private List pontosBox;
 	private final MainPanelEditor editor;
@@ -47,6 +50,8 @@ public class TestePista {
 			testTh = null;
 			return;
 		}
+
+		modoEscapada = false;
 
 		testTh = new Thread(new Runnable() {
 			public void run() {
@@ -87,7 +92,7 @@ public class TestePista {
 
 							}
 
-							posicionaCarro(cont, no, pontosPista);
+							posicionaCarroConsiderandoEscapada(cont, pontosPista);
 							centralizaTestCar();
 							if (No.RETA.equals(no.getTipo())
 									|| No.LARGADA.equals(no.getTipo())) {
@@ -129,6 +134,71 @@ public class TestePista {
 
 	}
 
+	/**
+	 * Posiciona o carro de teste no índice {@code cont}. Com
+	 * {@code modoEscapada} desligado (o padrão — sempre reiniciado pra
+	 * desligado ao carregar/criar um circuito e a cada início ou fim de
+	 * teste, ver {@link #iniciarTeste}, {@link #pararTeste} e
+	 * {@link #testarEscapada()}), o carro de teste fica sempre no traçado
+	 * central, ignorando qualquer zona de escapada. Só com
+	 * {@code modoEscapada} ligado é que ele passa a seguir o traçado de
+	 * escapada (nós de {@code Circuito.getEscapeMap()}) em vez da pista
+	 * normal quando o índice cai dentro de uma zona de escapada — igual
+	 * acontece com a pista normal e o box.
+	 */
+	protected void posicionaCarroConsiderandoEscapada(int cont, List pontosPista) {
+		List tracadoEscapada = modoEscapada ? obterTracadoEscapadaAtivo(cont) : null;
+		if (tracadoEscapada == null) {
+			posicionaCarro(cont, (No) pontosPista.get(cont), pontosPista);
+			return;
+		}
+
+		int traz = cont - 44;
+		int frente = cont + 44;
+		if (traz < 0) {
+			traz = (pontosPista.size() - 1) + traz;
+		}
+		if (frente > pontosPista.size()) {
+			frente = frente - (pontosPista.size() - 1);
+		}
+
+		trazCar = noNaListaOuFallback(tracadoEscapada, pontosPista, traz).getPoint();
+		frenteCar = noNaListaOuFallback(tracadoEscapada, pontosPista, frente).getPoint();
+		testCar = noNaListaOuFallback(tracadoEscapada, pontosPista, cont).getPoint();
+	}
+
+	/**
+	 * Retorna o traçado de escapada (lista de nós do mesmo tamanho da
+	 * pista, com {@code null} fora da zona) que tem um nó não nulo no
+	 * índice informado, ou {@code null} se nenhuma zona de escapada cobre
+	 * esse índice.
+	 */
+	private List obterTracadoEscapadaAtivo(int index) {
+		Map<PontoEscape, List<No>> escapeMap = circuito.getEscapeMap();
+		if (escapeMap == null) {
+			return null;
+		}
+		for (List<No> tracado : escapeMap.values()) {
+			if (index >= 0 && index < tracado.size() && tracado.get(index) != null) {
+				return tracado;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Lê o nó no índice informado em {@code preferida}; se estiver fora dos
+	 * limites da zona de escapada ({@code null} ali, ex.: nas bordas da
+	 * janela de 44 nós usada para calcular a orientação do carro), usa
+	 * {@code fallback} (a pista normal) nesse índice.
+	 */
+	private No noNaListaOuFallback(List preferida, List fallback, int index) {
+		if (index >= 0 && index < preferida.size() && preferida.get(index) != null) {
+			return (No) preferida.get(index);
+		}
+		return (No) fallback.get(index);
+	}
+
 	protected void posicionaCarroBox(int cont, No no, List lista) {
 		int traz = cont - 44;
 		int frente = cont + 44;
@@ -155,11 +225,20 @@ public void testarBox() {
 		return irProBox;
 	}
 
+	public void testarEscapada() {
+		modoEscapada = !modoEscapada;
+	}
+
+	public boolean isModoEscapada() {
+		return modoEscapada;
+	}
+
 	protected void centralizaTestCar() {
 		editor.centralizarPonto(testCar);
 	}
 
 	public void pararTeste() {
+		modoEscapada = false;
 		if (testTh != null) {
 			alive = false;
 			testTh.interrupt();

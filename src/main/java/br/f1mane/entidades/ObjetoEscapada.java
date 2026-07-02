@@ -12,6 +12,19 @@ public class ObjetoEscapada extends ObjetoPista {
 
 	public final static Color red = new Color(250, 0, 0, 50);
 
+	/**
+	 * Largura e altura funcionam como as propriedades da onda do traçado de
+	 * escapada (Circuito.gerarEscapeMap/preencheTracadoEscapeSuave): largura
+	 * é o comprimento da zona de escapada e altura é a amplitude (crista),
+	 * numa razão de 1:1 com os pixels do traçado (sem fator de escala
+	 * escondido). Os valores padrão aproximam a mesma proporção
+	 * comprimento:amplitude (~15:1) que o cálculo fixo anterior produzia.
+	 */
+	public ObjetoEscapada() {
+		setLargura(600);
+		setAltura(60);
+	}
+
 	@Override
 	public void desenha(Graphics2D g2d, double zoom) {
 		double rad = Math.toRadians((double) getAngulo());
@@ -38,7 +51,7 @@ public class ObjetoEscapada extends ObjetoPista {
 		if(posicaoQuina==null){
 			return null;
 		}
-		return new Point(posicaoQuina.x + (getAltura() / 2), posicaoQuina.y
+		return new Point(posicaoQuina.x + (getLargura() / 2), posicaoQuina.y
 				+ (getAltura() / 2));
 	}
 
@@ -47,19 +60,9 @@ public class ObjetoEscapada extends ObjetoPista {
 			return null;
 		}
 		return new Ellipse2D.Double(getPosicaoQuina().x, getPosicaoQuina().y,
-				getAltura(), getAltura());
+				getLargura(), getAltura());
 	}
 
 	public static void main(String[] args) {
-	}
-
-	@Override
-	public int getAltura() {
-		return 310;
-	}
-
-	@Override
-	public int getLargura() {
-		return getAltura();
 	}
 }

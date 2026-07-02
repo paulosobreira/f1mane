@@ -15,32 +15,26 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import br.f1mane.controles.InterfaceJogo;
+import br.f1mane.recursos.CarregadorRecursos;
 import br.nnpe.Global;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
-import br.f1mane.controles.InterfaceJogo;
-import br.f1mane.servidor.applet.AppletPaddock;
-import br.f1mane.recursos.CarregadorRecursos;
-import br.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author Paulo Sobreira Created on 14/06/2014
  */
-public class MainFrameEditor extends JFrame {
+public class EditorCircuitos extends JFrame {
     /**
      *
      */
@@ -49,7 +43,6 @@ public class MainFrameEditor extends JFrame {
     private InterfaceJogo controleJogo;
     private final JMenuBar bar;
     private final JMenu menuEditor;
-    private final JMenu menuIdiomas;
     private final JMenu menuInfo;
 
     protected boolean altApertado;
@@ -59,37 +52,19 @@ public class MainFrameEditor extends JFrame {
         return controleJogo;
     }
 
-    public MainFrameEditor() throws IOException {
+    public EditorCircuitos() throws IOException {
         bar = new JMenuBar();
         this.setJMenuBar(bar);
 
-        menuEditor = new JMenu() {
-            public String getText() {
-                return Lang.msg("090");
-            }
-
-        };
+        menuEditor = new JMenu("Editor");
         bar.add(menuEditor);
 
-        menuInfo = new JMenu() {
-            public String getText() {
-                return Lang.msg("089");
-            }
-
-        };
+        menuInfo = new JMenu("Informações");
         bar.add(menuInfo);
 
-        menuIdiomas = new JMenu() {
-            public String getText() {
-                return Lang.msg("219");
-            }
-
-        };
-        bar.add(menuIdiomas);
         gerarMenusEditor(menuEditor);
         gerarMenusInfo(menuInfo);
         gerarMenusSobre(menuInfo);
-        gerarMenusidiomas(menuIdiomas);
         String title = "Fl-MANE " + getVersao() + " MANager & Engineer Editor";
         setTitle(title);
         removerListeners();
@@ -130,47 +105,8 @@ public class MainFrameEditor extends JFrame {
         return CarregadorRecursos.getVersaoFormatado();
     }
 
-    private void gerarMenusidiomas(JMenu menuIdiomas) {
-        JRadioButtonMenuItem pt = new JRadioButtonMenuItem() {
-            public String getText() {
-                return Lang.msg("pt");
-            }
-
-        };
-        JRadioButtonMenuItem en = new JRadioButtonMenuItem() {
-            public String getText() {
-                return Lang.msg("en");
-            }
-
-        };
-        pt.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                Lang.mudarIdioma("pt");
-                SwingUtilities.updateComponentTreeUI(MainFrameEditor.this);
-            }
-        });
-        en.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                Lang.mudarIdioma("en");
-                SwingUtilities.updateComponentTreeUI(MainFrameEditor.this);
-            }
-        });
-
-        ButtonGroup buttonGroup = new ButtonGroup();
-        buttonGroup.add(pt);
-        buttonGroup.add(en);
-        menuIdiomas.add(pt);
-        menuIdiomas.add(en);
-
-    }
-
     private void gerarMenusInfo(JMenu menuInfo2) {
-        JMenuItem logs = new JMenuItem("Ver Logs") {
-            public String getText() {
-                return Lang.msg("267");
-            }
-
-        };
+        JMenuItem logs = new JMenuItem("Ver Logs");
         logs.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -185,8 +121,8 @@ public class MainFrameEditor extends JFrame {
                         area.append("\n");
                     }
                     area.setCaretPosition(0);
-                    JOptionPane.showMessageDialog(MainFrameEditor.this,
-                            new JScrollPane(area), Lang.msg("listaDeErros"),
+                    JOptionPane.showMessageDialog(EditorCircuitos.this,
+                            new JScrollPane(area), "Lista de Erros",
                             JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -196,12 +132,7 @@ public class MainFrameEditor extends JFrame {
         });
         menuInfo2.add(logs);
 
-        JMenuItem ligarLogs = new JMenuItem("ativarLogs") {
-            public String getText() {
-                return Lang.msg("ativarLogs");
-            }
-
-        };
+        JMenuItem ligarLogs = new JMenuItem("Ativar Debug/Logs");
         ligarLogs.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Global.DEBUG = !Global.DEBUG;
@@ -219,17 +150,12 @@ public class MainFrameEditor extends JFrame {
         for (int i = 0; i < size; i++)
             retorno.append(trace[i]).append("\n");
         JOptionPane.showMessageDialog(null, retorno.toString(),
-                Lang.msg("059"), JOptionPane.ERROR_MESSAGE);
+                "Conexão Perdida. Erro enviando dados.", JOptionPane.ERROR_MESSAGE);
 
     }
 
     private void gerarMenusSobre(JMenu menu2) {
-        JMenuItem sobre = new JMenuItem("Sobre o autor do jogo") {
-            public String getText() {
-                return Lang.msg("093");
-            }
-
-        };
+        JMenuItem sobre = new JMenuItem("Sobre o autor do jogo");
         sobre.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 mostraSobre();
@@ -240,16 +166,14 @@ public class MainFrameEditor extends JFrame {
     }
 
     public void mostraSobre() {
-        String msg = Lang.msg("184") + " Paulo Sobreira        ".trim() + "\n"
-                + "- " + Lang.msg("pistas") + " "
-                + " www.miniracingonline.com                   ".trim() + "\n"
-                + "- " + Lang.msg("capacetesCarros") + " "
-                + " spotterguidecentral.com                    ".trim() + "\n"
-                + "- http://sowbreira.appspot.com              ".trim() + "\n"
+        String msg = "Feito por" + " Paulo Sobreira        ".trim() + "\n"
+                + "- " + "Pistas" + " "
+                + "- " + "Capacetes e Carros" + " "
+                + "- https://sowbreira-26fe1.firebaseapp.com             ".trim() + "\n"
                 + "- sowbreira@gmail.com                       ".trim() + "\n"
-                + "- 2007-2024";
-        JOptionPane.showMessageDialog(MainFrameEditor.this, msg,
-                Lang.msg("093"), JOptionPane.INFORMATION_MESSAGE);
+                + "- 2007-2026";
+        JOptionPane.showMessageDialog(EditorCircuitos.this, msg,
+                "Sobre o autor do jogo", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void ativarKeysEditor() {
@@ -333,12 +257,7 @@ public class MainFrameEditor extends JFrame {
 
     private void gerarMenusEditor(Container menu4) {
 
-        JMenuItem abrirImg = new JMenuItem("Novo Circuito") {
-            public String getText() {
-                return Lang.msg("098");
-            }
-
-        };
+        JMenuItem abrirImg = new JMenuItem("Criar Circuito");
         abrirImg.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -346,7 +265,7 @@ public class MainFrameEditor extends JFrame {
                         controleJogo.matarTodasThreads();
                     }
                     editor = new MainPanelEditor(
-                            MainFrameEditor.this);
+                            EditorCircuitos.this);
                     editor.novo();
                     ativarKeysEditor();
                 } catch (Exception e1) {
@@ -356,18 +275,14 @@ public class MainFrameEditor extends JFrame {
             }
         });
         menu4.add(abrirImg);
-        JMenuItem abrirPista = new JMenuItem("Editar Circuito") {
-            public String getText() {
-                return Lang.msg("097");
-            }
-        };
+        JMenuItem abrirPista = new JMenuItem("Editar Circuito");
         abrirPista.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (controleJogo != null) {
                         controleJogo.matarTodasThreads();
                     }
-                    editor = new MainPanelEditor(MainFrameEditor.this);
+                    editor = new MainPanelEditor(EditorCircuitos.this);
                     editor.editar();
                     ativarKeysEditor();
                 } catch (Exception e1) {
@@ -378,12 +293,7 @@ public class MainFrameEditor extends JFrame {
         });
         menu4.add(abrirPista);
 
-        JMenuItem salvarPista = new JMenuItem("Salvar Pista F8") {
-            public String getText() {
-                return Lang.msg("108");
-            }
-
-        };
+        JMenuItem salvarPista = new JMenuItem("Salvar Pista F8");
         salvarPista.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -398,10 +308,7 @@ public class MainFrameEditor extends JFrame {
     }
 
     public static void main(String[] args) throws IOException {
-        if (args != null && args.length > 1) {
-            Lang.mudarIdioma(args[1]);
-        }
-        MainFrameEditor frame = new MainFrameEditor();
+        EditorCircuitos frame = new EditorCircuitos();
     }
 
     private void removerListeners() {

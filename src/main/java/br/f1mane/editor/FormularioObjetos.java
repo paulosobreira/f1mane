@@ -2,8 +2,11 @@ package br.f1mane.editor;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -14,11 +17,11 @@ import javax.swing.event.ChangeListener;
 
 import br.nnpe.Logger;
 import br.f1mane.entidades.ObjetoPista;
-import br.f1mane.recursos.idiomas.Lang;
 
 public class FormularioObjetos {
 
 	private final JSpinner largura = new JSpinner();
+	private final JSpinner altura = new JSpinner();
 	private JSpinner inicioTranparencia = new JSpinner();
 	private JSpinner fimTransparencia = new JSpinner();
 	private final JSpinner angulo = new JSpinner();
@@ -27,56 +30,42 @@ public class FormularioObjetos {
 	private final JComboBox tipoComboBox = new JComboBox();
 	private JLabel labelCor1 = new JLabel("Clique");
 	private JLabel labelCor2 = new JLabel("Clique");
-	private final JPanel panel = new JPanel(new GridLayout(5, 2));
+	private final JPanel panel = new JPanel(new GridLayout(9, 2));
 	private final MainPanelEditor mainPanelEditor;
 	private ObjetoPista objetoPista;
-	protected static final String OBJETO_TRANSPARENCIA = "Objeto Transparencia";
-	protected static final String OBJETO_ESCAPADA = "Objeto Escapada";
 
 	public FormularioObjetos(MainPanelEditor panelPai) {
 		this.mainPanelEditor = panelPai;
-		tipoComboBox.addItem(OBJETO_TRANSPARENCIA);
-		tipoComboBox.addItem(OBJETO_ESCAPADA);
+		for (TipoObjetoPista tipo : TipoObjetoPista.values()) {
+			tipoComboBox.addItem(tipo);
+		}
 
-		panel.add(new JLabel("Tipo") {
-			@Override
-			public String getText() {
-				return Lang.msg("tipo");
-			}
-		});
+		panel.add(new JLabel("Tipo"));
 		panel.add(tipoComboBox);
 
-		panel.add(new JLabel("No Inicio Transparencia") {
-			@Override
-			public String getText() {
-				return Lang.msg("noInicioTransparencia");
-			}
-		});
+		panel.add(new JLabel("No Início Transparência"));
 		panel.add(inicioTranparencia);
 
-		panel.add(new JLabel("No Fim Transparencia") {
-			@Override
-			public String getText() {
-				return Lang.msg("noFimTransparencia");
-			}
-		});
+		panel.add(new JLabel("No Fim Transparência"));
 		panel.add(fimTransparencia);
 
-		panel.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("transparenciaBox");
-			}
-		});
+		panel.add(new JLabel("Transparencia Box"));
 		panel.add(transparenciaBox);
 
-		panel.add(new JLabel("Angulo") {
-			@Override
-			public String getText() {
-				return Lang.msg("angulorRotacao");
-			}
-		});
+		panel.add(new JLabel("Ângulo"));
 		panel.add(angulo);
+
+		panel.add(new JLabel("Largura"));
+		panel.add(largura);
+
+		panel.add(new JLabel("Altura"));
+		panel.add(altura);
+
+		panel.add(new JLabel("Cor Primária"));
+		panel.add(labelCor1);
+
+		panel.add(new JLabel("Cor Secundária"));
+		panel.add(labelCor2);
 
 		ChangeListener changeListener = new ChangeListener() {
 
@@ -88,13 +77,36 @@ public class FormularioObjetos {
 		};
 		inicioTranparencia.addChangeListener(changeListener);
 		largura.addChangeListener(changeListener);
+		altura.addChangeListener(changeListener);
 		fimTransparencia.addChangeListener(changeListener);
+
+		labelCor1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Color nova = JColorChooser.showDialog(panel, "Cor Primária",
+						labelCor1.getBackground());
+				if (nova != null) {
+					setCor(nova, labelCor1);
+				}
+			}
+		});
+		labelCor2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Color nova = JColorChooser.showDialog(panel, "Cor Secundária",
+						labelCor2.getBackground());
+				if (nova != null) {
+					setCor(nova, labelCor2);
+				}
+			}
+		});
 	}
 
 	protected void atualizaMain() {
 		if (objetoPista != null
 				&& FormularioObjetos.this.mainPanelEditor != null) {
 			formularioObjetoPista(objetoPista);
+			FormularioObjetos.this.mainPanelEditor.reprocessaEscapadaSeNecessario(objetoPista);
 			FormularioObjetos.this.mainPanelEditor.repaint();
 		}
 
@@ -103,8 +115,10 @@ public class FormularioObjetos {
 	public void mostrarPainelModal() {
 		JOptionPane.showMessageDialog(this.mainPanelEditor.getSrcFrame(),
 				panel);
-		if (objetoPista != null)
+		if (objetoPista != null) {
 			formularioObjetoPista(objetoPista);
+			FormularioObjetos.this.mainPanelEditor.reprocessaEscapadaSeNecessario(objetoPista);
+		}
 		FormularioObjetos.this.mainPanelEditor.repaint();
 	}
 
@@ -182,20 +196,34 @@ public class FormularioObjetos {
 
 	public void objetoLivreFormulario(ObjetoPista objetoPista) {
 		this.objetoPista = null;
+		carregarCampos(objetoPista);
+		this.objetoPista = objetoPista;
+		mostrarPainelModal();
+	}
+
+	/**
+	 * Popula os campos do formulário a partir do estado atual de
+	 * {@code objetoPista}, para que abrir o formulário (seja para editar um
+	 * objeto existente, seja logo após criar um novo com valores padrão) não
+	 * sobrescreva esses valores com o estado em branco dos campos Swing.
+	 */
+	void carregarCampos(ObjetoPista objetoPista) {
 		largura.setValue(Integer.valueOf(objetoPista.getLargura()));
+		altura.setValue(Integer.valueOf(objetoPista.getAltura()));
+		angulo.setValue(Integer.valueOf((int) objetoPista.getAngulo()));
 		setCor(objetoPista.getCorPimaria(), labelCor1);
 		setCor(objetoPista.getCorSecundaria(), labelCor2);
 		frente.setSelected(objetoPista.isPintaEmcima());
 		inicioTranparencia.setValue(Integer.valueOf(objetoPista.getInicioTransparencia()));
 		fimTransparencia.setValue(Integer.valueOf(objetoPista.getFimTransparencia()));
 		transparenciaBox.setSelected(objetoPista.isTransparenciaBox());
-		this.objetoPista = objetoPista;
-		mostrarPainelModal();
 	}
 
 	public void formularioObjetoPista(ObjetoPista objetoPista) {
-//		objetoPista.setCorPimaria(getLabelCor1().getBackground());
-//		objetoPista.setCorSecundaria(getLabelCor2().getBackground());
+		objetoPista.setCorPimaria(labelCor1.getBackground());
+		objetoPista.setCorSecundaria(labelCor2.getBackground());
+		objetoPista.setLargura(((Integer) largura.getValue()).intValue());
+		objetoPista.setAltura(((Integer) altura.getValue()).intValue());
 		objetoPista.setAngulo(((Integer) angulo.getValue()).doubleValue());
 		objetoPista.setInicioTransparencia(
                 ((Integer) getInicioTranparencia().getValue()).intValue());

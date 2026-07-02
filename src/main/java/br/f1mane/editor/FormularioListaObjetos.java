@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.Transient;
 import java.util.List;
+import java.util.function.Function;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -21,6 +22,7 @@ import br.f1mane.entidades.ObjetoPista;
 public class FormularioListaObjetos {
 
 	private final MainPanelEditor editor;
+	private final Function<Circuito, List<ObjetoPista>> listaAccessor;
 	private DefaultListModel defaultListModelOP;
 	private JList list;
 	private final JFrame frame = new JFrame();
@@ -43,7 +45,13 @@ public class FormularioListaObjetos {
 	}
 
 	public FormularioListaObjetos(MainPanelEditor editor) {
+		this(editor, Circuito::getObjetos);
+	}
+
+	public FormularioListaObjetos(MainPanelEditor editor,
+			Function<Circuito, List<ObjetoPista>> listaAccessor) {
 		this.editor = editor;
+		this.listaAccessor = listaAccessor;
 		defaultListModelOP = new DefaultListModel();
 		list = new JList(defaultListModelOP);
 		list.addListSelectionListener(new ListSelectionListener() {
@@ -176,7 +184,7 @@ public class FormularioListaObjetos {
 	}
 
 	public void listarObjetos() {
-		List<ObjetoPista> objetoPista = editor.getCircuito().getObjetos();
+		List<ObjetoPista> objetoPista = listaAccessor.apply(editor.getCircuito());
 		if (objetoPista != null) {
 			defaultListModelOP.clear();
 			for (ObjetoPista op : objetoPista) {
@@ -187,7 +195,7 @@ public class FormularioListaObjetos {
 
 	protected void atualizarCircuito() {
 		Circuito circuito = editor.getCircuito();
-		List<ObjetoPista> objetos = circuito.getObjetos();
+		List<ObjetoPista> objetos = listaAccessor.apply(circuito);
 		objetos.clear();
 		for (int i = 0; i < defaultListModelOP.getSize(); i++) {
 			objetos.add((ObjetoPista) defaultListModelOP.getElementAt(i));

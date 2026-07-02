@@ -636,7 +636,7 @@ public class PainelCircuito {
         }
         try {
             if (backGround == null && !carragandoBkg) {
-                backGround = CarregadorRecursos.carregaBackGround(circuito.getBackGround(), null, circuito);
+                backGround = CarregadorRecursos.carregaBackGroundJogo(circuito.getBackGround(), null, circuito);
             }
         } catch (Exception e) {
             Logger.logarExept(e);
@@ -1773,6 +1773,8 @@ public class PainelCircuito {
                     Point delocado = new Point(objetoEscapada.getPosicaoQuina().x - descontoCentraliza.x,
                             objetoEscapada.getPosicaoQuina().y - descontoCentraliza.y);
                     objetoEscapadaDesenha.setPosicaoQuina(delocado);
+                    objetoEscapadaDesenha.setLargura(objetoEscapada.getLargura());
+                    objetoEscapadaDesenha.setAltura(objetoEscapada.getAltura());
                     objetoEscapadaDesenha.desenha(g2d, zoom);
                 }
             }

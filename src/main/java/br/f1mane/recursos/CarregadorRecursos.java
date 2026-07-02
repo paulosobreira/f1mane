@@ -248,6 +248,26 @@ public class CarregadorRecursos {
         return backGround;
     }
 
+    /**
+     * Usado pelo carregamento de imagem de fundo em corrida (não pelo
+     * editor de circuitos, que precisa sempre da imagem real de arquivo
+     * para servir de referência visual). Quando
+     * {@link Global#GERAR_IMAGEM_CIRCUITO_EM_MEMORIA} está ativa, gera a
+     * imagem em memória via {@link DesenhoProceduralCircuito} em vez de ler
+     * {@code circuitos/<backGroundStr>} do disco.
+     */
+    public static BufferedImage carregaBackGroundJogo(String backGroundStr,
+                                                       JPanel panel, Circuito circuito) {
+        if (Global.GERAR_IMAGEM_CIRCUITO_EM_MEMORIA && circuito != null) {
+            BufferedImage backGround = DesenhoProceduralCircuito.geraImagem(circuito);
+            if (panel != null) {
+                panel.setSize(backGround.getWidth(), backGround.getHeight());
+            }
+            return backGround;
+        }
+        return carregaBackGround(backGroundStr, panel, circuito);
+    }
+
     public static InputStream recursoComoStream(String recurso) {
         if (carregadorRecursos == null) {
             carregadorRecursos = new CarregadorRecursos();

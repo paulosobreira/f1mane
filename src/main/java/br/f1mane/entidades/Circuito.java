@@ -67,11 +67,15 @@ public class Circuito implements Serializable {
     @JsonIgnore
     private List<ObjetoPista> objetos;
     @JsonIgnore
+    private List<ObjetoPista> objetosCenario;
+    @JsonIgnore
     private Point creditos;
     @JsonIgnore
     private List<Point> escapeList = new ArrayList<Point>();
     @JsonIgnore
     private Color corFundo;
+    @JsonIgnore
+    private Color corAsfalto;
 
     public Point getCreditos() {
         return creditos;
@@ -265,6 +269,20 @@ public class Circuito implements Serializable {
         gerarEscapeMap();
     }
 
+    /**
+     * Reprocessa só o traçado de escapada (pista4Full/pista5Full/escapeMap),
+     * sem revetorizar a pista inteira. Usado pelo editor para atualizar o
+     * desenho dos nós de escapada em tempo real ao mover um objeto Escapada
+     * ou ajustar sua largura/altura (comprimento/amplitude da onda), sem o
+     * custo de {@link #vetorizarPista}. Requer que a pista já tenha sido
+     * vetorizada ao menos uma vez (pistaFull/pista1Full/pista2Full
+     * populados) — chamado antes disso é inofensivo, mas não gera zonas.
+     */
+    public synchronized void reprocessarEscapadas() {
+        gerarEscapeList();
+        gerarEscapeMap();
+    }
+
     private void gerarTracado1e2Pista() {
         pista1Full = new ArrayList<No>();
         pista2Full = new ArrayList<No>();
@@ -357,8 +375,19 @@ public class Circuito implements Serializable {
         pista5Full = new ArrayList<No>();
         pista5Full.addAll(pista1Full);
         List<No> nosDaPista = getPistaFull();
-        for (Iterator<Point> iterator = escapeList.iterator(); iterator.hasNext(); ) {
-            Point pointDerrapagem = iterator.next();
+        List<ObjetoPista> objetos = getObjetos();
+        if (objetos == null) {
+            return;
+        }
+        for (ObjetoPista objetoPista : objetos) {
+            if (!(objetoPista instanceof ObjetoEscapada)) {
+                continue;
+            }
+            ObjetoEscapada objetoEscapada = (ObjetoEscapada) objetoPista;
+            Point pointDerrapagem = objetoEscapada.centro();
+            if (pointDerrapagem == null) {
+                continue;
+            }
             No noPerto = null;
             double menorDistancia = Double.MAX_VALUE;
             for (Iterator iterator2 = nosDaPista.iterator(); iterator2.hasNext(); ) {
@@ -390,47 +419,26 @@ public class Circuito implements Serializable {
                     new Point(Util.inteiro(rectangle.getCenterX()), Util.inteiro(rectangle.getCenterY())));
             double distaciaEntrePontos1 = GeoUtil.distaciaEntrePontos(p1, pointDerrapagem);
             double distaciaEntrePontos2 = GeoUtil.distaciaEntrePontos(p2, pointDerrapagem);
-            int contSaida = 0;
-            int max = Util.inteiro(Carro.ALTURA * 3.5 * getMultiplicadorLarguraPista());
-            int contVolta = max;
+            // Onda da escapada: largura do objeto = comprimento da zona (em
+            // nós), altura do objeto = amplitude (crista), 1:1 em pixels —
+            // sem fator de escala adicional, para que ajustar essas
+            // propriedades no editor mude o traçado exatamente na mesma
+            // proporção. A direção do afastamento é calculada uma única vez
+            // aqui (calculaAngulo) e reaproveitada por toda a zona — a onda
+            // não segue a curvatura da pista nó a nó. O campo "ângulo" do
+            // objeto, quando >= 1, funciona como multiplicador extra de
+            // largura/altura (comprimento/amplitude); abaixo de 1 não
+            // multiplica (mantém largura/altura como estão).
+            double multiplicadorOnda = objetoEscapada.getAngulo() >= 1 ? objetoEscapada.getAngulo() : 1;
+            int crista = Util.inteiro(objetoEscapada.getAltura() * multiplicadorOnda);
             int index = noPerto.getIndex();
-            int contMax = (int) (index + (max * 15));
-            int contPonto = 0;
+            int contMax = index + Util.inteiro(objetoEscapada.getLargura() * multiplicadorOnda);
             if (distaciaEntrePontos1 < distaciaEntrePontos2) {
                 PontoEscape ponto = new PontoEscape();
                 ponto.setPoint(pointDerrapagem);
                 ponto.setPista(5);
                 pista5Full.set(index, pista1Full.get(index));
-                Point p5 = null;
-                for (int i = index; i < contMax; i++) {
-                    No noIndex = pista1Full.get(i);
-                    if (i % 2 == 0) {
-                        contSaida++;
-                    }
-                    if (contSaida < max) {
-                        contPonto = contSaida;
-                    } else if (contVolta > 0 && p5 != null) {
-                        boolean sair = false;
-                        for (int j = (index + 10); j < pista1Full.size(); j++) {
-                            if (GeoUtil.distaciaEntrePontos(pista1Full.get(j).getPoint(), p5) < 1) {
-                                sair = true;
-                            }
-                        }
-                        if (sair) {
-                            break;
-                        }
-                        if (i % 3 == 0) {
-                            contVolta--;
-                        }
-                        contPonto = contVolta;
-                    }
-                    p5 = GeoUtil.calculaPonto(calculaAngulo, Util.inteiro(contPonto), noIndex.getPoint());
-                    No newNo = new No();
-                    newNo.setPoint(p5);
-                    newNo.setTracado(5);
-                    newNo.setTipo(noIndex.getTipo());
-                    pista5Full.set(i, newNo);
-                }
+                preencheTracadoEscapeSuave(pista5Full, pista1Full, nosDaPista, index, contMax, crista, calculaAngulo, 0, 5);
                 escapeMap.put(ponto, pista5Full);
             }
             if (distaciaEntrePontos2 < distaciaEntrePontos1) {
@@ -438,36 +446,7 @@ public class Circuito implements Serializable {
                 ponto.setPoint(pointDerrapagem);
                 ponto.setPista(4);
                 pista4Full.set(index, pista2Full.get(index));
-                Point p4 = null;
-                for (int i = index; i < contMax; i++) {
-                    No noIndex = pista2Full.get(i);
-                    if (i % 2 == 0) {
-                        contSaida++;
-                    }
-                    if (contSaida < max) {
-                        contPonto = contSaida;
-                    } else if (contVolta > 0 && p4 != null) {
-                        boolean sair = false;
-                        for (int j = (index + 10); j < pista2Full.size(); j++) {
-                            if (GeoUtil.distaciaEntrePontos(pista2Full.get(j).getPoint(), p4) < 1) {
-                                sair = true;
-                            }
-                        }
-                        if (sair) {
-                            break;
-                        }
-                        if (i % 3 == 0) {
-                            contVolta--;
-                        }
-                        contPonto = contVolta;
-                    }
-                    p4 = GeoUtil.calculaPonto(calculaAngulo + 180, Util.inteiro(contPonto), noIndex.getPoint());
-                    No newNo = new No();
-                    newNo.setPoint(p4);
-                    newNo.setTipo(noIndex.getTipo());
-                    newNo.setTracado(4);
-                    pista4Full.set(i, newNo);
-                }
+                preencheTracadoEscapeSuave(pista4Full, pista2Full, nosDaPista, index, contMax, crista, calculaAngulo, 180, 4);
                 escapeMap.put(ponto, pista4Full);
             }
         }
@@ -482,6 +461,39 @@ public class Circuito implements Serializable {
             if (no.getTracado() != 5) {
                 pista5Full.set(i, null);
             }
+        }
+    }
+
+    /**
+     * Preenche o trecho [index, contMax) de {@code destino} com uma onda
+     * pura: o afastamento lateral segue uma senoide simétrica (zero nas
+     * duas pontas da zona, crista {@code max} na metade — comprimento e
+     * amplitude vêm 1:1 da largura/altura do objeto Escapada), numa única
+     * direção fixa ({@code angulo}, calculada uma vez pelo chamador a
+     * partir do nó de gatilho). Diferente da versão anterior, a onda não
+     * recalcula a direção nó a nó nem limita o afastamento pela curvatura
+     * local da pista — ela é definida só pela largura/altura/posição do
+     * objeto Escapada, sem depender do traçado da pista.
+     */
+    private void preencheTracadoEscapeSuave(List<No> destino, List<No> bordaOriginal, List<No> nosDaPista,
+            int index, int contMax, int max, double angulo, double anguloAdicional, int tracado) {
+        int fim = Math.min(contMax, Math.min(bordaOriginal.size(), nosDaPista.size()));
+        int comprimentoZona = fim - index;
+        if (comprimentoZona <= 0) {
+            return;
+        }
+        for (int idx = 0; idx < comprimentoZona; idx++) {
+            int i = index + idx;
+            double t = (double) idx / (double) comprimentoZona;
+            double offset = max * Math.sin(Math.PI * t);
+            No noOriginal = bordaOriginal.get(i);
+            Point pOffset = GeoUtil.calculaPonto(angulo + anguloAdicional, Util.inteiro(offset),
+                    noOriginal.getPoint());
+            No newNo = new No();
+            newNo.setPoint(pOffset);
+            newNo.setTipo(nosDaPista.get(i).getTipo());
+            newNo.setTracado(tracado);
+            destino.set(i, newNo);
         }
     }
 
@@ -607,12 +619,28 @@ public class Circuito implements Serializable {
         this.objetos = objetos;
     }
 
+    public List<ObjetoPista> getObjetosCenario() {
+        return objetosCenario;
+    }
+
+    public void setObjetosCenario(List<ObjetoPista> objetosCenario) {
+        this.objetosCenario = objetosCenario;
+    }
+
     public Color getCorFundo() {
         return corFundo;
     }
 
     public void setCorFundo(Color corFundo) {
         this.corFundo = corFundo;
+    }
+
+    public Color getCorAsfalto() {
+        return corAsfalto;
+    }
+
+    public void setCorAsfalto(Color corAsfalto) {
+        this.corAsfalto = corAsfalto;
     }
 
     public boolean isNoite() {
