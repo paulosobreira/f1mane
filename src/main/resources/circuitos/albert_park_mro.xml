@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="23.0.1" class="java.beans.XMLDecoder">
  <object class="br.f1mane.entidades.Circuito" id="Circuito0">
+  <void property="ativo">
+   <boolean>true</boolean>
+  </void>
   <void property="backGround">
    <string>albert_park_mro.jpg</string>
   </void>

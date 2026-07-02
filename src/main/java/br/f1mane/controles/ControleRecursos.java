@@ -265,6 +265,14 @@ public abstract class ControleRecursos {
             while (propName.hasMoreElements()) {
                 final String name = (String) propName.nextElement();
                 String names[] = properties.getProperty(name).split(",");
+                try {
+                    if (!CarregadorRecursos.carregarCircuito(name).isAtivo()) {
+                        continue;
+                    }
+                } catch (Exception e) {
+                    Logger.logarExept(e);
+                    continue;
+                }
                 circuitos.put(names[0], name);
                 circuitosCiclo.put(names[0],Integer.valueOf(names[1]));
             }
