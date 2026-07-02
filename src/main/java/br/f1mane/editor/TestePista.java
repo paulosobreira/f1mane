@@ -17,6 +17,7 @@ public class TestePista {
 	public Point frenteCar;
 	private boolean alive;
 	private boolean irProBox;
+	private boolean modoEscapada;
 	private List pontosPista;
 	private List pontosBox;
 	private final MainPanelEditor editor;
@@ -49,6 +50,8 @@ public class TestePista {
 			testTh = null;
 			return;
 		}
+
+		modoEscapada = false;
 
 		testTh = new Thread(new Runnable() {
 			public void run() {
@@ -132,14 +135,19 @@ public class TestePista {
 	}
 
 	/**
-	 * Posiciona o carro de teste no índice {@code cont}, seguindo o traçado
-	 * de escapada (nós de {@code Circuito.getEscapeMap()}) em vez da pista
-	 * normal quando esse índice cai dentro de uma zona de escapada — assim
-	 * o carro de teste "anda" pela escapada, igual acontece com a pista
-	 * normal e o box.
+	 * Posiciona o carro de teste no índice {@code cont}. Com
+	 * {@code modoEscapada} desligado (o padrão — sempre reiniciado pra
+	 * desligado ao carregar/criar um circuito e a cada início ou fim de
+	 * teste, ver {@link #iniciarTeste}, {@link #pararTeste} e
+	 * {@link #testarEscapada()}), o carro de teste fica sempre no traçado
+	 * central, ignorando qualquer zona de escapada. Só com
+	 * {@code modoEscapada} ligado é que ele passa a seguir o traçado de
+	 * escapada (nós de {@code Circuito.getEscapeMap()}) em vez da pista
+	 * normal quando o índice cai dentro de uma zona de escapada — igual
+	 * acontece com a pista normal e o box.
 	 */
 	protected void posicionaCarroConsiderandoEscapada(int cont, List pontosPista) {
-		List tracadoEscapada = obterTracadoEscapadaAtivo(cont);
+		List tracadoEscapada = modoEscapada ? obterTracadoEscapadaAtivo(cont) : null;
 		if (tracadoEscapada == null) {
 			posicionaCarro(cont, (No) pontosPista.get(cont), pontosPista);
 			return;
@@ -217,11 +225,20 @@ public void testarBox() {
 		return irProBox;
 	}
 
+	public void testarEscapada() {
+		modoEscapada = !modoEscapada;
+	}
+
+	public boolean isModoEscapada() {
+		return modoEscapada;
+	}
+
 	protected void centralizaTestCar() {
 		editor.centralizarPonto(testCar);
 	}
 
 	public void pararTeste() {
+		modoEscapada = false;
 		if (testTh != null) {
 			alive = false;
 			testTh.interrupt();

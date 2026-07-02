@@ -31,7 +31,7 @@ public final class Global {
 
     public static boolean LOG_COLISAO = false;
 
-    public static boolean GERAR_IMAGEM_CIRCUITO_EM_MEMORIA = false;
+    public static boolean GERAR_IMAGEM_CIRCUITO_EM_MEMORIA = true;
 
 
     private Global() {

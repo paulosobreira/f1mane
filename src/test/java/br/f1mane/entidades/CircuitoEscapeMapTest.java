@@ -15,11 +15,10 @@ import org.junit.jupiter.api.Test;
 import br.f1mane.recursos.CarregadorRecursos;
 
 /**
- * Cobre o traçado suave das zonas de escapada (Circuito.gerarEscapeMap):
- * o afastamento lateral deve subir e descer de forma contínua (sem picos
- * nem oscilação dupla — nem mesmo em curvas fechadas, onde a estimativa de
- * curvatura por 3 pontos é ruidosa), e a zona deve começar e terminar rente
- * ao traçado original da pista.
+ * Cobre o traçado das zonas de escapada (Circuito.gerarEscapeMap): a onda
+ * (senoide pura, sem depender da curvatura da pista) deve subir e descer de
+ * forma contínua (sem picos nem oscilação dupla), e a zona deve começar e
+ * terminar rente ao traçado original da pista.
  */
 class CircuitoEscapeMapTest {
 

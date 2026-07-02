@@ -28,38 +28,6 @@ import br.nnpe.Util;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Circuito implements Serializable {
     private static final long serialVersionUID = -1488529358105580761L;
-    /**
-     * Multiplica o afastamento máximo (crista da onda de saída de pista)
-     * para chegar no comprimento, em nós, da zona de escapada. Era 15;
-     * reduzido para encurtar a zona mantendo a mesma crista.
-     */
-    private static final int FATOR_COMPRIMENTO_ZONA_ESCAPADA = 6;
-    /**
-     * Reduz a crista (afastamento máximo) da onda de escapada na mesma
-     * proporção em que {@link #FATOR_COMPRIMENTO_ZONA_ESCAPADA} foi reduzido
-     * (de 15 para 6, ou seja 6/15). Sem isso, a crista continuaria com a
-     * mesma altura de quando a zona era mais longa, e a mesma altura numa
-     * zona mais curta vira uma subida/descida mais íngreme — esse fator
-     * restaura a inclinação original, mantendo a saída homogênea com o novo
-     * tamanho de zona.
-     */
-    private static final double FATOR_CRISTA_SAIDA = 6.0 / 15.0;
-    /**
-     * Ângulo interno mínimo (grau formado entre os trechos de pista antes e
-     * depois de um nó) para permitir zona de escapada nesse nó. Abaixo disso
-     * o nó fica numa curva fechada demais (perto de um hairpin); a onda de
-     * escapada assume uma pista com curvatura suave, e nós mais fechados que
-     * isso produzem um traçado de escapada degenerado.
-     */
-    private static final double ANGULO_MINIMO_NO_ESCAPADA_GRAUS = 100.0;
-    /**
-     * Fração do raio de curvatura local da pista até onde o afastamento
-     * lateral do traçado de escapada pode ir, em curvas fechadas. Offsetar
-     * mais que o raio local dobra o traçado sobre si mesmo (efeito
-     * serra/ponta aguda); manter uma margem (<1) evita isso mesmo perto do
-     * limite.
-     */
-    private static final double FATOR_SEGURANCA_CURVATURA = 0.85;
     private String backGround;
     @JsonIgnore
     private List<No> pista = new ArrayList<No>();
@@ -301,6 +269,20 @@ public class Circuito implements Serializable {
         gerarEscapeMap();
     }
 
+    /**
+     * Reprocessa só o traçado de escapada (pista4Full/pista5Full/escapeMap),
+     * sem revetorizar a pista inteira. Usado pelo editor para atualizar o
+     * desenho dos nós de escapada em tempo real ao mover um objeto Escapada
+     * ou ajustar sua largura/altura (comprimento/amplitude da onda), sem o
+     * custo de {@link #vetorizarPista}. Requer que a pista já tenha sido
+     * vetorizada ao menos uma vez (pistaFull/pista1Full/pista2Full
+     * populados) — chamado antes disso é inofensivo, mas não gera zonas.
+     */
+    public synchronized void reprocessarEscapadas() {
+        gerarEscapeList();
+        gerarEscapeMap();
+    }
+
     private void gerarTracado1e2Pista() {
         pista1Full = new ArrayList<No>();
         pista2Full = new ArrayList<No>();
@@ -393,8 +375,19 @@ public class Circuito implements Serializable {
         pista5Full = new ArrayList<No>();
         pista5Full.addAll(pista1Full);
         List<No> nosDaPista = getPistaFull();
-        for (Iterator<Point> iterator = escapeList.iterator(); iterator.hasNext(); ) {
-            Point pointDerrapagem = iterator.next();
+        List<ObjetoPista> objetos = getObjetos();
+        if (objetos == null) {
+            return;
+        }
+        for (ObjetoPista objetoPista : objetos) {
+            if (!(objetoPista instanceof ObjetoEscapada)) {
+                continue;
+            }
+            ObjetoEscapada objetoEscapada = (ObjetoEscapada) objetoPista;
+            Point pointDerrapagem = objetoEscapada.centro();
+            if (pointDerrapagem == null) {
+                continue;
+            }
             No noPerto = null;
             double menorDistancia = Double.MAX_VALUE;
             for (Iterator iterator2 = nosDaPista.iterator(); iterator2.hasNext(); ) {
@@ -418,9 +411,6 @@ public class Circuito implements Serializable {
             int frente = cont + 44;
             Point trazCar = ((No) nosDaPista.get(traz)).getPoint();
             Point frenteCar = ((No) nosDaPista.get(frente)).getPoint();
-            if (anguloInternoNo(trazCar, p, frenteCar) < ANGULO_MINIMO_NO_ESCAPADA_GRAUS) {
-                continue;
-            }
             double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
             Point p1 = GeoUtil.calculaPonto(calculaAngulo, Util.inteiro(Carro.ALTURA * getMultiplicadorLarguraPista()),
                     new Point(Util.inteiro(rectangle.getCenterX()), Util.inteiro(rectangle.getCenterY())));
@@ -429,16 +419,26 @@ public class Circuito implements Serializable {
                     new Point(Util.inteiro(rectangle.getCenterX()), Util.inteiro(rectangle.getCenterY())));
             double distaciaEntrePontos1 = GeoUtil.distaciaEntrePontos(p1, pointDerrapagem);
             double distaciaEntrePontos2 = GeoUtil.distaciaEntrePontos(p2, pointDerrapagem);
-            int max = Util.inteiro(Carro.ALTURA * 3.5 * getMultiplicadorLarguraPista());
-            int crista = Util.inteiro(max * FATOR_CRISTA_SAIDA);
+            // Onda da escapada: largura do objeto = comprimento da zona (em
+            // nós), altura do objeto = amplitude (crista), 1:1 em pixels —
+            // sem fator de escala adicional, para que ajustar essas
+            // propriedades no editor mude o traçado exatamente na mesma
+            // proporção. A direção do afastamento é calculada uma única vez
+            // aqui (calculaAngulo) e reaproveitada por toda a zona — a onda
+            // não segue a curvatura da pista nó a nó. O campo "ângulo" do
+            // objeto, quando >= 1, funciona como multiplicador extra de
+            // largura/altura (comprimento/amplitude); abaixo de 1 não
+            // multiplica (mantém largura/altura como estão).
+            double multiplicadorOnda = objetoEscapada.getAngulo() >= 1 ? objetoEscapada.getAngulo() : 1;
+            int crista = Util.inteiro(objetoEscapada.getAltura() * multiplicadorOnda);
             int index = noPerto.getIndex();
-            int contMax = (int) (index + (max * FATOR_COMPRIMENTO_ZONA_ESCAPADA));
+            int contMax = index + Util.inteiro(objetoEscapada.getLargura() * multiplicadorOnda);
             if (distaciaEntrePontos1 < distaciaEntrePontos2) {
                 PontoEscape ponto = new PontoEscape();
                 ponto.setPoint(pointDerrapagem);
                 ponto.setPista(5);
                 pista5Full.set(index, pista1Full.get(index));
-                preencheTracadoEscapeSuave(pista5Full, pista1Full, nosDaPista, index, contMax, crista, 0, 5);
+                preencheTracadoEscapeSuave(pista5Full, pista1Full, nosDaPista, index, contMax, crista, calculaAngulo, 0, 5);
                 escapeMap.put(ponto, pista5Full);
             }
             if (distaciaEntrePontos2 < distaciaEntrePontos1) {
@@ -446,7 +446,7 @@ public class Circuito implements Serializable {
                 ponto.setPoint(pointDerrapagem);
                 ponto.setPista(4);
                 pista4Full.set(index, pista2Full.get(index));
-                preencheTracadoEscapeSuave(pista4Full, pista2Full, nosDaPista, index, contMax, crista, 180, 4);
+                preencheTracadoEscapeSuave(pista4Full, pista2Full, nosDaPista, index, contMax, crista, calculaAngulo, 180, 4);
                 escapeMap.put(ponto, pista4Full);
             }
         }
@@ -465,61 +465,29 @@ public class Circuito implements Serializable {
     }
 
     /**
-     * Preenche o trecho [index, contMax) de {@code destino} com um traçado
-     * de escapada suave: o afastamento lateral segue uma curva senoidal
-     * simétrica (sobe até o pico na metade da zona e desce de volta a zero
-     * nas duas extremidades, sem a quina que existia entre as fases de
-     * afastamento/retorno do algoritmo anterior), e o ângulo de offset é
-     * recalculado a cada nó a partir da tangente local da pista (mesma
-     * janela usada por gerarTracado1e2Pista para pista1Full/pista2Full),
-     * para acompanhar a silhueta da pista em vez de manter uma única
-     * direção fixa calculada apenas no ponto de gatilho.
-     * <p>
-     * Em curvas fechadas, o afastamento desejado pela senoide é limitado ao
-     * raio de curvatura local da pista (via {@link #raioCurvaturaLocal}):
-     * offsetar mais que esse raio dobraria o traçado sobre si mesmo. A
-     * estimativa de raio ponto a ponto é ruidosa (o círculo por 3 pontos
-     * próximos pode "ver" uma reta isolada em pleno meio de uma curva, por
-     * artefato da rasterização) — sem tratar isso, um único ponto com raio
-     * artificialmente alto vira, sozinho, "o" pico da zona, e tudo ao redor
-     * fica ancorado nesse pico espúrio. Por isso o raio passa por um mínimo
-     * de janela deslizante (suprime esses pontos isolados otimistas) antes
-     * de limitar o afastamento, e o resultado ainda passa por
-     * {@link #forcaFormaUnimodal} como garantia final de uma única subida e
-     * uma única descida — elimina o efeito de serra/ponta aguda que fazia o
-     * carro de teste andar pra frente e pra trás ao tentar seguir os nós.
+     * Preenche o trecho [index, contMax) de {@code destino} com uma onda
+     * pura: o afastamento lateral segue uma senoide simétrica (zero nas
+     * duas pontas da zona, crista {@code max} na metade — comprimento e
+     * amplitude vêm 1:1 da largura/altura do objeto Escapada), numa única
+     * direção fixa ({@code angulo}, calculada uma vez pelo chamador a
+     * partir do nó de gatilho). Diferente da versão anterior, a onda não
+     * recalcula a direção nó a nó nem limita o afastamento pela curvatura
+     * local da pista — ela é definida só pela largura/altura/posição do
+     * objeto Escapada, sem depender do traçado da pista.
      */
     private void preencheTracadoEscapeSuave(List<No> destino, List<No> bordaOriginal, List<No> nosDaPista,
-            int index, int contMax, int max, double anguloAdicional, int tracado) {
+            int index, int contMax, int max, double angulo, double anguloAdicional, int tracado) {
         int fim = Math.min(contMax, Math.min(bordaOriginal.size(), nosDaPista.size()));
         int comprimentoZona = fim - index;
         if (comprimentoZona <= 0) {
             return;
         }
-        double[] angulos = new double[comprimentoZona];
-        double[] raios = new double[comprimentoZona];
         for (int idx = 0; idx < comprimentoZona; idx++) {
             int i = index + idx;
-            int traz = Math.max(0, i - Piloto.METADE_CARRO);
-            int frente = Math.min(nosDaPista.size() - 1, i + Piloto.METADE_CARRO);
-            Point pTraz = nosDaPista.get(traz).getPoint();
-            Point pAtual = nosDaPista.get(i).getPoint();
-            Point pFrente = nosDaPista.get(frente).getPoint();
-            angulos[idx] = GeoUtil.calculaAngulo(pFrente, pTraz, 0);
-            raios[idx] = raioCurvaturaLocal(pTraz, pAtual, pFrente);
-        }
-        double[] raiosSuavizados = minimoJanelaDeslizante(raios, Piloto.METADE_CARRO);
-        double[] offsetsLimitados = new double[comprimentoZona];
-        for (int idx = 0; idx < comprimentoZona; idx++) {
             double t = (double) idx / (double) comprimentoZona;
-            double offsetDesejado = max * Math.sin(Math.PI * t);
-            offsetsLimitados[idx] = Math.min(offsetDesejado, raiosSuavizados[idx] * FATOR_SEGURANCA_CURVATURA);
-        }
-        double[] offsetsFinais = forcaFormaUnimodal(offsetsLimitados);
-        for (int idx = 0; idx < comprimentoZona; idx++) {
-            int i = index + idx;
+            double offset = max * Math.sin(Math.PI * t);
             No noOriginal = bordaOriginal.get(i);
-            Point pOffset = GeoUtil.calculaPonto(angulos[idx] + anguloAdicional, Util.inteiro(offsetsFinais[idx]),
+            Point pOffset = GeoUtil.calculaPonto(angulo + anguloAdicional, Util.inteiro(offset),
                     noOriginal.getPoint());
             No newNo = new No();
             newNo.setPoint(pOffset);
@@ -527,103 +495,6 @@ public class Circuito implements Serializable {
             newNo.setTracado(tracado);
             destino.set(i, newNo);
         }
-    }
-
-    /**
-     * Mínimo numa janela deslizante de {@code ±janela} ao redor de cada
-     * posição. Usado para suprimir pontos isolados em que a estimativa de
-     * raio de curvatura vem artificialmente alta (ex.: 3 pontos quase
-     * colineares por acaso da rasterização, em pleno meio de uma curva),
-     * sem nunca permitir mais afastamento do que o trecho mais fechado por
-     * perto realmente permite.
-     */
-    private double[] minimoJanelaDeslizante(double[] valores, int janela) {
-        double[] resultado = new double[valores.length];
-        for (int i = 0; i < valores.length; i++) {
-            int lo = Math.max(0, i - janela);
-            int hi = Math.min(valores.length - 1, i + janela);
-            double menor = Double.MAX_VALUE;
-            for (int j = lo; j <= hi; j++) {
-                menor = Math.min(menor, valores[j]);
-            }
-            resultado[i] = menor;
-        }
-        return resultado;
-    }
-
-    /**
-     * Reduz {@code valores} a uma forma unimodal (sobe até um único pico e
-     * desce, sem reversões): encontra o pico e, a partir dele para cada
-     * lado, propaga o mínimo já visto. Isso garante que o resultado nunca
-     * exceda o valor mais restritivo entre a posição atual e o pico —
-     * eliminando qualquer serra/pico duplo por construção, não por
-     * suavização estatística que pode falhar em casos extremos.
-     */
-    private double[] forcaFormaUnimodal(double[] valores) {
-        int n = valores.length;
-        double[] resultado = new double[n];
-        if (n == 0) {
-            return resultado;
-        }
-        int idxPico = 0;
-        for (int i = 1; i < n; i++) {
-            if (valores[i] > valores[idxPico]) {
-                idxPico = i;
-            }
-        }
-        double menor = Double.MAX_VALUE;
-        for (int i = idxPico; i >= 0; i--) {
-            menor = Math.min(menor, valores[i]);
-            resultado[i] = menor;
-        }
-        menor = Double.MAX_VALUE;
-        for (int i = idxPico; i < n; i++) {
-            menor = Math.min(menor, valores[i]);
-            resultado[i] = menor;
-        }
-        return resultado;
-    }
-
-    /**
-     * Estima o raio de curvatura local da pista em {@code b}, a partir do
-     * círculo que passa pelos três pontos {@code a}, {@code b}, {@code c}
-     * (fórmula do circunraio via área do triângulo). Retorna
-     * {@code Double.MAX_VALUE} para pontos colineares (trecho reto, sem
-     * limite de curvatura).
-     */
-    private double raioCurvaturaLocal(Point a, Point b, Point c) {
-        double ab = a.distance(b);
-        double bc = b.distance(c);
-        double ca = c.distance(a);
-        double area = Math.abs((b.x - a.x) * (double) (c.y - a.y) - (c.x - a.x) * (double) (b.y - a.y)) / 2.0;
-        if (area < 1e-6) {
-            return Double.MAX_VALUE;
-        }
-        return (ab * bc * ca) / (4 * area);
-    }
-
-    /**
-     * Ângulo interno, em graus (0 a 180), formado no nó {@code atual} entre
-     * os trechos que vêm de {@code traz} e vão para {@code frente}: reta
-     * contínua tende a 180°, e quanto mais fechada a curva, mais perto de 0°
-     * (um hairpin praticamente dobra o traçado sobre si mesmo). Usado para
-     * não gerar zona de escapada em nós de curva fechada demais, onde o
-     * traçado assumido pela onda de escapada (pista com curvatura suave) não
-     * se aplica.
-     */
-    private double anguloInternoNo(Point traz, Point atual, Point frente) {
-        double v1x = traz.x - atual.x;
-        double v1y = traz.y - atual.y;
-        double v2x = frente.x - atual.x;
-        double v2y = frente.y - atual.y;
-        double mag1 = Math.sqrt(v1x * v1x + v1y * v1y);
-        double mag2 = Math.sqrt(v2x * v2x + v2y * v2y);
-        if (mag1 < 1e-6 || mag2 < 1e-6) {
-            return 180.0;
-        }
-        double cos = (v1x * v2x + v1y * v2y) / (mag1 * mag2);
-        cos = Math.max(-1.0, Math.min(1.0, cos));
-        return Math.toDegrees(Math.acos(cos));
     }
 
     public static void main(String[] args) {

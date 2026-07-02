@@ -1,11 +1,9 @@
 package br.f1mane.editor;
 
-import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Composite;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -74,7 +72,6 @@ import br.f1mane.entidades.ObjetoPista;
 import br.f1mane.entidades.ObjetoTransparencia;
 import br.f1mane.entidades.PontoEscape;
 import br.f1mane.recursos.CarregadorRecursos;
-import br.f1mane.recursos.idiomas.Lang;
 import br.f1mane.visao.PainelCircuito;
 import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
@@ -93,7 +90,7 @@ public class MainPanelEditor extends JPanel {
     private JList boxJList;
     private EditorCircuitos srcFrame;
     private boolean desenhaTracado = true;
-    private boolean mostraBG = false;
+    private boolean mostraBG = true;
     private boolean creditos = false;
     private boolean pontosEscape = false;
     public final static Color oran = new Color(255, 188, 40, 180);
@@ -173,7 +170,7 @@ public class MainPanelEditor extends JPanel {
             }
         }
         if (!temLargada) {
-            JOptionPane.showMessageDialog(null, Lang.msg("noLargadaObrigatorio"), Lang.msg("039"),
+            JOptionPane.showMessageDialog(null, "É obrigatório ter um nó de Largada", "Operação ilegal",
                     JOptionPane.ERROR_MESSAGE);
             return false;
         }
@@ -190,7 +187,7 @@ public class MainPanelEditor extends JPanel {
         }
         multiplicadorLarguraPista = circuito.getMultiplicadorLarguraPista();
         if (multiplicadorLarguraPista < 1.0 || multiplicadorLarguraPista > 2.0) {
-            JOptionPane.showMessageDialog(null, Lang.msg("multiplicadorLarguraPista"), Lang.msg("039"),
+            JOptionPane.showMessageDialog(null, "Largura Pista deve ser entre 1.0 e 2.0", "Operação ilegal",
                     JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
@@ -253,92 +250,47 @@ public class MainPanelEditor extends JPanel {
         semSelecaoButton.setSelected(true);
 
         JPanel bottonsPanel = new JPanel();
-        bottonsPanel.add(new JLabel() {
-            @Override
-            public String getText() {
-                return Lang.msg("099");
-            }
-        });
+        bottonsPanel.add(new JLabel("No Largada"));
         bottonsPanel.add(largadaButton);
         radiosPanel.add(bottonsPanel);
 
         bottonsPanel = new JPanel();
-        bottonsPanel.add(new JLabel() {
-            @Override
-            public String getText() {
-                return Lang.msg("100");
-            }
-        });
+        bottonsPanel.add(new JLabel("No Reta"));
         bottonsPanel.add(retaButton);
         radiosPanel.add(bottonsPanel);
 
         bottonsPanel = new JPanel();
-        bottonsPanel.add(new JLabel() {
-            @Override
-            public String getText() {
-                return Lang.msg("101");
-            }
-        });
+        bottonsPanel.add(new JLabel("No Curva Alta"));
         bottonsPanel.add(curvaAltaButton);
         radiosPanel.add(bottonsPanel);
 
         bottonsPanel = new JPanel();
-        bottonsPanel.add(new JLabel() {
-            @Override
-            public String getText() {
-                return Lang.msg("102");
-            }
-        });
+        bottonsPanel.add(new JLabel("No Curva Baixa"));
         bottonsPanel.add(curvaBaixaButton);
         radiosPanel.add(bottonsPanel);
 
         bottonsPanel = new JPanel();
-        bottonsPanel.add(new JLabel() {
-            @Override
-            public String getText() {
-                return Lang.msg("103");
-            }
-        });
+        bottonsPanel.add(new JLabel("No Box"));
         bottonsPanel.add(boxButton);
         radiosPanel.add(bottonsPanel);
 
         bottonsPanel = new JPanel();
-        bottonsPanel.add(new JLabel() {
-            @Override
-            public String getText() {
-                return Lang.msg("boxReta");
-            }
-        });
+        bottonsPanel.add(new JLabel("No Reta Box"));
         bottonsPanel.add(boxRetaButton);
         radiosPanel.add(bottonsPanel);
 
         bottonsPanel = new JPanel();
-        bottonsPanel.add(new JLabel() {
-            @Override
-            public String getText() {
-                return Lang.msg("boxCurvaAlta");
-            }
-        });
+        bottonsPanel.add(new JLabel("No Curva Box"));
         bottonsPanel.add(boxCurvaAltaButton);
         radiosPanel.add(bottonsPanel);
 
         bottonsPanel = new JPanel();
-        bottonsPanel.add(new JLabel() {
-            @Override
-            public String getText() {
-                return Lang.msg("104");
-            }
-        });
+        bottonsPanel.add(new JLabel("No Parada Box"));
         bottonsPanel.add(paraBoxButton);
         radiosPanel.add(bottonsPanel);
 
         bottonsPanel = new JPanel();
-        bottonsPanel.add(new JLabel() {
-            @Override
-            public String getText() {
-                return Lang.msg("fimBox");
-            }
-        });
+        bottonsPanel.add(new JLabel("No Fim box"));
         bottonsPanel.add(fimBoxButton);
         radiosPanel.add(bottonsPanel);
 
@@ -351,12 +303,7 @@ public class MainPanelEditor extends JPanel {
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(1, 3));
 
-        JButton desenhaTracadoBot = new JButton("Desenha Tracado") {
-            @Override
-            public String getText() {
-                return Lang.msg("037");
-            }
-        };
+        JButton desenhaTracadoBot = new JButton("Desenha Tracado");
         desenhaTracadoBot.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 desenhaTracado = !desenhaTracado;
@@ -364,12 +311,15 @@ public class MainPanelEditor extends JPanel {
             }
         });
 
-        JButton apagarUltimoNoButton = new JButton() {
-            @Override
-            public String getText() {
-                return Lang.msg("105");
+        JButton desenhaBackgroundBot = new JButton("Desenho Background");
+        desenhaBackgroundBot.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                mostraBG = !mostraBG;
+                MainPanelEditor.this.repaint();
             }
-        };
+        });
+
+        JButton apagarUltimoNoButton = new JButton("Apagar Ultimo NO");
         apagarUltimoNoButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -383,12 +333,7 @@ public class MainPanelEditor extends JPanel {
 
         buttonsPanel.add(apagarUltimoNoButton);
 
-        JButton apagaNoListaButton = new JButton() {
-            @Override
-            public String getText() {
-                return Lang.msg("apagaNoListaButton");
-            }
-        };
+        JButton apagaNoListaButton = new JButton("Apaga Nó na lista Selecionada");
         apagaNoListaButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -438,17 +383,12 @@ public class MainPanelEditor extends JPanel {
 
             }
         });
-        JButton creditosButton = new JButton() {
-            @Override
-            public String getText() {
-                return Lang.msg("creditos");
-            }
-        };
+        JButton creditosButton = new JButton("Créditos");
         creditosButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    JOptionPane.showMessageDialog(null, Lang.msg("informePontoCreditos"), Lang.msg("089"),
-                            JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Informe a posição dos créditos na imagem do circuito.",
+                            "Informações", JOptionPane.INFORMATION_MESSAGE);
                     creditos();
                 } catch (Exception e1) {
                     e1.printStackTrace();
@@ -459,6 +399,7 @@ public class MainPanelEditor extends JPanel {
 
         buttonsPanel.add(apagaNoListaButton);
         buttonsPanel.add(desenhaTracadoBot);
+        buttonsPanel.add(desenhaBackgroundBot);
         buttonsPanel.add(creditosButton);
         buttonsPanel.add(criarObjeto);
         return buttonsPanel;
@@ -566,12 +507,7 @@ public class MainPanelEditor extends JPanel {
             }
         });
         JPanel radioPistaPanel = new JPanel();
-        radioPistaPanel.add(new JLabel() {
-            @Override
-            public String getText() {
-                return Lang.msg("032");
-            }
-        });
+        radioPistaPanel.add(new JLabel("Nos da Pista"));
         JPanel pistas = new JPanel();
         pistas.setLayout(new BorderLayout());
         pistas.add(radioPistaPanel, BorderLayout.NORTH);
@@ -587,12 +523,7 @@ public class MainPanelEditor extends JPanel {
         JPanel boxes = new JPanel();
         boxes.setLayout(new BorderLayout());
         radioPistaPanel = new JPanel();
-        radioPistaPanel.add(new JLabel() {
-            @Override
-            public String getText() {
-                return Lang.msg("033");
-            }
-        });
+        radioPistaPanel.add(new JLabel("Nos do Box"));
         boxes.add(radioPistaPanel, BorderLayout.NORTH);
         JScrollPane boxJListJScrollPane = new JScrollPane(boxJList) {
             @Override
@@ -729,6 +660,7 @@ public class MainPanelEditor extends JPanel {
                 arrastouObjeto = true;
                 objetoArrastando.setPosicaoQuina(
                         new Point(e.getX() - offsetArraste.x, e.getY() - offsetArraste.y));
+                reprocessaEscapadaSeNecessario(objetoArrastando);
                 repaint();
             }
 
@@ -803,6 +735,7 @@ public class MainPanelEditor extends JPanel {
                     listaAlvo.add(objetoPista);
                     formularioListaAlvo.listarObjetos();
                     objetoPista.setNome("Objeto " + listaAlvo.size());
+                    reprocessaEscapadaSeNecessario(objetoPista);
                     repaint();
                     posicionaObjetoPista = false;
                     return;
@@ -855,18 +788,21 @@ public class MainPanelEditor extends JPanel {
         larguraSpinner.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 alvo.setLargura(((Integer) larguraSpinner.getValue()).intValue());
+                reprocessaEscapadaSeNecessario(alvo);
                 repaint();
             }
         });
         alturaSpinner.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 alvo.setAltura(((Integer) alturaSpinner.getValue()).intValue());
+                reprocessaEscapadaSeNecessario(alvo);
                 repaint();
             }
         });
         anguloSpinner.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 alvo.setAngulo(((Integer) anguloSpinner.getValue()).doubleValue());
+                reprocessaEscapadaSeNecessario(alvo);
                 repaint();
             }
         });
@@ -968,7 +904,8 @@ public class MainPanelEditor extends JPanel {
             }
         } else {
             if (no.isBox()) {
-                JOptionPane.showMessageDialog(this, Lang.msg("038"), Lang.msg("039"), JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Não pode inserir nos de box na psita", "Operação ilegal",
+                        JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
 
@@ -1007,19 +944,20 @@ public class MainPanelEditor extends JPanel {
         g2d.setColor(circuito.getCorFundo() != null ? circuito.getCorFundo() : getBackground());
         g2d.fillRect(0, 0, getWidth(), getHeight());
 
-        // 2. Imagem de referência (*_mro.jpg), semitransparente por cima da cor de fundo
+        // 2. Imagem de referência (*_mro.jpg), opaca, por cima da cor de fundo.
+        // Botão "Desenho Background" (do lado de "Desenha Tracado") alterna
+        // mostraBG entre visível e escondida.
         if (mostraBG && backGround != null) {
-            Composite composicaoOriginal = g2d.getComposite();
-            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
             g2d.drawImage(backGround, 0, 0, null);
-            g2d.setComposite(composicaoOriginal);
         }
 
         if (larguraPistaPixeis == 0)
             larguraPistaPixeis = Util.inteiro(Carro.LARGURA * 1.5 * multiplicadorLarguraPista * zoom);
 
         // 3. Sequência de desenho existente
-        DesenhoProceduralCircuito.desenhaPistaZebraEBox(g2d, circuito, zoom);
+        if (desenhaTracado) {
+            DesenhoProceduralCircuito.desenhaPistaZebraEBox(g2d, circuito, zoom);
+        }
         desenhaCarroTeste(g2d);
         desenhaEntradaParadaSaidaBox(g2d);
         desenhaLargada(g2d);
@@ -1137,11 +1075,11 @@ public class MainPanelEditor extends JPanel {
         }
         double total = noAlta + noMedia + noBaixa;
         y += 20;
-        g2d.drawString(Lang.msg("ALTA") + ":" + noAlta + " " + (int) (100 * noAlta / total) + "%", x, y);
+        g2d.drawString("Alta" + ":" + noAlta + " " + (int) (100 * noAlta / total) + "%", x, y);
         y += 20;
-        g2d.drawString(Lang.msg("MEDIA") + ":" + noMedia + " " + (int) (100 * noMedia / total) + "%", x, y);
+        g2d.drawString("Média" + ":" + noMedia + " " + (int) (100 * noMedia / total) + "%", x, y);
         y += 20;
-        g2d.drawString(Lang.msg("BAIXA") + ":" + noBaixa + " " + (int) (100 * noBaixa / total) + "%", x, y);
+        g2d.drawString("Baixa" + ":" + noBaixa + " " + (int) (100 * noBaixa / total) + "%", x, y);
         y += 20;
         g2d.setColor(Color.CYAN);
         g2d.drawLine(x + 50, y, x + 100, y);
@@ -1204,111 +1142,7 @@ public class MainPanelEditor extends JPanel {
     }
 
     private void desenhaBoxes(Graphics2D g2d) {
-        if (circuito.getBoxFull() == null || circuito.getBoxFull().isEmpty() || circuito.getParadaBoxIndex() == 0) {
-            return;
-        }
-        double multi = 1.5;
-        double maxBox = Util.inteiro(Carro.LARGURA * multi * 12) + Carro.LARGURA;
-        if (circuito.getFimParadaBoxIndex() != 0) {
-            No ini = (No) circuito.getBoxFull().get(circuito.getParadaBoxIndex());
-            No fim = (No) circuito.getBoxFull().get(circuito.getFimParadaBoxIndex());
-            int distaciaInicioFim = GeoUtil.distaciaEntrePontos(ini.getPoint(), fim.getPoint());
-            if (distaciaInicioFim < maxBox) {
-                multi = (multi * distaciaInicioFim) / maxBox;
-            }
-        }
-
-        int paradas = circuito.getParadaBoxIndex();
-        for (int i = 0; i < 12; i++) {
-            int iP = paradas + Util.inteiro(Carro.LARGURA * multi * i) + Carro.LARGURA;
-            int n1Idx = iP - Carro.MEIA_LARGURA;
-            int n2Idx = iP + Carro.MEIA_LARGURA;
-            if (n1Idx >= circuito.getBoxFull().size()) {
-                continue;
-            }
-            if (iP >= circuito.getBoxFull().size()) {
-                continue;
-            }
-            if (n2Idx >= circuito.getBoxFull().size()) {
-                continue;
-            }
-            No n1 = (No) circuito.getBoxFull().get(n1Idx);
-            No nM = (No) circuito.getBoxFull().get(iP);
-            No n2 = (No) circuito.getBoxFull().get(n2Idx);
-            Point p1 = new Point(Util.inteiro(n1.getPoint().x * zoom), Util.inteiro(n1.getPoint().y * zoom));
-            Point pm = new Point(Util.inteiro(nM.getPoint().x * zoom), Util.inteiro(nM.getPoint().y * zoom));
-            Point p2 = new Point(Util.inteiro(n2.getPoint().x * zoom), Util.inteiro(n2.getPoint().y * zoom));
-            double calculaAngulo = GeoUtil.calculaAngulo(p1, p2, 0);
-            Rectangle2D rectangle = new Rectangle2D.Double((pm.x - (Carro.MEIA_LARGURA)), (pm.y - (Carro.MEIA_ALTURA)),
-                    (Carro.LARGURA), (Carro.ALTURA));
-
-            Point cima = GeoUtil.calculaPonto(calculaAngulo,
-                    Util.inteiro(Carro.ALTURA * getCircuito().getMultiplicadorLarguraPista() * zoom),
-                    new Point(Util.inteiro(rectangle.getCenterX()), Util.inteiro(rectangle.getCenterY())));
-            Point baixo = GeoUtil.calculaPonto(calculaAngulo + 180,
-                    Util.inteiro(Carro.ALTURA * getCircuito().getMultiplicadorLarguraPista() * zoom),
-                    new Point(Util.inteiro(rectangle.getCenterX()), Util.inteiro(rectangle.getCenterY())));
-            Point cimaBoxC1 = GeoUtil.calculaPonto(calculaAngulo, Util.inteiro((Carro.ALTURA) * 3.5 * zoom),
-                    new Point(Util.inteiro(rectangle.getCenterX()), Util.inteiro(rectangle.getCenterY())));
-            Point baixoBoxC1 = GeoUtil.calculaPonto(calculaAngulo + 180, Util.inteiro((Carro.ALTURA) * 3.2 * zoom),
-                    new Point(Util.inteiro(rectangle.getCenterX()), Util.inteiro(rectangle.getCenterY())));
-            Point cimaBoxC2 = GeoUtil.calculaPonto(calculaAngulo, Util.inteiro((Carro.ALTURA) * 3.5 * zoom),
-                    new Point(Util.inteiro(rectangle.getCenterX()), Util.inteiro(rectangle.getCenterY())));
-            Point baixoBoxC2 = GeoUtil.calculaPonto(calculaAngulo + 180, Util.inteiro((Carro.ALTURA) * 3.2 * zoom),
-                    new Point(Util.inteiro(rectangle.getCenterX()), Util.inteiro(rectangle.getCenterY())));
-
-            RoundRectangle2D retC1;
-            RoundRectangle2D retC2;
-            if (circuito.getLadoBox() == 1) {
-                rectangle = new Rectangle2D.Double((cima.x - (Carro.MEIA_LARGURA * zoom)),
-                        (cima.y - (Carro.MEIA_ALTURA * zoom)), (Carro.LARGURA * zoom), (Carro.ALTURA * zoom));
-                retC1 = new RoundRectangle2D.Double((cimaBoxC1.x - (Carro.LARGURA * zoom)),
-                        (cimaBoxC1.y - (Carro.ALTURA * zoom)), (Carro.LARGURA * 2 * zoom), (Carro.ALTURA * 3 * zoom), 5,
-                        5);
-                retC2 = new RoundRectangle2D.Double((cimaBoxC2.x - (Carro.MEIA_LARGURA * zoom)),
-                        (cimaBoxC2.y + (Carro.MEIA_ALTURA * zoom)), (Carro.LARGURA * zoom), (Carro.ALTURA * zoom), 5,
-                        5);
-            } else {
-                rectangle = new Rectangle2D.Double((baixo.x - (Carro.MEIA_LARGURA * zoom)),
-                        (baixo.y - (Carro.MEIA_ALTURA * zoom)), (Carro.LARGURA * zoom), (Carro.ALTURA * zoom));
-                retC1 = new RoundRectangle2D.Double((baixoBoxC1.x - (Carro.LARGURA * zoom)),
-                        (baixoBoxC1.y - (Carro.ALTURA * zoom)), (Carro.LARGURA * 2 * zoom), (Carro.ALTURA * 3 * zoom),
-                        5, 5);
-                retC2 = new RoundRectangle2D.Double((baixoBoxC2.x - (Carro.MEIA_LARGURA * zoom)),
-                        (baixoBoxC2.y + (Carro.MEIA_ALTURA * zoom)), (Carro.LARGURA * zoom), (Carro.ALTURA * zoom), 5,
-                        5);
-            }
-
-            GeneralPath generalPath = new GeneralPath(rectangle);
-            AffineTransform affineTransformRect = AffineTransform.getScaleInstance(zoom, zoom);
-            double rad = Math.toRadians((double) calculaAngulo);
-            affineTransformRect.setToRotation(rad, rectangle.getCenterX(), rectangle.getCenterY());
-            g2d.setColor(new Color(255, 0, 255, 150));
-            g2d.fill(generalPath.createTransformedShape(affineTransformRect));
-            generalPath = new GeneralPath(retC1);
-            affineTransformRect.setToRotation(rad, retC1.getCenterX(), retC1.getCenterY());
-            g2d.setColor(new Color(0, 255, 255, 150));
-            g2d.fill(generalPath.createTransformedShape(affineTransformRect));
-
-            generalPath = new GeneralPath(retC2);
-            affineTransformRect.setToRotation(rad, retC2.getCenterX(), retC2.getCenterY());
-            g2d.setColor(new Color(255, 0, 255, 150));
-            g2d.fill(generalPath.createTransformedShape(affineTransformRect));
-
-            if (circuito.getLadoBox() == 1)
-                g2d.setColor(Color.BLUE);
-            else
-                g2d.setColor(PainelCircuito.transpMenus);
-            g2d.fillOval((int) cimaBoxC1.x, (int) cimaBoxC1.y, 10, 10);
-
-            if (circuito.getLadoBox() == 2)
-                g2d.setColor(Color.BLUE);
-            else
-                g2d.setColor(PainelCircuito.transpMenus);
-            g2d.fillOval((int) baixoBoxC1.x, (int) baixoBoxC1.y, 10, 10);
-
-        }
-
+        DesenhoProceduralCircuito.desenhaVagasBox(g2d, circuito, zoom);
     }
 
     private void desenhaGrid(Graphics2D g2d) {
@@ -1796,31 +1630,16 @@ public class MainPanelEditor extends JPanel {
 
     private JPanel iniciaEditorVetorizado() {
         JPanel radioPistaPanel = new JPanel();
-        radioPistaPanel.add(new JLabel() {
-            @Override
-            public String getText() {
-                return Lang.msg("032");
-            }
-        });
+        radioPistaPanel.add(new JLabel("Nos da Pista"));
         JPanel radioBoxPanel = new JPanel();
-        radioBoxPanel.add(new JLabel() {
-            @Override
-            public String getText() {
-                return Lang.msg("033");
-            }
-        });
+        radioBoxPanel.add(new JLabel("Nos do Box"));
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(2, 1));
 
         JPanel buttonsPanel1 = new JPanel();
-        buttonsPanel1.setLayout(new GridLayout(1, 5));
+        buttonsPanel1.setLayout(new GridLayout(1, 6));
 
-        JButton testaPistaButton = new JButton() {
-            @Override
-            public String getText() {
-                return Lang.msg("034");
-            }
-        };
+        JButton testaPistaButton = new JButton("Iniciar/Parar Teste de Pista");
         testaPistaButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -1839,18 +1658,21 @@ public class MainPanelEditor extends JPanel {
         });
         buttonsPanel1.add(testaPistaButton);
 
-        JButton testaBoxButton = new JButton("Ligar/Desligar Box") {
-            @Override
-            public String getText() {
-                return Lang.msg("035");
-            }
-        };
+        JButton testaBoxButton = new JButton("Ligar/Desligar Box");
         testaBoxButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 testePista.testarBox();
             }
         });
         buttonsPanel1.add(testaBoxButton);
+
+        JButton testaEscapadaButton = new JButton("Ligar/Desligar Modo Escapada");
+        testaEscapadaButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                testePista.testarEscapada();
+            }
+        });
+        buttonsPanel1.add(testaEscapadaButton);
 
         JButton left = new JButton() {
             @Override
@@ -1904,12 +1726,7 @@ public class MainPanelEditor extends JPanel {
         if (circuito != null) {
             nomePistaText.setText(circuito.getNome());
         }
-        buttonsPanel2.add(new JLabel() {
-            @Override
-            public String getText() {
-                return Lang.msg("nomeCircuito");
-            }
-        });
+        buttonsPanel2.add(new JLabel("Nome do circuito"));
         buttonsPanel2.add(nomePistaText);
 
         ladoBoxCombo = new JComboBox();
@@ -2064,10 +1881,25 @@ public class MainPanelEditor extends JPanel {
 
     }
 
+    /**
+     * Se {@code alvo} for um objeto Escapada, reprocessa o traçado de
+     * escapada do circuito (Circuito.reprocessarEscapadas) para refletir a
+     * posição/largura/altura/ângulo atuais — largura é o comprimento da onda
+     * de escapada e altura é a amplitude, e o ângulo (quando >= 1) multiplica
+     * os dois, então mover, redimensionar ou rotacionar o objeto muda o
+     * desenho dos nós de escapada.
+     */
+    void reprocessaEscapadaSeNecessario(ObjetoPista alvo) {
+        if (alvo instanceof ObjetoEscapada) {
+            circuito.reprocessarEscapadas();
+        }
+    }
+
     public void esquerdaObj() {
         if (objetoPista != null && objetoPista.getPosicaoQuina() != null) {
             Point p = objetoPista.getPosicaoQuina();
             p.x -= 5;
+            reprocessaEscapadaSeNecessario(objetoPista);
             repaint();
             return;
         }
@@ -2077,6 +1909,7 @@ public class MainPanelEditor extends JPanel {
         if (objetoPista != null && objetoPista.getPosicaoQuina() != null) {
             Point p = objetoPista.getPosicaoQuina();
             p.x += 5;
+            reprocessaEscapadaSeNecessario(objetoPista);
             repaint();
             return;
         }
@@ -2086,6 +1919,7 @@ public class MainPanelEditor extends JPanel {
         if (objetoPista != null && objetoPista.getPosicaoQuina() != null) {
             Point p = objetoPista.getPosicaoQuina();
             p.y -= 5;
+            reprocessaEscapadaSeNecessario(objetoPista);
             repaint();
             return;
         }
@@ -2095,6 +1929,7 @@ public class MainPanelEditor extends JPanel {
         if (objetoPista != null && objetoPista.getPosicaoQuina() != null) {
             Point p = objetoPista.getPosicaoQuina();
             p.y += 5;
+            reprocessaEscapadaSeNecessario(objetoPista);
             repaint();
             return;
         }
@@ -2103,6 +1938,7 @@ public class MainPanelEditor extends JPanel {
     public void menosAngulo() {
         if (objetoPista != null && objetoPista.getPosicaoQuina() != null) {
             objetoPista.setAngulo(objetoPista.getAngulo() - 1);
+            reprocessaEscapadaSeNecessario(objetoPista);
             repaint();
             return;
         }
@@ -2111,6 +1947,7 @@ public class MainPanelEditor extends JPanel {
     public void maisAngulo() {
         if (objetoPista != null && objetoPista.getPosicaoQuina() != null) {
             objetoPista.setAngulo(objetoPista.getAngulo() + 1);
+            reprocessaEscapadaSeNecessario(objetoPista);
             repaint();
             return;
         }
@@ -2119,6 +1956,7 @@ public class MainPanelEditor extends JPanel {
     public void maisLargura() {
         if (objetoPista != null) {
             objetoPista.setLargura(objetoPista.getLargura() + 1);
+            reprocessaEscapadaSeNecessario(objetoPista);
             repaint();
             return;
         }
@@ -2127,6 +1965,7 @@ public class MainPanelEditor extends JPanel {
     public void menosLargura() {
         if (objetoPista != null) {
             objetoPista.setLargura(objetoPista.getLargura() - 1);
+            reprocessaEscapadaSeNecessario(objetoPista);
             repaint();
             return;
         }
@@ -2135,6 +1974,7 @@ public class MainPanelEditor extends JPanel {
     public void maisAltura() {
         if (objetoPista != null) {
             objetoPista.setAltura(objetoPista.getAltura() + 1);
+            reprocessaEscapadaSeNecessario(objetoPista);
             repaint();
             return;
         }
@@ -2144,6 +1984,7 @@ public class MainPanelEditor extends JPanel {
     public void menosAltura() {
         if (objetoPista != null) {
             objetoPista.setAltura(objetoPista.getAltura() - 1);
+            reprocessaEscapadaSeNecessario(objetoPista);
             repaint();
             return;
         }
@@ -2226,9 +2067,6 @@ public class MainPanelEditor extends JPanel {
     }
 
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
-    }
-
     public void novo() {
         JFileChooser fileChooser = new JFileChooser(new File("src/main/resources/circuitos"));
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -2241,7 +2079,9 @@ public class MainPanelEditor extends JPanel {
         File file = fileChooser.getSelectedFile();
         backGround = CarregadorRecursos.carregaBackGround(file.getName(), this, circuito);
         if (backGround == null) {
-            JOptionPane.showMessageDialog(null, Lang.msg("backGroundNull"), Lang.msg("039"), JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,
+                    "Imagem para criar circuito deve esta na pasta /f1mane/src/sowbreira/f1mane/recursos/",
+                    "Operação ilegal", JOptionPane.ERROR_MESSAGE);
             return;
         }
         circuito.setBackGround(file.getName());

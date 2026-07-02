@@ -17,7 +17,6 @@ import javax.swing.event.ChangeListener;
 
 import br.nnpe.Logger;
 import br.f1mane.entidades.ObjetoPista;
-import br.f1mane.recursos.idiomas.Lang;
 
 public class FormularioObjetos {
 
@@ -41,76 +40,31 @@ public class FormularioObjetos {
 			tipoComboBox.addItem(tipo);
 		}
 
-		panel.add(new JLabel("Tipo") {
-			@Override
-			public String getText() {
-				return Lang.msg("tipo");
-			}
-		});
+		panel.add(new JLabel("Tipo"));
 		panel.add(tipoComboBox);
 
-		panel.add(new JLabel("No Inicio Transparencia") {
-			@Override
-			public String getText() {
-				return Lang.msg("noInicioTransparencia");
-			}
-		});
+		panel.add(new JLabel("No Início Transparência"));
 		panel.add(inicioTranparencia);
 
-		panel.add(new JLabel("No Fim Transparencia") {
-			@Override
-			public String getText() {
-				return Lang.msg("noFimTransparencia");
-			}
-		});
+		panel.add(new JLabel("No Fim Transparência"));
 		panel.add(fimTransparencia);
 
-		panel.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("transparenciaBox");
-			}
-		});
+		panel.add(new JLabel("Transparencia Box"));
 		panel.add(transparenciaBox);
 
-		panel.add(new JLabel("Angulo") {
-			@Override
-			public String getText() {
-				return Lang.msg("angulorRotacao");
-			}
-		});
+		panel.add(new JLabel("Ângulo"));
 		panel.add(angulo);
 
-		panel.add(new JLabel("Largura") {
-			@Override
-			public String getText() {
-				return Lang.msg("largura");
-			}
-		});
+		panel.add(new JLabel("Largura"));
 		panel.add(largura);
 
-		panel.add(new JLabel("Altura") {
-			@Override
-			public String getText() {
-				return Lang.msg("altura");
-			}
-		});
+		panel.add(new JLabel("Altura"));
 		panel.add(altura);
 
-		panel.add(new JLabel("Cor Primaria") {
-			@Override
-			public String getText() {
-				return Lang.msg("corPrimaria");
-			}
-		});
+		panel.add(new JLabel("Cor Primária"));
 		panel.add(labelCor1);
 
-		panel.add(new JLabel("Cor Secundaria") {
-			@Override
-			public String getText() {
-				return Lang.msg("corSecundaria");
-			}
-		});
+		panel.add(new JLabel("Cor Secundária"));
 		panel.add(labelCor2);
 
 		ChangeListener changeListener = new ChangeListener() {
@@ -129,7 +83,7 @@ public class FormularioObjetos {
 		labelCor1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Color nova = JColorChooser.showDialog(panel, Lang.msg("corPrimaria"),
+				Color nova = JColorChooser.showDialog(panel, "Cor Primária",
 						labelCor1.getBackground());
 				if (nova != null) {
 					setCor(nova, labelCor1);
@@ -139,7 +93,7 @@ public class FormularioObjetos {
 		labelCor2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Color nova = JColorChooser.showDialog(panel, Lang.msg("corSecundaria"),
+				Color nova = JColorChooser.showDialog(panel, "Cor Secundária",
 						labelCor2.getBackground());
 				if (nova != null) {
 					setCor(nova, labelCor2);
@@ -152,6 +106,7 @@ public class FormularioObjetos {
 		if (objetoPista != null
 				&& FormularioObjetos.this.mainPanelEditor != null) {
 			formularioObjetoPista(objetoPista);
+			FormularioObjetos.this.mainPanelEditor.reprocessaEscapadaSeNecessario(objetoPista);
 			FormularioObjetos.this.mainPanelEditor.repaint();
 		}
 
@@ -160,8 +115,10 @@ public class FormularioObjetos {
 	public void mostrarPainelModal() {
 		JOptionPane.showMessageDialog(this.mainPanelEditor.getSrcFrame(),
 				panel);
-		if (objetoPista != null)
+		if (objetoPista != null) {
 			formularioObjetoPista(objetoPista);
+			FormularioObjetos.this.mainPanelEditor.reprocessaEscapadaSeNecessario(objetoPista);
+		}
 		FormularioObjetos.this.mainPanelEditor.repaint();
 	}
 
@@ -253,6 +210,7 @@ public class FormularioObjetos {
 	void carregarCampos(ObjetoPista objetoPista) {
 		largura.setValue(Integer.valueOf(objetoPista.getLargura()));
 		altura.setValue(Integer.valueOf(objetoPista.getAltura()));
+		angulo.setValue(Integer.valueOf((int) objetoPista.getAngulo()));
 		setCor(objetoPista.getCorPimaria(), labelCor1);
 		setCor(objetoPista.getCorSecundaria(), labelCor2);
 		frente.setSelected(objetoPista.isPintaEmcima());

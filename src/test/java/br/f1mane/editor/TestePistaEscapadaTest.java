@@ -53,7 +53,7 @@ class TestePistaEscapadaTest {
     }
 
     @Test
-    void dentroDaZonaDeEscapada_carroDeTesteSeguePontosDaEscapada() {
+    void dentroDaZonaDeEscapada_comModoEscapadaLigado_carroDeTesteSeguePontosDaEscapada() {
         Circuito circuito = circuitoComEscapada();
         Map<PontoEscape, List<No>> escapeMap = circuito.getEscapeMap();
         Map.Entry<PontoEscape, List<No>> entrada = escapeMap.entrySet().iterator().next();
@@ -71,6 +71,7 @@ class TestePistaEscapadaTest {
         indiceDentroDaZona += 50;
 
         TestePista testePista = new TestePista(new MainPanelEditor(), circuito);
+        testePista.testarEscapada();
         List<No> pontosPista = circuito.getPistaFull();
 
         testePista.posicionaCarroConsiderandoEscapada(indiceDentroDaZona, pontosPista);
@@ -80,6 +81,32 @@ class TestePistaEscapadaTest {
 
         assertEquals(pontoEscapada, testePista.getTestCar());
         assertNotEquals(pontoPistaNormal, testePista.getTestCar());
+    }
+
+    @Test
+    void dentroDaZonaDeEscapada_comModoEscapadaDesligado_carroDeTesteUsaPistaNormal() {
+        Circuito circuito = circuitoComEscapada();
+        Map<PontoEscape, List<No>> escapeMap = circuito.getEscapeMap();
+        Map.Entry<PontoEscape, List<No>> entrada = escapeMap.entrySet().iterator().next();
+        List<No> tracadoEscapada = entrada.getValue();
+
+        int indiceDentroDaZona = -1;
+        for (int i = 0; i < tracadoEscapada.size(); i++) {
+            if (tracadoEscapada.get(i) != null) {
+                indiceDentroDaZona = i;
+                break;
+            }
+        }
+        indiceDentroDaZona += 50;
+
+        // modoEscapada começa desligado por padrão (sem chamar testarEscapada()) —
+        // o carro de teste deve ficar na pista normal mesmo dentro da zona.
+        TestePista testePista = new TestePista(new MainPanelEditor(), circuito);
+        List<No> pontosPista = circuito.getPistaFull();
+
+        testePista.posicionaCarroConsiderandoEscapada(indiceDentroDaZona, pontosPista);
+
+        assertEquals(pontosPista.get(indiceDentroDaZona).getPoint(), testePista.getTestCar());
     }
 
     @Test

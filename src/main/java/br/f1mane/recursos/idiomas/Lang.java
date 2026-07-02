@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -258,7 +259,8 @@ public class Lang {
 			}
 			validaProperties(inputStream);
 			inputStream = CarregadorRecursos.recursoComoStream(load);
-			propertyResourceBundle = new PropertyResourceBundle(inputStream);
+			propertyResourceBundle = new PropertyResourceBundle(
+					new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 			mapaBundle.put(sufix, propertyResourceBundle);
 		}
 		return propertyResourceBundle;
@@ -267,7 +269,7 @@ public class Lang {
 	private static void validaProperties(InputStream inputStream)
 			throws Exception {
 		BufferedReader bufferedReader = new BufferedReader(
-				new InputStreamReader(inputStream));
+				new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 		Set keys = new HashSet();
 		Set values = new HashSet();
 		String line = bufferedReader.readLine();
