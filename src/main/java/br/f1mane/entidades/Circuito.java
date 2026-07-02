@@ -52,6 +52,7 @@ public class Circuito implements Serializable {
     private String nome;
     private boolean noite;
     private boolean usaBkg;
+    private boolean ativo;
     private transient List<ObjetoPistaJSon> objetosNoTransparencia;
 
     @JsonIgnore
@@ -649,6 +650,14 @@ public class Circuito implements Serializable {
 
     public void setNoite(boolean noite) {
         this.noite = noite;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
     }
 
     public List<Point> getEscapeList() {

@@ -30,13 +30,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Properties;
 
 import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -50,9 +55,9 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.SpinnerNumberModel;
@@ -90,7 +95,7 @@ public class MainPanelEditor extends JPanel {
     private JList boxJList;
     private EditorCircuitos srcFrame;
     private boolean desenhaTracado = true;
-    private boolean mostraBG = true;
+    private boolean mostraBG = false;
     private boolean creditos = false;
     private boolean pontosEscape = false;
     public final static Color oran = new Color(255, 188, 40, 180);
@@ -100,16 +105,37 @@ public class MainPanelEditor extends JPanel {
     int ultimoItemBoxSelecionado = -1;
     int ultimoItemPistaSelecionado = -1;
 
-    private final JRadioButton largadaButton = new JRadioButton();
-    private final JRadioButton retaButton = new JRadioButton();
-    private final JRadioButton curvaAltaButton = new JRadioButton();
-    private final JRadioButton curvaBaixaButton = new JRadioButton();
-    private final JRadioButton boxButton = new JRadioButton();
-    private final JRadioButton boxRetaButton = new JRadioButton();
-    private final JRadioButton boxCurvaAltaButton = new JRadioButton();
-    private final JRadioButton paraBoxButton = new JRadioButton();
-    private final JRadioButton fimBoxButton = new JRadioButton();
-    private final JRadioButton semSelecaoButton = new JRadioButton();
+    private static final class OpcaoTipoNo {
+        final String label;
+        final Color tipo;
+        final boolean box;
+
+        OpcaoTipoNo(String label, Color tipo, boolean box) {
+            this.label = label;
+            this.tipo = tipo;
+            this.box = box;
+        }
+
+        @Override
+        public String toString() {
+            return label;
+        }
+    }
+
+    private static final OpcaoTipoNo[] TIPOS_NO = new OpcaoTipoNo[]{
+            new OpcaoTipoNo("Sem seleção", null, false),
+            new OpcaoTipoNo("No Largada", No.LARGADA, false),
+            new OpcaoTipoNo("No Reta", No.RETA, false),
+            new OpcaoTipoNo("No Curva Alta", No.CURVA_ALTA, false),
+            new OpcaoTipoNo("No Curva Baixa", No.CURVA_BAIXA, false),
+            new OpcaoTipoNo("No Box", No.BOX, true),
+            new OpcaoTipoNo("No Reta Box", No.RETA, true),
+            new OpcaoTipoNo("No Curva Box", No.CURVA_ALTA, true),
+            new OpcaoTipoNo("No Parada Box", No.PARADA_BOX, true),
+            new OpcaoTipoNo("No Fim Box", No.FIM_BOX, true),
+    };
+
+    private JComboBox tipoNoCombo;
 
     private JScrollPane scrollPane;
 
@@ -146,6 +172,14 @@ public class MainPanelEditor extends JPanel {
     private final JLabel corFundoLabel = criaIndicadorDeCor();
     private final JLabel corAsfaltoLabel = criaIndicadorDeCor();
     File file;
+
+    private final List<String> circuitosXml = new ArrayList<String>();
+    private int indiceCircuito = -1;
+    private JLabel lblCircuitoAtual;
+    private JButton btnCircuitoAnterior;
+    private JButton btnCircuitoProximo;
+    private JCheckBox ativoCheckBox;
+    private boolean eventosMouseAdicionados;
 
     public MainPanelEditor() {
     }
@@ -228,96 +262,65 @@ public class MainPanelEditor extends JPanel {
                 new java.awt.Color(60, 60, 60), new java.awt.Color(120, 120, 120),
                 br.f1mane.recursos.SpriteSheet.CIMA_W, br.f1mane.recursos.SpriteSheet.CIMA_H);
 
-        JPanel controlPanel = gerarListsNosPistaBox();
-
-        JPanel buttonsPanel = gerarBotoesTracado();
-
-        JPanel radiosPanel = new JPanel();
-        radiosPanel.setLayout(new GridLayout(1, 10));
-
-        ButtonGroup buttonGroup = new ButtonGroup();
-
-        buttonGroup.add(largadaButton);
-        buttonGroup.add(retaButton);
-        buttonGroup.add(curvaAltaButton);
-        buttonGroup.add(curvaBaixaButton);
-        buttonGroup.add(boxButton);
-        buttonGroup.add(boxRetaButton);
-        buttonGroup.add(boxCurvaAltaButton);
-        buttonGroup.add(paraBoxButton);
-        buttonGroup.add(fimBoxButton);
-        buttonGroup.add(semSelecaoButton);
-        semSelecaoButton.setSelected(true);
-
-        JPanel bottonsPanel = new JPanel();
-        bottonsPanel.add(new JLabel("No Largada"));
-        bottonsPanel.add(largadaButton);
-        radiosPanel.add(bottonsPanel);
-
-        bottonsPanel = new JPanel();
-        bottonsPanel.add(new JLabel("No Reta"));
-        bottonsPanel.add(retaButton);
-        radiosPanel.add(bottonsPanel);
-
-        bottonsPanel = new JPanel();
-        bottonsPanel.add(new JLabel("No Curva Alta"));
-        bottonsPanel.add(curvaAltaButton);
-        radiosPanel.add(bottonsPanel);
-
-        bottonsPanel = new JPanel();
-        bottonsPanel.add(new JLabel("No Curva Baixa"));
-        bottonsPanel.add(curvaBaixaButton);
-        radiosPanel.add(bottonsPanel);
-
-        bottonsPanel = new JPanel();
-        bottonsPanel.add(new JLabel("No Box"));
-        bottonsPanel.add(boxButton);
-        radiosPanel.add(bottonsPanel);
-
-        bottonsPanel = new JPanel();
-        bottonsPanel.add(new JLabel("No Reta Box"));
-        bottonsPanel.add(boxRetaButton);
-        radiosPanel.add(bottonsPanel);
-
-        bottonsPanel = new JPanel();
-        bottonsPanel.add(new JLabel("No Curva Box"));
-        bottonsPanel.add(boxCurvaAltaButton);
-        radiosPanel.add(bottonsPanel);
-
-        bottonsPanel = new JPanel();
-        bottonsPanel.add(new JLabel("No Parada Box"));
-        bottonsPanel.add(paraBoxButton);
-        radiosPanel.add(bottonsPanel);
-
-        bottonsPanel = new JPanel();
-        bottonsPanel.add(new JLabel("No Fim box"));
-        bottonsPanel.add(fimBoxButton);
-        radiosPanel.add(bottonsPanel);
-
-        gerarLayout(srcFrame, controlPanel, buttonsPanel, radiosPanel);
+        gerarLayout(srcFrame);
         testePista = new TestePista(this, circuito);
         adicionaEventosMouse(srcFrame);
     }
 
-    private JPanel gerarBotoesTracado() {
+    private JPanel gerarComboTipoNo() {
+        JPanel painel = new JPanel();
+        painel.add(new JLabel("Tipo de nó"));
+        tipoNoCombo = new JComboBox(TIPOS_NO);
+        tipoNoCombo.setSelectedIndex(0);
+        painel.add(tipoNoCombo);
+        return painel;
+    }
+
+    private JPanel gerarBotoesVisualizacao() {
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(1, 3));
 
-        JButton desenhaTracadoBot = new JButton("Desenha Tracado");
-        desenhaTracadoBot.addActionListener(new ActionListener() {
+        JCheckBox desenhaTracadoCheck = new JCheckBox("Traçado");
+        desenhaTracadoCheck.setSelected(desenhaTracado);
+        desenhaTracadoCheck.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                desenhaTracado = !desenhaTracado;
+                desenhaTracado = desenhaTracadoCheck.isSelected();
                 MainPanelEditor.this.repaint();
             }
         });
 
-        JButton desenhaBackgroundBot = new JButton("Desenho Background");
-        desenhaBackgroundBot.addActionListener(new ActionListener() {
+        JCheckBox desenhaBackgroundCheck = new JCheckBox("Background");
+        desenhaBackgroundCheck.setSelected(mostraBG);
+        desenhaBackgroundCheck.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                mostraBG = !mostraBG;
+                mostraBG = desenhaBackgroundCheck.isSelected();
                 MainPanelEditor.this.repaint();
             }
         });
+
+        JButton creditosButton = new JButton("Créditos");
+        creditosButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    JOptionPane.showMessageDialog(null, "Informe a posição dos créditos na imagem do circuito.",
+                            "Informações", JOptionPane.INFORMATION_MESSAGE);
+                    creditos();
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                    srcFrame.dialogDeErro(e1);
+                }
+            }
+        });
+
+        buttonsPanel.add(desenhaTracadoCheck);
+        buttonsPanel.add(desenhaBackgroundCheck);
+        buttonsPanel.add(creditosButton);
+        return buttonsPanel;
+    }
+
+    private JPanel gerarBotoesAcoesNo() {
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new GridLayout(1, 2));
 
         JButton apagarUltimoNoButton = new JButton("Apagar Ultimo NO");
         apagarUltimoNoButton.addActionListener(new ActionListener() {
@@ -330,7 +333,6 @@ public class MainPanelEditor extends JPanel {
                 }
             }
         });
-
         buttonsPanel.add(apagarUltimoNoButton);
 
         JButton apagaNoListaButton = new JButton("Apaga Nó na lista Selecionada");
@@ -357,12 +359,17 @@ public class MainPanelEditor extends JPanel {
                 }
             }
         });
+        buttonsPanel.add(apagaNoListaButton);
+        return buttonsPanel;
+    }
 
+    private JPanel gerarBotaoCriarObjeto() {
+        JPanel buttonsPanel = new JPanel(new GridLayout(1, 1));
         JButton criarObjeto = new JButton("Criar Objeto");
         criarObjeto.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    semSelecaoButton.setSelected(true);
+                    desSelecionaNosPista();
                     FormularioObjetos formularioObjetos = new FormularioObjetos(MainPanelEditor.this);
                     formularioObjetos.mostrarPainelModal();
                     TipoObjetoPista tipoSelecionado = (TipoObjetoPista) formularioObjetos
@@ -383,26 +390,342 @@ public class MainPanelEditor extends JPanel {
 
             }
         });
-        JButton creditosButton = new JButton("Créditos");
-        creditosButton.addActionListener(new ActionListener() {
+        buttonsPanel.add(criarObjeto);
+        return buttonsPanel;
+    }
+
+    private JPanel gerarSecaoNos() {
+        JPanel secao = new JPanel(new BorderLayout());
+        JPanel topo = new JPanel(new GridLayout(3, 1));
+        topo.add(gerarComboTipoNo());
+        topo.add(gerarCombosLadoBox());
+        topo.add(gerarBotoesAcoesNo());
+        secao.add(topo, BorderLayout.NORTH);
+        secao.add(gerarListsNosPistaBox(), BorderLayout.CENTER);
+        return secao;
+    }
+
+    private JPanel gerarCombosLadoBox() {
+        JPanel painel = new JPanel();
+
+        ladoBoxCombo = new JComboBox();
+        ladoBoxCombo.addItem(LADO_COMBO_1);
+        ladoBoxCombo.addItem(LADO_COMBO_2);
+        if (circuito != null && circuito.getLadoBox() == 2) {
+            ladoBoxCombo.setSelectedItem(LADO_COMBO_2);
+        }
+        painel.add(ladoBoxCombo);
+
+        ladoBoxSaidaBoxCombo = new JComboBox();
+        ladoBoxSaidaBoxCombo.addItem(SAIDA_LADO_COMBO_1);
+        ladoBoxSaidaBoxCombo.addItem(SAIDA_LADO_COMBO_2);
+        if (circuito != null && circuito.getLadoBoxSaidaBox() == 2) {
+            ladoBoxSaidaBoxCombo.setSelectedItem(SAIDA_LADO_COMBO_2);
+        }
+        painel.add(ladoBoxSaidaBoxCombo);
+
+        return painel;
+    }
+
+    private JPanel gerarSecaoObjetos() {
+        JPanel secao = new JPanel(new BorderLayout());
+        secao.add(gerarBotaoCriarObjeto(), BorderLayout.NORTH);
+        formularioListaObjetos = new FormularioListaObjetos(this);
+        formularioListaObjetos.listarObjetos();
+        formularioListaObjetosCenario = new FormularioListaObjetos(this, Circuito::getObjetosCenario);
+        formularioListaObjetosCenario.listarObjetos();
+        JPanel listasObjetosPanel = new JPanel(new GridLayout(2, 1));
+        listasObjetosPanel.add(formularioListaObjetos.getObjetos());
+        listasObjetosPanel.add(formularioListaObjetosCenario.getObjetos());
+        secao.add(listasObjetosPanel, BorderLayout.CENTER);
+        return secao;
+    }
+
+    private JSplitPane gerarSplitPaneLateral() {
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, gerarSecaoNos(), gerarSecaoObjetos());
+        splitPane.setResizeWeight(0.5);
+        splitPane.setOneTouchExpandable(true);
+        splitPane.setPreferredSize(new Dimension(300, 10000));
+        return splitPane;
+    }
+
+
+    private JPanel gerarTopoNavegacaoEAcoes() {
+        JPanel topo = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 6)) {
+            @Override
+            public Dimension getPreferredSize() {
+                Dimension d = super.getPreferredSize();
+                return new Dimension(d.width, (int) (d.height * 0.8));
+            }
+        };
+
+        btnCircuitoAnterior = new JButton("◀");
+        btnCircuitoAnterior.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                navegarCircuito(-1);
+            }
+        });
+        topo.add(btnCircuitoAnterior);
+
+        lblCircuitoAtual = new JLabel();
+        topo.add(lblCircuitoAtual);
+
+        btnCircuitoProximo = new JButton("▶");
+        btnCircuitoProximo.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                navegarCircuito(1);
+            }
+        });
+        topo.add(btnCircuitoProximo);
+
+        JButton btnSalvar = new JButton("Salvar");
+        btnSalvar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    JOptionPane.showMessageDialog(null, "Informe a posição dos créditos na imagem do circuito.",
-                            "Informações", JOptionPane.INFORMATION_MESSAGE);
-                    creditos();
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                    srcFrame.dialogDeErro(e1);
+                    salvarPista();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    srcFrame.dialogDeErro(ex);
                 }
             }
         });
+        topo.add(btnSalvar);
 
-        buttonsPanel.add(apagaNoListaButton);
-        buttonsPanel.add(desenhaTracadoBot);
-        buttonsPanel.add(desenhaBackgroundBot);
-        buttonsPanel.add(creditosButton);
-        buttonsPanel.add(criarObjeto);
-        return buttonsPanel;
+        JButton btnCriarNova = new JButton("Nova");
+        btnCriarNova.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    novo();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    srcFrame.dialogDeErro(ex);
+                }
+            }
+        });
+        topo.add(btnCriarNova);
+
+        topo.add(new JLabel("Nome do circuito"));
+        nomePistaText = new JTextField() {
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(150, 40);
+            }
+        };
+        if (circuito != null) {
+            nomePistaText.setText(circuito.getNome());
+        }
+        topo.add(nomePistaText);
+
+        topo.add(new JLabel("Ativo"));
+        ativoCheckBox = new JCheckBox();
+        ativoCheckBox.setSelected(circuito != null && circuito.isAtivo());
+        ativoCheckBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                circuito.setAtivo(ativoCheckBox.isSelected());
+            }
+        });
+        topo.add(ativoCheckBox);
+
+        topo.add(new JLabel() {
+            @Override
+            public String getText() {
+                return "% Chuva";
+            }
+        });
+        probalidadeChuvaText = new JTextField() {
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(30, super.getPreferredSize().height);
+            }
+        };
+        if (circuito != null) {
+            probalidadeChuvaText.setText("" + circuito.getProbalidadeChuva());
+        }
+        topo.add(probalidadeChuvaText);
+
+        if (multiplicadorLarguraPista < 1.0) {
+            multiplicadorLarguraPista = 1.0;
+        }
+        if (multiplicadorLarguraPista > 2.0) {
+            multiplicadorLarguraPista = 2.0;
+        }
+        SpinnerNumberModel model1 = new SpinnerNumberModel(multiplicadorLarguraPista, 1.0, 2.0, 0.1);
+        larguraPistaSpinner = new JSpinner(model1) {
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(60, super.getPreferredSize().height);
+            }
+        };
+        larguraPistaSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                circuito.setMultiplicadorLarguraPista(((Double) larguraPistaSpinner.getModel().getValue()).doubleValue());
+                vetorizarCircuito();
+                repaint();
+            }
+        });
+        topo.add(new JLabel() {
+            @Override
+            public String getText() {
+                return "Largura";
+            }
+        });
+        topo.add(larguraPistaSpinner);
+
+        topo.add(new JLabel("Noite") {
+            @Override
+            public String getText() {
+                return "Noite";
+            }
+        });
+        noite.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                circuito.setNoite(noite.isSelected());
+                repaint();
+            }
+        });
+        topo.add(noite);
+
+        topo.add(new JLabel("Cor de Fundo"));
+        atualizaCorLabel(corFundoLabel, circuito != null ? circuito.getCorFundo() : null, Color.WHITE);
+        corFundoLabel.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                Color nova = JColorChooser.showDialog(MainPanelEditor.this,
+                        "Cor de Fundo", corFundoLabel.getBackground());
+                if (nova != null) {
+                    circuito.setCorFundo(nova);
+                    atualizaCorLabel(corFundoLabel, nova, Color.WHITE);
+                    repaint();
+                }
+            }
+        });
+        topo.add(corFundoLabel);
+
+        topo.add(new JLabel("Cor do Asfalto"));
+        atualizaCorLabel(corAsfaltoLabel, circuito != null ? circuito.getCorAsfalto() : null,
+                DesenhoProceduralCircuito.COR_PISTA);
+        corAsfaltoLabel.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                Color nova = JColorChooser.showDialog(MainPanelEditor.this,
+                        "Cor do Asfalto", corAsfaltoLabel.getBackground());
+                if (nova != null) {
+                    circuito.setCorAsfalto(nova);
+                    atualizaCorLabel(corAsfaltoLabel, nova, DesenhoProceduralCircuito.COR_PISTA);
+                    repaint();
+                }
+            }
+        });
+        topo.add(corAsfaltoLabel);
+
+        atualizarBotoesNavegacao();
+        return topo;
+    }
+
+    private void atualizarBotoesNavegacao() {
+        boolean temCircuito = indiceCircuito >= 0 && indiceCircuito < circuitosXml.size();
+        if (btnCircuitoAnterior != null) {
+            btnCircuitoAnterior.setEnabled(temCircuito && indiceCircuito > 0);
+        }
+        if (btnCircuitoProximo != null) {
+            btnCircuitoProximo.setEnabled(temCircuito && indiceCircuito < circuitosXml.size() - 1);
+        }
+        if (lblCircuitoAtual != null) {
+            lblCircuitoAtual.setText(temCircuito ? circuitosXml.get(indiceCircuito) : "—");
+        }
+    }
+
+    private void popularCircuitos() {
+        circuitosXml.clear();
+        try {
+            Properties p = new Properties();
+            InputStream is = CarregadorRecursos.recursoComoStream("properties/circuitos.properties");
+            if (is != null) {
+                p.load(new InputStreamReader(is, StandardCharsets.UTF_8));
+                List<String> arquivos = new ArrayList<String>();
+                for (Object k : p.stringPropertyNames()) {
+                    arquivos.add((String) k);
+                }
+                Collections.sort(arquivos);
+                circuitosXml.addAll(arquivos);
+            }
+        } catch (Exception ex) {
+            File dir = new File("src/main/resources/circuitos");
+            if (dir.isDirectory()) {
+                List<String> arquivos = new ArrayList<String>();
+                for (File f : Objects.requireNonNull(dir.listFiles())) {
+                    if (f.isFile() && f.getName().endsWith(".xml")) {
+                        arquivos.add(f.getName());
+                    }
+                }
+                Collections.sort(arquivos);
+                circuitosXml.addAll(arquivos);
+            }
+        }
+    }
+
+    public void navegarCircuito(int delta) {
+        int novoIndice = indiceCircuito + delta;
+        if (novoIndice < 0 || novoIndice >= circuitosXml.size()) {
+            return;
+        }
+        indiceCircuito = novoIndice;
+        String arquivo = circuitosXml.get(indiceCircuito);
+        try {
+            carregarCircuitoExistente(arquivo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            srcFrame.dialogDeErro(e);
+        }
+    }
+
+    public void iniciarComNavegacao() {
+        popularCircuitos();
+        if (!circuitosXml.isEmpty()) {
+            indiceCircuito = 0;
+            String arquivo = circuitosXml.get(indiceCircuito);
+            try {
+                carregarCircuitoExistente(arquivo);
+                return;
+            } catch (Exception e) {
+                e.printStackTrace();
+                srcFrame.dialogDeErro(e);
+            }
+        }
+        indiceCircuito = -1;
+        testePista = new TestePista(this, circuito);
+        iniciaEditor();
+        atualizaListas();
+        srcFrame.pack();
+        srcFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    }
+
+    private void carregarCircuitoExistente(String arquivoXml) throws IOException, ClassNotFoundException {
+        file = new File("src/main/resources/circuitos/" + arquivoXml);
+        circuito = CarregadorRecursos.carregarCircuito(arquivoXml);
+        testePista = new TestePista(this, circuito);
+        backGround = CarregadorRecursos.carregaBackGround(circuito.getBackGround(), this, circuito);
+        iniciaEditor();
+        atualizaListas();
+        vetorizarCircuito();
+        refletirCircuitoNosCampos();
+        srcFrame.pack();
+        srcFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        if (circuito.getPistaFull() != null && !circuito.getPistaFull().isEmpty()) {
+            centralizarPonto(((No) circuito.getPistaFull().get(0)).getPoint());
+        }
+    }
+
+    private void refletirCircuitoNosCampos() {
+        larguraPistaSpinner.getModel().setValue(Double.valueOf(circuito.getMultiplicadorLarguraPista()));
+        probalidadeChuvaText.setText(String.valueOf(circuito.getProbalidadeChuva()));
+        nomePistaText.setText(circuito.getNome());
+        noite.setSelected(circuito.isNoite());
+        if (ativoCheckBox != null) {
+            ativoCheckBox.setSelected(circuito.isAtivo());
+        }
+        atualizaCorLabel(corFundoLabel, circuito.getCorFundo(), Color.WHITE);
+        atualizaCorLabel(corAsfaltoLabel, circuito.getCorAsfalto(), DesenhoProceduralCircuito.COR_PISTA);
     }
 
     private JPanel gerarListsNosPistaBox() {
@@ -537,7 +860,7 @@ public class MainPanelEditor extends JPanel {
         return controlPanel;
     }
 
-    private void gerarLayout(JFrame frame, JPanel controlPanel, JPanel buttonsPanel, JPanel radiosPanel) {
+    private void gerarLayout(JFrame frame) {
         frame.getContentPane().removeAll();
         frame.setLayout(new BorderLayout());
         if (backGround != null)
@@ -545,24 +868,29 @@ public class MainPanelEditor extends JPanel {
         else {
             this.setPreferredSize(new Dimension(10000, 10000));
         }
-        frame.getContentPane().add(controlPanel, BorderLayout.WEST);
+        JPanel nortePanel = new JPanel(new BorderLayout());
+        nortePanel.add(gerarTopoNavegacaoEAcoes(), BorderLayout.NORTH);
+        nortePanel.add(gerarLinhaVisualizacaoETeste(), BorderLayout.SOUTH);
+        frame.getContentPane().add(nortePanel, BorderLayout.NORTH);
+
+        frame.getContentPane().add(gerarSplitPaneLateral(), BorderLayout.EAST);
+
         scrollPane = new JScrollPane(this, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
-        JPanel nothPanel = new JPanel(new GridLayout(2, 1));
-        nothPanel.add(radiosPanel);
-        nothPanel.add(buttonsPanel);
-        frame.getContentPane().add(nothPanel, BorderLayout.NORTH);
-        frame.getContentPane().add(iniciaEditorVetorizado(), BorderLayout.SOUTH);
-        formularioListaObjetos = new FormularioListaObjetos(this);
-        formularioListaObjetos.listarObjetos();
-        formularioListaObjetosCenario = new FormularioListaObjetos(this, Circuito::getObjetosCenario);
-        formularioListaObjetosCenario.listarObjetos();
-        JPanel listasObjetosPanel = new JPanel(new GridLayout(2, 1));
-        listasObjetosPanel.add(formularioListaObjetos.getObjetos());
-        listasObjetosPanel.add(formularioListaObjetosCenario.getObjetos());
-        frame.getContentPane().add(listasObjetosPanel, BorderLayout.EAST);
+    }
 
+    private JPanel gerarLinhaVisualizacaoETeste() {
+        JPanel linha = new JPanel(new GridLayout(1, 2)) {
+            @Override
+            public Dimension getPreferredSize() {
+                Dimension d = super.getPreferredSize();
+                return new Dimension(d.width, (int) (d.height * 0.7));
+            }
+        };
+        linha.add(gerarBotoesVisualizacao());
+        linha.add(gerarBotoesTestePista());
+        return linha;
     }
 
     public void esquerda() {
@@ -631,6 +959,12 @@ public class MainPanelEditor extends JPanel {
     }
 
     private void adicionaEventosMouse(final JFrame frame) {
+        for (java.awt.event.MouseListener ml : this.getMouseListeners()) {
+            this.removeMouseListener(ml);
+        }
+        for (java.awt.event.MouseMotionListener mml : this.getMouseMotionListeners()) {
+            this.removeMouseMotionListener(mml);
+        }
         MouseAdapter mouseAdapter = new MouseAdapter() {
 
             public void mouseEntered(MouseEvent e) {
@@ -639,7 +973,7 @@ public class MainPanelEditor extends JPanel {
             }
 
             public void mousePressed(MouseEvent e) {
-                if (!semSelecaoButton.isSelected() || !SwingUtilities.isLeftMouseButton(e)
+                if (!isSemSelecao() || !SwingUtilities.isLeftMouseButton(e)
                         || posicionaObjetoPista || desenhandoObjetoLivre) {
                     return;
                 }
@@ -673,7 +1007,7 @@ public class MainPanelEditor extends JPanel {
                     arrastouObjeto = false;
                     return;
                 }
-                if (semSelecaoButton.isSelected()) {
+                if (isSemSelecao()) {
                     clickEditarObjetos(e);
                 } else {
                     No no = new No();
@@ -880,8 +1214,7 @@ public class MainPanelEditor extends JPanel {
     }
 
     private void inserirNoNasJList(No no) {
-        if (boxButton.isSelected() || paraBoxButton.isSelected() || fimBoxButton.isSelected()
-                || boxRetaButton.isSelected() || boxCurvaAltaButton.isSelected()) {
+        if (isTipoNoAtualBox()) {
             DefaultListModel model = ((DefaultListModel) boxJList.getModel());
             if (ultimoItemBoxSelecionado > -1) {
                 ultimoItemBoxSelecionado += 1;
@@ -1589,7 +1922,7 @@ public class MainPanelEditor extends JPanel {
     }
 
     public void creditos() {
-        semSelecaoButton.setSelected(true);
+        desSelecionaNosPista();
         objetoPista = null;
         if (circuito.getCreditos() != null) {
             centralizarPonto(circuito.getCreditos());
@@ -1597,82 +1930,66 @@ public class MainPanelEditor extends JPanel {
         creditos = true;
     }
 
+    private OpcaoTipoNo getOpcaoTipoNo() {
+        return tipoNoCombo != null ? (OpcaoTipoNo) tipoNoCombo.getSelectedItem() : null;
+    }
+
+    private boolean isSemSelecao() {
+        OpcaoTipoNo opcao = getOpcaoTipoNo();
+        return opcao == null || opcao.tipo == null;
+    }
+
+    private boolean isTipoNoAtualBox() {
+        OpcaoTipoNo opcao = getOpcaoTipoNo();
+        return opcao != null && opcao.box;
+    }
+
     public Color getTipoNo() {
-        if (largadaButton.isSelected()) {
-            tipoNo = No.LARGADA;
-        }
-        if (retaButton.isSelected()) {
-            tipoNo = No.RETA;
-        }
-        if (curvaAltaButton.isSelected()) {
-            tipoNo = No.CURVA_ALTA;
-        }
-        if (curvaBaixaButton.isSelected()) {
-            tipoNo = No.CURVA_BAIXA;
-        }
-        if (boxButton.isSelected()) {
-            tipoNo = No.BOX;
-        }
-        if (boxRetaButton.isSelected()) {
-            tipoNo = No.RETA;
-        }
-        if (boxCurvaAltaButton.isSelected()) {
-            tipoNo = No.CURVA_ALTA;
-        }
-        if (paraBoxButton.isSelected()) {
-            tipoNo = No.PARADA_BOX;
-        }
-        if (fimBoxButton.isSelected()) {
-            tipoNo = No.FIM_BOX;
-        }
+        OpcaoTipoNo opcao = getOpcaoTipoNo();
+        tipoNo = opcao != null ? opcao.tipo : null;
         return tipoNo;
     }
 
-    private JPanel iniciaEditorVetorizado() {
-        JPanel radioPistaPanel = new JPanel();
-        radioPistaPanel.add(new JLabel("Nos da Pista"));
-        JPanel radioBoxPanel = new JPanel();
-        radioBoxPanel.add(new JLabel("Nos do Box"));
-        JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new GridLayout(2, 1));
-
+    private JPanel gerarBotoesTestePista() {
         JPanel buttonsPanel1 = new JPanel();
         buttonsPanel1.setLayout(new GridLayout(1, 6));
 
-        JButton testaPistaButton = new JButton("Iniciar/Parar Teste de Pista");
-        testaPistaButton.addActionListener(new ActionListener() {
+        JCheckBox testaPistaCheck = new JCheckBox("Teste Pista");
+        testaPistaCheck.setSelected(testePista != null && testePista.isAlive());
+        testaPistaCheck.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    if (testePista.isAlive()) {
-                        testePista.pararTeste();
-                    } else {
+                    if (testaPistaCheck.isSelected()) {
                         vetorizarCircuito();
                         testePista.iniciarTeste(multiplicadorPista);
+                    } else {
+                        testePista.pararTeste();
                     }
-
                 } catch (Exception e1) {
                     e1.printStackTrace();
                     srcFrame.dialogDeErro(e1);
                 }
             }
         });
-        buttonsPanel1.add(testaPistaButton);
+        buttonsPanel1.add(testaPistaCheck);
 
-        JButton testaBoxButton = new JButton("Ligar/Desligar Box");
-        testaBoxButton.addActionListener(new ActionListener() {
+        JCheckBox testaBoxCheck = new JCheckBox("Box");
+        testaBoxCheck.setSelected(testePista != null && testePista.isIrProBox());
+        testaBoxCheck.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 testePista.testarBox();
             }
         });
-        buttonsPanel1.add(testaBoxButton);
+        buttonsPanel1.add(testaBoxCheck);
 
-        JButton testaEscapadaButton = new JButton("Ligar/Desligar Modo Escapada");
-        testaEscapadaButton.addActionListener(new ActionListener() {
+        JCheckBox testaEscapadaCheck = new JCheckBox("Escapada");
+        testaEscapadaCheck.setSelected(testePista != null && testePista.isModoEscapada());
+        testaEscapadaCheck.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 testePista.testarEscapada();
             }
         });
-        buttonsPanel1.add(testaEscapadaButton);
+        buttonsPanel1.add(testaEscapadaCheck);
 
         JButton left = new JButton() {
             @Override
@@ -1713,144 +2030,7 @@ public class MainPanelEditor extends JPanel {
             }
         });
         buttonsPanel1.add(right);
-
-        JPanel buttonsPanel2 = new JPanel();
-        buttonsPanel2.setLayout(new GridLayout());
-
-        nomePistaText = new JTextField() {
-            @Override
-            public Dimension getPreferredSize() {
-                return new Dimension(150, 40);
-            }
-        };
-        if (circuito != null) {
-            nomePistaText.setText(circuito.getNome());
-        }
-        buttonsPanel2.add(new JLabel("Nome do circuito"));
-        buttonsPanel2.add(nomePistaText);
-
-        ladoBoxCombo = new JComboBox();
-        ladoBoxCombo.addItem(LADO_COMBO_1);
-        ladoBoxCombo.addItem(LADO_COMBO_2);
-        if (circuito != null && circuito.getLadoBox() == 2) {
-            ladoBoxCombo.setSelectedItem(LADO_COMBO_2);
-        }
-        buttonsPanel2.add(ladoBoxCombo);
-
-        ladoBoxSaidaBoxCombo = new JComboBox();
-        ladoBoxSaidaBoxCombo.addItem(SAIDA_LADO_COMBO_1);
-        ladoBoxSaidaBoxCombo.addItem(SAIDA_LADO_COMBO_2);
-        if (circuito != null && circuito.getLadoBoxSaidaBox() == 2) {
-            ladoBoxSaidaBoxCombo.setSelectedItem(SAIDA_LADO_COMBO_2);
-        }
-        buttonsPanel2.add(ladoBoxSaidaBoxCombo);
-
-        probalidadeChuvaText = new JTextField() {
-            @Override
-            public Dimension getPreferredSize() {
-                return new Dimension(30, super.getPreferredSize().height);
-            }
-        };
-        if (circuito != null) {
-            probalidadeChuvaText.setText("" + circuito.getProbalidadeChuva());
-        }
-        JPanel p2 = new JPanel();
-        p2.add(new JLabel() {
-            @Override
-            public String getText() {
-                return "% Chuva";
-            }
-        });
-        p2.add(probalidadeChuvaText);
-        buttonsPanel2.add(p2);
-
-        if (multiplicadorLarguraPista < 1.0) {
-            multiplicadorLarguraPista = 1.0;
-        }
-        if (multiplicadorLarguraPista > 2.0) {
-            multiplicadorLarguraPista = 2.0;
-        }
-        SpinnerNumberModel model1 = new SpinnerNumberModel(multiplicadorLarguraPista, 1.0, 2.0, 0.1);
-        larguraPistaSpinner = new JSpinner(model1) {
-            @Override
-            public Dimension getPreferredSize() {
-                return new Dimension(60, super.getPreferredSize().height);
-            }
-        };
-        larguraPistaSpinner.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                circuito.setMultiplicadorLarguraPista(((Double) larguraPistaSpinner.getModel().getValue()).doubleValue());
-                vetorizarCircuito();
-                repaint();
-            }
-        });
-        p2 = new JPanel();
-        p2.add(new JLabel() {
-            @Override
-            public String getText() {
-                return "Largura";
-            }
-        });
-        p2.add(larguraPistaSpinner);
-        buttonsPanel2.add(p2);
-
-        p2 = new JPanel();
-        p2.add(new JLabel("Noite") {
-            @Override
-            public String getText() {
-                return "Noite";
-            }
-        });
-
-        noite.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                circuito.setNoite(noite.isSelected());
-                repaint();
-            }
-        });
-        p2.add(noite);
-        buttonsPanel2.add(p2);
-
-        p2 = new JPanel();
-        p2.add(new JLabel("Cor de Fundo"));
-        atualizaCorLabel(corFundoLabel, circuito != null ? circuito.getCorFundo() : null, Color.WHITE);
-        corFundoLabel.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                Color nova = JColorChooser.showDialog(MainPanelEditor.this,
-                        "Cor de Fundo", corFundoLabel.getBackground());
-                if (nova != null) {
-                    circuito.setCorFundo(nova);
-                    atualizaCorLabel(corFundoLabel, nova, Color.WHITE);
-                    repaint();
-                }
-            }
-        });
-        p2.add(corFundoLabel);
-        buttonsPanel2.add(p2);
-
-        p2 = new JPanel();
-        p2.add(new JLabel("Cor do Asfalto"));
-        atualizaCorLabel(corAsfaltoLabel, circuito != null ? circuito.getCorAsfalto() : null,
-                DesenhoProceduralCircuito.COR_PISTA);
-        corAsfaltoLabel.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                Color nova = JColorChooser.showDialog(MainPanelEditor.this,
-                        "Cor do Asfalto", corAsfaltoLabel.getBackground());
-                if (nova != null) {
-                    circuito.setCorAsfalto(nova);
-                    atualizaCorLabel(corAsfaltoLabel, nova, DesenhoProceduralCircuito.COR_PISTA);
-                    repaint();
-                }
-            }
-        });
-        p2.add(corAsfaltoLabel);
-        buttonsPanel2.add(p2);
-
-        buttonsPanel.add(buttonsPanel1);
-        buttonsPanel.add(buttonsPanel2);
-        return buttonsPanel;
+        return buttonsPanel1;
     }
 
     public void centralizarPonto(Point pin) {
@@ -2063,7 +2243,9 @@ public class MainPanelEditor extends JPanel {
     }
 
     public void desSelecionaNosPista() {
-        semSelecaoButton.setSelected(true);
+        if (tipoNoCombo != null) {
+            tipoNoCombo.setSelectedIndex(0);
+        }
     }
 
 
@@ -2076,51 +2258,26 @@ public class MainPanelEditor extends JPanel {
         if (result == JFileChooser.CANCEL_OPTION) {
             return;
         }
-        File file = fileChooser.getSelectedFile();
-        backGround = CarregadorRecursos.carregaBackGround(file.getName(), this, circuito);
-        if (backGround == null) {
+        File imagemFile = fileChooser.getSelectedFile();
+        Circuito novoCircuito = new Circuito();
+        BufferedImage novoBackGround = CarregadorRecursos.carregaBackGround(imagemFile.getName(), this, novoCircuito);
+        if (novoBackGround == null) {
             JOptionPane.showMessageDialog(null,
                     "Imagem para criar circuito deve esta na pasta /f1mane/src/sowbreira/f1mane/recursos/",
                     "Operação ilegal", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        circuito.setBackGround(file.getName());
+        file = null;
+        indiceCircuito = -1;
+        circuito = novoCircuito;
+        backGround = novoBackGround;
+        circuito.setBackGround(imagemFile.getName());
         testePista = new TestePista(this, circuito);
         iniciaEditor();
         atualizaListas();
+        refletirCircuitoNosCampos();
+        lblCircuitoAtual.setText("(novo circuito, não salvo)");
         srcFrame.pack();
         srcFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-    }
-
-    public void editar() throws IOException, ClassNotFoundException {
-        JFileChooser fileChooser = new JFileChooser(new File("src/main/resources/circuitos"));
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
-        ExampleFileFilter exampleFileFilter = new ExampleFileFilter("xml");
-        fileChooser.setFileFilter(exampleFileFilter);
-
-        int result = fileChooser.showOpenDialog(null);
-
-        if (result == JFileChooser.CANCEL_OPTION) {
-            return;
-        }
-        file = fileChooser.getSelectedFile();
-        circuito = CarregadorRecursos.carregarCircuito(fileChooser.getSelectedFile().getName());
-        testePista = new TestePista(this, circuito);
-        backGround = CarregadorRecursos.carregaBackGround(circuito.getBackGround(), this, circuito);
-        iniciaEditor();
-        atualizaListas();
-        vetorizarCircuito();
-        larguraPistaSpinner.getModel().setValue(Double.valueOf(circuito.getMultiplicadorLarguraPista()));
-        probalidadeChuvaText.setText(String.valueOf(circuito.getProbalidadeChuva()));
-        nomePistaText.setText(circuito.getNome());
-        noite.setSelected(circuito.isNoite());
-        atualizaCorLabel(corFundoLabel, circuito.getCorFundo(), Color.WHITE);
-        atualizaCorLabel(corAsfaltoLabel, circuito.getCorAsfalto(), DesenhoProceduralCircuito.COR_PISTA);
-        srcFrame.pack();
-        srcFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        if (circuito.getPistaFull() != null && !circuito.getPistaFull().isEmpty()) {
-            centralizarPonto(((No) circuito.getPistaFull().get(0)).getPoint());
-        }
     }
 }

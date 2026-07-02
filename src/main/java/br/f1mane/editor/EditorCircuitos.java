@@ -1,35 +1,18 @@
 package br.f1mane.editor;
 
-import java.awt.Container;
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.Set;
 
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 
 import br.f1mane.controles.InterfaceJogo;
 import br.f1mane.recursos.CarregadorRecursos;
-import br.nnpe.Global;
-import br.nnpe.ImageUtil;
-import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Created on 14/06/2014
@@ -41,9 +24,6 @@ public class EditorCircuitos extends JFrame {
     private static final long serialVersionUID = -284357233387917389L;
     private MainPanelEditor editor;
     private InterfaceJogo controleJogo;
-    private final JMenuBar bar;
-    private final JMenu menuEditor;
-    private final JMenu menuInfo;
 
     protected boolean altApertado;
     protected boolean shiftApertado;
@@ -53,93 +33,25 @@ public class EditorCircuitos extends JFrame {
     }
 
     public EditorCircuitos() throws IOException {
-        bar = new JMenuBar();
-        this.setJMenuBar(bar);
-
-        menuEditor = new JMenu("Editor");
-        bar.add(menuEditor);
-
-        menuInfo = new JMenu("Informações");
-        bar.add(menuInfo);
-
-        gerarMenusEditor(menuEditor);
-        gerarMenusInfo(menuInfo);
-        gerarMenusSobre(menuInfo);
         String title = "Fl-MANE " + getVersao() + " MANager & Engineer Editor";
         setTitle(title);
         removerListeners();
         removerKeyListeners();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        final BufferedImage bg = ImageUtil.gerarFade(carregarBgAleatorio(), 25);
-        setSize(bg != null ? bg.getWidth() : 1024, bg != null ? bg.getHeight() : 768);
-        JPanel jPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.drawImage(bg, 0, 0, null);
-            }
-        };
-        getContentPane().add(jPanel);
-        this.setVisible(true);
-
-    }
-
-    private BufferedImage carregarBgAleatorio() {
+        setSize(1024, 768);
         try {
-            java.net.URL dir = CarregadorRecursos.class.getResource("/bg");
-            if (dir != null) {
-                File pasta = new File(dir.toURI());
-                File[] jpgs = pasta.listFiles(f -> f.getName().endsWith(".jpg"));
-                if (jpgs != null && jpgs.length > 0) {
-                    File escolhido = jpgs[new java.util.Random().nextInt(jpgs.length)];
-                    return javax.imageio.ImageIO.read(escolhido);
-                }
-            }
-        } catch (Exception e) {
-            Logger.logarExept(e);
+            editor = new MainPanelEditor(this);
+            editor.iniciarComNavegacao();
+            ativarKeysEditor();
+        } catch (Exception e1) {
+            e1.printStackTrace();
+            dialogDeErro(e1);
         }
-        return new BufferedImage(1024, 768, BufferedImage.TYPE_INT_RGB);
+        this.setVisible(true);
     }
 
     private String getVersao() {
         return CarregadorRecursos.getVersaoFormatado();
-    }
-
-    private void gerarMenusInfo(JMenu menuInfo2) {
-        JMenuItem logs = new JMenuItem("Ver Logs");
-        logs.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    JTextArea area = new JTextArea(20, 50);
-                    Set top = Logger.topExceptions.keySet();
-                    for (Iterator iterator = top.iterator(); iterator.hasNext(); ) {
-                        String exept = (String) iterator.next();
-                        area.append("Quantidade : "
-                                + Logger.topExceptions.get(exept));
-                        area.append("\n");
-                        area.append(exept.replaceAll("<br>", "\n"));
-                        area.append("\n");
-                    }
-                    area.setCaretPosition(0);
-                    JOptionPane.showMessageDialog(EditorCircuitos.this,
-                            new JScrollPane(area), "Lista de Erros",
-                            JOptionPane.INFORMATION_MESSAGE);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    dialogDeErro(ex);
-                }
-            }
-        });
-        menuInfo2.add(logs);
-
-        JMenuItem ligarLogs = new JMenuItem("Ativar Debug/Logs");
-        ligarLogs.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                Global.DEBUG = !Global.DEBUG;
-            }
-        });
-        menuInfo2.add(ligarLogs);
-
     }
 
     public void dialogDeErro(Exception e) {
@@ -152,28 +64,6 @@ public class EditorCircuitos extends JFrame {
         JOptionPane.showMessageDialog(null, retorno.toString(),
                 "Conexão Perdida. Erro enviando dados.", JOptionPane.ERROR_MESSAGE);
 
-    }
-
-    private void gerarMenusSobre(JMenu menu2) {
-        JMenuItem sobre = new JMenuItem("Sobre o autor do jogo");
-        sobre.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                mostraSobre();
-            }
-
-        });
-        menu2.add(sobre);
-    }
-
-    public void mostraSobre() {
-        String msg = "Feito por" + " Paulo Sobreira        ".trim() + "\n"
-                + "- " + "Pistas" + " "
-                + "- " + "Capacetes e Carros" + " "
-                + "- https://sowbreira-26fe1.firebaseapp.com             ".trim() + "\n"
-                + "- sowbreira@gmail.com                       ".trim() + "\n"
-                + "- 2007-2026";
-        JOptionPane.showMessageDialog(EditorCircuitos.this, msg,
-                "Sobre o autor do jogo", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void ativarKeysEditor() {
@@ -253,58 +143,6 @@ public class EditorCircuitos extends JFrame {
         for (int i = 0; i < listeners.length; i++) {
             removeKeyListener(listeners[i]);
         }
-    }
-
-    private void gerarMenusEditor(Container menu4) {
-
-        JMenuItem abrirImg = new JMenuItem("Criar Circuito");
-        abrirImg.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    if (controleJogo != null) {
-                        controleJogo.matarTodasThreads();
-                    }
-                    editor = new MainPanelEditor(
-                            EditorCircuitos.this);
-                    editor.novo();
-                    ativarKeysEditor();
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                    dialogDeErro(e1);
-                }
-            }
-        });
-        menu4.add(abrirImg);
-        JMenuItem abrirPista = new JMenuItem("Editar Circuito");
-        abrirPista.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    if (controleJogo != null) {
-                        controleJogo.matarTodasThreads();
-                    }
-                    editor = new MainPanelEditor(EditorCircuitos.this);
-                    editor.editar();
-                    ativarKeysEditor();
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                    dialogDeErro(e1);
-                }
-            }
-        });
-        menu4.add(abrirPista);
-
-        JMenuItem salvarPista = new JMenuItem("Salvar Pista F8");
-        salvarPista.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    editor.salvarPista();
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
-        menu4.add(salvarPista);
-
     }
 
     public static void main(String[] args) throws IOException {
