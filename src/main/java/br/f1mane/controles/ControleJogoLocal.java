@@ -189,12 +189,69 @@ public class ControleJogoLocal extends ControleRecursos
      */
     public void atualizaIndexTracadoPilotos() {
         decrementaTracado();
+        if (br.nnpe.Global.LOG_COLISAO) {
+            logSobreposicaoReal();
+        }
     }
 
     public void decrementaTracado() {
         for (Iterator iterator = pilotos.iterator(); iterator.hasNext(); ) {
             Piloto piloto = (Piloto) iterator.next();
             piloto.decIndiceTracado();
+        }
+    }
+
+    /**
+     * Loga pares de carros sobrepostos na posicao real (mesma linha visual e
+     * distancia menor que um carro) para analise dos cenarios de overlap.
+     */
+    private void logSobreposicaoReal() {
+        List<No> pista = getNosDaPista();
+        if (pista == null || pista.isEmpty() || pilotos == null) {
+            return;
+        }
+        int n = pista.size();
+        int limite = Piloto.METADE_CARRO * 2;
+        for (int i = 0; i < pilotos.size(); i++) {
+            Piloto a = pilotos.get(i);
+            if (a == null || a.getNoAtual() == null || a.getNoAtual().isBox() || a.getPtosBox() != 0
+                    || a.verificaNaoPrecisaDesenhar() || verificaNoPitLane(a)) {
+                continue;
+            }
+            for (int j = i + 1; j < pilotos.size(); j++) {
+                Piloto b = pilotos.get(j);
+                if (b == null || b.getNoAtual() == null || b.getNoAtual().isBox() || b.getPtosBox() != 0
+                        || b.verificaNaoPrecisaDesenhar() || verificaNoPitLane(b)) {
+                    continue;
+                }
+                boolean mesmaLinha = a.getTracado() == b.getTracado()
+                        || (a.getIndiceTracado() > 0 && a.getTracadoAntigo() == b.getTracado())
+                        || (b.getIndiceTracado() > 0 && b.getTracadoAntigo() == a.getTracado());
+                if (!mesmaLinha) {
+                    continue;
+                }
+                int d = b.getNoAtual().getIndex() - a.getNoAtual().getIndex();
+                if (d > n / 2) {
+                    d -= n;
+                }
+                if (d < -n / 2) {
+                    d += n;
+                }
+                if (Math.abs(d) >= limite) {
+                    continue;
+                }
+                Logger.logar("[OVERLAP_REAL] gap=" + d
+                        + " a=" + a.getNome() + " idxA=" + a.getNoAtual().getIndex() + " trcA=" + a.getTracado()
+                        + " antA=" + a.getTracadoAntigo() + " indA=" + a.getIndiceTracado()
+                        + " ganhoA=" + Util.inteiro(a.getGanho()) + " posA=" + a.getPosicao()
+                        + " voltaA=" + a.getNumeroVolta()
+                        + " colA=" + (a.getColisao() != null ? a.getColisao().getNome() : "-")
+                        + " | b=" + b.getNome() + " idxB=" + b.getNoAtual().getIndex() + " trcB=" + b.getTracado()
+                        + " antB=" + b.getTracadoAntigo() + " indB=" + b.getIndiceTracado()
+                        + " ganhoB=" + Util.inteiro(b.getGanho()) + " posB=" + b.getPosicao()
+                        + " voltaB=" + b.getNumeroVolta()
+                        + " colB=" + (b.getColisao() != null ? b.getColisao().getNome() : "-"));
+            }
         }
     }
 

@@ -198,6 +198,8 @@ public class Piloto implements Serializable, PilotoSuave {
     @JsonIgnore
     private boolean colisaoCentro;
     @JsonIgnore
+    private int ciclosPresoFila;
+    @JsonIgnore
     private double limiteEvitarBatrCarroFrente;
     @JsonIgnore
     private boolean evitaBaterCarroFrente;
@@ -312,6 +314,10 @@ public class Piloto implements Serializable, PilotoSuave {
 
     public double getGanho() {
         return ganho;
+    }
+
+    public void setGanho(double ganho) {
+        this.ganho = ganho;
     }
 
     public List getGanhosBaixa() {
@@ -1101,8 +1107,9 @@ public class Piloto implements Serializable, PilotoSuave {
             if (noAtual.verificaCurvaBaixa()) {
                 novoModificador = 10;
             }
-            index += novoModificador;
-            setPtosPista(Util.inteiro(novoModificador + getPtosPista()));
+            long avancoBandeirada = limitaAvancoCarroFrente(Math.round(novoModificador));
+            index += avancoBandeirada;
+            setPtosPista(Util.inteiro(avancoBandeirada + getPtosPista()));
             setVelocidade(controleJogo.getRandom().intervalo(50, 65));
             if (carroPilotoDaFrenteRetardatario != null
                     && getTracado() == carroPilotoDaFrenteRetardatario.getPiloto().getTracado()) {
@@ -1141,8 +1148,12 @@ public class Piloto implements Serializable, PilotoSuave {
         processaSegundosParaRival();
         controleJogo.verificaAcidente(this);
         long roundGanho = Math.round(ganho);
-        setPtosPista(Util.inteiro(getPtosPista() + roundGanho));
-        index += roundGanho;
+        long avancoLimitado = limitaAvancoCarroFrente(roundGanho);
+        if (avancoLimitado < roundGanho) {
+            ganho = avancoLimitado;
+        }
+        setPtosPista(Util.inteiro(getPtosPista() + avancoLimitado));
+        index += avancoLimitado;
         setVelocidade(calculoVelocidade(ganho));
         return index;
     }
@@ -1370,6 +1381,7 @@ public class Piloto implements Serializable, PilotoSuave {
 
     public void processaPenalidadeColisao() {
         if (getColisao() == null) {
+            ciclosPresoFila = 0;
             return;
         }
         incStress(1);
@@ -1378,7 +1390,14 @@ public class Piloto implements Serializable, PilotoSuave {
         }
         Piloto pilotoFrente = getColisao();
         pilotoFrente.setCiclosDesconcentrado(0);
-        if (pilotoFrente.getTracado() == this.tracado) {
+        /**
+         * Considera tambem o carro da frente que ainda esta cruzando esta
+         * linha (mudou de tracado mas o corpo ainda nao saiu dela); antes a
+         * penalidade exigia tracado identico e o carro de tras atravessava.
+         */
+        boolean mesmaLinha = pilotoFrente.getTracado() == this.tracado
+                || (pilotoFrente.getIndiceTracado() > 0 && pilotoFrente.getTracadoAntigo() == this.tracado);
+        if (mesmaLinha) {
             double ganhoFrente = pilotoFrente.getGanho();
             if (colisaoDiantera && getCentroColisao().intersects(pilotoFrente.getCentroColisao())) {
                 ganho = Math.min(ganho, ganhoFrente);
@@ -1388,6 +1407,161 @@ public class Piloto implements Serializable, PilotoSuave {
                 ganho = Math.min(ganho, ganhoFrente);
             }
         }
+        if (mesmaLinha && ganho <= 10) {
+            ciclosPresoFila++;
+        } else {
+            ciclosPresoFila = 0;
+        }
+    }
+
+    /**
+     * Escapa da fila indiana: preso ha varios ciclos atras de um carro lento
+     * na mesma linha, muda para um tracado lateral comprovadamente livre. A
+     * verificacao padrao de mudanca de tracado bloqueia quando qualquer carro
+     * fora do tracado alvo esta a 75 nos - numa fila os proprios vizinhos
+     * impedem a saida mesmo com o tracado do lado totalmente vazio.
+     */
+    boolean tentarEscaparFilaIndiana() {
+        if (ciclosPresoFila < 8) {
+            return false;
+        }
+        if (controleJogo.isSafetyCarNaPista() || isRecebeuBanderada() || verificaDesconcentrado()) {
+            return false;
+        }
+        if (getPtosBox() != 0 || isBox()) {
+            return false;
+        }
+        int tracadoAtual = getTracado();
+        if (tracadoAtual != 0 && tracadoAtual != 1 && tracadoAtual != 2) {
+            return false;
+        }
+        int[] alvos;
+        if (tracadoAtual == 0) {
+            int primeiro = controleJogo.getRandom().intervalo(1, 2);
+            alvos = new int[] { primeiro, primeiro == 1 ? 2 : 1 };
+        } else {
+            alvos = new int[] { 0 };
+        }
+        for (int i = 0; i < alvos.length; i++) {
+            if (verificaTracadoLivreParaEscapar(alvos[i]) && mudarTracado(alvos[i], false, true)) {
+                ciclosPresoFila = 0;
+                if (Global.LOG_COLISAO) {
+                    Logger.logar("[ESCAPE_FILA] piloto=" + getNome() + " de=" + tracadoAtual + " para=" + alvos[i]
+                            + " idx=" + (getNoAtual() != null ? getNoAtual().getIndex() : -1)
+                            + " volta=" + getNumeroVolta());
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Livre = nenhum carro ocupando ou cruzando o tracado alvo numa janela de
+     * 100 nos atras (nao fechar quem vem rapido) e 60 nos a frente.
+     */
+    public boolean verificaTracadoLivreParaEscapar(int alvo) {
+        No no = getNoAtual();
+        if (no == null || no.isBox()) {
+            return false;
+        }
+        List<No> pista = controleJogo.getNosDaPista();
+        if (pista == null || pista.isEmpty()) {
+            return false;
+        }
+        int n = pista.size();
+        int meuIndex = no.getIndex();
+        List<Piloto> pilotos = controleJogo.getPilotos();
+        for (int i = 0; i < pilotos.size(); i++) {
+            Piloto outro = pilotos.get(i);
+            if (outro == null || outro.equals(this) || verificaNaoPrecisaDesviar(outro)) {
+                continue;
+            }
+            No noOutro = outro.getNoAtual();
+            if (noOutro == null || noOutro.isBox() || outro.getPtosBox() != 0
+                    || controleJogo.verificaNoPitLane(outro)) {
+                continue;
+            }
+            boolean ocupaAlvo = outro.getTracado() == alvo
+                    || (outro.getIndiceTracado() > 0 && outro.getTracadoAntigo() == alvo);
+            if (!ocupaAlvo) {
+                continue;
+            }
+            int d = noOutro.getIndex() - meuIndex;
+            if (d > n / 2) {
+                d -= n;
+            }
+            if (d < -n / 2) {
+                d += n;
+            }
+            if (d >= -100 && d <= 60) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Garante que o avanco do ciclo nunca entre nem atravesse a area do carro
+     * logo a frente na mesma linha. A penalidade de colisao apenas iguala o
+     * ganho ao do carro da frente: quando a aproximacao por ciclo e maior que
+     * a janela das areas de colisao (carro parado por acidente, largada,
+     * bandeirada) o carro de tras invadia ou passava por cima do da frente.
+     */
+    public long limitaAvancoCarroFrente(long avanco) {
+        if (avanco <= 0) {
+            return avanco;
+        }
+        if (controleJogo.isModoQualify()) {
+            return avanco;
+        }
+        No no = getNoAtual();
+        if (no == null || no.isBox() || controleJogo.verificaNoPitLane(this)) {
+            return avanco;
+        }
+        List<No> pista = controleJogo.getNosDaPista();
+        if (pista == null || pista.isEmpty()) {
+            return avanco;
+        }
+        int n = pista.size();
+        int meuIndex = no.getIndex();
+        int distanciaMinima = METADE_CARRO * 2;
+        long avancoLimitado = avanco;
+        List<Piloto> pilotos = controleJogo.getPilotos();
+        for (int i = 0; i < pilotos.size(); i++) {
+            Piloto outro = pilotos.get(i);
+            if (outro == null || outro.equals(this) || verificaNaoPrecisaDesviar(outro)) {
+                continue;
+            }
+            No noOutro = outro.getNoAtual();
+            if (noOutro == null || noOutro.isBox() || outro.getPtosBox() != 0
+                    || controleJogo.verificaNoPitLane(outro)) {
+                continue;
+            }
+            boolean mesmaLinha = outro.getTracado() == getTracado()
+                    || (outro.getIndiceTracado() > 0 && outro.getTracadoAntigo() == getTracado());
+            if (!mesmaLinha) {
+                continue;
+            }
+            int dOutro = noOutro.getIndex() - meuIndex;
+            if (dOutro < 0) {
+                dOutro += n;
+            }
+            if (dOutro == 0 && getPosicao() < outro.getPosicao()) {
+                continue;
+            }
+            if (dOutro > avancoLimitado + distanciaMinima) {
+                continue;
+            }
+            long novoAvanco = dOutro - distanciaMinima;
+            if (novoAvanco < 0) {
+                novoAvanco = 0;
+            }
+            if (novoAvanco < avancoLimitado) {
+                avancoLimitado = novoAvanco;
+            }
+        }
+        return avancoLimitado;
     }
 
     public void processaEscapadaDaPista() {
@@ -1835,7 +2009,12 @@ public class Piloto implements Serializable, PilotoSuave {
                 mudarTracado(2);
             } else if (getTracado() == 5) {
                 mudarTracado(1);
-            } else if (getNoAtual().getIndex() >= traz && getNoAtual().getIndex() <= frente) {
+            } else if (getNoAtual().getIndex() >= traz && getNoAtual().getIndex() <= frente
+                    && getIndiceTracado() == 0) {
+                /**
+                 * So forca o desvio com a animacao anterior concluida; o
+                 * branch roda a cada ciclo, entao apenas espera a vez.
+                 */
                 int novapos = 0;
                 if (pilotoBateu.getTracado() == 0) {
                     novapos = controleJogo.getRandom().intervalo(1, 2);
@@ -1857,6 +2036,10 @@ public class Piloto implements Serializable, PilotoSuave {
                 mudarTracado(0);
             }
 
+        } else if (tentarEscaparFilaIndiana()) {
+            /**
+             * Preso em fila indiana com tracado lateral livre: ja mudou.
+             */
         } else if ((evitaBaterCarroFrente && carroPilotoDaFrenteRetardatario != null
                 && getTracado() == carroPilotoDaFrenteRetardatario.getPiloto().getTracado())
                 || calculaDiffParaProximoRetardatario < (testeHabilidadePiloto() ? 100 : 150)) {
@@ -2039,6 +2222,13 @@ public class Piloto implements Serializable, PilotoSuave {
          * Verificar na entrada da curva e nao na area de escape
          */
         if (getTracado() == 4 || getTracado() == 5) {
+            return false;
+        }
+        /**
+         * Espera a animacao da troca de tracado atual terminar; escapar no
+         * meio dela resetava a interpolacao e o carro teleportava de linha.
+         */
+        if (getIndiceTracado() > 0) {
             return false;
         }
         if (pontoEscape == null) {
@@ -2825,6 +3015,10 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     public boolean mudarTracado(int mudarTracado, boolean forcaMudar) {
+        return mudarTracado(mudarTracado, forcaMudar, false);
+    }
+
+    public boolean mudarTracado(int mudarTracado, boolean forcaMudar, boolean escapandoFila) {
         if (!forcaMudar && isRecebeuBanderada()) {
             return false;
         }
@@ -2874,7 +3068,25 @@ public class Piloto implements Serializable, PilotoSuave {
         if (getCarro().testeFreios()) {
             multi -= 2;
         }
-        if (!forcaMudar && getTracado() != 4 && getTracado() != 5 && getColisao() != null
+        /**
+         * Com atualizacao suave o carro desenhado fica atras da posicao real;
+         * mudar de tracado e voltar logo em seguida faz o carro suave cortar a
+         * linha de outro carro. O cooldown vale para qualquer mudanca, nao so
+         * quando ja existe colisao, exceto ida ao box e volta de escapada.
+         */
+        boolean cooldownSuave = controleJogo.isAtualizacaoSuave() && !isBox();
+        if (cooldownSuave) {
+            /**
+             * O intervalo minimo entre mudancas cobre a animacao inteira da
+             * troca (indiceTracado cai 2 por ciclo) mais uma folga, para a
+             * proxima mudanca nunca comecar com a anterior ainda animando.
+             */
+            double ciclosAnimacao = controleJogo.getCircuito().getIndiceTracado() / 2.0;
+            if (multi < ciclosAnimacao + 4) {
+                multi = ciclosAnimacao + 4;
+            }
+        }
+        if (!forcaMudar && getTracado() != 4 && getTracado() != 5 && (cooldownSuave || getColisao() != null)
                 && (agora - ultimaMudancaPos) < (controleJogo.tempoCicloCircuito() * multi)) {
             return false;
         }
@@ -2884,13 +3096,40 @@ public class Piloto implements Serializable, PilotoSuave {
         if (getTracado() == 2 && mudarTracado == 1) {
             return false;
         }
-        ultimaMudancaPos = System.currentTimeMillis();
-        if (!forcaMudar && verificaColisaoAoMudarDeTracado(mudarTracado)) {
+        if (!forcaMudar && !escapandoFila && verificaColisaoAoMudarDeTracado(mudarTracado)) {
             return false;
         } else {
+            /**
+             * Cooldown conta a partir da ultima mudanca efetivada; tentativas
+             * bloqueadas nao renovam o cooldown, senao um carro preso em fila
+             * nunca acumula tempo suficiente para conseguir mudar de tracado.
+             */
+            ultimaMudancaPos = System.currentTimeMillis();
+            int tracadoAntigoAnterior = getTracadoAntigo();
+            int indiceRestante = indiceTracado;
             setTracadoAntigo(getTracado());
             setTracado(mudarTracado);
             calculaIndiceTracado();
+            if (indiceRestante > 0) {
+                /**
+                 * Mudanca forcada no meio da animacao anterior. Se esta
+                 * voltando para a linha de origem, continua da posicao
+                 * lateral atual (espelha o progresso) em vez de teleportar
+                 * o carro para o inicio da nova interpolacao.
+                 */
+                if (mudarTracado == tracadoAntigoAnterior) {
+                    int continua = indiceTracado - indiceRestante;
+                    if (continua < 1) {
+                        continua = 1;
+                    }
+                    setIndiceTracado(continua);
+                }
+                if (Global.LOG_COLISAO) {
+                    Logger.logar("[TRACADO_RESET] piloto=" + getNome() + " de=" + getTracadoAntigo() + " para="
+                            + mudarTracado + " antAnterior=" + tracadoAntigoAnterior + " restante=" + indiceRestante
+                            + " forca=" + forcaMudar);
+                }
+            }
             return true;
         }
     }
