@@ -1,10 +1,4 @@
-# Spec: collision-physics-block
-
-## Purpose
-
-Regras físicas de bloqueio e penalidade de avanço aplicadas quando hitboxes de carros se intersectam durante a simulação de corrida.
-
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: Bloqueio de avanço por colisão dianteira-centro
 Quando `colisaoDiantera` do carro de trás intersecta `centroColisao` do carro à frente na mesma linha (mesmo `tracado`, ou o carro à frente ainda cruzando essa linha a partir de outro `tracado`), o sistema SHALL limitar o `ganho` do carro de trás ao valor `ganho` do carro à frente, e SHALL adicionalmente limitar o avanço posicional (`noIndex`) do carro de trás no ciclo para nunca entrar ou atravessar a área ocupada pelo carro à frente, independentemente do quão maior seja a aproximação em um único ciclo.
