@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -28,7 +29,9 @@ public class FormularioObjetos {
 	private JSpinner inicioTranparencia = new JSpinner();
 	private JSpinner fimTransparencia = new JSpinner();
 	private final JSpinner angulo = new JSpinner();
-	private JCheckBox frente = new JCheckBox();
+	/** Sem limite de faixa, igual ao atalho PageUp/PageDown; não se aplica a ObjetoTransparencia. */
+	private final JSpinner nivelDesenho = new JSpinner(
+			new SpinnerNumberModel(0, Integer.MIN_VALUE, Integer.MAX_VALUE, 1));
 	private final JCheckBox transparenciaBox = new JCheckBox();
 	private final JComboBox<TipoObjetoLivre> tipoObjetoLivreCombo = new JComboBox<TipoObjetoLivre>(
 			TipoObjetoLivre.values());
@@ -55,6 +58,7 @@ public class FormularioObjetos {
 		largura.addChangeListener(changeListener);
 		altura.addChangeListener(changeListener);
 		fimTransparencia.addChangeListener(changeListener);
+		nivelDesenho.addChangeListener(changeListener);
 
 		labelCor1.addMouseListener(new MouseAdapter() {
 			@Override
@@ -102,7 +106,7 @@ public class FormularioObjetos {
 			panel.add(new JLabel("Ângulo"));
 			panel.add(angulo);
 		} else if (objetoPista instanceof ObjetoLivre) {
-			panel.setLayout(new GridLayout(6, 2));
+			panel.setLayout(new GridLayout(7, 2));
 			panel.add(new JLabel("Ângulo"));
 			panel.add(angulo);
 			panel.add(new JLabel("Largura"));
@@ -115,8 +119,10 @@ public class FormularioObjetos {
 			panel.add(labelCor2);
 			panel.add(new JLabel("Padrão"));
 			panel.add(tipoObjetoLivreCombo);
+			panel.add(new JLabel("Nível"));
+			panel.add(nivelDesenho);
 		} else {
-			panel.setLayout(new GridLayout(5, 2));
+			panel.setLayout(new GridLayout(6, 2));
 			panel.add(new JLabel("Ângulo"));
 			panel.add(angulo);
 			panel.add(new JLabel("Largura"));
@@ -127,6 +133,8 @@ public class FormularioObjetos {
 			panel.add(labelCor1);
 			panel.add(labelLegendaCor2);
 			panel.add(labelCor2);
+			panel.add(new JLabel("Nível"));
+			panel.add(nivelDesenho);
 		}
 		panel.revalidate();
 		panel.repaint();
@@ -196,14 +204,6 @@ public class FormularioObjetos {
 		this.fimTransparencia = fimTransparencia;
 	}
 
-	public JCheckBox getFrente() {
-		return frente;
-	}
-
-	public void setFrente(JCheckBox frente) {
-		this.frente = frente;
-	}
-
 	public JLabel getLabelCor1() {
 		return labelCor1;
 	}
@@ -239,7 +239,7 @@ public class FormularioObjetos {
 		angulo.setValue(Integer.valueOf((int) objetoPista.getAngulo()));
 		largura.setValue(Integer.valueOf(objetoPista.getLargura()));
 		altura.setValue(Integer.valueOf(objetoPista.getAltura()));
-		frente.setSelected(objetoPista.isPintaEmcima());
+		nivelDesenho.setValue(Integer.valueOf(objetoPista.getNivelDesenho()));
 		if (objetoPista instanceof ObjetoTransparencia) {
 			inicioTranparencia.setValue(Integer.valueOf(objetoPista.getInicioTransparencia()));
 			fimTransparencia.setValue(Integer.valueOf(objetoPista.getFimTransparencia()));
@@ -264,6 +264,7 @@ public class FormularioObjetos {
 		} else {
 			objetoPista.setCorPimaria(labelCor1.getBackground());
 			objetoPista.setCorSecundaria(labelCor2.getBackground());
+			objetoPista.setNivelDesenho(((Integer) nivelDesenho.getValue()).intValue());
 			if (objetoPista instanceof ObjetoLivre) {
 				((ObjetoLivre) objetoPista).setTipo((TipoObjetoLivre) tipoObjetoLivreCombo.getSelectedItem());
 			}

@@ -2,6 +2,7 @@ package br.f1mane.entidades;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
 import java.beans.XMLDecoder;
@@ -11,16 +12,12 @@ import java.io.ByteArrayOutputStream;
 
 import org.junit.jupiter.api.Test;
 
-import br.f1mane.recursos.CarregadorRecursos;
-
 /**
  * Cobre os novos campos de cor customizável de box e zebra em Circuito:
  * valor padrão nulo, compatibilidade com XML existente sem essas
  * propriedades, e persistência via XMLEncoder/XMLDecoder quando definidas.
  */
 class CircuitoCoresBoxZebraTest {
-
-    private static final String CIRCUITO_EXISTENTE = "albert_park_mro.xml";
 
     @Test
     void circuitoRecemCriado_coresDeBoxEZebraSaoNulas() {
@@ -32,10 +29,32 @@ class CircuitoCoresBoxZebraTest {
         assertNull(circuito.getCorZebra2());
     }
 
+    /**
+     * Simula um XML antigo (gravado antes das novas propriedades de cor
+     * existirem) sem depender de um circuito real de produção — os arquivos
+     * em circuitos/*.xml são editáveis pelo editor e podem passar a conter
+     * essas cores a qualquer momento.
+     */
     @Test
     void xmlExistenteSemAsNovasPropriedades_carregaComCoresNulas() throws Exception {
-        Circuito circuito = CarregadorRecursos.carregarCircuito(CIRCUITO_EXISTENTE);
+        Circuito antigo = new Circuito();
+        antigo.setNome("Circuito Antigo");
+        antigo.setCorFundo(new Color(1, 2, 3));
 
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (XMLEncoder encoder = new XMLEncoder(baos)) {
+            encoder.writeObject(antigo);
+        }
+        String xml = baos.toString();
+        assertTrue(!xml.contains("corBox1") && !xml.contains("corZebra1"),
+                "o XML de referência não deveria conter as novas propriedades de cor");
+
+        Circuito circuito;
+        try (XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(xml.getBytes()))) {
+            circuito = (Circuito) decoder.readObject();
+        }
+
+        assertEquals("Circuito Antigo", circuito.getNome());
         assertNull(circuito.getCorBox1());
         assertNull(circuito.getCorBox2());
         assertNull(circuito.getCorZebra1());

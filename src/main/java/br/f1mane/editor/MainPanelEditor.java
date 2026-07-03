@@ -383,38 +383,76 @@ public class MainPanelEditor extends JPanel {
         JButton criarObjeto = new JButton("Criar Objeto");
         criarObjeto.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                try {
-                    desSelecionaNosPista();
-                    TipoObjetoPista tipoSelecionado = (TipoObjetoPista) JOptionPane.showInputDialog(
-                            srcFrame, "Tipo do objeto:", "Criar Objeto", JOptionPane.QUESTION_MESSAGE,
-                            null, TipoObjetoPista.values(), TipoObjetoPista.values()[0]);
-                    if (tipoSelecionado == null) {
-                        return;
-                    }
-                    objetoPista = tipoSelecionado.criar();
-                    // Aplica os últimos valores usados (ângulo, tamanho, cores, padrão)
-                    // para esta mesma classe, se houver, em vez de sempre nascer com os
-                    // defaults do construtor. Sem segundo diálogo aqui: o objeto já é
-                    // criado pronto para posicionar/desenhar; para mudar alguma
-                    // propriedade, o usuário edita depois com duplo-clique.
-                    MemoriaPropriedadesObjeto.aplicar(objetoPista);
-                    posicionaObjetoPista = true;
-                    criandoObjetoCenario = tipoSelecionado.isCenario();
-                    if (objetoPista instanceof ObjetoTransparencia) {
-                        objetoPista.setTransparencia(125);
-                        desenhandoObjetoLivre = true;
-                    } else if (objetoPista instanceof ObjetoLivre) {
-                        desenhandoObjetoLivre = true;
-                    }
-                } catch (Exception e2) {
-                    e2.printStackTrace();
-                    srcFrame.dialogDeErro(e2);
-                }
-
+                iniciarCriacaoObjeto();
             }
         });
         buttonsPanel.add(criarObjeto);
         return buttonsPanel;
+    }
+
+    /**
+     * Abre o diálogo de escolha de tipo e prepara o objeto criado para ser
+     * posicionado no canvas — mesma ação do botão "Criar Objeto", reutilizada
+     * pelo atalho Insert.
+     */
+    public void iniciarCriacaoObjeto() {
+        try {
+            desSelecionaNosPista();
+            TipoObjetoPista tipoSelecionado = (TipoObjetoPista) JOptionPane.showInputDialog(
+                    srcFrame, "Tipo do objeto:", "Criar Objeto", JOptionPane.QUESTION_MESSAGE,
+                    null, TipoObjetoPista.values(), TipoObjetoPista.values()[0]);
+            if (tipoSelecionado == null) {
+                return;
+            }
+            objetoPista = tipoSelecionado.criar();
+            // Aplica os últimos valores usados (ângulo, tamanho, cores, padrão)
+            // para esta mesma classe, se houver, em vez de sempre nascer com os
+            // defaults do construtor. Sem segundo diálogo aqui: o objeto já é
+            // criado pronto para posicionar/desenhar; para mudar alguma
+            // propriedade, o usuário edita depois com duplo-clique.
+            MemoriaPropriedadesObjeto.aplicar(objetoPista);
+            posicionaObjetoPista = true;
+            criandoObjetoCenario = tipoSelecionado.isCenario();
+            if (objetoPista instanceof ObjetoTransparencia) {
+                objetoPista.setTransparencia(125);
+                desenhandoObjetoLivre = true;
+            } else if (objetoPista instanceof ObjetoLivre) {
+                desenhandoObjetoLivre = true;
+            }
+        } catch (Exception e2) {
+            e2.printStackTrace();
+            srcFrame.dialogDeErro(e2);
+        }
+    }
+
+    /**
+     * Apaga o objeto atualmente selecionado (canvas ou lista), em qualquer
+     * das duas listas do circuito (objetos ou objetosCenario) — atalho
+     * Delete. Sem seleção, não faz nada.
+     */
+    public void apagarObjetoSelecionado() {
+        if (objetoPista == null) {
+            return;
+        }
+        boolean removidoDeCenario = circuito.getObjetosCenario() != null
+                && circuito.getObjetosCenario().remove(objetoPista);
+        boolean removidoDeObjetos = !removidoDeCenario && circuito.getObjetos() != null
+                && circuito.getObjetos().remove(objetoPista);
+        if (!removidoDeCenario && !removidoDeObjetos) {
+            return;
+        }
+        if (editandoPontosDe == objetoPista) {
+            encerrarEdicaoPontosObjetoLivre();
+        }
+        objetoPista = null;
+        objetoArrastando = null;
+        if (removidoDeCenario && formularioListaObjetosCenario != null) {
+            formularioListaObjetosCenario.listarObjetos();
+        }
+        if (removidoDeObjetos && formularioListaObjetos != null) {
+            formularioListaObjetos.listarObjetos();
+        }
+        repaint();
     }
 
     private JPanel gerarSecaoNos() {
@@ -541,19 +579,6 @@ public class MainPanelEditor extends JPanel {
         });
         topo.add(btnSalvar);
 
-        JButton btnCriarNova = new JButton("Nova");
-        btnCriarNova.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    novo();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    srcFrame.dialogDeErro(ex);
-                }
-            }
-        });
-        topo.add(btnCriarNova);
-
         topo.add(new JLabel("Nome do circuito"));
         nomePistaText = new JTextField() {
             @Override
@@ -636,6 +661,13 @@ public class MainPanelEditor extends JPanel {
             }
         });
         topo.add(noite);
+
+        // Os indicadores de cor são campos finais reaproveitados a cada
+        // reconstrução do layout (troca/recarga de circuito); sem esta
+        // limpeza, cada carregamento empilhava mais um MouseAdapter no mesmo
+        // label e um clique abria vários seletores de cor em sequência.
+        limpaMouseListeners(corFundoLabel, corAsfaltoLabel, corBox1Label, corBox2Label,
+                corZebra1Label, corZebra2Label);
 
         topo.add(new JLabel("Cor de Fundo"));
         atualizaCorLabel(corFundoLabel, circuito != null ? circuito.getCorFundo() : null, Color.WHITE);
@@ -1133,6 +1165,7 @@ public class MainPanelEditor extends JPanel {
                 }
                 objetoPista = encontrado;
                 objetoArrastando = encontrado;
+                selecionarNasListas(encontrado);
                 offsetArraste = new Point(e.getX() - encontrado.getPosicaoQuina().x,
                         e.getY() - encontrado.getPosicaoQuina().y);
             }
@@ -1297,6 +1330,7 @@ public class MainPanelEditor extends JPanel {
                     return;
                 }
                 objetoPista = encontrado;
+                selecionarNasListas(encontrado);
                 JPopupMenu menu = new JPopupMenu();
                 menu.add(criaPainelAjusteRapido(encontrado));
                 menu.show(MainPanelEditor.this, e.getX(), e.getY());
@@ -1472,6 +1506,14 @@ public class MainPanelEditor extends JPanel {
         }
     }
 
+    private static void limpaMouseListeners(JLabel... labels) {
+        for (JLabel label : labels) {
+            for (java.awt.event.MouseListener listener : label.getMouseListeners()) {
+                label.removeMouseListener(listener);
+            }
+        }
+    }
+
     private static JLabel criaIndicadorDeCor() {
         JLabel label = new JLabel() {
             @Override
@@ -1507,7 +1549,7 @@ public class MainPanelEditor extends JPanel {
      * informado. Usado por edição por duplo-clique, menu de contexto e
      * início de arraste.
      */
-    private ObjetoPista encontraObjetoPista(Point point) {
+    ObjetoPista encontraObjetoPista(Point point) {
         ObjetoPista encontrado = encontraObjetoPistaNaLista(circuito.getObjetos(), point);
         if (encontrado != null) {
             return encontrado;
@@ -1515,11 +1557,19 @@ public class MainPanelEditor extends JPanel {
         return encontraObjetoPistaNaLista(circuito.getObjetosCenario(), point);
     }
 
+    /**
+     * Percorre a lista de trás pra frente: objetos mais recentes (adicionados
+     * por último) são desenhados por cima dos mais antigos quando as áreas se
+     * sobrepõem, então o clique deve priorizá-los também — sem isso, um
+     * objeto grande antigo "engolia" o clique em objetos menores e mais
+     * novos sobrepostos por ele.
+     */
     private ObjetoPista encontraObjetoPistaNaLista(List<ObjetoPista> lista, Point point) {
         if (lista == null) {
             return null;
         }
-        for (ObjetoPista objetoPista : lista) {
+        for (int i = lista.size() - 1; i >= 0; i--) {
+            ObjetoPista objetoPista = lista.get(i);
             if (objetoPista.obterAreaClique().contains(point)) {
                 return objetoPista;
             }
@@ -1540,6 +1590,19 @@ public class MainPanelEditor extends JPanel {
             todos.addAll(circuito.getObjetosCenario());
         }
         return todos;
+    }
+
+    /**
+     * Níveis de desenho distintos em uso pelos objetos do circuito, em ordem
+     * crescente — não há limite de faixa, então o desenho por nível percorre
+     * exatamente os níveis que existem, não um intervalo fixo.
+     */
+    private List<Integer> niveisDesenhoOrdenados() {
+        java.util.TreeSet<Integer> niveis = new java.util.TreeSet<Integer>();
+        for (ObjetoPista objetoPista : todosObjetos()) {
+            niveis.add(objetoPista.getNivelDesenho());
+        }
+        return new ArrayList<Integer>(niveis);
     }
 
     private void inserirNoNasJList(No no) {
@@ -1616,7 +1679,16 @@ public class MainPanelEditor extends JPanel {
         if (larguraPistaPixeis == 0)
             larguraPistaPixeis = Util.inteiro(Carro.LARGURA * 1.5 * multiplicadorLarguraPista * zoom);
 
-        // 3. Sequência de desenho existente
+        // 3. Objetos em níveis negativos ficam abaixo da pista (nível 0), do
+        // mais negativo (mais no fundo) para o mais próximo de zero.
+        List<Integer> niveis = niveisDesenhoOrdenados();
+        for (Integer nivel : niveis) {
+            if (nivel < 0) {
+                desenhaObjetosNivel(g2d, nivel);
+            }
+        }
+
+        // 4. Sequência de desenho existente
         if (desenhaTracado) {
             DesenhoProceduralCircuito.desenhaPistaZebraEBox(g2d, circuito, zoom);
         }
@@ -1625,10 +1697,15 @@ public class MainPanelEditor extends JPanel {
         desenhaLargada(g2d);
         desenhaGrid(g2d);
         desenhaBoxes(g2d);
-        desenhaObjetosBaixo(g2d);
+        desenhaObjetosNivel(g2d, 0);
         desenhaPreObjetoLivre(g2d);
         desenhaPreObjetoTransparencia(g2d);
-        desenhaObjetosCima(g2d);
+        // Níveis positivos por cima, do menor para o maior (mais em cima).
+        for (Integer nivel : niveis) {
+            if (nivel > 0) {
+                desenhaObjetosNivel(g2d, nivel);
+            }
+        }
         desenhaMarcadoresEdicaoPontos(g2d);
         desenhaObjetoSelecionadoNoCanvas(g2d);
         desenhaListaObjetos(g2d);
@@ -1787,12 +1864,12 @@ public class MainPanelEditor extends JPanel {
         g2d.drawString("Pista 2 ", x, y);
     }
 
-    private void desenhaObjetosCima(Graphics2D g2d) {
+    private void desenhaObjetosNivel(Graphics2D g2d, int nivel) {
         if (circuito == null) {
             return;
         }
         for (ObjetoPista objetoPista : todosObjetos()) {
-            if (!objetoPista.isPintaEmcima())
+            if (objetoPista.getNivelDesenho() != nivel)
                 continue;
             objetoPista.desenha(g2d, zoom);
         }
@@ -2029,18 +2106,6 @@ public class MainPanelEditor extends JPanel {
             g2d.fillOval(Util.inteiro(testePista.trazCar.x * zoom), Util.inteiro(testePista.trazCar.y * zoom),
                     Util.inteiro(5 * zoom), Util.inteiro(5 * zoom));
         }
-    }
-
-    private void desenhaObjetosBaixo(Graphics2D g2d) {
-        if (circuito == null) {
-            return;
-        }
-        for (ObjetoPista objetoPista : todosObjetos()) {
-            if (objetoPista.isPintaEmcima())
-                continue;
-            objetoPista.desenha(g2d, zoom);
-        }
-
     }
 
     public Shape limitesViewPort() {
@@ -2528,38 +2593,93 @@ public class MainPanelEditor extends JPanel {
         }
     }
 
+    /**
+     * Cria uma cópia independente de {@code origem} (mesmas propriedades
+     * visuais; pontos/vértices duplicados), sem adicioná-la ao circuito.
+     */
+    static ObjetoPista clonarObjetoPista(ObjetoPista origem)
+            throws InstantiationException, IllegalAccessException {
+        ObjetoPista objetoPistaNovo = origem.getClass().newInstance();
+        objetoPistaNovo.setAltura(origem.getAltura());
+        objetoPistaNovo.setAngulo(origem.getAngulo());
+        objetoPistaNovo.setCorPimaria(origem.getCorPimaria());
+        objetoPistaNovo.setCorSecundaria(origem.getCorSecundaria());
+        objetoPistaNovo.setLargura(origem.getLargura());
+        objetoPistaNovo.setPintaEmcima(origem.isPintaEmcima());
+        objetoPistaNovo.setNivelDesenho(origem.getNivelDesenho());
+        objetoPistaNovo.setTransparencia(origem.getTransparencia());
+        objetoPistaNovo
+                .setPosicaoQuina(new Point(origem.getPosicaoQuina().x, origem.getPosicaoQuina().y));
+
+        if (origem instanceof ObjetoLivre) {
+            ObjetoLivre src = (ObjetoLivre) origem;
+            ObjetoLivre dst = (ObjetoLivre) objetoPistaNovo;
+            dst.setTipo(src.getTipo());
+            dst.setPontos(new ArrayList<Point>());
+            for (Point point : src.getPontos()) {
+                dst.getPontos().add(new Point(point.x, point.y));
+            }
+            List<PontoCurva> verticesCopiados = new ArrayList<PontoCurva>();
+            for (PontoCurva verticeOriginal : src.getVertices()) {
+                PontoCurva copia = new PontoCurva(new Point(verticeOriginal.getPosicao()));
+                if (verticeOriginal.getHasteFim() != null) {
+                    copia.setHasteFim(new Point(verticeOriginal.getHasteFim()));
+                }
+                verticesCopiados.add(copia);
+            }
+            dst.setVertices(verticesCopiados);
+            dst.gerar();
+        }
+        return objetoPistaNovo;
+    }
+
+    public void subirNivelObjeto() {
+        mudarNivelObjeto(1);
+    }
+
+    public void descerNivelObjeto() {
+        mudarNivelObjeto(-1);
+    }
+
+    /**
+     * Muda o nível de desenho do objeto selecionado — atalhos PageUp/PageDown.
+     * Sem limite: negativo desenha cada vez mais abaixo da pista, positivo
+     * cada vez mais acima. Transparência fica fora do sistema de níveis (tem
+     * tratamento próprio em corrida).
+     */
+    private void mudarNivelObjeto(int delta) {
+        if (objetoPista == null || objetoPista instanceof ObjetoTransparencia) {
+            return;
+        }
+        objetoPista.setNivelDesenho(objetoPista.getNivelDesenho() + delta);
+        // os rótulos das listas exibem o nível entre parênteses
+        if (formularioListaObjetos != null) {
+            formularioListaObjetos.getList().repaint();
+        }
+        if (formularioListaObjetosCenario != null) {
+            formularioListaObjetosCenario.getList().repaint();
+        }
+        repaint();
+    }
+
+    /**
+     * Reflete a seleção feita no canvas nas listas do split lateral: marca o
+     * objeto na lista que o contém e limpa a seleção da outra, sem disparar a
+     * centralização do viewport (o objeto já está visível — foi clicado).
+     */
+    private void selecionarNasListas(ObjetoPista objeto) {
+        if (formularioListaObjetos != null) {
+            formularioListaObjetos.selecionarSemCentralizar(objeto);
+        }
+        if (formularioListaObjetosCenario != null) {
+            formularioListaObjetosCenario.selecionarSemCentralizar(objeto);
+        }
+    }
+
     public void copiarObjeto() {
         if (objetoPista != null) {
             try {
-                ObjetoPista objetoPistaNovo = objetoPista.getClass().newInstance();
-                objetoPistaNovo.setAltura(objetoPista.getAltura());
-                objetoPistaNovo.setAngulo(objetoPista.getAngulo());
-                objetoPistaNovo.setCorPimaria(objetoPista.getCorPimaria());
-                objetoPistaNovo.setCorSecundaria(objetoPista.getCorSecundaria());
-                objetoPistaNovo.setLargura(objetoPista.getLargura());
-                objetoPistaNovo.setPintaEmcima(objetoPista.isPintaEmcima());
-                objetoPistaNovo.setTransparencia(objetoPista.getTransparencia());
-                objetoPistaNovo
-                        .setPosicaoQuina(new Point(objetoPista.getPosicaoQuina().x, objetoPista.getPosicaoQuina().y));
-
-                if (objetoPista instanceof ObjetoLivre) {
-                    ObjetoLivre src = (ObjetoLivre) objetoPista;
-                    ObjetoLivre dst = (ObjetoLivre) objetoPistaNovo;
-                    dst.setPontos(new ArrayList<Point>());
-                    for (Point point : src.getPontos()) {
-                        dst.getPontos().add(new Point(point.x, point.y));
-                    }
-                    List<PontoCurva> verticesCopiados = new ArrayList<PontoCurva>();
-                    for (PontoCurva verticeOriginal : src.getVertices()) {
-                        PontoCurva copia = new PontoCurva(new Point(verticeOriginal.getPosicao()));
-                        if (verticeOriginal.getHasteFim() != null) {
-                            copia.setHasteFim(new Point(verticeOriginal.getHasteFim()));
-                        }
-                        verticesCopiados.add(copia);
-                    }
-                    dst.setVertices(verticesCopiados);
-                    dst.gerar();
-                }
+                ObjetoPista objetoPistaNovo = clonarObjetoPista(objetoPista);
                 boolean origemCenario = circuito.getObjetosCenario() != null
                         && circuito.getObjetosCenario().contains(objetoPista);
                 List<ObjetoPista> listaAlvo = origemCenario ? circuito.getObjetosCenario() : circuito.getObjetos();
@@ -2612,38 +2732,5 @@ public class MainPanelEditor extends JPanel {
         if (tipoNoCombo != null) {
             tipoNoCombo.setSelectedIndex(0);
         }
-    }
-
-
-    public void novo() {
-        JFileChooser fileChooser = new JFileChooser(new File("src/main/resources/circuitos"));
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        ExampleFileFilter exampleFileFilter = new ExampleFileFilter("jpg");
-        fileChooser.setFileFilter(exampleFileFilter);
-        int result = fileChooser.showOpenDialog(null);
-        if (result == JFileChooser.CANCEL_OPTION) {
-            return;
-        }
-        File imagemFile = fileChooser.getSelectedFile();
-        Circuito novoCircuito = new Circuito();
-        BufferedImage novoBackGround = CarregadorRecursos.carregaBackGround(imagemFile.getName(), this, novoCircuito);
-        if (novoBackGround == null) {
-            JOptionPane.showMessageDialog(null,
-                    "Imagem para criar circuito deve esta na pasta /f1mane/src/sowbreira/f1mane/recursos/",
-                    "Operação ilegal", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        file = null;
-        indiceCircuito = -1;
-        circuito = novoCircuito;
-        backGround = novoBackGround;
-        circuito.setBackGround(imagemFile.getName());
-        testePista = new TestePista(this, circuito);
-        iniciaEditor();
-        atualizaListas();
-        refletirCircuitoNosCampos();
-        atualizarBotoesNavegacao();
-        srcFrame.pack();
-        srcFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 }

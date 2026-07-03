@@ -576,7 +576,14 @@ public class Circuito implements Serializable {
         return backGround;
     }
 
-    public void setBackGround(String backGround) {
+    /**
+     * Sem o prefixo "set" de propósito: XMLEncoder só persiste uma
+     * propriedade se existir o par getter+setter no padrão JavaBeans, e o
+     * nome do jpg de referência não é mais dado guardado no XML — é derivado
+     * pelo mesmo nome-base do arquivo XML do circuito (ver
+     * {@link br.f1mane.recursos.CarregadorRecursos#carregarCircuito}).
+     */
+    public void definirBackGroundPorConvencao(String backGround) {
         this.backGround = backGround;
     }
 

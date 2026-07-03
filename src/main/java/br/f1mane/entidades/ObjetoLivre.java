@@ -1,10 +1,12 @@
 package br.f1mane.entidades;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
@@ -16,6 +18,14 @@ public class ObjetoLivre extends ObjetoPista {
 	private static final int PASSO_PADRAO_LOCAL = Carro.ALTURA;
 	/** Semente fixa: a dispersão da brita é "aleatória" mas sempre a mesma entre renderizações. */
 	private static final long SEMENTE_BRITA = 20260703L;
+	/** Semente fixa da dispersão (posição e tamanho) da vegetação, densa e simples. */
+	private static final long SEMENTE_VEGETACAO = 20260710L;
+	/** Vegetação densa: touceiras bem maiores (célula ~1.6x) e com tamanho bem variado entre si. */
+	private static final double FATOR_PASSO_VEGETACAO_DENSA = 1.6;
+	private static final double VARIACAO_TAMANHO_VEGETACAO_DENSA = 0.6;
+	/** Vegetação simples: mantém o tamanho original da célula, com variação apenas leve entre as marcas. */
+	private static final double FATOR_PASSO_VEGETACAO_SIMPLES = 1.0;
+	private static final double VARIACAO_TAMANHO_VEGETACAO_SIMPLES = 0.15;
 
 	/**
 	 * Campo legado (polígono de linhas retas), mantido apenas para leitura de
@@ -112,6 +122,12 @@ public class ObjetoLivre extends ObjetoPista {
 
 	@Override
 	public void desenha(Graphics2D g2d, double zoom) {
+		if (generalPath.getCurrentPoint() == null) {
+			// generalPath não é bean property, então XMLEncoder/XMLDecoder não
+			// o persistem: ao recarregar um circuito o path chega vazio e
+			// precisa ser regenerado a partir dos pontos/vértices salvos.
+			gerar();
+		}
 		if (posicaoQuina != null) {
 			Rectangle bounds = generalPath.getBounds();
 			AffineTransform translacao = AffineTransform.getTranslateInstance(
@@ -135,41 +151,75 @@ public class ObjetoLivre extends ObjetoPista {
 
 		if (tipo == TipoObjetoLivre.BRITA) {
 			desenhaBrita(g2d, formaFinal, zoom);
+		} else if (tipo == TipoObjetoLivre.VEGETACAO_DENSA || tipo == TipoObjetoLivre.VEGETACAO_SIMPLES) {
+			desenhaPadraoVegetacao(g2d, formaFinal, zoom);
 		} else if (tipo != TipoObjetoLivre.POLIGONO_SIMPLES) {
 			desenhaPadraoEmGrade(g2d, formaFinal, zoom);
 		}
 	}
 
 	/**
-	 * Sobrepõe, restrito à área da forma, um padrão procedural simples e
-	 * determinístico (grade de passo fixo, sem aleatoriedade) característico
-	 * do {@link #tipo}, usando {@code corSecundaria}. Usado por todos os
-	 * tipos exceto {@link TipoObjetoLivre#BRITA} (ver {@link #desenhaBrita}).
+	 * Sobrepõe, restrito à área da forma, o padrão de ondas da água: grade
+	 * alinhada de passo fixo (linhas alternadas com meio-passo de
+	 * deslocamento), sem aleatoriedade — o único tipo que ainda usa a grade
+	 * regular (vegetação passou a usar dispersão embaralhada, ver
+	 * {@link #desenhaPadraoVegetacao}).
 	 */
 	private void desenhaPadraoEmGrade(Graphics2D g2d, Shape formaFinal, double zoom) {
 		Shape clipAnterior = g2d.getClip();
 		g2d.clip(formaFinal);
 		Rectangle bounds = formaFinal.getBounds();
-		// Vegetação densa usa uma grade mais apertada (metade do passo padrão,
-		// ~4x mais marcas por área) que os demais tipos desta grade — o desenho
-		// em cruz sozinho ficava com espaço demais entre touceiras.
-		double fatorDensidade = tipo == TipoObjetoLivre.VEGETACAO_DENSA ? 0.5 : 1.0;
-		int passo = Math.max(4, (int) Math.round(PASSO_PADRAO_LOCAL * fatorDensidade * zoom));
+		int passo = Math.max(4, (int) Math.round(PASSO_PADRAO_LOCAL * zoom));
 		g2d.setColor(new Color(getCorSecundaria().getRed(), getCorSecundaria().getGreen(),
 				getCorSecundaria().getBlue(), getTransparencia()));
 		int linha = 0;
 		for (int y = bounds.y; y < bounds.y + bounds.height; y += passo) {
 			int deslocamentoLinha = (linha % 2 == 0) ? 0 : passo / 2;
 			for (int x = bounds.x - passo; x < bounds.x + bounds.width + passo; x += passo) {
-				desenhaPrimitivaPadrao(g2d, x + deslocamentoLinha, y + passo / 2, passo);
+				desenhaPrimitivaPadrao(g2d, x + deslocamentoLinha, y + passo / 2, Math.max(2, passo / 5));
 			}
 			linha++;
 		}
 		g2d.setClip(clipAnterior);
 	}
 
-	private void desenhaPrimitivaPadrao(Graphics2D g2d, int cx, int cy, int passo) {
-		int raio = Math.max(2, passo / 5);
+	/**
+	 * Vegetação (densa e simples): touceiras espalhadas em posições
+	 * pseudo-aleatórias dentro de cada célula (não alinhadas em grade, mesmo
+	 * espírito da {@link #desenhaBrita}) e com tamanho levemente sorteado a
+	 * cada marca. A densa usa célula maior (touceiras maiores) e uma faixa de
+	 * variação de tamanho bem mais ampla que a simples, que fica quase
+	 * uniforme. Semente fixa: determinístico entre renderizações sucessivas.
+	 */
+	private void desenhaPadraoVegetacao(Graphics2D g2d, Shape formaFinal, double zoom) {
+		Shape clipAnterior = g2d.getClip();
+		g2d.clip(formaFinal);
+		Rectangle bounds = formaFinal.getBounds();
+		boolean densa = tipo == TipoObjetoLivre.VEGETACAO_DENSA;
+		double fatorPasso = densa ? FATOR_PASSO_VEGETACAO_DENSA : FATOR_PASSO_VEGETACAO_SIMPLES;
+		double variacaoTamanho = densa ? VARIACAO_TAMANHO_VEGETACAO_DENSA : VARIACAO_TAMANHO_VEGETACAO_SIMPLES;
+		int passo = Math.max(4, (int) Math.round(PASSO_PADRAO_LOCAL * fatorPasso * zoom));
+		g2d.setColor(new Color(getCorSecundaria().getRed(), getCorSecundaria().getGreen(),
+				getCorSecundaria().getBlue(), getTransparencia()));
+		Stroke strokeAnterior = g2d.getStroke();
+		Random random = new Random(SEMENTE_VEGETACAO);
+		for (int y = bounds.y - passo; y < bounds.y + bounds.height + passo; y += passo) {
+			for (int x = bounds.x - passo; x < bounds.x + bounds.width + passo; x += passo) {
+				int deslocX = random.nextInt(passo);
+				int deslocY = random.nextInt(passo);
+				double fatorTamanho = 1.0 - variacaoTamanho + random.nextDouble() * (2 * variacaoTamanho);
+				int raio = Math.max(2, (int) Math.round((passo / 5.0) * fatorTamanho));
+				// Touceiras da vegetação densa são mais "encorpadas": traço
+				// proporcionalmente mais grosso além de maior, não só mais longo.
+				g2d.setStroke(densa ? new BasicStroke(Math.max(1f, raio / 2f)) : strokeAnterior);
+				desenhaPrimitivaPadrao(g2d, x + deslocX, y + deslocY, raio);
+			}
+		}
+		g2d.setStroke(strokeAnterior);
+		g2d.setClip(clipAnterior);
+	}
+
+	private void desenhaPrimitivaPadrao(Graphics2D g2d, int cx, int cy, int raio) {
 		switch (tipo) {
 		case VEGETACAO_SIMPLES:
 			g2d.drawLine(cx - raio, cy + raio, cx + raio, cy - raio);

@@ -97,6 +97,105 @@ class DesenhoProceduralCircuitoTest {
         assertEquals(asfalto.getRGB(), imagem.getRGB(1500, 1000));
     }
 
+    // ---- níveis de desenho em relação à pista ----
+
+    private Circuito circuitoComObjetoSobreAPista(int nivel, Color corObjeto) {
+        Circuito circuito = circuitoDeTeste();
+        circuito.setCorAsfalto(new Color(60, 70, 80));
+
+        // Quadrado cobrindo (1500,1000), ponto que fica sobre o asfalto da reta
+        ObjetoLivre objetoLivre = new ObjetoLivre();
+        objetoLivre.setCorPimaria(corObjeto);
+        List<Point> pontos = new ArrayList<>();
+        pontos.add(new Point(1400, 900));
+        pontos.add(new Point(1600, 900));
+        pontos.add(new Point(1600, 1100));
+        pontos.add(new Point(1400, 1100));
+        objetoLivre.setPontos(pontos);
+        objetoLivre.gerar();
+        objetoLivre.setPosicaoQuina(objetoLivre.obterArea().getLocation());
+        objetoLivre.setNivelDesenho(nivel);
+
+        List<ObjetoPista> objetosCenario = new ArrayList<>();
+        objetosCenario.add(objetoLivre);
+        circuito.setObjetosCenario(objetosCenario);
+        return circuito;
+    }
+
+    @Test
+    void geraImagem_objetoNivelMenosUm_ficaAbaixoDoAsfalto() {
+        Color corObjeto = new Color(200, 10, 200);
+        Circuito circuito = circuitoComObjetoSobreAPista(-1, corObjeto);
+
+        BufferedImage imagem = DesenhoProceduralCircuito.geraImagem(circuito);
+
+        assertEquals(circuito.getCorAsfalto().getRGB(), imagem.getRGB(1500, 1000),
+                "objeto no nível -1 deveria ficar coberto pelo asfalto");
+        assertTrue(imagemContemCor(imagem, corObjeto),
+                "as partes do objeto fora da pista continuam visíveis");
+    }
+
+    @Test
+    void geraImagem_objetoNivelZero_ficaAcimaDoAsfalto() {
+        Color corObjeto = new Color(200, 10, 200);
+        Circuito circuito = circuitoComObjetoSobreAPista(0, corObjeto);
+
+        BufferedImage imagem = DesenhoProceduralCircuito.geraImagem(circuito);
+
+        assertEquals(corObjeto.getRGB(), imagem.getRGB(1500, 1000),
+                "objeto no nível 0 deveria ser desenhado por cima do asfalto (comportamento antigo)");
+    }
+
+    private ObjetoLivre quadradoOpaco(int x, int y, int lado, Color cor, int nivel) {
+        ObjetoLivre objeto = new ObjetoLivre();
+        objeto.setCorPimaria(cor);
+        List<Point> pontos = new ArrayList<>();
+        pontos.add(new Point(x, y));
+        pontos.add(new Point(x + lado, y));
+        pontos.add(new Point(x + lado, y + lado));
+        pontos.add(new Point(x, y + lado));
+        objeto.setPontos(pontos);
+        objeto.gerar();
+        objeto.setPosicaoQuina(objeto.obterArea().getLocation());
+        objeto.setNivelDesenho(nivel);
+        return objeto;
+    }
+
+    @Test
+    void geraImagem_niveisNegativosSemLimite_maisPertoDeZeroFicaPorCima() {
+        // Fora dos limites da pista (que vai de 1000,1000 a 2000,2000), pra
+        // isolar só a ordem entre os dois níveis negativos, sem influência
+        // do asfalto por cima.
+        Circuito circuito = circuitoDeTeste();
+        Color corFundo = new Color(10, 10, 10);
+        Color corTopo = new Color(220, 220, 10);
+        List<ObjetoPista> objetosCenario = new ArrayList<>();
+        objetosCenario.add(quadradoOpaco(100, 100, 100, corFundo, -20));
+        objetosCenario.add(quadradoOpaco(100, 100, 100, corTopo, -1));
+        circuito.setObjetosCenario(objetosCenario);
+
+        BufferedImage imagem = DesenhoProceduralCircuito.geraImagem(circuito);
+
+        assertEquals(corTopo.getRGB(), imagem.getRGB(150, 150),
+                "nível -1 (mais perto de zero) deveria ficar por cima do nível -20 (mais no fundo)");
+    }
+
+    @Test
+    void geraImagem_niveisPositivosSemLimite_maiorFicaPorCima() {
+        Circuito circuito = circuitoDeTeste();
+        Color corBase = new Color(10, 10, 10);
+        Color corTopo = new Color(220, 220, 10);
+        List<ObjetoPista> objetosCenario = new ArrayList<>();
+        objetosCenario.add(quadradoOpaco(100, 100, 100, corBase, 1));
+        objetosCenario.add(quadradoOpaco(100, 100, 100, corTopo, 20));
+        circuito.setObjetosCenario(objetosCenario);
+
+        BufferedImage imagem = DesenhoProceduralCircuito.geraImagem(circuito);
+
+        assertEquals(corTopo.getRGB(), imagem.getRGB(150, 150),
+                "nível 20 deveria ficar por cima do nível 1 — sem limite, quanto maior, mais em cima");
+    }
+
     // ---- zebra e box customizáveis (circuito-cores-box-zebra) ----
 
     @Test
@@ -118,6 +217,38 @@ class DesenhoProceduralCircuitoTest {
         assertTrue(imagemContemCor(imagem, zebra1), "esperava encontrar corZebra1 customizada na imagem");
         assertTrue(imagemContemCor(imagem, zebra2), "esperava encontrar corZebra2 customizada na imagem");
         assertTrue(!imagemContemCor(imagem, Color.RED), "não deveria mais usar o vermelho padrão");
+        assertTrue(imagemContemCor(imagem, Color.WHITE), "a borda fora das curvas deveria continuar branca");
+    }
+
+    @Test
+    void desenhaPistaZebraEBox_coresCustomizadasFicamRestritasAsCurvas() {
+        Circuito circuito = circuitoDeTeste();
+        Color zebra1 = new Color(11, 22, 33);
+        Color zebra2 = new Color(44, 55, 66);
+        circuito.setCorZebra1(zebra1);
+        circuito.setCorZebra2(zebra2);
+
+        BufferedImage imagem = new BufferedImage(3000, 3000, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = imagem.createGraphics();
+        try {
+            DesenhoProceduralCircuito.desenhaPistaZebraEBox(g2d, circuito, 1.0);
+        } finally {
+            g2d.dispose();
+        }
+
+        // No circuito de teste, o único segmento com zebra sai do nó
+        // CURVA_ALTA em (2000,1000) até (2000,2000): qualquer pixel com as
+        // cores customizadas deve estar perto dessa vertical (x ~ 2000,
+        // folga generosa para a largura do traço), nunca nas retas.
+        for (int x = 0; x < imagem.getWidth(); x++) {
+            for (int y = 0; y < imagem.getHeight(); y++) {
+                int rgb = imagem.getRGB(x, y);
+                if (rgb == zebra1.getRGB() || rgb == zebra2.getRGB()) {
+                    assertTrue(x > 1700,
+                            "cor customizada fora da zona de curva, em x=" + x + " y=" + y);
+                }
+            }
+        }
     }
 
     @Test
@@ -137,10 +268,12 @@ class DesenhoProceduralCircuitoTest {
     }
 
     @Test
-    void desenhaPistaZebraEBox_apenasUmaCorDefinida_mantemFallbackNasDuas() {
+    void desenhaPistaZebraEBox_apenasUmaCorDefinida_usaFallbackSoNaOutra() {
         Circuito circuito = circuitoDeTeste();
-        circuito.setCorZebra1(new Color(11, 22, 33));
-        // corZebra2 permanece null: fallback deve valer para as duas, não misturar customizada com padrão
+        Color zebra2 = new Color(44, 55, 66);
+        circuito.setCorZebra2(zebra2);
+        // corZebra1 permanece null: só ela cai no fallback branco; corZebra2
+        // customizada já vale sozinha nas listras da curva
 
         BufferedImage imagem = new BufferedImage(3000, 3000, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = imagem.createGraphics();
@@ -150,9 +283,9 @@ class DesenhoProceduralCircuitoTest {
             g2d.dispose();
         }
 
-        assertTrue(imagemContemCor(imagem, Color.WHITE), "esperava fallback para branco quando só uma cor está definida");
-        assertTrue(imagemContemCor(imagem, Color.RED), "esperava fallback para vermelho quando só uma cor está definida");
-        assertTrue(!imagemContemCor(imagem, new Color(11, 22, 33)), "não deveria usar corZebra1 sozinha sem corZebra2");
+        assertTrue(imagemContemCor(imagem, Color.WHITE), "esperava fallback para branco na cor não definida");
+        assertTrue(imagemContemCor(imagem, zebra2), "corZebra2 sozinha já deveria aparecer nas listras da curva");
+        assertTrue(!imagemContemCor(imagem, Color.RED), "não deveria usar o vermelho padrão com corZebra2 definida");
     }
 
     // ---- box customizável (circuito-cores-box-zebra) ----

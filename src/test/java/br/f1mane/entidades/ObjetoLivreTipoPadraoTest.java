@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.util.ArrayList;
@@ -263,5 +264,149 @@ class ObjetoLivreTipoPadraoTest {
         int[] pixelsSegunda = ((DataBufferInt) segunda.getRaster().getDataBuffer()).getData();
         assertArrayEquals(pixelsPrimeira, pixelsSegunda,
                 "o padrão procedural não deveria mudar entre duas renderizações do mesmo objeto");
+    }
+
+    @Test
+    void desenha_vegetacaoDensaESimples_saoDeterministicasEntreDuasRenderizacoes() {
+        Color fundo = new Color(10, 20, 30, 255);
+        Color padrao = new Color(200, 210, 220, 255);
+        for (TipoObjetoLivre tipo : new TipoObjetoLivre[] {
+                TipoObjetoLivre.VEGETACAO_DENSA, TipoObjetoLivre.VEGETACAO_SIMPLES }) {
+            ObjetoLivre objetoLivre = criarObjetoLivre(tipo, fundo, padrao);
+
+            BufferedImage primeira = renderiza(objetoLivre);
+            objetoLivre.gerar();
+            BufferedImage segunda = renderiza(objetoLivre);
+
+            int[] pixelsPrimeira = ((DataBufferInt) primeira.getRaster().getDataBuffer()).getData();
+            int[] pixelsSegunda = ((DataBufferInt) segunda.getRaster().getDataBuffer()).getData();
+            assertArrayEquals(pixelsPrimeira, pixelsSegunda,
+                    tipo + ": o padrão não deveria mudar entre duas renderizações do mesmo objeto");
+        }
+    }
+
+    /**
+     * Mede a bounding box de cada blob (componente conexo) da cor de padrão —
+     * usado para comprovar dispersão fora de grade (posições muito variadas)
+     * e variação de tamanho (áreas de blob bem diferentes entre si).
+     */
+    private static List<Rectangle> bordasDosComponentes(BufferedImage imagem, Color cor) {
+        int alvo = cor.getRGB();
+        int largura = imagem.getWidth();
+        int altura = imagem.getHeight();
+        boolean[][] visitado = new boolean[largura][altura];
+        int[] filaX = new int[largura * altura];
+        int[] filaY = new int[largura * altura];
+        List<Rectangle> blobs = new ArrayList<>();
+        for (int y = 0; y < altura; y++) {
+            for (int x = 0; x < largura; x++) {
+                if (visitado[x][y] || imagem.getRGB(x, y) != alvo) {
+                    continue;
+                }
+                int inicio = 0;
+                int fim = 0;
+                filaX[fim] = x;
+                filaY[fim] = y;
+                fim++;
+                visitado[x][y] = true;
+                int minX = x, maxX = x, minY = y, maxY = y;
+                while (inicio < fim) {
+                    int cx = filaX[inicio];
+                    int cy = filaY[inicio];
+                    inicio++;
+                    minX = Math.min(minX, cx);
+                    maxX = Math.max(maxX, cx);
+                    minY = Math.min(minY, cy);
+                    maxY = Math.max(maxY, cy);
+                    int[][] vizinhos = { { cx + 1, cy }, { cx - 1, cy }, { cx, cy + 1 }, { cx, cy - 1 } };
+                    for (int[] v : vizinhos) {
+                        int vx = v[0];
+                        int vy = v[1];
+                        if (vx >= 0 && vx < largura && vy >= 0 && vy < altura && !visitado[vx][vy]
+                                && imagem.getRGB(vx, vy) == alvo) {
+                            visitado[vx][vy] = true;
+                            filaX[fim] = vx;
+                            filaY[fim] = vy;
+                            fim++;
+                        }
+                    }
+                }
+                blobs.add(new Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1));
+            }
+        }
+        return blobs;
+    }
+
+    @Test
+    void desenha_vegetacaoDensaESimples_naoFicamAlinhadasNumaGrade() {
+        Color fundo = new Color(10, 20, 30, 255);
+        Color padrao = new Color(200, 210, 220, 255);
+        for (TipoObjetoLivre tipo : new TipoObjetoLivre[] {
+                TipoObjetoLivre.VEGETACAO_DENSA, TipoObjetoLivre.VEGETACAO_SIMPLES }) {
+            ObjetoLivre objetoLivre = criarObjetoLivre(tipo, fundo, padrao);
+
+            BufferedImage imagem = renderiza(objetoLivre);
+            int alvo = padrao.getRGB();
+            java.util.Set<Integer> colunasComPadrao = new java.util.HashSet<>();
+            for (int y = 0; y < imagem.getHeight(); y++) {
+                for (int x = 0; x < imagem.getWidth(); x++) {
+                    if (imagem.getRGB(x, y) == alvo) {
+                        colunasComPadrao.add(x);
+                    }
+                }
+            }
+            // Numa grade alinhada com deslocamento fixo por linha, as marcas
+            // cairiam num conjunto pequeno de colunas periódicas; espalhadas,
+            // ocupam muitas colunas diferentes dentro da forma.
+            assertTrue(colunasComPadrao.size() > 50,
+                    tipo + ": esperava as marcas espalhadas por muitas colunas diferentes, não alinhadas em grade"
+                            + " (colunas=" + colunasComPadrao.size() + ")");
+        }
+    }
+
+    @Test
+    void desenha_vegetacaoDensa_temTamanhoBemVariadoEntreAsMarcas() {
+        Color fundo = new Color(10, 20, 30, 255);
+        Color padrao = new Color(200, 210, 220, 255);
+        ObjetoLivre objetoLivre = criarObjetoLivre(TipoObjetoLivre.VEGETACAO_DENSA, fundo, padrao);
+
+        List<Rectangle> blobs = bordasDosComponentes(renderiza(objetoLivre), padrao);
+        assertTrue(blobs.size() >= 3, "esperava várias touceiras para medir variação de tamanho");
+
+        int menor = Integer.MAX_VALUE;
+        int maior = Integer.MIN_VALUE;
+        for (Rectangle blob : blobs) {
+            int area = blob.width * blob.height;
+            menor = Math.min(menor, area);
+            maior = Math.max(maior, area);
+        }
+        assertTrue(maior > menor * 2,
+                "esperava touceiras de tamanhos bem diferentes entre si (menor=" + menor + ", maior=" + maior + ")");
+    }
+
+    @Test
+    void desenha_vegetacaoSimples_temVariacaoDeTamanhoBemMaisLeveQueADensa() {
+        Color fundo = new Color(10, 20, 30, 255);
+        Color padrao = new Color(200, 210, 220, 255);
+        ObjetoLivre simples = criarObjetoLivre(TipoObjetoLivre.VEGETACAO_SIMPLES, fundo, padrao);
+        ObjetoLivre densa = criarObjetoLivre(TipoObjetoLivre.VEGETACAO_DENSA, fundo, padrao);
+
+        double amplitudeSimples = amplitudeRelativaDeTamanho(bordasDosComponentes(renderiza(simples), padrao));
+        double amplitudeDensa = amplitudeRelativaDeTamanho(bordasDosComponentes(renderiza(densa), padrao));
+
+        assertTrue(amplitudeSimples < amplitudeDensa,
+                "esperava a vegetação simples ter variação de tamanho bem mais leve que a densa"
+                        + " (simples=" + amplitudeSimples + ", densa=" + amplitudeDensa + ")");
+    }
+
+    private static double amplitudeRelativaDeTamanho(List<Rectangle> blobs) {
+        int menor = Integer.MAX_VALUE;
+        int maior = Integer.MIN_VALUE;
+        for (Rectangle blob : blobs) {
+            int area = blob.width * blob.height;
+            menor = Math.min(menor, area);
+            maior = Math.max(maior, area);
+        }
+        return menor == 0 ? maior : (double) maior / menor;
     }
 }

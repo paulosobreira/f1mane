@@ -10,6 +10,14 @@ public abstract class ObjetoPista implements Serializable {
 	/** Margem de tolerância (px de tela) somada à área de clique, para facilitar acertar objetos finos. */
 	private static final int TOLERANCIA_CLIQUE_PX = 6;
 	boolean pintaEmcima;
+	/**
+	 * Nível de desenho em relação à pista (que está no nível 0): valores
+	 * negativos desenham abaixo do asfalto (quanto mais negativo, mais no
+	 * fundo), 0 é logo acima dele (padrão, comportamento antigo) e valores
+	 * positivos desenham por cima, na ordem crescente (quanto maior, mais em
+	 * cima). Sem limite — qualquer inteiro é válido.
+	 */
+	int nivelDesenho;
 	Color corPimaria;
 	Color corSecundaria;
 	int transparencia;
@@ -32,7 +40,7 @@ public abstract class ObjetoPista implements Serializable {
 
 	@Override
 	public String toString() {
-		return getNome() + " " + getClass().getSimpleName();
+		return getNome() + " " + getClass().getSimpleName() + " (" + nivelDesenho + ")";
 	}
 
 	public int getAltura() {
@@ -103,6 +111,24 @@ public abstract class ObjetoPista implements Serializable {
 
 	public void setPintaEmcima(boolean pintaEmcima) {
 		this.pintaEmcima = pintaEmcima;
+		// Ponte com XMLs antigos, que só têm pintaEmcima: true equivalia a
+		// desenhar por cima de tudo (nível 1). Mantém os dois campos
+		// coerentes também quando o setter é chamado por código novo.
+		if (pintaEmcima && nivelDesenho < 1) {
+			nivelDesenho = 1;
+		} else if (!pintaEmcima && nivelDesenho > 0) {
+			nivelDesenho = 0;
+		}
+	}
+
+	public int getNivelDesenho() {
+		return nivelDesenho;
+	}
+
+	/** Sem limite de faixa; mantém {@code pintaEmcima} coerente (nível >= 1 = por cima). */
+	public void setNivelDesenho(int nivelDesenho) {
+		this.nivelDesenho = nivelDesenho;
+		this.pintaEmcima = nivelDesenho >= 1;
 	}
 
 	public Color getCorPimaria() {
