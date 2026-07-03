@@ -77,6 +77,14 @@ public class Circuito implements Serializable {
     private Color corFundo;
     @JsonIgnore
     private Color corAsfalto;
+    @JsonIgnore
+    private Color corBox1;
+    @JsonIgnore
+    private Color corBox2;
+    @JsonIgnore
+    private Color corZebra1;
+    @JsonIgnore
+    private Color corZebra2;
 
     public Point getCreditos() {
         return creditos;
@@ -568,7 +576,14 @@ public class Circuito implements Serializable {
         return backGround;
     }
 
-    public void setBackGround(String backGround) {
+    /**
+     * Sem o prefixo "set" de propósito: XMLEncoder só persiste uma
+     * propriedade se existir o par getter+setter no padrão JavaBeans, e o
+     * nome do jpg de referência não é mais dado guardado no XML — é derivado
+     * pelo mesmo nome-base do arquivo XML do circuito (ver
+     * {@link br.f1mane.recursos.CarregadorRecursos#carregarCircuito}).
+     */
+    public void definirBackGroundPorConvencao(String backGround) {
         this.backGround = backGround;
     }
 
@@ -642,6 +657,38 @@ public class Circuito implements Serializable {
 
     public void setCorAsfalto(Color corAsfalto) {
         this.corAsfalto = corAsfalto;
+    }
+
+    public Color getCorBox1() {
+        return corBox1;
+    }
+
+    public void setCorBox1(Color corBox1) {
+        this.corBox1 = corBox1;
+    }
+
+    public Color getCorBox2() {
+        return corBox2;
+    }
+
+    public void setCorBox2(Color corBox2) {
+        this.corBox2 = corBox2;
+    }
+
+    public Color getCorZebra1() {
+        return corZebra1;
+    }
+
+    public void setCorZebra1(Color corZebra1) {
+        this.corZebra1 = corZebra1;
+    }
+
+    public Color getCorZebra2() {
+        return corZebra2;
+    }
+
+    public void setCorZebra2(Color corZebra2) {
+        this.corZebra2 = corZebra2;
     }
 
     public boolean isNoite() {

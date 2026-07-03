@@ -92,4 +92,10 @@ public class ObjetoTransparencia extends ObjetoPista {
     public Boolean getTransparenciaBox() {
         return Boolean.valueOf(transparenciaBox);
     }
+
+    /** Transparência fica fora do sistema de níveis de desenho: sem sufixo "(nível)". */
+    @Override
+    public String toString() {
+        return getNome() + " " + getClass().getSimpleName();
+    }
 }

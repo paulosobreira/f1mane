@@ -1,12 +1,23 @@
 package br.f1mane.entidades;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.io.Serializable;
 
 public abstract class ObjetoPista implements Serializable {
 
 	private static final long serialVersionUID = 4416705642227491612L;
+	/** Margem de tolerância (px de tela) somada à área de clique, para facilitar acertar objetos finos. */
+	private static final int TOLERANCIA_CLIQUE_PX = 6;
 	boolean pintaEmcima;
+	/**
+	 * Nível de desenho em relação à pista (que está no nível 0): valores
+	 * negativos desenham abaixo do asfalto (quanto mais negativo, mais no
+	 * fundo), 0 é logo acima dele (padrão, comportamento antigo) e valores
+	 * positivos desenham por cima, na ordem crescente (quanto maior, mais em
+	 * cima). Sem limite — qualquer inteiro é válido.
+	 */
+	int nivelDesenho;
 	Color corPimaria;
 	Color corSecundaria;
 	int transparencia;
@@ -29,7 +40,7 @@ public abstract class ObjetoPista implements Serializable {
 
 	@Override
 	public String toString() {
-		return getNome() + " " + getClass().getSimpleName();
+		return getNome() + " " + getClass().getSimpleName() + " (" + nivelDesenho + ")";
 	}
 
 	public int getAltura() {
@@ -60,6 +71,32 @@ public abstract class ObjetoPista implements Serializable {
 
 	public abstract Rectangle obterArea();
 
+	/**
+	 * Área usada para detectar clique/seleção no editor: como
+	 * {@link #obterArea()}, mas com uma margem de tolerância e considerando
+	 * a rotação ({@code angulo}) em torno do próprio centro, para coincidir
+	 * com a forma realmente desenhada (que é rotacionada só na hora de
+	 * pintar, não no retângulo bruto que cada subtipo guarda). {@code
+	 * obterArea()} continua retornando o retângulo sem rotação porque
+	 * também é usado por lógica de jogo (ex.: máscara de transparência do
+	 * box), que não deve mudar de comportamento.
+	 */
+	public Rectangle obterAreaClique() {
+		Rectangle base = obterArea();
+		if (base == null) {
+			return base;
+		}
+		Rectangle expandido = new Rectangle(base);
+		expandido.grow(TOLERANCIA_CLIQUE_PX, TOLERANCIA_CLIQUE_PX);
+		if (angulo == 0) {
+			return expandido;
+		}
+		double rad = Math.toRadians(angulo);
+		AffineTransform rotacao = AffineTransform.getRotateInstance(rad, expandido.getCenterX(),
+				expandido.getCenterY());
+		return rotacao.createTransformedShape(expandido).getBounds();
+	}
+
 	public double getAngulo() {
 		return angulo;
 	}
@@ -74,6 +111,24 @@ public abstract class ObjetoPista implements Serializable {
 
 	public void setPintaEmcima(boolean pintaEmcima) {
 		this.pintaEmcima = pintaEmcima;
+		// Ponte com XMLs antigos, que só têm pintaEmcima: true equivalia a
+		// desenhar por cima de tudo (nível 1). Mantém os dois campos
+		// coerentes também quando o setter é chamado por código novo.
+		if (pintaEmcima && nivelDesenho < 1) {
+			nivelDesenho = 1;
+		} else if (!pintaEmcima && nivelDesenho > 0) {
+			nivelDesenho = 0;
+		}
+	}
+
+	public int getNivelDesenho() {
+		return nivelDesenho;
+	}
+
+	/** Sem limite de faixa; mantém {@code pintaEmcima} coerente (nível >= 1 = por cima). */
+	public void setNivelDesenho(int nivelDesenho) {
+		this.nivelDesenho = nivelDesenho;
+		this.pintaEmcima = nivelDesenho >= 1;
 	}
 
 	public Color getCorPimaria() {

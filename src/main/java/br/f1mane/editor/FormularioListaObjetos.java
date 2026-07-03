@@ -27,6 +27,8 @@ public class FormularioListaObjetos {
 	private JList list;
 	private final JFrame frame = new JFrame();
 	private JPanel objetos;
+	/** Suprime os efeitos do ListSelectionListener quando a seleção vem do canvas, não do usuário na lista. */
+	private boolean selecaoProgramatica;
 
 	public DefaultListModel getDefaultListModelOP() {
 		return defaultListModelOP;
@@ -58,6 +60,9 @@ public class FormularioListaObjetos {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
+				if (selecaoProgramatica) {
+					return;
+				}
 				FormularioListaObjetos.this.editor.repaint();
 				FormularioListaObjetos.this.editor.desSelecionaNosPista();
 				int selectedIndex = list.getSelectedIndex();
@@ -181,6 +186,27 @@ public class FormularioListaObjetos {
 		botoes.add(editar);
 		botoes.add(remover);
 		frame.add(objetos);
+	}
+
+	/**
+	 * Seleciona {@code objeto} na lista (ou limpa a seleção se ele não
+	 * pertence a ela) sem centralizar o viewport nele — usado quando a
+	 * seleção veio de um clique direto no canvas, onde o objeto já está
+	 * visível e centralizar atrapalharia o arraste.
+	 */
+	public void selecionarSemCentralizar(ObjetoPista objeto) {
+		int indice = defaultListModelOP.indexOf(objeto);
+		selecaoProgramatica = true;
+		try {
+			if (indice < 0) {
+				list.clearSelection();
+			} else if (list.getSelectedIndex() != indice) {
+				list.setSelectedIndex(indice);
+				list.ensureIndexIsVisible(indice);
+			}
+		} finally {
+			selecaoProgramatica = false;
+		}
 	}
 
 	public void listarObjetos() {

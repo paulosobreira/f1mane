@@ -2,10 +2,7 @@
 <java version="11.0.24" class="java.beans.XMLDecoder">
  <object class="br.f1mane.entidades.Circuito" id="Circuito0">
   <void property="ativo">
-   <boolean>true</boolean>
-  </void>
-  <void property="backGround">
-   <string>magny_mro.jpg</string>
+   <boolean>false</boolean>
   </void>
   <void property="box">
    <void method="add">

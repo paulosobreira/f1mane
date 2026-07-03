@@ -125,6 +125,14 @@ public class EditorCircuitos extends JFrame {
                     editor.menosAngulo();
                 } else if (keyCode == KeyEvent.VK_X) {
                     editor.maisAngulo();
+                } else if (keyCode == KeyEvent.VK_PAGE_UP) {
+                    editor.subirNivelObjeto();
+                } else if (keyCode == KeyEvent.VK_PAGE_DOWN) {
+                    editor.descerNivelObjeto();
+                } else if (keyCode == KeyEvent.VK_DELETE) {
+                    editor.apagarObjetoSelecionado();
+                } else if (keyCode == KeyEvent.VK_INSERT) {
+                    editor.iniciarCriacaoObjeto();
                 }
             }
         });

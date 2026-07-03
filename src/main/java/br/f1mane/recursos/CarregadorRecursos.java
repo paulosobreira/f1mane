@@ -1138,11 +1138,26 @@ public class CarregadorRecursos {
         if (circuito == null) {
             XMLDecoder xmlDecoder = new XMLDecoder(CarregadorRecursos.recursoComoStream("circuitos/" + nmCircuito));
             circuito = (Circuito) xmlDecoder.readObject();
+            aplicarBackGroundPorConvencao(circuito, nmCircuito);
         }
         if (cache) {
             bufferCircuitos.put(nmCircuito, circuito);
         }
         return circuito;
+    }
+
+    /**
+     * Deriva o nome do jpg de referência do próprio nome do XML do circuito
+     * (ex.: "albert_park_mro.xml" -> "albert_park_mro.jpg") em vez de
+     * depender de uma propriedade gravada no XML — só atribui se esse jpg
+     * realmente existir nos recursos, senão o circuito fica sem imagem de
+     * referência (comportamento equivalente a nunca ter tido background).
+     */
+    private static void aplicarBackGroundPorConvencao(Circuito circuito, String nmCircuitoXml) {
+        String nomeJpg = nmCircuitoXml.replaceFirst("\\.xml$", ".jpg");
+        if (CarregadorRecursos.recursoURL("circuitos/" + nomeJpg) != null) {
+            circuito.definirBackGroundPorConvencao(nomeJpg);
+        }
     }
 
     private static class PilotoComparator implements Comparator<Piloto> {

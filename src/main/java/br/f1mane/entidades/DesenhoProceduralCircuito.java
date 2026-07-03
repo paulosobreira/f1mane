@@ -9,7 +9,9 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import br.nnpe.GeoUtil;
 import br.nnpe.Util;
@@ -101,6 +103,17 @@ public final class DesenhoProceduralCircuito {
 		// quantidade de vagas que cabe no espaço disponível.
 		double multi = MULTI_VAGAS_BOX + (ESPACO_MINIMO_ENTRE_VAGAS_PIXELS / zoom) / Carro.LARGURA;
 
+		// corBox1/corBox2 do circuito substituem o ciano/magenta padrão quando
+		// definidas, mantendo a mesma transparência (150) das cores fixas.
+		Color corRetC1 = circuito.getCorBox1() != null
+				? new Color(circuito.getCorBox1().getRed(), circuito.getCorBox1().getGreen(),
+						circuito.getCorBox1().getBlue(), 150)
+				: new Color(0, 255, 255, 150);
+		Color corRect = circuito.getCorBox2() != null
+				? new Color(circuito.getCorBox2().getRed(), circuito.getCorBox2().getGreen(),
+						circuito.getCorBox2().getBlue(), 150)
+				: new Color(255, 0, 255, 150);
+
 		int quantidadeVagas = MAX_VAGAS_BOX;
 		if (circuito.getFimParadaBoxIndex() != 0) {
 			No ini = circuito.getBoxFull().get(circuito.getParadaBoxIndex());
@@ -188,16 +201,16 @@ public final class DesenhoProceduralCircuito {
 			AffineTransform affineTransformRect = AffineTransform.getScaleInstance(zoom, zoom);
 			double rad = Math.toRadians(calculaAngulo);
 			affineTransformRect.setToRotation(rad, rectangle.getCenterX(), rectangle.getCenterY());
-			g2d.setColor(new Color(255, 0, 255, 150));
+			g2d.setColor(corRect);
 			g2d.fill(generalPath.createTransformedShape(affineTransformRect));
 			generalPath = new GeneralPath(retC1);
 			affineTransformRect.setToRotation(rad, retC1.getCenterX(), retC1.getCenterY());
-			g2d.setColor(new Color(0, 255, 255, 150));
+			g2d.setColor(corRetC1);
 			g2d.fill(generalPath.createTransformedShape(affineTransformRect));
 
 			generalPath = new GeneralPath(retC2);
 			affineTransformRect.setToRotation(rad, retC2.getCenterX(), retC2.getCenterY());
-			g2d.setColor(new Color(255, 0, 255, 150));
+			g2d.setColor(corRect);
 			g2d.fill(generalPath.createTransformedShape(affineTransformRect));
 
 			if (circuito.getLadoBox() == 1)
@@ -223,9 +236,35 @@ public final class DesenhoProceduralCircuito {
 	 * ficar gravados de forma permanente na imagem.
 	 */
 	public static void desenha(Graphics2D g2d, Circuito circuito, double zoom) {
+		List<Integer> niveis = niveisDesenhoOrdenados(circuito);
+		for (Integer nivel : niveis) {
+			if (nivel < 0) {
+				desenhaObjetos(g2d, circuito, zoom, nivel);
+			}
+		}
 		desenhaPistaZebraEBox(g2d, circuito, zoom);
 		desenhaVagasBox(g2d, circuito, zoom);
-		desenhaObjetos(g2d, circuito, zoom);
+		desenhaObjetos(g2d, circuito, zoom, 0);
+		for (Integer nivel : niveis) {
+			if (nivel > 0) {
+				desenhaObjetos(g2d, circuito, zoom, nivel);
+			}
+		}
+	}
+
+	/**
+	 * Níveis de desenho distintos em uso pelos objetos de cenário do
+	 * circuito, em ordem crescente — sem limite de faixa, então percorre
+	 * exatamente os níveis presentes, não um intervalo fixo.
+	 */
+	private static List<Integer> niveisDesenhoOrdenados(Circuito circuito) {
+		java.util.TreeSet<Integer> niveis = new java.util.TreeSet<Integer>();
+		if (circuito.getObjetosCenario() != null) {
+			for (ObjetoPista objetoPista : circuito.getObjetosCenario()) {
+				niveis.add(objetoPista.getNivelDesenho());
+			}
+		}
+		return new ArrayList<Integer>(niveis);
 	}
 
 	/**
@@ -296,16 +335,23 @@ public final class DesenhoProceduralCircuito {
 
 	private static void desenhaTintaPistaEZebra(Graphics2D g2d, Circuito circuito, double zoom,
 			BasicStroke pistaTinta, BasicStroke zebra) {
+		// As cores customizadas valem só para a faixa de zebra das curvas —
+		// corZebra1 como fundo sólido e corZebra2 como listras — cada uma com
+		// seu próprio fallback (branco/vermelho). A tinta de borda no resto
+		// da pista é sempre branca, independente das cores customizadas.
+		Color corZebra1 = circuito.getCorZebra1() != null ? circuito.getCorZebra1() : Color.WHITE;
+		Color corZebra2 = circuito.getCorZebra2() != null ? circuito.getCorZebra2() : Color.RED;
 		No oldNo = null;
 		for (Iterator<No> iter = circuito.getPistaKey().iterator(); iter.hasNext(); ) {
 			No no = iter.next();
 			if (oldNo != null) {
-				g2d.setColor(Color.WHITE);
+				boolean curva = No.CURVA_ALTA.equals(oldNo.getTipo()) || No.CURVA_BAIXA.equals(oldNo.getTipo());
+				g2d.setColor(curva ? corZebra1 : Color.WHITE);
 				g2d.setStroke(pistaTinta);
 				g2d.drawLine(Util.inteiro(oldNo.getX() * zoom), Util.inteiro(oldNo.getY() * zoom),
 						Util.inteiro(no.getX() * zoom), Util.inteiro(no.getY() * zoom));
-				if (No.CURVA_ALTA.equals(oldNo.getTipo()) || No.CURVA_BAIXA.equals(oldNo.getTipo())) {
-					g2d.setColor(Color.RED);
+				if (curva) {
+					g2d.setColor(corZebra2);
 					g2d.setStroke(zebra);
 					g2d.drawLine(Util.inteiro(oldNo.getX() * zoom), Util.inteiro(oldNo.getY() * zoom),
 							Util.inteiro(no.getX() * zoom), Util.inteiro(no.getY() * zoom));
@@ -320,11 +366,14 @@ public final class DesenhoProceduralCircuito {
 				Util.inteiro(noFinal.getX() * zoom), Util.inteiro(noFinal.getY() * zoom));
 	}
 
-	private static void desenhaObjetos(Graphics2D g2d, Circuito circuito, double zoom) {
+	private static void desenhaObjetos(Graphics2D g2d, Circuito circuito, double zoom, int nivel) {
 		if (circuito.getObjetosCenario() == null) {
 			return;
 		}
 		for (ObjetoPista objetoPista : circuito.getObjetosCenario()) {
+			if (objetoPista.getNivelDesenho() != nivel) {
+				continue;
+			}
 			objetoPista.desenha(g2d, zoom);
 		}
 	}

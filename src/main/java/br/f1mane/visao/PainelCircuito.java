@@ -5355,6 +5355,12 @@ public class PainelCircuito {
     }
 
     private void desenhaTintaPistaZebra(Graphics2D g2d) {
+        // As cores customizadas valem só para a faixa de zebra das curvas —
+        // corZebra1 como fundo sólido e corZebra2 como listras — cada uma com
+        // seu próprio fallback (branco/vermelho). A tinta de borda no resto
+        // da pista é sempre branca, independente das cores customizadas.
+        Color corZebra1 = circuito.getCorZebra1() != null ? circuito.getCorZebra1() : Color.WHITE;
+        Color corZebra2 = circuito.getCorZebra2() != null ? circuito.getCorZebra2() : Color.RED;
         g2d.setColor(Color.WHITE);
         Stroke stroke = g2d.getStroke();
         g2d.setStroke(pistaTinta);
@@ -5364,14 +5370,15 @@ public class PainelCircuito {
         for (Iterator iter = circuito.getPistaKey().iterator(); iter.hasNext(); ) {
             No no = (No) iter.next();
             if (oldNo != null) {
-                g2d.setColor(Color.WHITE);
+                boolean curva = No.CURVA_ALTA.equals(oldNo.getTipo()) || No.CURVA_BAIXA.equals(oldNo.getTipo());
+                g2d.setColor(curva ? corZebra1 : Color.WHITE);
                 g2d.setStroke(pistaTinta);
                 g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
                         Util.inteiro((oldNo.getY() - descontoCentraliza.y) * zoom),
                         Util.inteiro((no.getX() - descontoCentraliza.x) * zoom),
                         Util.inteiro((no.getY() - descontoCentraliza.y) * zoom));
-                if (No.CURVA_ALTA.equals(oldNo.getTipo()) || No.CURVA_BAIXA.equals(oldNo.getTipo())) {
-                    g2d.setColor(Color.RED);
+                if (curva) {
+                    g2d.setColor(corZebra2);
                     g2d.setStroke(zebra);
                     g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
                             Util.inteiro((oldNo.getY() - descontoCentraliza.y) * zoom),
@@ -5382,6 +5389,8 @@ public class PainelCircuito {
             oldNo = no;
         }
         No noFinal = (No) circuito.getPistaKey().get(0);
+        g2d.setColor(Color.WHITE);
+        g2d.setStroke(pistaTinta);
         g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
                 Util.inteiro((oldNo.getY() - descontoCentraliza.y) * zoom),
                 Util.inteiro((noFinal.getX() - descontoCentraliza.x) * zoom),

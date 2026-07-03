@@ -6,6 +6,7 @@ import br.f1mane.entidades.ObjetoArquibancada;
 import br.f1mane.entidades.ObjetoConstrucao;
 import br.f1mane.entidades.ObjetoEscapada;
 import br.f1mane.entidades.ObjetoGuardRails;
+import br.f1mane.entidades.ObjetoLivre;
 import br.f1mane.entidades.ObjetoPista;
 import br.f1mane.entidades.ObjetoPneus;
 import br.f1mane.entidades.ObjetoTransparencia;
@@ -13,6 +14,7 @@ import br.f1mane.entidades.ObjetoTransparencia;
 public enum TipoObjetoPista {
 
 	TRANSPARENCIA("Objeto Transparencia", ObjetoTransparencia::new, false),
+	LIVRE("Objeto Livre", ObjetoLivre::new, false),
 	ESCAPADA("Objeto Escapada", ObjetoEscapada::new, false),
 	ARQUIBANCADA("Objeto Arquibancada", ObjetoArquibancada::new, true),
 	CONSTRUCAO("Objeto Construcao", ObjetoConstrucao::new, true),
