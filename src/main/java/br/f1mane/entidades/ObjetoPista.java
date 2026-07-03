@@ -1,11 +1,14 @@
 package br.f1mane.entidades;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.io.Serializable;
 
 public abstract class ObjetoPista implements Serializable {
 
 	private static final long serialVersionUID = 4416705642227491612L;
+	/** Margem de tolerância (px de tela) somada à área de clique, para facilitar acertar objetos finos. */
+	private static final int TOLERANCIA_CLIQUE_PX = 6;
 	boolean pintaEmcima;
 	Color corPimaria;
 	Color corSecundaria;
@@ -59,6 +62,32 @@ public abstract class ObjetoPista implements Serializable {
 	public abstract void desenha(Graphics2D g2d, double zoom);
 
 	public abstract Rectangle obterArea();
+
+	/**
+	 * Área usada para detectar clique/seleção no editor: como
+	 * {@link #obterArea()}, mas com uma margem de tolerância e considerando
+	 * a rotação ({@code angulo}) em torno do próprio centro, para coincidir
+	 * com a forma realmente desenhada (que é rotacionada só na hora de
+	 * pintar, não no retângulo bruto que cada subtipo guarda). {@code
+	 * obterArea()} continua retornando o retângulo sem rotação porque
+	 * também é usado por lógica de jogo (ex.: máscara de transparência do
+	 * box), que não deve mudar de comportamento.
+	 */
+	public Rectangle obterAreaClique() {
+		Rectangle base = obterArea();
+		if (base == null) {
+			return base;
+		}
+		Rectangle expandido = new Rectangle(base);
+		expandido.grow(TOLERANCIA_CLIQUE_PX, TOLERANCIA_CLIQUE_PX);
+		if (angulo == 0) {
+			return expandido;
+		}
+		double rad = Math.toRadians(angulo);
+		AffineTransform rotacao = AffineTransform.getRotateInstance(rad, expandido.getCenterX(),
+				expandido.getCenterY());
+		return rotacao.createTransformedShape(expandido).getBounds();
+	}
 
 	public double getAngulo() {
 		return angulo;

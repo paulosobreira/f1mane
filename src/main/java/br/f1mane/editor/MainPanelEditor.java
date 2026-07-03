@@ -12,6 +12,7 @@ import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -75,6 +76,7 @@ import br.f1mane.entidades.ObjetoEscapada;
 import br.f1mane.entidades.ObjetoLivre;
 import br.f1mane.entidades.ObjetoPista;
 import br.f1mane.entidades.ObjetoTransparencia;
+import br.f1mane.entidades.PontoCurva;
 import br.f1mane.entidades.PontoEscape;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.visao.PainelCircuito;
@@ -96,7 +98,6 @@ public class MainPanelEditor extends JPanel {
     private EditorCircuitos srcFrame;
     private boolean desenhaTracado = true;
     private boolean mostraBG = false;
-    private boolean creditos = false;
     private boolean pontosEscape = false;
     public final static Color oran = new Color(255, 188, 40, 180);
     public final static Color ver = new Color(255, 10, 10, 150);
@@ -165,21 +166,50 @@ public class MainPanelEditor extends JPanel {
     private Point offsetArraste;
     private boolean arrastouObjeto;
     private Point ultimoClicado;
+
+    /** Raio de tolerância (px de tela; o canvas do editor não tem zoom variável) para clicar num marcador. */
+    private static final int RAIO_MARCADOR_EDICAO_PONTOS_PX = 8;
+    private ObjetoLivre editandoPontosDe;
+    private PontoCurva verticeArrastando;
+    private boolean arrastandoHasteDoVertice;
+    private boolean arrastouVertice;
     private FormularioListaObjetos formularioListaObjetos;
     private FormularioListaObjetos formularioListaObjetosCenario;
     protected final DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
     JCheckBox noite = new JCheckBox();
     private final JLabel corFundoLabel = criaIndicadorDeCor();
     private final JLabel corAsfaltoLabel = criaIndicadorDeCor();
+    private final JLabel corBox1Label = criaIndicadorDeCor();
+    private final JLabel corBox2Label = criaIndicadorDeCor();
+    private final JLabel corZebra1Label = criaIndicadorDeCor();
+    private final JLabel corZebra2Label = criaIndicadorDeCor();
     File file;
 
     private final List<String> circuitosXml = new ArrayList<String>();
+    private final List<String> nomesAmigaveisCircuitos = new ArrayList<String>();
     private int indiceCircuito = -1;
-    private JLabel lblCircuitoAtual;
+    private JComboBox<CircuitoComboItem> comboCircuito;
+    private boolean sincronizandoComboCircuito;
     private JButton btnCircuitoAnterior;
     private JButton btnCircuitoProximo;
     private JCheckBox ativoCheckBox;
     private boolean eventosMouseAdicionados;
+
+    /** Item do combobox de seleção de circuito: exibe o nome amigável, carrega pelo arquivo XML. */
+    private static final class CircuitoComboItem {
+        private final String nomeAmigavel;
+        private final String arquivoXml;
+
+        CircuitoComboItem(String nomeAmigavel, String arquivoXml) {
+            this.nomeAmigavel = nomeAmigavel;
+            this.arquivoXml = arquivoXml;
+        }
+
+        @Override
+        public String toString() {
+            return nomeAmigavel;
+        }
+    }
 
     public MainPanelEditor() {
     }
@@ -278,7 +308,7 @@ public class MainPanelEditor extends JPanel {
 
     private JPanel gerarBotoesVisualizacao() {
         JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new GridLayout(1, 3));
+        buttonsPanel.setLayout(new GridLayout(1, 2));
 
         JCheckBox desenhaTracadoCheck = new JCheckBox("Traçado");
         desenhaTracadoCheck.setSelected(desenhaTracado);
@@ -298,29 +328,14 @@ public class MainPanelEditor extends JPanel {
             }
         });
 
-        JButton creditosButton = new JButton("Créditos");
-        creditosButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    JOptionPane.showMessageDialog(null, "Informe a posição dos créditos na imagem do circuito.",
-                            "Informações", JOptionPane.INFORMATION_MESSAGE);
-                    creditos();
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                    srcFrame.dialogDeErro(e1);
-                }
-            }
-        });
-
         buttonsPanel.add(desenhaTracadoCheck);
         buttonsPanel.add(desenhaBackgroundCheck);
-        buttonsPanel.add(creditosButton);
         return buttonsPanel;
     }
 
     private JPanel gerarBotoesAcoesNo() {
         JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new GridLayout(1, 2));
+        buttonsPanel.setLayout(new GridLayout(2, 1));
 
         JButton apagarUltimoNoButton = new JButton("Apagar Ultimo NO");
         apagarUltimoNoButton.addActionListener(new ActionListener() {
@@ -370,19 +385,27 @@ public class MainPanelEditor extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 try {
                     desSelecionaNosPista();
-                    FormularioObjetos formularioObjetos = new FormularioObjetos(MainPanelEditor.this);
-                    formularioObjetos.mostrarPainelModal();
-                    TipoObjetoPista tipoSelecionado = (TipoObjetoPista) formularioObjetos
-                            .getTipoComboBox().getSelectedItem();
+                    TipoObjetoPista tipoSelecionado = (TipoObjetoPista) JOptionPane.showInputDialog(
+                            srcFrame, "Tipo do objeto:", "Criar Objeto", JOptionPane.QUESTION_MESSAGE,
+                            null, TipoObjetoPista.values(), TipoObjetoPista.values()[0]);
+                    if (tipoSelecionado == null) {
+                        return;
+                    }
                     objetoPista = tipoSelecionado.criar();
+                    // Aplica os últimos valores usados (ângulo, tamanho, cores, padrão)
+                    // para esta mesma classe, se houver, em vez de sempre nascer com os
+                    // defaults do construtor. Sem segundo diálogo aqui: o objeto já é
+                    // criado pronto para posicionar/desenhar; para mudar alguma
+                    // propriedade, o usuário edita depois com duplo-clique.
+                    MemoriaPropriedadesObjeto.aplicar(objetoPista);
                     posicionaObjetoPista = true;
                     criandoObjetoCenario = tipoSelecionado.isCenario();
                     if (objetoPista instanceof ObjetoTransparencia) {
                         objetoPista.setTransparencia(125);
                         desenhandoObjetoLivre = true;
+                    } else if (objetoPista instanceof ObjetoLivre) {
+                        desenhandoObjetoLivre = true;
                     }
-                    formularioObjetos.carregarCampos(objetoPista);
-                    formularioObjetos.formularioObjetoPista(objetoPista);
                 } catch (Exception e2) {
                     e2.printStackTrace();
                     srcFrame.dialogDeErro(e2);
@@ -467,8 +490,35 @@ public class MainPanelEditor extends JPanel {
         });
         topo.add(btnCircuitoAnterior);
 
-        lblCircuitoAtual = new JLabel();
-        topo.add(lblCircuitoAtual);
+        comboCircuito = new JComboBox<CircuitoComboItem>();
+        comboCircuito.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (sincronizandoComboCircuito) {
+                    return;
+                }
+                CircuitoComboItem selecionado = (CircuitoComboItem) comboCircuito.getSelectedItem();
+                if (selecionado == null) {
+                    return;
+                }
+                int novoIndice = circuitosXml.indexOf(selecionado.arquivoXml);
+                if (novoIndice < 0 || novoIndice == indiceCircuito) {
+                    return;
+                }
+                indiceCircuito = novoIndice;
+                try {
+                    carregarCircuitoExistente(selecionado.arquivoXml);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    srcFrame.dialogDeErro(ex);
+                }
+            }
+        });
+        topo.add(comboCircuito);
+        // gerarLayout() recria este painel (e comboCircuito) a cada carregamento
+        // de circuito; sem isto o combo nasceria vazio e o setSelectedIndex feito
+        // por atualizarBotoesNavegacao() no fim deste método lançaria
+        // IllegalArgumentException (índice fora dos limites de um combo vazio).
+        repopularComboCircuitos();
 
         btnCircuitoProximo = new JButton("▶");
         btnCircuitoProximo.addActionListener(new ActionListener() {
@@ -618,6 +668,66 @@ public class MainPanelEditor extends JPanel {
         });
         topo.add(corAsfaltoLabel);
 
+        topo.add(new JLabel("Cor Box 1"));
+        atualizaCorLabel(corBox1Label, circuito != null ? circuito.getCorBox1() : null, Color.LIGHT_GRAY);
+        corBox1Label.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                Color nova = JColorChooser.showDialog(MainPanelEditor.this,
+                        "Cor Box 1", corBox1Label.getBackground());
+                if (nova != null) {
+                    circuito.setCorBox1(nova);
+                    atualizaCorLabel(corBox1Label, nova, Color.LIGHT_GRAY);
+                    repaint();
+                }
+            }
+        });
+        topo.add(corBox1Label);
+
+        topo.add(new JLabel("Cor Box 2"));
+        atualizaCorLabel(corBox2Label, circuito != null ? circuito.getCorBox2() : null, Color.GRAY);
+        corBox2Label.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                Color nova = JColorChooser.showDialog(MainPanelEditor.this,
+                        "Cor Box 2", corBox2Label.getBackground());
+                if (nova != null) {
+                    circuito.setCorBox2(nova);
+                    atualizaCorLabel(corBox2Label, nova, Color.GRAY);
+                    repaint();
+                }
+            }
+        });
+        topo.add(corBox2Label);
+
+        topo.add(new JLabel("Cor Zebra 1"));
+        atualizaCorLabel(corZebra1Label, circuito != null ? circuito.getCorZebra1() : null, Color.WHITE);
+        corZebra1Label.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                Color nova = JColorChooser.showDialog(MainPanelEditor.this,
+                        "Cor Zebra 1", corZebra1Label.getBackground());
+                if (nova != null) {
+                    circuito.setCorZebra1(nova);
+                    atualizaCorLabel(corZebra1Label, nova, Color.WHITE);
+                    repaint();
+                }
+            }
+        });
+        topo.add(corZebra1Label);
+
+        topo.add(new JLabel("Cor Zebra 2"));
+        atualizaCorLabel(corZebra2Label, circuito != null ? circuito.getCorZebra2() : null, Color.RED);
+        corZebra2Label.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                Color nova = JColorChooser.showDialog(MainPanelEditor.this,
+                        "Cor Zebra 2", corZebra2Label.getBackground());
+                if (nova != null) {
+                    circuito.setCorZebra2(nova);
+                    atualizaCorLabel(corZebra2Label, nova, Color.RED);
+                    repaint();
+                }
+            }
+        });
+        topo.add(corZebra2Label);
+
         atualizarBotoesNavegacao();
         return topo;
     }
@@ -630,13 +740,37 @@ public class MainPanelEditor extends JPanel {
         if (btnCircuitoProximo != null) {
             btnCircuitoProximo.setEnabled(temCircuito && indiceCircuito < circuitosXml.size() - 1);
         }
-        if (lblCircuitoAtual != null) {
-            lblCircuitoAtual.setText(temCircuito ? circuitosXml.get(indiceCircuito) : "—");
+        if (comboCircuito != null) {
+            sincronizandoComboCircuito = true;
+            try {
+                int indiceValido = (temCircuito && indiceCircuito < comboCircuito.getItemCount())
+                        ? indiceCircuito : -1;
+                comboCircuito.setSelectedIndex(indiceValido);
+            } finally {
+                sincronizandoComboCircuito = false;
+            }
         }
+    }
+
+    private void repopularComboCircuitos() {
+        if (comboCircuito == null) {
+            return;
+        }
+        sincronizandoComboCircuito = true;
+        try {
+            comboCircuito.removeAllItems();
+            for (int i = 0; i < circuitosXml.size(); i++) {
+                comboCircuito.addItem(new CircuitoComboItem(nomesAmigaveisCircuitos.get(i), circuitosXml.get(i)));
+            }
+        } finally {
+            sincronizandoComboCircuito = false;
+        }
+        atualizarBotoesNavegacao();
     }
 
     private void popularCircuitos() {
         circuitosXml.clear();
+        nomesAmigaveisCircuitos.clear();
         try {
             Properties p = new Properties();
             InputStream is = CarregadorRecursos.recursoComoStream("properties/circuitos.properties");
@@ -648,6 +782,11 @@ public class MainPanelEditor extends JPanel {
                 }
                 Collections.sort(arquivos);
                 circuitosXml.addAll(arquivos);
+                for (String arquivo : arquivos) {
+                    String valor = p.getProperty(arquivo);
+                    String nomeAmigavel = (valor != null && !valor.isEmpty()) ? valor.split(",")[0] : arquivo;
+                    nomesAmigaveisCircuitos.add(nomeAmigavel);
+                }
             }
         } catch (Exception ex) {
             File dir = new File("src/main/resources/circuitos");
@@ -660,8 +799,10 @@ public class MainPanelEditor extends JPanel {
                 }
                 Collections.sort(arquivos);
                 circuitosXml.addAll(arquivos);
+                nomesAmigaveisCircuitos.addAll(arquivos);
             }
         }
+        repopularComboCircuitos();
     }
 
     public void navegarCircuito(int delta) {
@@ -714,6 +855,7 @@ public class MainPanelEditor extends JPanel {
         if (circuito.getPistaFull() != null && !circuito.getPistaFull().isEmpty()) {
             centralizarPonto(((No) circuito.getPistaFull().get(0)).getPoint());
         }
+        atualizarBotoesNavegacao();
     }
 
     private void refletirCircuitoNosCampos() {
@@ -726,6 +868,10 @@ public class MainPanelEditor extends JPanel {
         }
         atualizaCorLabel(corFundoLabel, circuito.getCorFundo(), Color.WHITE);
         atualizaCorLabel(corAsfaltoLabel, circuito.getCorAsfalto(), DesenhoProceduralCircuito.COR_PISTA);
+        atualizaCorLabel(corBox1Label, circuito.getCorBox1(), Color.LIGHT_GRAY);
+        atualizaCorLabel(corBox2Label, circuito.getCorBox2(), Color.GRAY);
+        atualizaCorLabel(corZebra1Label, circuito.getCorZebra1(), Color.WHITE);
+        atualizaCorLabel(corZebra2Label, circuito.getCorZebra2(), Color.RED);
     }
 
     private JPanel gerarListsNosPistaBox() {
@@ -973,6 +1119,10 @@ public class MainPanelEditor extends JPanel {
             }
 
             public void mousePressed(MouseEvent e) {
+                if (editandoPontosDe != null && isSemSelecao() && !posicionaObjetoPista && !desenhandoObjetoLivre
+                        && tentarIniciarArrasteVerticeOuHaste(e)) {
+                    return;
+                }
                 if (!isSemSelecao() || !SwingUtilities.isLeftMouseButton(e)
                         || posicionaObjetoPista || desenhandoObjetoLivre) {
                     return;
@@ -988,6 +1138,27 @@ public class MainPanelEditor extends JPanel {
             }
 
             public void mouseDragged(MouseEvent e) {
+                if (verticeArrastando != null) {
+                    arrastouVertice = true;
+                    Point offset = calculaOffsetTelaObjetoLivre(editandoPontosDe);
+                    Point localAlvo = localDaTela(e.getPoint(), offset);
+                    if (arrastandoHasteDoVertice) {
+                        verticeArrastando.setHasteFim(localAlvo);
+                    } else {
+                        Point posicaoAntiga = verticeArrastando.getPosicao();
+                        int deltaX = localAlvo.x - posicaoAntiga.x;
+                        int deltaY = localAlvo.y - posicaoAntiga.y;
+                        verticeArrastando.setPosicao(localAlvo);
+                        if (verticeArrastando.getHasteFim() != null) {
+                            verticeArrastando.setHasteFim(new Point(
+                                    verticeArrastando.getHasteFim().x + deltaX,
+                                    verticeArrastando.getHasteFim().y + deltaY));
+                        }
+                    }
+                    editandoPontosDe.gerar();
+                    repaint();
+                    return;
+                }
                 if (objetoArrastando == null) {
                     return;
                 }
@@ -999,10 +1170,15 @@ public class MainPanelEditor extends JPanel {
             }
 
             public void mouseReleased(MouseEvent e) {
+                verticeArrastando = null;
                 objetoArrastando = null;
             }
 
             public void mouseClicked(MouseEvent e) {
+                if (arrastouVertice) {
+                    arrastouVertice = false;
+                    return;
+                }
                 if (arrastouObjeto) {
                     arrastouObjeto = false;
                     return;
@@ -1035,6 +1211,11 @@ public class MainPanelEditor extends JPanel {
                         objetoTransparencia.getPontos().add(ultimoClicado);
                     } else {
                         desenhandoObjetoLivre = false;
+                        // sem isto, posicionaObjetoPista continuava travado em true pra
+                        // sempre depois desta criação (só é zerado no fluxo de "canto"
+                        // logo abaixo), bloqueando mousePressed() e o menu de contexto
+                        // (botão direito) pra qualquer objeto dali em diante.
+                        posicionaObjetoPista = false;
                         objetoTransparencia.setTransparencia(125);
                         if (circuito.getObjetos() == null)
                             circuito.setObjetos(new ArrayList<ObjetoPista>());
@@ -1042,6 +1223,29 @@ public class MainPanelEditor extends JPanel {
                         formularioListaObjetos.listarObjetos();
                         objetoTransparencia.setNome("Objeto " + circuito.getObjetos().size());
                         objetoTransparencia.gerar();
+                        // posicaoQuina precisa ficar definida (mesmo que igual aos bounds
+                        // atuais, sem mudar nada visualmente) para o objeto poder ser
+                        // clicado e arrastado depois — sem isso mousePressed() ignora o
+                        // objeto (posicaoQuina == null é tratado como "não arrastável").
+                        objetoTransparencia.setPosicaoQuina(objetoTransparencia.obterArea().getLocation());
+                        objetoPista = null;
+                    }
+                    repaint();
+                    return;
+                } else if (desenhandoObjetoLivre && (objetoPista instanceof ObjetoLivre)) {
+                    ObjetoLivre objetoLivre = (ObjetoLivre) objetoPista;
+                    if (e.getButton() == MouseEvent.BUTTON1) {
+                        objetoLivre.getPontos().add(ultimoClicado);
+                    } else {
+                        desenhandoObjetoLivre = false;
+                        posicionaObjetoPista = false;
+                        if (circuito.getObjetos() == null)
+                            circuito.setObjetos(new ArrayList<ObjetoPista>());
+                        circuito.getObjetos().add(objetoLivre);
+                        formularioListaObjetos.listarObjetos();
+                        objetoLivre.setNome("Objeto " + circuito.getObjetos().size());
+                        objetoLivre.gerar();
+                        objetoLivre.setPosicaoQuina(objetoLivre.obterArea().getLocation());
                         objetoPista = null;
                     }
                     repaint();
@@ -1073,11 +1277,6 @@ public class MainPanelEditor extends JPanel {
                     repaint();
                     posicionaObjetoPista = false;
                     return;
-                } else if (creditos) {
-                    circuito.setCreditos(e.getPoint());
-                    repaint();
-                    creditos = false;
-                    return;
                 } else if (pontosEscape) {
                     repaint();
                     pontosEscape = false;
@@ -1108,7 +1307,7 @@ public class MainPanelEditor extends JPanel {
     }
 
     private JPanel criaPainelAjusteRapido(final ObjetoPista alvo) {
-        JPanel panel = new JPanel(new GridLayout(3, 2));
+        JPanel panel = new JPanel(new GridLayout(alvo instanceof ObjetoLivre ? 4 : 3, 2));
         JSpinner larguraSpinner = new JSpinner(new SpinnerNumberModel(alvo.getLargura(), 0, 10000, 1));
         JSpinner alturaSpinner = new JSpinner(new SpinnerNumberModel(alvo.getAltura(), 0, 10000, 1));
         JSpinner anguloSpinner = new JSpinner(
@@ -1140,7 +1339,137 @@ public class MainPanelEditor extends JPanel {
                 repaint();
             }
         });
+        if (alvo instanceof ObjetoLivre) {
+            final ObjetoLivre objetoLivre = (ObjetoLivre) alvo;
+            boolean editandoEsteObjeto = objetoLivre.equals(editandoPontosDe);
+            JButton editarPontosButton = new JButton(editandoEsteObjeto ? "Parar de Editar Pontos" : "Editar Pontos");
+            editarPontosButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    if (objetoLivre.equals(editandoPontosDe)) {
+                        encerrarEdicaoPontosObjetoLivre();
+                    } else {
+                        iniciarEdicaoPontosObjetoLivre(objetoLivre);
+                    }
+                }
+            });
+            panel.add(editarPontosButton);
+            panel.add(new JLabel());
+        }
         return panel;
+    }
+
+    /**
+     * Liga o modo de edição de pontos/hastes (estilo ferramenta de caminhos
+     * do GIMP) para um ObjetoLivre já posicionado no circuito. Clique
+     * esquerdo arrastando um vértice o reposiciona; clique direito
+     * arrastando um vértice (ou a ponta de uma haste já ajustada) muda a
+     * curvatura dos segmentos adjacentes.
+     */
+    public void iniciarEdicaoPontosObjetoLivre(ObjetoLivre objetoLivre) {
+        objetoLivre.inicializarVerticesSeNecessario();
+        objetoLivre.gerar();
+        editandoPontosDe = objetoLivre;
+        objetoPista = objetoLivre;
+        repaint();
+    }
+
+    public void encerrarEdicaoPontosObjetoLivre() {
+        editandoPontosDe = null;
+        verticeArrastando = null;
+        repaint();
+    }
+
+    /**
+     * Deslocamento entre o espaço local dos vértices (onde eles foram
+     * originalmente clicados/criados) e a tela: {@code desenha()} sempre
+     * translada o path gerado a partir do zero para alinhar com
+     * {@code posicaoQuina}, então esse deslocamento é
+     * {@code posicaoQuina - bounds do path recém-gerado (local, sem
+     * translação)} — recalculado a cada chamada para acompanhar mudanças na
+     * própria geometria durante o arraste.
+     */
+    private Point calculaOffsetTelaObjetoLivre(ObjetoLivre objetoLivre) {
+        if (objetoLivre.getPosicaoQuina() == null) {
+            return new Point(0, 0);
+        }
+        objetoLivre.gerar();
+        Rectangle boundsLocal = objetoLivre.getForma().getBounds();
+        return new Point(objetoLivre.getPosicaoQuina().x - boundsLocal.x,
+                objetoLivre.getPosicaoQuina().y - boundsLocal.y);
+    }
+
+    private static Point telaDoLocal(Point local, Point offset) {
+        return new Point(local.x + offset.x, local.y + offset.y);
+    }
+
+    private static Point localDaTela(Point tela, Point offset) {
+        return new Point(tela.x - offset.x, tela.y - offset.y);
+    }
+
+    private static double distancia(Point a, Point b) {
+        double dx = a.x - b.x;
+        double dy = a.y - b.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    /**
+     * Testa se o clique atingiu um vértice ou a ponta de haste de um vértice
+     * do ObjetoLivre em edição, e se sim, inicia o arraste correspondente.
+     * Botão direito testa primeiro a ponta de haste já ajustada (para
+     * ajuste fino) e, se não atingir nenhuma, cai para o próprio vértice
+     * (iniciando uma haste nova a partir dele); botão esquerdo só testa os
+     * vértices (reposiciona o ponto, arrastando a haste junto).
+     */
+    private boolean tentarIniciarArrasteVerticeOuHaste(MouseEvent e) {
+        if (editandoPontosDe == null) {
+            return false;
+        }
+        boolean botaoDireito = SwingUtilities.isRightMouseButton(e);
+        boolean botaoEsquerdo = SwingUtilities.isLeftMouseButton(e);
+        if (!botaoDireito && !botaoEsquerdo) {
+            return false;
+        }
+        Point offset = calculaOffsetTelaObjetoLivre(editandoPontosDe);
+        if (botaoDireito) {
+            for (PontoCurva vertice : editandoPontosDe.getVertices()) {
+                Point hasteTela = telaDoLocal(vertice.getControleSaida(), offset);
+                if (distancia(e.getPoint(), hasteTela) <= RAIO_MARCADOR_EDICAO_PONTOS_PX) {
+                    verticeArrastando = vertice;
+                    arrastandoHasteDoVertice = true;
+                    return true;
+                }
+            }
+        }
+        for (PontoCurva vertice : editandoPontosDe.getVertices()) {
+            Point posTela = telaDoLocal(vertice.getPosicao(), offset);
+            if (distancia(e.getPoint(), posTela) <= RAIO_MARCADOR_EDICAO_PONTOS_PX) {
+                verticeArrastando = vertice;
+                arrastandoHasteDoVertice = botaoDireito;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void desenhaMarcadoresEdicaoPontos(Graphics2D g2d) {
+        if (editandoPontosDe == null) {
+            return;
+        }
+        Point offset = calculaOffsetTelaObjetoLivre(editandoPontosDe);
+        for (PontoCurva vertice : editandoPontosDe.getVertices()) {
+            Point posTela = telaDoLocal(vertice.getPosicao(), offset);
+            Point hasteTela = telaDoLocal(vertice.getControleSaida(), offset);
+            if (!hasteTela.equals(posTela)) {
+                g2d.setColor(Color.CYAN);
+                g2d.drawLine(posTela.x, posTela.y, hasteTela.x, hasteTela.y);
+                g2d.setColor(Color.BLUE);
+                g2d.fillOval(hasteTela.x - 4, hasteTela.y - 4, 8, 8);
+            }
+            g2d.setColor(Color.YELLOW);
+            g2d.fillOval(posTela.x - 5, posTela.y - 5, 10, 10);
+            g2d.setColor(Color.BLACK);
+            g2d.drawOval(posTela.x - 5, posTela.y - 5, 10, 10);
+        }
     }
 
     private static JLabel criaIndicadorDeCor() {
@@ -1191,7 +1520,7 @@ public class MainPanelEditor extends JPanel {
             return null;
         }
         for (ObjetoPista objetoPista : lista) {
-            if (objetoPista.obterArea().contains(point)) {
+            if (objetoPista.obterAreaClique().contains(point)) {
                 return objetoPista;
             }
         }
@@ -1300,6 +1629,8 @@ public class MainPanelEditor extends JPanel {
         desenhaPreObjetoLivre(g2d);
         desenhaPreObjetoTransparencia(g2d);
         desenhaObjetosCima(g2d);
+        desenhaMarcadoresEdicaoPontos(g2d);
+        desenhaObjetoSelecionadoNoCanvas(g2d);
         desenhaListaObjetos(g2d);
         desenhaPainelClassico(g2d);
         desenhaInfo(g2d);
@@ -1349,6 +1680,37 @@ public class MainPanelEditor extends JPanel {
         g2d.drawString("X Menos Angulo", x, y);
         y += 20;
         g2d.drawString("Alt+C Copiar Objeto", x, y);
+    }
+
+    /**
+     * Contorno ao redor do objeto atualmente "ativo" (o mesmo que as teclas
+     * Z/X, setas e Shift+setas manipulam) — indica visualmente qual objeto
+     * responde aos atalhos de teclado mesmo quando selecionado por clique
+     * direto no canvas, não só pela lista lateral (que já tem seu próprio
+     * indicador em {@link #desenhaListaObjetos}).
+     */
+    private void desenhaObjetoSelecionadoNoCanvas(Graphics2D g2d) {
+        ObjetoPista ativo = objetoPista;
+        if (ativo == null || ativo.getPosicaoQuina() == null) {
+            return;
+        }
+        Rectangle area = ativo.obterArea();
+        if (area == null) {
+            return;
+        }
+        Stroke strokeAnterior = g2d.getStroke();
+        Color corAnterior = g2d.getColor();
+        g2d.setColor(Color.ORANGE);
+        g2d.setStroke(new BasicStroke(2f));
+        if (ativo.getAngulo() == 0) {
+            g2d.drawRect(area.x, area.y, area.width, area.height);
+        } else {
+            double rad = Math.toRadians(ativo.getAngulo());
+            AffineTransform rotacao = AffineTransform.getRotateInstance(rad, area.getCenterX(), area.getCenterY());
+            g2d.draw(rotacao.createTransformedShape(area));
+        }
+        g2d.setStroke(strokeAnterior);
+        g2d.setColor(corAnterior);
     }
 
     private void desenhaListaObjetos(Graphics2D g2d) {
@@ -1456,22 +1818,27 @@ public class MainPanelEditor extends JPanel {
     }
 
     private void desenhaPreObjetoLivre(Graphics2D g2d) {
-        g2d.setColor(Color.BLACK);
-        if (objetoPista == null || !desenhandoObjetoLivre || !(objetoPista instanceof ObjetoLivre))
-            return;
-        ObjetoLivre objetoLivre = (ObjetoLivre) objetoPista;
-        if (objetoLivre.getPontos().size() == 1) {
+        if (objetoPista == null || !desenhandoObjetoLivre || !(objetoPista instanceof ObjetoLivre)) {
             return;
         }
+        ObjetoLivre objetoLivre = (ObjetoLivre) objetoPista;
+        Stroke strokeAnterior = g2d.getStroke();
+        Color corAnterior = g2d.getColor();
+        g2d.setColor(Color.MAGENTA);
+        g2d.setStroke(new BasicStroke(3f));
+        int raioPonto = 6;
         Point ant = null;
         for (Point p : objetoLivre.getPontos()) {
+            int px = Util.inteiro(p.x * zoom);
+            int py = Util.inteiro(p.y * zoom);
             if (ant != null) {
-                g2d.drawLine(Util.inteiro(ant.x * zoom), Util.inteiro(ant.y * zoom), Util.inteiro(p.x * zoom),
-                        Util.inteiro(p.y * zoom));
+                g2d.drawLine(Util.inteiro(ant.x * zoom), Util.inteiro(ant.y * zoom), px, py);
             }
+            g2d.fillOval(px - raioPonto, py - raioPonto, raioPonto * 2, raioPonto * 2);
             ant = p;
         }
-
+        g2d.setStroke(strokeAnterior);
+        g2d.setColor(corAnterior);
     }
 
     private void desenhaBoxes(Graphics2D g2d) {
@@ -1921,15 +2288,6 @@ public class MainPanelEditor extends JPanel {
         return super.getPreferredSize();
     }
 
-    public void creditos() {
-        desSelecionaNosPista();
-        objetoPista = null;
-        if (circuito.getCreditos() != null) {
-            centralizarPonto(circuito.getCreditos());
-        }
-        creditos = true;
-    }
-
     private OpcaoTipoNo getOpcaoTipoNo() {
         return tipoNoCombo != null ? (OpcaoTipoNo) tipoNoCombo.getSelectedItem() : null;
     }
@@ -2188,10 +2546,18 @@ public class MainPanelEditor extends JPanel {
                     ObjetoLivre src = (ObjetoLivre) objetoPista;
                     ObjetoLivre dst = (ObjetoLivre) objetoPistaNovo;
                     dst.setPontos(new ArrayList<Point>());
-                    List<Point> pontos = src.getPontos();
-                    for (Point point : pontos) {
+                    for (Point point : src.getPontos()) {
                         dst.getPontos().add(new Point(point.x, point.y));
                     }
+                    List<PontoCurva> verticesCopiados = new ArrayList<PontoCurva>();
+                    for (PontoCurva verticeOriginal : src.getVertices()) {
+                        PontoCurva copia = new PontoCurva(new Point(verticeOriginal.getPosicao()));
+                        if (verticeOriginal.getHasteFim() != null) {
+                            copia.setHasteFim(new Point(verticeOriginal.getHasteFim()));
+                        }
+                        verticesCopiados.add(copia);
+                    }
+                    dst.setVertices(verticesCopiados);
                     dst.gerar();
                 }
                 boolean origemCenario = circuito.getObjetosCenario() != null
@@ -2276,7 +2642,7 @@ public class MainPanelEditor extends JPanel {
         iniciaEditor();
         atualizaListas();
         refletirCircuitoNosCampos();
-        lblCircuitoAtual.setText("(novo circuito, não salvo)");
+        atualizarBotoesNavegacao();
         srcFrame.pack();
         srcFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }

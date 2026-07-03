@@ -16,7 +16,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import br.nnpe.Logger;
+import br.f1mane.entidades.ObjetoLivre;
 import br.f1mane.entidades.ObjetoPista;
+import br.f1mane.entidades.ObjetoTransparencia;
+import br.f1mane.entidades.TipoObjetoLivre;
 
 public class FormularioObjetos {
 
@@ -27,45 +30,18 @@ public class FormularioObjetos {
 	private final JSpinner angulo = new JSpinner();
 	private JCheckBox frente = new JCheckBox();
 	private final JCheckBox transparenciaBox = new JCheckBox();
-	private final JComboBox tipoComboBox = new JComboBox();
+	private final JComboBox<TipoObjetoLivre> tipoObjetoLivreCombo = new JComboBox<TipoObjetoLivre>(
+			TipoObjetoLivre.values());
 	private JLabel labelCor1 = new JLabel("Clique");
 	private JLabel labelCor2 = new JLabel("Clique");
-	private final JPanel panel = new JPanel(new GridLayout(9, 2));
+	private final JLabel labelLegendaCor1 = new JLabel("Cor de Fundo");
+	private final JLabel labelLegendaCor2 = new JLabel("Cor de Padrão");
+	private final JPanel panel = new JPanel(new GridLayout(1, 2));
 	private final MainPanelEditor mainPanelEditor;
 	private ObjetoPista objetoPista;
 
 	public FormularioObjetos(MainPanelEditor panelPai) {
 		this.mainPanelEditor = panelPai;
-		for (TipoObjetoPista tipo : TipoObjetoPista.values()) {
-			tipoComboBox.addItem(tipo);
-		}
-
-		panel.add(new JLabel("Tipo"));
-		panel.add(tipoComboBox);
-
-		panel.add(new JLabel("No Início Transparência"));
-		panel.add(inicioTranparencia);
-
-		panel.add(new JLabel("No Fim Transparência"));
-		panel.add(fimTransparencia);
-
-		panel.add(new JLabel("Transparencia Box"));
-		panel.add(transparenciaBox);
-
-		panel.add(new JLabel("Ângulo"));
-		panel.add(angulo);
-
-		panel.add(new JLabel("Largura"));
-		panel.add(largura);
-
-		panel.add(new JLabel("Altura"));
-		panel.add(altura);
-
-		panel.add(new JLabel("Cor Primária"));
-		panel.add(labelCor1);
-
-		panel.add(new JLabel("Cor Secundária"));
-		panel.add(labelCor2);
 
 		ChangeListener changeListener = new ChangeListener() {
 
@@ -83,7 +59,7 @@ public class FormularioObjetos {
 		labelCor1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Color nova = JColorChooser.showDialog(panel, "Cor Primária",
+				Color nova = JColorChooser.showDialog(panel, "Cor de Fundo",
 						labelCor1.getBackground());
 				if (nova != null) {
 					setCor(nova, labelCor1);
@@ -93,13 +69,67 @@ public class FormularioObjetos {
 		labelCor2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Color nova = JColorChooser.showDialog(panel, "Cor Secundária",
+				Color nova = JColorChooser.showDialog(panel, "Cor de Padrão",
 						labelCor2.getBackground());
 				if (nova != null) {
 					setCor(nova, labelCor2);
 				}
 			}
 		});
+	}
+
+	/**
+	 * Reconstrói o painel só com os campos relevantes para o tipo de
+	 * {@code objetoPista}: ObjetoTransparencia usa apenas as propriedades de
+	 * transparência (mais tamanho/ângulo); ObjetoLivre usa tamanho/ângulo,
+	 * as duas cores e o seletor de padrão; os demais tipos usam
+	 * tamanho/ângulo e as duas cores, sem padrão nem transparência.
+	 */
+	private void montarPainelParaTipo(ObjetoPista objetoPista) {
+		panel.removeAll();
+		if (objetoPista instanceof ObjetoTransparencia) {
+			panel.setLayout(new GridLayout(6, 2));
+			panel.add(new JLabel("No Início Transparência"));
+			panel.add(inicioTranparencia);
+			panel.add(new JLabel("No Fim Transparência"));
+			panel.add(fimTransparencia);
+			panel.add(new JLabel("Transparencia Box"));
+			panel.add(transparenciaBox);
+			panel.add(new JLabel("Altura"));
+			panel.add(altura);
+			panel.add(new JLabel("Largura"));
+			panel.add(largura);
+			panel.add(new JLabel("Ângulo"));
+			panel.add(angulo);
+		} else if (objetoPista instanceof ObjetoLivre) {
+			panel.setLayout(new GridLayout(6, 2));
+			panel.add(new JLabel("Ângulo"));
+			panel.add(angulo);
+			panel.add(new JLabel("Largura"));
+			panel.add(largura);
+			panel.add(new JLabel("Altura"));
+			panel.add(altura);
+			panel.add(labelLegendaCor1);
+			panel.add(labelCor1);
+			panel.add(labelLegendaCor2);
+			panel.add(labelCor2);
+			panel.add(new JLabel("Padrão"));
+			panel.add(tipoObjetoLivreCombo);
+		} else {
+			panel.setLayout(new GridLayout(5, 2));
+			panel.add(new JLabel("Ângulo"));
+			panel.add(angulo);
+			panel.add(new JLabel("Largura"));
+			panel.add(largura);
+			panel.add(new JLabel("Altura"));
+			panel.add(altura);
+			panel.add(labelLegendaCor1);
+			panel.add(labelCor1);
+			panel.add(labelLegendaCor2);
+			panel.add(labelCor2);
+		}
+		panel.revalidate();
+		panel.repaint();
 	}
 
 	protected void atualizaMain() {
@@ -190,10 +220,6 @@ public class FormularioObjetos {
 		this.labelCor2 = labelCor2;
 	}
 
-	public JComboBox getTipoComboBox() {
-		return tipoComboBox;
-	}
-
 	public void objetoLivreFormulario(ObjetoPista objetoPista) {
 		this.objetoPista = null;
 		carregarCampos(objetoPista);
@@ -202,33 +228,48 @@ public class FormularioObjetos {
 	}
 
 	/**
-	 * Popula os campos do formulário a partir do estado atual de
-	 * {@code objetoPista}, para que abrir o formulário (seja para editar um
-	 * objeto existente, seja logo após criar um novo com valores padrão) não
-	 * sobrescreva esses valores com o estado em branco dos campos Swing.
+	 * Reconstrói o painel para o tipo de {@code objetoPista} (só os campos
+	 * relevantes) e popula esses campos a partir do estado atual do objeto,
+	 * para que abrir o formulário (seja para editar um objeto existente,
+	 * seja logo após criar um novo com valores padrão) não sobrescreva
+	 * esses valores com o estado em branco dos campos Swing.
 	 */
 	void carregarCampos(ObjetoPista objetoPista) {
+		montarPainelParaTipo(objetoPista);
+		angulo.setValue(Integer.valueOf((int) objetoPista.getAngulo()));
 		largura.setValue(Integer.valueOf(objetoPista.getLargura()));
 		altura.setValue(Integer.valueOf(objetoPista.getAltura()));
-		angulo.setValue(Integer.valueOf((int) objetoPista.getAngulo()));
-		setCor(objetoPista.getCorPimaria(), labelCor1);
-		setCor(objetoPista.getCorSecundaria(), labelCor2);
 		frente.setSelected(objetoPista.isPintaEmcima());
-		inicioTranparencia.setValue(Integer.valueOf(objetoPista.getInicioTransparencia()));
-		fimTransparencia.setValue(Integer.valueOf(objetoPista.getFimTransparencia()));
-		transparenciaBox.setSelected(objetoPista.isTransparenciaBox());
+		if (objetoPista instanceof ObjetoTransparencia) {
+			inicioTranparencia.setValue(Integer.valueOf(objetoPista.getInicioTransparencia()));
+			fimTransparencia.setValue(Integer.valueOf(objetoPista.getFimTransparencia()));
+			transparenciaBox.setSelected(objetoPista.isTransparenciaBox());
+		} else {
+			setCor(objetoPista.getCorPimaria(), labelCor1);
+			setCor(objetoPista.getCorSecundaria(), labelCor2);
+			if (objetoPista instanceof ObjetoLivre) {
+				tipoObjetoLivreCombo.setSelectedItem(((ObjetoLivre) objetoPista).getTipo());
+			}
+		}
 	}
 
 	public void formularioObjetoPista(ObjetoPista objetoPista) {
-		objetoPista.setCorPimaria(labelCor1.getBackground());
-		objetoPista.setCorSecundaria(labelCor2.getBackground());
+		objetoPista.setAngulo(((Integer) angulo.getValue()).doubleValue());
 		objetoPista.setLargura(((Integer) largura.getValue()).intValue());
 		objetoPista.setAltura(((Integer) altura.getValue()).intValue());
-		objetoPista.setAngulo(((Integer) angulo.getValue()).doubleValue());
-		objetoPista.setInicioTransparencia(
-                ((Integer) getInicioTranparencia().getValue()).intValue());
-		objetoPista.setFimTransparencia(
-                ((Integer) getFimTransparencia().getValue()).intValue());
-		objetoPista.setTransparenciaBox(transparenciaBox.isSelected());
+		if (objetoPista instanceof ObjetoTransparencia) {
+			objetoPista.setInicioTransparencia(((Integer) getInicioTranparencia().getValue()).intValue());
+			objetoPista.setFimTransparencia(((Integer) getFimTransparencia().getValue()).intValue());
+			objetoPista.setTransparenciaBox(transparenciaBox.isSelected());
+		} else {
+			objetoPista.setCorPimaria(labelCor1.getBackground());
+			objetoPista.setCorSecundaria(labelCor2.getBackground());
+			if (objetoPista instanceof ObjetoLivre) {
+				((ObjetoLivre) objetoPista).setTipo((TipoObjetoLivre) tipoObjetoLivreCombo.getSelectedItem());
+			}
+		}
+		// Guarda os valores atuais como "última configuração" desta classe,
+		// pra o próximo objeto criado deste mesmo tipo já nascer com eles.
+		MemoriaPropriedadesObjeto.lembrar(objetoPista);
 	}
 }

@@ -5355,7 +5355,11 @@ public class PainelCircuito {
     }
 
     private void desenhaTintaPistaZebra(Graphics2D g2d) {
-        g2d.setColor(Color.WHITE);
+        Color corZebra1 = circuito.getCorZebra1() != null && circuito.getCorZebra2() != null
+                ? circuito.getCorZebra1() : Color.WHITE;
+        Color corZebra2 = circuito.getCorZebra1() != null && circuito.getCorZebra2() != null
+                ? circuito.getCorZebra2() : Color.RED;
+        g2d.setColor(corZebra1);
         Stroke stroke = g2d.getStroke();
         g2d.setStroke(pistaTinta);
 
@@ -5364,14 +5368,14 @@ public class PainelCircuito {
         for (Iterator iter = circuito.getPistaKey().iterator(); iter.hasNext(); ) {
             No no = (No) iter.next();
             if (oldNo != null) {
-                g2d.setColor(Color.WHITE);
+                g2d.setColor(corZebra1);
                 g2d.setStroke(pistaTinta);
                 g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
                         Util.inteiro((oldNo.getY() - descontoCentraliza.y) * zoom),
                         Util.inteiro((no.getX() - descontoCentraliza.x) * zoom),
                         Util.inteiro((no.getY() - descontoCentraliza.y) * zoom));
                 if (No.CURVA_ALTA.equals(oldNo.getTipo()) || No.CURVA_BAIXA.equals(oldNo.getTipo())) {
-                    g2d.setColor(Color.RED);
+                    g2d.setColor(corZebra2);
                     g2d.setStroke(zebra);
                     g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
                             Util.inteiro((oldNo.getY() - descontoCentraliza.y) * zoom),
