@@ -115,7 +115,7 @@ class ObjetoPistaNivelDesenhoTest {
     }
 
     @Test
-    void toStringMostraONivel_excetoTransparencia() {
+    void toStringMostraONivel_excetoObjetosDeFuncao() {
         ObjetoLivre objeto = new ObjetoLivre();
         objeto.setNome("Objeto 1");
         objeto.setNivelDesenho(-1);
@@ -124,6 +124,11 @@ class ObjetoPistaNivelDesenhoTest {
         ObjetoTransparencia transparencia = new ObjetoTransparencia();
         transparencia.setNome("Objeto 2");
         assertEquals("Objeto 2 ObjetoTransparencia", transparencia.toString(),
-                "transparência fica fora do sistema de níveis, sem sufixo");
+                "transparência é objeto de função, fora do sistema de níveis, sem sufixo");
+
+        ObjetoEscapada escapada = new ObjetoEscapada();
+        escapada.setNome("Objeto 3");
+        assertEquals("Objeto 3 ObjetoEscapada", escapada.toString(),
+                "escapada é objeto de função, fora do sistema de níveis, sem sufixo");
     }
 }

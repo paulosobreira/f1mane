@@ -1,0 +1,312 @@
+package br.f1mane.editor;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JButton;
+
+import org.junit.jupiter.api.Test;
+
+import br.f1mane.entidades.Circuito;
+import br.f1mane.entidades.ObjetoLivre;
+import br.f1mane.entidades.ObjetoPista;
+
+/**
+ * Copiar Cor / Colar Cor: copia corPimaria/corSecundaria do objeto
+ * selecionado (lista de objetos ou de cenário) e aplica em todos os objetos
+ * selecionados no momento de colar, somando a seleção das duas listas —
+ * suporta colar em vários objetos de uma vez. Também cobre os botões
+ * "Primeiro"/"Ultimo": ausentes na lista de objetos de função, presentes só
+ * na de objetos de desenho.
+ */
+class MainPanelEditorCopiarColarCorTest {
+
+    private ObjetoLivre criarObjeto(String nome, Color cor1, Color cor2) {
+        ObjetoLivre objeto = new ObjetoLivre();
+        objeto.setNome(nome);
+        objeto.setCorPimaria(cor1);
+        objeto.setCorSecundaria(cor2);
+        return objeto;
+    }
+
+    private MainPanelEditor editorComListasPopuladas(List<ObjetoPista> objetos, List<ObjetoPista> objetosCenario) {
+        MainPanelEditor editor = new MainPanelEditor();
+        Circuito circuito = new Circuito();
+        circuito.setObjetos(objetos);
+        circuito.setObjetosCenario(objetosCenario);
+        editor.setCircuito(circuito);
+
+        editor.formularioListaObjetosFuncao = new FormularioListaObjetos(editor);
+        editor.formularioListaObjetosFuncao.listarObjetos();
+        editor.formularioListaObjetosDesenho = new FormularioListaObjetos(editor, Circuito::getObjetosCenario);
+        editor.formularioListaObjetosDesenho.listarObjetos();
+        return editor;
+    }
+
+    /**
+     * Seleciona vários índices de uma vez sem passar pelo
+     * ListSelectionListener de produção (que chama centralizarPonto() e
+     * exige um MainPanelEditor totalmente montado, com scrollPane etc.) —
+     * mesmo mecanismo de supressão usado por selecionarSemCentralizar(),
+     * generalizado aqui só para o teste simular seleção múltipla.
+     */
+    private static void selecionarIndicesSemCentralizar(FormularioListaObjetos formulario, int... indices) {
+        formulario.selecaoProgramatica = true;
+        try {
+            formulario.getList().setSelectedIndices(indices);
+        } finally {
+            formulario.selecaoProgramatica = false;
+        }
+    }
+
+    @Test
+    void copiarCor_pegaCorDoObjetoSelecionadoNaListaDeObjetos() {
+        ObjetoLivre alvo = criarObjeto("Alvo", new Color(10, 20, 30), new Color(40, 50, 60));
+        ObjetoLivre outro = criarObjeto("Outro", Color.BLACK, Color.WHITE);
+        MainPanelEditor editor = editorComListasPopuladas(
+                new ArrayList<>(List.of(outro, alvo)), new ArrayList<>());
+        editor.formularioListaObjetosFuncao.selecionarSemCentralizar(alvo);
+
+        editor.copiarCorObjetoSelecionado();
+
+        ObjetoLivre destino = criarObjeto("Destino", Color.GRAY, Color.GRAY);
+        editor.formularioListaObjetosDesenho.getDefaultListModelOP().addElement(destino);
+        editor.formularioListaObjetosDesenho.selecionarSemCentralizar(destino);
+        editor.colarCorObjetosSelecionados();
+
+        assertEquals(new Color(10, 20, 30), destino.getCorPimaria());
+        assertEquals(new Color(40, 50, 60), destino.getCorSecundaria());
+    }
+
+    @Test
+    void copiarCor_semSelecaoEmNenhumaLista_naoAlteraNadaAoColar() {
+        ObjetoLivre destino = criarObjeto("Destino", Color.GRAY, Color.GRAY);
+        MainPanelEditor editor = editorComListasPopuladas(
+                new ArrayList<>(List.of(destino)), new ArrayList<>());
+
+        editor.copiarCorObjetoSelecionado();
+        editor.formularioListaObjetosFuncao.selecionarSemCentralizar(destino);
+        editor.colarCorObjetosSelecionados();
+
+        assertEquals(Color.GRAY, destino.getCorPimaria(), "nada foi copiado, colar não deveria alterar a cor");
+    }
+
+    @Test
+    void colarCor_aplicaEmVariosObjetosSelecionadosDeUmaVez() {
+        ObjetoLivre origem = criarObjeto("Origem", Color.RED, Color.BLUE);
+        ObjetoLivre destino1 = criarObjeto("D1", Color.GRAY, Color.GRAY);
+        ObjetoLivre destino2 = criarObjeto("D2", Color.GRAY, Color.GRAY);
+        ObjetoLivre destino3 = criarObjeto("D3", Color.GRAY, Color.GRAY);
+        MainPanelEditor editor = editorComListasPopuladas(
+                new ArrayList<>(List.of(origem, destino1, destino2, destino3)), new ArrayList<>());
+
+        editor.formularioListaObjetosFuncao.selecionarSemCentralizar(origem);
+        editor.copiarCorObjetoSelecionado();
+
+        selecionarIndicesSemCentralizar(editor.formularioListaObjetosFuncao, 1, 2, 3);
+        editor.colarCorObjetosSelecionados();
+
+        for (ObjetoLivre destino : List.of(destino1, destino2, destino3)) {
+            assertEquals(Color.RED, destino.getCorPimaria());
+            assertEquals(Color.BLUE, destino.getCorSecundaria());
+        }
+    }
+
+    @Test
+    void colarCor_somaSelecaoDasDuasListas() {
+        ObjetoLivre origem = criarObjeto("Origem", Color.RED, Color.BLUE);
+        ObjetoLivre destinoObjetos = criarObjeto("DestinoObjetos", Color.GRAY, Color.GRAY);
+        ObjetoLivre destinoCenario = criarObjeto("DestinoCenario", Color.GRAY, Color.GRAY);
+        MainPanelEditor editor = editorComListasPopuladas(
+                new ArrayList<>(List.of(origem, destinoObjetos)),
+                new ArrayList<>(List.of(destinoCenario)));
+
+        editor.formularioListaObjetosFuncao.selecionarSemCentralizar(origem);
+        editor.copiarCorObjetoSelecionado();
+
+        editor.formularioListaObjetosFuncao.selecionarSemCentralizar(destinoObjetos);
+        editor.formularioListaObjetosDesenho.selecionarSemCentralizar(destinoCenario);
+        editor.colarCorObjetosSelecionados();
+
+        assertEquals(Color.RED, destinoObjetos.getCorPimaria());
+        assertEquals(Color.RED, destinoCenario.getCorPimaria());
+    }
+
+    @Test
+    void colarCor_semNadaSelecionado_naoLancaExcecao() {
+        ObjetoLivre origem = criarObjeto("Origem", Color.RED, Color.BLUE);
+        MainPanelEditor editor = editorComListasPopuladas(
+                new ArrayList<>(List.of(origem)), new ArrayList<>());
+        editor.formularioListaObjetosFuncao.selecionarSemCentralizar(origem);
+        editor.copiarCorObjetoSelecionado();
+        editor.formularioListaObjetosFuncao.selecionarSemCentralizar(null);
+
+        editor.colarCorObjetosSelecionados();
+    }
+
+    private static List<JButton> todosOsBotoes(Component componente) {
+        List<JButton> botoes = new ArrayList<>();
+        if (componente instanceof JButton) {
+            botoes.add((JButton) componente);
+        }
+        if (componente instanceof Container) {
+            for (Component filho : ((Container) componente).getComponents()) {
+                botoes.addAll(todosOsBotoes(filho));
+            }
+        }
+        return botoes;
+    }
+
+    /**
+     * "Editar" (duplo-clique no item substitui o botão) não foi testado
+     * diretamente disparando o clique: objetoLivreFormulario() abre um
+     * JOptionPane.showMessageDialog modal de verdade neste ambiente
+     * (headless=false), que bloquearia o teste esperando interação.
+     * <p>
+     * A lista de objetos de função (construtor padrão/2 args, sem o terceiro
+     * parâmetro) continua sem Primeiro/Ultimo — só a lista de objetos de
+     * desenho (ver {@link #listaDeObjetosDeDesenho_temBotoesPrimeiroEUltimo})
+     * ganhou esses botões de volta.
+     */
+    @Test
+    void listaDeObjetosDeFuncao_naoTemBotoesPrimeiroEUltimoNemEditar_masMantemCimaEBaixoERemover() {
+        FormularioListaObjetos formulario = new FormularioListaObjetos(new MainPanelEditor());
+
+        List<String> textos = new ArrayList<>();
+        for (JButton botao : todosOsBotoes(formulario.getObjetos())) {
+            textos.add(botao.getText());
+        }
+
+        assertFalse(textos.contains("Primeiro"), "objetos de função não deveriam ter o botão Primeiro");
+        assertFalse(textos.contains("Ultimo"), "objetos de função não deveriam ter o botão Ultimo");
+        assertFalse(textos.contains("Editar"), "botão Editar deveria ter sido removido (duplo-clique no lugar)");
+        assertTrue(textos.contains("Cima"));
+        assertTrue(textos.contains("Baixo"));
+        assertTrue(textos.contains("Remover"));
+    }
+
+    /**
+     * Objetos de desenho (Livre, Arquibancada, Construcao, GuardRails,
+     * Pneus) recuperaram os botões Primeiro/Ultimo — a ordem na lista é a
+     * ordem de desenho dentro do mesmo nível, e mover direto pro início/fim
+     * é mais rápido que clicar Cima/Baixo repetidamente numa lista longa.
+     */
+    @Test
+    void listaDeObjetosDeDesenho_temBotoesPrimeiroEUltimo() {
+        FormularioListaObjetos formulario = new FormularioListaObjetos(new MainPanelEditor(), Circuito::getObjetosCenario, true);
+
+        List<String> textos = new ArrayList<>();
+        for (JButton botao : todosOsBotoes(formulario.getObjetos())) {
+            textos.add(botao.getText());
+        }
+
+        assertTrue(textos.contains("Primeiro"));
+        assertTrue(textos.contains("Ultimo"));
+        assertTrue(textos.contains("Cima"));
+        assertTrue(textos.contains("Baixo"));
+        assertTrue(textos.contains("Remover"));
+    }
+
+    /**
+     * Primeiro/Ultimo movem o item selecionado direto pro início/fim da
+     * lista (e do circuito, via atualizarCircuito), preservando a ordem dos
+     * demais.
+     */
+    @Test
+    void botaoPrimeiro_moveItemSelecionadoParaOInicioDaLista() {
+        MainPanelEditor editor = new MainPanelEditor();
+        Circuito circuito = new Circuito();
+        ObjetoLivre a = criarObjeto("A", Color.RED, Color.BLUE);
+        ObjetoLivre b = criarObjeto("B", Color.GREEN, Color.YELLOW);
+        ObjetoLivre c = criarObjeto("C", Color.BLACK, Color.WHITE);
+        circuito.setObjetosCenario(new ArrayList<>(List.of(a, b, c)));
+        editor.setCircuito(circuito);
+
+        FormularioListaObjetos formulario = new FormularioListaObjetos(editor, Circuito::getObjetosCenario, true);
+        formulario.listarObjetos();
+        selecionarIndicesSemCentralizar(formulario, 2);
+
+        JButton primeiro = botaoComTexto(formulario.getObjetos(), "Primeiro");
+        // O próprio botão reseleciona a lista ao mover o item, o que
+        // dispararia centralizarPonto() num MainPanelEditor sem a UI
+        // completa (scrollPane nulo neste teste) — suprime com o mesmo
+        // mecanismo de seleção "programática" usado acima.
+        formulario.selecaoProgramatica = true;
+        try {
+            primeiro.doClick();
+        } finally {
+            formulario.selecaoProgramatica = false;
+        }
+
+        assertEquals(List.of(c, a, b), circuito.getObjetosCenario());
+        assertEquals(0, formulario.getList().getSelectedIndex());
+    }
+
+    @Test
+    void botaoUltimo_moveItemSelecionadoParaOFinalDaLista() {
+        MainPanelEditor editor = new MainPanelEditor();
+        Circuito circuito = new Circuito();
+        ObjetoLivre a = criarObjeto("A", Color.RED, Color.BLUE);
+        ObjetoLivre b = criarObjeto("B", Color.GREEN, Color.YELLOW);
+        ObjetoLivre c = criarObjeto("C", Color.BLACK, Color.WHITE);
+        circuito.setObjetosCenario(new ArrayList<>(List.of(a, b, c)));
+        editor.setCircuito(circuito);
+
+        FormularioListaObjetos formulario = new FormularioListaObjetos(editor, Circuito::getObjetosCenario, true);
+        formulario.listarObjetos();
+        selecionarIndicesSemCentralizar(formulario, 0);
+
+        JButton ultimo = botaoComTexto(formulario.getObjetos(), "Ultimo");
+        formulario.selecaoProgramatica = true;
+        try {
+            ultimo.doClick();
+        } finally {
+            formulario.selecaoProgramatica = false;
+        }
+
+        assertEquals(List.of(b, c, a), circuito.getObjetosCenario());
+        assertEquals(2, formulario.getList().getSelectedIndex());
+    }
+
+    private static JButton botaoComTexto(Component raiz, String texto) {
+        for (JButton botao : todosOsBotoes(raiz)) {
+            if (texto.equals(botao.getText())) {
+                return botao;
+            }
+        }
+        throw new AssertionError("botão \"" + texto + "\" não encontrado");
+    }
+
+    /**
+     * Confirma que o duplo-clique é detectado no índice correto do item
+     * clicado (locationToIndex), sem de fato disparar a abertura do
+     * formulário (que exigiria interação com um diálogo modal real).
+     */
+    @Test
+    void duploCliqueNaLista_resolveOIndiceDoItemClicado() {
+        MainPanelEditor editor = new MainPanelEditor();
+        Circuito circuito = new Circuito();
+        ObjetoLivre primeiro = criarObjeto("Primeiro", Color.RED, Color.BLUE);
+        ObjetoLivre segundo = criarObjeto("Segundo", Color.GREEN, Color.YELLOW);
+        circuito.setObjetosCenario(new ArrayList<>(List.of(primeiro, segundo)));
+        editor.setCircuito(circuito);
+
+        FormularioListaObjetos formulario = new FormularioListaObjetos(editor, Circuito::getObjetosCenario);
+        formulario.listarObjetos();
+
+        java.awt.Rectangle celaSegundo = formulario.getList().getCellBounds(1, 1);
+        int indice = formulario.getList().locationToIndex(
+                new Point(celaSegundo.x + 1, celaSegundo.y + 1));
+
+        assertEquals(1, indice, "o ponto dentro da célula do segundo item deveria resolver pro índice 1");
+        assertEquals(segundo, formulario.getDefaultListModelOP().get(indice));
+    }
+}

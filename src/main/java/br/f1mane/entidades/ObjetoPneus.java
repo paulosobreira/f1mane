@@ -8,7 +8,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.RoundRectangle2D;
 
-public class ObjetoPneus extends ObjetoPista {
+public class ObjetoPneus extends ObjetoDesenho {
 
 	RoundRectangle2D externo = new RoundRectangle2D.Double();
 

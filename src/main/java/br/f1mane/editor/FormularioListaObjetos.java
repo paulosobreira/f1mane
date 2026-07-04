@@ -3,7 +3,8 @@ package br.f1mane.editor;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.Transient;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.function.Function;
 
@@ -27,8 +28,13 @@ public class FormularioListaObjetos {
 	private JList list;
 	private final JFrame frame = new JFrame();
 	private JPanel objetos;
-	/** Suprime os efeitos do ListSelectionListener quando a seleção vem do canvas, não do usuário na lista. */
-	private boolean selecaoProgramatica;
+	/**
+	 * Suprime os efeitos do ListSelectionListener quando a seleção vem do
+	 * canvas, não do usuário na lista. Pacote-privado (em vez de private)
+	 * para permitir simular seleção múltipla programática em testes, sem
+	 * depender do editor estar totalmente montado (scrollPane etc.).
+	 */
+	boolean selecaoProgramatica;
 
 	public DefaultListModel getDefaultListModelOP() {
 		return defaultListModelOP;
@@ -52,6 +58,21 @@ public class FormularioListaObjetos {
 
 	public FormularioListaObjetos(MainPanelEditor editor,
 			Function<Circuito, List<ObjetoPista>> listaAccessor) {
+		this(editor, listaAccessor, false);
+	}
+
+	/**
+	 * @param mostrarMoverPrimeiroEUltimo liga os botões "Primeiro"/"Ultimo"
+	 *                                    (mover o item selecionado direto pro
+	 *                                    início/fim da lista) — só faz
+	 *                                    sentido pros objetos de desenho, cuja
+	 *                                    ordem na lista é a ordem de desenho
+	 *                                    dentro do mesmo nível; objetos de
+	 *                                    função (Escapada/Transparência)
+	 *                                    continuam só com Cima/Baixo/Remover.
+	 */
+	public FormularioListaObjetos(MainPanelEditor editor,
+			Function<Circuito, List<ObjetoPista>> listaAccessor, boolean mostrarMoverPrimeiroEUltimo) {
 		this.editor = editor;
 		this.listaAccessor = listaAccessor;
 		defaultListModelOP = new DefaultListModel();
@@ -86,14 +107,8 @@ public class FormularioListaObjetos {
 
 			}
 		});
-		objetos = new JPanel(new BorderLayout()) {
-			@Override
-			@Transient
-			public Dimension getPreferredSize() {
-				return new Dimension(super.getPreferredSize().height, 160);
-			}
-		};
-		JPanel botoes = new JPanel(new GridLayout(3, 1));
+		objetos = new JPanel(new BorderLayout());
+		JPanel botoes = new JPanel(new GridLayout(0, 1));
 		objetos.add(new JScrollPane(list), BorderLayout.CENTER);
 		objetos.add(botoes, BorderLayout.SOUTH);
 		JButton cima = new JButton("Cima");
@@ -147,8 +162,7 @@ public class FormularioListaObjetos {
 					return;
 				ObjetoPista objetoPista = (ObjetoPista) defaultListModelOP
 						.remove(sel);
-				defaultListModelOP.add(defaultListModelOP.getSize(),
-						objetoPista);
+				defaultListModelOP.add(defaultListModelOP.getSize(), objetoPista);
 				list.setSelectedIndex(defaultListModelOP.getSize() - 1);
 				atualizarCircuito();
 			}
@@ -165,14 +179,20 @@ public class FormularioListaObjetos {
 			}
 		});
 
-		JButton editar = new JButton("Editar");
-		editar.addActionListener(new ActionListener() {
+		// Editar passou a ser por duplo-clique no item da lista (sem botão
+		// dedicado) — mesmo padrão do duplo-clique no objeto desenhado no
+		// canvas (editaObjetoPista em MainPanelEditor).
+		list.addMouseListener(new MouseAdapter() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				int sel = list.getSelectedIndex();
-				if (sel == -1)
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() != 2) {
 					return;
-				ObjetoPista objetoPista = (ObjetoPista) list.getSelectedValue();
+				}
+				int indice = list.locationToIndex(e.getPoint());
+				if (indice < 0) {
+					return;
+				}
+				ObjetoPista objetoPista = (ObjetoPista) defaultListModelOP.get(indice);
 				FormularioObjetos formularioObjetos = new FormularioObjetos(
 						FormularioListaObjetos.this.editor);
 				formularioObjetos.objetoLivreFormulario(objetoPista);
@@ -181,9 +201,10 @@ public class FormularioListaObjetos {
 
 		botoes.add(cima);
 		botoes.add(baixo);
-		botoes.add(primeiro);
-		botoes.add(ultimo);
-		botoes.add(editar);
+		if (mostrarMoverPrimeiroEUltimo) {
+			botoes.add(primeiro);
+			botoes.add(ultimo);
+		}
 		botoes.add(remover);
 		frame.add(objetos);
 	}

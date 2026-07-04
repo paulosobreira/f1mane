@@ -324,7 +324,7 @@ class DesenhoProceduralCircuitoTest {
         BufferedImage imagem = new BufferedImage(3000, 3000, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = imagem.createGraphics();
         try {
-            DesenhoProceduralCircuito.desenhaVagasBox(g2d, circuito, 1.0);
+            DesenhoProceduralCircuito.desenhaVagasBox(g2d, circuito, 1.0, false);
         } finally {
             g2d.dispose();
         }
@@ -342,13 +342,44 @@ class DesenhoProceduralCircuitoTest {
         BufferedImage imagem = new BufferedImage(3000, 3000, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = imagem.createGraphics();
         try {
-            DesenhoProceduralCircuito.desenhaVagasBox(g2d, circuito, 1.0);
+            DesenhoProceduralCircuito.desenhaVagasBox(g2d, circuito, 1.0, false);
         } finally {
             g2d.dispose();
         }
 
         assertTrue(imagemContemCor(imagem, corSobrePreto(Color.CYAN, 150)), "esperava fallback para ciano");
         assertTrue(imagemContemCor(imagem, corSobrePreto(Color.MAGENTA, 150)), "esperava fallback para magenta");
+    }
+
+    /**
+     * As bolinhas de "lado do box" são só do editor (modoEditor=true) — a
+     * imagem final de corrida (modoEditor=false, o que {@link
+     * DesenhoProceduralCircuito#desenha} sempre usa) não deve mostrá-las.
+     */
+    @Test
+    void desenhaVagasBox_bolinhaDeLadoDoBox_soApareceEmModoEditor() {
+        Circuito circuito = circuitoComBoxDeTeste();
+        circuito.setLadoBox(1);
+
+        BufferedImage imagemEditor = new BufferedImage(3000, 3000, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2dEditor = imagemEditor.createGraphics();
+        try {
+            DesenhoProceduralCircuito.desenhaVagasBox(g2dEditor, circuito, 1.0, true);
+        } finally {
+            g2dEditor.dispose();
+        }
+        assertTrue(imagemContemCor(imagemEditor, Color.BLUE),
+                "modoEditor=true deveria desenhar a bolinha azul indicando o lado do box");
+
+        BufferedImage imagemCorrida = new BufferedImage(3000, 3000, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2dCorrida = imagemCorrida.createGraphics();
+        try {
+            DesenhoProceduralCircuito.desenhaVagasBox(g2dCorrida, circuito, 1.0, false);
+        } finally {
+            g2dCorrida.dispose();
+        }
+        assertTrue(!imagemContemCor(imagemCorrida, Color.BLUE),
+                "modoEditor=false (imagem de corrida) não deveria desenhar a bolinha de lado do box");
     }
 
     /** Varre a imagem inteira procurando um pixel com exatamente essa cor (RGB, ignora alpha). */

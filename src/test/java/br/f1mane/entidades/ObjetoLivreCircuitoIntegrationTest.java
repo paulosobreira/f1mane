@@ -137,14 +137,20 @@ class ObjetoLivreCircuitoIntegrationTest {
         assertTrue(pintou, "o objeto recarregado deveria ser renderizado sem precisar de gerar() manual");
     }
 
+    /**
+     * ObjetoLivre é um objeto de desenho (mesma família de
+     * Arquibancada/Construcao/GuardRails/Pneus), não um objeto de função
+     * como Escapada/Transparencia — por isso fica em circuito.objetosCenario,
+     * de onde DesenhoProceduralCircuito realmente o desenha em corrida.
+     */
     @Test
-    void objetoLivre_estaRegistradoComoTipoCriavelNaoDeCenario() {
+    void objetoLivre_estaRegistradoComoTipoCriavelDeCenario() {
         boolean encontrado = false;
         for (br.f1mane.editor.TipoObjetoPista tipo : br.f1mane.editor.TipoObjetoPista.values()) {
             if (tipo.criar() instanceof ObjetoLivre) {
                 encontrado = true;
-                assertTrue(!tipo.isCenario(),
-                        "ObjetoLivre deve ficar em circuito.objetos (como Escapada/Transparencia), não em objetosCenario");
+                assertTrue(tipo.isCenario(),
+                        "ObjetoLivre deve ficar em circuito.objetosCenario (como Arquibancada/Construcao/GuardRails/Pneus)");
             }
         }
         assertTrue(encontrado, "ObjetoLivre deveria estar registrado em TipoObjetoPista para ser criável no editor");

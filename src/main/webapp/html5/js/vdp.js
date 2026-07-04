@@ -150,6 +150,13 @@ function vdp_processaAlturaLargura() {
 }
 
 function vdp_processaBackGround() {
+    // Antes da corrida começar o imgBg existe mas ainda não tem src (ver
+    // mid_carregaBackGroundCorrida) — sem este guard, um Image sem src conta
+    // como complete com 0x0 e cairia no fallback abaixo, pedindo a imagem ao
+    // servidor ainda na sala de espera.
+    if (!imgBgSolicitado) {
+        return;
+    }
     if (imgBg && imgBg.complete) {
         if (imgBg.width == 0 || imgBg.height == 0) {
             imgBg.src = "/flmane/rest/letsRace/circuitoBg/" +
@@ -467,10 +474,15 @@ function vdp_colisaoTracadoSuave(pilotoParam) {
 
 function vdp_centralizaPilotoSelecionado() {
     if (dadosParciais == null || dadosParciais.posisPack == null) {
-        if (circuito != null) {
+        // Sem piloto selecionado ainda: foca na largada (primeiro nó da
+        // pista), mesmo fallback do editor/jogo (ver
+        // GerenciadorVisual.centralizarPiloto) — circuito não tem mais
+        // creditosPonto.
+        if (circuito != null && circuito.pistaFull != null && circuito.pistaFull.length > 0) {
+            var largada = circuito.pistaFull[0];
             var pontoZoom = {
-                x: circuito.creditosPonto.x / zoom,
-                y: circuito.creditosPonto.y / zoom
+                x: largada.x / zoom,
+                y: largada.y / zoom
             };
             vdp_centralizaPonto(pontoZoom);
         }

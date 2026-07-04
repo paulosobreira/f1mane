@@ -7,13 +7,14 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class ObjetoLivre extends ObjetoPista {
+public class ObjetoLivre extends ObjetoDesenho {
 	/** Tamanho (em unidades de mundo, antes do zoom) da célula da grade do padrão de preenchimento. */
 	private static final int PASSO_PADRAO_LOCAL = Carro.ALTURA;
 	/** Semente fixa: a dispersão da brita é "aleatória" mas sempre a mesma entre renderizações. */
@@ -166,21 +167,20 @@ public class ObjetoLivre extends ObjetoPista {
 	 * {@link #desenhaPadraoVegetacao}).
 	 */
 	private void desenhaPadraoEmGrade(Graphics2D g2d, Shape formaFinal, double zoom) {
-		Shape clipAnterior = g2d.getClip();
-		g2d.clip(formaFinal);
-		Rectangle bounds = formaFinal.getBounds();
-		int passo = Math.max(4, (int) Math.round(PASSO_PADRAO_LOCAL * zoom));
-		g2d.setColor(new Color(getCorSecundaria().getRed(), getCorSecundaria().getGreen(),
-				getCorSecundaria().getBlue(), getTransparencia()));
-		int linha = 0;
-		for (int y = bounds.y; y < bounds.y + bounds.height; y += passo) {
-			int deslocamentoLinha = (linha % 2 == 0) ? 0 : passo / 2;
-			for (int x = bounds.x - passo; x < bounds.x + bounds.width + passo; x += passo) {
-				desenhaPrimitivaPadrao(g2d, x + deslocamentoLinha, y + passo / 2, Math.max(2, passo / 5));
+		desenhaComClipSemAntialiasing(g2d, formaFinal, () -> {
+			Rectangle bounds = formaFinal.getBounds();
+			int passo = Math.max(4, (int) Math.round(PASSO_PADRAO_LOCAL * zoom));
+			g2d.setColor(new Color(getCorSecundaria().getRed(), getCorSecundaria().getGreen(),
+					getCorSecundaria().getBlue(), getTransparencia()));
+			int linha = 0;
+			for (int y = bounds.y; y < bounds.y + bounds.height; y += passo) {
+				int deslocamentoLinha = (linha % 2 == 0) ? 0 : passo / 2;
+				for (int x = bounds.x - passo; x < bounds.x + bounds.width + passo; x += passo) {
+					desenhaPrimitivaPadrao(g2d, x + deslocamentoLinha, y + passo / 2, Math.max(2, passo / 5));
+				}
+				linha++;
 			}
-			linha++;
-		}
-		g2d.setClip(clipAnterior);
+		});
 	}
 
 	/**
@@ -192,31 +192,32 @@ public class ObjetoLivre extends ObjetoPista {
 	 * uniforme. Semente fixa: determinístico entre renderizações sucessivas.
 	 */
 	private void desenhaPadraoVegetacao(Graphics2D g2d, Shape formaFinal, double zoom) {
-		Shape clipAnterior = g2d.getClip();
-		g2d.clip(formaFinal);
-		Rectangle bounds = formaFinal.getBounds();
-		boolean densa = tipo == TipoObjetoLivre.VEGETACAO_DENSA;
-		double fatorPasso = densa ? FATOR_PASSO_VEGETACAO_DENSA : FATOR_PASSO_VEGETACAO_SIMPLES;
-		double variacaoTamanho = densa ? VARIACAO_TAMANHO_VEGETACAO_DENSA : VARIACAO_TAMANHO_VEGETACAO_SIMPLES;
-		int passo = Math.max(4, (int) Math.round(PASSO_PADRAO_LOCAL * fatorPasso * zoom));
-		g2d.setColor(new Color(getCorSecundaria().getRed(), getCorSecundaria().getGreen(),
-				getCorSecundaria().getBlue(), getTransparencia()));
-		Stroke strokeAnterior = g2d.getStroke();
-		Random random = new Random(SEMENTE_VEGETACAO);
-		for (int y = bounds.y - passo; y < bounds.y + bounds.height + passo; y += passo) {
-			for (int x = bounds.x - passo; x < bounds.x + bounds.width + passo; x += passo) {
-				int deslocX = random.nextInt(passo);
-				int deslocY = random.nextInt(passo);
-				double fatorTamanho = 1.0 - variacaoTamanho + random.nextDouble() * (2 * variacaoTamanho);
-				int raio = Math.max(2, (int) Math.round((passo / 5.0) * fatorTamanho));
-				// Touceiras da vegetação densa são mais "encorpadas": traço
-				// proporcionalmente mais grosso além de maior, não só mais longo.
-				g2d.setStroke(densa ? new BasicStroke(Math.max(1f, raio / 2f)) : strokeAnterior);
-				desenhaPrimitivaPadrao(g2d, x + deslocX, y + deslocY, raio);
+		desenhaComClipSemAntialiasing(g2d, formaFinal, () -> {
+			Rectangle bounds = formaFinal.getBounds();
+			boolean densa = tipo == TipoObjetoLivre.VEGETACAO_DENSA;
+			double fatorPasso = densa ? FATOR_PASSO_VEGETACAO_DENSA : FATOR_PASSO_VEGETACAO_SIMPLES;
+			double variacaoTamanho = densa ? VARIACAO_TAMANHO_VEGETACAO_DENSA : VARIACAO_TAMANHO_VEGETACAO_SIMPLES;
+			int passo = Math.max(4, (int) Math.round(PASSO_PADRAO_LOCAL * fatorPasso * zoom));
+			g2d.setColor(new Color(getCorSecundaria().getRed(), getCorSecundaria().getGreen(),
+					getCorSecundaria().getBlue(), getTransparencia()));
+			Random random = new Random(SEMENTE_VEGETACAO);
+			for (int y = bounds.y - passo; y < bounds.y + bounds.height + passo; y += passo) {
+				for (int x = bounds.x - passo; x < bounds.x + bounds.width + passo; x += passo) {
+					int deslocX = random.nextInt(passo);
+					int deslocY = random.nextInt(passo);
+					double fatorTamanho = 1.0 - variacaoTamanho + random.nextDouble() * (2 * variacaoTamanho);
+					int raio = Math.max(2, (int) Math.round((passo / 5.0) * fatorTamanho));
+					// Touceiras da vegetação densa são mais "encorpadas": traço
+					// proporcionalmente mais grosso além de maior, não só mais longo.
+					// A simples usa o traço-base (1px) que desenhaComClipSemAntialiasing
+					// já deixou ajustado — nunca o traço herdado de fora.
+					if (densa) {
+						g2d.setStroke(new BasicStroke(Math.max(1f, raio / 2f)));
+					}
+					desenhaPrimitivaPadrao(g2d, x + deslocX, y + deslocY, raio);
+				}
 			}
-		}
-		g2d.setStroke(strokeAnterior);
-		g2d.setClip(clipAnterior);
+		});
 	}
 
 	private void desenhaPrimitivaPadrao(Graphics2D g2d, int cx, int cy, int raio) {
@@ -244,23 +245,60 @@ public class ObjetoLivre extends ObjetoPista {
 	 * resultado é determinístico entre renderizações sucessivas.
 	 */
 	private void desenhaBrita(Graphics2D g2d, Shape formaFinal, double zoom) {
-		Shape clipAnterior = g2d.getClip();
-		g2d.clip(formaFinal);
-		Rectangle bounds = formaFinal.getBounds();
-		int passoBase = Math.max(4, (int) Math.round(PASSO_PADRAO_LOCAL * zoom));
-		int celula = Math.max(2, passoBase / 4);
-		int diametro = Math.max(1, celula / 4);
-		g2d.setColor(new Color(getCorSecundaria().getRed(), getCorSecundaria().getGreen(),
-				getCorSecundaria().getBlue(), getTransparencia()));
-		Random random = new Random(SEMENTE_BRITA);
-		for (int y = bounds.y - celula; y < bounds.y + bounds.height + celula; y += celula) {
-			for (int x = bounds.x - celula; x < bounds.x + bounds.width + celula; x += celula) {
-				int deslocX = random.nextInt(celula);
-				int deslocY = random.nextInt(celula);
-				g2d.fillOval(x + deslocX, y + deslocY, diametro, diametro);
+		desenhaComClipSemAntialiasing(g2d, formaFinal, () -> {
+			Rectangle bounds = formaFinal.getBounds();
+			int passoBase = Math.max(4, (int) Math.round(PASSO_PADRAO_LOCAL * zoom));
+			int celula = Math.max(2, passoBase / 4);
+			int diametro = Math.max(1, celula / 4);
+			g2d.setColor(new Color(getCorSecundaria().getRed(), getCorSecundaria().getGreen(),
+					getCorSecundaria().getBlue(), getTransparencia()));
+			Random random = new Random(SEMENTE_BRITA);
+			for (int y = bounds.y - celula; y < bounds.y + bounds.height + celula; y += celula) {
+				for (int x = bounds.x - celula; x < bounds.x + bounds.width + celula; x += celula) {
+					int deslocX = random.nextInt(celula);
+					int deslocY = random.nextInt(celula);
+					g2d.fillOval(x + deslocX, y + deslocY, diametro, diametro);
+				}
 			}
+		});
+	}
+
+	/**
+	 * Aplica o clip da forma e roda {@code desenho}, restaurando o clip
+	 * original ao final. Desliga a antialiasing só durante esse trecho
+	 * (restaurando o valor anterior depois): um {@code fill()} anterior na
+	 * mesma forma (o preenchimento de fundo, chamado por {@link #desenha})
+	 * seguido de {@code clip()}/desenho na MESMA forma com antialiasing
+	 * ligado faz o Java2D simplesmente não pintar mais nada dentro do clip —
+	 * peculiaridade que só aparece com formas grandes e com segmentos
+	 * autointerceptantes (comuns depois de várias edições de vértice no
+	 * editor), mas a antialiasing do preenchimento em si já rodou antes
+	 * disso, então a borda da forma continua suave.
+	 * <p>
+	 * Também fixa um traço-base (1px) antes de rodar {@code desenho},
+	 * restaurando o traço anterior ao final: os padrões de água e vegetação
+	 * simples desenham linhas/arcos finos sem nunca setar o próprio traço, e
+	 * por isso herdavam o que sobrava de outro desenho no mesmo Graphics2D
+	 * (ex.: o traço grosso do box da pista) — o que fazia o padrão aparecer
+	 * "errado" (traços grossos/borrados) só quando o objeto ficava num nível
+	 * de desenho posicionado depois desse outro desenho na mesma imagem,
+	 * dando a falsa impressão de que nivelDesenho influenciava o padrão.
+	 */
+	private void desenhaComClipSemAntialiasing(Graphics2D g2d, Shape forma, Runnable desenho) {
+		Shape clipAnterior = g2d.getClip();
+		Stroke strokeAnterior = g2d.getStroke();
+		Object antialiasingAnterior = g2d.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+		g2d.clip(forma);
+		g2d.setStroke(new BasicStroke(1f));
+		try {
+			desenho.run();
+		} finally {
+			g2d.setClip(clipAnterior);
+			g2d.setStroke(strokeAnterior);
+			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+					antialiasingAnterior != null ? antialiasingAnterior : RenderingHints.VALUE_ANTIALIAS_DEFAULT);
 		}
-		g2d.setClip(clipAnterior);
 	}
 
 	@Override

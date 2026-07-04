@@ -7,7 +7,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.RoundRectangle2D;
 
-public class ObjetoArquibancada extends ObjetoPista {
+public class ObjetoArquibancada extends ObjetoDesenho {
 
 	RoundRectangle2D externo = new RoundRectangle2D.Double();
 

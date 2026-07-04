@@ -266,7 +266,13 @@ public abstract class ControleRecursos {
                 final String name = (String) propName.nextElement();
                 String names[] = properties.getProperty(name).split(",");
                 try {
-                    if (!CarregadorRecursos.carregarCircuito(name).isAtivo()) {
+                    // Só a flag "ativo" é lida aqui (sem desserializar o
+                    // circuito): carregar os XMLs inteiros nesta listagem
+                    // (que roda na abertura do menu) deixava TODOS os
+                    // circuitos presos em memória desde o boot — o circuito
+                    // completo só é carregado quando a corrida (ou o preview
+                    // do menu) realmente o usa.
+                    if (!CarregadorRecursos.circuitoAtivo(name)) {
                         continue;
                     }
                 } catch (Exception e) {

@@ -72,7 +72,9 @@ import br.f1mane.entidades.Carro;
 import br.f1mane.entidades.Circuito;
 import br.f1mane.entidades.DesenhoProceduralCircuito;
 import br.f1mane.entidades.No;
+import br.f1mane.entidades.ObjetoDesenho;
 import br.f1mane.entidades.ObjetoEscapada;
+import br.f1mane.entidades.ObjetoGuardRails;
 import br.f1mane.entidades.ObjetoLivre;
 import br.f1mane.entidades.ObjetoPista;
 import br.f1mane.entidades.ObjetoTransparencia;
@@ -98,8 +100,10 @@ public class MainPanelEditor extends JPanel {
     private EditorCircuitos srcFrame;
     private boolean desenhaTracado = true;
     private boolean mostraBG = false;
+    /** Preview do editor: liga/desliga o desenho dos objetos de desenho (Livre, Arquibancada, Construcao,
+     * GuardRails, Pneus). Não afeta objetos de função (Escapada, Transparencia), sempre desenhados. */
+    private boolean desenhaObjetosDesenho = true;
     private boolean pontosEscape = false;
-    public final static Color oran = new Color(255, 188, 40, 180);
     public final static Color ver = new Color(255, 10, 10, 150);
 
     private BufferedImage backGround;
@@ -173,8 +177,19 @@ public class MainPanelEditor extends JPanel {
     private PontoCurva verticeArrastando;
     private boolean arrastandoHasteDoVertice;
     private boolean arrastouVertice;
-    private FormularioListaObjetos formularioListaObjetos;
-    private FormularioListaObjetos formularioListaObjetosCenario;
+    /**
+     * Pacote-privado (em vez de private) para permitir injeção direta em
+     * testes. formularioListaObjetosDesenho espelha circuito.objetosCenario
+     * (objetos de desenho: Livre, Arquibancada, Construcao, GuardRails,
+     * Pneus — todos com nível); formularioListaObjetosFuncao espelha
+     * circuito.objetos (objetos de função: Escapada, Transparencia — sem
+     * nível, tratamento próprio em corrida).
+     */
+    FormularioListaObjetos formularioListaObjetosDesenho;
+    FormularioListaObjetos formularioListaObjetosFuncao;
+    /** "Área de transferência" de cor (Copiar Cor/Colar Cor); null enquanto nada foi copiado ainda. */
+    private Color corCopiada1;
+    private Color corCopiada2;
     protected final DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
     JCheckBox noite = new JCheckBox();
     private final JLabel corFundoLabel = criaIndicadorDeCor();
@@ -308,7 +323,7 @@ public class MainPanelEditor extends JPanel {
 
     private JPanel gerarBotoesVisualizacao() {
         JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new GridLayout(1, 2));
+        buttonsPanel.setLayout(new GridLayout(1, 3));
 
         JCheckBox desenhaTracadoCheck = new JCheckBox("Traçado");
         desenhaTracadoCheck.setSelected(desenhaTracado);
@@ -328,8 +343,21 @@ public class MainPanelEditor extends JPanel {
             }
         });
 
+        // Liga/desliga só os objetos de desenho (Livre, Arquibancada, Construcao,
+        // GuardRails, Pneus); Escapada/Transparencia (objetos de função) continuam
+        // sempre desenhados, ver desenhaObjetosNivel().
+        JCheckBox desenhaObjetosCheck = new JCheckBox("Objetos");
+        desenhaObjetosCheck.setSelected(desenhaObjetosDesenho);
+        desenhaObjetosCheck.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                desenhaObjetosDesenho = desenhaObjetosCheck.isSelected();
+                MainPanelEditor.this.repaint();
+            }
+        });
+
         buttonsPanel.add(desenhaTracadoCheck);
         buttonsPanel.add(desenhaBackgroundCheck);
+        buttonsPanel.add(desenhaObjetosCheck);
         return buttonsPanel;
     }
 
@@ -379,7 +407,7 @@ public class MainPanelEditor extends JPanel {
     }
 
     private JPanel gerarBotaoCriarObjeto() {
-        JPanel buttonsPanel = new JPanel(new GridLayout(1, 1));
+        JPanel buttonsPanel = new JPanel(new GridLayout(3, 1));
         JButton criarObjeto = new JButton("Criar Objeto");
         criarObjeto.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -387,7 +415,80 @@ public class MainPanelEditor extends JPanel {
             }
         });
         buttonsPanel.add(criarObjeto);
+
+        JButton copiarCor = new JButton("Copiar Cor");
+        copiarCor.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                copiarCorObjetoSelecionado();
+            }
+        });
+        buttonsPanel.add(copiarCor);
+
+        JButton colarCor = new JButton("Colar Cor");
+        colarCor.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                colarCorObjetosSelecionados();
+            }
+        });
+        buttonsPanel.add(colarCor);
+
         return buttonsPanel;
+    }
+
+    /**
+     * Copia a cor primária e secundária do objeto selecionado (na lista de
+     * objetos ou na de cenário — a primeira das duas que tiver seleção) para
+     * uso posterior em {@link #colarCorObjetosSelecionados()}. Sem seleção em
+     * nenhuma das duas listas, não faz nada.
+     */
+    void copiarCorObjetoSelecionado() {
+        ObjetoPista origem = primeiroSelecionado(formularioListaObjetosFuncao);
+        if (origem == null) {
+            origem = primeiroSelecionado(formularioListaObjetosDesenho);
+        }
+        if (origem == null) {
+            return;
+        }
+        corCopiada1 = origem.getCorPimaria();
+        corCopiada2 = origem.getCorSecundaria();
+    }
+
+    /**
+     * Aplica a cor copiada por {@link #copiarCorObjetoSelecionado()} a todos
+     * os objetos atualmente selecionados, somando a seleção das duas listas
+     * (objetos e cenário) — suporta colar em vários objetos de uma vez. Sem
+     * nada copiado antes, ou sem nenhuma seleção, não faz nada.
+     */
+    void colarCorObjetosSelecionados() {
+        if (corCopiada1 == null && corCopiada2 == null) {
+            return;
+        }
+        List<ObjetoPista> selecionados = new ArrayList<ObjetoPista>();
+        selecionados.addAll(todosSelecionados(formularioListaObjetosFuncao));
+        selecionados.addAll(todosSelecionados(formularioListaObjetosDesenho));
+        if (selecionados.isEmpty()) {
+            return;
+        }
+        for (ObjetoPista objetoPista : selecionados) {
+            objetoPista.setCorPimaria(corCopiada1);
+            objetoPista.setCorSecundaria(corCopiada2);
+        }
+        repaint();
+    }
+
+    private static ObjetoPista primeiroSelecionado(FormularioListaObjetos formulario) {
+        if (formulario == null) {
+            return null;
+        }
+        return (ObjetoPista) formulario.getList().getSelectedValue();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static List<ObjetoPista> todosSelecionados(FormularioListaObjetos formulario) {
+        if (formulario == null) {
+            return java.util.Collections.emptyList();
+        }
+        return formulario.getList().getSelectedValuesList();
     }
 
     /**
@@ -416,7 +517,9 @@ public class MainPanelEditor extends JPanel {
             if (objetoPista instanceof ObjetoTransparencia) {
                 objetoPista.setTransparencia(125);
                 desenhandoObjetoLivre = true;
-            } else if (objetoPista instanceof ObjetoLivre) {
+            } else if (objetoPista instanceof ObjetoLivre || objetoPista instanceof ObjetoGuardRails) {
+                // GuardRails também é desenhado ponto a ponto (encadeamento de
+                // segmentos), como ObjetoLivre — reaproveita o mesmo modo.
                 desenhandoObjetoLivre = true;
             }
         } catch (Exception e2) {
@@ -446,11 +549,11 @@ public class MainPanelEditor extends JPanel {
         }
         objetoPista = null;
         objetoArrastando = null;
-        if (removidoDeCenario && formularioListaObjetosCenario != null) {
-            formularioListaObjetosCenario.listarObjetos();
+        if (removidoDeCenario && formularioListaObjetosDesenho != null) {
+            formularioListaObjetosDesenho.listarObjetos();
         }
-        if (removidoDeObjetos && formularioListaObjetos != null) {
-            formularioListaObjetos.listarObjetos();
+        if (removidoDeObjetos && formularioListaObjetosFuncao != null) {
+            formularioListaObjetosFuncao.listarObjetos();
         }
         repaint();
     }
@@ -488,17 +591,30 @@ public class MainPanelEditor extends JPanel {
         return painel;
     }
 
+    /**
+     * Duas listas: a de cima ("objetos de desenho" — Livre, Arquibancada,
+     * Construcao, GuardRails, Pneus, todos com nível de desenho) ocupa o
+     * espaço principal; a de baixo, menor, tem só os objetos de função
+     * (Escapada, Transparencia), que não têm nível — não fazem sentido
+     * "acima"/"abaixo" da pista, têm tratamento próprio em corrida.
+     */
     private JPanel gerarSecaoObjetos() {
         JPanel secao = new JPanel(new BorderLayout());
         secao.add(gerarBotaoCriarObjeto(), BorderLayout.NORTH);
-        formularioListaObjetos = new FormularioListaObjetos(this);
-        formularioListaObjetos.listarObjetos();
-        formularioListaObjetosCenario = new FormularioListaObjetos(this, Circuito::getObjetosCenario);
-        formularioListaObjetosCenario.listarObjetos();
-        JPanel listasObjetosPanel = new JPanel(new GridLayout(2, 1));
-        listasObjetosPanel.add(formularioListaObjetos.getObjetos());
-        listasObjetosPanel.add(formularioListaObjetosCenario.getObjetos());
-        secao.add(listasObjetosPanel, BorderLayout.CENTER);
+        formularioListaObjetosDesenho = new FormularioListaObjetos(this, Circuito::getObjetosCenario, true);
+        formularioListaObjetosDesenho.listarObjetos();
+        formularioListaObjetosFuncao = new FormularioListaObjetos(this, Circuito::getObjetos);
+        formularioListaObjetosFuncao.listarObjetos();
+        // Split vertical (não BorderLayout com altura fixa): a lista de cima
+        // tem lista+5 botões (Cima/Baixo/Primeiro/Ultimo/Remover) e a de
+        // baixo lista+3 (Cima/Baixo/Remover); uma altura em pixels fixa
+        // espremia as listas até sumir. 70/30 garante os 30% pedidos
+        // independente do conteúdo.
+        JSplitPane splitListas = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+                formularioListaObjetosDesenho.getObjetos(), formularioListaObjetosFuncao.getObjetos());
+        splitListas.setResizeWeight(0.7);
+        splitListas.setOneTouchExpandable(true);
+        secao.add(splitListas, BorderLayout.CENTER);
         return secao;
     }
 
@@ -1253,7 +1369,7 @@ public class MainPanelEditor extends JPanel {
                         if (circuito.getObjetos() == null)
                             circuito.setObjetos(new ArrayList<ObjetoPista>());
                         circuito.getObjetos().add(objetoTransparencia);
-                        formularioListaObjetos.listarObjetos();
+                        formularioListaObjetosFuncao.listarObjetos();
                         objetoTransparencia.setNome("Objeto " + circuito.getObjetos().size());
                         objetoTransparencia.gerar();
                         // posicaoQuina precisa ficar definida (mesmo que igual aos bounds
@@ -1272,13 +1388,35 @@ public class MainPanelEditor extends JPanel {
                     } else {
                         desenhandoObjetoLivre = false;
                         posicionaObjetoPista = false;
-                        if (circuito.getObjetos() == null)
-                            circuito.setObjetos(new ArrayList<ObjetoPista>());
-                        circuito.getObjetos().add(objetoLivre);
-                        formularioListaObjetos.listarObjetos();
-                        objetoLivre.setNome("Objeto " + circuito.getObjetos().size());
+                        // ObjetoLivre é objeto de cenário/desenho (ver TipoObjetoPista.LIVRE),
+                        // não de função como Transparencia — vai para objetosCenario.
+                        if (circuito.getObjetosCenario() == null)
+                            circuito.setObjetosCenario(new ArrayList<ObjetoPista>());
+                        circuito.getObjetosCenario().add(objetoLivre);
+                        formularioListaObjetosDesenho.listarObjetos();
+                        objetoLivre.setNome("Objeto " + circuito.getObjetosCenario().size());
                         objetoLivre.gerar();
                         objetoLivre.setPosicaoQuina(objetoLivre.obterArea().getLocation());
+                        objetoPista = null;
+                    }
+                    repaint();
+                    return;
+                } else if (desenhandoObjetoLivre && (objetoPista instanceof ObjetoGuardRails)) {
+                    ObjetoGuardRails guardRails = (ObjetoGuardRails) objetoPista;
+                    if (e.getButton() == MouseEvent.BUTTON1) {
+                        guardRails.getPontos().add(ultimoClicado);
+                    } else {
+                        desenhandoObjetoLivre = false;
+                        posicionaObjetoPista = false;
+                        // GuardRails é objeto de cenário/desenho (ver TipoObjetoPista.GUARD_RAILS),
+                        // não de função como Transparencia — vai para objetosCenario.
+                        if (circuito.getObjetosCenario() == null)
+                            circuito.setObjetosCenario(new ArrayList<ObjetoPista>());
+                        circuito.getObjetosCenario().add(guardRails);
+                        formularioListaObjetosDesenho.listarObjetos();
+                        guardRails.setNome("Objeto " + circuito.getObjetosCenario().size());
+                        guardRails.gerar();
+                        guardRails.setPosicaoQuina(guardRails.obterArea().getLocation());
                         objetoPista = null;
                     }
                     repaint();
@@ -1291,13 +1429,13 @@ public class MainPanelEditor extends JPanel {
                             circuito.setObjetosCenario(new ArrayList<ObjetoPista>());
                         }
                         listaAlvo = circuito.getObjetosCenario();
-                        formularioListaAlvo = formularioListaObjetosCenario;
+                        formularioListaAlvo = formularioListaObjetosDesenho;
                     } else {
                         if (circuito.getObjetos() == null) {
                             circuito.setObjetos(new ArrayList<ObjetoPista>());
                         }
                         listaAlvo = circuito.getObjetos();
-                        formularioListaAlvo = formularioListaObjetos;
+                        formularioListaAlvo = formularioListaObjetosFuncao;
                     }
                     Point quina = new Point(ultimoClicado);
                     quina.x -= objetoPista.getLargura() / 2;
@@ -1341,38 +1479,63 @@ public class MainPanelEditor extends JPanel {
     }
 
     private JPanel criaPainelAjusteRapido(final ObjetoPista alvo) {
-        JPanel panel = new JPanel(new GridLayout(alvo instanceof ObjetoLivre ? 4 : 3, 2));
-        JSpinner larguraSpinner = new JSpinner(new SpinnerNumberModel(alvo.getLargura(), 0, 10000, 1));
-        JSpinner alturaSpinner = new JSpinner(new SpinnerNumberModel(alvo.getAltura(), 0, 10000, 1));
-        JSpinner anguloSpinner = new JSpinner(
-                new SpinnerNumberModel((int) alvo.getAngulo(), -360, 360, 1));
-        panel.add(new JLabel("Largura"));
-        panel.add(larguraSpinner);
-        panel.add(new JLabel("Altura"));
-        panel.add(alturaSpinner);
-        panel.add(new JLabel("Angulo"));
-        panel.add(anguloSpinner);
-        larguraSpinner.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                alvo.setLargura(((Integer) larguraSpinner.getValue()).intValue());
-                reprocessaEscapadaSeNecessario(alvo);
-                repaint();
-            }
-        });
-        alturaSpinner.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                alvo.setAltura(((Integer) alturaSpinner.getValue()).intValue());
-                reprocessaEscapadaSeNecessario(alvo);
-                repaint();
-            }
-        });
-        anguloSpinner.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                alvo.setAngulo(((Integer) anguloSpinner.getValue()).doubleValue());
-                reprocessaEscapadaSeNecessario(alvo);
-                repaint();
-            }
-        });
+        // Largura/Altura não fazem sentido para ObjetoLivre: sua área vem
+        // dos vértices/pontos desenhados (ver ObjetoLivre.obterArea()), não
+        // desses campos, que ficam sem efeito no desenho. GuardRails também
+        // é desenhado por pontos (ver ObjetoGuardRails), mas largura ainda
+        // vale — é a espessura da barreira ao longo de todo o encadeamento;
+        // só altura e ângulo (por segmento, calculados a partir dos pontos)
+        // ficam sem efeito.
+        boolean ehObjetoLivre = alvo instanceof ObjetoLivre;
+        boolean ehGuardRails = alvo instanceof ObjetoGuardRails;
+        boolean mostraLargura = !ehObjetoLivre;
+        boolean mostraAltura = !ehObjetoLivre && !ehGuardRails;
+        boolean mostraAngulo = !ehObjetoLivre && !ehGuardRails;
+        int linhas = (mostraLargura ? 1 : 0) + (mostraAltura ? 1 : 0) + (mostraAngulo ? 1 : 0);
+        JPanel panel = new JPanel(new GridLayout(Math.max(1, linhas), 2));
+        // Objetos de desenho não aceitam largura/altura menor que 1 nem
+        // ângulo negativo (ver ObjetoDesenho); objetos de função (Escapada,
+        // Transparencia) continuam sem essa restrição.
+        boolean objetoDeDesenho = alvo instanceof ObjetoDesenho;
+        int larguraMinima = objetoDeDesenho ? 1 : 0;
+        int anguloMinimo = objetoDeDesenho ? 0 : -360;
+        if (mostraLargura) {
+            JSpinner larguraSpinner = new JSpinner(new SpinnerNumberModel(alvo.getLargura(), larguraMinima, 10000, 1));
+            panel.add(new JLabel("Largura"));
+            panel.add(larguraSpinner);
+            larguraSpinner.addChangeListener(new ChangeListener() {
+                public void stateChanged(ChangeEvent e) {
+                    alvo.setLargura(((Integer) larguraSpinner.getValue()).intValue());
+                    reprocessaEscapadaSeNecessario(alvo);
+                    repaint();
+                }
+            });
+        }
+        if (mostraAltura) {
+            JSpinner alturaSpinner = new JSpinner(new SpinnerNumberModel(alvo.getAltura(), larguraMinima, 10000, 1));
+            panel.add(new JLabel("Altura"));
+            panel.add(alturaSpinner);
+            alturaSpinner.addChangeListener(new ChangeListener() {
+                public void stateChanged(ChangeEvent e) {
+                    alvo.setAltura(((Integer) alturaSpinner.getValue()).intValue());
+                    reprocessaEscapadaSeNecessario(alvo);
+                    repaint();
+                }
+            });
+        }
+        if (mostraAngulo) {
+            JSpinner anguloSpinner = new JSpinner(
+                    new SpinnerNumberModel((int) alvo.getAngulo(), anguloMinimo, 360, 1));
+            panel.add(new JLabel("Angulo"));
+            panel.add(anguloSpinner);
+            anguloSpinner.addChangeListener(new ChangeListener() {
+                public void stateChanged(ChangeEvent e) {
+                    alvo.setAngulo(((Integer) anguloSpinner.getValue()).doubleValue());
+                    reprocessaEscapadaSeNecessario(alvo);
+                    repaint();
+                }
+            });
+        }
         if (alvo instanceof ObjetoLivre) {
             final ObjetoLivre objetoLivre = (ObjetoLivre) alvo;
             boolean editandoEsteObjeto = objetoLivre.equals(editandoPontosDe);
@@ -1699,6 +1862,7 @@ public class MainPanelEditor extends JPanel {
         desenhaBoxes(g2d);
         desenhaObjetosNivel(g2d, 0);
         desenhaPreObjetoLivre(g2d);
+        desenhaPreObjetoGuardRails(g2d);
         desenhaPreObjetoTransparencia(g2d);
         // Níveis positivos por cima, do menor para o maior (mais em cima).
         for (Integer nivel : niveis) {
@@ -1791,22 +1955,23 @@ public class MainPanelEditor extends JPanel {
     }
 
     private void desenhaListaObjetos(Graphics2D g2d) {
-        if (formularioListaObjetos != null) {
-            if (formularioListaObjetos.getList().getSelectedIndex() != -1) {
-                ObjetoPista objetoPista = (ObjetoPista) formularioListaObjetos.getDefaultListModelOP()
-                        .get(formularioListaObjetos.getList().getSelectedIndex());
-                g2d.setColor(PainelCircuito.lightWhiteRain);
-                Point loc = objetoPista.obterArea().getLocation();
-                loc = new Point((int) (loc.x * zoom), (int) (loc.y * zoom));
-                g2d.fillRect(loc.x, loc.y, 22, 12);
-                g2d.setColor(Color.BLACK);
-                g2d.drawString(objetoPista.getNome().split(" ")[1], loc.x, loc.y + 10);
-                if (objetoPista.getPosicaoQuina() != null) {
-                    g2d.setColor(Color.ORANGE);
-                    g2d.drawRect(objetoPista.getPosicaoQuina().x, objetoPista.getPosicaoQuina().y,
-                            objetoPista.getLargura(), objetoPista.getAltura());
-                }
-            }
+        ObjetoPista objetoPista = primeiroSelecionado(formularioListaObjetosDesenho);
+        if (objetoPista == null) {
+            objetoPista = primeiroSelecionado(formularioListaObjetosFuncao);
+        }
+        if (objetoPista == null) {
+            return;
+        }
+        g2d.setColor(PainelCircuito.lightWhiteRain);
+        Point loc = objetoPista.obterArea().getLocation();
+        loc = new Point((int) (loc.x * zoom), (int) (loc.y * zoom));
+        g2d.fillRect(loc.x, loc.y, 22, 12);
+        g2d.setColor(Color.BLACK);
+        g2d.drawString(objetoPista.getNome().split(" ")[1], loc.x, loc.y + 10);
+        if (objetoPista.getPosicaoQuina() != null) {
+            g2d.setColor(Color.ORANGE);
+            g2d.drawRect(objetoPista.getPosicaoQuina().x, objetoPista.getPosicaoQuina().y,
+                    objetoPista.getLargura(), objetoPista.getAltura());
         }
     }
 
@@ -1864,6 +2029,11 @@ public class MainPanelEditor extends JPanel {
         g2d.drawString("Pista 2 ", x, y);
     }
 
+    /**
+     * O checkbox "Objetos" só afeta objetos de desenho (Livre, Arquibancada,
+     * Construcao, GuardRails, Pneus); Escapada e Transparencia são objetos de
+     * função e continuam sempre desenhados, independente do checkbox.
+     */
     private void desenhaObjetosNivel(Graphics2D g2d, int nivel) {
         if (circuito == null) {
             return;
@@ -1871,6 +2041,10 @@ public class MainPanelEditor extends JPanel {
         for (ObjetoPista objetoPista : todosObjetos()) {
             if (objetoPista.getNivelDesenho() != nivel)
                 continue;
+            boolean objetoDeFuncao = objetoPista instanceof ObjetoEscapada || objetoPista instanceof ObjetoTransparencia;
+            if (!objetoDeFuncao && !desenhaObjetosDesenho) {
+                continue;
+            }
             objetoPista.desenha(g2d, zoom);
         }
     }
@@ -1918,8 +2092,35 @@ public class MainPanelEditor extends JPanel {
         g2d.setColor(corAnterior);
     }
 
+    private void desenhaPreObjetoGuardRails(Graphics2D g2d) {
+        if (objetoPista == null || !desenhandoObjetoLivre || !(objetoPista instanceof ObjetoGuardRails)) {
+            return;
+        }
+        ObjetoGuardRails guardRails = (ObjetoGuardRails) objetoPista;
+        Stroke strokeAnterior = g2d.getStroke();
+        Color corAnterior = g2d.getColor();
+        g2d.setColor(Color.MAGENTA);
+        g2d.setStroke(new BasicStroke(3f));
+        int raioPonto = 6;
+        Point ant = null;
+        for (Point p : guardRails.getPontos()) {
+            int px = Util.inteiro(p.x * zoom);
+            int py = Util.inteiro(p.y * zoom);
+            if (ant != null) {
+                g2d.drawLine(Util.inteiro(ant.x * zoom), Util.inteiro(ant.y * zoom), px, py);
+            }
+            g2d.fillOval(px - raioPonto, py - raioPonto, raioPonto * 2, raioPonto * 2);
+            ant = p;
+        }
+        g2d.setStroke(strokeAnterior);
+        g2d.setColor(corAnterior);
+    }
+
     private void desenhaBoxes(Graphics2D g2d) {
-        DesenhoProceduralCircuito.desenhaVagasBox(g2d, circuito, zoom);
+        // modoEditor=true: preview do editor mostra as bolinhas de lado do
+        // box; a imagem final da corrida (DesenhoProceduralCircuito.desenha)
+        // não deve mostrar, ver javadoc de desenhaVagasBox.
+        DesenhoProceduralCircuito.desenhaVagasBox(g2d, circuito, zoom, true);
     }
 
     private void desenhaGrid(Graphics2D g2d) {
@@ -2118,11 +2319,6 @@ public class MainPanelEditor extends JPanel {
     }
 
     private void desenhaPainelClassico(Graphics g2d) {
-        if (circuito != null && circuito.getCreditos() != null) {
-            g2d.setColor(oran);
-            g2d.fillOval((int) circuito.getCreditos().getX() - 2, (int) circuito.getCreditos().getY() - 2, 8, 8);
-        }
-
         if (!desenhaTracado) {
             return;
         }
@@ -2630,6 +2826,15 @@ public class MainPanelEditor extends JPanel {
             dst.setVertices(verticesCopiados);
             dst.gerar();
         }
+        if (origem instanceof ObjetoGuardRails) {
+            ObjetoGuardRails src = (ObjetoGuardRails) origem;
+            ObjetoGuardRails dst = (ObjetoGuardRails) objetoPistaNovo;
+            dst.setPontos(new ArrayList<Point>());
+            for (Point point : src.getPontos()) {
+                dst.getPontos().add(new Point(point.x, point.y));
+            }
+            dst.gerar();
+        }
         return objetoPistaNovo;
     }
 
@@ -2644,20 +2849,22 @@ public class MainPanelEditor extends JPanel {
     /**
      * Muda o nível de desenho do objeto selecionado — atalhos PageUp/PageDown.
      * Sem limite: negativo desenha cada vez mais abaixo da pista, positivo
-     * cada vez mais acima. Transparência fica fora do sistema de níveis (tem
-     * tratamento próprio em corrida).
+     * cada vez mais acima. Objetos de função (Transparência e Escapada) ficam
+     * fora do sistema de níveis — não são "desenhados" no sentido em que os
+     * demais são, têm tratamento próprio em corrida.
      */
     private void mudarNivelObjeto(int delta) {
-        if (objetoPista == null || objetoPista instanceof ObjetoTransparencia) {
+        if (objetoPista == null || objetoPista instanceof ObjetoTransparencia
+                || objetoPista instanceof ObjetoEscapada) {
             return;
         }
         objetoPista.setNivelDesenho(objetoPista.getNivelDesenho() + delta);
         // os rótulos das listas exibem o nível entre parênteses
-        if (formularioListaObjetos != null) {
-            formularioListaObjetos.getList().repaint();
+        if (formularioListaObjetosDesenho != null) {
+            formularioListaObjetosDesenho.getList().repaint();
         }
-        if (formularioListaObjetosCenario != null) {
-            formularioListaObjetosCenario.getList().repaint();
+        if (formularioListaObjetosFuncao != null) {
+            formularioListaObjetosFuncao.getList().repaint();
         }
         repaint();
     }
@@ -2668,11 +2875,11 @@ public class MainPanelEditor extends JPanel {
      * centralização do viewport (o objeto já está visível — foi clicado).
      */
     private void selecionarNasListas(ObjetoPista objeto) {
-        if (formularioListaObjetos != null) {
-            formularioListaObjetos.selecionarSemCentralizar(objeto);
+        if (formularioListaObjetosDesenho != null) {
+            formularioListaObjetosDesenho.selecionarSemCentralizar(objeto);
         }
-        if (formularioListaObjetosCenario != null) {
-            formularioListaObjetosCenario.selecionarSemCentralizar(objeto);
+        if (formularioListaObjetosFuncao != null) {
+            formularioListaObjetosFuncao.selecionarSemCentralizar(objeto);
         }
     }
 
@@ -2686,9 +2893,9 @@ public class MainPanelEditor extends JPanel {
                 listaAlvo.add(objetoPistaNovo);
                 objetoPistaNovo.setNome("Objeto " + listaAlvo.size());
                 if (origemCenario) {
-                    formularioListaObjetosCenario.listarObjetos();
+                    formularioListaObjetosDesenho.listarObjetos();
                 } else {
-                    formularioListaObjetos.listarObjetos();
+                    formularioListaObjetosFuncao.listarObjetos();
                 }
 
             } catch (Exception e) {

@@ -4,16 +4,19 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.f1mane.entidades.ObjetoGuardRails;
 import br.f1mane.entidades.ObjetoLivre;
 import br.f1mane.entidades.ObjetoPista;
+import br.f1mane.entidades.OrientacaoGuardRails;
 import br.f1mane.entidades.TipoObjetoLivre;
 
 /**
  * Lembra, por classe concreta de {@link ObjetoPista}, os últimos valores de
- * ângulo/largura/altura/cores (e o {@link TipoObjetoLivre} no caso de
- * {@link ObjetoLivre}) usados pelo usuário, para que criar um novo objeto do
- * mesmo tipo já comece com esses valores em vez dos padrões da classe. Só
- * dura a sessão do editor (não é persistida em disco).
+ * ângulo/largura/altura/cores (o {@link TipoObjetoLivre} no caso de
+ * {@link ObjetoLivre}, a {@link OrientacaoGuardRails} no caso de
+ * {@link ObjetoGuardRails}) usados pelo usuário, para que criar um novo
+ * objeto do mesmo tipo já comece com esses valores em vez dos padrões da
+ * classe. Só dura a sessão do editor (não é persistida em disco).
  */
 final class MemoriaPropriedadesObjeto {
 
@@ -42,6 +45,9 @@ final class MemoriaPropriedadesObjeto {
         if (objeto instanceof ObjetoLivre) {
             snapshot.tipoObjetoLivre = ((ObjetoLivre) objeto).getTipo();
         }
+        if (objeto instanceof ObjetoGuardRails) {
+            snapshot.orientacaoGuardRails = ((ObjetoGuardRails) objeto).getOrientacao();
+        }
         memoria.put(objeto.getClass(), snapshot);
     }
 
@@ -66,6 +72,9 @@ final class MemoriaPropriedadesObjeto {
         if (objeto instanceof ObjetoLivre && snapshot.tipoObjetoLivre != null) {
             ((ObjetoLivre) objeto).setTipo(snapshot.tipoObjetoLivre);
         }
+        if (objeto instanceof ObjetoGuardRails && snapshot.orientacaoGuardRails != null) {
+            ((ObjetoGuardRails) objeto).setOrientacao(snapshot.orientacaoGuardRails);
+        }
     }
 
     private static final class Snapshot {
@@ -75,5 +84,6 @@ final class MemoriaPropriedadesObjeto {
         Color corPimaria;
         Color corSecundaria;
         TipoObjetoLivre tipoObjetoLivre;
+        OrientacaoGuardRails orientacaoGuardRails;
     }
 }

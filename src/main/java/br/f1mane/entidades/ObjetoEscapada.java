@@ -65,4 +65,10 @@ public class ObjetoEscapada extends ObjetoPista {
 
 	public static void main(String[] args) {
 	}
+
+	/** Objeto de função (fica na listinha de baixo do editor): fora do sistema de níveis, sem sufixo "(nível)". */
+	@Override
+	public String toString() {
+		return getNome() + " " + getClass().getSimpleName();
+	}
 }

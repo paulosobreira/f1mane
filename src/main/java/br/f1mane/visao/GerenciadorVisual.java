@@ -66,6 +66,15 @@ public class GerenciadorVisual {
     private long ultMudaPos;
     private long qdtAbaixoFps;
     private VisualRandom random;
+    /**
+     * Listeners registrados no frame por iniciarInterfaceGraficaJogo,
+     * guardados para serem removidos no dispose(): eles capturam o
+     * painelCircuito, e sem removê-los o frame seguraria o painel (e a
+     * imagem de fundo gerada, que pode passar de 100MB) vivo depois que a
+     * corrida acabou.
+     */
+    private KeyListener keyListenerJogo;
+    private MouseWheelListener mouseWheelListenerJogo;
 
     public JComboBox getComboBoxTemporadas() {
         return comboBoxTemporadas;
@@ -124,6 +133,8 @@ public class GerenciadorVisual {
             frame.getParent().addKeyListener(keyListener);
         }
         frame.addMouseWheelListener(mw);
+        keyListenerJogo = keyListener;
+        mouseWheelListenerJogo = mw;
         iniciaThreadJogoSuave();
     }
 
@@ -191,6 +202,28 @@ public class GerenciadorVisual {
         thAtualizaPainelSuaveAlive = false;
         thAtualizaPilotosSuaveAlive = false;
         thAtualizaSomAlive = false;
+        // A corrida deixou de existir: solta a imagem de fundo gerada em
+        // memória (só corridas ativas devem mantê-la) e tira do frame os
+        // listeners que capturam o painelCircuito — sem isso o frame
+        // seguraria o painel (e a imagem) vivos até o fim do processo,
+        // acumulando uma imagem grande por corrida jogada na sessão.
+        JFrame frame = controleJogo.getMainFrame();
+        if (frame != null) {
+            if (keyListenerJogo != null) {
+                frame.removeKeyListener(keyListenerJogo);
+                if (frame.getParent() != null) {
+                    frame.getParent().removeKeyListener(keyListenerJogo);
+                }
+            }
+            if (mouseWheelListenerJogo != null) {
+                frame.removeMouseWheelListener(mouseWheelListenerJogo);
+            }
+        }
+        keyListenerJogo = null;
+        mouseWheelListenerJogo = null;
+        if (painelCircuito != null) {
+            painelCircuito.liberarBackGround();
+        }
     }
 
     private void addiconarListenerComandos() {
@@ -405,12 +438,9 @@ public class GerenciadorVisual {
         }
         Piloto pilotoSelecionado = controleJogo.getPilotoSelecionado();
         if (!painelCircuito.isDesenhouQualificacao()) {
+            // Início de cada corrida foca sempre na largada (primeiro nó da pista).
             No n = (No) controleJogo.getCircuito().getPistaFull().get(0);
-            Point pQualy = n.getPoint();
-            if (controleJogo.getCircuito().getCreditos() != null) {
-                pQualy = controleJogo.getCircuito().getCreditos();
-            }
-            painelCircuito.centralizarPonto(pQualy);
+            painelCircuito.centralizarPonto(n.getPoint());
         } else if (pilotoSelecionado == null) {
             List l = controleJogo.getCircuito().getPistaFull();
             No n = (No) l.get(0);

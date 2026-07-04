@@ -1664,24 +1664,6 @@
     <int>255</int>
    </object>
   </void>
-  <void property="creditos">
-   <object class="java.awt.Point" id="Point62">
-    <void class="java.awt.Point" method="getField">
-     <string>x</string>
-     <void method="set">
-      <object idref="Point62"/>
-      <int>767</int>
-     </void>
-    </void>
-    <void class="java.awt.Point" method="getField">
-     <string>y</string>
-     <void method="set">
-      <object idref="Point62"/>
-      <int>2381</int>
-     </void>
-    </void>
-   </object>
-  </void>
   <void property="escapeList">
    <void method="add">
     <object class="java.awt.Point" id="Point63">

@@ -18,6 +18,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import br.nnpe.Util;
+
 /**
  * Cobre a propriedade `tipo` de ObjetoLivre e os padrões de preenchimento
  * procedurais (vegetação densa, água, brita): tipo padrão, POLIGONO_SIMPLES
@@ -144,6 +146,50 @@ class ObjetoLivreTipoPadraoTest {
 
         assertTrue(imagemContemCor(imagem, fundo));
         assertTrue(imagemContemCor(imagem, padrao), "esperava o padrão de brita usando a cor secundária");
+    }
+
+    /**
+     * Regressão: um ObjetoLivre com muitos vértices editados manualmente pode
+     * ter segmentos que se autointerceptam (comum depois de várias edições de
+     * ponto/haste no editor). Usado como clip (g2d.clip(formaFinal)) com
+     * antialiasing ligado — exatamente como acontece na geração da imagem
+     * real de corrida, DesenhoProceduralCircuito.geraImagem() via
+     * Util.setarHints() — esse tipo de forma simplesmente não pintava nenhum
+     * ponto do padrão (permanecia só o preenchimento sólido), enquanto o
+     * preenchimento em si sempre funcionou. Reproduz com a geometria real de
+     * um objeto encontrado num circuito de produção (Albert Park) que caía
+     * exatamente nesse caso. Corrigido usando Area(formaFinal) como clip, que
+     * normaliza o caminho antes de aplicar.
+     */
+    @Test
+    void desenha_comFormaAutointerceptanteEAntialiasing_padraoAindaAparece() {
+        Color fundo = new Color(10, 20, 30, 255);
+        Color padrao = new Color(200, 210, 220, 255);
+        ObjetoLivre objetoLivre = new ObjetoLivre();
+        objetoLivre.setPontos(new ArrayList<>(Arrays.asList(
+                new Point(5050, 732), new Point(4995, 1633), new Point(6056, 1686),
+                new Point(6675, 1658), new Point(6788, 1660), new Point(6871, 1665),
+                new Point(7265, 650), new Point(7266, 16), new Point(5059, 21))));
+        objetoLivre.setTipo(TipoObjetoLivre.VEGETACAO_SIMPLES);
+        objetoLivre.setCorPimaria(fundo);
+        objetoLivre.setCorSecundaria(padrao);
+        objetoLivre.gerar();
+        objetoLivre.setPosicaoQuina(objetoLivre.obterArea().getLocation());
+
+        Rectangle area = objetoLivre.obterArea();
+        BufferedImage imagem = new BufferedImage(area.x + area.width + 10, area.y + area.height + 10,
+                BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = imagem.createGraphics();
+        Util.setarHints(g2d);
+        try {
+            objetoLivre.desenha(g2d, 1.0);
+        } finally {
+            g2d.dispose();
+        }
+
+        assertTrue(imagemContemCor(imagem, fundo));
+        assertTrue(imagemContemCor(imagem, padrao),
+                "o padrão de vegetação deveria aparecer mesmo numa forma autointerceptante, com antialiasing ligado");
     }
 
     /**
@@ -408,5 +454,75 @@ class ObjetoLivreTipoPadraoTest {
             maior = Math.max(maior, area);
         }
         return menor == 0 ? maior : (double) maior / menor;
+    }
+
+    /**
+     * nivelDesenho só deve influenciar a ORDEM em que os objetos são
+     * desenhados (ver DesenhoProceduralCircuito/MainPanelEditor, que só o
+     * usam para decidir quando chamar desenha()) — nunca o resultado de
+     * desenha() em si. Relato de que o padrão "sumia" com nível zero: o
+     * próprio desenha() nem lê nivelDesenho, então o resultado tem que ser
+     * idêntico pixel a pixel pra qualquer valor do campo.
+     */
+    @Test
+    void desenha_comQualquerNivelDesenho_produzOMesmoResultado() {
+        Color fundo = new Color(10, 20, 30, 255);
+        Color padrao = new Color(200, 210, 220, 255);
+        ObjetoLivre objetoLivre = criarObjetoLivre(TipoObjetoLivre.VEGETACAO_SIMPLES, fundo, padrao);
+
+        objetoLivre.setNivelDesenho(-9);
+        int pixelsNivelNegativo = contarPixelsComCor(renderiza(objetoLivre), padrao);
+
+        objetoLivre.setNivelDesenho(0);
+        int pixelsNivelZero = contarPixelsComCor(renderiza(objetoLivre), padrao);
+
+        objetoLivre.setNivelDesenho(5);
+        int pixelsNivelPositivo = contarPixelsComCor(renderiza(objetoLivre), padrao);
+
+        assertEquals(pixelsNivelNegativo, pixelsNivelZero,
+                "nivelDesenho não deveria afetar se/como o padrão é desenhado");
+        assertEquals(pixelsNivelZero, pixelsNivelPositivo,
+                "nivelDesenho não deveria afetar se/como o padrão é desenhado");
+    }
+
+    /**
+     * Água e vegetação simples desenham suas linhas/arcos sem nunca setar o
+     * próprio traço, então herdavam o que sobrasse de um desenho anterior no
+     * mesmo Graphics2D (ex.: o traço grosso de
+     * DesenhoProceduralCircuito.desenhaPistaBox, que fica valendo até o
+     * próximo setStroke) — o que fazia o padrão aparecer errado (traços
+     * grossos/borrados em vez de finos) só quando algo mais grosso era
+     * desenhado antes do objeto na mesma imagem. Como isso depende de quando
+     * o objeto é desenhado em relação a outras coisas, dava a falsa
+     * impressão de que era o próprio nivelDesenho (que só controla a ordem)
+     * quem decidia se o padrão aparecia certo.
+     */
+    @Test
+    void desenha_comTracoGrossoJaSetadoNoGraphics2D_naoAlteraOPadraoDeAguaOuVegetacaoSimples() {
+        Color fundo = new Color(10, 20, 30, 255);
+        Color padrao = new Color(200, 210, 220, 255);
+        for (TipoObjetoLivre tipo : new TipoObjetoLivre[] { TipoObjetoLivre.AGUA, TipoObjetoLivre.VEGETACAO_SIMPLES }) {
+            ObjetoLivre objetoLivre = criarObjetoLivre(tipo, fundo, padrao);
+
+            int pixelsComTracoFino = contarPixelsComCor(
+                    renderizaComTracoPrevio(objetoLivre, new java.awt.BasicStroke(1f)), padrao);
+            int pixelsComTracoGrosso = contarPixelsComCor(
+                    renderizaComTracoPrevio(objetoLivre, new java.awt.BasicStroke(40f)), padrao);
+
+            assertEquals(pixelsComTracoFino, pixelsComTracoGrosso,
+                    "o traço herdado de outro desenho no mesmo Graphics2D não deveria mudar o padrão de " + tipo);
+        }
+    }
+
+    private BufferedImage renderizaComTracoPrevio(ObjetoLivre objetoLivre, java.awt.Stroke tracoPrevio) {
+        BufferedImage imagem = new BufferedImage(400, 400, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = imagem.createGraphics();
+        try {
+            g2d.setStroke(tracoPrevio);
+            objetoLivre.desenha(g2d, 1.0);
+        } finally {
+            g2d.dispose();
+        }
+        return imagem;
     }
 }

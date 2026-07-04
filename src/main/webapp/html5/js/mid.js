@@ -15,6 +15,7 @@ var carroCimaFreiosD1, carroCimaFreiosD2, carroCimaFreiosD3, carroCimaFreiosD4, 
 var carroCimaFreiosE1, carroCimaFreiosE2, carroCimaFreiosE3, carroCimaFreiosE4, carroCimaFreiosE5;
 var carregouMidia = false;
 var contCarregouMidia = 0;
+var imgBgSolicitado = false;
 var carrosLadoImgMap;
 var carrosImgMap;
 var carrosImgSemAereofolioMap;
@@ -26,6 +27,20 @@ var mapaRastroFaisca = new Map();
 var mapaTravadaRodaFumaca = new Map();
 var eixoCarro = 30;
 var preCarrega = true;
+
+/**
+ * Dispara o carregamento do jpg do circuito (gerado sob demanda no
+ * servidor). Chamada a partir do qualify (estado 10) ou da corrida (ver
+ * cpu_main), pra não custar geração de imagem no servidor enquanto o jogo
+ * ainda está na sala de espera (estado 07).
+ */
+function mid_carregaBackGroundCorrida() {
+	if (imgBgSolicitado || imgBg == null || circuito == null) {
+		return;
+	}
+	imgBgSolicitado = true;
+	imgBg.src = "/flmane/rest/letsRace/circuitoJpg/" + circuito.backGround;
+}
 
 function mid_atualizaJogadores() {
 	for (var i = 0; i < dadosJogo.pilotos.length; i++) {
@@ -127,8 +142,11 @@ function mid_caregaMidia() {
 	}
 	
 	
+	// imgBg fica sem src aqui de propósito: o jpg do circuito só é pedido
+	// (e gerado no servidor) a partir do qualify/corrida, não ao entrar na
+	// sala de espera (estado 07) — ver mid_carregaBackGroundCorrida(),
+	// chamada pelo cpu_main quando o estado é qualify (10) ou corrida.
 	imgBg = new Image();
-	imgBg.src = "/flmane/rest/letsRace/circuitoJpg/" + circuito.backGround
 
 	pow = new Image();
 	pow.src = "/flmane/rest/letsRace/png/pow"

@@ -13,13 +13,18 @@ import br.f1mane.entidades.ObjetoTransparencia;
 
 public enum TipoObjetoPista {
 
-	TRANSPARENCIA("Objeto Transparencia", ObjetoTransparencia::new, false),
-	LIVRE("Objeto Livre", ObjetoLivre::new, false),
-	ESCAPADA("Objeto Escapada", ObjetoEscapada::new, false),
+	// Objeto Livre é "cenário" (mesma família de Arquibancada/Construcao/GuardRails/Pneus):
+	// é um objeto de desenho, não de função como Escapada/Transparencia, e precisa estar em
+	// objetosCenario para ser desenhado de fato em corrida (ver DesenhoProceduralCircuito).
+	LIVRE("Objeto Livre", ObjetoLivre::new, true),
 	ARQUIBANCADA("Objeto Arquibancada", ObjetoArquibancada::new, true),
 	CONSTRUCAO("Objeto Construcao", ObjetoConstrucao::new, true),
 	GUARD_RAILS("Objeto Guard Rails", ObjetoGuardRails::new, true),
-	PNEUS("Objeto Pneus", ObjetoPneus::new, true);
+	PNEUS("Objeto Pneus", ObjetoPneus::new, true),
+	// Objetos de função (Escapada/Transparencia) ficam por último na ordem de
+	// criação: são usados bem menos que os de cenário/desenho.
+	ESCAPADA("Objeto Escapada", ObjetoEscapada::new, false),
+	TRANSPARENCIA("Objeto Transparencia", ObjetoTransparencia::new, false);
 
 	private final String descricao;
 	private final Supplier<ObjetoPista> fabrica;
