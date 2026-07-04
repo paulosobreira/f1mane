@@ -317,7 +317,7 @@ public class ControleCorrida {
     public void danificaAreofolio(Piloto piloto) {
         piloto.getCarro().setDurabilidadeAereofolio(piloto.getCarro().getDurabilidadeAereofolio() - 1);
         if (piloto.testeHabilidadePiloto() && controleJogo.getRandom().nextDouble() < fatorAcidente) {
-            piloto.incStress(15);
+            piloto.sinalizaDanoAereofolio();
             piloto.setModoPilotagem(Piloto.LENTO);
         }
     }

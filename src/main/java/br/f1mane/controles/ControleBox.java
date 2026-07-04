@@ -254,7 +254,7 @@ public class ControleBox {
             }
 
             if (piloto.getPtosBox() < boxList.size()) {
-                piloto.decStress(2);
+                piloto.processaStressFilaBox();
                 piloto.setNoAtual((No) boxList.get(piloto.getPtosBox()));
             } else {
                 processarPilotoSairBox(piloto);

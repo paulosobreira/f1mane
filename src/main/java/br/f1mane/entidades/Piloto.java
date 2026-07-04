@@ -77,6 +77,29 @@ public class Piloto implements Serializable, PilotoSuave {
     private No noAtual = new No();
     @JsonIgnore
     private int stress;
+    /**
+     * Magnitude de incremento de estresse por freada mal-sucedida sob
+     * pressão, sinalizada por processaFreioNaReta() (que consome e reseta
+     * retardaFreiandoReta no mesmo instante) e consumida por processaStress().
+     * null quando não há incremento pendente neste tick.
+     */
+    @JsonIgnore
+    private Integer freioNaRetaMalSucedidoNesteTick;
+    /**
+     * Sinaliza que decrementaPilotoDesconcentrado() encontrou o piloto
+     * desconcentrado em modo agressivo com estresse baixo neste tick — a
+     * própria chamada já decrementa ciclosDesconcentrado, então o valor não
+     * pode ser rederivado depois por processaStress(); precisa desse flag.
+     */
+    @JsonIgnore
+    private boolean desconcentradoAgressivoNesteTick;
+    /**
+     * Sinalizado por ControleCorrida.danificaAreofolio() quando o piloto
+     * sofre um acidente com perda de aerofólio neste tick; consumido por
+     * processaStress(), que aplica o incremento de estresse correspondente.
+     */
+    @JsonIgnore
+    private boolean sofreuDanoAereofolioNesteTick;
     @JsonIgnore
     private String modoPilotagem = NORMAL;
     @JsonIgnore
@@ -1122,7 +1145,6 @@ public class Piloto implements Serializable, PilotoSuave {
         }
         processaGanho();
         calculaCarrosAdjacentes();
-        processaStress();
         processaIAnovoIndex();
         processaIaIrBox();
         processaUsoERS();
@@ -1148,6 +1170,7 @@ public class Piloto implements Serializable, PilotoSuave {
         decrementaPilotoDesconcentrado();
         processaSegundosParaRival();
         controleJogo.verificaAcidente(this);
+        processaStress();
         long roundGanho = Math.round(ganho);
         long avancoLimitado = limitaAvancoCarroFrente(roundGanho);
         if (avancoLimitado < roundGanho) {
@@ -1195,13 +1218,11 @@ public class Piloto implements Serializable, PilotoSuave {
             if (ganho > 15) {
                 ganho = 15;
             }
-            incStress(testeHabilidadePiloto() ? 0 : 4);
         }
         if (getNoAtual().verificaCurvaAlta()) {
             if (ganho > 20) {
                 ganho = 20;
             }
-            incStress(testeHabilidadePiloto() ? 0 : 2);
         }
     }
 
@@ -1384,10 +1405,6 @@ public class Piloto implements Serializable, PilotoSuave {
         if (getColisao() == null) {
             ciclosPresoFila = 0;
             return;
-        }
-        incStress(1);
-        if (evitaBaterCarroFrente) {
-            incStress(1);
         }
         Piloto pilotoFrente = getColisao();
         pilotoFrente.setCiclosDesconcentrado(0);
@@ -1789,8 +1806,7 @@ public class Piloto implements Serializable, PilotoSuave {
 
         if (getNoAtual().verificaCurvaBaixa() && retardaFreiandoReta) {
             if (getPosicao() <= 3 && controleJogo.getRandom().nextDouble() > 0.9 && !testeHabilidadePilotoFreios()) {
-                int incStress = 10 - (getCarro().getPorcentagemDesgastePneus() / 100);
-                incStress(incStress);
+                freioNaRetaMalSucedidoNesteTick = 10 - (getCarro().getPorcentagemDesgastePneus() / 100);
                 if (controleJogo.verificaInfoRelevante(this) && controleJogo.getRandom().nextDouble() > 0.7) {
                     controleJogo
                             .info(Lang.msg("014", new String[] { nomeJogadorFormatado(), Html.negrito(getNome()) }));
@@ -1875,6 +1891,7 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     private void processaStress() {
+        processaStressDesgastePneus();
         int fatorStresse = controleJogo.getRandom().intervalo(1, 5);
         if (getNoAtual().verificaCurvaAlta() || getNoAtual().verificaCurvaBaixa()) {
             fatorStresse /= 2;
@@ -1884,6 +1901,107 @@ public class Piloto implements Serializable, PilotoSuave {
         } else if (LENTO.equals(getModoPilotagem())) {
             decStress(fatorStresse * (testeHabilidadePiloto() ? 2 : 1));
         }
+        processaStressPneusIncompativeis();
+        processaStressFreioNaRetaMalSucedido();
+        processaStressColisao();
+        processaStressDesconcentradoAgressivo();
+        processaStressDanoAereofolio();
+    }
+
+    /**
+     * Espelha as condições de estresse que antes viviam em
+     * Carro.calculaDesgastePneus(No) — o desgaste de pneu em si continua lá,
+     * só o incremento/decremento de estresse foi movido pra cá.
+     */
+    private void processaStressDesgastePneus() {
+        if (isRecebeuBanderada() || controleJogo.isSafetyCarNaPista()) {
+            return;
+        }
+        No no = getNoAtual();
+        int incStress = 10 - (getCarro().getPorcentagemDesgastePneus() / 100);
+        int decStress = getCarro().getPorcentagemDesgastePneus() / 100;
+        if (no.verificaCurvaBaixa()) {
+            incStress(testeHabilidadePilotoAerodinamicaFreios() ? incStress / 2 : incStress);
+            if (!controleJogo.isChovendo() && getPtosBox() == 0 && getStress() > 80) {
+                decStress(testeHabilidadePiloto() ? decStress : decStress / 2);
+            }
+        } else if (no.verificaCurvaAlta()) {
+            if (!controleJogo.isChovendo() && getPtosBox() == 0 && getStress() > 70) {
+                decStress(testeHabilidadePiloto() ? decStress : decStress / 2);
+            }
+        } else if (no.verificaRetaOuLargada()) {
+            int indexFrete = no.getIndex() + 50;
+            if (indexFrete < (controleJogo.getNosDaPista().size() - 1)
+                    && getStress() > 60 && !controleJogo.isChovendo() && getPtosBox() == 0) {
+                incStress(testeHabilidadePiloto() ? incStress / 2 : incStress);
+            }
+        }
+    }
+
+    private void processaStressPneusIncompativeis() {
+        if (!carro.verificaPneusIncompativeisClima() || isRecebeuBanderada()) {
+            return;
+        }
+        if (getNoAtual().verificaCurvaBaixa()) {
+            incStress(testeHabilidadePiloto() ? 0 : 4);
+        }
+        if (getNoAtual().verificaCurvaAlta()) {
+            incStress(testeHabilidadePiloto() ? 0 : 2);
+        }
+    }
+
+    private void processaStressFreioNaRetaMalSucedido() {
+        if (freioNaRetaMalSucedidoNesteTick == null) {
+            return;
+        }
+        incStress(freioNaRetaMalSucedidoNesteTick);
+        freioNaRetaMalSucedidoNesteTick = null;
+    }
+
+    private void processaStressColisao() {
+        if (getColisao() == null) {
+            return;
+        }
+        incStress(1);
+        if (evitaBaterCarroFrente) {
+            incStress(1);
+        }
+    }
+
+    private void processaStressDesconcentradoAgressivo() {
+        if (!desconcentradoAgressivoNesteTick) {
+            return;
+        }
+        incStress(1);
+        desconcentradoAgressivoNesteTick = false;
+    }
+
+    /**
+     * Chamado diretamente por ControleBox.processarPilotoBox() enquanto o
+     * piloto avança na fila do box — não faz parte de processaStress()
+     * porque processarCiclo() (que chama processaStress()) só roda quando
+     * getPtosBox() == 0, exatamente o oposto da janela em que este gatilho
+     * se aplica.
+     */
+    public void processaStressFilaBox() {
+        decStress(2);
+    }
+
+    /**
+     * Chamado por ControleCorrida.danificaAreofolio() ao decidir que houve
+     * dano de aerofólio por acidente — a decisão de acidente em si continua
+     * lá; aqui só sinalizamos o flag consumido logo abaixo.
+     */
+    public void sinalizaDanoAereofolio() {
+        sofreuDanoAereofolioNesteTick = true;
+    }
+
+    private void processaStressDanoAereofolio() {
+        if (!sofreuDanoAereofolioNesteTick) {
+            return;
+        }
+        incStress(15);
+        sofreuDanoAereofolioNesteTick = false;
     }
 
     private void processaIAnovoIndex() {
@@ -2767,7 +2885,7 @@ public class Piloto implements Serializable, PilotoSuave {
         double val = (controleJogo.tempoCicloCircuito() / 80);
         int dec = (int) val;
         if (AGRESSIVO.equals(modoPilotagem) && getStress() < 70) {
-            incStress(1);
+            desconcentradoAgressivoNesteTick = true;
             dec++;
         }
         ciclosDesconcentrado -= dec;
@@ -2947,16 +3065,36 @@ public class Piloto implements Serializable, PilotoSuave {
         return stress;
     }
 
+    /**
+     * Escala de recuperação por modo de pilotagem: NORMAL recupera 25% a
+     * mais, LENTO recupera 50% a mais (mais que o normal); AGRESSIVO não
+     * muda (mantém a ausência de decaimento passivo que já tinha).
+     */
     public void decStress(int val) {
+        if (NORMAL.equals(getModoPilotagem())) {
+            val = Math.round(val * 1.25f);
+        } else if (LENTO.equals(getModoPilotagem())) {
+            val = Math.round(val * 1.5f);
+        }
         if (stress > 0 && (stress - val) > 0
-                && (controleJogo.getRandom().nextDouble() > ((700.0 - getPosicao() * 20) / 1000.0))) {
+                && (controleJogo.getRandom().nextDouble() > ((700.0 - getPosicao() * 10) / 1000.0))) {
             stress -= val;
         }
     }
 
+    /**
+     * Escala de geração por modo de pilotagem: AGRESSIVO gera 50% a menos —
+     * o máximo possível sem zerar o menor incremento existente (val=1, usado
+     * em colisão/desconcentração: Math.round(1 * 0.5) = 1, mas qualquer fator
+     * menor que 0.5 arredondaria pra 0 e a regra deixaria de gerar estresse);
+     * NORMAL também gera metade.
+     */
     public void incStress(int val) {
         if (isRecebeuBanderada()) {
             return;
+        }
+        if (AGRESSIVO.equals(getModoPilotagem()) || NORMAL.equals(getModoPilotagem())) {
+            val = Math.round(val * 0.5f);
         }
         if (val < 1) {
             return;
@@ -2971,7 +3109,7 @@ public class Piloto implements Serializable, PilotoSuave {
             val = 3;
         }
         if (stress < 100 && (stress + val) < 100) {
-            if ((controleJogo.getRandom().nextDouble() < ((900 - getPosicao() * 35) / 1000.0)))
+            if ((controleJogo.getRandom().nextDouble() < ((900 - getPosicao() * 17.5) / 1000.0)))
                 stress += val;
         }
         if (stress >= 99 && AGRESSIVO.equals(getModoPilotagem())) {
