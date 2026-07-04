@@ -63,8 +63,14 @@ function cpu_main() {
 		// MOSTRANDO_QUALIFY 10
 		// ESPERANDO_JOGO_COMECAR 07
 		if ('07' == dadosJogo.estado || '10' == dadosJogo.estado) {
+			if ('10' == dadosJogo.estado) {
+				// A partir do qualify já pede o jpg do circuito ao servidor
+				// (que o gera sob demanda) — só a sala de espera fica sem.
+				mid_carregaBackGroundCorrida();
+			}
 			rest_dadosJogo(nomeJogo);
 		} else {
+			mid_carregaBackGroundCorrida();
 			rest_dadosParciais();
 		}
 		cpu_altenador();

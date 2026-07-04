@@ -17,9 +17,13 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import br.nnpe.Logger;
+import br.f1mane.entidades.ObjetoDesenho;
+import br.f1mane.entidades.ObjetoEscapada;
+import br.f1mane.entidades.ObjetoGuardRails;
 import br.f1mane.entidades.ObjetoLivre;
 import br.f1mane.entidades.ObjetoPista;
 import br.f1mane.entidades.ObjetoTransparencia;
+import br.f1mane.entidades.OrientacaoGuardRails;
 import br.f1mane.entidades.TipoObjetoLivre;
 
 public class FormularioObjetos {
@@ -35,6 +39,8 @@ public class FormularioObjetos {
 	private final JCheckBox transparenciaBox = new JCheckBox();
 	private final JComboBox<TipoObjetoLivre> tipoObjetoLivreCombo = new JComboBox<TipoObjetoLivre>(
 			TipoObjetoLivre.values());
+	private final JComboBox<OrientacaoGuardRails> orientacaoGuardRailsCombo = new JComboBox<OrientacaoGuardRails>(
+			OrientacaoGuardRails.values());
 	private JLabel labelCor1 = new JLabel("Clique");
 	private JLabel labelCor2 = new JLabel("Clique");
 	private final JLabel labelLegendaCor1 = new JLabel("Cor de Fundo");
@@ -85,12 +91,27 @@ public class FormularioObjetos {
 	/**
 	 * Reconstrói o painel só com os campos relevantes para o tipo de
 	 * {@code objetoPista}: ObjetoTransparencia usa apenas as propriedades de
-	 * transparência (mais tamanho/ângulo); ObjetoLivre usa tamanho/ângulo,
-	 * as duas cores e o seletor de padrão; os demais tipos usam
-	 * tamanho/ângulo e as duas cores, sem padrão nem transparência.
+	 * transparência (mais tamanho/ângulo); ObjetoLivre usa tamanho/ângulo, as
+	 * duas cores, o seletor de padrão e o nível; ObjetoEscapada usa
+	 * tamanho/ângulo e as duas cores, sem nível (objeto de função, fora do
+	 * sistema de níveis, como Transparência); os demais tipos (objetos de
+	 * desenho, como Arquibancada/Construcao/GuardRails/Pneus) usam
+	 * tamanho/ângulo, as duas cores e o nível.
 	 */
 	private void montarPainelParaTipo(ObjetoPista objetoPista) {
 		panel.removeAll();
+		// Objetos de desenho não aceitam largura/altura menor que 1 nem ângulo
+		// negativo (ver ObjetoDesenho); objetos de função (Escapada,
+		// Transparencia) continuam sem essa restrição no spinner.
+		boolean objetoDeDesenho = objetoPista instanceof ObjetoDesenho;
+		int larguraMinima = objetoDeDesenho ? 1 : 0;
+		int anguloMinimo = objetoDeDesenho ? 0 : -360;
+		largura.setModel(new SpinnerNumberModel(Math.max(larguraMinima, objetoPista.getLargura()),
+				larguraMinima, 10000, 1));
+		altura.setModel(new SpinnerNumberModel(Math.max(larguraMinima, objetoPista.getAltura()),
+				larguraMinima, 10000, 1));
+		angulo.setModel(new SpinnerNumberModel(Math.max(anguloMinimo, (int) objetoPista.getAngulo()),
+				anguloMinimo, 360, 1));
 		if (objetoPista instanceof ObjetoTransparencia) {
 			panel.setLayout(new GridLayout(6, 2));
 			panel.add(new JLabel("No Início Transparência"));
@@ -106,7 +127,39 @@ public class FormularioObjetos {
 			panel.add(new JLabel("Ângulo"));
 			panel.add(angulo);
 		} else if (objetoPista instanceof ObjetoLivre) {
-			panel.setLayout(new GridLayout(7, 2));
+			// Largura/Altura não fazem sentido para ObjetoLivre: sua área vem
+			// dos vértices/pontos desenhados (ver ObjetoLivre.obterArea()),
+			// não desses campos, que ficam sem efeito no desenho.
+			panel.setLayout(new GridLayout(5, 2));
+			panel.add(new JLabel("Ângulo"));
+			panel.add(angulo);
+			panel.add(labelLegendaCor1);
+			panel.add(labelCor1);
+			panel.add(labelLegendaCor2);
+			panel.add(labelCor2);
+			panel.add(new JLabel("Padrão"));
+			panel.add(tipoObjetoLivreCombo);
+			panel.add(new JLabel("Nível"));
+			panel.add(nivelDesenho);
+		} else if (objetoPista instanceof ObjetoGuardRails) {
+			// GuardRails é desenhado ponto a ponto no editor (clique a clique,
+			// botão direito finaliza), como ObjetoLivre: Altura e Ângulo não
+			// fazem sentido (cada segmento do encadeamento calcula o próprio
+			// ângulo a partir dos pontos), mas Largura continua valendo — é a
+			// espessura da barreira ao longo de todo o encadeamento.
+			panel.setLayout(new GridLayout(5, 2));
+			panel.add(new JLabel("Largura"));
+			panel.add(largura);
+			panel.add(labelLegendaCor1);
+			panel.add(labelCor1);
+			panel.add(labelLegendaCor2);
+			panel.add(labelCor2);
+			panel.add(new JLabel("Orientação"));
+			panel.add(orientacaoGuardRailsCombo);
+			panel.add(new JLabel("Nível"));
+			panel.add(nivelDesenho);
+		} else if (objetoPista instanceof ObjetoEscapada) {
+			panel.setLayout(new GridLayout(5, 2));
 			panel.add(new JLabel("Ângulo"));
 			panel.add(angulo);
 			panel.add(new JLabel("Largura"));
@@ -117,10 +170,6 @@ public class FormularioObjetos {
 			panel.add(labelCor1);
 			panel.add(labelLegendaCor2);
 			panel.add(labelCor2);
-			panel.add(new JLabel("Padrão"));
-			panel.add(tipoObjetoLivreCombo);
-			panel.add(new JLabel("Nível"));
-			panel.add(nivelDesenho);
 		} else {
 			panel.setLayout(new GridLayout(6, 2));
 			panel.add(new JLabel("Ângulo"));
@@ -250,6 +299,9 @@ public class FormularioObjetos {
 			if (objetoPista instanceof ObjetoLivre) {
 				tipoObjetoLivreCombo.setSelectedItem(((ObjetoLivre) objetoPista).getTipo());
 			}
+			if (objetoPista instanceof ObjetoGuardRails) {
+				orientacaoGuardRailsCombo.setSelectedItem(((ObjetoGuardRails) objetoPista).getOrientacao());
+			}
 		}
 	}
 
@@ -264,9 +316,15 @@ public class FormularioObjetos {
 		} else {
 			objetoPista.setCorPimaria(labelCor1.getBackground());
 			objetoPista.setCorSecundaria(labelCor2.getBackground());
-			objetoPista.setNivelDesenho(((Integer) nivelDesenho.getValue()).intValue());
+			if (!(objetoPista instanceof ObjetoEscapada)) {
+				objetoPista.setNivelDesenho(((Integer) nivelDesenho.getValue()).intValue());
+			}
 			if (objetoPista instanceof ObjetoLivre) {
 				((ObjetoLivre) objetoPista).setTipo((TipoObjetoLivre) tipoObjetoLivreCombo.getSelectedItem());
+			}
+			if (objetoPista instanceof ObjetoGuardRails) {
+				((ObjetoGuardRails) objetoPista)
+						.setOrientacao((OrientacaoGuardRails) orientacaoGuardRailsCombo.getSelectedItem());
 			}
 		}
 		// Guarda os valores atuais como "última configuração" desta classe,

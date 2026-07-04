@@ -17,7 +17,10 @@ import br.f1mane.entidades.Circuito;
  * O nome do jpg de referência do circuito deixou de ser uma propriedade
  * gravada no XML: agora é derivado pelo mesmo nome-base do arquivo XML do
  * circuito ("albert_park_mro.xml" -> "albert_park_mro.jpg"), atribuído em
- * {@link CarregadorRecursos#carregarCircuito} só quando esse jpg existir.
+ * {@link CarregadorRecursos#carregarCircuito} — sempre, quando a geração
+ * procedural da imagem está ativa (o nome é só a chave usada pelo cliente
+ * web, já que os jpg ficam fora do jar final), ou só quando o jpg existir,
+ * no caminho legado sem a geração procedural.
  * {@code Circuito.definirBackGroundPorConvencao} de propósito não segue o
  * padrão JavaBeans "set..." — sem um setter pareado, XMLEncoder não volta a
  * gravar essa propriedade no XML.

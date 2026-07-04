@@ -265,6 +265,12 @@
                                 <filter>
                                     <artifact>*:*</artifact>
                                     <excludes>
+                                        <!-- Imagens de referência dos circuitos: usadas SÓ pelo editor
+                                             (que roda do repositório, via target/classes) como fundo de
+                                             comparação ao traçar a pista. O jogo gera a imagem
+                                             proceduralmente (Global.GERAR_IMAGEM_CIRCUITO_EM_MEMORIA),
+                                             então ~140MB de jpg não precisam ir no jar final. -->
+                                        <exclude>circuitos/*_mro.jpg</exclude>
                                         <exclude>META-INF/*.SF</exclude>
                                         <exclude>META-INF/*.DSA</exclude>
                                         <exclude>META-INF/*.RSA</exclude>

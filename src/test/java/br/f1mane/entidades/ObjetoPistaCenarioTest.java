@@ -13,17 +13,18 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 /**
- * Cobre os quatro tipos de objeto de cenário de pista (Arquibancada,
- * Construcao, GuardRails, Pneus): devem ter defaults seguros (sem
- * NullPointerException) tanto ao consultar a área antes do primeiro
- * desenho quanto ao desenhar logo após serem instanciados, sem edição
- * prévia pelo usuário no editor.
+ * Cobre os tipos de objeto de cenário de pista que nascem prontos por um
+ * único clique — Arquibancada, Construcao, Pneus: devem ter defaults
+ * seguros (sem NullPointerException) tanto ao consultar a área antes do
+ * primeiro desenho quanto ao desenhar logo após serem instanciados, sem
+ * edição prévia pelo usuário no editor. GuardRails (como ObjetoLivre) fica
+ * de fora: precisa dos pontos clicados pelo usuário antes de ter uma área
+ * visível, então uma instância "nua" legitimamente não desenha nada.
  */
 class ObjetoPistaCenarioTest {
 
     private static List<ObjetoPista> objetosDeCenario() {
-        return List.of(new ObjetoArquibancada(), new ObjetoConstrucao(),
-                new ObjetoGuardRails(), new ObjetoPneus());
+        return List.of(new ObjetoArquibancada(), new ObjetoConstrucao(), new ObjetoPneus());
     }
 
     @Test

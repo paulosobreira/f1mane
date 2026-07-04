@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import br.f1mane.entidades.ObjetoGuardRails;
 import br.f1mane.entidades.ObjetoLivre;
 import br.f1mane.entidades.ObjetoPista;
 import br.f1mane.entidades.PontoCurva;
@@ -66,6 +67,27 @@ class MainPanelEditorCopiarObjetoTest {
         assertEquals(new Point(10, 20), copia.getVertices().get(0).getPosicao());
         assertEquals(new Point(30, 40), copia.getVertices().get(0).getHasteFim());
         assertNotSame(original.getVertices().get(0), copia.getVertices().get(0));
+    }
+
+    /**
+     * GuardRails também é desenhado ponto a ponto (ver ObjetoGuardRails):
+     * sem copiar {@code pontos}, a cópia nasceria sem encadeamento nenhum
+     * (invisível), como acontecia com ObjetoLivre antes da correção acima.
+     */
+    @Test
+    void clonarObjetoGuardRails_duplicaPontos_semCompartilharInstancias() throws Exception {
+        ObjetoGuardRails original = new ObjetoGuardRails();
+        List<Point> pontos = new ArrayList<>();
+        pontos.add(new Point(10, 20));
+        pontos.add(new Point(10, 120));
+        original.setPontos(pontos);
+        original.gerar();
+        original.setPosicaoQuina(original.obterArea().getLocation());
+
+        ObjetoGuardRails copia = (ObjetoGuardRails) MainPanelEditor.clonarObjetoPista(original);
+
+        assertEquals(original.getPontos(), copia.getPontos());
+        assertNotSame(original.getPontos().get(0), copia.getPontos().get(0));
     }
 
     @Test

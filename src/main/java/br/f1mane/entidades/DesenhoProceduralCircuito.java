@@ -92,8 +92,16 @@ public final class DesenhoProceduralCircuito {
 	 * fazia se sobrepor quando esse espaço era curto), desenha só a
 	 * quantidade de vagas que cabe nesse espaço com o espaçamento normal.
 	 * Se todas couberem, desenha todas.
+	 *
+	 * @param modoEditor quando {@code true} (chamado a partir do editor),
+	 *                   também desenha as bolinhas indicadoras de qual lado
+	 *                   (1 ou 2) o box está configurado — informação útil só
+	 *                   para quem está editando o traçado, nunca deve ir para
+	 *                   a imagem final da corrida ({@code false}). Convenção
+	 *                   a seguir para qualquer futuro elemento visual que
+	 *                   deva existir só no preview do editor, não na corrida.
 	 */
-	public static void desenhaVagasBox(Graphics2D g2d, Circuito circuito, double zoom) {
+	public static void desenhaVagasBox(Graphics2D g2d, Circuito circuito, double zoom, boolean modoEditor) {
 		if (circuito.getBoxFull() == null || circuito.getBoxFull().isEmpty() || circuito.getParadaBoxIndex() == 0) {
 			return;
 		}
@@ -213,17 +221,21 @@ public final class DesenhoProceduralCircuito {
 			g2d.setColor(corRect);
 			g2d.fill(generalPath.createTransformedShape(affineTransformRect));
 
-			if (circuito.getLadoBox() == 1)
-				g2d.setColor(Color.BLUE);
-			else
-				g2d.setColor(TRANSP_MENUS);
-			g2d.fillOval((int) cimaBoxC1.x, (int) cimaBoxC1.y, 10, 10);
+			if (modoEditor) {
+				// Bolinhas indicando qual lado (1 ou 2) o box está configurado —
+				// só fazem sentido para quem está editando o traçado.
+				if (circuito.getLadoBox() == 1)
+					g2d.setColor(Color.BLUE);
+				else
+					g2d.setColor(TRANSP_MENUS);
+				g2d.fillOval((int) cimaBoxC1.x, (int) cimaBoxC1.y, 10, 10);
 
-			if (circuito.getLadoBox() == 2)
-				g2d.setColor(Color.BLUE);
-			else
-				g2d.setColor(TRANSP_MENUS);
-			g2d.fillOval((int) baixoBoxC1.x, (int) baixoBoxC1.y, 10, 10);
+				if (circuito.getLadoBox() == 2)
+					g2d.setColor(Color.BLUE);
+				else
+					g2d.setColor(TRANSP_MENUS);
+				g2d.fillOval((int) baixoBoxC1.x, (int) baixoBoxC1.y, 10, 10);
+			}
 		}
 	}
 
@@ -234,6 +246,10 @@ public final class DesenhoProceduralCircuito {
 	 * não faz parte deste desenho — esses dois já têm tratamento próprio em
 	 * tempo real (debug e máscara de boxes, respectivamente) e não devem
 	 * ficar gravados de forma permanente na imagem.
+	 * <p>
+	 * Só é usado para gerar a imagem final de corrida — nunca é chamado pelo
+	 * preview do editor —, então elementos "só de editor" (ver parâmetro
+	 * {@code modoEditor} de {@link #desenhaVagasBox}) são sempre omitidos.
 	 */
 	public static void desenha(Graphics2D g2d, Circuito circuito, double zoom) {
 		List<Integer> niveis = niveisDesenhoOrdenados(circuito);
@@ -243,7 +259,7 @@ public final class DesenhoProceduralCircuito {
 			}
 		}
 		desenhaPistaZebraEBox(g2d, circuito, zoom);
-		desenhaVagasBox(g2d, circuito, zoom);
+		desenhaVagasBox(g2d, circuito, zoom, false);
 		desenhaObjetos(g2d, circuito, zoom, 0);
 		for (Integer nivel : niveis) {
 			if (nivel > 0) {

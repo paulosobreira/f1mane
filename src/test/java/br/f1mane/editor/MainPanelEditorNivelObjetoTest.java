@@ -4,13 +4,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import br.f1mane.entidades.ObjetoEscapada;
 import br.f1mane.entidades.ObjetoLivre;
 import br.f1mane.entidades.ObjetoTransparencia;
 
 /**
  * Atalhos PageUp/PageDown do editor: sobem/descem o nível de desenho do
- * objeto selecionado, sem limite de faixa; ObjetoTransparencia fica fora do
- * sistema de níveis e não é alterado.
+ * objeto selecionado, sem limite de faixa; os objetos de função
+ * (ObjetoTransparencia, ObjetoEscapada) ficam fora do sistema de níveis e
+ * não são alterados.
  */
 class MainPanelEditorNivelObjetoTest {
 
@@ -45,6 +47,18 @@ class MainPanelEditorNivelObjetoTest {
         assertEquals(0, transparencia.getNivelDesenho());
         editor.descerNivelObjeto();
         assertEquals(0, transparencia.getNivelDesenho());
+    }
+
+    @Test
+    void escapada_naoTemNivelAlterado() {
+        MainPanelEditor editor = new MainPanelEditor();
+        ObjetoEscapada escapada = new ObjetoEscapada();
+        editor.setObjetoPista(escapada);
+
+        editor.subirNivelObjeto();
+        assertEquals(0, escapada.getNivelDesenho());
+        editor.descerNivelObjeto();
+        assertEquals(0, escapada.getNivelDesenho());
     }
 
     @Test

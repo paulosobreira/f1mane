@@ -5532,6 +5532,21 @@ public class PainelCircuito {
         this.backGround = backGround;
     }
 
+    /**
+     * Solta as imagens de fundo do circuito (a gerada em memória e a cópia
+     * com zoom), para o GC recolher — chamado quando a corrida deixa de
+     * existir (voltar ao menu, criar outro jogo, fechar), garantindo que só
+     * corridas ativas mantenham a imagem (que pode passar de 100MB em
+     * circuitos grandes) em memória. Só deve ser chamado com a thread de
+     * render já parada: se o render ainda rodasse, desenhaBackGround
+     * regeneraria a imagem na hora, anulando a liberação.
+     */
+    public void liberarBackGround() {
+        backGround = null;
+        backGroundZoom = null;
+        backGroundZoomPronto = false;
+    }
+
     public Piloto getPilotoSelecionado() {
         return pilotoSelecionado;
     }

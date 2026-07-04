@@ -17,6 +17,7 @@ import java.awt.image.WritableRaster;
 import java.beans.XMLDecoder;
 import java.io.*;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.*;
@@ -1132,6 +1133,46 @@ public class CarregadorRecursos {
         return circuitosDefauts;
     }
 
+    /**
+     * Lê só a flag "ativo" do XML do circuito, sem desserializar o circuito
+     * inteiro: a listagem de circuitos (menu/lobby) só precisa desse
+     * boolean, e desserializar todos os circuitos (grafos com milhares de
+     * pontos e objetos) só pra isso deixava todos presos no
+     * bufferCircuitos desde a abertura do menu — o circuito completo só
+     * deve ser carregado quando uma corrida (ou o preview do menu)
+     * realmente o usa. A propriedade fica no começo do arquivo (XMLEncoder
+     * grava "ativo" como primeira propriedade); se não aparecer nas
+     * primeiras linhas, vale o default do bean (false, circuito inativo) —
+     * mesmo resultado que o XMLDecoder produziria.
+     */
+    public static boolean circuitoAtivo(String nmCircuito) {
+        Circuito emCache = bufferCircuitos.get(nmCircuito);
+        if (emCache != null) {
+            return emCache.isAtivo();
+        }
+        InputStream stream = recursoComoStream("circuitos/" + nmCircuito);
+        if (stream == null) {
+            return false;
+        }
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+            String linha;
+            int lidas = 0;
+            boolean dentroDePropriedadeAtivo = false;
+            while ((linha = reader.readLine()) != null && lidas++ < 200) {
+                if (dentroDePropriedadeAtivo) {
+                    if (linha.contains("<boolean>")) {
+                        return linha.contains("true");
+                    }
+                } else if (linha.contains("property=\"ativo\"")) {
+                    dentroDePropriedadeAtivo = true;
+                }
+            }
+        } catch (IOException e) {
+            Logger.logarExept(e);
+        }
+        return false;
+    }
+
     public static Circuito carregarCircuito(String nmCircuito)
             throws IOException, ClassNotFoundException {
         Circuito circuito = bufferCircuitos.get(nmCircuito);
@@ -1139,6 +1180,7 @@ public class CarregadorRecursos {
             XMLDecoder xmlDecoder = new XMLDecoder(CarregadorRecursos.recursoComoStream("circuitos/" + nmCircuito));
             circuito = (Circuito) xmlDecoder.readObject();
             aplicarBackGroundPorConvencao(circuito, nmCircuito);
+            migrarObjetoLivreParaCenario(circuito);
         }
         if (cache) {
             bufferCircuitos.put(nmCircuito, circuito);
@@ -1149,15 +1191,53 @@ public class CarregadorRecursos {
     /**
      * Deriva o nome do jpg de referência do próprio nome do XML do circuito
      * (ex.: "albert_park_mro.xml" -> "albert_park_mro.jpg") em vez de
-     * depender de uma propriedade gravada no XML — só atribui se esse jpg
-     * realmente existir nos recursos, senão o circuito fica sem imagem de
-     * referência (comportamento equivalente a nunca ter tido background).
+     * depender de uma propriedade gravada no XML.
+     * <p>
+     * Com {@link Global#GERAR_IMAGEM_CIRCUITO_EM_MEMORIA} ativa, o nome é
+     * atribuído sempre, mesmo sem o jpg nos recursos: os *_mro.jpg ficam de
+     * fora do jar final (são só referência de edição, ver exclusão no
+     * pom.xml) e o nome vira apenas a chave que o cliente web usa em
+     * /letsRace/circuitoJpg/&lt;nome&gt; para pedir a imagem gerada
+     * proceduralmente. Sem a flag (caminho legado, que lê o jpg de verdade),
+     * mantém o comportamento de só atribuir se o arquivo existir.
      */
     private static void aplicarBackGroundPorConvencao(Circuito circuito, String nmCircuitoXml) {
         String nomeJpg = nmCircuitoXml.replaceFirst("\\.xml$", ".jpg");
-        if (CarregadorRecursos.recursoURL("circuitos/" + nomeJpg) != null) {
+        if (Global.GERAR_IMAGEM_CIRCUITO_EM_MEMORIA
+                || CarregadorRecursos.recursoURL("circuitos/" + nomeJpg) != null) {
             circuito.definirBackGroundPorConvencao(nomeJpg);
         }
+    }
+
+    /**
+     * Migra ObjetoLivre gravado em circuito.objetos (classificação legada,
+     * de quando ObjetoLivre não era considerado um objeto de cenário) para
+     * circuito.objetosCenario (classificação atual) — sem isso, circuitos
+     * XML salvos antes dessa mudança manteriam esses objetos "presos" na
+     * lista de objetos de função (Escapada/Transparencia) e nunca seriam
+     * desenhados de fato em corrida, já que DesenhoProceduralCircuito só
+     * desenha objetosCenario. Idempotente: não faz nada se já migrado.
+     */
+    private static void migrarObjetoLivreParaCenario(Circuito circuito) {
+        List<ObjetoPista> objetos = circuito.getObjetos();
+        if (objetos == null) {
+            return;
+        }
+        List<ObjetoPista> livres = new ArrayList<ObjetoPista>();
+        for (Iterator<ObjetoPista> iterator = objetos.iterator(); iterator.hasNext(); ) {
+            ObjetoPista objetoPista = iterator.next();
+            if (objetoPista instanceof ObjetoLivre) {
+                livres.add(objetoPista);
+                iterator.remove();
+            }
+        }
+        if (livres.isEmpty()) {
+            return;
+        }
+        if (circuito.getObjetosCenario() == null) {
+            circuito.setObjetosCenario(new ArrayList<ObjetoPista>());
+        }
+        circuito.getObjetosCenario().addAll(livres);
     }
 
     private static class PilotoComparator implements Comparator<Piloto> {

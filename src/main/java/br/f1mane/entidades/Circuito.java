@@ -70,8 +70,6 @@ public class Circuito implements Serializable {
     @JsonIgnore
     private List<ObjetoPista> objetosCenario;
     @JsonIgnore
-    private Point creditos;
-    @JsonIgnore
     private List<Point> escapeList = new ArrayList<Point>();
     @JsonIgnore
     private Color corFundo;
@@ -85,18 +83,6 @@ public class Circuito implements Serializable {
     private Color corZebra1;
     @JsonIgnore
     private Color corZebra2;
-
-    public Point getCreditos() {
-        return creditos;
-    }
-
-    public Ponto getCreditosPonto() {
-        return new Ponto(creditos);
-    }
-
-    public void setCreditos(Point creditos) {
-        this.creditos = creditos;
-    }
 
     public String getNome() {
         return nome;
@@ -997,7 +983,6 @@ public class Circuito implements Serializable {
                 ", boxKey=" + (boxKey != null ? String.valueOf(boxKey.size()) : "null") +
                 ", escapeMap=" + escapeMap.size() +
                 ", objetos=" + (objetos != null ? String.valueOf(objetos.size()) : "null") +
-                ", creditos=" + creditos +
                 ", escapeList=" + escapeList.size() +
                 ", corFundo=" + corFundo +
                 '}';

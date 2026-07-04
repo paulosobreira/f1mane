@@ -1339,24 +1339,6 @@
     </object>
    </void>
   </void>
-  <void property="creditos">
-   <object class="java.awt.Point" id="Point50">
-    <void class="java.awt.Point" method="getField">
-     <string>x</string>
-     <void method="set">
-      <object idref="Point50"/>
-      <int>180</int>
-     </void>
-    </void>
-    <void class="java.awt.Point" method="getField">
-     <string>y</string>
-     <void method="set">
-      <object idref="Point50"/>
-      <int>3463</int>
-     </void>
-    </void>
-   </object>
-  </void>
   <void property="ladoBox">
    <int>1</int>
   </void>

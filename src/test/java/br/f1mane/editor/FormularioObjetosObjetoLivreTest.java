@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import br.f1mane.entidades.ObjetoArquibancada;
+import br.f1mane.entidades.ObjetoEscapada;
 import br.f1mane.entidades.ObjetoLivre;
 import br.f1mane.entidades.ObjetoTransparencia;
 import br.f1mane.entidades.TipoObjetoLivre;
@@ -69,5 +70,17 @@ class FormularioObjetosObjetoLivreTest {
         formulario.formularioObjetoPista(transparencia);
 
         assertEquals(0, transparencia.getNivelDesenho());
+    }
+
+    /** ObjetoEscapada também é objeto de função, fora do sistema de níveis, como ObjetoTransparencia. */
+    @Test
+    void formularioObjetoPista_naoAlteraNivelDeObjetoEscapada() {
+        ObjetoEscapada escapada = new ObjetoEscapada();
+
+        FormularioObjetos formulario = new FormularioObjetos(null);
+        formulario.carregarCampos(escapada);
+        formulario.formularioObjetoPista(escapada);
+
+        assertEquals(0, escapada.getNivelDesenho());
     }
 }
