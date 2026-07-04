@@ -174,14 +174,16 @@ class ObjetoGuardRailsTest {
     }
 
     /**
-     * VERTICAL desenha barras cruzando o percurso (largas na perpendicular,
-     * finas ao longo dele); HORIZONTAL desenha traços ao longo do percurso
-     * (finos na perpendicular, largos ao longo dele) — pra um segmento
-     * vertical, isso significa que VERTICAL ocupa várias colunas de largura
-     * (a espessura da barreira) enquanto HORIZONTAL ocupa só uma.
+     * VERTICAL desenha barras cruzando o percurso, cada uma atravessando
+     * toda a largura da barreira; HORIZONTAL desenha linhas contínuas ao
+     * longo de todo o percurso, periódicas através da largura — pra uma
+     * largura de barreira maior que o período linha+vão, VERTICAL cobre
+     * (com suas várias barras) toda a faixa de colunas da largura, enquanto
+     * HORIZONTAL cobre só uma fração dela (as próprias linhas, sem os vãos
+     * entre elas).
      */
     @Test
-    void desenha_orientacaoHorizontal_marcasSaoMaisEstreitasNaLarguraQueVertical() {
+    void desenha_orientacaoHorizontal_cobreMenosColunasDeLarguraQueVertical() {
         ObjetoGuardRails vertical = criarGuardRails(new Point(20, 10), new Point(20, 110));
         vertical.setLargura(6);
         vertical.setOrientacao(OrientacaoGuardRails.VERTICAL);
@@ -201,6 +203,38 @@ class ObjetoGuardRailsTest {
                         + ", horizontal=" + colunasHorizontal + ")");
     }
 
+    /**
+     * Reproduz o relato: em modo HORIZONTAL, com largura da barreira grande
+     * o bastante para caber mais de uma linha+vão, deveriam aparecer várias
+     * linhas paralelas ao longo do percurso (não só uma no centro).
+     */
+    @Test
+    void desenha_orientacaoHorizontal_largelaBastanteParaVariasLinhas_desenhaMaisDeUma() {
+        ObjetoGuardRails horizontal = criarGuardRails(new Point(20, 10), new Point(20, 110));
+        // largura=9, larguraLinha=1, vaoEntreLinhas=1 (padrões) -> cabem 4 linhas (período 2px cada).
+        horizontal.setLargura(9);
+        horizontal.setOrientacao(OrientacaoGuardRails.HORIZONTAL);
+
+        BufferedImage imagem = renderiza(horizontal, 40, 130);
+
+        // Uma linha na horizontal do meio do segmento (y=60) atravessa todas as linhas paralelas:
+        // conta quantas sequências de cor secundária aparecem nessa linha.
+        int alvo = horizontal.getCorSecundaria().getRGB();
+        int quantidadeDeLinhas = 0;
+        boolean dentro = false;
+        for (int x = 0; x < imagem.getWidth(); x++) {
+            boolean pixel = imagem.getRGB(x, 60) == alvo;
+            if (pixel && !dentro) {
+                quantidadeDeLinhas++;
+            }
+            dentro = pixel;
+        }
+
+        assertTrue(quantidadeDeLinhas > 1,
+                "HORIZONTAL com largura suficiente deveria desenhar mais de uma linha paralela, mas desenhou "
+                        + quantidadeDeLinhas);
+    }
+
     private int contarColunasComCor(BufferedImage imagem, Color cor) {
         int alvo = cor.getRGB();
         int colunas = 0;
@@ -213,5 +247,62 @@ class ObjetoGuardRailsTest {
             }
         }
         return colunas;
+    }
+
+    @Test
+    void getLarguraLinhaEVaoEntreLinhas_padraoEhUm() {
+        ObjetoGuardRails guardRails = new ObjetoGuardRails();
+
+        assertEquals(1, guardRails.getLarguraLinha());
+        assertEquals(1, guardRails.getVaoEntreLinhas());
+    }
+
+    @Test
+    void setLarguraLinhaEVaoEntreLinhas_gravaValoresInformados() {
+        ObjetoGuardRails guardRails = new ObjetoGuardRails();
+
+        guardRails.setLarguraLinha(3);
+        guardRails.setVaoEntreLinhas(5);
+
+        assertEquals(3, guardRails.getLarguraLinha());
+        assertEquals(5, guardRails.getVaoEntreLinhas());
+    }
+
+    @Test
+    void moverPonto_atualizaPosicaoDoPontoNoIndice() {
+        ObjetoGuardRails guardRails = criarGuardRails(new Point(10, 10), new Point(10, 110));
+
+        guardRails.moverPonto(1, new Point(50, 200));
+
+        assertEquals(new Point(50, 200), guardRails.getPontos().get(1));
+    }
+
+    @Test
+    void inserirPonto_adicionaPontoEntreOsVizinhos() {
+        ObjetoGuardRails guardRails = criarGuardRails(new Point(10, 10), new Point(10, 110));
+
+        guardRails.inserirPonto(0, new Point(10, 60));
+
+        assertEquals(3, guardRails.getPontos().size());
+        assertEquals(new Point(10, 60), guardRails.getPontos().get(1));
+    }
+
+    @Test
+    void removerPonto_removeQuandoRestamMaisDeDoisPontos() {
+        ObjetoGuardRails guardRails = criarGuardRails(
+                new Point(10, 10), new Point(10, 60), new Point(10, 110));
+
+        guardRails.removerPonto(1);
+
+        assertEquals(2, guardRails.getPontos().size());
+    }
+
+    @Test
+    void removerPonto_bloqueiaQuandoRestariamMenosDeDoisPontos() {
+        ObjetoGuardRails guardRails = criarGuardRails(new Point(10, 10), new Point(10, 110));
+
+        guardRails.removerPonto(0);
+
+        assertEquals(2, guardRails.getPontos().size());
     }
 }

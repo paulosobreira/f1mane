@@ -41,6 +41,8 @@ public class FormularioObjetos {
 			TipoObjetoLivre.values());
 	private final JComboBox<OrientacaoGuardRails> orientacaoGuardRailsCombo = new JComboBox<OrientacaoGuardRails>(
 			OrientacaoGuardRails.values());
+	private final JSpinner larguraLinhaGuardRails = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
+	private final JSpinner vaoEntreLinhasGuardRails = new JSpinner(new SpinnerNumberModel(1, 0, 100, 1));
 	private JLabel labelCor1 = new JLabel("Clique");
 	private JLabel labelCor2 = new JLabel("Clique");
 	private final JLabel labelLegendaCor1 = new JLabel("Cor de Fundo");
@@ -65,6 +67,8 @@ public class FormularioObjetos {
 		altura.addChangeListener(changeListener);
 		fimTransparencia.addChangeListener(changeListener);
 		nivelDesenho.addChangeListener(changeListener);
+		larguraLinhaGuardRails.addChangeListener(changeListener);
+		vaoEntreLinhasGuardRails.addChangeListener(changeListener);
 
 		labelCor1.addMouseListener(new MouseAdapter() {
 			@Override
@@ -147,7 +151,7 @@ public class FormularioObjetos {
 			// fazem sentido (cada segmento do encadeamento calcula o próprio
 			// ângulo a partir dos pontos), mas Largura continua valendo — é a
 			// espessura da barreira ao longo de todo o encadeamento.
-			panel.setLayout(new GridLayout(5, 2));
+			panel.setLayout(new GridLayout(7, 2));
 			panel.add(new JLabel("Largura"));
 			panel.add(largura);
 			panel.add(labelLegendaCor1);
@@ -156,6 +160,10 @@ public class FormularioObjetos {
 			panel.add(labelCor2);
 			panel.add(new JLabel("Orientação"));
 			panel.add(orientacaoGuardRailsCombo);
+			panel.add(new JLabel("Espessura da Linha"));
+			panel.add(larguraLinhaGuardRails);
+			panel.add(new JLabel("Vão entre Linhas"));
+			panel.add(vaoEntreLinhasGuardRails);
 			panel.add(new JLabel("Nível"));
 			panel.add(nivelDesenho);
 		} else if (objetoPista instanceof ObjetoEscapada) {
@@ -300,7 +308,10 @@ public class FormularioObjetos {
 				tipoObjetoLivreCombo.setSelectedItem(((ObjetoLivre) objetoPista).getTipo());
 			}
 			if (objetoPista instanceof ObjetoGuardRails) {
-				orientacaoGuardRailsCombo.setSelectedItem(((ObjetoGuardRails) objetoPista).getOrientacao());
+				ObjetoGuardRails guardRails = (ObjetoGuardRails) objetoPista;
+				orientacaoGuardRailsCombo.setSelectedItem(guardRails.getOrientacao());
+				larguraLinhaGuardRails.setValue(Integer.valueOf(guardRails.getLarguraLinha()));
+				vaoEntreLinhasGuardRails.setValue(Integer.valueOf(guardRails.getVaoEntreLinhas()));
 			}
 		}
 	}
@@ -323,8 +334,10 @@ public class FormularioObjetos {
 				((ObjetoLivre) objetoPista).setTipo((TipoObjetoLivre) tipoObjetoLivreCombo.getSelectedItem());
 			}
 			if (objetoPista instanceof ObjetoGuardRails) {
-				((ObjetoGuardRails) objetoPista)
-						.setOrientacao((OrientacaoGuardRails) orientacaoGuardRailsCombo.getSelectedItem());
+				ObjetoGuardRails guardRails = (ObjetoGuardRails) objetoPista;
+				guardRails.setOrientacao((OrientacaoGuardRails) orientacaoGuardRailsCombo.getSelectedItem());
+				guardRails.setLarguraLinha(((Integer) larguraLinhaGuardRails.getValue()).intValue());
+				guardRails.setVaoEntreLinhas(((Integer) vaoEntreLinhasGuardRails.getValue()).intValue());
 			}
 		}
 		// Guarda os valores atuais como "última configuração" desta classe,

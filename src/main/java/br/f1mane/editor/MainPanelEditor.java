@@ -173,10 +173,15 @@ public class MainPanelEditor extends JPanel {
 
     /** Raio de tolerância (px de tela; o canvas do editor não tem zoom variável) para clicar num marcador. */
     private static final int RAIO_MARCADOR_EDICAO_PONTOS_PX = 8;
+    /** Raio de tolerância (px de tela) para o snap de pontos de guard rails a nós/outros objetos. */
+    private static final int RAIO_SNAP_GUARD_RAILS_PX = 10;
     private ObjetoLivre editandoPontosDe;
     private PontoCurva verticeArrastando;
     private boolean arrastandoHasteDoVertice;
     private boolean arrastouVertice;
+    private ObjetoGuardRails editandoPontosGuardRailsDe;
+    private int indicePontoGuardRailsArrastando = -1;
+    private boolean arrastouPontoGuardRails;
     /**
      * Pacote-privado (em vez de private) para permitir injeção direta em
      * testes. formularioListaObjetosDesenho espelha circuito.objetosCenario
@@ -546,6 +551,9 @@ public class MainPanelEditor extends JPanel {
         }
         if (editandoPontosDe == objetoPista) {
             encerrarEdicaoPontosObjetoLivre();
+        }
+        if (editandoPontosGuardRailsDe == objetoPista) {
+            encerrarEdicaoPontosGuardRails();
         }
         objetoPista = null;
         objetoArrastando = null;
@@ -1271,6 +1279,10 @@ public class MainPanelEditor extends JPanel {
                         && tentarIniciarArrasteVerticeOuHaste(e)) {
                     return;
                 }
+                if (editandoPontosGuardRailsDe != null && isSemSelecao() && !posicionaObjetoPista
+                        && !desenhandoObjetoLivre && tentarIniciarArrastePontoGuardRails(e)) {
+                    return;
+                }
                 if (!isSemSelecao() || !SwingUtilities.isLeftMouseButton(e)
                         || posicionaObjetoPista || desenhandoObjetoLivre) {
                     return;
@@ -1308,6 +1320,15 @@ public class MainPanelEditor extends JPanel {
                     repaint();
                     return;
                 }
+                if (indicePontoGuardRailsArrastando >= 0) {
+                    arrastouPontoGuardRails = true;
+                    Point offset = calculaOffsetTelaGuardRails(editandoPontosGuardRailsDe);
+                    Point localAlvo = localDaTela(e.getPoint(), offset);
+                    editandoPontosGuardRailsDe.getPontos().set(indicePontoGuardRailsArrastando, localAlvo);
+                    editandoPontosGuardRailsDe.gerar();
+                    repaint();
+                    return;
+                }
                 if (objetoArrastando == null) {
                     return;
                 }
@@ -1320,12 +1341,24 @@ public class MainPanelEditor extends JPanel {
 
             public void mouseReleased(MouseEvent e) {
                 verticeArrastando = null;
+                if (indicePontoGuardRailsArrastando >= 0) {
+                    Point telaComSnap = aplicaSnap(e.getPoint(), editandoPontosGuardRailsDe);
+                    Point offset = calculaOffsetTelaGuardRails(editandoPontosGuardRailsDe);
+                    Point localComSnap = localDaTela(telaComSnap, offset);
+                    editandoPontosGuardRailsDe.moverPonto(indicePontoGuardRailsArrastando, localComSnap);
+                    indicePontoGuardRailsArrastando = -1;
+                    repaint();
+                }
                 objetoArrastando = null;
             }
 
             public void mouseClicked(MouseEvent e) {
                 if (arrastouVertice) {
                     arrastouVertice = false;
+                    return;
+                }
+                if (arrastouPontoGuardRails) {
+                    arrastouPontoGuardRails = false;
                     return;
                 }
                 if (arrastouObjeto) {
@@ -1346,6 +1379,21 @@ public class MainPanelEditor extends JPanel {
 
             private void clickEditarObjetos(MouseEvent e) {
                 ultimoClicado = e.getPoint();
+                if (editandoPontosGuardRailsDe != null && !desenhandoObjetoLivre) {
+                    if (SwingUtilities.isRightMouseButton(e)) {
+                        if (!removerPontoGuardRailsSeAtingido(e.getPoint())) {
+                            mostraMenuContextoObjeto(e);
+                        } else {
+                            repaint();
+                        }
+                        return;
+                    }
+                    if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 1 && !posicionaObjetoPista) {
+                        tentarInserirPontoGuardRails(e.getPoint());
+                        repaint();
+                        return;
+                    }
+                }
                 if (SwingUtilities.isRightMouseButton(e) && !posicionaObjetoPista && !desenhandoObjetoLivre) {
                     mostraMenuContextoObjeto(e);
                     return;
@@ -1404,7 +1452,7 @@ public class MainPanelEditor extends JPanel {
                 } else if (desenhandoObjetoLivre && (objetoPista instanceof ObjetoGuardRails)) {
                     ObjetoGuardRails guardRails = (ObjetoGuardRails) objetoPista;
                     if (e.getButton() == MouseEvent.BUTTON1) {
-                        guardRails.getPontos().add(ultimoClicado);
+                        guardRails.getPontos().add(aplicaSnap(ultimoClicado, guardRails));
                     } else {
                         desenhandoObjetoLivre = false;
                         posicionaObjetoPista = false;
@@ -1552,6 +1600,22 @@ public class MainPanelEditor extends JPanel {
             panel.add(editarPontosButton);
             panel.add(new JLabel());
         }
+        if (alvo instanceof ObjetoGuardRails) {
+            final ObjetoGuardRails guardRails = (ObjetoGuardRails) alvo;
+            boolean editandoEsteObjeto = guardRails.equals(editandoPontosGuardRailsDe);
+            JButton editarPontosButton = new JButton(editandoEsteObjeto ? "Parar de Editar Pontos" : "Editar Pontos");
+            editarPontosButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    if (guardRails.equals(editandoPontosGuardRailsDe)) {
+                        encerrarEdicaoPontosGuardRails();
+                    } else {
+                        iniciarEdicaoPontosGuardRails(guardRails);
+                    }
+                }
+            });
+            panel.add(editarPontosButton);
+            panel.add(new JLabel());
+        }
         return panel;
     }
 
@@ -1667,6 +1731,210 @@ public class MainPanelEditor extends JPanel {
             g2d.setColor(Color.BLACK);
             g2d.drawOval(posTela.x - 5, posTela.y - 5, 10, 10);
         }
+    }
+
+    /**
+     * Liga o modo de edição de pontos (mover, inserir, remover) para um
+     * ObjetoGuardRails já posicionado no circuito — análogo a
+     * {@link #iniciarEdicaoPontosObjetoLivre(ObjetoLivre)}, mas sem hastes de
+     * curvatura: clique esquerdo arrasta um ponto existente, clique esquerdo
+     * perto de um segmento insere um ponto novo, clique direito sobre um
+     * ponto o remove.
+     */
+    public void iniciarEdicaoPontosGuardRails(ObjetoGuardRails guardRails) {
+        guardRails.gerar();
+        editandoPontosGuardRailsDe = guardRails;
+        objetoPista = guardRails;
+        repaint();
+    }
+
+    public void encerrarEdicaoPontosGuardRails() {
+        editandoPontosGuardRailsDe = null;
+        indicePontoGuardRailsArrastando = -1;
+        repaint();
+    }
+
+    /**
+     * Deslocamento entre o espaço local de {@link ObjetoGuardRails#getPontos()}
+     * (onde os pontos foram originalmente clicados/criados) e a tela — mesma
+     * ideia de {@link #calculaOffsetTelaObjetoLivre(ObjetoLivre)}.
+     */
+    private Point calculaOffsetTelaGuardRails(ObjetoGuardRails guardRails) {
+        if (guardRails == null || guardRails.getPosicaoQuina() == null) {
+            return new Point(0, 0);
+        }
+        guardRails.gerar();
+        Rectangle boundsLocal = guardRails.obterArea();
+        return new Point(guardRails.getPosicaoQuina().x - boundsLocal.x,
+                guardRails.getPosicaoQuina().y - boundsLocal.y);
+    }
+
+    /**
+     * Testa se o clique atingiu um ponto existente de
+     * {@link #editandoPontosGuardRailsDe} e, se sim, inicia o arraste desse
+     * ponto (só botão esquerdo — direito é tratado em
+     * {@link #removerPontoGuardRailsSeAtingido(Point)}).
+     */
+    private boolean tentarIniciarArrastePontoGuardRails(MouseEvent e) {
+        if (editandoPontosGuardRailsDe == null || !SwingUtilities.isLeftMouseButton(e)) {
+            return false;
+        }
+        Point offset = calculaOffsetTelaGuardRails(editandoPontosGuardRailsDe);
+        List<Point> pontos = editandoPontosGuardRailsDe.getPontos();
+        for (int i = 0; i < pontos.size(); i++) {
+            Point posTela = telaDoLocal(pontos.get(i), offset);
+            if (distancia(e.getPoint(), posTela) <= RAIO_MARCADOR_EDICAO_PONTOS_PX) {
+                indicePontoGuardRailsArrastando = i;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Remove o ponto de {@link #editandoPontosGuardRailsDe} atingido por {@code pontoTela}, se houver. */
+    private boolean removerPontoGuardRailsSeAtingido(Point pontoTela) {
+        if (editandoPontosGuardRailsDe == null) {
+            return false;
+        }
+        Point offset = calculaOffsetTelaGuardRails(editandoPontosGuardRailsDe);
+        List<Point> pontos = editandoPontosGuardRailsDe.getPontos();
+        for (int i = 0; i < pontos.size(); i++) {
+            if (distancia(pontoTela, telaDoLocal(pontos.get(i), offset)) <= RAIO_MARCADOR_EDICAO_PONTOS_PX) {
+                editandoPontosGuardRailsDe.removerPonto(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Se {@code pontoTela} não atingir nenhum ponto existente mas estiver
+     * perto o bastante de algum segmento do encadeamento, insere um novo
+     * ponto ali (com snap aplicado), aumentando o encadeamento em um ponto.
+     */
+    private boolean tentarInserirPontoGuardRails(Point pontoTela) {
+        if (editandoPontosGuardRailsDe == null) {
+            return false;
+        }
+        Point offset = calculaOffsetTelaGuardRails(editandoPontosGuardRailsDe);
+        List<Point> pontos = editandoPontosGuardRailsDe.getPontos();
+        for (Point ponto : pontos) {
+            if (distancia(pontoTela, telaDoLocal(ponto, offset)) <= RAIO_MARCADOR_EDICAO_PONTOS_PX) {
+                return false;
+            }
+        }
+        for (int i = 0; i < pontos.size() - 1; i++) {
+            Point aTela = telaDoLocal(pontos.get(i), offset);
+            Point bTela = telaDoLocal(pontos.get(i + 1), offset);
+            if (distanciaAoSegmento(pontoTela, aTela, bTela) <= RAIO_MARCADOR_EDICAO_PONTOS_PX) {
+                Point telaComSnap = aplicaSnap(pontoTela, editandoPontosGuardRailsDe);
+                Point localComSnap = localDaTela(telaComSnap, offset);
+                editandoPontosGuardRailsDe.inserirPonto(i, localComSnap);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static double distanciaAoSegmento(Point p, Point a, Point b) {
+        double dx = b.x - a.x;
+        double dy = b.y - a.y;
+        double comprimentoQuadrado = dx * dx + dy * dy;
+        if (comprimentoQuadrado == 0) {
+            return distancia(p, a);
+        }
+        double t = ((p.x - a.x) * dx + (p.y - a.y) * dy) / comprimentoQuadrado;
+        t = Math.max(0, Math.min(1, t));
+        double projX = a.x + t * dx;
+        double projY = a.y + t * dy;
+        return distancia(p, new Point((int) Math.round(projX), (int) Math.round(projY)));
+    }
+
+    private void desenhaMarcadoresEdicaoPontosGuardRails(Graphics2D g2d) {
+        if (editandoPontosGuardRailsDe == null) {
+            return;
+        }
+        Point offset = calculaOffsetTelaGuardRails(editandoPontosGuardRailsDe);
+        for (Point ponto : editandoPontosGuardRailsDe.getPontos()) {
+            Point posTela = telaDoLocal(ponto, offset);
+            g2d.setColor(Color.YELLOW);
+            g2d.fillOval(posTela.x - 5, posTela.y - 5, 10, 10);
+            g2d.setColor(Color.BLACK);
+            g2d.drawOval(posTela.x - 5, posTela.y - 5, 10, 10);
+        }
+    }
+
+    /**
+     * Aproxima {@code candidatoTela} (em espaço de tela) do nó de pista ou
+     * ponto de outro objeto de cenário mais próximo, se algum estiver dentro
+     * de {@link #RAIO_SNAP_GUARD_RAILS_PX}; caso contrário retorna o próprio
+     * candidato. {@code ignorar} é o próprio ObjetoGuardRails em criação/edição,
+     * para não se auto-atrair.
+     */
+    Point aplicaSnap(Point candidatoTela, ObjetoPista ignorar) {
+        Point melhor = candidatoTela;
+        double menorDistancia = RAIO_SNAP_GUARD_RAILS_PX;
+        if (circuito.getPista() != null) {
+            for (No no : circuito.getPista()) {
+                double d = distancia(candidatoTela, no.getPoint());
+                if (d <= menorDistancia) {
+                    menorDistancia = d;
+                    melhor = no.getPoint();
+                }
+            }
+        }
+        if (circuito.getBox() != null) {
+            for (No no : circuito.getBox()) {
+                double d = distancia(candidatoTela, no.getPoint());
+                if (d <= menorDistancia) {
+                    menorDistancia = d;
+                    melhor = no.getPoint();
+                }
+            }
+        }
+        if (circuito.getObjetosCenario() != null) {
+            for (ObjetoPista outro : circuito.getObjetosCenario()) {
+                if (outro == ignorar) {
+                    continue;
+                }
+                for (Point candidatoObjeto : pontosAbsolutosParaSnap(outro)) {
+                    double d = distancia(candidatoTela, candidatoObjeto);
+                    if (d <= menorDistancia) {
+                        menorDistancia = d;
+                        melhor = candidatoObjeto;
+                    }
+                }
+            }
+        }
+        return melhor;
+    }
+
+    /** Pontos/vértices de {@code objeto} convertidos para espaço de tela, usados como candidatos de snap. */
+    private List<Point> pontosAbsolutosParaSnap(ObjetoPista objeto) {
+        List<Point> resultado = new ArrayList<Point>();
+        if (objeto instanceof ObjetoGuardRails) {
+            ObjetoGuardRails guardRails = (ObjetoGuardRails) objeto;
+            Point offset = calculaOffsetTelaGuardRails(guardRails);
+            for (Point ponto : guardRails.getPontos()) {
+                resultado.add(telaDoLocal(ponto, offset));
+            }
+        } else if (objeto instanceof ObjetoLivre) {
+            ObjetoLivre objetoLivre = (ObjetoLivre) objeto;
+            Point offset = calculaOffsetTelaObjetoLivre(objetoLivre);
+            List<PontoCurva> vertices = objetoLivre.getVertices();
+            if (!vertices.isEmpty()) {
+                for (PontoCurva vertice : vertices) {
+                    resultado.add(telaDoLocal(vertice.getPosicao(), offset));
+                }
+            } else {
+                for (Point ponto : objetoLivre.getPontos()) {
+                    resultado.add(telaDoLocal(ponto, offset));
+                }
+            }
+        } else if (objeto.getPosicaoQuina() != null) {
+            resultado.add(objeto.getPosicaoQuina());
+        }
+        return resultado;
     }
 
     private static void limpaMouseListeners(JLabel... labels) {
@@ -1871,6 +2139,7 @@ public class MainPanelEditor extends JPanel {
             }
         }
         desenhaMarcadoresEdicaoPontos(g2d);
+        desenhaMarcadoresEdicaoPontosGuardRails(g2d);
         desenhaObjetoSelecionadoNoCanvas(g2d);
         desenhaListaObjetos(g2d);
         desenhaPainelClassico(g2d);

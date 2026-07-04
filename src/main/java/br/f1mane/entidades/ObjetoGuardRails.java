@@ -26,10 +26,12 @@ public class ObjetoGuardRails extends ObjetoDesenho {
 	/**
 	 * Espessura de cada linha, em unidades de mundo (antes do zoom) — bem
 	 * mais fina que a da arquibancada (10px). 1px é o mínimo possível.
+	 * Editável pelo formulário de objetos; default 1 preserva a aparência de
+	 * circuitos XML gravados antes desta propriedade existir.
 	 */
-	private static final int LARGURA_LINHA = 1;
-	/** Vão entre linhas consecutivas — mesma proporção 1:1 da arquibancada. */
-	private static final int VAO_ENTRE_LINHAS = LARGURA_LINHA;
+	private int larguraLinha = 1;
+	/** Vão entre linhas consecutivas — mesma proporção 1:1 da arquibancada por padrão. */
+	private int vaoEntreLinhas = 1;
 
 	/**
 	 * Pontos clicados pelo usuário no editor (um por clique esquerdo,
@@ -62,6 +64,56 @@ public class ObjetoGuardRails extends ObjetoDesenho {
 
 	public void setOrientacao(OrientacaoGuardRails orientacao) {
 		this.orientacao = orientacao != null ? orientacao : OrientacaoGuardRails.VERTICAL;
+	}
+
+	public int getLarguraLinha() {
+		return larguraLinha;
+	}
+
+	public void setLarguraLinha(int larguraLinha) {
+		this.larguraLinha = Math.max(1, larguraLinha);
+	}
+
+	public int getVaoEntreLinhas() {
+		return vaoEntreLinhas;
+	}
+
+	public void setVaoEntreLinhas(int vaoEntreLinhas) {
+		this.vaoEntreLinhas = Math.max(0, vaoEntreLinhas);
+	}
+
+	/**
+	 * Move o ponto de índice {@code indice} para {@code novaPosicao} e
+	 * reconstrói {@link #caminho}, usado pelo editor ao arrastar um ponto já
+	 * existente em modo de edição de pontos.
+	 */
+	public void moverPonto(int indice, Point novaPosicao) {
+		pontos.set(indice, novaPosicao);
+		gerar();
+	}
+
+	/**
+	 * Insere {@code posicao} no encadeamento logo após o índice
+	 * {@code indiceSegmento} (ou seja, entre os pontos {@code indiceSegmento}
+	 * e {@code indiceSegmento + 1}), usado pelo editor para adicionar um
+	 * ponto no meio de um segmento existente.
+	 */
+	public void inserirPonto(int indiceSegmento, Point posicao) {
+		pontos.add(indiceSegmento + 1, posicao);
+		gerar();
+	}
+
+	/**
+	 * Remove o ponto de índice {@code indice}, exceto quando restariam menos
+	 * de dois pontos (o mínimo pra formar um segmento) — nesse caso a
+	 * remoção é ignorada.
+	 */
+	public void removerPonto(int indice) {
+		if (pontos.size() <= 2) {
+			return;
+		}
+		pontos.remove(indice);
+		gerar();
 	}
 
 	/**
@@ -109,14 +161,18 @@ public class ObjetoGuardRails extends ObjetoDesenho {
 				.getGreen(), getCorPimaria().getBlue(), getTransparencia()));
 		g2d.fill(escala.createTransformedShape(formaExterna));
 
-		// Linhas finas encadeadas do começo ao fim de TODO o percurso (soma
-		// de todos os segmentos), não de cada segmento isoladamente: a
-		// quantidade é a máxima que cabe no período-alvo linha+vão, e o vão
-		// é recalculado pra essa quantidade de linhas encostar exatamente no
-		// início e no final do percurso — nunca sobra vão só no final,
-		// diferente da arquibancada (que usa período fixo e pode deixar
-		// sobra).
-		GeneralPath linhas = construirLinhas(vertices);
+		// VERTICAL: barras cruzando o percurso, periódicas ao longo dele (uma
+		// a cada trecho de largura+vão), cada uma atravessando toda a
+		// largura da barreira. HORIZONTAL: o oposto — linhas periódicas ao
+		// longo da LARGURA da barreira (uma a cada trecho de largura+vão
+		// através dela), cada uma correndo pelo percurso inteiro. Em ambos
+		// os casos o vão é recalculado pra a quantidade de linhas encostar
+		// exatamente nas duas pontas do intervalo (percurso ou largura),
+		// nunca sobrando vão só numa delas — diferente da arquibancada (que
+		// usa período fixo e pode deixar sobra).
+		GeneralPath linhas = orientacao == OrientacaoGuardRails.HORIZONTAL
+				? construirLinhasHorizontais(vertices)
+				: construirLinhasVerticais(vertices);
 		g2d.setColor(new Color(getCorSecundaria().getRed(), getCorSecundaria()
 				.getGreen(), getCorSecundaria().getBlue(), getTransparencia()));
 		g2d.fill(escala.createTransformedShape(linhas));
@@ -134,7 +190,35 @@ public class ObjetoGuardRails extends ObjetoDesenho {
 		return vertices;
 	}
 
-	private GeneralPath construirLinhas(List<Point2D> vertices) {
+	/**
+	 * Calcula, para um intervalo de comprimento {@code comprimentoTotal},
+	 * quantas marcas de espessura {@link #larguraLinha} cabem nele com vão
+	 * de {@link #vaoEntreLinhas} entre elas, e o vão real recalculado pra
+	 * essa quantidade encostar exatamente nas duas pontas do intervalo (sem
+	 * sobrar vão só numa delas). Usado tanto para distribuir as barras
+	 * verticais ao longo do percurso quanto para distribuir as linhas
+	 * horizontais através da largura da barreira.
+	 */
+	private double periodoReal(double comprimentoTotal, int quantidadeLinhas) {
+		double vaoReal = quantidadeLinhas > 1
+				? (comprimentoTotal - quantidadeLinhas * larguraLinha) / (quantidadeLinhas - 1)
+				: 0;
+		return larguraLinha + vaoReal;
+	}
+
+	private int quantidadeLinhasQueCabem(double comprimentoTotal) {
+		int periodoAlvo = larguraLinha + vaoEntreLinhas;
+		return Math.max(1, (int) (comprimentoTotal / periodoAlvo));
+	}
+
+	/**
+	 * VERTICAL: barras cruzando o percurso, uma a cada trecho de
+	 * {@link #larguraLinha}+{@link #vaoEntreLinhas} ao longo de TODO o
+	 * percurso (soma de todos os segmentos), não de cada segmento
+	 * isoladamente — cada barra atravessa toda a {@link #largura} da
+	 * barreira, centrada no ponto do percurso.
+	 */
+	private GeneralPath construirLinhasVerticais(List<Point2D> vertices) {
 		int quantidadeSegmentos = vertices.size() - 1;
 		double[] comprimentoSegmento = new double[quantidadeSegmentos];
 		double comprimentoTotal = 0;
@@ -143,12 +227,8 @@ public class ObjetoGuardRails extends ObjetoDesenho {
 			comprimentoTotal += comprimentoSegmento[i];
 		}
 
-		int periodoAlvo = LARGURA_LINHA + VAO_ENTRE_LINHAS;
-		int quantidadeLinhas = Math.max(1, (int) (comprimentoTotal / periodoAlvo));
-		double vaoReal = quantidadeLinhas > 1
-				? (comprimentoTotal - quantidadeLinhas * LARGURA_LINHA) / (quantidadeLinhas - 1)
-				: 0;
-		double periodoReal = LARGURA_LINHA + vaoReal;
+		int quantidadeLinhas = quantidadeLinhasQueCabem(comprimentoTotal);
+		double periodoReal = periodoReal(comprimentoTotal, quantidadeLinhas);
 
 		GeneralPath linhas = new GeneralPath();
 		int segmentoAtual = 0;
@@ -168,40 +248,69 @@ public class ObjetoGuardRails extends ObjetoDesenho {
 			double cy = p1.getY() + (p2.getY() - p1.getY()) * t;
 			double dx = compSeg == 0 ? 1 : (p2.getX() - p1.getX()) / compSeg;
 			double dy = compSeg == 0 ? 0 : (p2.getY() - p1.getY()) / compSeg;
-			adicionaTick(linhas, cx, cy, dx, dy);
+			double nx = -dy;
+			double ny = dx;
+			adicionaRetangulo(linhas, cx, cy, nx, ny, largura / 2.0, dx, dy, larguraLinha / 2.0);
+		}
+		return linhas;
+	}
+
+	/**
+	 * HORIZONTAL: linhas correndo ao longo de TODO o percurso, uma a cada
+	 * trecho de {@link #larguraLinha}+{@link #vaoEntreLinhas} através da
+	 * {@link #largura} da barreira (perpendicular ao percurso) — o oposto
+	 * de {@link #construirLinhasVerticais}: periódico na largura, contínuo
+	 * no comprimento, em vez de periódico no comprimento e contínuo na
+	 * largura.
+	 */
+	private GeneralPath construirLinhasHorizontais(List<Point2D> vertices) {
+		int quantidadeLinhas = quantidadeLinhasQueCabem(largura);
+		double periodoReal = periodoReal(largura, quantidadeLinhas);
+
+		GeneralPath linhas = new GeneralPath();
+		for (int i = 0; i < quantidadeLinhas; i++) {
+			double offsetProximo = -largura / 2.0 + i * periodoReal;
+			double offsetCentro = offsetProximo + larguraLinha / 2.0;
+			for (int s = 0; s < vertices.size() - 1; s++) {
+				Point2D p1 = vertices.get(s);
+				Point2D p2 = vertices.get(s + 1);
+				double dx = p2.getX() - p1.getX();
+				double dy = p2.getY() - p1.getY();
+				double compSeg = Math.hypot(dx, dy);
+				if (compSeg == 0) {
+					continue;
+				}
+				dx /= compSeg;
+				dy /= compSeg;
+				double nx = -dy;
+				double ny = dx;
+				double cx = (p1.getX() + p2.getX()) / 2.0 + nx * offsetCentro;
+				double cy = (p1.getY() + p2.getY()) / 2.0 + ny * offsetCentro;
+				adicionaRetangulo(linhas, cx, cy, dx, dy, compSeg / 2.0, nx, ny, larguraLinha / 2.0);
+			}
 		}
 		return linhas;
 	}
 
 	/**
 	 * Acrescenta em {@code destino} um retângulo centrado em {@code cx,cy},
-	 * com {@link #largura} (a espessura da barreira) num eixo e
-	 * {@link #LARGURA_LINHA} no outro — qual eixo é qual depende de
-	 * {@link #orientacao}: {@code VERTICAL} (padrão) usa o vetor
-	 * perpendicular ao segmento ({@code nx,ny}) como eixo comprido, formando
-	 * barras cruzando o percurso; {@code HORIZONTAL} usa o próprio vetor do
-	 * segmento ({@code dx,dy}) como eixo comprido, formando traços ao longo
-	 * dele. Construído por vetores em vez de {@code AffineTransform.rotate}
-	 * porque cada marca pode ter uma direção diferente (segmentos do
-	 * encadeamento nem sempre têm o mesmo ângulo).
+	 * com meia-extensão {@code meiaLonga} no eixo {@code eixoLongoX,eixoLongoY}
+	 * e meia-extensão {@code meiaCurta} no eixo {@code eixoCurtoX,eixoCurtoY}
+	 * (ambos vetores unitários). Construído por vetores em vez de
+	 * {@code AffineTransform.rotate} porque cada marca pode ter uma direção
+	 * diferente (segmentos do encadeamento nem sempre têm o mesmo ângulo).
 	 */
-	private void adicionaTick(GeneralPath destino, double cx, double cy, double dx, double dy) {
-		double nx = -dy;
-		double ny = dx;
-		double eixoLongoX = orientacao == OrientacaoGuardRails.HORIZONTAL ? dx : nx;
-		double eixoLongoY = orientacao == OrientacaoGuardRails.HORIZONTAL ? dy : ny;
-		double eixoCurtoX = orientacao == OrientacaoGuardRails.HORIZONTAL ? nx : dx;
-		double eixoCurtoY = orientacao == OrientacaoGuardRails.HORIZONTAL ? ny : dy;
-		double meiaLargura = largura / 2.0;
-		double meiaEspessura = LARGURA_LINHA / 2.0;
-		destino.moveTo(cx + eixoLongoX * meiaLargura + eixoCurtoX * meiaEspessura,
-				cy + eixoLongoY * meiaLargura + eixoCurtoY * meiaEspessura);
-		destino.lineTo(cx - eixoLongoX * meiaLargura + eixoCurtoX * meiaEspessura,
-				cy - eixoLongoY * meiaLargura + eixoCurtoY * meiaEspessura);
-		destino.lineTo(cx - eixoLongoX * meiaLargura - eixoCurtoX * meiaEspessura,
-				cy - eixoLongoY * meiaLargura - eixoCurtoY * meiaEspessura);
-		destino.lineTo(cx + eixoLongoX * meiaLargura - eixoCurtoX * meiaEspessura,
-				cy + eixoLongoY * meiaLargura - eixoCurtoY * meiaEspessura);
+	private static void adicionaRetangulo(GeneralPath destino, double cx, double cy,
+			double eixoLongoX, double eixoLongoY, double meiaLonga,
+			double eixoCurtoX, double eixoCurtoY, double meiaCurta) {
+		destino.moveTo(cx + eixoLongoX * meiaLonga + eixoCurtoX * meiaCurta,
+				cy + eixoLongoY * meiaLonga + eixoCurtoY * meiaCurta);
+		destino.lineTo(cx - eixoLongoX * meiaLonga + eixoCurtoX * meiaCurta,
+				cy - eixoLongoY * meiaLonga + eixoCurtoY * meiaCurta);
+		destino.lineTo(cx - eixoLongoX * meiaLonga - eixoCurtoX * meiaCurta,
+				cy - eixoLongoY * meiaLonga - eixoCurtoY * meiaCurta);
+		destino.lineTo(cx + eixoLongoX * meiaLonga - eixoCurtoX * meiaCurta,
+				cy + eixoLongoY * meiaLonga - eixoCurtoY * meiaCurta);
 		destino.closePath();
 	}
 
