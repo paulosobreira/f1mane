@@ -3,6 +3,7 @@ package br.f1mane.controles;
 import br.f1mane.entidades.*;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.servidor.JogoServidor;
+import br.nnpe.Global;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
@@ -26,6 +27,13 @@ public abstract class ControleRecursos {
     public static Map<String, Integer> circuitosCiclo;
     protected final Map<No, No> mapaNoProxCurva = new HashMap<No, No>();
     protected final Map<No, No> mapaNoCurvaAnterior = new HashMap<No, No>();
+    /**
+     * Nós (reta de frenagem + cluster de curva baixa) que pertencem a uma
+     * zona de frenagem detectada, mapeados pra sua posição relativa dentro
+     * dela (0.0 = início da zona, nó mais distante da curva; 1.0 = final da
+     * zona, último nó do cluster de curva baixa). Ver {@link #calculaZonaFrenagem()}.
+     */
+    protected final Map<No, Double> zonaFrenagemPosicoes = new HashMap<No, Double>();
     protected Map<Integer, No> mapaIdsNos = new HashMap<Integer, No>();
     protected Map<No, Integer> mapaNosIds = new HashMap<No, Integer>();
     private String temporada;
@@ -128,6 +136,7 @@ public abstract class ControleRecursos {
         idsNoBox.clear();
         mapaNoProxCurva.clear();
         mapaNoCurvaAnterior.clear();
+        zonaFrenagemPosicoes.clear();
         circuito = CarregadorRecursos.carregarCircuito(circuitoStr);
         circuito.vetorizarPista();
         String nome = "";
@@ -213,6 +222,120 @@ public abstract class ControleRecursos {
             }
         }
 
+        calculaZonaFrenagem();
+    }
+
+    /** Recalcula {@link #zonaFrenagemPosicoes} a partir de {@link #nosDaPista}; ver {@link #calculaZonaFrenagem(List)}. */
+    void calculaZonaFrenagem() {
+        zonaFrenagemPosicoes.clear();
+        zonaFrenagemPosicoes.putAll(calculaZonaFrenagem(nosDaPista));
+    }
+
+    /**
+     * Detecta trechos de "zona de frenagem": um cluster contíguo de nós
+     * {@code CURVA_BAIXA} com pelo menos {@link Global#MIN_NOS_CURVA_BAIXA_ZONA_FRENAGEM}
+     * nós (curva fechada de verdade, não um kink isolado), precedido por uma
+     * reta (ou largada, que conta como reta pra esse efeito) com no máximo
+     * {@link Global#MAX_CLUSTERS_CURVA_ALTA_ZONA_FRENAGEM} <em>trechos</em>
+     * (não nós individuais — uma única curva alta longa e sinuosa pode ter
+     * centenas de nós e ainda ser só UM trecho) de curva alta no meio (mais
+     * que isso é mais provável uma sequência de esses/chicane que uma
+     * entrada única de curva alta seguida de freada forte pra uma curva
+     * fechada). Quando o cluster qualifica, marca como zona de frenagem os
+     * nós de reta/largada imediatamente anteriores (até
+     * {@link Global#TAMANHO_ZONA_FRENAGEM}) e os próprios nós do cluster,
+     * cada um com sua posição relativa dentro da zona (0.0 no nó mais
+     * distante da curva — início da zona — até 1.0 no último nó do cluster
+     * — final da zona), na ordem em que o piloto realmente percorre (reta
+     * do início da zona até o fim do cluster). Varredura circular (a pista
+     * é uma volta fechada — a reta antes de uma curva logo após a largada
+     * normalmente cruza o índice 0), método estático e sem estado pra poder
+     * ser reaproveitado pelo editor de circuitos (que não passa por
+     * {@link #carregaRecursos}), não só pelo motor de jogo.
+     */
+    public static Map<No, Double> calculaZonaFrenagem(List<No> nosDaPista) {
+        Map<No, Double> zonaFrenagem = new HashMap<No, Double>();
+        int n = nosDaPista.size();
+        if (n == 0) {
+            return zonaFrenagem;
+        }
+        int i = 0;
+        while (i < n) {
+            No no = nosDaPista.get(i);
+            if (!no.verificaCurvaBaixa()) {
+                i++;
+                continue;
+            }
+            int inicioCluster = i;
+            int fimCluster = i;
+            while (fimCluster + 1 < n && nosDaPista.get(fimCluster + 1).verificaCurvaBaixa()) {
+                fimCluster++;
+            }
+            if (fimCluster - inicioCluster + 1 >= Global.MIN_NOS_CURVA_BAIXA_ZONA_FRENAGEM) {
+                List<No> retaAcumulada = new ArrayList<No>();
+                int clustersDeCurvaAlta = 0;
+                boolean dentroDeClusterAlta = false;
+                boolean valido = true;
+                int j = inicioCluster - 1;
+                int passos = 0;
+                while (passos < n && retaAcumulada.size() < Global.TAMANHO_ZONA_FRENAGEM) {
+                    int idx = ((j % n) + n) % n;
+                    No anterior = nosDaPista.get(idx);
+                    if (anterior.verificaCurvaBaixa()) {
+                        break;
+                    }
+                    if (anterior.verificaCurvaAlta()) {
+                        if (!dentroDeClusterAlta) {
+                            dentroDeClusterAlta = true;
+                            clustersDeCurvaAlta++;
+                            if (clustersDeCurvaAlta > Global.MAX_CLUSTERS_CURVA_ALTA_ZONA_FRENAGEM) {
+                                valido = false;
+                                break;
+                            }
+                        }
+                    } else {
+                        dentroDeClusterAlta = false;
+                        if (anterior.verificaRetaOuLargada()) {
+                            retaAcumulada.add(anterior);
+                        }
+                    }
+                    j--;
+                    passos++;
+                }
+                if (valido && !retaAcumulada.isEmpty()) {
+                    // retaAcumulada foi preenchida de trás pra frente (do nó mais perto do
+                    // cluster pro mais distante); em ordem de percurso ela vem invertida.
+                    List<No> emOrdemDePercurso = new ArrayList<No>();
+                    for (int k = retaAcumulada.size() - 1; k >= 0; k--) {
+                        emOrdemDePercurso.add(retaAcumulada.get(k));
+                    }
+                    for (int k = inicioCluster; k <= fimCluster; k++) {
+                        emOrdemDePercurso.add(nosDaPista.get(k));
+                    }
+                    int total = emOrdemDePercurso.size();
+                    for (int idx = 0; idx < total; idx++) {
+                        double posicao = total > 1 ? (double) idx / (total - 1) : 0.0;
+                        zonaFrenagem.put(emOrdemDePercurso.get(idx), posicao);
+                    }
+                }
+            }
+            i = fimCluster + 1;
+        }
+        return zonaFrenagem;
+    }
+
+    public boolean isNoZonaFrenagem(No no) {
+        return zonaFrenagemPosicoes.containsKey(no);
+    }
+
+    /**
+     * Posição relativa de {@code no} dentro da zona de frenagem detectada
+     * (0.0 = início da zona, 1.0 = final, dentro do cluster de curva
+     * baixa), ou {@code null} se o nó não pertence a nenhuma zona de
+     * frenagem.
+     */
+    public Double obterPosicaoNaZonaFrenagem(No no) {
+        return zonaFrenagemPosicoes.get(no);
     }
 
     public int obterLadoEscape(Point pontoDerrapada) {

@@ -7,6 +7,7 @@ import br.f1mane.servidor.JogoServidor;
 import br.f1mane.servidor.entidades.TOs.TravadaRoda;
 import br.f1mane.visao.GerenciadorVisual;
 import br.f1mane.visao.PainelTabelaResultadoFinal;
+import br.nnpe.Global;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -976,11 +977,6 @@ public class ControleJogoLocal extends ControleRecursos
 
     @Override
     public void travouRodas(Piloto piloto) {
-        travouRodas(piloto, false);
-    }
-
-    @Override
-    public void travouRodas(Piloto piloto, boolean semFumaca) {
         if (piloto.isRecebeuBanderada()) {
             return;
         }
@@ -990,13 +986,57 @@ public class ControleJogoLocal extends ControleRecursos
         if (piloto.getPtosBox() != 0) {
             return;
         }
-        double lim = 0.3;
-        if (asfaltoAbrasivo()) {
-            lim = 0.5;
+        Double posicaoZonaFrenagem = obterPosicaoNaZonaFrenagem(piloto.getNoAtual());
+        if (posicaoZonaFrenagem == null) {
+            return;
         }
+        double lim = limiteBaseMarcaPneu();
+        lim *= intensidadeNaZonaFrenagem(posicaoZonaFrenagem);
         if (getRandom().nextDouble() > lim) {
             return;
         }
+        geraTravadaRoda(piloto);
+    }
+
+    /**
+     * Travada de roda por freada brusca ao evitar/sofrer colisão: ao
+     * contrário de {@link #travouRodas(Piloto)}, não é vetada por estar fora
+     * de uma zona de frenagem — uma colisão pode acontecer em qualquer ponto
+     * da pista. Fora de zona, usa a intensidade máxima (freada de emergência).
+     */
+    @Override
+    public void travouRodasPorColisao(Piloto piloto) {
+        if (piloto.isRecebeuBanderada()) {
+            return;
+        }
+        if (isChovendo()) {
+            return;
+        }
+        if (piloto.getPtosBox() != 0) {
+            return;
+        }
+        Double posicaoZonaFrenagem = obterPosicaoNaZonaFrenagem(piloto.getNoAtual());
+        double lim = limiteBaseMarcaPneu();
+        lim *= posicaoZonaFrenagem == null
+                ? Global.INTENSIDADE_MARCA_INICIO_ZONA_FRENAGEM
+                : intensidadeNaZonaFrenagem(posicaoZonaFrenagem);
+        if (getRandom().nextDouble() > lim) {
+            return;
+        }
+        geraTravadaRoda(piloto);
+    }
+
+    private double limiteBaseMarcaPneu() {
+        return asfaltoAbrasivo() ? 0.5 : 0.3;
+    }
+
+    private double intensidadeNaZonaFrenagem(double posicaoZonaFrenagem) {
+        return Global.INTENSIDADE_MARCA_INICIO_ZONA_FRENAGEM
+                + (Global.INTENSIDADE_MARCA_FIM_ZONA_FRENAGEM - Global.INTENSIDADE_MARCA_INICIO_ZONA_FRENAGEM)
+                        * posicaoZonaFrenagem;
+    }
+
+    private void geraTravadaRoda(Piloto piloto) {
         TravadaRoda travadaRoda = new TravadaRoda(getRandom());
         travadaRoda.setIdNo(mapaNosIds.get(piloto.getNoAtual()).intValue());
         travadaRoda.setTracado(piloto.getTracado());
@@ -1008,15 +1048,10 @@ public class ControleJogoLocal extends ControleRecursos
         } else if (piloto.getNoAtual().verificaCurvaBaixa()) {
             qtdeFumaca = getRandom().intervalo(10, 20);
         }
-        if (semFumaca) {
-            piloto.setMarcaPneu(true);
-            piloto.setTravouRodas(0);
-        } else {
-            piloto.setTravouRodas(qtdeFumaca);
-        }
+        piloto.setMarcaPneu(true);
+        piloto.setTravouRodas(qtdeFumaca);
         if (gerenciadorVisual != null && ControleCiclo.VALENDO)
             gerenciadorVisual.adicinaTravadaRoda(travadaRoda);
-
     }
 
     @Override

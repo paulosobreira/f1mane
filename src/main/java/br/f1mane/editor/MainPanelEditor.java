@@ -71,6 +71,7 @@ import javax.swing.event.ListSelectionListener;
 import br.f1mane.entidades.Carro;
 import br.f1mane.entidades.Circuito;
 import br.f1mane.entidades.DesenhoProceduralCircuito;
+import br.f1mane.controles.ControleRecursos;
 import br.f1mane.entidades.No;
 import br.f1mane.entidades.ObjetoDesenho;
 import br.f1mane.entidades.ObjetoEscapada;
@@ -104,6 +105,9 @@ public class MainPanelEditor extends JPanel {
      * GuardRails, Pneus). Não afeta objetos de função (Escapada, Transparencia), sempre desenhados. */
     private boolean desenhaObjetosDesenho = true;
     private boolean pontosEscape = false;
+    /** Cache de {@link #obterZonaFrenagemNos()}, invalidado quando {@code circuito.getPistaFull()} muda de referência (ex.: revetorização). */
+    private List<No> zonaFrenagemCalculadaPara;
+    private java.util.Set<No> zonaFrenagemNos = java.util.Collections.emptySet();
     public final static Color ver = new Color(255, 10, 10, 150);
 
     private BufferedImage backGround;
@@ -2122,6 +2126,7 @@ public class MainPanelEditor extends JPanel {
         // 4. Sequência de desenho existente
         if (desenhaTracado) {
             DesenhoProceduralCircuito.desenhaPistaZebraEBox(g2d, circuito, zoom);
+            desenhaZonaFrenagemOverlay(g2d);
         }
         desenhaCarroTeste(g2d);
         desenhaEntradaParadaSaidaBox(g2d);
@@ -2505,6 +2510,51 @@ public class MainPanelEditor extends JPanel {
         g2d.fillOval(Util.inteiro(s.x * zoom), Util.inteiro(s.y * zoom), Util.inteiro(5 * zoom),
                 Util.inteiro(5 * zoom));
 
+    }
+
+    /**
+     * Nós que pertencem a uma zona de frenagem detectada no circuito atual —
+     * reaproveita {@link ControleRecursos#calculaZonaFrenagem(java.util.List)}
+     * (a mesma detecção usada pelo motor de jogo), cacheado pela referência
+     * da própria lista {@code circuito.getPistaFull()} (não pela referência
+     * de {@link #circuito}): {@code circuito.vetorizarPista(...)} substitui
+     * essa lista por uma nova, com instâncias de {@code No} novas, sem
+     * trocar a referência de {@code circuito} — cachear pelo circuito
+     * deixaria o cache "grudado" nos nós antigos (que não batem mais por
+     * identidade com os nós de uma revetorização posterior).
+     */
+    private java.util.Set<No> obterZonaFrenagemNos() {
+        List<No> pista = circuito.getPistaFull();
+        if (pista != zonaFrenagemCalculadaPara) {
+            zonaFrenagemNos = (pista == null || pista.isEmpty())
+                    ? java.util.Collections.<No>emptySet()
+                    : ControleRecursos.calculaZonaFrenagem(pista).keySet();
+            zonaFrenagemCalculadaPara = pista;
+        }
+        return zonaFrenagemNos;
+    }
+
+    /**
+     * Marcação visual (acinzentada/translúcida) sobre os nós de pista que
+     * pertencem a uma zona de frenagem detectada — sempre visível quando o
+     * traçado está sendo mostrado, independente do checkbox "Faísca e
+     * Marcas de Pneu". Desenhada numa chamada própria do editor, separada
+     * de {@code DesenhoProceduralCircuito.desenhaPistaZebraEBox} (que é
+     * reaproveitada pela geração de imagem em memória usada em corrida
+     * real), pra essa marcação nunca vazar pra dentro da imagem de corrida.
+     */
+    private void desenhaZonaFrenagemOverlay(Graphics2D g2d) {
+        java.util.Set<No> zona = obterZonaFrenagemNos();
+        if (zona.isEmpty()) {
+            return;
+        }
+        g2d.setColor(new Color(120, 120, 120, 110));
+        double multiplicador = multiplicadorLarguraPista > 0 ? multiplicadorLarguraPista : 1.0;
+        int raio = Math.max(3, Util.inteiro(Carro.LARGURA * multiplicador * zoom / 2.0));
+        for (No no : zona) {
+            Point p = no.getPoint();
+            g2d.fillOval(Util.inteiro(p.x * zoom) - raio, Util.inteiro(p.y * zoom) - raio, raio * 2, raio * 2);
+        }
     }
 
     private void desenhaCarroTeste(Graphics2D g2d) {

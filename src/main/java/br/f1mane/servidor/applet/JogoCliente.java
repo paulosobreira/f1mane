@@ -702,6 +702,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
         piloto.setTravouRodas(10);
     }
 
+    @Override
+    public void travouRodasPorColisao(Piloto piloto) {
+        piloto.setTravouRodas(10);
+    }
+
     public void travouRodas(TravadaRoda travadaRoda) {
         if (gerenciadorVisual != null && travadaRoda != null) {
             gerenciadorVisual.adicinaTravadaRoda(travadaRoda);
@@ -1241,11 +1246,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
     @Override
     public Double getFatorBoxTemporada() {
         return null;
-    }
-
-    @Override
-    public void travouRodas(Piloto piloto, boolean semFumaca) {
-
     }
 
     @Override

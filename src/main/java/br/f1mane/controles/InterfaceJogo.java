@@ -192,6 +192,8 @@ public interface InterfaceJogo {
 
     public void travouRodas(Piloto piloto);
 
+    public void travouRodasPorColisao(Piloto piloto);
+
     public No obterNoPorId(int idNo);
 
     public Integer obterIdPorNo(No no);
@@ -254,6 +256,8 @@ public interface InterfaceJogo {
     public void forcaSafatyCar();
 
     public No obterProxCurva(No noAtual);
+
+    public boolean isNoZonaFrenagem(No no);
 
     public boolean verificaLag();
 
@@ -378,8 +382,6 @@ public interface InterfaceJogo {
     public boolean verificaEntradaBox(Piloto piloto);
 
     public Double getFatorBoxTemporada();
-
-    void travouRodas(Piloto piloto, boolean semFumaca);
 
     public void desqualificaPiloto(Piloto piloto);
 

@@ -1129,8 +1129,8 @@ public class Piloto implements Serializable, PilotoSuave {
         processaUsoDRS();
         processaPontoEscape();
         processaEscapadaDaPista();
-        processaTurbulencia();
         processaFaiscas();
+        processaTurbulencia();
         processaGanhoDanificado();
         processaPneusIncomaptiveis();
         processaFreioNaReta();
@@ -1138,6 +1138,7 @@ public class Piloto implements Serializable, PilotoSuave {
         processaMudarTracado();
         processaColisao();
         processaPenalidadeColisao();
+        processaTravouRodas();
         processaLimitadorGanho();
         processaGanhoMedio();
         processaEstatisticasGanho();
@@ -1575,7 +1576,7 @@ public class Piloto implements Serializable, PilotoSuave {
             return;
         }
         if (verificaForaPista(this)) {
-            ganho *= 0.60;
+            ganho *= 0.50;
         }
         /**
          * Escapa para os tracados 4 ou 5
@@ -1608,33 +1609,40 @@ public class Piloto implements Serializable, PilotoSuave {
             }
         }
 
-        /**
-         * Volta a pista apos escapada
-         */
-        if (getTracado() == 4 || getTracado() == 5) {
-            setModoPilotagem(LENTO);
-            getCarro().setGiro(Carro.GIRO_MIN_VAL);
-            if (getIndiceTracado() <= 0) {
-                int mudarTracado = 0;
-                if (getTracado() == 4) {
-                    No no = controleJogo.getCircuito().getPista4Full().get(getNoAtual().getIndex());
-                    if (no == null || no.getTracado() != 4) {
-                        mudarTracado = 2;
-                        mudarTracado(mudarTracado);
-                    }
-                }
-                if (getTracado() == 5) {
-                    No no = controleJogo.getCircuito().getPista5Full().get(getNoAtual().getIndex());
-                    if (no == null || no.getTracado() != 5) {
-                        mudarTracado = 1;
-                        mudarTracado(mudarTracado);
-                    }
-                }
-            } else {
-                setModoPilotagem(LENTO);
-                getCarro().setGiro(Carro.GIRO_MIN_VAL);
+    }
+
+    public void processaTravouRodas() {
+        No no = getNoAtual();
+        if (isRecebeuBanderada() || controleJogo.isSafetyCarNaPista()) {
+            return;
+        }
+        if (controleJogo.isChovendo() || getPtosBox() != 0) {
+            return;
+        }
+        if (no.verificaCurvaBaixa()) {
+            if (getStress() > 80) {
                 controleJogo.travouRodas(this);
             }
+            if (controleJogo.asfaltoAbrasivo() && getStress() > 70) {
+                controleJogo.travouRodas(this);
+            }
+        } else if (no.verificaCurvaAlta()) {
+            if (getStress() > 70) {
+                controleJogo.travouRodas(this);
+            }
+            if (controleJogo.asfaltoAbrasivo() && getStress() > 50 && controleJogo.getRandom().nextDouble() > 0.5) {
+                controleJogo.travouRodas(this);
+            }
+        } else if (no.verificaRetaOuLargada()) {
+            if (getStress() > 60) {
+                controleJogo.travouRodas(this);
+                if (controleJogo.asfaltoAbrasivo() && getStress() > 80) {
+                    controleJogo.travouRodas(this);
+                }
+            }
+        }
+        if (isColisaoDiantera() || isColisaoCentro()) {
+            controleJogo.travouRodasPorColisao(this);
         }
     }
 
@@ -1723,7 +1731,7 @@ public class Piloto implements Serializable, PilotoSuave {
         return piloto.getTracado() == 4 || piloto.getTracado() == 5 || voltando;
     }
 
-    private void processaFreioNaReta() {
+    void processaFreioNaReta() {
         if (isRecebeuBanderada()) {
             return;
         }
@@ -1732,52 +1740,49 @@ public class Piloto implements Serializable, PilotoSuave {
          * efeito freiar na reta
          */
         No obterProxCurva = controleJogo.obterProxCurva(getNoAtual());
-        if (obterProxCurva != null && obterProxCurva.verificaCurvaBaixa()) {
+        if (obterProxCurva != null && obterProxCurva.verificaCurvaBaixa()
+                && controleJogo.isNoZonaFrenagem(getNoAtual()) && getNoAtual().verificaRetaOuLargada()) {
             int indexProxCurva = obterProxCurva.getIndex();
             if (indexProxCurva < getNoAtual().getIndex()) {
                 indexProxCurva += controleJogo.getNosDaPista().size();
             }
             double val = indexProxCurva - getNoAtual().getIndex();
             double distAfrente = 300.0;
-            if (val < distAfrente && getNoAtual().verificaRetaOuLargada()) {
-                freiandoReta = true;
-                double multi = (val / distAfrente);
+            freiandoReta = true;
+            double multi = (val / distAfrente);
 
-                if (testPilotoPneus) {
-                    retardaFreiandoReta = true;
-                }
-
-                if (!retardaFreiandoReta && Piloto.AGRESSIVO.equals(getModoPilotagem())) {
-                    retardaFreiandoReta = true;
-                }
-
-                double minMulti = 0.7;
-                if (controleJogo.isChovendo()) {
-                    minMulti -= 0.3;
-                    retardaFreiandoReta = false;
-                }
-                if (calculaDiffParaProximoRetardatario < 50) {
-                    minMulti -= controleJogo.getRandom().intervalo(0.05, 0.15);
-                    retardaFreiandoReta = false;
-                } else if (calculaDiffParaProximoRetardatarioMesmoTracado < 100) {
-                    minMulti -= 0.1;
-                    retardaFreiandoReta = false;
-                } else if (calculaDiffParaProximoRetardatarioMesmoTracado < 150) {
-                    minMulti -= controleJogo.getRandom().intervalo(0.05, 0.1);
-                    retardaFreiandoReta = false;
-                }
-                if (retardaFreiandoReta) {
-                    if (getStress() > 50 && Piloto.AGRESSIVO.equals(getModoPilotagem())) {
-                        controleJogo.travouRodas(this);
-                    }
-                    minMulti += (testPilotoPneus) ? 0.2 : 0.1;
-                }
-                if (multi < minMulti)
-                    multi = minMulti;
-                ganho *= multi;
-            } else {
-                freiandoReta = false;
+            if (testPilotoPneus) {
+                retardaFreiandoReta = true;
             }
+
+            if (!retardaFreiandoReta && Piloto.AGRESSIVO.equals(getModoPilotagem())) {
+                retardaFreiandoReta = true;
+            }
+
+            double minMulti = 0.7;
+            if (controleJogo.isChovendo()) {
+                minMulti -= 0.3;
+                retardaFreiandoReta = false;
+            }
+            if (calculaDiffParaProximoRetardatario < 50) {
+                minMulti -= controleJogo.getRandom().intervalo(0.05, 0.15);
+                retardaFreiandoReta = false;
+            } else if (calculaDiffParaProximoRetardatarioMesmoTracado < 100) {
+                minMulti -= 0.1;
+                retardaFreiandoReta = false;
+            } else if (calculaDiffParaProximoRetardatarioMesmoTracado < 150) {
+                minMulti -= controleJogo.getRandom().intervalo(0.05, 0.1);
+                retardaFreiandoReta = false;
+            }
+            if (retardaFreiandoReta) {
+                if (getStress() > 50 && Piloto.AGRESSIVO.equals(getModoPilotagem())) {
+                    controleJogo.travouRodas(this);
+                }
+                minMulti += (testPilotoPneus) ? 0.2 : 0.1;
+            }
+            if (multi < minMulti)
+                multi = minMulti;
+            ganho *= multi;
         } else {
             freiandoReta = false;
         }
@@ -2212,7 +2217,7 @@ public class Piloto implements Serializable, PilotoSuave {
         }
         if (calculaDiffParaProximoRetardatarioMesmoTracado < limiteEvitarBatrCarroFrente
                 && (pilotoFrente.getTracado() == getTracado()
-                || pilotoFrente.getColisao() != null)) {
+                        || pilotoFrente.getColisao() != null)) {
             evitaBaterCarroFrente = true;
         }
     }
