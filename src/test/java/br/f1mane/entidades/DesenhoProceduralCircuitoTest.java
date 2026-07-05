@@ -382,6 +382,86 @@ class DesenhoProceduralCircuitoTest {
                 "modoEditor=false (imagem de corrida) não deveria desenhar a bolinha de lado do box");
     }
 
+    // ---- linha de largada quadriculada (largada-bandeira-quadriculada) ----
+
+    private Circuito circuitoComLargada() {
+        Circuito circuito = new Circuito();
+
+        List<No> pista = new ArrayList<>();
+        pista.add(criarNo(1000, 1000, No.LARGADA));
+        pista.add(criarNo(2000, 1000, No.RETA));
+        pista.add(criarNo(2000, 2000, No.CURVA_ALTA));
+        pista.add(criarNo(1000, 2000, No.CURVA_BAIXA));
+        circuito.setPista(pista);
+        circuito.setBox(new ArrayList<>());
+
+        circuito.vetorizarPista(9, 1.5);
+        return circuito;
+    }
+
+    @Test
+    void desenhaLinhaDeLargada_naoLancaExcecao_paraCircuitoComNoDeLargada() {
+        Circuito circuito = circuitoComLargada();
+        BufferedImage imagem = new BufferedImage(3000, 3000, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = imagem.createGraphics();
+        try {
+            assertDoesNotThrow(() -> DesenhoProceduralCircuito.desenhaLinhaDeLargada(g2d, circuito, 1.0));
+        } finally {
+            g2d.dispose();
+        }
+    }
+
+    @Test
+    void desenhaLinhaDeLargada_naoDesenhaNada_paraCircuitoSemNoDeLargada() {
+        // circuitoDeTeste() só tem RETA/CURVA_ALTA/CURVA_BAIXA, nenhum LARGADA.
+        Circuito circuito = circuitoDeTeste();
+        Color corFundo = new Color(128, 128, 128);
+        BufferedImage imagem = new BufferedImage(3000, 3000, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = imagem.createGraphics();
+        try {
+            g2d.setColor(corFundo);
+            g2d.fillRect(0, 0, imagem.getWidth(), imagem.getHeight());
+            assertDoesNotThrow(() -> DesenhoProceduralCircuito.desenhaLinhaDeLargada(g2d, circuito, 1.0));
+        } finally {
+            g2d.dispose();
+        }
+
+        assertTrue(!imagemContemCor(imagem, Color.BLACK), "sem nó de largada, nada deveria ter sido desenhado");
+        assertTrue(!imagemContemCor(imagem, Color.WHITE), "sem nó de largada, nada deveria ter sido desenhado");
+    }
+
+    @Test
+    void desenhaLinhaDeLargada_desenhaQuadriculadoPretoEBrancoPertoDoNoDeLargada() {
+        Circuito circuito = circuitoComLargada();
+        Color corFundo = new Color(128, 128, 128);
+        BufferedImage imagem = new BufferedImage(3000, 3000, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = imagem.createGraphics();
+        try {
+            g2d.setColor(corFundo);
+            g2d.fillRect(0, 0, imagem.getWidth(), imagem.getHeight());
+            DesenhoProceduralCircuito.desenhaLinhaDeLargada(g2d, circuito, 1.0);
+        } finally {
+            g2d.dispose();
+        }
+
+        assertTrue(imagemContemCor(imagem, Color.BLACK), "esperava quadrados pretos na linha de largada");
+        assertTrue(imagemContemCor(imagem, Color.WHITE), "esperava quadrados brancos na linha de largada");
+
+        // O nó de largada fica em (1000,1000); a faixa quadriculada é pequena
+        // (largura da pista x um par de quadrados ao longo da pista), então
+        // pixels pretos/brancos só deveriam aparecer perto desse ponto, não
+        // no restante da imagem (fundo cinza, sem mais nada desenhado).
+        for (int x = 0; x < imagem.getWidth(); x++) {
+            for (int y = 0; y < imagem.getHeight(); y++) {
+                int rgb = imagem.getRGB(x, y) & 0xFFFFFF;
+                if (rgb == Color.BLACK.getRGB() || rgb == (Color.WHITE.getRGB() & 0xFFFFFF)) {
+                    assertTrue(Math.abs(x - 1000) < 200 && Math.abs(y - 1000) < 200,
+                            "pixel do xadrez fora da vizinhança esperada do nó de largada, em x=" + x + " y=" + y);
+                }
+            }
+        }
+    }
+
     /** Varre a imagem inteira procurando um pixel com exatamente essa cor (RGB, ignora alpha). */
     private static boolean imagemContemCor(BufferedImage imagem, Color cor) {
         int alvo = cor.getRGB() & 0xFFFFFF;

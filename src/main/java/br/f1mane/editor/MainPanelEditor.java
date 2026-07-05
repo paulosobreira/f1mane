@@ -2259,7 +2259,7 @@ public class MainPanelEditor extends JPanel {
         }
         desenhaCarroTeste(g2d);
         desenhaEntradaParadaSaidaBox(g2d);
-        desenhaLargada(g2d);
+        DesenhoProceduralCircuito.desenhaLinhaDeLargada(g2d, circuito, zoom);
         desenhaGrid(g2d);
         desenhaBoxes(g2d);
         desenhaObjetosNivel(g2d, 0);
@@ -2596,27 +2596,6 @@ public class MainPanelEditor extends JPanel {
             affineTransformRect.setToRotation(rad, rectangle.getCenterX(), rectangle.getCenterY());
             g2d.setColor(new Color(192, 192, 192, 150));
         }
-
-    }
-
-    private void desenhaLargada(Graphics2D g2d) {
-        if (circuito.getPistaFull() == null || circuito.getPistaFull().isEmpty()) {
-            return;
-        }
-        No n1 = (No) circuito.getPistaFull().get(0);
-        No n2 = (No) circuito.getPistaFull().get(20);
-        Point p1 = new Point(Util.inteiro(n1.getPoint().x * zoom), Util.inteiro(n1.getPoint().y * zoom));
-        Point p2 = new Point(Util.inteiro(n2.getPoint().x * zoom), Util.inteiro(n2.getPoint().y * zoom));
-        double larguraZebra = (larguraPistaPixeis * 0.01);
-        RoundRectangle2D rectangle = new RoundRectangle2D.Double((p1.x - (larguraZebra / 2)),
-                (p1.y - (larguraPistaPixeis / 2)), larguraZebra, larguraPistaPixeis, 5 * zoom, 5 * zoom);
-        double calculaAngulo = GeoUtil.calculaAngulo(p1, p2, 0);
-        double rad = Math.toRadians((double) calculaAngulo);
-        GeneralPath generalPath = new GeneralPath(rectangle);
-        AffineTransform affineTransformRect = AffineTransform.getScaleInstance(zoom, zoom);
-        affineTransformRect.setToRotation(rad, rectangle.getCenterX(), rectangle.getCenterY());
-        g2d.setColor(Color.white);
-        g2d.fill(generalPath.createTransformedShape(affineTransformRect));
 
     }
 

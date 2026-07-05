@@ -41,3 +41,7 @@ Número de colunas, tamanho de cada quadrado e espessura da faixa ficam como con
 ## Open Questions
 
 - Tamanho exato dos quadrados do xadrez e quantas colunas cabem por padrão ficam a critério de quem implementar/ajustar visualmente — não afeta a forma pública do método nem os cenários de spec.
+
+## Verificação manual (limitação do ambiente)
+
+Não há display interativo disponível no ambiente de implementação pra rodar o editor Swing ou o jogo ao vivo. A verificação visual foi feita renderizando um circuito real (Interlagos) via `DesenhoProceduralCircuito.geraImagem`, recortando a região ao redor do nó de largada e inspecionando o PNG resultante: a faixa quadriculada aparece perpendicular à pista, cruzando a largura do traçado com espessura fixa ao longo da direção da pista — como esperado. Fica como pendência de quem rodar o jogo/editor de fato conferir visualmente em tempo real (zoom, scroll, imagem de fundo estática `.jpg`).
