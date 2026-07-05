@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="25.0.2" class="java.beans.XMLDecoder">
+<java version="21.0.11" class="java.beans.XMLDecoder">
  <object class="br.f1mane.entidades.Circuito" id="Circuito0">
   <void property="box">
    <void method="add">
@@ -429,9 +429,9 @@
   </void>
   <void property="corFundo">
    <object class="java.awt.Color">
-    <int>153</int>
-    <int>153</int>
-    <int>116</int>
+    <int>130</int>
+    <int>131</int>
+    <int>74</int>
     <int>255</int>
    </object>
   </void>
