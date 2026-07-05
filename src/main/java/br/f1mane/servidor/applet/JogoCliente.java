@@ -1281,7 +1281,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
     @Override
     public long tempoCicloCircuito() {
-        return circuitosCiclo.get(circuito.getNome());
+        return circuito.getCiclo();
     }
 
     @Override

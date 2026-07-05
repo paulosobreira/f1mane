@@ -580,6 +580,9 @@
     </object>
    </void>
   </void>
+  <void property="ciclo">
+   <int>180</int>
+  </void>
   <void property="corFundo">
    <object class="java.awt.Color">
     <int>47</int>

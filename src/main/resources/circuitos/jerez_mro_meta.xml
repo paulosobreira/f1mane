@@ -892,6 +892,9 @@
     </object>
    </void>
   </void>
+  <void property="ciclo">
+   <int>140</int>
+  </void>
   <void property="ladoBox">
    <int>1</int>
   </void>

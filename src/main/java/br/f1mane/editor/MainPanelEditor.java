@@ -71,6 +71,7 @@ import javax.swing.event.ListSelectionListener;
 import br.f1mane.entidades.Carro;
 import br.f1mane.entidades.Circuito;
 import br.f1mane.entidades.DesenhoProceduralCircuito;
+import br.f1mane.controles.ControleEstatisticas;
 import br.f1mane.controles.ControleRecursos;
 import br.f1mane.entidades.DirecaoEmpilhamento;
 import br.f1mane.entidades.No;
@@ -165,6 +166,9 @@ public class MainPanelEditor extends JPanel {
     private JSpinner larguraPistaSpinner;
     private JTextField nomePistaText;
     private JTextField probalidadeChuvaText;
+    private JSpinner cicloSpinner;
+    private JTextField distanciaKmText;
+    private JLabel tempoVoltaEstimadoLabel;
     private final BasicStroke trilho = new BasicStroke(1);
     private int larguraPistaPixeis;
     private JComboBox ladoBoxCombo;
@@ -284,6 +288,7 @@ public class MainPanelEditor extends JPanel {
         }
         if (defaultListModel.size() > 10) {
             circuito.vetorizarPista(this.multiplicadorPista, this.multiplicadorLarguraPista);
+            atualizaTempoVoltaEstimado();
         }
         List l = circuito.getPistaFull();
         for (Iterator iterator = l.iterator(); iterator.hasNext(); ) {
@@ -749,6 +754,53 @@ public class MainPanelEditor extends JPanel {
         }
         topo.add(probalidadeChuvaText);
 
+        topo.add(new JLabel() {
+            @Override
+            public String getText() {
+                return "Ciclo (ms/tick)";
+            }
+        });
+        cicloSpinner = new JSpinner(new SpinnerNumberModel(circuito != null ? circuito.getCiclo() : 160, 1, 10000, 1)) {
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(60, super.getPreferredSize().height);
+            }
+        };
+        cicloSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                circuito.setCiclo(((Integer) cicloSpinner.getValue()).intValue());
+                atualizaTempoVoltaEstimado();
+            }
+        });
+        topo.add(cicloSpinner);
+
+        topo.add(new JLabel() {
+            @Override
+            public String getText() {
+                return "Tempo de volta estimado";
+            }
+        });
+        tempoVoltaEstimadoLabel = new JLabel("~");
+        topo.add(tempoVoltaEstimadoLabel);
+
+        topo.add(new JLabel() {
+            @Override
+            public String getText() {
+                return "Distância (km)";
+            }
+        });
+        distanciaKmText = new JTextField() {
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(50, super.getPreferredSize().height);
+            }
+        };
+        if (circuito != null) {
+            distanciaKmText.setText("" + circuito.getDistanciaKm());
+        }
+        topo.add(distanciaKmText);
+
         if (multiplicadorLarguraPista < 1.0) {
             multiplicadorLarguraPista = 1.0;
         }
@@ -1029,12 +1081,32 @@ public class MainPanelEditor extends JPanel {
         if (ativoCheckBox != null) {
             ativoCheckBox.setSelected(circuito.isAtivo());
         }
+        if (cicloSpinner != null) {
+            cicloSpinner.getModel().setValue(Integer.valueOf(circuito.getCiclo()));
+        }
+        if (distanciaKmText != null) {
+            distanciaKmText.setText(String.valueOf(circuito.getDistanciaKm()));
+        }
         atualizaCorLabel(corFundoLabel, circuito.getCorFundo(), Color.WHITE);
         atualizaCorLabel(corAsfaltoLabel, circuito.getCorAsfalto(), DesenhoProceduralCircuito.COR_PISTA);
         atualizaCorLabel(corBox1Label, circuito.getCorBox1(), Color.LIGHT_GRAY);
         atualizaCorLabel(corBox2Label, circuito.getCorBox2(), Color.GRAY);
         atualizaCorLabel(corZebra1Label, circuito.getCorZebra1(), Color.WHITE);
         atualizaCorLabel(corZebra2Label, circuito.getCorZebra2(), Color.RED);
+        atualizaTempoVoltaEstimado();
+    }
+
+    /**
+     * Atualiza o rótulo de tempo de volta estimado (aproximado — ver
+     * {@link Circuito#estimarTempoVoltaMs()}), chamado sempre que ciclo
+     * muda ou o circuito é (re)vetorizado.
+     */
+    private void atualizaTempoVoltaEstimado() {
+        if (tempoVoltaEstimadoLabel == null || circuito == null) {
+            return;
+        }
+        tempoVoltaEstimadoLabel.setText(
+                "~" + ControleEstatisticas.formatarTempo(Long.valueOf(circuito.estimarTempoVoltaMs())));
     }
 
     private JPanel gerarListsNosPistaBox() {
@@ -2894,6 +2966,7 @@ public class MainPanelEditor extends JPanel {
         circuito.setMultiplicadorLarguraPista(multiplicadorLarguraPista);
         circuito.setProbalidadeChuva(Integer.parseInt(probalidadeChuvaText.getText()));
         circuito.setNome(nomePistaText.getText());
+        circuito.setDistanciaKm(Double.parseDouble(distanciaKmText.getText().replace(',', '.')));
         if (!vetorizarCircuito()) {
             return;
         }

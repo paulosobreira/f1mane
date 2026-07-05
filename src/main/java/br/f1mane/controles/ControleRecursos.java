@@ -24,7 +24,6 @@ public abstract class ControleRecursos {
     protected List<Carro> carros;
     protected CarregadorRecursos carregadorRecursos;
     protected static Map<String, String> circuitos;
-    public static Map<String, Integer> circuitosCiclo;
     protected final Map<No, No> mapaNoProxCurva = new HashMap<No, No>();
     protected final Map<No, No> mapaNoCurvaAnterior = new HashMap<No, No>();
     /**
@@ -378,7 +377,6 @@ public abstract class ControleRecursos {
         }
 
         circuitos = new HashMap<String, String>();
-        circuitosCiclo= new HashMap<String, Integer>();
         final Properties properties = new Properties();
 
         try {
@@ -388,18 +386,19 @@ public abstract class ControleRecursos {
             while (propName.hasMoreElements()) {
                 final String name = (String) propName.nextElement();
                 String names[] = properties.getProperty(name).split(",");
-                // O terceiro campo (ativo) já está no Properties carregado
+                // O segundo campo (ativo) já está no Properties carregado
                 // acima, sem precisar desserializar nenhum circuito: carregar
                 // os XMLs inteiros nesta listagem (que roda na abertura do
                 // menu) deixava TODOS os circuitos presos em memória desde o
                 // boot — o circuito completo só é carregado quando a corrida
-                // (ou o preview do menu) realmente o usa.
-                boolean ativo = names.length > 2 && Boolean.parseBoolean(names[2].trim());
+                // (ou o preview do menu) realmente o usa. Ciclo não é mais
+                // lido daqui — vive em Circuito.getCiclo() (ver
+                // circuito-info-editor).
+                boolean ativo = names.length > 1 && Boolean.parseBoolean(names[1].trim());
                 if (!ativo) {
                     continue;
                 }
                 circuitos.put(names[0], name);
-                circuitosCiclo.put(names[0],Integer.valueOf(names[1]));
             }
 
         } catch (IOException e) {

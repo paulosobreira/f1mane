@@ -45,6 +45,10 @@ public class Circuito implements Serializable {
     private int ladoBoxSaidaBox = 0;
     private int probalidadeChuva = 0;
     private double velocidadePista = 0;
+    /** Milissegundos entre ticks de simulação (InterfaceJogo.tempoCicloCircuito()) — não é contagem de voltas. */
+    private int ciclo = 160;
+    /** Distância oficial do circuito em quilômetros, informada por quem edita o circuito — não calculada a partir do traçado. */
+    private double distanciaKm = 0;
     private int entradaBoxIndex;
     private int saidaBoxIndex;
     private int paradaBoxIndex;
@@ -599,6 +603,8 @@ public class Circuito implements Serializable {
         copia.setCorZebra1(corZebra1);
         copia.setCorZebra2(corZebra2);
         copia.setMultiplicadorLarguraPista(multiplicadorLarguraPista);
+        copia.setCiclo(ciclo);
+        copia.setDistanciaKm(distanciaKm);
         copia.setPista(new ArrayList<No>(pista));
         copia.setBox(new ArrayList<No>(box));
         return copia;
@@ -755,6 +761,55 @@ public class Circuito implements Serializable {
 
     public void setProbalidadeChuva(int probalidadeChuva) {
         this.probalidadeChuva = probalidadeChuva;
+    }
+
+    public int getCiclo() {
+        return ciclo;
+    }
+
+    public void setCiclo(int ciclo) {
+        this.ciclo = ciclo;
+    }
+
+    public double getDistanciaKm() {
+        return distanciaKm;
+    }
+
+    public void setDistanciaKm(double distanciaKm) {
+        this.distanciaKm = distanciaKm;
+    }
+
+    /**
+     * Ganhos médios (nós de pistaFull avançados por tick) usados só para
+     * estimar o tempo de volta no editor — médias aproximadas das faixas de
+     * {@link Piloto#calculaModificadorPrincipal()} antes de qualquer
+     * modificador de carro/piloto/clima/dano: reta/largada 30-50 (média 40),
+     * curva alta 20-30 (média 25), curva baixa 10-20 (média 15). Não é uma
+     * refatoração da fórmula de corrida, só uma ordem de grandeza pro editor.
+     */
+    private static final int GANHO_MEDIO_RETA = 40;
+    private static final int GANHO_MEDIO_CURVA_ALTA = 25;
+    private static final int GANHO_MEDIO_CURVA_BAIXA = 15;
+
+    /**
+     * Estimativa de tempo de volta, em milissegundos: soma, para cada nó de
+     * {@link #pistaFull}, {@code 1 / ganhoMedio(tipoDoNo)} ticks, multiplicada
+     * por {@link #ciclo} (ms/tick). Não precisa ser exata — é uma ferramenta
+     * de apoio pra calibrar {@code ciclo} no editor, não um substituto da
+     * simulação real (ver {@link #GANHO_MEDIO_RETA} e afins).
+     */
+    public long estimarTempoVoltaMs() {
+        double ticks = 0;
+        for (No no : pistaFull) {
+            if (no.verificaRetaOuLargada()) {
+                ticks += 1.0 / GANHO_MEDIO_RETA;
+            } else if (no.verificaCurvaAlta()) {
+                ticks += 1.0 / GANHO_MEDIO_CURVA_ALTA;
+            } else if (no.verificaCurvaBaixa()) {
+                ticks += 1.0 / GANHO_MEDIO_CURVA_BAIXA;
+            }
+        }
+        return Math.round(ticks * ciclo);
     }
 
     public List<ObjetoPistaJSon> getObjetosNoTransparencia() {

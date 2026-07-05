@@ -1143,10 +1143,11 @@ public class CarregadorRecursos {
     }
 
     /**
-     * Lê só o terceiro campo (ativo) da linha correspondente em
+     * Lê só o segundo campo (ativo) da linha correspondente em
      * {@code properties/circuitos.properties}
-     * (<code>&lt;arquivo&gt;=&lt;NomeExibicao&gt;,&lt;ciclo&gt;,&lt;ativo&gt;</code>),
-     * sem tocar em nenhum XML de circuito. Ausência da linha, do terceiro
+     * (<code>&lt;arquivo&gt;=&lt;NomeExibicao&gt;,&lt;ativo&gt;</code> — o
+     * ciclo não vive mais aqui, ver {@link br.f1mane.entidades.Circuito#getCiclo()}),
+     * sem tocar em nenhum XML de circuito. Ausência da linha, do segundo
      * campo, ou do próprio arquivo de properties equivale a {@code false}.
      */
     private static boolean lerAtivoDeCircuitosProperties(String nmCircuito) {
@@ -1165,10 +1166,10 @@ public class CarregadorRecursos {
             return false;
         }
         String[] campos = valor.split(",");
-        if (campos.length < 3) {
+        if (campos.length < 2) {
             return false;
         }
-        return Boolean.parseBoolean(campos[2].trim());
+        return Boolean.parseBoolean(campos[1].trim());
     }
 
     /**
@@ -1245,7 +1246,7 @@ public class CarregadorRecursos {
     }
 
     /**
-     * Atualiza (ou acrescenta) o terceiro campo CSV (ativo) da linha de
+     * Atualiza (ou acrescenta) o segundo campo CSV (ativo) da linha de
      * {@code nmCircuitoXml} em {@code src/main/resources/properties/circuitos.properties},
      * preservando todas as outras linhas exatamente como estavam — leitura e
      * escrita linha a linha, não via {@code Properties.store()} (que
@@ -1253,7 +1254,7 @@ public class CarregadorRecursos {
      * diffs git ruidosos). Se a linha de {@code nmCircuitoXml} ainda não
      * existir (circuito nunca listado em circuitos.properties), não grava
      * nada e só registra um aviso — criar automaticamente a linha
-     * (nome de exibição/ciclo) de um circuito novo está fora do escopo desta
+     * (nome de exibição) de um circuito novo está fora do escopo desta
      * mudança.
      */
     public static void atualizarAtivoEmCircuitosProperties(String nmCircuitoXml, boolean ativo) throws IOException {
@@ -1281,8 +1282,7 @@ public class CarregadorRecursos {
                 if (idxIgual > 0 && linha.substring(0, idxIgual).equals(nmCircuitoXml)) {
                     String[] campos = linha.substring(idxIgual + 1).split(",", -1);
                     String nomeExibicao = campos.length > 0 ? campos[0] : "";
-                    String ciclo = campos.length > 1 ? campos[1] : "";
-                    linha = nmCircuitoXml + "=" + nomeExibicao + "," + ciclo + "," + ativo;
+                    linha = nmCircuitoXml + "=" + nomeExibicao + "," + ativo;
                     encontrada = true;
                 }
                 linhas.add(linha);
