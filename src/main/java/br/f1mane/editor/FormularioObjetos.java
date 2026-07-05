@@ -17,6 +17,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import br.nnpe.Logger;
+import br.f1mane.entidades.DirecaoEmpilhamento;
+import br.f1mane.entidades.ObjetoConstrucao;
 import br.f1mane.entidades.ObjetoDesenho;
 import br.f1mane.entidades.ObjetoEscapada;
 import br.f1mane.entidades.ObjetoGuardRails;
@@ -24,6 +26,7 @@ import br.f1mane.entidades.ObjetoLivre;
 import br.f1mane.entidades.ObjetoPista;
 import br.f1mane.entidades.ObjetoTransparencia;
 import br.f1mane.entidades.OrientacaoGuardRails;
+import br.f1mane.entidades.TipoObjetoConstrucao;
 import br.f1mane.entidades.TipoObjetoLivre;
 
 public class FormularioObjetos {
@@ -43,6 +46,13 @@ public class FormularioObjetos {
 			OrientacaoGuardRails.values());
 	private final JSpinner larguraLinhaGuardRails = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
 	private final JSpinner vaoEntreLinhasGuardRails = new JSpinner(new SpinnerNumberModel(1, 0, 100, 1));
+	private final JComboBox<TipoObjetoConstrucao> tipoObjetoConstrucaoCombo = new JComboBox<TipoObjetoConstrucao>(
+			TipoObjetoConstrucao.values());
+	private final JSpinner afunilamentoSpinner = new JSpinner(new SpinnerNumberModel(30, 0, 90, 1));
+	private final JSpinner quantidadeEmpilhamentoSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 20, 1));
+	private final JComboBox<DirecaoEmpilhamento> direcaoEmpilhamentoCombo = new JComboBox<DirecaoEmpilhamento>(
+			DirecaoEmpilhamento.values());
+	private final JSpinner grauEmpilhamentoSpinner = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1));
 	private JLabel labelCor1 = new JLabel("Clique");
 	private JLabel labelCor2 = new JLabel("Clique");
 	private final JLabel labelLegendaCor1 = new JLabel("Cor de Fundo");
@@ -69,6 +79,9 @@ public class FormularioObjetos {
 		nivelDesenho.addChangeListener(changeListener);
 		larguraLinhaGuardRails.addChangeListener(changeListener);
 		vaoEntreLinhasGuardRails.addChangeListener(changeListener);
+		afunilamentoSpinner.addChangeListener(changeListener);
+		quantidadeEmpilhamentoSpinner.addChangeListener(changeListener);
+		grauEmpilhamentoSpinner.addChangeListener(changeListener);
 
 		labelCor1.addMouseListener(new MouseAdapter() {
 			@Override
@@ -178,6 +191,36 @@ public class FormularioObjetos {
 			panel.add(labelCor1);
 			panel.add(labelLegendaCor2);
 			panel.add(labelCor2);
+		} else if (objetoPista instanceof ObjetoConstrucao) {
+			// Afunilamento só faz sentido para o tipo BARCO; empilhamento
+			// (quantidade/direção/grau) é transversal a qualquer tipo, então
+			// aparece sempre, independente do tipo selecionado.
+			boolean mostraAfunilamento = ((ObjetoConstrucao) objetoPista).getTipo() == TipoObjetoConstrucao.BARCO;
+			panel.setLayout(new GridLayout(mostraAfunilamento ? 11 : 10, 2));
+			panel.add(new JLabel("Ângulo"));
+			panel.add(angulo);
+			panel.add(new JLabel("Largura"));
+			panel.add(largura);
+			panel.add(new JLabel("Altura"));
+			panel.add(altura);
+			panel.add(labelLegendaCor1);
+			panel.add(labelCor1);
+			panel.add(labelLegendaCor2);
+			panel.add(labelCor2);
+			panel.add(new JLabel("Tipo"));
+			panel.add(tipoObjetoConstrucaoCombo);
+			if (mostraAfunilamento) {
+				panel.add(new JLabel("Afunilamento"));
+				panel.add(afunilamentoSpinner);
+			}
+			panel.add(new JLabel("Qtd. Empilhamento"));
+			panel.add(quantidadeEmpilhamentoSpinner);
+			panel.add(new JLabel("Direção Empilhamento"));
+			panel.add(direcaoEmpilhamentoCombo);
+			panel.add(new JLabel("Grau Empilhamento"));
+			panel.add(grauEmpilhamentoSpinner);
+			panel.add(new JLabel("Nível"));
+			panel.add(nivelDesenho);
 		} else {
 			panel.setLayout(new GridLayout(6, 2));
 			panel.add(new JLabel("Ângulo"));
@@ -313,6 +356,14 @@ public class FormularioObjetos {
 				larguraLinhaGuardRails.setValue(Integer.valueOf(guardRails.getLarguraLinha()));
 				vaoEntreLinhasGuardRails.setValue(Integer.valueOf(guardRails.getVaoEntreLinhas()));
 			}
+			if (objetoPista instanceof ObjetoConstrucao) {
+				ObjetoConstrucao objetoConstrucao = (ObjetoConstrucao) objetoPista;
+				tipoObjetoConstrucaoCombo.setSelectedItem(objetoConstrucao.getTipo());
+				afunilamentoSpinner.setValue(Integer.valueOf(objetoConstrucao.getAfunilamento()));
+				quantidadeEmpilhamentoSpinner.setValue(Integer.valueOf(objetoConstrucao.getQuantidadeEmpilhamento()));
+				direcaoEmpilhamentoCombo.setSelectedItem(objetoConstrucao.getDirecaoEmpilhamento());
+				grauEmpilhamentoSpinner.setValue(Integer.valueOf(objetoConstrucao.getGrauEmpilhamento()));
+			}
 		}
 	}
 
@@ -338,6 +389,15 @@ public class FormularioObjetos {
 				guardRails.setOrientacao((OrientacaoGuardRails) orientacaoGuardRailsCombo.getSelectedItem());
 				guardRails.setLarguraLinha(((Integer) larguraLinhaGuardRails.getValue()).intValue());
 				guardRails.setVaoEntreLinhas(((Integer) vaoEntreLinhasGuardRails.getValue()).intValue());
+			}
+			if (objetoPista instanceof ObjetoConstrucao) {
+				ObjetoConstrucao objetoConstrucao = (ObjetoConstrucao) objetoPista;
+				objetoConstrucao.setTipo((TipoObjetoConstrucao) tipoObjetoConstrucaoCombo.getSelectedItem());
+				objetoConstrucao.setAfunilamento(((Integer) afunilamentoSpinner.getValue()).intValue());
+				objetoConstrucao
+						.setQuantidadeEmpilhamento(((Integer) quantidadeEmpilhamentoSpinner.getValue()).intValue());
+				objetoConstrucao.setDirecaoEmpilhamento((DirecaoEmpilhamento) direcaoEmpilhamentoCombo.getSelectedItem());
+				objetoConstrucao.setGrauEmpilhamento(((Integer) grauEmpilhamentoSpinner.getValue()).intValue());
 			}
 		}
 		// Guarda os valores atuais como "última configuração" desta classe,

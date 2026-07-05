@@ -29,7 +29,7 @@ O registro de tipos de `ObjetoPista` SHALL incluir `ObjetoArquibancada`, `Objeto
 - **THEN** os respectivos `ObjetoConstrucao`, `ObjetoGuardRails` e `ObjetoPneus` são adicionados a `circuito.getObjetos()` e aparecem na lista de objetos do editor
 
 ### Requirement: Cor e tamanho de um objeto de pista são editáveis no editor
-O formulário de edição de `ObjetoPista` (`FormularioObjetos`) SHALL permitir escolher a cor primária e a cor secundária via seletor de cores, e definir largura e altura via campos numéricos, gravando esses valores no objeto selecionado. Para `ObjetoGuardRails` especificamente, o formulário SHALL também permitir editar, via campos numéricos, a espessura da linha fina do padrão (`larguraLinha`) e o vão entre linhas consecutivas (`vaoEntreLinhas`), que passam a ser propriedades do objeto em vez de constantes fixas de classe.
+O formulário de edição de `ObjetoPista` (`FormularioObjetos`) SHALL permitir escolher a cor primária e a cor secundária via seletor de cores, e definir largura e altura via campos numéricos, gravando esses valores no objeto selecionado. Para `ObjetoGuardRails` especificamente, o formulário SHALL também permitir editar, via campos numéricos, a espessura da linha fina do padrão (`larguraLinha`) e o vão entre linhas consecutivas (`vaoEntreLinhas`), que passam a ser propriedades do objeto em vez de constantes fixas de classe. Para `ObjetoConstrucao` especificamente, o formulário SHALL também permitir escolher o `tipo` (`QUADRADO`, `REDONDO`, `CAMINHAO`, `BARCO`) via combo box, editar condicionalmente o afunilamento (só quando `tipo=BARCO`), e editar sempre (independente do `tipo`) a quantidade, a direção e o grau de empilhamento.
 
 #### Scenario: Alterar a cor primária
 - **WHEN** o usuário clica no indicador de cor primária no formulário e escolhe uma cor no seletor
@@ -50,6 +50,22 @@ O formulário de edição de `ObjetoPista` (`FormularioObjetos`) SHALL permitir 
 #### Scenario: Guard rails de circuito antigo assume valores padrão
 - **WHEN** um circuito XML criado antes desta mudança, contendo um `ObjetoGuardRails` sem `larguraLinha`/`vaoEntreLinhas` gravados, é carregado
 - **THEN** o objeto assume `larguraLinha=1` e `vaoEntreLinhas=1` (os mesmos valores antes hardcoded), preservando a aparência original
+
+#### Scenario: Alterar o tipo de um objeto construção
+- **WHEN** o usuário seleciona um tipo diferente no combo de tipo do formulário para um `ObjetoConstrucao` em edição
+- **THEN** `tipo` do objeto é atualizado e o objeto é redesenhado com a forma correspondente ao novo tipo, mantendo posição, ângulo, cores, tamanho e configuração de empilhamento já definidos
+
+#### Scenario: Campo de afunilamento só aparece para o tipo BARCO
+- **WHEN** o usuário abre o formulário para um `ObjetoConstrucao` cujo tipo selecionado é `BARCO`
+- **THEN** o formulário exibe o campo de afunilamento, e esse campo não aparece quando o tipo selecionado é `QUADRADO`, `REDONDO` ou `CAMINHAO`
+
+#### Scenario: Campos de empilhamento aparecem para qualquer tipo
+- **WHEN** o usuário abre o formulário para um `ObjetoConstrucao`, qualquer que seja o tipo selecionado (`QUADRADO`, `REDONDO`, `CAMINHAO` ou `BARCO`)
+- **THEN** o formulário exibe os campos de quantidade, direção e grau de empilhamento, independente do tipo selecionado
+
+#### Scenario: Menu de contexto de ajuste rápido reflete os mesmos campos
+- **WHEN** o usuário abre o menu de contexto de ajuste rápido (clique direito) sobre um `ObjetoConstrucao`
+- **THEN** o menu exibe os mesmos campos de empilhamento (sempre) e de afunilamento (só quando `tipo=BARCO`) que o formulário completo exibiria
 
 ### Requirement: Objetos de cenário têm valores padrão seguros ao serem criados
 `ObjetoArquibancada`, `ObjetoConstrucao`, `ObjetoGuardRails` e `ObjetoPneus` SHALL, ao serem instanciados sem configuração adicional, ter cor primária, cor secundária, largura e altura com valores padrão não nulos e maiores que zero, de forma que o objeto seja desenhado sem lançar exceção e seja visível antes de qualquer edição pelo usuário.
