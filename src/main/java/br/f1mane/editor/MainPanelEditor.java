@@ -72,13 +72,16 @@ import br.f1mane.entidades.Carro;
 import br.f1mane.entidades.Circuito;
 import br.f1mane.entidades.DesenhoProceduralCircuito;
 import br.f1mane.controles.ControleRecursos;
+import br.f1mane.entidades.DirecaoEmpilhamento;
 import br.f1mane.entidades.No;
+import br.f1mane.entidades.ObjetoConstrucao;
 import br.f1mane.entidades.ObjetoDesenho;
 import br.f1mane.entidades.ObjetoEscapada;
 import br.f1mane.entidades.ObjetoGuardRails;
 import br.f1mane.entidades.ObjetoLivre;
 import br.f1mane.entidades.ObjetoPista;
 import br.f1mane.entidades.ObjetoTransparencia;
+import br.f1mane.entidades.TipoObjetoConstrucao;
 import br.f1mane.entidades.PontoCurva;
 import br.f1mane.entidades.PontoEscape;
 import br.f1mane.recursos.CarregadorRecursos;
@@ -1543,7 +1546,13 @@ public class MainPanelEditor extends JPanel {
         boolean mostraLargura = !ehObjetoLivre;
         boolean mostraAltura = !ehObjetoLivre && !ehGuardRails;
         boolean mostraAngulo = !ehObjetoLivre && !ehGuardRails;
-        int linhas = (mostraLargura ? 1 : 0) + (mostraAltura ? 1 : 0) + (mostraAngulo ? 1 : 0);
+        // Empilhamento (quantidade/direção/grau) é transversal a qualquer
+        // tipo de ObjetoConstrucao; afunilamento só faz sentido para BARCO.
+        boolean ehObjetoConstrucao = alvo instanceof ObjetoConstrucao;
+        boolean mostraAfunilamento = ehObjetoConstrucao
+                && ((ObjetoConstrucao) alvo).getTipo() == TipoObjetoConstrucao.BARCO;
+        int linhasConstrucao = ehObjetoConstrucao ? (3 + (mostraAfunilamento ? 1 : 0)) : 0;
+        int linhas = (mostraLargura ? 1 : 0) + (mostraAltura ? 1 : 0) + (mostraAngulo ? 1 : 0) + linhasConstrucao;
         JPanel panel = new JPanel(new GridLayout(Math.max(1, linhas), 2));
         // Objetos de desenho não aceitam largura/altura menor que 1 nem
         // ângulo negativo (ver ObjetoDesenho); objetos de função (Escapada,
@@ -1619,6 +1628,54 @@ public class MainPanelEditor extends JPanel {
             });
             panel.add(editarPontosButton);
             panel.add(new JLabel());
+        }
+        if (alvo instanceof ObjetoConstrucao) {
+            final ObjetoConstrucao objetoConstrucao = (ObjetoConstrucao) alvo;
+            if (mostraAfunilamento) {
+                final JSpinner afunilamentoSpinner = new JSpinner(
+                        new SpinnerNumberModel(objetoConstrucao.getAfunilamento(), 0, 90, 1));
+                panel.add(new JLabel("Afunilamento"));
+                panel.add(afunilamentoSpinner);
+                afunilamentoSpinner.addChangeListener(new ChangeListener() {
+                    public void stateChanged(ChangeEvent e) {
+                        objetoConstrucao.setAfunilamento(((Integer) afunilamentoSpinner.getValue()).intValue());
+                        repaint();
+                    }
+                });
+            }
+            final JSpinner quantidadeEmpilhamentoSpinner = new JSpinner(
+                    new SpinnerNumberModel(objetoConstrucao.getQuantidadeEmpilhamento(), 1, 20, 1));
+            panel.add(new JLabel("Qtd. Empilhamento"));
+            panel.add(quantidadeEmpilhamentoSpinner);
+            quantidadeEmpilhamentoSpinner.addChangeListener(new ChangeListener() {
+                public void stateChanged(ChangeEvent e) {
+                    objetoConstrucao
+                            .setQuantidadeEmpilhamento(((Integer) quantidadeEmpilhamentoSpinner.getValue()).intValue());
+                    repaint();
+                }
+            });
+            final JComboBox<DirecaoEmpilhamento> direcaoEmpilhamentoCombo = new JComboBox<DirecaoEmpilhamento>(
+                    DirecaoEmpilhamento.values());
+            direcaoEmpilhamentoCombo.setSelectedItem(objetoConstrucao.getDirecaoEmpilhamento());
+            panel.add(new JLabel("Direção Empilhamento"));
+            panel.add(direcaoEmpilhamentoCombo);
+            direcaoEmpilhamentoCombo.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    objetoConstrucao
+                            .setDirecaoEmpilhamento((DirecaoEmpilhamento) direcaoEmpilhamentoCombo.getSelectedItem());
+                    repaint();
+                }
+            });
+            final JSpinner grauEmpilhamentoSpinner = new JSpinner(
+                    new SpinnerNumberModel(objetoConstrucao.getGrauEmpilhamento(), 0, 1000, 1));
+            panel.add(new JLabel("Grau Empilhamento"));
+            panel.add(grauEmpilhamentoSpinner);
+            grauEmpilhamentoSpinner.addChangeListener(new ChangeListener() {
+                public void stateChanged(ChangeEvent e) {
+                    objetoConstrucao.setGrauEmpilhamento(((Integer) grauEmpilhamentoSpinner.getValue()).intValue());
+                    repaint();
+                }
+            });
         }
         return panel;
     }
@@ -3160,6 +3217,15 @@ public class MainPanelEditor extends JPanel {
                 dst.getPontos().add(new Point(point.x, point.y));
             }
             dst.gerar();
+        }
+        if (origem instanceof ObjetoConstrucao) {
+            ObjetoConstrucao src = (ObjetoConstrucao) origem;
+            ObjetoConstrucao dst = (ObjetoConstrucao) objetoPistaNovo;
+            dst.setTipo(src.getTipo());
+            dst.setAfunilamento(src.getAfunilamento());
+            dst.setQuantidadeEmpilhamento(src.getQuantidadeEmpilhamento());
+            dst.setDirecaoEmpilhamento(src.getDirecaoEmpilhamento());
+            dst.setGrauEmpilhamento(src.getGrauEmpilhamento());
         }
         return objetoPistaNovo;
     }

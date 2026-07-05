@@ -10,10 +10,13 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import br.f1mane.entidades.DirecaoEmpilhamento;
+import br.f1mane.entidades.ObjetoConstrucao;
 import br.f1mane.entidades.ObjetoGuardRails;
 import br.f1mane.entidades.ObjetoLivre;
 import br.f1mane.entidades.ObjetoPista;
 import br.f1mane.entidades.PontoCurva;
+import br.f1mane.entidades.TipoObjetoConstrucao;
 import br.f1mane.entidades.TipoObjetoLivre;
 
 /**
@@ -88,6 +91,31 @@ class MainPanelEditorCopiarObjetoTest {
 
         assertEquals(original.getPontos(), copia.getPontos());
         assertNotSame(original.getPontos().get(0), copia.getPontos().get(0));
+    }
+
+    /**
+     * Mesmo bug de novo, agora com ObjetoConstrucao: sem um branch dedicado
+     * em clonarObjetoPista(), a cópia nascia sempre QUADRADO com
+     * quantidadeEmpilhamento=1 (os defaults do construtor), perdendo tipo,
+     * afunilamento e a configuração de empilhamento do original.
+     */
+    @Test
+    void clonarObjetoConstrucao_preservaTipoEEmpilhamento() throws Exception {
+        ObjetoConstrucao original = new ObjetoConstrucao();
+        original.setTipo(TipoObjetoConstrucao.BARCO);
+        original.setAfunilamento(70);
+        original.setQuantidadeEmpilhamento(6);
+        original.setDirecaoEmpilhamento(DirecaoEmpilhamento.BAIXO_ESQUERDA);
+        original.setGrauEmpilhamento(25);
+        original.setPosicaoQuina(new Point(0, 0));
+
+        ObjetoConstrucao copia = (ObjetoConstrucao) MainPanelEditor.clonarObjetoPista(original);
+
+        assertEquals(TipoObjetoConstrucao.BARCO, copia.getTipo());
+        assertEquals(70, copia.getAfunilamento());
+        assertEquals(6, copia.getQuantidadeEmpilhamento());
+        assertEquals(DirecaoEmpilhamento.BAIXO_ESQUERDA, copia.getDirecaoEmpilhamento());
+        assertEquals(25, copia.getGrauEmpilhamento());
     }
 
     @Test
