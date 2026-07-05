@@ -49,6 +49,8 @@ class CircuitoMetadadosArquivoTest {
         circuito.setCorZebra1(Color.WHITE);
         circuito.setCorZebra2(Color.RED);
         circuito.setMultiplicadorLarguraPista(1.4);
+        circuito.setCiclo(200);
+        circuito.setDistanciaKm(5.278);
 
         // Loop grande o suficiente (e box deslocado para o meio de um dos
         // lados, não perto do nó inicial) para vetorizarPista()/
@@ -115,6 +117,8 @@ class CircuitoMetadadosArquivoTest {
         assertTrue(xml.contains("property=\"box\""), "meta deveria conter box");
         assertTrue(xml.contains("property=\"nome\""), "meta deveria conter nome");
         assertTrue(xml.contains("property=\"corFundo\""), "meta deveria conter corFundo");
+        assertTrue(xml.contains("property=\"ciclo\""), "meta deveria conter ciclo");
+        assertTrue(xml.contains("property=\"distanciaKm\""), "meta deveria conter distanciaKm");
         assertFalse(xml.contains("property=\"ativo\""), "meta não deveria conter ativo");
         assertFalse(xml.contains("property=\"objetosCenario\""), "meta não deveria conter objetosCenario");
         assertFalse(xml.contains("property=\"pistaKey\""), "meta não deveria conter pistaKey");
@@ -138,6 +142,8 @@ class CircuitoMetadadosArquivoTest {
         assertFalse(xml.contains("property=\"corFundo\""), "objetos não deveria conter corFundo");
         assertFalse(xml.contains("property=\"pistaKey\""), "objetos não deveria conter pistaKey");
         assertFalse(xml.contains("property=\"escapeMap\""), "objetos não deveria conter escapeMap");
+        assertFalse(xml.contains("property=\"ciclo\""), "objetos não deveria conter ciclo");
+        assertFalse(xml.contains("property=\"distanciaKm\""), "objetos não deveria conter distanciaKm");
     }
 
     @Test
@@ -200,24 +206,24 @@ class CircuitoMetadadosArquivoTest {
     void atualizarAtivoEmCircuitosProperties_alteraSoALinhaAlvo(@TempDir File tempDir) throws Exception {
         File arquivo = new File(tempDir, "circuitos.properties");
         try (FileWriter writer = new FileWriter(arquivo)) {
-            writer.write("circuitoA_mro.xml=Circuito A,100,false\n");
-            writer.write("circuitoB_mro.xml=Circuito B,200,true\n");
-            writer.write("circuitoC_mro.xml=Circuito C,150,false\n");
+            writer.write("circuitoA_mro.xml=Circuito A,false\n");
+            writer.write("circuitoB_mro.xml=Circuito B,true\n");
+            writer.write("circuitoC_mro.xml=Circuito C,false\n");
         }
 
         CarregadorRecursos.atualizarAtivoEmCircuitosProperties(arquivo, "circuitoB_mro.xml", false);
 
         List<String> linhas = lerLinhas(arquivo);
-        assertEquals("circuitoA_mro.xml=Circuito A,100,false", linhas.get(0));
-        assertEquals("circuitoB_mro.xml=Circuito B,200,false", linhas.get(1));
-        assertEquals("circuitoC_mro.xml=Circuito C,150,false", linhas.get(2));
+        assertEquals("circuitoA_mro.xml=Circuito A,false", linhas.get(0));
+        assertEquals("circuitoB_mro.xml=Circuito B,false", linhas.get(1));
+        assertEquals("circuitoC_mro.xml=Circuito C,false", linhas.get(2));
 
         CarregadorRecursos.atualizarAtivoEmCircuitosProperties(arquivo, "circuitoA_mro.xml", true);
 
         linhas = lerLinhas(arquivo);
-        assertEquals("circuitoA_mro.xml=Circuito A,100,true", linhas.get(0));
-        assertEquals("circuitoB_mro.xml=Circuito B,200,false", linhas.get(1), "linha de B não deveria mudar");
-        assertEquals("circuitoC_mro.xml=Circuito C,150,false", linhas.get(2), "linha de C não deveria mudar");
+        assertEquals("circuitoA_mro.xml=Circuito A,true", linhas.get(0));
+        assertEquals("circuitoB_mro.xml=Circuito B,false", linhas.get(1), "linha de B não deveria mudar");
+        assertEquals("circuitoC_mro.xml=Circuito C,false", linhas.get(2), "linha de C não deveria mudar");
     }
 
     private List<String> lerLinhas(File arquivo) throws Exception {

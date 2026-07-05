@@ -1851,7 +1851,7 @@ public class ControleJogoLocal extends ControleRecursos
 
     @Override
     public long tempoCicloCircuito() {
-        return circuitosCiclo.get(circuito.getNome());
+        return circuito.getCiclo();
     }
 
     @Override

@@ -1,4 +1,10 @@
-## ADDED Requirements
+# circuito-info-editor
+
+## Purpose
+
+`Circuito` expõe metadados próprios de ajuste fino e de ficha técnica que hoje ou viviam soltos em `circuitos.properties` (o `ciclo` de simulação) ou não existiam (a `distanciaKm` real do autódromo). O editor de circuitos edita `ciclo` e `distanciaKm` diretamente, e calcula/exibe um tempo de volta estimado somente-leitura a partir de `ciclo` e do traçado, para dar retorno visual imediato de como esses valores se traduzem em corrida.
+
+## Requirements
 
 ### Requirement: Circuito tem uma propriedade ciclo, não mais circuitos.properties
 `Circuito` SHALL expor uma propriedade `ciclo` (inteiro, milissegundos por tick de simulação, valor padrão maior que zero), com getter/setter, persistida no arquivo de metadados do circuito. `properties/circuitos.properties` SHALL NOT conter mais esse valor — cada linha passa a ter só `<NomeExibicao>,<ativo>`.
@@ -26,12 +32,20 @@ O editor de circuitos SHALL calcular e exibir, como informação somente-leitura
 - **WHEN** o usuário adiciona ou remove nós de pista e o circuito é revetorizado
 - **THEN** o tempo de volta estimado exibido reflete a nova contagem de nós por tipo
 
-### Requirement: Editor mostra a distância do circuito em quilômetros
-O editor de circuitos SHALL calcular e exibir, como informação somente-leitura, a distância aproximada do circuito em quilômetros, a partir do comprimento de `pistaFull` (uma amostra por pixel do traçado) e uma escala fixa de metros por pixel.
+### Requirement: Circuito tem uma propriedade distanciaKm informada pelo usuário
+`Circuito` SHALL expor uma propriedade `distanciaKm` (número, quilômetros, valor padrão zero), com getter/setter, editável no editor de circuitos como um campo numérico comum e persistida no arquivo de metadados do circuito. `distanciaKm` SHALL NOT ser calculada a partir de `pistaFull` nem de nenhuma geometria do traçado — é um dado informado por quem edita o circuito.
 
-#### Scenario: Distância exibida cresce com o comprimento do traçado
-- **WHEN** dois circuitos têm `pistaFull` de tamanhos diferentes (um traçado bem maior que o outro)
-- **THEN** o circuito com `pistaFull` maior mostra uma distância em quilômetros maior
+#### Scenario: Circuito recém-criado tem distanciaKm zero
+- **WHEN** um novo `Circuito` é instanciado sem que `distanciaKm` seja definida explicitamente
+- **THEN** `circuito.getDistanciaKm()` retorna zero
+
+#### Scenario: Usuário informa a distância e ela é gravada no circuito
+- **WHEN** o usuário digita um valor no campo de distância em quilômetros do editor
+- **THEN** `circuito.getDistanciaKm()` passa a retornar esse valor, e ele é persistido ao salvar o circuito
+
+#### Scenario: Distância não muda ao editar o traçado
+- **WHEN** o usuário adiciona ou remove nós de pista e o circuito é revetorizado
+- **THEN** `circuito.getDistanciaKm()` permanece com o valor informado anteriormente, sem ser recalculada
 
 ### Requirement: Migração dos circuitos existentes preserva o valor de ciclo
 Todo circuito já listado em `circuitos.properties` no momento desta mudança SHALL ter o valor de `ciclo` hoje gravado nessa linha migrado para o campo `ciclo` do circuito correspondente, antes de esse campo ser removido de `circuitos.properties`.
