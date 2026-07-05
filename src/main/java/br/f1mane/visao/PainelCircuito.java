@@ -2495,6 +2495,7 @@ public class PainelCircuito {
                 }
 
                 g2d.drawImage(drawBuffer, newX, newY, null);
+                DesenhoProceduralCircuito.desenhaLinhaDeLargada(g2d, circuito, zoom, descontoCentraliza);
             }
         }
     }
@@ -2575,6 +2576,7 @@ public class PainelCircuito {
         desenhaPista(g2d);
         desenhaPistaBox(g2d);
         desenhaBoxes(g2d);
+        DesenhoProceduralCircuito.desenhaLinhaDeLargada(g2d, circuito, zoom, descontoCentraliza);
     }
 
     public BufferedImage desenhaCircuito() {

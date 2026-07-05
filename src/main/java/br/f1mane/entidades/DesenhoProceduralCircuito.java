@@ -259,6 +259,7 @@ public final class DesenhoProceduralCircuito {
 			}
 		}
 		desenhaPistaZebraEBox(g2d, circuito, zoom);
+		desenhaLinhaDeLargada(g2d, circuito, zoom);
 		desenhaVagasBox(g2d, circuito, zoom, false);
 		desenhaObjetos(g2d, circuito, zoom, 0);
 		for (Integer nivel : niveis) {
@@ -266,6 +267,119 @@ public final class DesenhoProceduralCircuito {
 				desenhaObjetos(g2d, circuito, zoom, nivel);
 			}
 		}
+	}
+
+	/** Quantidade de quadrados do xadrez cobrindo a largura da pista na linha de largada. */
+	private static final int LARGADA_COLUNAS = 6;
+	/**
+	 * Fator aplicado ao tamanho do quadrado pra obter a espessura da faixa ao
+	 * longo da direção da pista — reduzido pela metade sucessivas vezes a
+	 * pedido, sem afetar a largura que cobre a pista (perpendicular).
+	 */
+	private static final double LARGADA_ESPESSURA_FATOR = 0.25;
+	/**
+	 * Alongamento da célula no sentido perpendicular à pista (across-track,
+	 * o "sentido da pista" pedido) em relação ao lado ao longo da pista —
+	 * 1.0 seria um quadrado perfeito.
+	 */
+	private static final double LARGADA_ALONGAMENTO = 2.0;
+
+	/**
+	 * Desenha a linha de largada em padrão quadriculado (preto/branco),
+	 * perpendicular à direção local da pista no nó {@code No.LARGADA},
+	 * cobrindo a largura da pista naquele ponto. Não desenha nada (sem
+	 * lançar exceção) se o circuito não tiver um nó de largada em
+	 * {@code pistaKey} ou não houver nó vizinho em {@code pistaFull} pra
+	 * estimar a direção. Sem offset de centralização — usado pelo editor de
+	 * circuitos (sem imagem de fundo) e pela geração de imagem em memória
+	 * (zoom 1, sem viewport). Ver {@link #desenhaLinhaDeLargada(Graphics2D, Circuito, double, Point)}
+	 * para o caso com viewport (usado por {@code PainelCircuito}).
+	 */
+	public static void desenhaLinhaDeLargada(Graphics2D g2d, Circuito circuito, double zoom) {
+		desenhaLinhaDeLargada(g2d, circuito, zoom, new Point(0, 0));
+	}
+
+	/**
+	 * Mesmo desenho de {@link #desenhaLinhaDeLargada(Graphics2D, Circuito, double)},
+	 * mas descontando {@code descontoCentraliza} das coordenadas do circuito
+	 * antes de aplicar o zoom — mesma convenção usada por
+	 * {@code PainelCircuito} pra desenhar em cima do viewport com scroll/zoom.
+	 */
+	public static void desenhaLinhaDeLargada(Graphics2D g2d, Circuito circuito, double zoom,
+			Point descontoCentraliza) {
+		No noLargada = localizaNoLargada(circuito.getPistaKey());
+		if (noLargada == null) {
+			return;
+		}
+		No noVizinho = localizaVizinhoNaPistaFull(circuito.getPistaFull(), noLargada);
+		if (noVizinho == null) {
+			return;
+		}
+
+		double anguloPista = GeoUtil.calculaAngulo(noLargada.getPoint(), noVizinho.getPoint(), 0);
+		int larguraPistaPixeis = Util.inteiro(Carro.LARGURA * 1.5
+				* circuito.getMultiplicadorLarguraPista() * zoom);
+		// Lado base já reduzido pela espessura pedida — é a dimensão ao longo
+		// da pista (fixa); o passo entre colunas (perpendicular) parte desse
+		// mesmo lado, alongado por LARGADA_ALONGAMENTO.
+		double ladoBase = (larguraPistaPixeis / (double) LARGADA_COLUNAS) * LARGADA_ESPESSURA_FATOR;
+		double ladoAoLongo = ladoBase;
+		double ladoPerpendicular = ladoBase * LARGADA_ALONGAMENTO;
+		int numColunas = Math.max(1, Util.inteiro(larguraPistaPixeis / ladoPerpendicular));
+		double rad = Math.toRadians(anguloPista);
+		Point centro = new Point(
+				Util.inteiro((noLargada.getX() - descontoCentraliza.x) * zoom),
+				Util.inteiro((noLargada.getY() - descontoCentraliza.y) * zoom));
+
+		for (int coluna = 0; coluna < numColunas; coluna++) {
+			double deslocamentoPerpendicular = (coluna - (numColunas - 1) / 2.0) * ladoPerpendicular;
+			Point centroColuna = GeoUtil.calculaPonto(anguloPista, Util.inteiro(deslocamentoPerpendicular), centro);
+			for (int linha = 0; linha < 2; linha++) {
+				double deslocamentoAoLongo = (linha - 0.5) * ladoAoLongo;
+				Point centroQuadrado = GeoUtil.calculaPonto(anguloPista + 90, Util.inteiro(deslocamentoAoLongo),
+						centroColuna);
+				g2d.setColor((coluna + linha) % 2 == 0 ? Color.BLACK : Color.WHITE);
+				Rectangle2D quadrado = new Rectangle2D.Double(
+						centroQuadrado.x - ladoAoLongo / 2.0, centroQuadrado.y - ladoPerpendicular / 2.0,
+						ladoAoLongo, ladoPerpendicular);
+				GeneralPath path = new GeneralPath(quadrado);
+				AffineTransform transform = AffineTransform.getRotateInstance(rad, centroQuadrado.x, centroQuadrado.y);
+				g2d.fill(path.createTransformedShape(transform));
+			}
+		}
+	}
+
+	private static No localizaNoLargada(List<No> pistaKey) {
+		if (pistaKey == null) {
+			return null;
+		}
+		for (No no : pistaKey) {
+			if (No.LARGADA.equals(no.getTipo())) {
+				return no;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * O nó de largada em {@code pistaKey} é o ponto inicial de um segmento
+	 * inteiro de {@code pistaFull} com o mesmo tipo (ver
+	 * {@code Circuito.converterPointNo}), então localizar por tipo em
+	 * {@code pistaFull} não seria único — em vez disso, localiza o nó de
+	 * {@code pistaFull} na mesma posição do nó de largada (o primeiro ponto
+	 * do Bresenham de cada segmento coincide com o nó-chave de origem) e
+	 * retorna o próximo, pra estimar a direção local da pista.
+	 */
+	private static No localizaVizinhoNaPistaFull(List<No> pistaFull, No noLargada) {
+		if (pistaFull == null || pistaFull.isEmpty()) {
+			return null;
+		}
+		for (int i = 0; i < pistaFull.size(); i++) {
+			if (pistaFull.get(i).getPoint().equals(noLargada.getPoint())) {
+				return pistaFull.get((i + 1) % pistaFull.size());
+			}
+		}
+		return null;
 	}
 
 	/**
