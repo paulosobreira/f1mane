@@ -388,18 +388,14 @@ public abstract class ControleRecursos {
             while (propName.hasMoreElements()) {
                 final String name = (String) propName.nextElement();
                 String names[] = properties.getProperty(name).split(",");
-                try {
-                    // Só a flag "ativo" é lida aqui (sem desserializar o
-                    // circuito): carregar os XMLs inteiros nesta listagem
-                    // (que roda na abertura do menu) deixava TODOS os
-                    // circuitos presos em memória desde o boot — o circuito
-                    // completo só é carregado quando a corrida (ou o preview
-                    // do menu) realmente o usa.
-                    if (!CarregadorRecursos.circuitoAtivo(name)) {
-                        continue;
-                    }
-                } catch (Exception e) {
-                    Logger.logarExept(e);
+                // O terceiro campo (ativo) já está no Properties carregado
+                // acima, sem precisar desserializar nenhum circuito: carregar
+                // os XMLs inteiros nesta listagem (que roda na abertura do
+                // menu) deixava TODOS os circuitos presos em memória desde o
+                // boot — o circuito completo só é carregado quando a corrida
+                // (ou o preview do menu) realmente o usa.
+                boolean ativo = names.length > 2 && Boolean.parseBoolean(names[2].trim());
+                if (!ativo) {
                     continue;
                 }
                 circuitos.put(names[0], name);

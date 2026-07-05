@@ -1134,58 +1134,172 @@ public class CarregadorRecursos {
     }
 
     /**
-     * Lê só a flag "ativo" do XML do circuito, sem desserializar o circuito
-     * inteiro: a listagem de circuitos (menu/lobby) só precisa desse
-     * boolean, e desserializar todos os circuitos (grafos com milhares de
-     * pontos e objetos) só pra isso deixava todos presos no
+     * Nome do arquivo de metadados (traçado + propriedades leves) a partir
+     * do nome do arquivo de objetos, pelo mesmo padrão de sufixo usado para
+     * derivar o jpg de referência (ver {@link #aplicarBackGroundPorConvencao}).
+     */
+    public static String nomeArquivoMetadados(String nmCircuitoXml) {
+        return nmCircuitoXml.replaceFirst("\\.xml$", "_meta.xml");
+    }
+
+    /**
+     * Lê só o terceiro campo (ativo) da linha correspondente em
+     * {@code properties/circuitos.properties}
+     * (<code>&lt;arquivo&gt;=&lt;NomeExibicao&gt;,&lt;ciclo&gt;,&lt;ativo&gt;</code>),
+     * sem tocar em nenhum XML de circuito. Ausência da linha, do terceiro
+     * campo, ou do próprio arquivo de properties equivale a {@code false}.
+     */
+    private static boolean lerAtivoDeCircuitosProperties(String nmCircuito) {
+        Properties properties = new Properties();
+        try (InputStream stream = recursoComoStream("properties/circuitos.properties")) {
+            if (stream == null) {
+                return false;
+            }
+            properties.load(stream);
+        } catch (IOException e) {
+            Logger.logarExept(e);
+            return false;
+        }
+        String valor = properties.getProperty(nmCircuito);
+        if (valor == null) {
+            return false;
+        }
+        String[] campos = valor.split(",");
+        if (campos.length < 3) {
+            return false;
+        }
+        return Boolean.parseBoolean(campos[2].trim());
+    }
+
+    /**
+     * Lê só a flag "ativo" de {@code properties/circuitos.properties}, sem
+     * desserializar o circuito inteiro: a listagem de circuitos (menu/lobby)
+     * só precisa desse boolean, e desserializar todos os circuitos (grafos
+     * com milhares de pontos e objetos) só pra isso deixava todos presos no
      * bufferCircuitos desde a abertura do menu — o circuito completo só
      * deve ser carregado quando uma corrida (ou o preview do menu)
-     * realmente o usa. A propriedade fica no começo do arquivo (XMLEncoder
-     * grava "ativo" como primeira propriedade); se não aparecer nas
-     * primeiras linhas, vale o default do bean (false, circuito inativo) —
-     * mesmo resultado que o XMLDecoder produziria.
+     * realmente o usa.
      */
     public static boolean circuitoAtivo(String nmCircuito) {
         Circuito emCache = bufferCircuitos.get(nmCircuito);
         if (emCache != null) {
             return emCache.isAtivo();
         }
-        InputStream stream = recursoComoStream("circuitos/" + nmCircuito);
-        if (stream == null) {
-            return false;
-        }
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
-            String linha;
-            int lidas = 0;
-            boolean dentroDePropriedadeAtivo = false;
-            while ((linha = reader.readLine()) != null && lidas++ < 200) {
-                if (dentroDePropriedadeAtivo) {
-                    if (linha.contains("<boolean>")) {
-                        return linha.contains("true");
-                    }
-                } else if (linha.contains("property=\"ativo\"")) {
-                    dentroDePropriedadeAtivo = true;
-                }
-            }
-        } catch (IOException e) {
-            Logger.logarExept(e);
-        }
-        return false;
+        return lerAtivoDeCircuitosProperties(nmCircuito);
     }
 
+    /**
+     * Decodifica {@code <nome>_mro.xml} (objetos/objetosCenario) e, se
+     * existir, {@code <nome>_mro_meta.xml} (metadados leves + pista/box),
+     * mesclando os dois num único {@code Circuito}. {@code ativo} é sempre
+     * populado a partir de {@code circuitos.properties} (nunca do XML,
+     * mesmo em circuitos ainda não migrados para o novo formato de dois
+     * arquivos). O circuito retornado já sai vetorizado
+     * ({@link Circuito#vetorizarPista()}), então nenhum chamador precisa
+     * fazer isso de novo.
+     */
     public static Circuito carregarCircuito(String nmCircuito)
             throws IOException, ClassNotFoundException {
         Circuito circuito = bufferCircuitos.get(nmCircuito);
         if (circuito == null) {
-            XMLDecoder xmlDecoder = new XMLDecoder(CarregadorRecursos.recursoComoStream("circuitos/" + nmCircuito));
-            circuito = (Circuito) xmlDecoder.readObject();
+            XMLDecoder decoderObjetos = new XMLDecoder(CarregadorRecursos.recursoComoStream("circuitos/" + nmCircuito));
+            Circuito circuitoObjetos = (Circuito) decoderObjetos.readObject();
+            InputStream streamMeta = recursoComoStream("circuitos/" + nomeArquivoMetadados(nmCircuito));
+            if (streamMeta != null) {
+                Circuito circuitoMeta = (Circuito) new XMLDecoder(streamMeta).readObject();
+                circuitoMeta.setObjetos(circuitoObjetos.getObjetos());
+                circuitoMeta.setObjetosCenario(circuitoObjetos.getObjetosCenario());
+                circuito = circuitoMeta;
+            } else {
+                circuito = circuitoObjetos;
+            }
+            circuito.setAtivo(circuitoAtivo(nmCircuito));
             aplicarBackGroundPorConvencao(circuito, nmCircuito);
             migrarObjetoLivreParaCenario(circuito);
+            circuito.vetorizarPista();
         }
         if (cache) {
             bufferCircuitos.put(nmCircuito, circuito);
         }
         return circuito;
+    }
+
+    /**
+     * Leitura leve de um circuito: decodifica só
+     * {@code <nome>_mro_meta.xml} (metadados + pista/box, suficiente para
+     * desenhar uma miniatura), sem tocar em {@code <nome>_mro.xml}
+     * (objetos/objetosCenario) nem chamar {@code vetorizarPista()}. Se o
+     * arquivo de metadados não existir (circuito no formato antigo de
+     * arquivo único), cai no carregamento completo via
+     * {@link #carregarCircuito}.
+     */
+    public static Circuito carregarMetadadosCircuito(String nmCircuito)
+            throws IOException, ClassNotFoundException {
+        InputStream streamMeta = recursoComoStream("circuitos/" + nomeArquivoMetadados(nmCircuito));
+        if (streamMeta == null) {
+            return carregarCircuito(nmCircuito);
+        }
+        Circuito circuitoMeta = (Circuito) new XMLDecoder(streamMeta).readObject();
+        circuitoMeta.setAtivo(circuitoAtivo(nmCircuito));
+        return circuitoMeta;
+    }
+
+    /**
+     * Atualiza (ou acrescenta) o terceiro campo CSV (ativo) da linha de
+     * {@code nmCircuitoXml} em {@code src/main/resources/properties/circuitos.properties},
+     * preservando todas as outras linhas exatamente como estavam — leitura e
+     * escrita linha a linha, não via {@code Properties.store()} (que
+     * reordena as linhas e escreve um comentário de timestamp, gerando
+     * diffs git ruidosos). Se a linha de {@code nmCircuitoXml} ainda não
+     * existir (circuito nunca listado em circuitos.properties), não grava
+     * nada e só registra um aviso — criar automaticamente a linha
+     * (nome de exibição/ciclo) de um circuito novo está fora do escopo desta
+     * mudança.
+     */
+    public static void atualizarAtivoEmCircuitosProperties(String nmCircuitoXml, boolean ativo) throws IOException {
+        atualizarAtivoEmCircuitosProperties(new File("src/main/resources/properties/circuitos.properties"),
+                nmCircuitoXml, ativo);
+    }
+
+    /**
+     * Mesma lógica de {@link #atualizarAtivoEmCircuitosProperties(String, boolean)},
+     * mas recebendo o arquivo alvo explicitamente — usado por testes para não
+     * mutar o {@code circuitos.properties} real do projeto.
+     */
+    static void atualizarAtivoEmCircuitosProperties(File arquivo, String nmCircuitoXml, boolean ativo)
+            throws IOException {
+        if (!arquivo.exists()) {
+            return;
+        }
+        List<String> linhas = new ArrayList<String>();
+        boolean encontrada = false;
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(new FileInputStream(arquivo), StandardCharsets.UTF_8))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                int idxIgual = linha.indexOf('=');
+                if (idxIgual > 0 && linha.substring(0, idxIgual).equals(nmCircuitoXml)) {
+                    String[] campos = linha.substring(idxIgual + 1).split(",", -1);
+                    String nomeExibicao = campos.length > 0 ? campos[0] : "";
+                    String ciclo = campos.length > 1 ? campos[1] : "";
+                    linha = nmCircuitoXml + "=" + nomeExibicao + "," + ciclo + "," + ativo;
+                    encontrada = true;
+                }
+                linhas.add(linha);
+            }
+        }
+        if (!encontrada) {
+            Logger.logar("circuitos.properties não tem entrada para " + nmCircuitoXml
+                    + "; valor de ativo não foi gravado.");
+            return;
+        }
+        try (BufferedWriter writer = new BufferedWriter(
+                new OutputStreamWriter(new FileOutputStream(arquivo), StandardCharsets.UTF_8))) {
+            for (String linha : linhas) {
+                writer.write(linha);
+                writer.newLine();
+            }
+        }
     }
 
     /**

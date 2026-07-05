@@ -573,6 +573,50 @@ public class Circuito implements Serializable {
         this.backGround = backGround;
     }
 
+    /**
+     * Cópia para persistir em {@code <nome>_mro_meta.xml}: mantém metadados
+     * leves e o traçado autorado (pista/box), suficiente para desenhar uma
+     * miniatura. Não inclui {@code ativo} (passa a viver em
+     * {@code circuitos.properties}, ver
+     * {@link br.f1mane.recursos.CarregadorRecursos#circuitoAtivo}), nem
+     * objetos/objetosCenario, nem os campos derivados por
+     * {@link #vetorizarPista()} — ficam no valor padrão de um
+     * {@code Circuito} novo e por isso o {@code XMLEncoder} não os grava.
+     */
+    public Circuito copiaParaArquivoMetadados() {
+        Circuito copia = new Circuito();
+        copia.setNome(nome);
+        copia.setNoite(noite);
+        copia.setUsaBkg(usaBkg);
+        copia.setProbalidadeChuva(probalidadeChuva);
+        copia.setVelocidadePista(velocidadePista);
+        copia.setLadoBox(ladoBox);
+        copia.setLadoBoxSaidaBox(ladoBoxSaidaBox);
+        copia.setCorFundo(corFundo);
+        copia.setCorAsfalto(corAsfalto);
+        copia.setCorBox1(corBox1);
+        copia.setCorBox2(corBox2);
+        copia.setCorZebra1(corZebra1);
+        copia.setCorZebra2(corZebra2);
+        copia.setMultiplicadorLarguraPista(multiplicadorLarguraPista);
+        copia.setPista(new ArrayList<No>(pista));
+        copia.setBox(new ArrayList<No>(box));
+        return copia;
+    }
+
+    /**
+     * Cópia para persistir em {@code <nome>_mro.xml}: mantém só objetos de
+     * cenário/função (dados não deriváveis). Metadados, traçado autorado e
+     * campos derivados ficam no valor padrão de um {@code Circuito} novo.
+     */
+    public Circuito copiaParaArquivoObjetos() {
+        Circuito copia = new Circuito();
+        copia.setObjetos(objetos != null ? new ArrayList<ObjetoPista>(objetos) : new ArrayList<ObjetoPista>());
+        copia.setObjetosCenario(
+                objetosCenario != null ? new ArrayList<ObjetoPista>(objetosCenario) : new ArrayList<ObjetoPista>());
+        return copia;
+    }
+
     public List<No> getBox() {
         return box;
     }

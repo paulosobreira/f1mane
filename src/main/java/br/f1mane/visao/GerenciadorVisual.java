@@ -934,7 +934,10 @@ public class GerenciadorVisual {
         ObjectInputStream ois;
         Circuito circuito = null;
         try {
-            circuito = CarregadorRecursos.carregarCircuito(circuitoStr);
+            // Leitura leve: só metadados + pista/box (o suficiente para
+            // desenhar a miniatura abaixo), sem carregar objetos/objetosCenario
+            // nem vetorizar a pista à toa.
+            circuito = CarregadorRecursos.carregarMetadadosCircuito(circuitoStr);
         } catch (Exception e) {
             Logger.logarExept(e);
         }

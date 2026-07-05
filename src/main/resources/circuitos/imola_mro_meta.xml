@@ -1,0 +1,3573 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="25.0.2" class="java.beans.XMLDecoder">
+ <object class="br.f1mane.entidades.Circuito" id="Circuito0">
+  <void property="box">
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No0">
+     <void property="box">
+      <boolean>true</boolean>
+     </void>
+     <void id="Point0" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point0"/>
+        <int>1998</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point0"/>
+        <int>1853</int>
+       </void>
+      </void>
+     </void>
+     <void id="Integer0" property="index"/>
+     <void property="tipo">
+      <object class="java.awt.Color" id="Color0">
+       <object idref="Integer0"/>
+       <int>255</int>
+       <object idref="Integer0"/>
+       <int>255</int>
+      </object>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No1">
+     <void property="box">
+      <boolean>true</boolean>
+     </void>
+     <void id="Point1" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point1"/>
+        <int>2050</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point1"/>
+        <int>1887</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object class="java.awt.Color" id="Color1">
+       <object idref="Integer0"/>
+       <int>255</int>
+       <object idref="Integer0"/>
+       <int>255</int>
+      </object>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No2">
+     <void property="box">
+      <boolean>true</boolean>
+     </void>
+     <void id="Point2" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point2"/>
+        <int>2115</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point2"/>
+        <int>1921</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No3">
+     <void property="box">
+      <boolean>true</boolean>
+     </void>
+     <void id="Point3" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point3"/>
+        <int>2172</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point3"/>
+        <int>1945</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No4">
+     <void property="box">
+      <boolean>true</boolean>
+     </void>
+     <void id="Point4" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point4"/>
+        <int>2226</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point4"/>
+        <int>1965</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object class="java.awt.Color" id="Color2">
+       <object idref="Integer0"/>
+       <int>255</int>
+       <int>255</int>
+       <int>255</int>
+      </object>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No5">
+     <void property="box">
+      <boolean>true</boolean>
+     </void>
+     <void id="Point5" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point5"/>
+        <int>2260</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point5"/>
+        <int>1963</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color2"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No6">
+     <void property="box">
+      <boolean>true</boolean>
+     </void>
+     <void id="Point6" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point6"/>
+        <int>2307</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point6"/>
+        <int>1947</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color2"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No7">
+     <void property="box">
+      <boolean>true</boolean>
+     </void>
+     <void id="Point7" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point7"/>
+        <int>2341</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point7"/>
+        <int>1919</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color2"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No8">
+     <void property="box">
+      <boolean>true</boolean>
+     </void>
+     <void id="Point8" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point8"/>
+        <int>2385</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point8"/>
+        <int>1901</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color2"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No9">
+     <void property="box">
+      <boolean>true</boolean>
+     </void>
+     <void id="Point9" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point9"/>
+        <int>2429</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point9"/>
+        <int>1929</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object class="java.awt.Color">
+       <int>255</int>
+       <int>200</int>
+       <object idref="Integer0"/>
+       <int>255</int>
+      </object>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No10">
+     <void property="box">
+      <boolean>true</boolean>
+     </void>
+     <void id="Point10" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point10"/>
+        <int>3200</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point10"/>
+        <int>2493</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object class="java.awt.Color">
+       <int>255</int>
+       <int>175</int>
+       <int>175</int>
+       <int>255</int>
+      </object>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No11">
+     <void property="box">
+      <boolean>true</boolean>
+     </void>
+     <void id="Point11" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point11"/>
+        <int>3518</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point11"/>
+        <int>2719</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color2"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No12">
+     <void property="box">
+      <boolean>true</boolean>
+     </void>
+     <void id="Point12" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point12"/>
+        <int>3562</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point12"/>
+        <int>2723</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color2"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No13">
+     <void property="box">
+      <boolean>true</boolean>
+     </void>
+     <void id="Point13" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point13"/>
+        <int>3615</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point13"/>
+        <int>2746</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color2"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No14">
+     <void property="box">
+      <boolean>true</boolean>
+     </void>
+     <void id="Point14" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point14"/>
+        <int>3630</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point14"/>
+        <int>2757</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color2"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No15">
+     <void property="box">
+      <boolean>true</boolean>
+     </void>
+     <void id="Point15" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point15"/>
+        <int>3642</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point15"/>
+        <int>2766</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No16">
+     <void property="box">
+      <boolean>true</boolean>
+     </void>
+     <void id="Point16" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point16"/>
+        <int>3683</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point16"/>
+        <int>2797</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No17">
+     <void property="box">
+      <boolean>true</boolean>
+     </void>
+     <void id="Point17" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point17"/>
+        <int>3740</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point17"/>
+        <int>2832</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No18">
+     <void property="box">
+      <boolean>true</boolean>
+     </void>
+     <void id="Point18" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point18"/>
+        <int>3846</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point18"/>
+        <int>2890</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No19">
+     <void property="box">
+      <boolean>true</boolean>
+     </void>
+     <void id="Point19" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point19"/>
+        <int>3935</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point19"/>
+        <int>2917</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No20">
+     <void property="box">
+      <boolean>true</boolean>
+     </void>
+     <void id="Point20" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point20"/>
+        <int>4040</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point20"/>
+        <int>2936</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No21">
+     <void property="box">
+      <boolean>true</boolean>
+     </void>
+     <void id="Point21" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point21"/>
+        <int>4270</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point21"/>
+        <int>2936</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color0"/>
+     </void>
+    </object>
+   </void>
+  </void>
+  <void property="ladoBox">
+   <int>2</int>
+  </void>
+  <void property="ladoBoxSaidaBox">
+   <int>1</int>
+  </void>
+  <void property="multiplicadorLarguraPista">
+   <double>1.7000000000000002</double>
+  </void>
+  <void property="nome">
+   <string>Imola</string>
+  </void>
+  <void property="pista">
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No22">
+     <void id="Point22" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point22"/>
+        <int>3659</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point22"/>
+        <int>2576</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object class="java.awt.Color">
+       <object idref="Integer0"/>
+       <object idref="Integer0"/>
+       <int>255</int>
+       <int>255</int>
+      </object>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No23">
+     <void id="Point23" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point23"/>
+        <int>3870</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point23"/>
+        <int>2731</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No24">
+     <void id="Point24" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point24"/>
+        <int>4042</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point24"/>
+        <int>2830</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No25">
+     <void id="Point25" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point25"/>
+        <int>4271</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point25"/>
+        <int>2937</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No26">
+     <void id="Point26" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point26"/>
+        <int>4447</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point26"/>
+        <int>2993</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No27">
+     <void id="Point27" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point27"/>
+        <int>4481</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point27"/>
+        <int>3002</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No28">
+     <void id="Point28" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point28"/>
+        <int>4539</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point28"/>
+        <int>3021</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No29">
+     <void id="Point29" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point29"/>
+        <int>4652</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point29"/>
+        <int>3047</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No30">
+     <void id="Point30" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point30"/>
+        <int>4817</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point30"/>
+        <int>3071</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No31">
+     <void id="Point31" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point31"/>
+        <int>5069</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point31"/>
+        <int>3093</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No32">
+     <void id="Point32" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point32"/>
+        <int>5228</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point32"/>
+        <int>3082</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No33">
+     <void id="Point33" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point33"/>
+        <int>5398</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point33"/>
+        <int>3050</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No34">
+     <void id="Point34" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point34"/>
+        <int>5524</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point34"/>
+        <int>3008</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No35">
+     <void id="Point35" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point35"/>
+        <int>5703</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point35"/>
+        <int>2902</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No36">
+     <void id="Point36" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point36"/>
+        <int>5824</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point36"/>
+        <int>2777</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No37">
+     <void id="Point37" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point37"/>
+        <int>6591</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point37"/>
+        <int>1926</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No38">
+     <void id="Point38" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point38"/>
+        <int>6716</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point38"/>
+        <int>1803</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No39">
+     <void id="Point39" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point39"/>
+        <int>6791</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point39"/>
+        <int>1749</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No40">
+     <void id="Point40" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point40"/>
+        <int>6861</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point40"/>
+        <int>1701</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No41">
+     <void id="Point41" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point41"/>
+        <int>7184</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point41"/>
+        <int>1604</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No42">
+     <void id="Point42" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point42"/>
+        <int>7448</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point42"/>
+        <int>1523</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object class="java.awt.Color" id="Color3">
+       <int>255</int>
+       <object idref="Integer0"/>
+       <object idref="Integer0"/>
+       <int>255</int>
+      </object>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No43">
+     <void id="Point43" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point43"/>
+        <int>7494</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point43"/>
+        <int>1505</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No44">
+     <void id="Point44" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point44"/>
+        <int>7543</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point44"/>
+        <int>1472</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No45">
+     <void id="Point45" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point45"/>
+        <int>7576</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point45"/>
+        <int>1442</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No46">
+     <void id="Point46" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point46"/>
+        <int>7593</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point46"/>
+        <int>1402</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No47">
+     <void id="Point47" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point47"/>
+        <int>7596</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point47"/>
+        <int>1356</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No48">
+     <void id="Point48" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point48"/>
+        <int>7579</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point48"/>
+        <int>1309</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No49">
+     <void id="Point49" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point49"/>
+        <int>7495</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point49"/>
+        <int>1253</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object class="java.awt.Color">
+       <int>255</int>
+       <int>255</int>
+       <object idref="Integer0"/>
+       <int>255</int>
+      </object>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No50">
+     <void id="Point50" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point50"/>
+        <int>7366</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point50"/>
+        <int>1215</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No51">
+     <void id="Point51" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point51"/>
+        <int>6423</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point51"/>
+        <int>947</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object class="java.awt.Color">
+       <int>255</int>
+       <int>255</int>
+       <object idref="Integer0"/>
+       <int>255</int>
+      </object>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No52">
+     <void id="Point52" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point52"/>
+        <int>6251</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point52"/>
+        <int>852</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object class="java.awt.Color">
+       <object idref="Integer0"/>
+       <int>255</int>
+       <object idref="Integer0"/>
+       <int>255</int>
+      </object>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No53">
+     <void id="Point53" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point53"/>
+        <int>5931</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point53"/>
+        <int>575</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object class="java.awt.Color">
+       <object idref="Integer0"/>
+       <int>255</int>
+       <object idref="Integer0"/>
+       <int>255</int>
+      </object>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No54">
+     <void id="Point54" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point54"/>
+        <int>5810</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point54"/>
+        <int>429</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object class="java.awt.Color" id="Color4">
+       <int>255</int>
+       <int>255</int>
+       <object idref="Integer0"/>
+       <int>255</int>
+      </object>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No55">
+     <void id="Point55" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point55"/>
+        <int>5780</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point55"/>
+        <int>394</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No56">
+     <void id="Point56" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point56"/>
+        <int>5727</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point56"/>
+        <int>361</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No57">
+     <void id="Point57" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point57"/>
+        <int>5677</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point57"/>
+        <int>345</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No58">
+     <void id="Point58" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point58"/>
+        <int>5623</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point58"/>
+        <int>339</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No59">
+     <void id="Point59" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point59"/>
+        <int>5557</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point59"/>
+        <int>346</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object class="java.awt.Color" id="Color5">
+       <int>255</int>
+       <int>255</int>
+       <object idref="Integer0"/>
+       <int>255</int>
+      </object>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No60">
+     <void id="Point60" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point60"/>
+        <int>5520</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point60"/>
+        <int>363</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No61">
+     <void id="Point61" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point61"/>
+        <int>5263</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point61"/>
+        <int>592</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No62">
+     <void id="Point62" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point62"/>
+        <int>5234</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point62"/>
+        <int>656</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No63">
+     <void id="Point63" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point63"/>
+        <int>5225</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point63"/>
+        <int>724</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No64">
+     <void id="Point64" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point64"/>
+        <int>5254</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point64"/>
+        <int>974</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object class="java.awt.Color" id="Color6">
+       <object idref="Integer0"/>
+       <int>255</int>
+       <object idref="Integer0"/>
+       <int>255</int>
+      </object>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No65">
+     <void id="Point65" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point65"/>
+        <int>5282</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point65"/>
+        <int>1211</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color4"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No66">
+     <void id="Point66" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point66"/>
+        <int>5287</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point66"/>
+        <int>1250</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No67">
+     <void id="Point67" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point67"/>
+        <int>5293</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point67"/>
+        <int>1300</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No68">
+     <void id="Point68" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point68"/>
+        <int>5293</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point68"/>
+        <int>1342</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No69">
+     <void id="Point69" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point69"/>
+        <int>5284</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point69"/>
+        <int>1376</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No70">
+     <void id="Point70" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point70"/>
+        <int>5261</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point70"/>
+        <int>1393</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No71">
+     <void id="Point71" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point71"/>
+        <int>5215</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point71"/>
+        <int>1414</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No72">
+     <void id="Point72" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point72"/>
+        <int>5170</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point72"/>
+        <int>1419</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No73">
+     <void id="Point73" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point73"/>
+        <int>5104</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point73"/>
+        <int>1430</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No74">
+     <void id="Point74" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point74"/>
+        <int>5074</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point74"/>
+        <int>1444</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No75">
+     <void id="Point75" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point75"/>
+        <int>5059</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point75"/>
+        <int>1468</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No76">
+     <void id="Point76" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point76"/>
+        <int>5053</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point76"/>
+        <int>1489</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No77">
+     <void id="Point77" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point77"/>
+        <int>5050</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point77"/>
+        <int>1515</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No78">
+     <void id="Point78" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point78"/>
+        <int>5062</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point78"/>
+        <int>1562</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No79">
+     <void id="Point79" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point79"/>
+        <int>5072</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point79"/>
+        <int>1608</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No80">
+     <void id="Point80" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point80"/>
+        <int>5097</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point80"/>
+        <int>1685</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No81">
+     <void id="Point81" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point81"/>
+        <int>5097</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point81"/>
+        <int>1720</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No82">
+     <void id="Point82" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point82"/>
+        <int>5091</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point82"/>
+        <int>1744</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No83">
+     <void id="Point83" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point83"/>
+        <int>5076</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point83"/>
+        <int>1781</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No84">
+     <void id="Point84" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point84"/>
+        <int>5041</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point84"/>
+        <int>1820</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No85">
+     <void id="Point85" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point85"/>
+        <int>4981</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point85"/>
+        <int>1845</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No86">
+     <void id="Point86" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point86"/>
+        <int>4780</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point86"/>
+        <int>1928</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object class="java.awt.Color" id="Color7">
+       <int>255</int>
+       <int>255</int>
+       <object idref="Integer0"/>
+       <int>255</int>
+      </object>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No87">
+     <void id="Point87" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point87"/>
+        <int>4740</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point87"/>
+        <int>1947</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No88">
+     <void id="Point88" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point88"/>
+        <int>4669</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point88"/>
+        <int>1965</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No89">
+     <void id="Point89" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point89"/>
+        <int>4601</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point89"/>
+        <int>1975</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No90">
+     <void id="Point90" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point90"/>
+        <int>4541</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point90"/>
+        <int>1977</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No91">
+     <void id="Point91" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point91"/>
+        <int>4485</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point91"/>
+        <int>1954</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No92">
+     <void id="Point92" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point92"/>
+        <int>4430</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point92"/>
+        <int>1881</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No93">
+     <void id="Point93" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point93"/>
+        <int>4342</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point93"/>
+        <int>1731</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No94">
+     <void id="Point94" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point94"/>
+        <int>4238</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point94"/>
+        <int>1608</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No95">
+     <void id="Point95" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point95"/>
+        <int>4076</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point95"/>
+        <int>1475</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No96">
+     <void id="Point96" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point96"/>
+        <int>3794</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point96"/>
+        <int>1316</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No97">
+     <void id="Point97" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point97"/>
+        <int>3306</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point97"/>
+        <int>1109</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color6"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No98">
+     <void id="Point98" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point98"/>
+        <int>3199</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point98"/>
+        <int>1064</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color4"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No99">
+     <void id="Point99" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point99"/>
+        <int>3164</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point99"/>
+        <int>1052</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No100">
+     <void id="Point100" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point100"/>
+        <int>3107</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point100"/>
+        <int>1025</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No101">
+     <void id="Point101" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point101"/>
+        <int>3063</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point101"/>
+        <int>983</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No102">
+     <void id="Point102" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point102"/>
+        <int>3031</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point102"/>
+        <int>939</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No103">
+     <void id="Point103" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point103"/>
+        <int>3030</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point103"/>
+        <int>847</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No104">
+     <void id="Point104" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point104"/>
+        <int>3028</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point104"/>
+        <int>781</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No105">
+     <void id="Point105" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point105"/>
+        <int>3006</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point105"/>
+        <int>725</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No106">
+     <void id="Point106" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point106"/>
+        <int>2948</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point106"/>
+        <int>697</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No107">
+     <void id="Point107" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point107"/>
+        <int>2885</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point107"/>
+        <int>677</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No108">
+     <void id="Point108" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point108"/>
+        <int>2605</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point108"/>
+        <int>684</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No109">
+     <void id="Point109" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point109"/>
+        <int>2122</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point109"/>
+        <int>704</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No110">
+     <void id="Point110" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point110"/>
+        <int>1859</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point110"/>
+        <int>739</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No111">
+     <void id="Point111" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point111"/>
+        <int>1490</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point111"/>
+        <int>818</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No112">
+     <void id="Point112" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point112"/>
+        <int>1389</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point112"/>
+        <int>830</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No113">
+     <void id="Point113" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point113"/>
+        <int>1170</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point113"/>
+        <int>846</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No114">
+     <void id="Point114" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point114"/>
+        <int>547</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point114"/>
+        <int>836</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No115">
+     <void id="Point115" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point115"/>
+        <int>488</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point115"/>
+        <int>838</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No116">
+     <void id="Point116" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point116"/>
+        <int>423</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point116"/>
+        <int>857</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No117">
+     <void id="Point117" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point117"/>
+        <int>373</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point117"/>
+        <int>895</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No118">
+     <void id="Point118" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point118"/>
+        <int>322</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point118"/>
+        <int>957</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No119">
+     <void id="Point119" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point119"/>
+        <int>305</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point119"/>
+        <int>1012</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No120">
+     <void id="Point120" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point120"/>
+        <int>314</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point120"/>
+        <int>1248</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No121">
+     <void id="Point121" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point121"/>
+        <int>319</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point121"/>
+        <int>1300</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No122">
+     <void id="Point122" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point122"/>
+        <int>331</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point122"/>
+        <int>1333</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No123">
+     <void id="Point123" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point123"/>
+        <int>369</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point123"/>
+        <int>1379</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No124">
+     <void id="Point124" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point124"/>
+        <int>445</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point124"/>
+        <int>1425</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No125">
+     <void id="Point125" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point125"/>
+        <int>538</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point125"/>
+        <int>1426</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No126">
+     <void id="Point126" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point126"/>
+        <int>954</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point126"/>
+        <int>1403</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color6"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No127">
+     <void id="Point127" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point127"/>
+        <int>1317</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point127"/>
+        <int>1386</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color4"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No128">
+     <void id="Point128" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point128"/>
+        <int>1343</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point128"/>
+        <int>1385</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No129">
+     <void id="Point129" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point129"/>
+        <int>1400</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point129"/>
+        <int>1405</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No130">
+     <void id="Point130" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point130"/>
+        <int>1439</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point130"/>
+        <int>1432</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No131">
+     <void id="Point131" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point131"/>
+        <int>1475</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point131"/>
+        <int>1475</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No132">
+     <void id="Point132" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point132"/>
+        <int>1507</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point132"/>
+        <int>1557</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No133">
+     <void id="Point133" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point133"/>
+        <int>1538</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point133"/>
+        <int>1618</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No134">
+     <void id="Point134" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point134"/>
+        <int>1603</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point134"/>
+        <int>1664</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No135">
+     <void id="Point135" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point135"/>
+        <int>1906</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point135"/>
+        <int>1813</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color7"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No136">
+     <void id="Point136" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point136"/>
+        <int>1998</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point136"/>
+        <int>1855</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No137">
+     <void id="Point137" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point137"/>
+        <int>2060</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point137"/>
+        <int>1860</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No138">
+     <void id="Point138" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point138"/>
+        <int>2103</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point138"/>
+        <int>1849</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No139">
+     <void id="Point139" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point139"/>
+        <int>2149</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point139"/>
+        <int>1826</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No140">
+     <void id="Point140" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point140"/>
+        <int>2166</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point140"/>
+        <int>1788</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No141">
+     <void id="Point141" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point141"/>
+        <int>2181</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point141"/>
+        <int>1740</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No142">
+     <void id="Point142" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point142"/>
+        <int>2195</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point142"/>
+        <int>1709</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No143">
+     <void id="Point143" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point143"/>
+        <int>2244</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point143"/>
+        <int>1676</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No144">
+     <void id="Point144" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point144"/>
+        <int>2285</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point144"/>
+        <int>1653</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No145">
+     <void id="Point145" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point145"/>
+        <int>2361</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point145"/>
+        <int>1653</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No146">
+     <void id="Point146" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point146"/>
+        <int>2481</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point146"/>
+        <int>1704</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.f1mane.entidades.No" id="No147">
+     <void id="Point147" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point147"/>
+        <int>2644</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point147"/>
+        <int>1834</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+  </void>
+  <void property="probalidadeChuva">
+   <int>65</int>
+  </void>
+  <void property="usaBkg">
+   <boolean>true</boolean>
+  </void>
+ </object>
+</java>

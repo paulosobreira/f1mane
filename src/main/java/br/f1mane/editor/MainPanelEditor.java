@@ -2840,16 +2840,23 @@ public class MainPanelEditor extends JPanel {
         if (!vetorizarCircuito()) {
             return;
         }
-        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        salvarCircuitoEmArquivo(circuito.copiaParaArquivoObjetos(), file);
+        File arquivoMeta = new File(file.getParentFile(), CarregadorRecursos.nomeArquivoMetadados(file.getName()));
+        salvarCircuitoEmArquivo(circuito.copiaParaArquivoMetadados(), arquivoMeta);
+        CarregadorRecursos.atualizarAtivoEmCircuitosProperties(file.getName(), circuito.isAtivo());
+        JOptionPane.showMessageDialog(this.getSrcFrame(), circuito.getNome(),
+                "Salvo com sucesso. ", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void salvarCircuitoEmArquivo(Circuito circuitoParaSalvar, File arquivo) throws IOException {
+        FileOutputStream fileOutputStream = new FileOutputStream(arquivo);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         XMLEncoder encoder = new XMLEncoder(byteArrayOutputStream);
-        encoder.writeObject(circuito);
+        encoder.writeObject(circuitoParaSalvar);
         encoder.flush();
         String save = new String(byteArrayOutputStream.toByteArray()) + "</java>";
         fileOutputStream.write(save.getBytes());
         fileOutputStream.close();
-        JOptionPane.showMessageDialog(this.getSrcFrame(), circuito.getNome(),
-                "Salvo com sucesso. ", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public Dimension getPreferredSize() {
