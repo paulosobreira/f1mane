@@ -4249,15 +4249,15 @@ public class PainelCircuito {
         if (Carro.PNEU_FURADO.equals(pilotoSelecionado.getCarro().getDanificado())) {
             g2d.setColor(OcilaCor.geraOcila("pneuFurado", Color.red));
             // Roda diantera
-            g2d.fillOval(limitesViewPort.x + 203, limitesViewPort.y + 24, 18, 18);
+            g2d.fillOval(limitesViewPort.x + 208, limitesViewPort.y + 28, 18, 18);
             // Roda trazeira
-            g2d.fillOval(limitesViewPort.x + 307, limitesViewPort.y + 24, 18, 18);
+            g2d.fillOval(limitesViewPort.x + 328, limitesViewPort.y + 28, 18, 18);
         } else if (pneus <= 25) {
             g2d.setColor(OcilaCor.geraOcila("pneuGastos", Color.yellow));
             // Roda diantera
-            g2d.fillOval(limitesViewPort.x + 203, limitesViewPort.y + 24, 18, 18);
+            g2d.fillOval(limitesViewPort.x + 208, limitesViewPort.y + 28, 18, 18);
             // Roda trazeira
-            g2d.fillOval(limitesViewPort.x + 307, limitesViewPort.y + 24, 18, 18);
+            g2d.fillOval(limitesViewPort.x + 328, limitesViewPort.y + 28, 18, 18);
         }
         if (Carro.EXPLODIU_MOTOR.equals(pilotoSelecionado.getCarro().getDanificado())) {
             g2d.setColor(OcilaCor.geraOcila("explodioMotor", Color.red));

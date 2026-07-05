@@ -15,11 +15,10 @@ import br.f1mane.controles.InterfaceJogo;
 /**
  * Piloto.processaStress() é o único ponto que chama incStress/decStress.
  * Os métodos originais (processaPneusIncomaptiveis, processaPenalidadeColisao,
- * processaFreioNaReta, decrementaPilotoDesconcentrado) continuam avaliando
- * suas próprias condições, mas não escrevem mais estresse diretamente —
- * ou sinalizam um flag consumido por processaStress() (freio na reta e
- * desconcentração agressiva, onde a condição não pode ser rederivada depois
- * porque o próprio método consome/reseta o estado envolvido).
+ * processaFreioNaReta) continuam avaliando suas próprias condições, mas não
+ * escrevem mais estresse diretamente — ou sinalizam um flag consumido por
+ * processaStress() (freio na reta, onde a condição não pode ser rederivada
+ * depois porque o próprio método consome/reseta o estado envolvido).
  */
 class PilotoProcessaStressConsolidadoTest {
 
@@ -108,7 +107,24 @@ class PilotoProcessaStressConsolidadoTest {
 
         invocaPrivado(piloto, "processaStressColisao");
 
-        assertEquals(1, piloto.getStress(), "colisão em andamento deveria incrementar 1");
+        // incStress(12) (60% dos 20 originais) em modo NORMAL e escalado por incStress() em 0.5 -> round(6.0) = 6
+        assertEquals(6, piloto.getStress(), "colisão em andamento deveria incrementar 12 (60% do total, nível similar ao desgaste de pneu), escalado a 6 em modo NORMAL");
+    }
+
+    @Test
+    void processaStressColisao_evitaBaterCarroFrente_incrementaFracaoAdicional() throws Exception {
+        Piloto piloto = criarPiloto();
+        Piloto pilotoFrente = criarPiloto();
+        piloto.setColisao(pilotoFrente);
+        piloto.setStress(0);
+        setCampo(piloto, "evitaBaterCarroFrente", true);
+
+        invocaPrivado(piloto, "processaStressColisao");
+
+        // evitaBaterCarroFrente tem prioridade exclusiva sobre a colisão: incStress(8) (40% dos 20 originais)
+        // em modo NORMAL e escalado por incStress() em 0.5 -> round(4.0) = 4
+        assertEquals(4, piloto.getStress(),
+                "evitaBaterCarroFrente deveria incrementar só 8 (40%, exclusivo — não soma com a colisão), escalado a 4 em modo NORMAL");
     }
 
     @Test
@@ -147,59 +163,6 @@ class PilotoProcessaStressConsolidadoTest {
         assertEquals(0, piloto.getStress());
     }
 
-    @Test
-    void processaStressDesconcentradoAgressivo_flagAtivo_incrementaEConsome() throws Exception {
-        Piloto piloto = criarPiloto();
-        piloto.setModoPilotagem(Piloto.AGRESSIVO); // este flag só é setado na prática quando o modo é AGRESSIVO
-        piloto.setStress(0);
-        setCampo(piloto, "desconcentradoAgressivoNesteTick", true);
-
-        invocaPrivado(piloto, "processaStressDesconcentradoAgressivo");
-
-        // incStress(1) em modo AGRESSIVO e escalado por incStress() em 0.5 -> round(0.5) = 1
-        assertEquals(1, piloto.getStress());
-        assertEquals(false, getCampo(piloto, "desconcentradoAgressivoNesteTick"), "o flag deveria ser limpo após consumido");
-    }
-
-    @Test
-    void processaStressDesconcentradoAgressivo_semFlag_naoAltera() throws Exception {
-        Piloto piloto = criarPiloto();
-        piloto.setStress(0);
-
-        invocaPrivado(piloto, "processaStressDesconcentradoAgressivo");
-
-        assertEquals(0, piloto.getStress());
-    }
-
-    @Test
-    void decrementaPilotoDesconcentrado_naoAlteraEstresseDiretamente_masSinalizaFlag() throws Exception {
-        Piloto piloto = criarPiloto();
-        piloto.setStress(0);
-        piloto.setModoPilotagem(Piloto.AGRESSIVO);
-        setCampo(piloto, "ciclosDesconcentrado", 100);
-        when(controleJogo.tempoCicloCircuito()).thenReturn(80L);
-
-        piloto.decrementaPilotoDesconcentrado();
-
-        assertEquals(0, piloto.getStress(), "o método original não deveria mais escrever estresse diretamente");
-        assertEquals(true, getCampo(piloto, "desconcentradoAgressivoNesteTick"),
-                "AGRESSIVO com estresse < 70 e desconcentrado deveria sinalizar o flag");
-    }
-
-    @Test
-    void decrementaPilotoDesconcentrado_normalOuStressAlto_naoSinalizaFlag() throws Exception {
-        Piloto piloto = criarPiloto();
-        piloto.setStress(90);
-        piloto.setModoPilotagem(Piloto.AGRESSIVO);
-        setCampo(piloto, "ciclosDesconcentrado", 100);
-        when(controleJogo.tempoCicloCircuito()).thenReturn(80L);
-
-        piloto.decrementaPilotoDesconcentrado();
-
-        assertEquals(false, getCampo(piloto, "desconcentradoAgressivoNesteTick"),
-                "estresse >= 70 não deveria sinalizar o flag");
-    }
-
     /**
      * Chamado diretamente por ControleBox.processarPilotoBox() (não faz
      * parte de processaStress(), que nunca roda enquanto getPtosBox() != 0).
@@ -212,8 +175,8 @@ class PilotoProcessaStressConsolidadoTest {
 
         piloto.processaStressFilaBox();
 
-        // decStress(2) em modo NORMAL (padrao) e escalado por decStress() em 1.5 -> round(3.0) = 3
-        assertEquals(47, piloto.getStress());
+        // decStress(2) em modo NORMAL (padrao) e escalado por decStress() em 1.1 -> round(2.2) = 2
+        assertEquals(48, piloto.getStress());
     }
 
     /**
@@ -232,15 +195,15 @@ class PilotoProcessaStressConsolidadoTest {
     }
 
     @Test
-    void processaStressDanoAereofolio_flagAtivo_incrementaEmQuinzeEConsome() throws Exception {
+    void processaStressDanoAereofolio_flagAtivo_incrementaETrintaEConsome() throws Exception {
         Piloto piloto = criarPiloto();
         piloto.setStress(0);
         piloto.sinalizaDanoAereofolio();
 
         invocaPrivado(piloto, "processaStressDanoAereofolio");
 
-        // incStress(15) em modo NORMAL e escalado por incStress() em 0.5 -> round(7.5) = 8
-        assertEquals(8, piloto.getStress());
+        // incStress(30) em modo NORMAL e escalado por incStress() em 0.5 -> round(15.0) = 15
+        assertEquals(15, piloto.getStress());
         assertEquals(false, getCampo(piloto, "sofreuDanoAereofolioNesteTick"), "o flag deveria ser limpo após consumido");
     }
 
@@ -296,14 +259,14 @@ class PilotoProcessaStressConsolidadoTest {
     }
 
     @Test
-    void decStress_modoNormal_aumentaEm25Porcento() {
+    void decStress_modoNormal_aumentaEm10Porcento() {
         Piloto piloto = criarPiloto();
         piloto.setStress(50);
         when(random.nextDouble()).thenReturn(0.99); // satisfaz o sorteio interno de decStress
 
         piloto.decStress(10);
 
-        assertEquals(37, piloto.getStress(), "NORMAL deveria aumentar o decremento em 25% (10 -> 13)");
+        assertEquals(39, piloto.getStress(), "NORMAL deveria aumentar o decremento em 10% (10 -> 11), recuperação mais cadenciada que antes (era 25%)");
     }
 
     @Test
@@ -315,7 +278,7 @@ class PilotoProcessaStressConsolidadoTest {
 
         piloto.decStress(10);
 
-        assertEquals(35, piloto.getStress(), "LENTO deveria aumentar o decremento em 50% (10 -> 15), mais que o NORMAL (13)");
+        assertEquals(35, piloto.getStress(), "LENTO deveria aumentar o decremento em 50% (10 -> 15), mais que o NORMAL (11)");
     }
 
     @Test
@@ -373,8 +336,8 @@ class PilotoProcessaStressConsolidadoTest {
 
         ultimo.decStress(10);
 
-        // decStress(10) em modo NORMAL (padrao) e escalado por decStress() em 1.25 -> 13
+        // decStress(10) em modo NORMAL (padrao) e escalado por decStress() em 1.1 -> 11
         assertEquals(50, lider.getStress(), "líder (posição 1, gate 0.69) não deveria recuperar com esse sorteio");
-        assertEquals(37, ultimo.getStress(), "último colocado (posição 20, gate 0.50) deveria recuperar com o mesmo sorteio");
+        assertEquals(39, ultimo.getStress(), "último colocado (posição 20, gate 0.50) deveria recuperar com o mesmo sorteio");
     }
 }

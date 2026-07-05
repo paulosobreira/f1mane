@@ -86,14 +86,6 @@ public class Piloto implements Serializable, PilotoSuave {
     @JsonIgnore
     private Integer freioNaRetaMalSucedidoNesteTick;
     /**
-     * Sinaliza que decrementaPilotoDesconcentrado() encontrou o piloto
-     * desconcentrado em modo agressivo com estresse baixo neste tick — a
-     * própria chamada já decrementa ciclosDesconcentrado, então o valor não
-     * pode ser rederivado depois por processaStress(); precisa desse flag.
-     */
-    @JsonIgnore
-    private boolean desconcentradoAgressivoNesteTick;
-    /**
      * Sinalizado por ControleCorrida.danificaAreofolio() quando o piloto
      * sofre um acidente com perda de aerofólio neste tick; consumido por
      * processaStress(), que aplica o incremento de estresse correspondente.
@@ -181,8 +173,6 @@ public class Piloto implements Serializable, PilotoSuave {
     @JsonIgnore
     private No noAnterior = new No();
     @JsonIgnore
-    private transient int ciclosDesconcentrado;
-    @JsonIgnore
     private transient int porcentagemCombustUltimaParadaBox;
     @JsonIgnore
     private long ciclosVoltaQualificacao;
@@ -226,8 +216,6 @@ public class Piloto implements Serializable, PilotoSuave {
     private double limiteEvitarBatrCarroFrente;
     @JsonIgnore
     private boolean evitaBaterCarroFrente;
-    @JsonIgnore
-    private boolean problemaLargada;
     @JsonIgnore
     private boolean recebeuBanderada;
     @JsonIgnore
@@ -767,11 +755,6 @@ public class Piloto implements Serializable, PilotoSuave {
         this.setUpIncial = setUpIncial;
     }
 
-    @JsonIgnore
-    public int getCiclosDesconcentrado() {
-        return ciclosDesconcentrado;
-    }
-
     public int getPtosBox() {
         return ptosBox;
     }
@@ -786,13 +769,6 @@ public class Piloto implements Serializable, PilotoSuave {
 
     public void setBox(boolean box) {
         this.box = box;
-    }
-
-    public void setCiclosDesconcentrado(int ciclosDelay) {
-        if (ciclosDelay > 0 && verificaDesconcentrado()) {
-            return;
-        }
-        this.ciclosDesconcentrado = ciclosDelay;
     }
 
     public boolean isJogadorHumano() {
@@ -1167,7 +1143,6 @@ public class Piloto implements Serializable, PilotoSuave {
         processaGanhoSafetyCar();
         processaUltimas5Voltas();
         processaMudancaRegime();
-        decrementaPilotoDesconcentrado();
         processaSegundosParaRival();
         controleJogo.verificaAcidente(this);
         processaStress();
@@ -1407,7 +1382,6 @@ public class Piloto implements Serializable, PilotoSuave {
             return;
         }
         Piloto pilotoFrente = getColisao();
-        pilotoFrente.setCiclosDesconcentrado(0);
         /**
          * Considera tambem o carro da frente que ainda esta cruzando esta
          * linha (mudou de tracado mas o corpo ainda nao saiu dela); antes a
@@ -1443,7 +1417,7 @@ public class Piloto implements Serializable, PilotoSuave {
         if (ciclosPresoFila < 8) {
             return false;
         }
-        if (controleJogo.isSafetyCarNaPista() || isRecebeuBanderada() || verificaDesconcentrado()) {
+        if (controleJogo.isSafetyCarNaPista() || isRecebeuBanderada()) {
             return false;
         }
         if (getPtosBox() != 0 || isBox()) {
@@ -1601,7 +1575,7 @@ public class Piloto implements Serializable, PilotoSuave {
         if (getStress() > getValorLimiteStressePararErrarCurva() && !controleJogo.isSafetyCarNaPista()
                 && AGRESSIVO.equals(modoPilotagem)) {
             if (escapaTracado()) {
-                setCiclosDesconcentrado(testeHabilidadePiloto() ? 5 : 7);
+                incStress(testeHabilidadePiloto() ? 1 : 3);
                 controleJogo.travouRodas(this);
                 if (controleJogo.verificaInfoRelevante(this)) {
                     controleJogo.info(Lang.msg("saiDaPista",
@@ -1806,7 +1780,7 @@ public class Piloto implements Serializable, PilotoSuave {
 
         if (getNoAtual().verificaCurvaBaixa() && retardaFreiandoReta) {
             if (getPosicao() <= 3 && controleJogo.getRandom().nextDouble() > 0.9 && !testeHabilidadePilotoFreios()) {
-                freioNaRetaMalSucedidoNesteTick = 10 - (getCarro().getPorcentagemDesgastePneus() / 100);
+                freioNaRetaMalSucedidoNesteTick = 30 - (getCarro().getPorcentagemDesgastePneus() / 100);
                 if (controleJogo.verificaInfoRelevante(this) && controleJogo.getRandom().nextDouble() > 0.7) {
                     controleJogo
                             .info(Lang.msg("014", new String[] { nomeJogadorFormatado(), Html.negrito(getNome()) }));
@@ -1904,7 +1878,6 @@ public class Piloto implements Serializable, PilotoSuave {
         processaStressPneusIncompativeis();
         processaStressFreioNaRetaMalSucedido();
         processaStressColisao();
-        processaStressDesconcentradoAgressivo();
         processaStressDanoAereofolio();
     }
 
@@ -1913,27 +1886,30 @@ public class Piloto implements Serializable, PilotoSuave {
      * Carro.calculaDesgastePneus(No) — o desgaste de pneu em si continua lá,
      * só o incremento/decremento de estresse foi movido pra cá.
      */
+    /**
+     * Magnitude do incremento escala por modo de pilotagem: AGRESSIVO usa o
+     * desgaste alto cheio, NORMAL usa metade disso, LENTO não gera incremento
+     * algum (só se beneficia da recuperação abaixo).
+     */
     private void processaStressDesgastePneus() {
         if (isRecebeuBanderada() || controleJogo.isSafetyCarNaPista()) {
             return;
         }
         No no = getNoAtual();
-        int incStress = 10 - (getCarro().getPorcentagemDesgastePneus() / 100);
-        int decStress = getCarro().getPorcentagemDesgastePneus() / 100;
+        if (controleJogo.getRandom().nextDouble() < (getCarro().getPorcentagemDesgastePneus() / 100.0)) {
+            return;
+        }
         if (no.verificaCurvaBaixa()) {
-            incStress(testeHabilidadePilotoAerodinamicaFreios() ? incStress / 2 : incStress);
-            if (!controleJogo.isChovendo() && getPtosBox() == 0 && getStress() > 80) {
-                decStress(testeHabilidadePiloto() ? decStress : decStress / 2);
+            if (AGRESSIVO.equals(getModoPilotagem())) {
+                incStress(testeHabilidadePilotoAerodinamicaFreios() ? 10 : 20);
+            } else if (NORMAL.equals(getModoPilotagem())) {
+                incStress(testeHabilidadePilotoAerodinamicaFreios() ? 5 : 10);
             }
         } else if (no.verificaCurvaAlta()) {
-            if (!controleJogo.isChovendo() && getPtosBox() == 0 && getStress() > 70) {
-                decStress(testeHabilidadePiloto() ? decStress : decStress / 2);
-            }
-        } else if (no.verificaRetaOuLargada()) {
-            int indexFrete = no.getIndex() + 50;
-            if (indexFrete < (controleJogo.getNosDaPista().size() - 1)
-                    && getStress() > 60 && !controleJogo.isChovendo() && getPtosBox() == 0) {
-                incStress(testeHabilidadePiloto() ? incStress / 2 : incStress);
+            if (AGRESSIVO.equals(getModoPilotagem())) {
+                incStress(testeHabilidadePilotoCarro() ? 10 : 20);
+            } else if (NORMAL.equals(getModoPilotagem())) {
+                incStress(testeHabilidadePilotoCarro() ? 5 : 10);
             }
         }
     }
@@ -1959,21 +1935,12 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     private void processaStressColisao() {
-        if (getColisao() == null) {
-            return;
-        }
-        incStress(1);
         if (evitaBaterCarroFrente) {
-            incStress(1);
+            incStress(8);
+        } else if (getColisao() != null) {
+            incStress(12);
         }
-    }
 
-    private void processaStressDesconcentradoAgressivo() {
-        if (!desconcentradoAgressivoNesteTick) {
-            return;
-        }
-        incStress(1);
-        desconcentradoAgressivoNesteTick = false;
     }
 
     /**
@@ -2000,12 +1967,12 @@ public class Piloto implements Serializable, PilotoSuave {
         if (!sofreuDanoAereofolioNesteTick) {
             return;
         }
-        incStress(15);
+        incStress(30);
         sofreuDanoAereofolioNesteTick = false;
     }
 
     private void processaIAnovoIndex() {
-        if (colisao != null || isRecebeuBanderada() || controleJogo.isModoQualify() || verificaDesconcentrado()) {
+        if (colisao != null || isRecebeuBanderada() || controleJogo.isModoQualify()) {
             return;
         }
         if (isJogadorHumano() &&
@@ -2203,7 +2170,7 @@ public class Piloto implements Serializable, PilotoSuave {
         if (!lento && verificaPassarRetardatario(piloto, pilotoNaFrente)) {
             pilotoNaFrente.getCarro().setGiro(Carro.GIRO_MIN_VAL);
             pilotoNaFrente.setModoPilotagem(Piloto.LENTO);
-            pilotoNaFrente.setCiclosDesconcentrado(5);
+            pilotoNaFrente.incStress(pilotoNaFrente.testeHabilidadePiloto() ? 1 : 2);
             mensagemRetardatario(piloto, pilotoNaFrente);
         }
         int novapos = 0;
@@ -2231,7 +2198,7 @@ public class Piloto implements Serializable, PilotoSuave {
                 String msg = Lang.msg("021", new String[] { pilotoNaFrente.getNome(), piloto.getNome() });
                 controleJogo.info(Html.azul(msg));
             }
-            pilotoNaFrente.setCiclosDesconcentrado(10);
+            pilotoNaFrente.incStress(pilotoNaFrente.testeHabilidadePiloto() ? 2 : 5);
         }
     }
 
@@ -2261,9 +2228,6 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     private void iaTentaUsarDRS() {
-        if (verificaDesconcentrado()) {
-            return;
-        }
         if (controleJogo.isChovendo()) {
             return;
         }
@@ -2278,9 +2242,6 @@ public class Piloto implements Serializable, PilotoSuave {
 
     private void iaTentaUsarErs() {
         if (!controleJogo.isErs()) {
-            return;
-        }
-        if (verificaDesconcentrado()) {
             return;
         }
         if (noAtual == null) {
@@ -2759,15 +2720,6 @@ public class Piloto implements Serializable, PilotoSuave {
             getCarro().setGiro(Carro.GIRO_MIN_VAL);
             return;
         }
-        if (verificaDesconcentrado()) {
-            if (Piloto.AGRESSIVO.equals(getModoPilotagem())) {
-                setModoPilotagem(Piloto.NORMAL);
-            }
-            if (Carro.GIRO_MAX_VAL == getCarro().getGiro()) {
-                getCarro().setGiro(Carro.GIRO_NOR_VAL);
-            }
-            return;
-        }
         if (AGRESSIVO.equals(getModoPilotagem())) {
             mensangesModoAgressivo();
         }
@@ -2866,32 +2818,6 @@ public class Piloto implements Serializable, PilotoSuave {
         return carro.testePotencia() && testeHabilidadePiloto();
     }
 
-    public boolean verificaDesconcentrado() {
-        return ciclosDesconcentrado > 0;
-    }
-
-    public boolean decrementaPilotoDesconcentrado() {
-        if (colisao != null) {
-            return false;
-        }
-        if (ciclosDesconcentrado <= 0) {
-            ciclosDesconcentrado = 0;
-            if (isProblemaLargada()) {
-                controleJogo.info(Html.vermelho(getNome() + " " + Lang.msg("problemaLargada")));
-                setProblemaLargada(false);
-            }
-            return false;
-        }
-        double val = (controleJogo.tempoCicloCircuito() / 80);
-        int dec = (int) val;
-        if (AGRESSIVO.equals(modoPilotagem) && getStress() < 70) {
-            desconcentradoAgressivoNesteTick = true;
-            dec++;
-        }
-        ciclosDesconcentrado -= dec;
-        return true;
-    }
-
     private int calculaModificadorPrincipal() {
         double comparador = 0.3;
         if (Carro.GIRO_MAX_VAL == getCarro().getGiro()) {
@@ -2951,7 +2877,7 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     public boolean testeHabilidadePiloto() {
-        if (danificado() || verificaDesconcentrado()) {
+        if (danificado()) {
             return false;
         }
         return controleJogo.getRandom().nextDouble() < (habilidade / 1000.0);
@@ -3066,13 +2992,15 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     /**
-     * Escala de recuperação por modo de pilotagem: NORMAL recupera 25% a
-     * mais, LENTO recupera 50% a mais (mais que o normal); AGRESSIVO não
-     * muda (mantém a ausência de decaimento passivo que já tinha).
+     * Escala de recuperação por modo de pilotagem: NORMAL recupera 10% a
+     * mais (recuperação mais cadenciada — reduzido de 25%, que ficava
+     * agressivo demais somado ao decaimento passivo incondicional por tick),
+     * LENTO recupera 50% a mais (mais que o normal); AGRESSIVO não muda
+     * (mantém a ausência de decaimento passivo que já tinha).
      */
     public void decStress(int val) {
         if (NORMAL.equals(getModoPilotagem())) {
-            val = Math.round(val * 1.25f);
+            val = Math.round(val * 1.1f);
         } else if (LENTO.equals(getModoPilotagem())) {
             val = Math.round(val * 1.5f);
         }
@@ -3163,10 +3091,6 @@ public class Piloto implements Serializable, PilotoSuave {
 
     public boolean mudarTracado(int mudarTracado, boolean forcaMudar, boolean escapandoFila) {
         if (!forcaMudar && isRecebeuBanderada()) {
-            return false;
-        }
-        if (!forcaMudar && verificaDesconcentrado() && (getTracado() == 4 || getTracado() == 5)
-                && (mudarTracado != 4 && mudarTracado != 5)) {
             return false;
         }
         if (getSetaBaixo() <= 0) {
@@ -3575,14 +3499,6 @@ public class Piloto implements Serializable, PilotoSuave {
     @JsonIgnore
     public int getDiferencaParaProximo() {
         return calculaDiferencaParaProximo;
-    }
-
-    public boolean isProblemaLargada() {
-        return problemaLargada;
-    }
-
-    public void setProblemaLargada(boolean problemaLargada) {
-        this.problemaLargada = problemaLargada;
     }
 
     public void atualizaInfoDebug(StringBuilder buffer) {

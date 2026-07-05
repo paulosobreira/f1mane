@@ -15,10 +15,13 @@ import br.f1mane.controles.InterfaceJogo;
 /**
  * Carro.calculaDesgastePneus(No) não altera mais o estresse do piloto
  * diretamente — a decisão foi movida para Piloto.processaStressDesgastePneus(),
- * consumida por processaStress(). Com habilidade/freios/aerodinâmica em 0,
- * testeHabilidadePiloto()/testeHabilidadePilotoAerodinamicaFreios() resolvem
- * consistentemente para falso, para qualquer valor de random.nextDouble()
- * usado abaixo.
+ * consumida por processaStress(). Com habilidade/freios/aerodinâmica/potência
+ * em 0, testeHabilidadePiloto()/testeHabilidadePilotoAerodinamicaFreios()/
+ * testeHabilidadePilotoCarro() resolvem consistentemente para falso, para
+ * qualquer valor de random.nextDouble() usado abaixo. A magnitude do
+ * incremento agora escala por modo de pilotagem (AGRESSIVO = desgaste alto
+ * cheio, NORMAL = metade disso, LENTO = nenhum incremento), que soma com o
+ * escalonamento genérico já existente em incStress() (AGRESSIVO/NORMAL x0.5).
  */
 class CarroCalculaDesgastePneusStressTest {
 
@@ -146,28 +149,29 @@ class CarroCalculaDesgastePneusStressTest {
     }
 
     @Test
-    void processaStressDesgastePneus_retaOuLargada_stressAcima60_incrementa() throws Exception {
+    void processaStressDesgastePneus_retaOuLargada_stressAcima60_naoAltera() throws Exception {
+        // Não há intenção, em nenhum cenário, de o desgaste de pneu aumentar o estresse numa reta/largada.
         Piloto piloto = criarPiloto(0.0);
-        piloto.setStress(65); // >60, mas abaixo de 70/80/90 -> nenhum cap interno se aplica
-        piloto.getCarro().setPorcentagemDesgastePneus(0); // incStress base = 10, reduzido a 5 em modo NORMAL
+        piloto.setStress(65);
+        piloto.getCarro().setPorcentagemDesgastePneus(0);
         piloto.setNoAtual(criarNo(10, No.RETA));
 
         invocaProcessaStressDesgastePneus(piloto);
 
-        assertEquals(70, piloto.getStress());
+        assertEquals(65, piloto.getStress());
     }
 
     @Test
-    void processaStressDesgastePneus_retaOuLargada_modoAgressivo_incrementaComRedução50Porcento() throws Exception {
+    void processaStressDesgastePneus_retaOuLargada_modoAgressivo_naoAltera() throws Exception {
         Piloto piloto = criarPiloto(0.0);
         piloto.setModoPilotagem(Piloto.AGRESSIVO);
         piloto.setStress(65);
-        piloto.getCarro().setPorcentagemDesgastePneus(0); // incStress base = 10, escalado por incStress() em 0.5 (AGRESSIVO) -> 5
+        piloto.getCarro().setPorcentagemDesgastePneus(0);
         piloto.setNoAtual(criarNo(10, No.RETA));
 
         invocaProcessaStressDesgastePneus(piloto);
 
-        assertEquals(70, piloto.getStress());
+        assertEquals(65, piloto.getStress());
     }
 
     @Test

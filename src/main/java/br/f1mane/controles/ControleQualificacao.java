@@ -6,12 +6,14 @@ import java.util.*;
 
 import br.nnpe.Global;
 import br.nnpe.GeoUtil;
+import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.f1mane.entidades.Carro;
 import br.f1mane.entidades.Circuito;
 import br.f1mane.entidades.No;
 import br.f1mane.entidades.Piloto;
+import br.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author Paulo Sobreira
@@ -266,8 +268,9 @@ public class ControleQualificacao {
             if (!piloto.isJogadorHumano()
                     && !piloto.testeHabilidadePilotoCarro()
                     && controleJogo.getRandom().nextDouble() > 0.95) {
-                piloto.setCiclosDesconcentrado(controleJogo.getRandom().intervalo(500, 700));
-                piloto.setProblemaLargada(true);
+                int valor = controleJogo.getRandom().intervalo(15, 20);
+                piloto.incStress(piloto.testeHabilidadePiloto() ? valor / 2 : valor);
+                controleJogo.info(Html.vermelho(piloto.getNome() + " " + Lang.msg("problemaLargada")));
             }
             Carro carro = piloto.getCarro();
             carro.setTempMax(carro.getPotencia() / 4);
