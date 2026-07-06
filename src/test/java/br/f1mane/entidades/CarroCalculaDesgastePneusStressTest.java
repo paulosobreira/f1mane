@@ -96,44 +96,43 @@ class CarroCalculaDesgastePneusStressTest {
     }
 
     @Test
-    void processaStressDesgastePneus_curvaBaixa_modoAgressivo_incrementaComRedução50Porcento() throws Exception {
+    void processaStressDesgastePneus_curvaBaixa_modoAgressivo_incrementaEmDobroDoNormal() throws Exception {
         Piloto piloto = criarPiloto(0.0);
         piloto.setModoPilotagem(Piloto.AGRESSIVO);
         piloto.setStress(0);
-        piloto.getCarro().setPorcentagemDesgastePneus(0); // incStress base = 10, escalado por incStress() em 0.5 (AGRESSIVO) -> 5
+        piloto.getCarro().setPorcentagemDesgastePneus(0); // incStress base = 20 (cheio), escalado por incStress() em 0.5 (AGRESSIVO) -> 10
         piloto.setNoAtual(criarNo(10, No.CURVA_BAIXA));
 
         invocaProcessaStressDesgastePneus(piloto);
 
-        assertEquals(5, piloto.getStress(), "em modo AGRESSIVO o incremento é reduzido em 50% (igual ao NORMAL)");
+        assertEquals(10, piloto.getStress(),
+                "em modo AGRESSIVO a base é o valor cheio (20), o dobro do NORMAL (10), antes do escalonamento genérico de incStress()");
     }
 
     @Test
-    void processaStressDesgastePneus_curvaBaixa_stressAcima80_incrementaCapadoEDecrementaTambem() throws Exception {
-        // nextDouble=0.8 satisfaz tanto o sorteio interno de incStress (< 0.9) quanto o de decStress (> 0.7)
-        Piloto piloto = criarPiloto(0.8);
+    void processaStressDesgastePneus_curvaBaixa_stressAcima80_incrementaCapadoSemDecrementar() throws Exception {
+        Piloto piloto = criarPiloto(0.0);
         piloto.setStress(85);
-        piloto.getCarro().setPorcentagemDesgastePneus(250); // incStress base=8, decStress base=2 (valores artificiais so pra teste)
+        piloto.getCarro().setPorcentagemDesgastePneus(0); // incStress base = 10 (NORMAL)
         piloto.setNoAtual(criarNo(10, No.CURVA_BAIXA));
 
         invocaProcessaStressDesgastePneus(piloto);
 
-        // incStress(8) escalado (NORMAL x0.5=4) com stress=85: cap ">80"->2 (85+2=87);
-        // decStress(2/2=1) escalado (NORMAL x1.25=round(1.25)=1) com stress=87>80: 87-1=86
-        assertEquals(86, piloto.getStress());
+        // incStress(10) escalado (NORMAL x0.5=5) com stress=85: cap ">80"->2 (85+2=87); nunca mais decrementa
+        assertEquals(87, piloto.getStress());
     }
 
     @Test
-    void processaStressDesgastePneus_curvaAlta_stressAcima70_decrementa() throws Exception {
-        Piloto piloto = criarPiloto(0.8); // > 0.7, satisfaz o sorteio interno de decStress
+    void processaStressDesgastePneus_curvaAlta_stressAcima70_incrementaEmVezDeDecrementar() throws Exception {
+        Piloto piloto = criarPiloto(0.0);
         piloto.setStress(75);
-        piloto.getCarro().setPorcentagemDesgastePneus(250); // decStress base=2, ternario (habilidade falsa) -> 2/2=1
+        piloto.getCarro().setPorcentagemDesgastePneus(0); // incStress base = 10 (NORMAL)
         piloto.setNoAtual(criarNo(10, No.CURVA_ALTA));
 
         invocaProcessaStressDesgastePneus(piloto);
 
-        // decStress(1) escalado por decStress() em 1.25 (NORMAL) -> round(1.25) = 1
-        assertEquals(74, piloto.getStress());
+        // incStress(10) escalado (NORMAL x0.5=5) com stress=75>70: cap ">70"->3 (75+3=78); curva alta não decrementa mais
+        assertEquals(78, piloto.getStress());
     }
 
     @Test
