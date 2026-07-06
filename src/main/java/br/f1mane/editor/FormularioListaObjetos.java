@@ -19,6 +19,7 @@ import javax.swing.event.ListSelectionListener;
 
 import br.f1mane.entidades.Circuito;
 import br.f1mane.entidades.ObjetoPista;
+import br.f1mane.recursos.idiomas.Lang;
 
 public class FormularioListaObjetos {
 
@@ -111,7 +112,7 @@ public class FormularioListaObjetos {
 		JPanel botoes = new JPanel(new GridLayout(0, 1));
 		objetos.add(new JScrollPane(list), BorderLayout.CENTER);
 		objetos.add(botoes, BorderLayout.SOUTH);
-		JButton cima = new JButton("Cima");
+		JButton cima = new JButton(Lang.msg("287"));
 		cima.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -125,7 +126,7 @@ public class FormularioListaObjetos {
 				atualizarCircuito();
 			}
 		});
-		JButton baixo = new JButton("Baixo");
+		JButton baixo = new JButton(Lang.msg("288"));
 		baixo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -139,7 +140,7 @@ public class FormularioListaObjetos {
 				atualizarCircuito();
 			}
 		});
-		JButton primeiro = new JButton("Primeiro");
+		JButton primeiro = new JButton(Lang.msg("moverParaPrimeiro"));
 		primeiro.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -153,7 +154,7 @@ public class FormularioListaObjetos {
 				atualizarCircuito();
 			}
 		});
-		JButton ultimo = new JButton("Ultimo");
+		JButton ultimo = new JButton(Lang.msg("moverParaUltimo"));
 		ultimo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -167,7 +168,7 @@ public class FormularioListaObjetos {
 				atualizarCircuito();
 			}
 		});
-		JButton remover = new JButton("Remover");
+		JButton remover = new JButton(Lang.msg("removerObjetoLista"));
 		remover.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

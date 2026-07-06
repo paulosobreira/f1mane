@@ -33,3 +33,7 @@ Em vez de calcular dinamicamente onde o `FlowLayout` vai quebrar linha (frágil,
 ## Open Questions
 
 - Altura exata de linha a adotar na barra superior fica a critério de quem implementar/ajustar visualmente — não afeta nenhum comportamento funcional nem cenário de spec.
+
+## Addendum — divergência na implementação da Requirement 2
+
+A abordagem de "altura de componente comum dentro do `FlowLayout`" (Decisions, acima) foi superada por uma mudança mais ampla feita numa sessão de trabalho anterior nesta mesma branch: `gerarTopoNavegacaoEAcoes()` já havia sido reorganizado para um `GridLayout(0, 4)` (rótulo/campo em 4 colunas) como parte de um trabalho de internacionalização dos textos do editor, o que também eliminou a inconsistência de altura entre linhas descrita neste documento — de forma estrutural (todas as células de um `GridLayout` têm o mesmo tamanho), não por normalização manual de altura. Isso contraria o Non-Goal original ("não trocar `FlowLayout` por outro gerenciador de layout ali"), mas satisfaz a Requirement 2 da spec sem a fragilidade da alternativa descartada. Nenhuma ação adicional de "altura comum" foi necessária na aplicação deste change; ver `tasks.md`, seção 2, para o registro dessa constatação.

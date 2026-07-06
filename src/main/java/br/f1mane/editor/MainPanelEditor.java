@@ -8,7 +8,10 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
@@ -43,12 +46,14 @@ import java.util.Objects;
 import java.util.Properties;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -62,6 +67,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -86,6 +92,7 @@ import br.f1mane.entidades.TipoObjetoConstrucao;
 import br.f1mane.entidades.PontoCurva;
 import br.f1mane.entidades.PontoEscape;
 import br.f1mane.recursos.CarregadorRecursos;
+import br.f1mane.recursos.idiomas.Lang;
 import br.f1mane.visao.PainelCircuito;
 import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
@@ -135,27 +142,28 @@ public class MainPanelEditor extends JPanel {
         }
     }
 
-    private static final OpcaoTipoNo[] TIPOS_NO = new OpcaoTipoNo[]{
-            new OpcaoTipoNo("Sem seleção", null, false),
-            new OpcaoTipoNo("No Largada", No.LARGADA, false),
-            new OpcaoTipoNo("No Reta", No.RETA, false),
-            new OpcaoTipoNo("No Curva Alta", No.CURVA_ALTA, false),
-            new OpcaoTipoNo("No Curva Baixa", No.CURVA_BAIXA, false),
-            new OpcaoTipoNo("No Box", No.BOX, true),
-            new OpcaoTipoNo("No Reta Box", No.RETA, true),
-            new OpcaoTipoNo("No Curva Box", No.CURVA_ALTA, true),
-            new OpcaoTipoNo("No Parada Box", No.PARADA_BOX, true),
-            new OpcaoTipoNo("No Fim Box", No.FIM_BOX, true),
-    };
+    // Não é static final: os textos vêm de Lang.msg, que resolve pelo idioma
+    // corrente a cada chamada — um array estático fixaria a tradução do
+    // idioma vigente no carregamento da classe.
+    private static OpcaoTipoNo[] criarTiposNo() {
+        return new OpcaoTipoNo[]{
+                new OpcaoTipoNo(Lang.msg("noSemSelecao"), null, false),
+                new OpcaoTipoNo(Lang.msg("099"), No.LARGADA, false),
+                new OpcaoTipoNo(Lang.msg("100"), No.RETA, false),
+                new OpcaoTipoNo(Lang.msg("101"), No.CURVA_ALTA, false),
+                new OpcaoTipoNo(Lang.msg("102"), No.CURVA_BAIXA, false),
+                new OpcaoTipoNo(Lang.msg("103"), No.BOX, true),
+                new OpcaoTipoNo(Lang.msg("boxReta"), No.RETA, true),
+                new OpcaoTipoNo(Lang.msg("boxCurvaAlta"), No.CURVA_ALTA, true),
+                new OpcaoTipoNo(Lang.msg("104"), No.PARADA_BOX, true),
+                new OpcaoTipoNo(Lang.msg("fimBox"), No.FIM_BOX, true),
+        };
+    }
 
     private JComboBox tipoNoCombo;
 
     private JScrollPane scrollPane;
 
-    private static final String LADO_COMBO_1 = "BOX LADO 1";
-    private static final String LADO_COMBO_2 = "BOX LADO 2";
-    private static final String SAIDA_LADO_COMBO_1 = "SAIDA BOX LADO 1";
-    private static final String SAIDA_LADO_COMBO_2 = "SAIDA BOX LADO 2";
     public final double zoom = 1;
     private BufferedImage carroCima;
     private int mx;
@@ -265,24 +273,24 @@ public class MainPanelEditor extends JPanel {
             }
         }
         if (!temLargada) {
-            JOptionPane.showMessageDialog(null, "É obrigatório ter um nó de Largada", "Operação ilegal",
+            JOptionPane.showMessageDialog(null, Lang.msg("obrigatorioNoLargada"), Lang.msg("039"),
                     JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
-        if (ladoBoxCombo.getSelectedItem().equals(LADO_COMBO_1)) {
+        if (ladoBoxCombo.getSelectedIndex() == 0) {
             circuito.setLadoBox(1);
         } else {
             circuito.setLadoBox(2);
         }
-        if (ladoBoxSaidaBoxCombo.getSelectedItem().equals(SAIDA_LADO_COMBO_1)) {
+        if (ladoBoxSaidaBoxCombo.getSelectedIndex() == 0) {
             circuito.setLadoBoxSaidaBox(1);
         } else {
             circuito.setLadoBoxSaidaBox(2);
         }
         multiplicadorLarguraPista = circuito.getMultiplicadorLarguraPista();
         if (multiplicadorLarguraPista < 1.0 || multiplicadorLarguraPista > 2.0) {
-            JOptionPane.showMessageDialog(null, "Largura Pista deve ser entre 1.0 e 2.0", "Operação ilegal",
+            JOptionPane.showMessageDialog(null, Lang.msg("multiplicadorLarguraPista"), Lang.msg("039"),
                     JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
@@ -329,20 +337,11 @@ public class MainPanelEditor extends JPanel {
         adicionaEventosMouse(srcFrame);
     }
 
-    private JPanel gerarComboTipoNo() {
-        JPanel painel = new JPanel();
-        painel.add(new JLabel("Tipo de nó"));
-        tipoNoCombo = new JComboBox(TIPOS_NO);
-        tipoNoCombo.setSelectedIndex(0);
-        painel.add(tipoNoCombo);
-        return painel;
-    }
-
     private JPanel gerarBotoesVisualizacao() {
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(1, 3));
 
-        JCheckBox desenhaTracadoCheck = new JCheckBox("Traçado");
+        JCheckBox desenhaTracadoCheck = new JCheckBox(Lang.msg("TRACADO"));
         desenhaTracadoCheck.setSelected(desenhaTracado);
         desenhaTracadoCheck.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -351,7 +350,7 @@ public class MainPanelEditor extends JPanel {
             }
         });
 
-        JCheckBox desenhaBackgroundCheck = new JCheckBox("Background");
+        JCheckBox desenhaBackgroundCheck = new JCheckBox(Lang.msg("mostrarBackground"));
         desenhaBackgroundCheck.setSelected(mostraBG);
         desenhaBackgroundCheck.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -363,7 +362,7 @@ public class MainPanelEditor extends JPanel {
         // Liga/desliga só os objetos de desenho (Livre, Arquibancada, Construcao,
         // GuardRails, Pneus); Escapada/Transparencia (objetos de função) continuam
         // sempre desenhados, ver desenhaObjetosNivel().
-        JCheckBox desenhaObjetosCheck = new JCheckBox("Objetos");
+        JCheckBox desenhaObjetosCheck = new JCheckBox(Lang.msg("mostrarObjetosDesenho"));
         desenhaObjetosCheck.setSelected(desenhaObjetosDesenho);
         desenhaObjetosCheck.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -378,54 +377,9 @@ public class MainPanelEditor extends JPanel {
         return buttonsPanel;
     }
 
-    private JPanel gerarBotoesAcoesNo() {
-        JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new GridLayout(2, 1));
-
-        JButton apagarUltimoNoButton = new JButton("Apagar Ultimo NO");
-        apagarUltimoNoButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    apagarUltimoNo();
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                    srcFrame.dialogDeErro(e1);
-                }
-            }
-        });
-        buttonsPanel.add(apagarUltimoNoButton);
-
-        JButton apagaNoListaButton = new JButton("Apaga Nó na lista Selecionada");
-        apagaNoListaButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    DefaultListModel boxModel = ((DefaultListModel) boxJList.getModel());
-                    int selectedIndexBox = boxJList.getSelectedIndex();
-                    if (selectedIndexBox >= 0 && selectedIndexBox < boxModel.getSize()) {
-                        circuito.getBox().remove(boxModel.get(selectedIndexBox));
-                        boxModel.remove(selectedIndexBox);
-                    }
-                    DefaultListModel pistaModel = ((DefaultListModel) pistaJList.getModel());
-                    int selectedIndexPista = pistaJList.getSelectedIndex();
-                    if (selectedIndexPista >= 0 && selectedIndexPista < pistaModel.getSize()) {
-                        circuito.getPista().remove(pistaModel.get(selectedIndexPista));
-                        pistaModel.remove(selectedIndexPista);
-                    }
-                    vetorizarCircuito();
-                    repaint();
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                    srcFrame.dialogDeErro(e1);
-                }
-            }
-        });
-        buttonsPanel.add(apagaNoListaButton);
-        return buttonsPanel;
-    }
-
     private JPanel gerarBotaoCriarObjeto() {
-        JPanel buttonsPanel = new JPanel(new GridLayout(3, 1));
-        JButton criarObjeto = new JButton("Criar Objeto");
+        JPanel buttonsPanel = new JPanel(new GridLayout(7, 1));
+        JButton criarObjeto = new JButton(Lang.msg("criarObjeto"));
         criarObjeto.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 iniciarCriacaoObjeto();
@@ -433,7 +387,7 @@ public class MainPanelEditor extends JPanel {
         });
         buttonsPanel.add(criarObjeto);
 
-        JButton copiarCor = new JButton("Copiar Cor");
+        JButton copiarCor = new JButton(Lang.msg("copiarCor"));
         copiarCor.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 copiarCorObjetoSelecionado();
@@ -441,13 +395,19 @@ public class MainPanelEditor extends JPanel {
         });
         buttonsPanel.add(copiarCor);
 
-        JButton colarCor = new JButton("Colar Cor");
+        JButton colarCor = new JButton(Lang.msg("colarCor"));
         colarCor.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 colarCorObjetosSelecionados();
             }
         });
         buttonsPanel.add(colarCor);
+
+        // Legenda dos atalhos de teclado de objeto — ver EditorCircuitos.ativarKeysEditor().
+        buttonsPanel.add(new JLabel(Lang.msg("atalhoInserir")));
+        buttonsPanel.add(new JLabel(Lang.msg("atalhoApagar")));
+        buttonsPanel.add(new JLabel(Lang.msg("atalhoSobeNivel")));
+        buttonsPanel.add(new JLabel(Lang.msg("atalhoDesceNivel")));
 
         return buttonsPanel;
     }
@@ -517,7 +477,7 @@ public class MainPanelEditor extends JPanel {
         try {
             desSelecionaNosPista();
             TipoObjetoPista tipoSelecionado = (TipoObjetoPista) JOptionPane.showInputDialog(
-                    srcFrame, "Tipo do objeto:", "Criar Objeto", JOptionPane.QUESTION_MESSAGE,
+                    srcFrame, Lang.msg("tipoDoObjetoPrompt"), Lang.msg("criarObjeto"), JOptionPane.QUESTION_MESSAGE,
                     null, TipoObjetoPista.values(), TipoObjetoPista.values()[0]);
             if (tipoSelecionado == null) {
                 return;
@@ -580,33 +540,87 @@ public class MainPanelEditor extends JPanel {
 
     private JPanel gerarSecaoNos() {
         JPanel secao = new JPanel(new BorderLayout());
-        JPanel topo = new JPanel(new GridLayout(3, 1));
-        topo.add(gerarComboTipoNo());
-        topo.add(gerarCombosLadoBox());
-        topo.add(gerarBotoesAcoesNo());
-        secao.add(topo, BorderLayout.NORTH);
+        secao.add(gerarPainelControlesNos(), BorderLayout.NORTH);
         secao.add(gerarListsNosPistaBox(), BorderLayout.CENTER);
         return secao;
     }
 
-    private JPanel gerarCombosLadoBox() {
-        JPanel painel = new JPanel();
+    /**
+     * Único grid de 1 coluna com os controles de nós de pista — tipo de nó,
+     * lado do box, lado de saída do box, apagar último nó e apagar nó
+     * selecionado —, uma linha por controle, substituindo os três
+     * sub-painéis que antes misturavam arranjo empilhado com arranjo lado a
+     * lado (gerarComboTipoNo/gerarCombosLadoBox/gerarBotoesAcoesNo).
+     */
+    private JPanel gerarPainelControlesNos() {
+        JPanel painel = new JPanel(new GridLayout(6, 1));
 
+        // Rótulo numa linha própria, acima do combo — e o combo direto no
+        // grid (sem painel embrulhando), pra ocupar a linha toda como os
+        // botões abaixo, em vez de ficar do tamanho natural/centralizado
+        // dentro de um painel com FlowLayout padrão.
+        painel.add(new JLabel(Lang.msg("tipoDeNo"), SwingConstants.CENTER));
+        tipoNoCombo = new JComboBox(criarTiposNo());
+        tipoNoCombo.setSelectedIndex(0);
+        painel.add(tipoNoCombo);
+
+        // Itens indexados (0 = lado 1, 1 = lado 2): a seleção é lida por
+        // índice (ver vetorizarCircuito()), não pelo texto do item, já que o
+        // texto vem de Lang.msg e muda conforme o idioma.
         ladoBoxCombo = new JComboBox();
-        ladoBoxCombo.addItem(LADO_COMBO_1);
-        ladoBoxCombo.addItem(LADO_COMBO_2);
+        ladoBoxCombo.addItem(Lang.msg("ladoBox1"));
+        ladoBoxCombo.addItem(Lang.msg("ladoBox2"));
         if (circuito != null && circuito.getLadoBox() == 2) {
-            ladoBoxCombo.setSelectedItem(LADO_COMBO_2);
+            ladoBoxCombo.setSelectedIndex(1);
         }
         painel.add(ladoBoxCombo);
 
         ladoBoxSaidaBoxCombo = new JComboBox();
-        ladoBoxSaidaBoxCombo.addItem(SAIDA_LADO_COMBO_1);
-        ladoBoxSaidaBoxCombo.addItem(SAIDA_LADO_COMBO_2);
+        ladoBoxSaidaBoxCombo.addItem(Lang.msg("saidaLadoBox1"));
+        ladoBoxSaidaBoxCombo.addItem(Lang.msg("saidaLadoBox2"));
         if (circuito != null && circuito.getLadoBoxSaidaBox() == 2) {
-            ladoBoxSaidaBoxCombo.setSelectedItem(SAIDA_LADO_COMBO_2);
+            ladoBoxSaidaBoxCombo.setSelectedIndex(1);
         }
         painel.add(ladoBoxSaidaBoxCombo);
+
+        JButton apagarUltimoNoButton = new JButton(Lang.msg("105"));
+        apagarUltimoNoButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    apagarUltimoNo();
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                    srcFrame.dialogDeErro(e1);
+                }
+            }
+        });
+        painel.add(apagarUltimoNoButton);
+
+        JButton apagaNoListaButton = new JButton(Lang.msg("apagaNoListaButton"));
+        apagaNoListaButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    DefaultListModel boxModel = ((DefaultListModel) boxJList.getModel());
+                    int selectedIndexBox = boxJList.getSelectedIndex();
+                    if (selectedIndexBox >= 0 && selectedIndexBox < boxModel.getSize()) {
+                        circuito.getBox().remove(boxModel.get(selectedIndexBox));
+                        boxModel.remove(selectedIndexBox);
+                    }
+                    DefaultListModel pistaModel = ((DefaultListModel) pistaJList.getModel());
+                    int selectedIndexPista = pistaJList.getSelectedIndex();
+                    if (selectedIndexPista >= 0 && selectedIndexPista < pistaModel.getSize()) {
+                        circuito.getPista().remove(pistaModel.get(selectedIndexPista));
+                        pistaModel.remove(selectedIndexPista);
+                    }
+                    vetorizarCircuito();
+                    repaint();
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                    srcFrame.dialogDeErro(e1);
+                }
+            }
+        });
+        painel.add(apagaNoListaButton);
 
         return painel;
     }
@@ -625,13 +639,22 @@ public class MainPanelEditor extends JPanel {
         formularioListaObjetosDesenho.listarObjetos();
         formularioListaObjetosFuncao = new FormularioListaObjetos(this, Circuito::getObjetos);
         formularioListaObjetosFuncao.listarObjetos();
+
+        JPanel listaDesenho = new JPanel(new BorderLayout());
+        listaDesenho.add(new JLabel(Lang.msg("objetosDesenhoLabel")), BorderLayout.NORTH);
+        listaDesenho.add(formularioListaObjetosDesenho.getObjetos(), BorderLayout.CENTER);
+
+        JPanel listaFuncao = new JPanel(new BorderLayout());
+        listaFuncao.add(new JLabel(Lang.msg("objetosFuncaoLabel")), BorderLayout.NORTH);
+        listaFuncao.add(formularioListaObjetosFuncao.getObjetos(), BorderLayout.CENTER);
+
         // Split vertical (não BorderLayout com altura fixa): a lista de cima
         // tem lista+5 botões (Cima/Baixo/Primeiro/Ultimo/Remover) e a de
         // baixo lista+3 (Cima/Baixo/Remover); uma altura em pixels fixa
         // espremia as listas até sumir. 70/30 garante os 30% pedidos
         // independente do conteúdo.
         JSplitPane splitListas = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-                formularioListaObjetosDesenho.getObjetos(), formularioListaObjetosFuncao.getObjetos());
+                listaDesenho, listaFuncao);
         splitListas.setResizeWeight(0.7);
         splitListas.setOneTouchExpandable(true);
         secao.add(splitListas, BorderLayout.CENTER);
@@ -648,13 +671,30 @@ public class MainPanelEditor extends JPanel {
 
 
     private JPanel gerarTopoNavegacaoEAcoes() {
-        JPanel topo = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 6)) {
-            @Override
-            public Dimension getPreferredSize() {
-                Dimension d = super.getPreferredSize();
-                return new Dimension(d.width, (int) (d.height * 0.8));
-            }
-        };
+        // Três linhas: a linha 0 tem a navegação/salvar e a primeira metade
+        // dos campos persistidos no circuito (nome/ativo/clima/ciclo/tempo de
+        // volta/distância/largura); a linha 1 tem a outra metade (noite e as
+        // cores); a linha 2 tem só os controles de teste/visualização, que
+        // não alteram dado nenhum do circuito (traçado, background, objetos,
+        // teste de pista, ir ao box, escapada, setinhas de posição do
+        // traçado). GridBagLayout (em vez de GridLayout) porque os valores
+        // não têm o mesmo tamanho natural — o campo de nome do circuito, por
+        // exemplo, precisa de bem mais largura que um indicador de cor ou um
+        // checkbox — então cada coluna assume a largura do maior componente
+        // que a ocupa, em vez de todo campo ser esticado pro tamanho do
+        // maior campo da grade toda.
+        // Cada linha tem seu próprio GridBagLayout independente (em vez de
+        // um só compartilhado pelas três) — colunas de um GridBagLayout são
+        // globais ao container inteiro, então um componente largo numa linha
+        // (ex.: o combo de circuitos) alargava a mesma coluna nas outras
+        // linhas também, mesmo sem precisar.
+        JPanel linha0Painel = new JPanel(new GridBagLayout());
+        JPanel linha1Painel = new JPanel(new GridBagLayout());
+        JPanel linha2Painel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(2, 4, 2, 10);
+        gbc.anchor = GridBagConstraints.WEST;
+        int[] colunaLinha0 = {0};
 
         btnCircuitoAnterior = new JButton("◀");
         btnCircuitoAnterior.addActionListener(new ActionListener() {
@@ -662,9 +702,15 @@ public class MainPanelEditor extends JPanel {
                 navegarCircuito(-1);
             }
         });
-        topo.add(btnCircuitoAnterior);
+        adicionaComponenteTopo(linha0Painel, gbc, 0, colunaLinha0, btnCircuitoAnterior);
 
-        comboCircuito = new JComboBox<CircuitoComboItem>();
+        comboCircuito = new JComboBox<CircuitoComboItem>() {
+            @Override
+            public Dimension getPreferredSize() {
+                Dimension d = super.getPreferredSize();
+                return new Dimension(Math.min(d.width, 160), d.height);
+            }
+        };
         comboCircuito.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (sincronizandoComboCircuito) {
@@ -687,7 +733,7 @@ public class MainPanelEditor extends JPanel {
                 }
             }
         });
-        topo.add(comboCircuito);
+        adicionaComponenteTopo(linha0Painel, gbc, 0, colunaLinha0, comboCircuito);
         // gerarLayout() recria este painel (e comboCircuito) a cada carregamento
         // de circuito; sem isto o combo nasceria vazio e o setSelectedIndex feito
         // por atualizarBotoesNavegacao() no fim deste método lançaria
@@ -700,9 +746,9 @@ public class MainPanelEditor extends JPanel {
                 navegarCircuito(1);
             }
         });
-        topo.add(btnCircuitoProximo);
+        adicionaComponenteTopo(linha0Painel, gbc, 0, colunaLinha0, btnCircuitoProximo);
 
-        JButton btnSalvar = new JButton("Salvar");
+        JButton btnSalvar = new JButton(Lang.msg("108"));
         btnSalvar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -713,21 +759,14 @@ public class MainPanelEditor extends JPanel {
                 }
             }
         });
-        topo.add(btnSalvar);
+        adicionaComponenteTopo(linha0Painel, gbc, 0, colunaLinha0, btnSalvar);
 
-        topo.add(new JLabel("Nome do circuito"));
-        nomePistaText = new JTextField() {
-            @Override
-            public Dimension getPreferredSize() {
-                return new Dimension(150, 40);
-            }
-        };
+        nomePistaText = new JTextField();
+        nomePistaText.setColumns(18);
         if (circuito != null) {
             nomePistaText.setText(circuito.getNome());
         }
-        topo.add(nomePistaText);
 
-        topo.add(new JLabel("Ativo"));
         ativoCheckBox = new JCheckBox();
         ativoCheckBox.setSelected(circuito != null && circuito.isAtivo());
         ativoCheckBox.addActionListener(new ActionListener() {
@@ -735,37 +774,14 @@ public class MainPanelEditor extends JPanel {
                 circuito.setAtivo(ativoCheckBox.isSelected());
             }
         });
-        topo.add(ativoCheckBox);
 
-        topo.add(new JLabel() {
-            @Override
-            public String getText() {
-                return "% Chuva";
-            }
-        });
-        probalidadeChuvaText = new JTextField() {
-            @Override
-            public Dimension getPreferredSize() {
-                return new Dimension(30, super.getPreferredSize().height);
-            }
-        };
+        probalidadeChuvaText = new JTextField();
+        probalidadeChuvaText.setColumns(3);
         if (circuito != null) {
             probalidadeChuvaText.setText("" + circuito.getProbalidadeChuva());
         }
-        topo.add(probalidadeChuvaText);
 
-        topo.add(new JLabel() {
-            @Override
-            public String getText() {
-                return "Ciclo (ms/tick)";
-            }
-        });
-        cicloSpinner = new JSpinner(new SpinnerNumberModel(circuito != null ? circuito.getCiclo() : 160, 1, 10000, 1)) {
-            @Override
-            public Dimension getPreferredSize() {
-                return new Dimension(60, super.getPreferredSize().height);
-            }
-        };
+        cicloSpinner = new JSpinner(new SpinnerNumberModel(circuito != null ? circuito.getCiclo() : 160, 1, 10000, 1));
         cicloSpinner.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -773,33 +789,14 @@ public class MainPanelEditor extends JPanel {
                 atualizaTempoVoltaEstimado();
             }
         });
-        topo.add(cicloSpinner);
 
-        topo.add(new JLabel() {
-            @Override
-            public String getText() {
-                return "Tempo de volta estimado";
-            }
-        });
         tempoVoltaEstimadoLabel = new JLabel("~");
-        topo.add(tempoVoltaEstimadoLabel);
 
-        topo.add(new JLabel() {
-            @Override
-            public String getText() {
-                return "Distância (km)";
-            }
-        });
-        distanciaKmText = new JTextField() {
-            @Override
-            public Dimension getPreferredSize() {
-                return new Dimension(50, super.getPreferredSize().height);
-            }
-        };
+        distanciaKmText = new JTextField();
+        distanciaKmText.setColumns(5);
         if (circuito != null) {
             distanciaKmText.setText("" + circuito.getDistanciaKm());
         }
-        topo.add(distanciaKmText);
 
         if (multiplicadorLarguraPista < 1.0) {
             multiplicadorLarguraPista = 1.0;
@@ -808,12 +805,11 @@ public class MainPanelEditor extends JPanel {
             multiplicadorLarguraPista = 2.0;
         }
         SpinnerNumberModel model1 = new SpinnerNumberModel(multiplicadorLarguraPista, 1.0, 2.0, 0.1);
-        larguraPistaSpinner = new JSpinner(model1) {
-            @Override
-            public Dimension getPreferredSize() {
-                return new Dimension(60, super.getPreferredSize().height);
-            }
-        };
+        larguraPistaSpinner = new JSpinner(model1);
+        // Sem isto o spinner nasce estreito demais pra ler o valor (o
+        // JSpinner não tem setColumns() direto — o campo de texto fica
+        // dentro do editor padrão).
+        ((JSpinner.DefaultEditor) larguraPistaSpinner.getEditor()).getTextField().setColumns(5);
         larguraPistaSpinner.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -822,28 +818,12 @@ public class MainPanelEditor extends JPanel {
                 repaint();
             }
         });
-        topo.add(new JLabel() {
-            @Override
-            public String getText() {
-                return "Largura";
-            }
-        });
-        topo.add(larguraPistaSpinner);
 
-        topo.add(new JLabel("Noite") {
-            @Override
-            public String getText() {
-                return "Noite";
-            }
-        });
-        noite.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                circuito.setNoite(noite.isSelected());
-                repaint();
-            }
-        });
-        topo.add(noite);
+        adicionaParTopo(linha0Painel, gbc, 0, colunaLinha0, new JLabel(Lang.msg("nomeCircuito")), nomePistaText);
+        adicionaParTopo(linha0Painel, gbc, 0, colunaLinha0, new JLabel(Lang.msg("cicloMsTick")), cicloSpinner);
+        adicionaParTopo(linha0Painel, gbc, 0, colunaLinha0, new JLabel(Lang.msg("tempoVoltaEstimado")), tempoVoltaEstimadoLabel);
+        adicionaParTopo(linha0Painel, gbc, 0, colunaLinha0, new JLabel(Lang.msg("distanciaKmLabel")), distanciaKmText);
+        adicionaEspacoTopo(linha0Painel, gbc, 0, colunaLinha0);
 
         // Os indicadores de cor são campos finais reaproveitados a cada
         // reconstrução do layout (troca/recarga de circuito); sem esta
@@ -852,12 +832,19 @@ public class MainPanelEditor extends JPanel {
         limpaMouseListeners(corFundoLabel, corAsfaltoLabel, corBox1Label, corBox2Label,
                 corZebra1Label, corZebra2Label);
 
-        topo.add(new JLabel("Cor de Fundo"));
+        noite.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                circuito.setNoite(noite.isSelected());
+                repaint();
+            }
+        });
+
         atualizaCorLabel(corFundoLabel, circuito != null ? circuito.getCorFundo() : null, Color.WHITE);
         corFundoLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 Color nova = JColorChooser.showDialog(MainPanelEditor.this,
-                        "Cor de Fundo", corFundoLabel.getBackground());
+                        Lang.msg("corDeFundo"), corFundoLabel.getBackground());
                 if (nova != null) {
                     circuito.setCorFundo(nova);
                     atualizaCorLabel(corFundoLabel, nova, Color.WHITE);
@@ -865,15 +852,13 @@ public class MainPanelEditor extends JPanel {
                 }
             }
         });
-        topo.add(corFundoLabel);
 
-        topo.add(new JLabel("Cor do Asfalto"));
         atualizaCorLabel(corAsfaltoLabel, circuito != null ? circuito.getCorAsfalto() : null,
                 DesenhoProceduralCircuito.COR_PISTA);
         corAsfaltoLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 Color nova = JColorChooser.showDialog(MainPanelEditor.this,
-                        "Cor do Asfalto", corAsfaltoLabel.getBackground());
+                        Lang.msg("corDoAsfalto"), corAsfaltoLabel.getBackground());
                 if (nova != null) {
                     circuito.setCorAsfalto(nova);
                     atualizaCorLabel(corAsfaltoLabel, nova, DesenhoProceduralCircuito.COR_PISTA);
@@ -881,14 +866,12 @@ public class MainPanelEditor extends JPanel {
                 }
             }
         });
-        topo.add(corAsfaltoLabel);
 
-        topo.add(new JLabel("Cor Box 1"));
         atualizaCorLabel(corBox1Label, circuito != null ? circuito.getCorBox1() : null, Color.LIGHT_GRAY);
         corBox1Label.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 Color nova = JColorChooser.showDialog(MainPanelEditor.this,
-                        "Cor Box 1", corBox1Label.getBackground());
+                        Lang.msg("corBox1"), corBox1Label.getBackground());
                 if (nova != null) {
                     circuito.setCorBox1(nova);
                     atualizaCorLabel(corBox1Label, nova, Color.LIGHT_GRAY);
@@ -896,14 +879,12 @@ public class MainPanelEditor extends JPanel {
                 }
             }
         });
-        topo.add(corBox1Label);
 
-        topo.add(new JLabel("Cor Box 2"));
         atualizaCorLabel(corBox2Label, circuito != null ? circuito.getCorBox2() : null, Color.GRAY);
         corBox2Label.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 Color nova = JColorChooser.showDialog(MainPanelEditor.this,
-                        "Cor Box 2", corBox2Label.getBackground());
+                        Lang.msg("corBox2"), corBox2Label.getBackground());
                 if (nova != null) {
                     circuito.setCorBox2(nova);
                     atualizaCorLabel(corBox2Label, nova, Color.GRAY);
@@ -911,14 +892,12 @@ public class MainPanelEditor extends JPanel {
                 }
             }
         });
-        topo.add(corBox2Label);
 
-        topo.add(new JLabel("Cor Zebra 1"));
         atualizaCorLabel(corZebra1Label, circuito != null ? circuito.getCorZebra1() : null, Color.WHITE);
         corZebra1Label.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 Color nova = JColorChooser.showDialog(MainPanelEditor.this,
-                        "Cor Zebra 1", corZebra1Label.getBackground());
+                        Lang.msg("corZebra1"), corZebra1Label.getBackground());
                 if (nova != null) {
                     circuito.setCorZebra1(nova);
                     atualizaCorLabel(corZebra1Label, nova, Color.WHITE);
@@ -926,14 +905,12 @@ public class MainPanelEditor extends JPanel {
                 }
             }
         });
-        topo.add(corZebra1Label);
 
-        topo.add(new JLabel("Cor Zebra 2"));
         atualizaCorLabel(corZebra2Label, circuito != null ? circuito.getCorZebra2() : null, Color.RED);
         corZebra2Label.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 Color nova = JColorChooser.showDialog(MainPanelEditor.this,
-                        "Cor Zebra 2", corZebra2Label.getBackground());
+                        Lang.msg("corZebra2"), corZebra2Label.getBackground());
                 if (nova != null) {
                     circuito.setCorZebra2(nova);
                     atualizaCorLabel(corZebra2Label, nova, Color.RED);
@@ -941,10 +918,80 @@ public class MainPanelEditor extends JPanel {
                 }
             }
         });
-        topo.add(corZebra2Label);
+
+        int[] colunaLinha1 = {0};
+        adicionaParTopo(linha1Painel, gbc, 0, colunaLinha1, new JLabel(Lang.msg("circuitoAtivo")), ativoCheckBox);
+        adicionaParTopo(linha1Painel, gbc, 0, colunaLinha1, new JLabel(Lang.msg("percentualChuva")), probalidadeChuvaText);
+        adicionaParTopo(linha1Painel, gbc, 0, colunaLinha1, new JLabel(Lang.msg("largura")), larguraPistaSpinner);
+        adicionaParTopo(linha1Painel, gbc, 0, colunaLinha1, new JLabel(Lang.msg("noite")), noite);
+        adicionaParTopo(linha1Painel, gbc, 0, colunaLinha1, new JLabel(Lang.msg("topoFundo")), corFundoLabel);
+        adicionaParTopo(linha1Painel, gbc, 0, colunaLinha1, new JLabel(Lang.msg("topoAsfalto")), corAsfaltoLabel);
+        adicionaParTopo(linha1Painel, gbc, 0, colunaLinha1, new JLabel(Lang.msg("topoBox1")), corBox1Label);
+        adicionaParTopo(linha1Painel, gbc, 0, colunaLinha1, new JLabel(Lang.msg("topoBox2")), corBox2Label);
+        adicionaParTopo(linha1Painel, gbc, 0, colunaLinha1, new JLabel(Lang.msg("topoZebra1")), corZebra1Label);
+        adicionaParTopo(linha1Painel, gbc, 0, colunaLinha1, new JLabel(Lang.msg("topoZebra2")), corZebra2Label);
+        adicionaEspacoTopo(linha1Painel, gbc, 0, colunaLinha1);
+
+        // Linha 2: só controles de teste/visualização — nada aqui é
+        // persistido no circuito (ver gerarBotoesVisualizacao/gerarBotoesTestePista).
+        int[] colunaLinha2 = {0};
+        adicionaComponenteTopo(linha2Painel, gbc, 0, colunaLinha2, gerarBotoesVisualizacao());
+        adicionaComponenteTopo(linha2Painel, gbc, 0, colunaLinha2, gerarBotoesTestePista());
+        adicionaEspacoTopo(linha2Painel, gbc, 0, colunaLinha2);
+
+        JPanel topo = new JPanel(new GridLayout(3, 1));
+        topo.add(linha0Painel);
+        topo.add(linha1Painel);
+        topo.add(linha2Painel);
 
         atualizarBotoesNavegacao();
         return topo;
+    }
+
+    /**
+     * Adiciona um componente avulso (botão de navegação, sub-painel de
+     * checkboxes etc.) na linha {@code linha} do grid da barra superior, na
+     * próxima coluna livre indicada por {@code coluna} (cursor mutável,
+     * incrementado a cada chamada — permite misturar componentes avulsos com
+     * pares rótulo/valor na mesma linha sem calcular índice manualmente).
+     */
+    private void adicionaComponenteTopo(JPanel painel, GridBagConstraints gbc, int linha, int[] coluna,
+            JComponent componente) {
+        gbc.gridy = linha;
+        gbc.gridx = coluna[0]++;
+        painel.add(componente, gbc);
+    }
+
+    /**
+     * Adiciona um par rótulo/valor na linha {@code linha} do grid de dados da
+     * barra superior, ocupando as próximas duas colunas livres de
+     * {@code coluna}. Rótulo e valor ficam em colunas próprias do
+     * {@link GridBagLayout}, então cada um assume a largura do seu próprio
+     * conteúdo em vez de todos os valores da grade serem esticados pro
+     * tamanho do maior campo (o nome do circuito, por exemplo, ocupa bem mais
+     * espaço que um indicador de cor ou um checkbox).
+     */
+    private void adicionaParTopo(JPanel painel, GridBagConstraints gbc, int linha, int[] coluna,
+            JComponent label, JComponent valor) {
+        adicionaComponenteTopo(painel, gbc, linha, coluna, label);
+        adicionaComponenteTopo(painel, gbc, linha, coluna, valor);
+    }
+
+    /**
+     * Adiciona um espaço elástico (weightx = 1) como última coluna da linha
+     * — sem isto, como nenhum componente real tem weightx, o
+     * {@link GridBagLayout} centraliza o bloco inteiro de componentes no
+     * painel em vez de grudar à esquerda. Usa um clone do {@code gbc} pra não
+     * deixar weightx/fill "vazando" pras próximas chamadas (a próxima linha
+     * reusa o mesmo {@code gbc} compartilhado).
+     */
+    private void adicionaEspacoTopo(JPanel painel, GridBagConstraints gbc, int linha, int[] coluna) {
+        GridBagConstraints gbcEspaco = (GridBagConstraints) gbc.clone();
+        gbcEspaco.gridy = linha;
+        gbcEspaco.gridx = coluna[0]++;
+        gbcEspaco.weightx = 1.0;
+        gbcEspaco.fill = GridBagConstraints.HORIZONTAL;
+        painel.add(Box.createHorizontalGlue(), gbcEspaco);
     }
 
     private void atualizarBotoesNavegacao() {
@@ -1211,7 +1258,7 @@ public class MainPanelEditor extends JPanel {
             }
         });
         JPanel radioPistaPanel = new JPanel();
-        radioPistaPanel.add(new JLabel("Nos da Pista"));
+        radioPistaPanel.add(new JLabel(Lang.msg("032")));
         JPanel pistas = new JPanel();
         pistas.setLayout(new BorderLayout());
         pistas.add(radioPistaPanel, BorderLayout.NORTH);
@@ -1227,7 +1274,7 @@ public class MainPanelEditor extends JPanel {
         JPanel boxes = new JPanel();
         boxes.setLayout(new BorderLayout());
         radioPistaPanel = new JPanel();
-        radioPistaPanel.add(new JLabel("Nos do Box"));
+        radioPistaPanel.add(new JLabel(Lang.msg("033")));
         boxes.add(radioPistaPanel, BorderLayout.NORTH);
         JScrollPane boxJListJScrollPane = new JScrollPane(boxJList) {
             @Override
@@ -1249,29 +1296,13 @@ public class MainPanelEditor extends JPanel {
         else {
             this.setPreferredSize(new Dimension(10000, 10000));
         }
-        JPanel nortePanel = new JPanel(new BorderLayout());
-        nortePanel.add(gerarTopoNavegacaoEAcoes(), BorderLayout.NORTH);
-        nortePanel.add(gerarLinhaVisualizacaoETeste(), BorderLayout.SOUTH);
-        frame.getContentPane().add(nortePanel, BorderLayout.NORTH);
+        frame.getContentPane().add(gerarTopoNavegacaoEAcoes(), BorderLayout.NORTH);
 
         frame.getContentPane().add(gerarSplitPaneLateral(), BorderLayout.EAST);
 
         scrollPane = new JScrollPane(this, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
-    }
-
-    private JPanel gerarLinhaVisualizacaoETeste() {
-        JPanel linha = new JPanel(new GridLayout(1, 2)) {
-            @Override
-            public Dimension getPreferredSize() {
-                Dimension d = super.getPreferredSize();
-                return new Dimension(d.width, (int) (d.height * 0.7));
-            }
-        };
-        linha.add(gerarBotoesVisualizacao());
-        linha.add(gerarBotoesTestePista());
-        return linha;
     }
 
     public void esquerda() {
@@ -1634,7 +1665,7 @@ public class MainPanelEditor extends JPanel {
         int anguloMinimo = objetoDeDesenho ? 0 : -360;
         if (mostraLargura) {
             JSpinner larguraSpinner = new JSpinner(new SpinnerNumberModel(alvo.getLargura(), larguraMinima, 10000, 1));
-            panel.add(new JLabel("Largura"));
+            panel.add(new JLabel(Lang.msg("largura")));
             panel.add(larguraSpinner);
             larguraSpinner.addChangeListener(new ChangeListener() {
                 public void stateChanged(ChangeEvent e) {
@@ -1646,7 +1677,7 @@ public class MainPanelEditor extends JPanel {
         }
         if (mostraAltura) {
             JSpinner alturaSpinner = new JSpinner(new SpinnerNumberModel(alvo.getAltura(), larguraMinima, 10000, 1));
-            panel.add(new JLabel("Altura"));
+            panel.add(new JLabel(Lang.msg("altura")));
             panel.add(alturaSpinner);
             alturaSpinner.addChangeListener(new ChangeListener() {
                 public void stateChanged(ChangeEvent e) {
@@ -1659,7 +1690,7 @@ public class MainPanelEditor extends JPanel {
         if (mostraAngulo) {
             JSpinner anguloSpinner = new JSpinner(
                     new SpinnerNumberModel((int) alvo.getAngulo(), anguloMinimo, 360, 1));
-            panel.add(new JLabel("Angulo"));
+            panel.add(new JLabel(Lang.msg("angulo")));
             panel.add(anguloSpinner);
             anguloSpinner.addChangeListener(new ChangeListener() {
                 public void stateChanged(ChangeEvent e) {
@@ -1672,7 +1703,7 @@ public class MainPanelEditor extends JPanel {
         if (alvo instanceof ObjetoLivre) {
             final ObjetoLivre objetoLivre = (ObjetoLivre) alvo;
             boolean editandoEsteObjeto = objetoLivre.equals(editandoPontosDe);
-            JButton editarPontosButton = new JButton(editandoEsteObjeto ? "Parar de Editar Pontos" : "Editar Pontos");
+            JButton editarPontosButton = new JButton(editandoEsteObjeto ? Lang.msg("pararDeEditarPontos") : Lang.msg("editarPontos"));
             editarPontosButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     if (objetoLivre.equals(editandoPontosDe)) {
@@ -1688,7 +1719,7 @@ public class MainPanelEditor extends JPanel {
         if (alvo instanceof ObjetoGuardRails) {
             final ObjetoGuardRails guardRails = (ObjetoGuardRails) alvo;
             boolean editandoEsteObjeto = guardRails.equals(editandoPontosGuardRailsDe);
-            JButton editarPontosButton = new JButton(editandoEsteObjeto ? "Parar de Editar Pontos" : "Editar Pontos");
+            JButton editarPontosButton = new JButton(editandoEsteObjeto ? Lang.msg("pararDeEditarPontos") : Lang.msg("editarPontos"));
             editarPontosButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     if (guardRails.equals(editandoPontosGuardRailsDe)) {
@@ -1706,7 +1737,7 @@ public class MainPanelEditor extends JPanel {
             if (mostraAfunilamento) {
                 final JSpinner afunilamentoSpinner = new JSpinner(
                         new SpinnerNumberModel(objetoConstrucao.getAfunilamento(), 0, 90, 1));
-                panel.add(new JLabel("Afunilamento"));
+                panel.add(new JLabel(Lang.msg("afunilamento")));
                 panel.add(afunilamentoSpinner);
                 afunilamentoSpinner.addChangeListener(new ChangeListener() {
                     public void stateChanged(ChangeEvent e) {
@@ -1717,7 +1748,7 @@ public class MainPanelEditor extends JPanel {
             }
             final JSpinner quantidadeEmpilhamentoSpinner = new JSpinner(
                     new SpinnerNumberModel(objetoConstrucao.getQuantidadeEmpilhamento(), 1, 20, 1));
-            panel.add(new JLabel("Qtd. Empilhamento"));
+            panel.add(new JLabel(Lang.msg("qtdEmpilhamento")));
             panel.add(quantidadeEmpilhamentoSpinner);
             quantidadeEmpilhamentoSpinner.addChangeListener(new ChangeListener() {
                 public void stateChanged(ChangeEvent e) {
@@ -1729,7 +1760,7 @@ public class MainPanelEditor extends JPanel {
             final JComboBox<DirecaoEmpilhamento> direcaoEmpilhamentoCombo = new JComboBox<DirecaoEmpilhamento>(
                     DirecaoEmpilhamento.values());
             direcaoEmpilhamentoCombo.setSelectedItem(objetoConstrucao.getDirecaoEmpilhamento());
-            panel.add(new JLabel("Direção Empilhamento"));
+            panel.add(new JLabel(Lang.msg("direcaoEmpilhamento")));
             panel.add(direcaoEmpilhamentoCombo);
             direcaoEmpilhamentoCombo.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -1740,7 +1771,7 @@ public class MainPanelEditor extends JPanel {
             });
             final JSpinner grauEmpilhamentoSpinner = new JSpinner(
                     new SpinnerNumberModel(objetoConstrucao.getGrauEmpilhamento(), 0, 1000, 1));
-            panel.add(new JLabel("Grau Empilhamento"));
+            panel.add(new JLabel(Lang.msg("grauEmpilhamento")));
             panel.add(grauEmpilhamentoSpinner);
             grauEmpilhamentoSpinner.addChangeListener(new ChangeListener() {
                 public void stateChanged(ChangeEvent e) {
@@ -2193,7 +2224,7 @@ public class MainPanelEditor extends JPanel {
             }
         } else {
             if (no.isBox()) {
-                JOptionPane.showMessageDialog(this, "Não pode inserir nos de box na psita", "Operação ilegal",
+                JOptionPane.showMessageDialog(this, Lang.msg("038"), Lang.msg("039"),
                         JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
@@ -2286,7 +2317,7 @@ public class MainPanelEditor extends JPanel {
         int x = limitesViewPort.getBounds().x + limitesViewPort.width - 200;
         int y = limitesViewPort.getBounds().y + 20;
         g2d.setColor(PainelCircuito.lightWhiteRain);
-        g2d.fillRoundRect(x - 15, y - 15, 200, 180, 15, 15);
+        g2d.fillRoundRect(x - 15, y - 15, 200, 260, 15, 15);
         g2d.setColor(Color.black);
         g2d.drawString("Alt ativado " + (srcFrame.isAltApertado() ? "SIM" : "NÃO"), x, y);
         String esquera = "Move tela Esquerda";
@@ -2324,6 +2355,14 @@ public class MainPanelEditor extends JPanel {
         g2d.drawString("X Menos Angulo", x, y);
         y += 20;
         g2d.drawString("Alt+C Copiar Objeto", x, y);
+        y += 20;
+        g2d.drawString(Lang.msg("atalhoInserir"), x, y);
+        y += 20;
+        g2d.drawString(Lang.msg("atalhoApagar"), x, y);
+        y += 20;
+        g2d.drawString(Lang.msg("atalhoSobeNivel"), x, y);
+        y += 20;
+        g2d.drawString(Lang.msg("atalhoDesceNivel"), x, y);
     }
 
     /**
@@ -2954,7 +2993,7 @@ public class MainPanelEditor extends JPanel {
         salvarCircuitoEmArquivo(circuito.copiaParaArquivoMetadados(), arquivoMeta);
         CarregadorRecursos.atualizarAtivoEmCircuitosProperties(file.getName(), circuito.isAtivo());
         JOptionPane.showMessageDialog(this.getSrcFrame(), circuito.getNome(),
-                "Salvo com sucesso. ", JOptionPane.INFORMATION_MESSAGE);
+                Lang.msg("salvoComSucesso"), JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void salvarCircuitoEmArquivo(Circuito circuitoParaSalvar, File arquivo) throws IOException {
@@ -3008,7 +3047,7 @@ public class MainPanelEditor extends JPanel {
         JPanel buttonsPanel1 = new JPanel();
         buttonsPanel1.setLayout(new GridLayout(1, 6));
 
-        JCheckBox testaPistaCheck = new JCheckBox("Teste Pista");
+        JCheckBox testaPistaCheck = new JCheckBox(Lang.msg("testePistaCheck"));
         testaPistaCheck.setSelected(testePista != null && testePista.isAlive());
         testaPistaCheck.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -3027,7 +3066,7 @@ public class MainPanelEditor extends JPanel {
         });
         buttonsPanel1.add(testaPistaCheck);
 
-        JCheckBox testaBoxCheck = new JCheckBox("Box");
+        JCheckBox testaBoxCheck = new JCheckBox(Lang.msg("testarIrAoBox"));
         testaBoxCheck.setSelected(testePista != null && testePista.isIrProBox());
         testaBoxCheck.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -3036,7 +3075,7 @@ public class MainPanelEditor extends JPanel {
         });
         buttonsPanel1.add(testaBoxCheck);
 
-        JCheckBox testaEscapadaCheck = new JCheckBox("Escapada");
+        JCheckBox testaEscapadaCheck = new JCheckBox(Lang.msg("testarEscapadaCheck"));
         testaEscapadaCheck.setSelected(testePista != null && testePista.isModoEscapada());
         testaEscapadaCheck.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

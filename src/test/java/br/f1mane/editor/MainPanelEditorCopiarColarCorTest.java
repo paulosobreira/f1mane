@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import br.f1mane.entidades.Circuito;
 import br.f1mane.entidades.ObjetoLivre;
 import br.f1mane.entidades.ObjetoPista;
+import br.f1mane.recursos.idiomas.Lang;
 
 /**
  * Copiar Cor / Colar Cor: copia corPimaria/corSecundaria do objeto
@@ -185,12 +186,12 @@ class MainPanelEditorCopiarColarCorTest {
             textos.add(botao.getText());
         }
 
-        assertFalse(textos.contains("Primeiro"), "objetos de função não deveriam ter o botão Primeiro");
-        assertFalse(textos.contains("Ultimo"), "objetos de função não deveriam ter o botão Ultimo");
+        assertFalse(textos.contains(Lang.msg("moverParaPrimeiro")), "objetos de função não deveriam ter o botão Primeiro");
+        assertFalse(textos.contains(Lang.msg("moverParaUltimo")), "objetos de função não deveriam ter o botão Ultimo");
         assertFalse(textos.contains("Editar"), "botão Editar deveria ter sido removido (duplo-clique no lugar)");
-        assertTrue(textos.contains("Cima"));
-        assertTrue(textos.contains("Baixo"));
-        assertTrue(textos.contains("Remover"));
+        assertTrue(textos.contains(Lang.msg("287")));
+        assertTrue(textos.contains(Lang.msg("288")));
+        assertTrue(textos.contains(Lang.msg("removerObjetoLista")));
     }
 
     /**
@@ -208,11 +209,11 @@ class MainPanelEditorCopiarColarCorTest {
             textos.add(botao.getText());
         }
 
-        assertTrue(textos.contains("Primeiro"));
-        assertTrue(textos.contains("Ultimo"));
-        assertTrue(textos.contains("Cima"));
-        assertTrue(textos.contains("Baixo"));
-        assertTrue(textos.contains("Remover"));
+        assertTrue(textos.contains(Lang.msg("moverParaPrimeiro")));
+        assertTrue(textos.contains(Lang.msg("moverParaUltimo")));
+        assertTrue(textos.contains(Lang.msg("287")));
+        assertTrue(textos.contains(Lang.msg("288")));
+        assertTrue(textos.contains(Lang.msg("removerObjetoLista")));
     }
 
     /**
@@ -234,7 +235,7 @@ class MainPanelEditorCopiarColarCorTest {
         formulario.listarObjetos();
         selecionarIndicesSemCentralizar(formulario, 2);
 
-        JButton primeiro = botaoComTexto(formulario.getObjetos(), "Primeiro");
+        JButton primeiro = botaoComTexto(formulario.getObjetos(), Lang.msg("moverParaPrimeiro"));
         // O próprio botão reseleciona a lista ao mover o item, o que
         // dispararia centralizarPonto() num MainPanelEditor sem a UI
         // completa (scrollPane nulo neste teste) — suprime com o mesmo
@@ -264,7 +265,7 @@ class MainPanelEditorCopiarColarCorTest {
         formulario.listarObjetos();
         selecionarIndicesSemCentralizar(formulario, 0);
 
-        JButton ultimo = botaoComTexto(formulario.getObjetos(), "Ultimo");
+        JButton ultimo = botaoComTexto(formulario.getObjetos(), Lang.msg("moverParaUltimo"));
         formulario.selecaoProgramatica = true;
         try {
             ultimo.doClick();
