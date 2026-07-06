@@ -17,6 +17,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import br.nnpe.Logger;
+import br.f1mane.recursos.idiomas.Lang;
 import br.f1mane.entidades.DirecaoEmpilhamento;
 import br.f1mane.entidades.ObjetoConstrucao;
 import br.f1mane.entidades.ObjetoDesenho;
@@ -53,10 +54,10 @@ public class FormularioObjetos {
 	private final JComboBox<DirecaoEmpilhamento> direcaoEmpilhamentoCombo = new JComboBox<DirecaoEmpilhamento>(
 			DirecaoEmpilhamento.values());
 	private final JSpinner grauEmpilhamentoSpinner = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1));
-	private JLabel labelCor1 = new JLabel("Clique");
-	private JLabel labelCor2 = new JLabel("Clique");
-	private final JLabel labelLegendaCor1 = new JLabel("Cor de Fundo");
-	private final JLabel labelLegendaCor2 = new JLabel("Cor de Padrão");
+	private JLabel labelCor1 = new JLabel(Lang.msg("cliqueParaCor"));
+	private JLabel labelCor2 = new JLabel(Lang.msg("cliqueParaCor"));
+	private final JLabel labelLegendaCor1 = new JLabel(Lang.msg("corDeFundo"));
+	private final JLabel labelLegendaCor2 = new JLabel(Lang.msg("corDePadrao"));
 	private final JPanel panel = new JPanel(new GridLayout(1, 2));
 	private final MainPanelEditor mainPanelEditor;
 	private ObjetoPista objetoPista;
@@ -86,7 +87,7 @@ public class FormularioObjetos {
 		labelCor1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Color nova = JColorChooser.showDialog(panel, "Cor de Fundo",
+				Color nova = JColorChooser.showDialog(panel, Lang.msg("corDeFundo"),
 						labelCor1.getBackground());
 				if (nova != null) {
 					setCor(nova, labelCor1);
@@ -96,7 +97,7 @@ public class FormularioObjetos {
 		labelCor2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Color nova = JColorChooser.showDialog(panel, "Cor de Padrão",
+				Color nova = JColorChooser.showDialog(panel, Lang.msg("corDePadrao"),
 						labelCor2.getBackground());
 				if (nova != null) {
 					setCor(nova, labelCor2);
@@ -131,32 +132,32 @@ public class FormularioObjetos {
 				anguloMinimo, 360, 1));
 		if (objetoPista instanceof ObjetoTransparencia) {
 			panel.setLayout(new GridLayout(6, 2));
-			panel.add(new JLabel("No Início Transparência"));
+			panel.add(new JLabel(Lang.msg("noInicioTransparencia")));
 			panel.add(inicioTranparencia);
-			panel.add(new JLabel("No Fim Transparência"));
+			panel.add(new JLabel(Lang.msg("noFimTransparencia")));
 			panel.add(fimTransparencia);
-			panel.add(new JLabel("Transparencia Box"));
+			panel.add(new JLabel(Lang.msg("transparenciaBox")));
 			panel.add(transparenciaBox);
-			panel.add(new JLabel("Altura"));
+			panel.add(new JLabel(Lang.msg("altura")));
 			panel.add(altura);
-			panel.add(new JLabel("Largura"));
+			panel.add(new JLabel(Lang.msg("largura")));
 			panel.add(largura);
-			panel.add(new JLabel("Ângulo"));
+			panel.add(new JLabel(Lang.msg("angulo")));
 			panel.add(angulo);
 		} else if (objetoPista instanceof ObjetoLivre) {
 			// Largura/Altura não fazem sentido para ObjetoLivre: sua área vem
 			// dos vértices/pontos desenhados (ver ObjetoLivre.obterArea()),
 			// não desses campos, que ficam sem efeito no desenho.
 			panel.setLayout(new GridLayout(5, 2));
-			panel.add(new JLabel("Ângulo"));
+			panel.add(new JLabel(Lang.msg("angulo")));
 			panel.add(angulo);
 			panel.add(labelLegendaCor1);
 			panel.add(labelCor1);
 			panel.add(labelLegendaCor2);
 			panel.add(labelCor2);
-			panel.add(new JLabel("Padrão"));
+			panel.add(new JLabel(Lang.msg("197")));
 			panel.add(tipoObjetoLivreCombo);
-			panel.add(new JLabel("Nível"));
+			panel.add(new JLabel(Lang.msg("nivelDesenhoLabel")));
 			panel.add(nivelDesenho);
 		} else if (objetoPista instanceof ObjetoGuardRails) {
 			// GuardRails é desenhado ponto a ponto no editor (clique a clique,
@@ -165,27 +166,27 @@ public class FormularioObjetos {
 			// ângulo a partir dos pontos), mas Largura continua valendo — é a
 			// espessura da barreira ao longo de todo o encadeamento.
 			panel.setLayout(new GridLayout(7, 2));
-			panel.add(new JLabel("Largura"));
+			panel.add(new JLabel(Lang.msg("largura")));
 			panel.add(largura);
 			panel.add(labelLegendaCor1);
 			panel.add(labelCor1);
 			panel.add(labelLegendaCor2);
 			panel.add(labelCor2);
-			panel.add(new JLabel("Orientação"));
+			panel.add(new JLabel(Lang.msg("orientacao")));
 			panel.add(orientacaoGuardRailsCombo);
-			panel.add(new JLabel("Espessura da Linha"));
+			panel.add(new JLabel(Lang.msg("espessuraLinha")));
 			panel.add(larguraLinhaGuardRails);
-			panel.add(new JLabel("Vão entre Linhas"));
+			panel.add(new JLabel(Lang.msg("vaoEntreLinhas")));
 			panel.add(vaoEntreLinhasGuardRails);
-			panel.add(new JLabel("Nível"));
+			panel.add(new JLabel(Lang.msg("nivelDesenhoLabel")));
 			panel.add(nivelDesenho);
 		} else if (objetoPista instanceof ObjetoEscapada) {
 			panel.setLayout(new GridLayout(5, 2));
-			panel.add(new JLabel("Ângulo"));
+			panel.add(new JLabel(Lang.msg("angulo")));
 			panel.add(angulo);
-			panel.add(new JLabel("Largura"));
+			panel.add(new JLabel(Lang.msg("largura")));
 			panel.add(largura);
-			panel.add(new JLabel("Altura"));
+			panel.add(new JLabel(Lang.msg("altura")));
 			panel.add(altura);
 			panel.add(labelLegendaCor1);
 			panel.add(labelCor1);
@@ -197,43 +198,43 @@ public class FormularioObjetos {
 			// aparece sempre, independente do tipo selecionado.
 			boolean mostraAfunilamento = ((ObjetoConstrucao) objetoPista).getTipo() == TipoObjetoConstrucao.BARCO;
 			panel.setLayout(new GridLayout(mostraAfunilamento ? 11 : 10, 2));
-			panel.add(new JLabel("Ângulo"));
+			panel.add(new JLabel(Lang.msg("angulo")));
 			panel.add(angulo);
-			panel.add(new JLabel("Largura"));
+			panel.add(new JLabel(Lang.msg("largura")));
 			panel.add(largura);
-			panel.add(new JLabel("Altura"));
+			panel.add(new JLabel(Lang.msg("altura")));
 			panel.add(altura);
 			panel.add(labelLegendaCor1);
 			panel.add(labelCor1);
 			panel.add(labelLegendaCor2);
 			panel.add(labelCor2);
-			panel.add(new JLabel("Tipo"));
+			panel.add(new JLabel(Lang.msg("tipoLabel")));
 			panel.add(tipoObjetoConstrucaoCombo);
 			if (mostraAfunilamento) {
-				panel.add(new JLabel("Afunilamento"));
+				panel.add(new JLabel(Lang.msg("afunilamento")));
 				panel.add(afunilamentoSpinner);
 			}
-			panel.add(new JLabel("Qtd. Empilhamento"));
+			panel.add(new JLabel(Lang.msg("qtdEmpilhamento")));
 			panel.add(quantidadeEmpilhamentoSpinner);
-			panel.add(new JLabel("Direção Empilhamento"));
+			panel.add(new JLabel(Lang.msg("direcaoEmpilhamento")));
 			panel.add(direcaoEmpilhamentoCombo);
-			panel.add(new JLabel("Grau Empilhamento"));
+			panel.add(new JLabel(Lang.msg("grauEmpilhamento")));
 			panel.add(grauEmpilhamentoSpinner);
-			panel.add(new JLabel("Nível"));
+			panel.add(new JLabel(Lang.msg("nivelDesenhoLabel")));
 			panel.add(nivelDesenho);
 		} else {
 			panel.setLayout(new GridLayout(6, 2));
-			panel.add(new JLabel("Ângulo"));
+			panel.add(new JLabel(Lang.msg("angulo")));
 			panel.add(angulo);
-			panel.add(new JLabel("Largura"));
+			panel.add(new JLabel(Lang.msg("largura")));
 			panel.add(largura);
-			panel.add(new JLabel("Altura"));
+			panel.add(new JLabel(Lang.msg("altura")));
 			panel.add(altura);
 			panel.add(labelLegendaCor1);
 			panel.add(labelCor1);
 			panel.add(labelLegendaCor2);
 			panel.add(labelCor2);
-			panel.add(new JLabel("Nível"));
+			panel.add(new JLabel(Lang.msg("nivelDesenhoLabel")));
 			panel.add(nivelDesenho);
 		}
 		panel.revalidate();
