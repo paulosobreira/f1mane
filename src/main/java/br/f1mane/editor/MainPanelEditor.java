@@ -763,6 +763,7 @@ public class MainPanelEditor extends JPanel {
 
         nomePistaText = new JTextField();
         nomePistaText.setColumns(18);
+        nomePistaText.setMinimumSize(new Dimension(150, nomePistaText.getPreferredSize().height));
         if (circuito != null) {
             nomePistaText.setText(circuito.getNome());
         }
@@ -794,6 +795,7 @@ public class MainPanelEditor extends JPanel {
 
         distanciaKmText = new JTextField();
         distanciaKmText.setColumns(5);
+        distanciaKmText.setMinimumSize(new Dimension(60, distanciaKmText.getPreferredSize().height));
         if (circuito != null) {
             distanciaKmText.setText("" + circuito.getDistanciaKm());
         }
