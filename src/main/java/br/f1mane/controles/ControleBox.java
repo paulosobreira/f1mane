@@ -39,6 +39,10 @@ public class ControleBox {
     private List carrosBox;
     private boolean boxRapido = false;
     private int ultIndiceParada = 0;
+    private int alta = 0;
+    private int media = 0;
+    private int baixa = 0;
+
 
     public boolean isBoxRapido() {
         return boxRapido;
@@ -47,10 +51,6 @@ public class ControleBox {
     public List getCarrosBox() {
         return carrosBox;
     }
-
-    private int alta = 0;
-    private int media = 0;
-    private int baixa = 0;
 
     /**
      * @param controleJogo
@@ -95,9 +95,9 @@ public class ControleBox {
             }
         }
         double total = noAlta + noMedia + noBaixa;
-        int alta = (int) (100 * noAlta / total);
-        int media = (int) (100 * noMedia / total);
-        int baixa = (int) (100 * noBaixa / total);
+        this.alta = (int) (100 * noAlta / total);
+        this.media = (int) (100 * noMedia / total);
+        this.baixa = (int) (100 * noBaixa / total);
     }
 
     public ControleBox() {

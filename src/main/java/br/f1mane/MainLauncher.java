@@ -17,16 +17,23 @@ import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.URI;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.security.CodeSource;
 import java.util.Enumeration;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -119,7 +126,7 @@ public class MainLauncher {
     }
 
     private static File extrairWebapp() throws Exception {
-        Path destino = Files.createTempDirectory("flmane-webapp");
+        Path destino = criarDiretorioTemporarioSeguro("flmane-webapp");
         CodeSource src =
                 MainLauncher.class
                         .getProtectionDomain()
@@ -157,6 +164,51 @@ public class MainLauncher {
             }
         }
         return destino.toFile();
+    }
+
+    /**
+     * Cria o diretório temporário dentro do home do usuário (nunca no
+     * diretório compartilhado java.io.tmpdir, que em Linux/macOS é
+     * publicamente gravável por qualquer usuário da máquina) e, quando o
+     * filesystem suporta permissões POSIX, restringe o acesso ao dono do
+     * processo. O webapp extraído ali (incluindo web.xml e estáticos) não
+     * deve ficar legível/gravável por outros usuários locais.
+     */
+    private static Path criarDiretorioTemporarioSeguro(String prefixo)
+            throws IOException {
+        Path base = diretorioBaseTemporario();
+        if (FileSystems.getDefault()
+                .supportedFileAttributeViews()
+                .contains("posix")) {
+            FileAttribute<Set<PosixFilePermission>> apenasDono =
+                    PosixFilePermissions.asFileAttribute(
+                            PosixFilePermissions.fromString("rwx------"));
+            return Files.createTempDirectory(base, prefixo, apenasDono);
+        }
+        return Files.createTempDirectory(base, prefixo);
+    }
+
+    /**
+     * Diretório privado do usuário (~/.flmane/tmp) usado como pai dos
+     * diretórios temporários da aplicação, para não depender do
+     * java.io.tmpdir compartilhado pela máquina.
+     */
+    private static Path diretorioBaseTemporario() throws IOException {
+        Path base = Paths.get(
+                System.getProperty("user.home"), ".flmane", "tmp");
+        if (FileSystems.getDefault()
+                .supportedFileAttributeViews()
+                .contains("posix")) {
+            FileAttribute<Set<PosixFilePermission>> apenasDono =
+                    PosixFilePermissions.asFileAttribute(
+                            PosixFilePermissions.fromString("rwx------"));
+            Files.createDirectories(base, apenasDono);
+            Files.setPosixFilePermissions(
+                    base, PosixFilePermissions.fromString("rwx------"));
+        } else {
+            Files.createDirectories(base);
+        }
+        return base;
     }
 
 
