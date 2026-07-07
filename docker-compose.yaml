@@ -38,8 +38,23 @@ services:
       PMA_PORT: 3306
       MYSQL_ROOT_PASSWORD: flmane
 
+  sonarqube:
+    image: sonarqube:community
+    container_name: sonarqube
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s -u admin:admin http://localhost:9000/api/system/status | grep -q '\"status\":\"UP\"'"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+
 volumes:
   mysql_data:
+  sonarqube_data:
 networks:
   default:
     ipam:
