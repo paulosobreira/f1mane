@@ -38,9 +38,20 @@ public class AppletPaddock {
     }
 
     public void init() {
+        init(false);
+    }
+
+    /**
+     * @param hospedado true quando aberto de dentro da JVM do MainLauncher:
+     *                  fechar a janela descarta só o cliente multiplayer
+     *                  (DISPOSE_ON_CLOSE) em vez de encerrar o launcher.
+     */
+    public void init(boolean hospedado) {
         try {
             frame = new JFrame();
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setDefaultCloseOperation(hospedado
+                    ? JFrame.DISPOSE_ON_CLOSE
+                    : JFrame.EXIT_ON_CLOSE);
             CarregadorRecursos.initProperties();
             controlePaddockCliente = new ControlePaddockCliente(this);
             controlePaddockCliente.verificaVersao();
