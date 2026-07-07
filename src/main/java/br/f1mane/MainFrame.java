@@ -57,6 +57,16 @@ public class MainFrame extends JFrame {
     }
 
     public MainFrame(AppletPaddock appletPaddock) throws IOException {
+        this(appletPaddock, false);
+    }
+
+    /**
+     * @param hospedado true quando aberto de dentro da JVM do MainLauncher:
+     *                  fechar a janela descarta só o jogo (DISPOSE_ON_CLOSE)
+     *                  em vez de encerrar a JVM inteira do launcher.
+     */
+    public MainFrame(AppletPaddock appletPaddock, boolean hospedado)
+            throws IOException {
         this.appletPaddock = appletPaddock;
         bar = new JMenuBar();
         debugFrame = new JFrame();
@@ -93,7 +103,9 @@ public class MainFrame extends JFrame {
         setTitle(title);
         if (appletPaddock == null) {
             iniciar();
-            setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            setDefaultCloseOperation(hospedado
+                    ? WindowConstants.DISPOSE_ON_CLOSE
+                    : WindowConstants.EXIT_ON_CLOSE);
         } else {
             setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         }

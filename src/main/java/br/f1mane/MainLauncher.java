@@ -1,6 +1,8 @@
 package br.f1mane;
 
 import br.f1mane.recursos.CarregadorRecursos;
+import br.f1mane.recursos.idiomas.Lang;
+import br.f1mane.servidor.applet.AppletPaddock;
 import br.f1mane.visao.PainelCircuito;
 import br.nnpe.ImageUtil;
 import com.google.zxing.BarcodeFormat;
@@ -31,45 +33,89 @@ import java.util.jar.JarFile;
 public class MainLauncher {
 
 
+    private static final int PORT = 8080;
+
     public static void main(String[] args) {
 
         try {
-            int port = 8080;
-            File base = extrairWebapp();
-            System.out.println(
-                    "WEBAPP: " +
-                            base.getAbsolutePath());
-            if (!base.exists()) {
-                throw new RuntimeException(
-                        "Diretorio webapp nao encontrado: "
-                                + base.getAbsolutePath());
+            if (contemHeadless(args)) {
+                iniciarServidorHeadless();
+                return;
             }
-            Tomcat tomcat = new Tomcat();
-            tomcat.setPort(port);
-            tomcat.getConnector();
-            Context context = tomcat.addWebapp(
-                    "/flmane",
-                    base.getAbsolutePath());
-            File webXml = new File(base, "WEB-INF/web.xml");
-            if (webXml.exists()) {
-                context.setConfigFile(webXml.toURI().toURL());
-                System.out.println("WEB.XML: " + webXml.getAbsolutePath());
-            }
-            tomcat.start();
+            // Modo GUI: o backend sobe numa JVM filha (--headless) pra que o
+            // Lang estático do launcher/Swing não seja alterado pelas
+            // traduções por request do servidor.
+            String jar = localizarJar();
+            Process servidor = iniciarProcessoServidor(jar);
+            Runtime.getRuntime().addShutdownHook(
+                    new Thread(servidor::destroy));
             String ip = descobrirIP();
-            String url = "http://" + ip + ":" + port
+            String url = "http://" + ip + ":" + PORT
                     + "/flmane/html5/index.html";
-            System.out.println("=================================");
-            System.out.println("SERVER STARTED");
-            System.out.println(url);
-            System.out.println("=================================");
-            if (args == null || args.length == 0) {
-                mostrarLauncher(url);
-            }
-            tomcat.getServer().await();
+            mostrarLauncher(url);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static boolean contemHeadless(String[] args) {
+        if (args == null) {
+            return false;
+        }
+        for (String arg : args) {
+            if ("--headless".equals(arg)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static void iniciarServidorHeadless() throws Exception {
+        File base = extrairWebapp();
+        System.out.println(
+                "WEBAPP: " +
+                        base.getAbsolutePath());
+        if (!base.exists()) {
+            throw new RuntimeException(
+                    "Diretorio webapp nao encontrado: "
+                            + base.getAbsolutePath());
+        }
+        Tomcat tomcat = new Tomcat();
+        tomcat.setPort(PORT);
+        tomcat.getConnector();
+        Context context = tomcat.addWebapp(
+                "/flmane",
+                base.getAbsolutePath());
+        File webXml = new File(base, "WEB-INF/web.xml");
+        if (webXml.exists()) {
+            context.setConfigFile(webXml.toURI().toURL());
+            System.out.println("WEB.XML: " + webXml.getAbsolutePath());
+        }
+        tomcat.start();
+        String ip = descobrirIP();
+        String url = "http://" + ip + ":" + PORT
+                + "/flmane/html5/index.html";
+        System.out.println("=================================");
+        System.out.println("SERVER STARTED");
+        System.out.println(url);
+        System.out.println("=================================");
+        tomcat.getServer().await();
+    }
+
+    private static Process iniciarProcessoServidor(String jar)
+            throws Exception {
+        ProcessBuilder pb =
+                new ProcessBuilder(
+                        "java",
+                        "-Xms64m",
+                        "-Xmx512m",
+                        "-cp",
+                        jar,
+                        "br.f1mane.MainLauncher",
+                        "--headless"
+                );
+        pb.inheritIO();
+        return pb.start();
     }
 
     private static File extrairWebapp() throws Exception {
@@ -116,7 +162,6 @@ public class MainLauncher {
 
     private static void mostrarLauncher(String url) throws Exception {
         JFrame frame = new JFrame();
-        String jar = localizarJar();
         frame.setSize(1280, 720);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -170,7 +215,7 @@ public class MainLauncher {
         painel.add(campo);
         painel.add(Box.createVerticalStrut(18));
         JLabel copiar = criarMenuLabel(
-                "Copy link",
+                Lang.msg("launcherCopiarLink"),
                 () -> {
                     Toolkit.getDefaultToolkit()
                             .getSystemClipboard()
@@ -181,7 +226,7 @@ public class MainLauncher {
         painel.add(copiar);
         painel.add(Box.createVerticalStrut(8));
         JLabel abrirWeb = criarMenuLabel(
-                "Open in browser",
+                Lang.msg("launcherAbrirNavegador"),
                 () -> {
                     try {
                         Desktop.getDesktop()
@@ -193,45 +238,26 @@ public class MainLauncher {
         painel.add(abrirWeb);
         painel.add(Box.createVerticalStrut(8));
         JLabel abrirDesktop = criarMenuLabel(
-                "Java solo game",
-                () -> {
+                Lang.msg("launcherJogoSolo"),
+                () -> SwingUtilities.invokeLater(() -> {
                     try {
-                        ProcessBuilder pb =
-                                new ProcessBuilder(
-                                        "java",
-                                        "-Xms64m",
-                                        "-Xmx512m",
-                                        "-cp",
-                                        jar,
-                                        "br.f1mane.MainFrame"
-                                );
-                        pb.inheritIO();
-                        pb.start();
+                        new MainFrame(null, true);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
-                });
+                }));
         painel.add(abrirDesktop);
 
         painel.add(Box.createVerticalStrut(8));
         JLabel abrirDesktopMulti = criarMenuLabel(
-                "Java multiplayer game",
-                () -> {
+                Lang.msg("launcherJogoMulti"),
+                () -> SwingUtilities.invokeLater(() -> {
                     try {
-                        ProcessBuilder pb =
-                                new ProcessBuilder(
-                                        "java",
-                                        "-Xms64m",
-                                        "-Xmx512m",
-                                        "-cp",
-                                        jar,
-                                        "br.f1mane.servidor.applet.AppletPaddock"
-                                );
-                        pb.start();
+                        new AppletPaddock().init(true);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
-                });
+                }));
         painel.add(abrirDesktopMulti);
 
         backgroundPanel.add(painel);
@@ -240,6 +266,23 @@ public class MainLauncher {
     }
 
     private static String localizarJar() {
+
+        // Rodando do próprio jar (duplo-clique/java -jar em qualquer CWD), o
+        // CodeSource é o caminho mais confiável; os relativos abaixo cobrem a
+        // execução a partir do repositório (IDE/target-classes).
+        try {
+            File codeSource = new File(
+                    MainLauncher.class
+                            .getProtectionDomain()
+                            .getCodeSource()
+                            .getLocation()
+                            .toURI());
+            if (codeSource.isFile()) {
+                return codeSource.getPath();
+            }
+        } catch (Exception e) {
+            // sem CodeSource utilizável; tenta os caminhos relativos
+        }
 
         File appJar = new File("app/flmane.jar");
         if (appJar.exists()) {

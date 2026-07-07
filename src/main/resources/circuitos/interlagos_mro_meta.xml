@@ -946,9 +946,9 @@
   </void>
   <void property="corFundo">
    <object class="java.awt.Color">
-    <int>150</int>
-    <int>183</int>
-    <int>117</int>
+    <int>85</int>
+    <int>86</int>
+    <int>10</int>
     <int>255</int>
    </object>
   </void>

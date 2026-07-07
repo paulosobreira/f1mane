@@ -1,16 +1,4 @@
-# sdd-execution-modes
-
-## Purpose
-Documents the three execution modes of the `flmane.jar` — their entry points, what each initialises, and how the headless simulation mode works.
-
-## Requirements
-
-### Requirement: Modos de execução documentados
-O SDD SHALL descrever os três modos de execução do JAR `flmane.jar`, seus entry points e o que cada um inicializa.
-
-#### Scenario: Entry points descritos
-- **WHEN** o leitor consulta a seção de modos de execução
-- **THEN** encontra os três entry points: `MainLauncher`, `MainFrame` e `AppletPaddock`, com a classe Java correspondente a cada um
+## MODIFIED Requirements
 
 ### Requirement: MainLauncher descrito
 O SDD SHALL descrever que `MainLauncher` tem dois modos: **GUI** (sem args) — exibe o launcher Swing com QR Code e inicia o backend numa **JVM filha** via `ProcessBuilder` (`java -cp <jar> br.f1mane.MainLauncher --headless`), com as aplicações Swing (`MainFrame`, `AppletPaddock`) abrindo na própria JVM do launcher; e **headless** (parâmetro fixo `--headless`, usado no Docker/servidor) — sobe **Tomcat 11** na porta 8080 na própria JVM, extrai `webapp/` do JAR para um diretório temporário `flmane-webapp` e mapeia contexto em `/flmane`, sem GUI e sem processo filho. O Tomcat 11 usa **Jakarta EE 11** (`jakarta.*` namespace) — a dependência `javax.servlet-api` foi substituída por `jakarta.servlet-api 6.1`.
