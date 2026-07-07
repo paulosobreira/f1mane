@@ -18,6 +18,14 @@ public class PosisPack implements Serializable {
 	public int safetyTracado;
 	public long time = System.currentTimeMillis();
 	public boolean safetySair;
+	/**
+	 * Marcas de pneu (por nó + traçado) acumuladas na pista até o momento,
+	 * fonte autoritativa pro cliente web desenhar marcas de pneu — ver
+	 * {@link br.f1mane.controles.ControleRecursos#getMarcasPneuGeradas()}.
+	 * Sempre a lista completa (não um delta desde o último poll), porque
+	 * múltiplos clientes fazem polling independente do mesmo jogo.
+	 */
+	public TravadaRoda[] travadaRodas = new TravadaRoda[0];
 
 	public String encode() {
 		if (posis.length == 0) {
@@ -31,7 +39,21 @@ public class PosisPack implements Serializable {
 		String lessLastPipe = stringBuffer.toString().substring(0,
 				stringBuffer.toString().length() - 1);
 		return safetyNoId + "£" + safetyTracado + "£" + (safetySair ? "S" : "N")
-				+ "£" + lessLastPipe;
+				+ "£" + lessLastPipe + "£" + encodeTravadaRodas();
+	}
+
+	private String encodeTravadaRodas() {
+		if (travadaRodas == null || travadaRodas.length == 0) {
+			return "";
+		}
+		StringBuilder stringBuffer = new StringBuilder();
+		for (int i = 0; i < travadaRodas.length; i++) {
+			if (i > 0) {
+				stringBuffer.append("~");
+			}
+			stringBuffer.append(travadaRodas[i].encode());
+		}
+		return stringBuffer.toString();
 	}
 
 	public void decode(String val) {
@@ -44,6 +66,16 @@ public class PosisPack implements Serializable {
 		for (int i = 0; i < posisEnc.length; i++) {
 			posis[i] = new Posis();
 			posis[i].decode(posisEnc[i]);
+		}
+		if (sp.length > 4 && !sp[4].isEmpty()) {
+			String[] travadaRodasEnc = sp[4].split("~");
+			travadaRodas = new TravadaRoda[travadaRodasEnc.length];
+			for (int i = 0; i < travadaRodasEnc.length; i++) {
+				travadaRodas[i] = new TravadaRoda();
+				travadaRodas[i].decode(travadaRodasEnc[i]);
+			}
+		} else {
+			travadaRodas = new TravadaRoda[0];
 		}
 	}
 
@@ -69,6 +101,14 @@ public class PosisPack implements Serializable {
 
 	public void setPosis(Posis[] posis) {
 		this.posis = posis;
+	}
+
+	public TravadaRoda[] getTravadaRodas() {
+		return travadaRodas;
+	}
+
+	public void setTravadaRodas(TravadaRoda[] travadaRodas) {
+		this.travadaRodas = travadaRodas;
 	}
 
 	public int getSafetyNoId() {

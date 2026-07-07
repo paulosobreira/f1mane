@@ -458,6 +458,8 @@ public class ControleJogosServer {
             posis[i] = (Posis) object[i];
         }
         pack.posis = posis;
+        pack.travadaRodas = jogoServidor.getMarcasPneuGeradas()
+                .toArray(new TravadaRoda[0]);
         if (jogoServidor.isSafetyCarNaPista()
                 && jogoServidor.getSafetyCar() != null) {
             pack.safetyNoId = ((Integer) jogoServidor.getMapaNosIds()

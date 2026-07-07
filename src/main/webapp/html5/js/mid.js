@@ -30,9 +30,11 @@ var preCarrega = true;
 
 /**
  * Dispara o carregamento do jpg do circuito (gerado sob demanda no
- * servidor). Chamada a partir do qualify (estado 10) ou da corrida (ver
- * cpu_main), pra não custar geração de imagem no servidor enquanto o jogo
- * ainda está na sala de espera (estado 07).
+ * servidor). Chamada em todos os estados a partir de cpu_main, inclusive a
+ * sala de espera (07) — a tela de espera (pista + contador "Inicia em" +
+ * msgCarregando) depende do cvBg existir pra ser desenhada. Normalmente é
+ * um cache hit: o preload real acontece no clique de "Jogar"
+ * (jogar_preCarregaBackGround) e o endpoint circuitoJpg manda Cache-Control.
  */
 function mid_carregaBackGroundCorrida() {
 	if (imgBgSolicitado || imgBg == null || circuito == null) {

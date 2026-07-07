@@ -436,7 +436,9 @@ public class LetsRace {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(buffer, "jpg", baos);
             byte[] imageData = baos.toByteArray();
-            return Response.ok(new ByteArrayInputStream(imageData)).build();
+            return Response.ok(new ByteArrayInputStream(imageData))
+                    .header("Cache-Control", "max-age=120")
+                    .build();
         } catch (Exception e) {
             Logger.topExecpts(e);
             return Response.status(500)

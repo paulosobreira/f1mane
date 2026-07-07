@@ -406,7 +406,9 @@ function jogarCampeonato() {
 			localStorage.setItem("nomeJogo", dadosJogo.nomeJogo);
 			localStorage.setItem("token", token);
 			localStorage.setItem("idPilotoSelecionado", dadosJogo.idPilotoSelecionado);
-			window.location.href = "corrida.html";
+			jogar_preCarregaBackGround(circuitoSelecionado, function() {
+				window.location.href = "corrida.html";
+			});
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);
@@ -458,7 +460,9 @@ function jogar() {
 			localStorage.setItem("nomeJogo", dadosJogo.nomeJogo);
 			localStorage.setItem("token", token);
 			localStorage.setItem("idPilotoSelecionado", idPilotoSelecionado);
-			window.location.href = "corrida.html";
+			jogar_preCarregaBackGround(circuitoSelecionado, function() {
+				window.location.href = "corrida.html";
+			});
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);
@@ -471,6 +475,53 @@ function jogar() {
 			console.log('jogar() ' + xhRequest.status + '  ' + xhRequest.responseText);
 		}
 	});
+}
+
+/**
+ * Dispara o carregamento do jpg de fundo do circuito assim que o jogador
+ * confirma "Jogar", em vez de esperar o polling de corrida.html chegar no
+ * qualify/corrida (mid_carregaBackGroundCorrida). O jpg é gerado sob demanda
+ * no servidor, então essa requisição antecipada é o que faz corrida.html
+ * achar a imagem já em cache do navegador (ver Cache-Control em
+ * LetsRace.circuitoJpg).
+ *
+ * `callback` só é chamado depois que a requisição do jpg foi de fato
+ * disparada (ou desistida) — chamar `window.location.href` antes disso
+ * derruba o contexto JS de jogar.html e cancela a busca do nome do jpg
+ * (`/circuito?nomeCircuito=`) antes que ela complete, fazendo o preload não
+ * acontecer de verdade. Um timeout de segurança garante que a navegação
+ * nunca fica presa esperando essa chamada.
+ */
+function jogar_preCarregaBackGround(nomeCircuito, callback) {
+	if (nomeCircuito == null) {
+		callback();
+		return;
+	}
+	var jaContinuou = false;
+	var continuaUmaVez = function() {
+		if (jaContinuou) {
+			return;
+		}
+		jaContinuou = true;
+		callback();
+	};
+	$.ajax({
+		type : "GET",
+		url : "/flmane/rest/letsRace/circuito?nomeCircuito=" + nomeCircuito,
+		contentType : "application/json",
+		dataType : "json",
+		success : function(circuito) {
+			if (circuito != null && circuito.backGround != null) {
+				var imgBgPreCarregado = new Image();
+				imgBgPreCarregado.src = "/flmane/rest/letsRace/circuitoJpg/" + circuito.backGround;
+			}
+			continuaUmaVez();
+		},
+		error : function() {
+			continuaUmaVez();
+		}
+	});
+	setTimeout(continuaUmaVez, 1500);
 }
 
 

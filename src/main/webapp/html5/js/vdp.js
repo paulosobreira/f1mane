@@ -9,7 +9,6 @@ var mapaIndexTracadoSuave = new Map();
 var mapaGanhoSuave = new Map();
 var mapaPontoSuave = new Map();
 var mapaRastroChuva = new Map();
-var pilotosEfeitosMap = new Map();
 var measureText = new Map();
 var rotateCache = true;
 var cvBlend = document.createElement('canvas');
@@ -114,6 +113,7 @@ function vdp_desenhaBorrachaNaPista() {
     }
     if (dadosParciais.clima == "png/chuva.png") {
         borrachaNaPista = [];
+        marcasPneuAcumuladas.clear();
         return;
     }
     for (var i = 0; i < borrachaNaPista.length; i++) {
@@ -857,7 +857,6 @@ function vdp_desenhaCarrosCima() {
         var x = ponto.x - ptBg.x - 45;
         var y = ponto.y - ptBg.y - 45;
         var anguloGraus = Math.round(Math.degrees(angulo / 6));
-        pilotosEfeitosMap.set(piloto.idPiloto, true);
         var emMovimento = vdp_emMovimento(piloto.idPiloto, piloto.idNo);
         var desenhaRastroFaiscaFx = null;
         var desenhaRastroChuvaFx = null;
@@ -936,10 +935,6 @@ function vdp_desenhaCarrosCima() {
             maneContext.stroke();
             maneContext.closePath();
         }
-        if (emMovimento && pilotosEfeitosMap.get(piloto.idPiloto)) {
-            vdp_desenhaTravadaRoda(piloto, x, y, angulo, no);
-        }
-
         if (ctl_showFps && piloto.idPiloto == idPilotoSelecionado) {
             ponto = vdp_obterPonto(piloto, true);
             if (ponto == null || ponto.x == null || ponto.y == null) {
@@ -1099,7 +1094,6 @@ function vdp_blend(imgSrc, ptCarro, xCarro, yCarro, no, idPiloto, naoDesenha) {
             var y = pontosTp.y - ptBg.y - yCarro;
             ctxBlend.globalCompositeOperation = blendOp;
             desenha(ctxBlend, imgObj, x, y);
-            pilotosEfeitosMap.set(idPiloto, false);
         }
     }
     if (!desenhouBlend) {
@@ -1411,16 +1405,28 @@ function vdp_desenhaFarois() {
     }
 }
 
-function vdp_desenhaTravadaRoda(piloto, x, y, angulo, no) {
-    if (!pilotosTravadaMap.get(piloto.idPiloto)) {
-        return;
-    }
+function vdp_registraMarcaPneuNo(idNo, tracado) {
     if (dadosParciais.clima == "png/chuva.png") {
         return;
     }
-    if (no.box) {
+    var no = mapaIdNos.get(idNo);
+    if (no == null || no.box) {
         return;
     }
+    var ponto = vdp_pontoTracado(tracado, no);
+    if (ponto == null) {
+        return;
+    }
+    var indexAtras = (no.index - eixoCarro) > 0 ? (no.index - eixoCarro) : 0;
+    var indexFrente = (no.index + eixoCarro) < circuito.pistaFull.length ?
+        (no.index + eixoCarro) : circuito.pistaFull.length - 1;
+    var frenteCar = vdp_pontoTracado(tracado, { index: indexFrente, box: false });
+    var atrasCar = vdp_pontoTracado(tracado, { index: indexAtras, box: false });
+    if (frenteCar == null || atrasCar == null) {
+        return;
+    }
+    var angulo = gu_calculaAngulo(frenteCar, atrasCar, 180);
+
     var fn = function () {
         var rotacionar;
         var sw = Math.round(intervalo(0, 2));
@@ -1431,14 +1437,12 @@ function vdp_desenhaTravadaRoda(piloto, x, y, angulo, no) {
         } else if (sw == 2) {
             rotacionar = vdp_rotacionar(travadaRoda2, angulo);
         }
-        //desenha(ctxBg, rotacionar, x + ptBg.x, y + ptBg.y);
         var borracha = {
-            x: x + ptBg.x,
-            y: y + ptBg.y,
+            x: ponto.x - 45,
+            y: ponto.y - 45,
             img: rotacionar
         };
         borrachaNaPista.push(borracha);
     };
     funqueue.push(fn);
-    pilotosTravadaMap.set(piloto.idPiloto, false);
 }

@@ -11,6 +11,9 @@ public class TravadaRoda implements Serializable {
     private int tracado;
     private int tipo;
 
+    public TravadaRoda() {
+    }
+
     public TravadaRoda(GameRandom random) {
         if (random == null && random.nextDouble() > .9) {
             setTipo(0);

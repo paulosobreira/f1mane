@@ -3,6 +3,7 @@ package br.f1mane.controles;
 import br.f1mane.entidades.*;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.servidor.JogoServidor;
+import br.f1mane.servidor.entidades.TOs.TravadaRoda;
 import br.nnpe.Global;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -35,6 +36,15 @@ public abstract class ControleRecursos {
     protected final Map<No, Double> zonaFrenagemPosicoes = new HashMap<No, Double>();
     protected Map<Integer, No> mapaIdsNos = new HashMap<Integer, No>();
     protected Map<No, Integer> mapaNosIds = new HashMap<No, Integer>();
+    /**
+     * Marcas de pneu (travada de roda) já produzidas na pista, por nó +
+     * traçado (chave "idNo_tracado"), acumuladas ao longo da corrida atual
+     * pra servir de fonte autoritativa ao cliente web — nunca é uma fila
+     * consumida em drain, já que múltiplos clientes fazem polling
+     * independente e um drain esvaziaria a lista antes do segundo cliente
+     * ler. Limpa apenas ao carregar um novo circuito (nova corrida).
+     */
+    protected final Map<String, TravadaRoda> marcasPneuGeradas = new LinkedHashMap<String, TravadaRoda>();
     private String temporada;
     private final Set<Integer> idsNoPista = new HashSet<Integer>();
     private final Set<Integer> idsNoBox = new HashSet<Integer>();
@@ -89,6 +99,10 @@ public abstract class ControleRecursos {
         return mapaNosIds;
     }
 
+    public Collection<TravadaRoda> getMarcasPneuGeradas() {
+        return marcasPneuGeradas.values();
+    }
+
 
     public ControleRecursos(long seed) throws Exception {
         carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);
@@ -136,6 +150,7 @@ public abstract class ControleRecursos {
         mapaNoProxCurva.clear();
         mapaNoCurvaAnterior.clear();
         zonaFrenagemPosicoes.clear();
+        marcasPneuGeradas.clear();
         circuito = CarregadorRecursos.carregarCircuito(circuitoStr);
         circuito.vetorizarPista();
         String nome = "";

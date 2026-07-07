@@ -58,6 +58,14 @@ public final class Global {
      */
     public static final double INTENSIDADE_MARCA_FIM_ZONA_FRENAGEM = 0.3;
 
+    /**
+     * Chance de uma travada de roda também gerar fumaça, além da marca de
+     * pneu (que é sempre gerada). Nem toda travada de roda deve produzir
+     * fumaça, senão a marca e a fumaça deixam de ser eventos distintos para
+     * os renderers (Swing e web).
+     */
+    public static final double CHANCE_FUMACA_TRAVADA_RODA = 0.6;
+
     private Global() {
     }
 

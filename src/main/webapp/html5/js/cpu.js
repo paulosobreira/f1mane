@@ -20,8 +20,8 @@ var pilotosMap = new Map();
 var pilotosDnfMap = new Map();
 var pilotosBandeirada = new Map();
 var pilotosFaiscaMap = new Map();
-var pilotosTravadaMap = new Map();
 var pilotosTravadaFumacaMap = new Map();
+var marcasPneuAcumuladas = new Map();
 var pilotosAereofolioMap = new Map();
 var idNoAnterior = new Map();
 var sleepDefault = 600;
@@ -58,19 +58,27 @@ function cpu_main() {
 		contCarregouMidia = 10;
 	}
 	if (dadosJogo != null && circuito != null && ativo && contCarregouMidia == 0) {
-		$loading.hide();
+		// O loader só some quando o cvBg existe: é ele que indica que o jpg da
+		// pista terminou de carregar e que o próximo frame do vdp_desenha já
+		// mostra a pista + contador (vdp_ctl). Esconder antes deixava a tela
+		// preta por 2-3s enquanto o circuitoJpg baixava.
+		if (cvBg != null) {
+			$loading.hide();
+		}
 		//$('body').removeClass('body');
 		// MOSTRANDO_QUALIFY 10
 		// ESPERANDO_JOGO_COMECAR 07
+		// O background é pedido em todos os estados, inclusive na sala de
+		// espera (07): sem cvBg o vdp_desenha retorna antes de vdp_ctl e a
+		// tela de espera (pista + contador "Inicia em" + msgCarregando de
+		// ctl_desenhaInfoSegundosParaIniciar) nunca aparece. O custo de
+		// geração no servidor é amortizado pelo preload disparado no clique
+		// de "Jogar" (jogar_preCarregaBackGround) + Cache-Control do
+		// endpoint circuitoJpg.
+		mid_carregaBackGroundCorrida();
 		if ('07' == dadosJogo.estado || '10' == dadosJogo.estado) {
-			if ('10' == dadosJogo.estado) {
-				// A partir do qualify já pede o jpg do circuito ao servidor
-				// (que o gera sob demanda) — só a sala de espera fica sem.
-				mid_carregaBackGroundCorrida();
-			}
 			rest_dadosJogo(nomeJogo);
 		} else {
-			mid_carregaBackGroundCorrida();
 			rest_dadosParciais();
 		}
 		cpu_altenador();
@@ -134,7 +142,6 @@ function cpu_dadosParciais() {
 		} else if (status == "F") {
 			pilotosFaiscaMap.set(piloto.idPiloto, 15);
 		} else if (status == "T" ) {
-			pilotosTravadaMap.set(piloto.idPiloto, true);
 			if (no.tipoJson == 'R') {
 				pilotosTravadaFumacaMap.set(piloto.idPiloto, 10);
 			} else if (no.tipoJson == 'A') {
@@ -142,8 +149,6 @@ function cpu_dadosParciais() {
 			} else if (no.tipoJson == 'B') {
 				pilotosTravadaFumacaMap.set(piloto.idPiloto, 3);
 			}
-		} else if (status == "M") {
-			pilotosTravadaMap.set(piloto.idPiloto, true);
 		} else if (status == "R" ) {
 			pilotosDnfMap.set(piloto.idPiloto, true);
 		} else if (status == "B"  && pilotosBandeirada.get(piloto.idPiloto) == null) {
@@ -155,6 +160,7 @@ function cpu_dadosParciais() {
 			}
 		}
 	}
+	cpu_processaMarcasPneu(posicaoPilotos.travadaRodas);
 	if (contadorJogadores != contadorJogadoresLocal) {
 //		console.log(' contadorJogadores ' + contadorJogadores);
 //		console.log(' contadorJogadoresLocal ' + contadorJogadoresLocal);
@@ -169,6 +175,21 @@ function cpu_dadosParciais() {
 		ativo = false;
 		clearInterval(main);
 		window.location.href = "resultado.html?token=" + token + "&nomeJogo=" + nomeJogo;
+	}
+}
+
+function cpu_processaMarcasPneu(travadaRodas) {
+	if (!travadaRodas) {
+		return;
+	}
+	for (var i = 0; i < travadaRodas.length; i++) {
+		var marca = travadaRodas[i];
+		var chave = marca.idNo + "_" + marca.tracado;
+		if (marcasPneuAcumuladas.get(chave)) {
+			continue;
+		}
+		marcasPneuAcumuladas.set(chave, true);
+		vdp_registraMarcaPneuNo(marca.idNo, marca.tracado);
 	}
 }
 
