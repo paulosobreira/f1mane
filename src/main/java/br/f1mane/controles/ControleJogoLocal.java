@@ -1041,15 +1041,18 @@ public class ControleJogoLocal extends ControleRecursos
         travadaRoda.setIdNo(mapaNosIds.get(piloto.getNoAtual()).intValue());
         travadaRoda.setTracado(piloto.getTracado());
         int qtdeFumaca = 0;
-        if (piloto.getNoAtual().verificaRetaOuLargada()) {
-            qtdeFumaca = getRandom().intervalo(10, 25);
-        } else if (piloto.getNoAtual().verificaCurvaAlta()) {
-            qtdeFumaca = getRandom().intervalo(10, 30);
-        } else if (piloto.getNoAtual().verificaCurvaBaixa()) {
-            qtdeFumaca = getRandom().intervalo(10, 20);
+        if (getRandom().nextDouble() <= Global.CHANCE_FUMACA_TRAVADA_RODA) {
+            if (piloto.getNoAtual().verificaRetaOuLargada()) {
+                qtdeFumaca = getRandom().intervalo(10, 25);
+            } else if (piloto.getNoAtual().verificaCurvaAlta()) {
+                qtdeFumaca = getRandom().intervalo(10, 30);
+            } else if (piloto.getNoAtual().verificaCurvaBaixa()) {
+                qtdeFumaca = getRandom().intervalo(10, 20);
+            }
         }
         piloto.setMarcaPneu(true);
         piloto.setTravouRodas(qtdeFumaca);
+        marcasPneuGeradas.put(travadaRoda.getIdNo() + "_" + travadaRoda.getTracado(), travadaRoda);
         if (gerenciadorVisual != null && ControleCiclo.VALENDO)
             gerenciadorVisual.adicinaTravadaRoda(travadaRoda);
     }
