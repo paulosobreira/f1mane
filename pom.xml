@@ -271,6 +271,12 @@
                                              proceduralmente (Global.GERAR_IMAGEM_CIRCUITO_EM_MEMORIA),
                                              então ~140MB de jpg não precisam ir no jar final. -->
                                         <exclude>circuitos/*_mro.jpg</exclude>
+                                        <!-- Folhas de sprites por temporada: o runtime já tem fallback
+                                             completo no modelo universal v2 (SpriteSheet.isDisponivel()
+                                             retorna false e CarregadorRecursos usa pintarModeloV2 com
+                                             png/carro-*-v2.png e png/capacete-v2.png), então não precisam
+                                             ir no jar final. -->
+                                        <exclude>sprites/*</exclude>
                                         <exclude>META-INF/*.SF</exclude>
                                         <exclude>META-INF/*.DSA</exclude>
                                         <exclude>META-INF/*.RSA</exclude>
