@@ -9,9 +9,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.beanutils.SuppressPropertiesBeanIntrospector;
 import org.apache.commons.beanutils.converters.SqlTimestampConverter;
 
 /**
@@ -20,11 +22,22 @@ import org.apache.commons.beanutils.converters.SqlTimestampConverter;
 public class BeanUtil {
 	static {
 		/**
+		 * Impede que "class" (e, em cadeia, "class.classLoader.*") seja
+		 * tratada como propriedade JavaBean navegável pelo BeanUtils
+		 * (CVE-2014-0114): sem isso, describe()/copyProperties()/
+		 * setProperty() enxergam o getClass() de todo objeto Java como uma
+		 * propriedade "class" comum, o que permitiria alcançar e manipular
+		 * o ClassLoader do bean de destino através dela.
+		 */
+		BeanUtilsBean.getInstance().getPropertyUtils()
+				.addBeanIntrospector(SuppressPropertiesBeanIntrospector.SUPPRESS_CLASS);
+
+		/**
 		 * Corrige o bug do <i>BeanUtils</i> pra converter valores de data que
 		 * estão <b>null</b>.
-		 * 
+		 *
 		 */
-		
+
 		ConvertUtils.register(new Converter() {
 			public Object convert(Class type, Object value) {
 				SqlTimestampConverter sqlTimestampConverter = new SqlTimestampConverter();
@@ -86,7 +99,7 @@ public class BeanUtil {
 		String valor;
 		String datatype = tipo.getName();
 
-		if (object == null) {
+		if (object == null || !propriedadeEhSegura(propriedade)) {
 			return;
 		}
 
@@ -108,6 +121,21 @@ public class BeanUtil {
 		}
 
 		BeanUtils.setProperty(beanVo, propriedade, object.toString());
+	}
+
+	/**
+	 * Segunda barreira (além do SuppressPropertiesBeanIntrospector
+	 * registrado no static initializer) contra o gadget do CVE-2014-0114:
+	 * nenhum dos 4 BeanUtils.setProperty() acima deve alcançar "class" nem
+	 * um caminho aninhado como "class.classLoader...", que permitiriam
+	 * navegar até o ClassLoader do bean de destino.
+	 */
+	private static boolean propriedadeEhSegura(String propriedade) {
+		String propriedadeLower = propriedade.toLowerCase();
+
+		return !propriedadeLower.equals("class")
+				&& !propriedadeLower.startsWith("class.")
+				&& !propriedadeLower.contains("classloader");
 	}
 
 	/**

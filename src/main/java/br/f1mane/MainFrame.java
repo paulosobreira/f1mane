@@ -37,7 +37,7 @@ public class MainFrame extends JFrame {
 
 
     private static final long serialVersionUID = -284357233387917389L;
-    protected InterfaceJogo controleJogo;
+    protected transient InterfaceJogo controleJogo;
     private JMenuBar bar;
     private JMenu menuJogo;
     private JMenu menuInfo;
@@ -50,7 +50,7 @@ public class MainFrame extends JFrame {
     boolean adicionouPainelNarracao = false;
     boolean adicionouPainelDebug = false;
 
-    private AppletPaddock appletPaddock = new AppletPaddock();
+    private transient AppletPaddock appletPaddock = new AppletPaddock();
 
     public InterfaceJogo getControleJogo() {
         return controleJogo;
