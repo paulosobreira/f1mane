@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="25.0.2" class="java.beans.XMLDecoder">
+<java version="25" class="java.beans.XMLDecoder">
  <object class="br.f1mane.entidades.Circuito" id="Circuito0">
   <void property="box">
    <void method="add">
@@ -944,11 +944,43 @@
     </object>
    </void>
   </void>
+  <void property="corAsfalto">
+   <object class="java.awt.Color">
+    <int>153</int>
+    <int>153</int>
+    <int>153</int>
+    <int>255</int>
+   </object>
+  </void>
+  <void property="corBox1">
+   <object class="java.awt.Color">
+    <int>255</int>
+    <int>255</int>
+    <object idref="Integer0"/>
+    <int>255</int>
+   </object>
+  </void>
+  <void property="corBox2">
+   <object class="java.awt.Color">
+    <int>51</int>
+    <int>102</int>
+    <object idref="Integer0"/>
+    <int>255</int>
+   </object>
+  </void>
   <void property="corFundo">
    <object class="java.awt.Color">
     <int>85</int>
     <int>86</int>
     <int>10</int>
+    <int>255</int>
+   </object>
+  </void>
+  <void property="corZebra2">
+   <object class="java.awt.Color">
+    <object idref="Integer0"/>
+    <object idref="Integer0"/>
+    <int>204</int>
     <int>255</int>
    </object>
   </void>
@@ -959,7 +991,7 @@
    <int>2</int>
   </void>
   <void property="multiplicadorLarguraPista">
-   <double>1.4</double>
+   <double>1.6</double>
   </void>
   <void property="nome">
    <string>Interlagos</string>

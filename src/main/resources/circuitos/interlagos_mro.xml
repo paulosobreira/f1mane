@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="25.0.2" class="java.beans.XMLDecoder">
+<java version="25" class="java.beans.XMLDecoder">
  <object class="br.f1mane.entidades.Circuito">
   <void property="objetos">
    <object class="java.util.ArrayList"/>
@@ -717,7 +717,7 @@
      </object>
     </void>
     <void method="add">
-     <object class="br.f1mane.entidades.ObjetoConstrucao">
+     <object class="br.f1mane.entidades.ObjetoConstrucao" id="ObjetoConstrucao0">
       <void property="altura">
        <int>105</int>
       </void>
@@ -761,6 +761,8 @@
         </void>
        </object>
       </void>
+      <void id="Integer0" property="grauEmpilhamento"/>
+      <void id="Integer1" property="afunilamento"/>
      </object>
     </void>
     <void method="add">
@@ -1682,6 +1684,1558 @@
       </void>
       <void property="quantidadeEmpilhamento">
        <int>2</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoArquibancada">
+      <void property="altura">
+       <int>170</int>
+      </void>
+      <void property="angulo">
+       <double>11.0</double>
+      </void>
+      <void property="largura">
+       <int>512</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 28</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point58">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point58"/>
+          <int>1831</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point58"/>
+          <int>3799</int>
+         </void>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoArquibancada">
+      <void property="altura">
+       <int>183</int>
+      </void>
+      <void property="largura">
+       <int>2526</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 29</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point59">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point59"/>
+          <int>2417</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point59"/>
+          <int>3800</int>
+         </void>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoArquibancada">
+      <void property="altura">
+       <int>189</int>
+      </void>
+      <void property="angulo">
+       <double>114.0</double>
+      </void>
+      <void property="largura">
+       <int>95</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 30</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point60">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point60"/>
+          <int>5234</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point60"/>
+          <int>3513</int>
+         </void>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoArquibancada">
+      <void property="altura">
+       <int>189</int>
+      </void>
+      <void property="angulo">
+       <double>152.0</double>
+      </void>
+      <void property="largura">
+       <int>146</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 31</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point61">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point61"/>
+          <int>5019</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point61"/>
+          <int>3743</int>
+         </void>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoArquibancada">
+      <void property="altura">
+       <int>189</int>
+      </void>
+      <void property="angulo">
+       <double>121.0</double>
+      </void>
+      <void property="largura">
+       <int>95</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 32</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point62">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point62"/>
+          <int>5179</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point62"/>
+          <int>3623</int>
+         </void>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoArquibancada">
+      <void property="altura">
+       <int>189</int>
+      </void>
+      <void property="angulo">
+       <double>103.0</double>
+      </void>
+      <void property="largura">
+       <int>1275</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 33</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point63">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point63"/>
+          <int>4804</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point63"/>
+          <int>2761</int>
+         </void>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoArquibancada">
+      <void property="altura">
+       <int>189</int>
+      </void>
+      <void property="angulo">
+       <double>35.0</double>
+      </void>
+      <void property="largura">
+       <int>95</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 34</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point64">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point64"/>
+          <int>5276</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point64"/>
+          <int>1742</int>
+         </void>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoArquibancada">
+      <void property="altura">
+       <int>189</int>
+      </void>
+      <void property="angulo">
+       <double>78.0</double>
+      </void>
+      <void property="largura">
+       <int>95</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 35</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point65">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point65"/>
+          <int>5511</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point65"/>
+          <int>2022</int>
+         </void>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoArquibancada">
+      <void property="altura">
+       <int>189</int>
+      </void>
+      <void property="angulo">
+       <double>55.0</double>
+      </void>
+      <void property="largura">
+       <int>95</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 36</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point66">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point66"/>
+          <int>5456</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point66"/>
+          <int>1892</int>
+         </void>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoArquibancada">
+      <void property="altura">
+       <int>189</int>
+      </void>
+      <void property="angulo">
+       <double>39.0</double>
+      </void>
+      <void property="largura">
+       <int>95</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 37</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point67">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point67"/>
+          <int>5366</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point67"/>
+          <int>1802</int>
+         </void>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoConstrucao">
+      <void property="altura">
+       <int>105</int>
+      </void>
+      <void property="angulo">
+       <double>37.0</double>
+      </void>
+      <void property="corPimaria">
+       <object idref="Color1"/>
+      </void>
+      <void property="corSecundaria">
+       <object idref="Color2"/>
+      </void>
+      <void property="direcaoEmpilhamento">
+       <object idref="DirecaoEmpilhamento0"/>
+      </void>
+      <void property="grauEmpilhamento">
+       <int>20</int>
+      </void>
+      <void property="largura">
+       <int>700</int>
+      </void>
+      <void property="nivelDesenho">
+       <int>-7</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 38</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point68">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point68"/>
+          <int>3440</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point68"/>
+          <int>2207</int>
+         </void>
+        </void>
+       </object>
+      </void>
+      <void property="quantidadeEmpilhamento">
+       <int>3</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoArquibancada">
+      <void property="altura">
+       <int>189</int>
+      </void>
+      <void property="angulo">
+       <double>210.0</double>
+      </void>
+      <void property="largura">
+       <int>1278</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 39</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point69">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point69"/>
+          <int>4060</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point69"/>
+          <int>1402</int>
+         </void>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoArquibancada">
+      <void property="altura">
+       <int>189</int>
+      </void>
+      <void property="angulo">
+       <double>210.0</double>
+      </void>
+      <void property="largura">
+       <int>518</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 40</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point70">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point70"/>
+          <int>2143</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point70"/>
+          <int>88</int>
+         </void>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoArquibancada">
+      <void property="altura">
+       <int>189</int>
+      </void>
+      <void property="angulo">
+       <double>210.0</double>
+      </void>
+      <void property="largura">
+       <int>518</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 41</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point71">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point71"/>
+          <int>3603</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point71"/>
+          <int>923</int>
+         </void>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoArquibancada">
+      <void property="altura">
+       <int>189</int>
+      </void>
+      <void property="angulo">
+       <double>210.0</double>
+      </void>
+      <void property="largura">
+       <int>518</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 42</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point72">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point72"/>
+          <int>3123</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point72"/>
+          <int>648</int>
+         </void>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoArquibancada">
+      <void property="altura">
+       <int>189</int>
+      </void>
+      <void property="angulo">
+       <double>210.0</double>
+      </void>
+      <void property="largura">
+       <int>518</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 43</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point73">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point73"/>
+          <int>2628</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point73"/>
+          <int>368</int>
+         </void>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoArquibancada">
+      <void property="altura">
+       <int>189</int>
+      </void>
+      <void property="angulo">
+       <double>298.0</double>
+      </void>
+      <void property="largura">
+       <int>518</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 44</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point74">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point74"/>
+          <int>1285</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point74"/>
+          <int>762</int>
+         </void>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoPneus">
+      <void property="angulo">
+       <double>30.0</double>
+      </void>
+      <void property="largura">
+       <int>80</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 45</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point75">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point75"/>
+          <int>2732</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point75"/>
+          <int>860</int>
+         </void>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoGuardRails" id="ObjetoGuardRails0">
+      <void property="altura">
+       <int>1</int>
+      </void>
+      <void property="corPimaria">
+       <object class="java.awt.Color">
+        <int>153</int>
+        <int>153</int>
+        <int>153</int>
+        <int>255</int>
+       </object>
+      </void>
+      <void property="corSecundaria">
+       <object class="java.awt.Color">
+        <int>102</int>
+        <int>102</int>
+        <int>102</int>
+        <int>255</int>
+       </object>
+      </void>
+      <void property="largura">
+       <object idref="Integer0"/>
+      </void>
+      <void property="larguraLinha">
+       <int>11</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 46</string>
+      </void>
+      <void property="pontos">
+       <void method="add">
+        <object class="java.awt.Point" id="Point76">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point76"/>
+           <int>4641</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point76"/>
+           <int>3396</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point77">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point77"/>
+           <int>4598</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point77"/>
+           <int>3200</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point78">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point78"/>
+           <int>4605</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point78"/>
+           <int>3024</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point79">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point79"/>
+           <int>4655</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point79"/>
+           <int>2937</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point80">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point80"/>
+           <int>4771</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point80"/>
+           <int>2834</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point81">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point81"/>
+           <int>4822</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point81"/>
+           <int>2742</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point82">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point82"/>
+           <int>4851</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point82"/>
+           <int>2660</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point83">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point83"/>
+           <int>4862</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point83"/>
+           <int>2558</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point84">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point84"/>
+           <int>4855</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point84"/>
+           <int>2415</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point85">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point85"/>
+           <int>4833</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point85"/>
+           <int>2300</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point86">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point86"/>
+           <int>4791</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point86"/>
+           <int>2215</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point87">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point87"/>
+           <int>4728</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point87"/>
+           <int>2124</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point88">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point88"/>
+           <int>4610</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point88"/>
+           <int>2041</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point89">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point89"/>
+           <int>4549</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point89"/>
+           <int>2001</int>
+          </void>
+         </void>
+        </object>
+       </void>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point90">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point90"/>
+          <int>4549</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point90"/>
+          <int>2001</int>
+         </void>
+        </void>
+       </object>
+      </void>
+      <void property="vaoEntreLinhas">
+       <int>4</int>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoLivre" id="ObjetoLivre3">
+      <void property="nivelDesenho">
+       <int>-5</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 47</string>
+      </void>
+      <void property="pontos">
+       <void method="add">
+        <object class="java.awt.Point" id="Point91">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point91"/>
+           <int>3326</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point91"/>
+           <int>1107</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point92">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point92"/>
+           <int>3552</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point92"/>
+           <int>1135</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point93">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point93"/>
+           <int>4842</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point93"/>
+           <int>1859</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point94">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point94"/>
+           <int>4911</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point94"/>
+           <int>1936</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point95">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point95"/>
+           <int>4988</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point95"/>
+           <int>2049</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point96">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point96"/>
+           <int>5019</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point96"/>
+           <int>2129</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point97">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point97"/>
+           <int>5030</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point97"/>
+           <int>2253</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point98">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point98"/>
+           <int>5016</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point98"/>
+           <int>2385</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point99">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point99"/>
+           <int>4868</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point99"/>
+           <int>2122</int>
+          </void>
+         </void>
+        </object>
+       </void>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point100">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point100"/>
+          <int>3326</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point100"/>
+          <int>1107</int>
+         </void>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoLivre" id="ObjetoLivre4">
+      <void property="nivelDesenho">
+       <int>-9</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 48</string>
+      </void>
+      <void property="pontos">
+       <void method="add">
+        <object class="java.awt.Point" id="Point101">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point101"/>
+           <int>2913</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point101"/>
+           <int>873</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point102">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point102"/>
+           <int>2857</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point102"/>
+           <int>787</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point103">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point103"/>
+           <int>2760</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point103"/>
+           <int>696</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point104">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point104"/>
+           <int>2658</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point104"/>
+           <int>628</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point105">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point105"/>
+           <int>2517</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point105"/>
+           <int>545</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point106">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point106"/>
+           <int>1808</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point106"/>
+           <int>142</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point107">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point107"/>
+           <int>1635</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point107"/>
+           <int>375</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point108">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point108"/>
+           <int>1730</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point108"/>
+           <int>505</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point109">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point109"/>
+           <int>1791</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point109"/>
+           <int>663</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point110">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point110"/>
+           <int>1792</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point110"/>
+           <int>716</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point111">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point111"/>
+           <int>1788</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point111"/>
+           <int>764</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point112">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point112"/>
+           <int>1630</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point112"/>
+           <int>1126</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point113">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point113"/>
+           <int>1747</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point113"/>
+           <int>1529</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point114">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point114"/>
+           <int>1871</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point114"/>
+           <int>1535</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point115">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point115"/>
+           <int>1852</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point115"/>
+           <int>1062</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point116">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point116"/>
+           <int>2113</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point116"/>
+           <int>658</int>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point117">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point117"/>
+           <int>2444</int>
+          </void>
+         </void>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point117"/>
+           <int>681</int>
+          </void>
+         </void>
+        </object>
+       </void>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point118">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point118"/>
+          <int>1630</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point118"/>
+          <int>142</int>
+         </void>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoPneus">
+      <void property="angulo">
+       <double>53.0</double>
+      </void>
+      <void property="largura">
+       <int>51</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 49</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point119">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point119"/>
+          <int>1890</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point119"/>
+          <int>2324</int>
+         </void>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoPneus">
+      <void property="angulo">
+       <double>53.0</double>
+      </void>
+      <void property="largura">
+       <int>89</int>
+      </void>
+      <void property="nome">
+       <string>Objeto 50</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point120">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point120"/>
+          <int>1270</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point120"/>
+          <int>1759</int>
+         </void>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.f1mane.entidades.ObjetoPneus">
+      <void property="angulo">
+       <double>166.0</double>
+      </void>
+      <void property="largura">
+       <object idref="Integer1"/>
+      </void>
+      <void property="nome">
+       <string>Objeto 51</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point121">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point121"/>
+          <int>2081</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point121"/>
+          <int>3113</int>
+         </void>
+        </void>
+       </object>
       </void>
      </object>
     </void>

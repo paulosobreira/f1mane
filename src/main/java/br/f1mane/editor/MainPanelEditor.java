@@ -378,7 +378,7 @@ public class MainPanelEditor extends JPanel {
     }
 
     private JPanel gerarBotaoCriarObjeto() {
-        JPanel buttonsPanel = new JPanel(new GridLayout(7, 1));
+        JPanel buttonsPanel = new JPanel(new GridLayout(3, 1));
         JButton criarObjeto = new JButton(Lang.msg("criarObjeto"));
         criarObjeto.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -402,12 +402,6 @@ public class MainPanelEditor extends JPanel {
             }
         });
         buttonsPanel.add(colarCor);
-
-        // Legenda dos atalhos de teclado de objeto — ver EditorCircuitos.ativarKeysEditor().
-        buttonsPanel.add(new JLabel(Lang.msg("atalhoInserir")));
-        buttonsPanel.add(new JLabel(Lang.msg("atalhoApagar")));
-        buttonsPanel.add(new JLabel(Lang.msg("atalhoSobeNivel")));
-        buttonsPanel.add(new JLabel(Lang.msg("atalhoDesceNivel")));
 
         return buttonsPanel;
     }
