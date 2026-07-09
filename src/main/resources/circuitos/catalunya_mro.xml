@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="25.0.2" class="java.beans.XMLDecoder">
+<java version="25" class="java.beans.XMLDecoder">
  <object class="br.f1mane.entidades.Circuito">
   <void property="objetos">
+   <object class="java.util.ArrayList"/>
+  </void>
+  <void property="objetosCenario">
    <object class="java.util.ArrayList">
     <void method="add">
-     <object class="br.f1mane.entidades.ObjetoEscapada">
+     <object class="br.f1mane.entidades.ObjetoConstrucao">
+      <void property="altura">
+       <int>106</int>
+      </void>
+      <void property="direcaoEmpilhamento">
+       <object class="java.lang.Enum" method="valueOf">
+        <class>br.f1mane.entidades.DirecaoEmpilhamento</class>
+        <string>CIMA_ESQUERDA</string>
+       </object>
+      </void>
+      <void property="grauEmpilhamento">
+       <int>18</int>
+      </void>
+      <void property="largura">
+       <int>1401</int>
+      </void>
+      <void property="nivelDesenho">
+       <int>-7</int>
+      </void>
       <void property="nome">
        <string>Objeto 1</string>
       </void>
@@ -14,22 +35,31 @@
          <string>x</string>
          <void method="set">
           <object idref="Point0"/>
-          <int>1016</int>
+          <int>2890</int>
          </void>
         </void>
         <void class="java.awt.Point" method="getField">
          <string>y</string>
          <void method="set">
           <object idref="Point0"/>
-          <int>1847</int>
+          <int>1710</int>
          </void>
         </void>
        </object>
       </void>
+      <void property="quantidadeEmpilhamento">
+       <int>4</int>
+      </void>
      </object>
     </void>
     <void method="add">
-     <object class="br.f1mane.entidades.ObjetoEscapada">
+     <object class="br.f1mane.entidades.ObjetoArquibancada">
+      <void property="altura">
+       <int>188</int>
+      </void>
+      <void property="largura">
+       <int>2024</int>
+      </void>
       <void property="nome">
        <string>Objeto 2</string>
       </void>
@@ -39,14 +69,14 @@
          <string>x</string>
          <void method="set">
           <object idref="Point1"/>
-          <int>2183</int>
+          <int>2819</int>
          </void>
         </void>
         <void class="java.awt.Point" method="getField">
          <string>y</string>
          <void method="set">
           <object idref="Point1"/>
-          <int>251</int>
+          <int>2201</int>
          </void>
         </void>
        </object>
@@ -54,69 +84,64 @@
      </object>
     </void>
     <void method="add">
-     <object class="br.f1mane.entidades.ObjetoEscapada">
+     <object class="br.f1mane.entidades.ObjetoGuardRails" id="ObjetoGuardRails0">
+      <void property="altura">
+       <int>1</int>
+      </void>
+      <void property="corSecundaria">
+       <object class="java.awt.Color">
+        <int>102</int>
+        <int>102</int>
+        <int>102</int>
+        <int>255</int>
+       </object>
+      </void>
+      <void property="largura">
+       <int>12</int>
+      </void>
+      <void property="larguraLinha">
+       <int>2</int>
+      </void>
       <void property="nome">
        <string>Objeto 3</string>
       </void>
-      <void property="posicaoQuina">
-       <object class="java.awt.Point" id="Point2">
-        <void class="java.awt.Point" method="getField">
-         <string>x</string>
-         <void method="set">
-          <object idref="Point2"/>
-          <int>2544</int>
+      <void property="pontos">
+       <void method="add">
+        <object class="java.awt.Point" id="Point2">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point2"/>
+           <int>5084</int>
+          </void>
          </void>
-        </void>
-        <void class="java.awt.Point" method="getField">
-         <string>y</string>
-         <void method="set">
-          <object idref="Point2"/>
-          <int>1469</int>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point2"/>
+           <int>2183</int>
+          </void>
          </void>
-        </void>
-       </object>
-      </void>
-     </object>
-    </void>
-    <void method="add">
-     <object class="br.f1mane.entidades.ObjetoEscapada">
-      <void property="nome">
-       <string>Objeto 4</string>
-      </void>
-      <void property="posicaoQuina">
-       <object class="java.awt.Point" id="Point3">
-        <void class="java.awt.Point" method="getField">
-         <string>x</string>
-         <void method="set">
-          <object idref="Point3"/>
-          <int>5552</int>
+        </object>
+       </void>
+       <void method="add">
+        <object class="java.awt.Point" id="Point3">
+         <void class="java.awt.Point" method="getField">
+          <string>x</string>
+          <void method="set">
+           <object idref="Point3"/>
+           <int>1320</int>
+          </void>
          </void>
-        </void>
-        <void class="java.awt.Point" method="getField">
-         <string>y</string>
-         <void method="set">
-          <object idref="Point3"/>
-          <int>1454</int>
+         <void class="java.awt.Point" method="getField">
+          <string>y</string>
+          <void method="set">
+           <object idref="Point3"/>
+           <int>2183</int>
+          </void>
          </void>
-        </void>
-       </object>
-      </void>
-     </object>
-    </void>
-    <void method="add">
-     <object class="br.f1mane.entidades.ObjetoEscapada">
-      <void property="corPimaria">
-       <object class="javax.swing.plaf.ColorUIResource" id="ColorUIResource0">
-        <int>238</int>
-        <int>238</int>
-        <int>238</int>
-       </object>
-      </void>
-      <void property="corSecundaria">
-       <object idref="ColorUIResource0"/>
-      </void>
-      <void property="nome">
-       <string>Objeto 5</string>
+        </object>
+       </void>
       </void>
       <void property="posicaoQuina">
        <object class="java.awt.Point" id="Point4">
@@ -124,67 +149,14 @@
          <string>x</string>
          <void method="set">
           <object idref="Point4"/>
-          <int>5111</int>
+          <int>1320</int>
          </void>
         </void>
         <void class="java.awt.Point" method="getField">
          <string>y</string>
          <void method="set">
           <object idref="Point4"/>
-          <int>581</int>
-         </void>
-        </void>
-       </object>
-      </void>
-      <void property="transparencia">
-       <int>255</int>
-      </void>
-     </object>
-    </void>
-    <void method="add">
-     <object class="br.f1mane.entidades.ObjetoEscapada">
-      <void property="nome">
-       <string>Objeto 6</string>
-      </void>
-      <void property="posicaoQuina">
-       <object class="java.awt.Point" id="Point5">
-        <void class="java.awt.Point" method="getField">
-         <string>x</string>
-         <void method="set">
-          <object idref="Point5"/>
-          <int>877</int>
-         </void>
-        </void>
-        <void class="java.awt.Point" method="getField">
-         <string>y</string>
-         <void method="set">
-          <object idref="Point5"/>
-          <int>759</int>
-         </void>
-        </void>
-       </object>
-      </void>
-     </object>
-    </void>
-    <void method="add">
-     <object class="br.f1mane.entidades.ObjetoEscapada">
-      <void property="nome">
-       <string>Objeto 7</string>
-      </void>
-      <void property="posicaoQuina">
-       <object class="java.awt.Point" id="Point6">
-        <void class="java.awt.Point" method="getField">
-         <string>x</string>
-         <void method="set">
-          <object idref="Point6"/>
-          <int>3260</int>
-         </void>
-        </void>
-        <void class="java.awt.Point" method="getField">
-         <string>y</string>
-         <void method="set">
-          <object idref="Point6"/>
-          <int>226</int>
+          <int>2183</int>
          </void>
         </void>
        </object>
@@ -192,9 +164,6 @@
      </object>
     </void>
    </object>
-  </void>
-  <void property="objetosCenario">
-   <object class="java.util.ArrayList"/>
   </void>
  </object>
 </java>
