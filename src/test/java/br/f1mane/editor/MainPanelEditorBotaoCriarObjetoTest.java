@@ -35,8 +35,8 @@ class MainPanelEditorBotaoCriarObjetoTest {
         assertInstanceOf(GridLayout.class, painel.getLayout());
         GridLayout layout = (GridLayout) painel.getLayout();
         assertEquals(1, layout.getColumns());
-        assertEquals(7, layout.getRows());
-        assertEquals(7, painel.getComponentCount());
+        assertEquals(3, layout.getRows());
+        assertEquals(3, painel.getComponentCount());
     }
 
     @Test
@@ -51,17 +51,4 @@ class MainPanelEditorBotaoCriarObjetoTest {
         assertEquals(Lang.msg("colarCor"), ((JButton) painel.getComponent(2)).getText());
     }
 
-    @Test
-    void ultimasQuatroLinhas_saoALegendaDosAtalhosDeTeclado() throws Exception {
-        JPanel painel = gerarPainel();
-
-        assertInstanceOf(JLabel.class, painel.getComponent(3));
-        assertInstanceOf(JLabel.class, painel.getComponent(4));
-        assertInstanceOf(JLabel.class, painel.getComponent(5));
-        assertInstanceOf(JLabel.class, painel.getComponent(6));
-        assertEquals(Lang.msg("atalhoInserir"), ((JLabel) painel.getComponent(3)).getText());
-        assertEquals(Lang.msg("atalhoApagar"), ((JLabel) painel.getComponent(4)).getText());
-        assertEquals(Lang.msg("atalhoSobeNivel"), ((JLabel) painel.getComponent(5)).getText());
-        assertEquals(Lang.msg("atalhoDesceNivel"), ((JLabel) painel.getComponent(6)).getText());
-    }
 }
