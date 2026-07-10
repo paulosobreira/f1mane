@@ -1412,6 +1412,9 @@ public class Piloto implements Serializable, PilotoSuave {
      * impedem a saida mesmo com o tracado do lado totalmente vazio.
      */
     boolean tentarEscaparFilaIndiana() {
+        if (isJogadorHumano()) {
+            return false;
+        }
         if (ciclosPresoFila < 8) {
             return false;
         }
@@ -2191,13 +2194,33 @@ public class Piloto implements Serializable, PilotoSuave {
         sofreuDanoAereofolioNesteTick = false;
     }
 
+    /**
+     * Autopilot = IA decidindo giro/ERS/DRS/ataque-defesa e a escolha
+     * proativa de traçado no lugar do jogador humano. Sempre desligado
+     * online (o jogador humano nunca é pilotado pela IA em multiplayer,
+     * mesmo que o automaticoManual da partida esteja em AUTOMATICO) e no
+     * solo em modo manual.
+     */
+    private boolean autopilotDesligado() {
+        return isJogadorHumano() &&
+                (Global.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual())
+                        || controleJogo instanceof JogoServidor);
+    }
+
+    /**
+     * Leitura pura (sem decrementar): o decremento de manualTemporario ja
+     * acontece uma vez por ciclo em processaIAnovoIndex(), que roda antes
+     * de processaMudarTracado() no pipeline de processaNovoIndex().
+     */
+    private boolean autopilotAtivo() {
+        return !autopilotDesligado() && !isManualTemporario();
+    }
+
     private void processaIAnovoIndex() {
         if (colisao != null || isRecebeuBanderada() || controleJogo.isModoQualify()) {
             return;
         }
-        if (isJogadorHumano() &&
-                (Global.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual())
-                        || controleJogo instanceof JogoServidor)) {
+        if (autopilotDesligado()) {
             return;
         }
 
@@ -2286,14 +2309,11 @@ public class Piloto implements Serializable, PilotoSuave {
         return false;
     }
 
-    private void processaMudarTracado() {
+    void processaMudarTracado() {
         if (isRecebeuBanderada()) {
             return;
         }
         if (controleJogo.isModoQualify()) {
-            return;
-        }
-        if (isJogadorHumano() && Global.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual())) {
             return;
         }
         if (!noAtual.verificaRetaOuLargada() && !controleJogo.isSafetyCarNaPista()) {
@@ -2350,9 +2370,9 @@ public class Piloto implements Serializable, PilotoSuave {
             /**
              * Preso em fila indiana com tracado lateral livre: ja mudou.
              */
-        } else if ((evitaBaterCarroFrente && carroPilotoDaFrenteRetardatario != null
+        } else if (autopilotAtivo() && ((evitaBaterCarroFrente && carroPilotoDaFrenteRetardatario != null
                 && getTracado() == carroPilotoDaFrenteRetardatario.getPiloto().getTracado())
-                || calculaDiffParaProximoRetardatario < (testeHabilidadePiloto() ? 100 : 150)) {
+                || calculaDiffParaProximoRetardatario < (testeHabilidadePiloto() ? 100 : 150))) {
             desviaPilotoNaFrente(this, carroPilotoDaFrenteRetardatario.getPiloto());
         } else if (controleJogo.getNumVoltaAtual() > 1 && !isJogadorHumano() && testeHabilidadePiloto()
                 && pontoEscape != null && calculaDiffParaProximoRetardatario > 150
@@ -2368,7 +2388,7 @@ public class Piloto implements Serializable, PilotoSuave {
                     mudarTracado(1);
                 }
             }
-        } else if ((calculaDiffParaProximoRetardatarioMesmoTracado < calculaDiferencaParaAnterior
+        } else if (autopilotAtivo() && (calculaDiffParaProximoRetardatarioMesmoTracado < calculaDiferencaParaAnterior
                 && calculaDiffParaProximoRetardatarioMesmoTracado < (testeHabilidadePilotoCarro() ? 150 : 200))) {
             desviaPilotoNaFrente(this, carroPilotoDaFrenteRetardatario.getPiloto());
         } else if (!isJogadorHumano() && carroPilotoAtras != null && mudouTracadoReta <= 1
