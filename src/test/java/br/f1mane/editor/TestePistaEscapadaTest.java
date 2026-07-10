@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
@@ -14,33 +13,28 @@ import br.f1mane.entidades.Circuito;
 import br.f1mane.entidades.No;
 import br.f1mane.entidades.ObjetoEscapada;
 import br.f1mane.entidades.ObjetoPista;
-import br.f1mane.entidades.PontoEscape;
 
 /**
- * Cobre o carro de teste do editor (TestePista) seguindo o traçado de
- * escapada quando o índice atual cai dentro de uma zona de escapada, em vez
- * de continuar sempre pela pista normal.
+ * Cobre o carro de teste do editor (TestePista) com o novo modelo de
+ * ObjetoEscapada (entrada → trajeto livre → saída, ancorados a
+ * indiceEntrada/indiceSaida no traçado em que a escapada foi definida): com
+ * modoEscapada ligado e o índice da pista dentro de [indiceEntrada,
+ * indiceSaida] de alguma escapada, o carro de teste segue o trajeto
+ * interpolado da escapada em vez da pista normal; fora desse intervalo, ou
+ * com modoEscapada desligado, continua usando a pista normal.
  */
 class TestePistaEscapadaTest {
 
-    private Circuito circuitoComEscapada() {
+    private Circuito circuitoVetorizado() {
         Circuito circuito = new Circuito();
-
         List<No> pista = new ArrayList<>();
         pista.add(criarNo(1000, 1000));
-        pista.add(criarNo(3000, 1000));
-        pista.add(criarNo(3000, 3000));
-        pista.add(criarNo(1000, 3000));
+        pista.add(criarNo(4000, 1000));
+        pista.add(criarNo(4000, 4000));
+        pista.add(criarNo(1000, 4000));
         circuito.setPista(pista);
         circuito.setBox(new ArrayList<>());
         circuito.setMultiplicadorLarguraPista(1.5);
-
-        List<ObjetoPista> objetos = new ArrayList<>();
-        ObjetoEscapada escapada = new ObjetoEscapada();
-        escapada.setPosicaoQuina(new Point(1500, 985));
-        objetos.add(escapada);
-        circuito.setObjetos(objetos);
-
         circuito.vetorizarPista();
         return circuito;
     }
@@ -52,74 +46,103 @@ class TestePistaEscapadaTest {
         return no;
     }
 
-    @Test
-    void dentroDaZonaDeEscapada_comModoEscapadaLigado_carroDeTesteSeguePontosDaEscapada() {
-        Circuito circuito = circuitoComEscapada();
-        Map<PontoEscape, List<No>> escapeMap = circuito.getEscapeMap();
-        Map.Entry<PontoEscape, List<No>> entrada = escapeMap.entrySet().iterator().next();
-        List<No> tracadoEscapada = entrada.getValue();
+    /** Escapada válida: entrada/saída em nós reais do traçado 1, com um ponto livre desviado no meio. */
+    private ObjetoEscapada criarEscapada(No noEntrada, No noSaida) {
+        ObjetoEscapada escapada = new ObjetoEscapada();
+        List<Point> pontos = new ArrayList<>();
+        pontos.add(new Point(noEntrada.getPoint()));
+        pontos.add(new Point(noEntrada.getPoint().x + 200, noEntrada.getPoint().y + 200));
+        pontos.add(new Point(noSaida.getPoint()));
+        escapada.setPontos(pontos);
+        escapada.setTracadoOrigem(1);
+        escapada.setIndiceEntrada(noEntrada.getIndex());
+        escapada.setIndiceSaida(noSaida.getIndex());
+        escapada.gerar();
+        escapada.setPosicaoQuina(escapada.obterArea().getLocation());
+        return escapada;
+    }
 
-        int indiceDentroDaZona = -1;
-        for (int i = 0; i < tracadoEscapada.size(); i++) {
-            if (tracadoEscapada.get(i) != null) {
-                indiceDentroDaZona = i;
-                break;
-            }
-        }
-        // Pula pra um pouco depois do início, onde o afastamento já é
-        // perceptível (perto do início a curva senoidal ainda está perto de 0).
-        indiceDentroDaZona += 50;
+    private void anexarEscapada(Circuito circuito, ObjetoEscapada escapada) {
+        List<ObjetoPista> objetos = new ArrayList<>();
+        objetos.add(escapada);
+        circuito.setObjetos(objetos);
+    }
+
+    @Test
+    void dentroDaZonaComModoEscapadaLigado_carroSegueOTrajetoDaEscapada() {
+        Circuito circuito = circuitoVetorizado();
+        No noEntrada = circuito.getPista1Full().get(300);
+        No noSaida = circuito.getPista1Full().get(340);
+        anexarEscapada(circuito, criarEscapada(noEntrada, noSaida));
 
         TestePista testePista = new TestePista(new MainPanelEditor(), circuito);
         testePista.testarEscapada();
         List<No> pontosPista = circuito.getPistaFull();
 
-        testePista.posicionaCarroConsiderandoEscapada(indiceDentroDaZona, pontosPista);
+        testePista.posicionaCarroConsiderandoEscapada(noEntrada.getIndex(), pontosPista);
+        assertEquals(noEntrada.getPoint(), testePista.getTestCar(),
+                "no índice de entrada, o carro deveria estar exatamente no primeiro ponto do trajeto da escapada");
 
-        Point pontoEscapada = tracadoEscapada.get(indiceDentroDaZona).getPoint();
-        Point pontoPistaNormal = pontosPista.get(indiceDentroDaZona).getPoint();
+        testePista.posicionaCarroConsiderandoEscapada(noSaida.getIndex(), pontosPista);
+        assertEquals(noSaida.getPoint(), testePista.getTestCar(),
+                "no índice de saída, o carro deveria estar exatamente no último ponto do trajeto da escapada");
 
-        assertEquals(pontoEscapada, testePista.getTestCar());
-        assertNotEquals(pontoPistaNormal, testePista.getTestCar());
+        int indiceMeio = (noEntrada.getIndex() + noSaida.getIndex()) / 2;
+        testePista.posicionaCarroConsiderandoEscapada(indiceMeio, pontosPista);
+        assertNotEquals(pontosPista.get(indiceMeio).getPoint(), testePista.getTestCar(),
+                "no meio da zona, o carro deveria estar seguindo o trajeto desviado da escapada, não a pista normal");
     }
 
     @Test
-    void dentroDaZonaDeEscapada_comModoEscapadaDesligado_carroDeTesteUsaPistaNormal() {
-        Circuito circuito = circuitoComEscapada();
-        Map<PontoEscape, List<No>> escapeMap = circuito.getEscapeMap();
-        Map.Entry<PontoEscape, List<No>> entrada = escapeMap.entrySet().iterator().next();
-        List<No> tracadoEscapada = entrada.getValue();
+    void dentroDaZonaComModoEscapadaDesligado_carroDeTesteUsaPistaNormal() {
+        Circuito circuito = circuitoVetorizado();
+        No noEntrada = circuito.getPista1Full().get(300);
+        No noSaida = circuito.getPista1Full().get(340);
+        anexarEscapada(circuito, criarEscapada(noEntrada, noSaida));
 
-        int indiceDentroDaZona = -1;
-        for (int i = 0; i < tracadoEscapada.size(); i++) {
-            if (tracadoEscapada.get(i) != null) {
-                indiceDentroDaZona = i;
-                break;
-            }
-        }
-        indiceDentroDaZona += 50;
-
-        // modoEscapada começa desligado por padrão (sem chamar testarEscapada()) —
-        // o carro de teste deve ficar na pista normal mesmo dentro da zona.
+        // modoEscapada começa desligado por padrão (sem chamar testarEscapada()).
         TestePista testePista = new TestePista(new MainPanelEditor(), circuito);
         List<No> pontosPista = circuito.getPistaFull();
+        int indiceMeio = (noEntrada.getIndex() + noSaida.getIndex()) / 2;
 
-        testePista.posicionaCarroConsiderandoEscapada(indiceDentroDaZona, pontosPista);
+        testePista.posicionaCarroConsiderandoEscapada(indiceMeio, pontosPista);
 
-        assertEquals(pontosPista.get(indiceDentroDaZona).getPoint(), testePista.getTestCar());
+        assertEquals(pontosPista.get(indiceMeio).getPoint(), testePista.getTestCar());
     }
 
     @Test
     void foraDaZonaDeEscapada_carroDeTesteUsaPistaNormal() {
-        Circuito circuito = circuitoComEscapada();
-        List<No> pontosPista = circuito.getPistaFull();
+        Circuito circuito = circuitoVetorizado();
+        No noEntrada = circuito.getPista1Full().get(300);
+        No noSaida = circuito.getPista1Full().get(340);
+        anexarEscapada(circuito, criarEscapada(noEntrada, noSaida));
 
         TestePista testePista = new TestePista(new MainPanelEditor(), circuito);
-        // Índice bem longe do ponto de escapada (perto do fim da lista).
+        testePista.testarEscapada();
+        List<No> pontosPista = circuito.getPistaFull();
         int indiceForaDaZona = pontosPista.size() - 200;
 
         testePista.posicionaCarroConsiderandoEscapada(indiceForaDaZona, pontosPista);
 
         assertEquals(pontosPista.get(indiceForaDaZona).getPoint(), testePista.getTestCar());
+    }
+
+    @Test
+    void escapadaSemIndicesValidos_naoAtivaEUsaPistaNormal() {
+        // Objeto degenerado (nunca teve entrada/saída validadas com sucesso,
+        // indiceEntrada/indiceSaida ficam no default -1) não deveria travar
+        // nem ser tratado como zona ativa em nenhum índice.
+        Circuito circuito = circuitoVetorizado();
+        ObjetoEscapada escapadaDegenerada = new ObjetoEscapada();
+        anexarEscapada(circuito, escapadaDegenerada);
+
+        TestePista testePista = new TestePista(new MainPanelEditor(), circuito);
+        testePista.testarEscapada();
+        List<No> pontosPista = circuito.getPistaFull();
+        int indice = 300;
+
+        testePista.posicionaCarroConsiderandoEscapada(indice, pontosPista);
+
+        assertEquals(pontosPista.get(indice).getPoint(), testePista.getTestCar());
     }
 }

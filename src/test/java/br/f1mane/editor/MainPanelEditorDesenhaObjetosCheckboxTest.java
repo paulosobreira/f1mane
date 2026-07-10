@@ -106,7 +106,12 @@ class MainPanelEditorDesenhaObjetosCheckboxTest {
         Circuito circuito = new Circuito();
 
         ObjetoEscapada escapada = new ObjetoEscapada();
-        escapada.setPosicaoQuina(new Point(50, 50));
+        List<Point> pontosEscapada = new ArrayList<>();
+        pontosEscapada.add(new Point(40, 40));
+        pontosEscapada.add(new Point(60, 60));
+        escapada.setPontos(pontosEscapada);
+        escapada.gerar();
+        escapada.setPosicaoQuina(escapada.obterArea().getLocation());
         ObjetoTransparencia transparencia = new ObjetoTransparencia();
         List<java.awt.Point> pontos = new ArrayList<>();
         pontos.add(new Point(200, 200));

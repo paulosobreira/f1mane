@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="25" class="java.beans.XMLDecoder">
+<java version="25.0.2" class="java.beans.XMLDecoder">
  <object class="br.f1mane.entidades.Circuito" id="Circuito0">
   <void property="box">
    <void method="add">
@@ -548,33 +548,6 @@
      </void>
     </object>
    </void>
-  </void>
-  <void property="corAsfalto">
-   <object class="java.awt.Color">
-    <int>153</int>
-    <int>153</int>
-    <int>153</int>
-    <int>255</int>
-   </object>
-  </void>
-  <void property="corBox1">
-   <object class="java.awt.Color">
-    <int>255</int>
-    <int>255</int>
-    <int>255</int>
-    <int>255</int>
-   </object>
-  </void>
-  <void property="corBox2">
-   <object class="java.awt.Color">
-    <int>255</int>
-    <object idref="Integer0"/>
-    <object idref="Integer0"/>
-    <int>255</int>
-   </object>
-  </void>
-  <void property="distanciaKm">
-   <double>4657.0</double>
   </void>
   <void property="ladoBox">
    <int>2</int>

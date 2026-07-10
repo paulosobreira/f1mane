@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="25" class="java.beans.XMLDecoder">
+<java version="25.0.2" class="java.beans.XMLDecoder">
  <object class="br.f1mane.entidades.Circuito" id="Circuito0">
   <void property="box">
    <void method="add">
@@ -985,7 +985,7 @@
    </object>
   </void>
   <void property="distanciaKm">
-   <double>4309.0</double>
+   <int>4309</int>
   </void>
   <void property="ladoBox">
    <int>1</int>

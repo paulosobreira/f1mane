@@ -48,7 +48,7 @@ public class Circuito implements Serializable {
     /** Milissegundos entre ticks de simulação (InterfaceJogo.tempoCicloCircuito()) — não é contagem de voltas. */
     private int ciclo = 160;
     /** Distância oficial do circuito em quilômetros, informada por quem edita o circuito — não calculada a partir do traçado. */
-    private double distanciaKm = 0;
+    private int distanciaKm = 0;
     private int entradaBoxIndex;
     private int saidaBoxIndex;
     private int paradaBoxIndex;
@@ -367,149 +367,52 @@ public class Circuito implements Serializable {
         }
     }
 
+    /**
+     * {@code ObjetoEscapada} deixou de ser uma elipse solta com
+     * largura/altura/ângulo interpretados como comprimento/amplitude de uma
+     * onda (ver o novo modelo de saída/retorno ancorado ao traçado, em
+     * {@link ObjetoEscapada}) — por isso este método não gera mais nenhuma
+     * zona de escapada a partir dos objetos do circuito. Continua populando
+     * {@link #pista4Full}/{@link #pista5Full} (espelhando
+     * {@link #pista2Full}/{@link #pista1Full}, do mesmo tamanho) e
+     * {@link #escapeMap} (sempre vazio) só para preservar a compatibilidade
+     * de {@code Piloto.processaEscapadaDaPista()} e das telas de debug que
+     * leem essas listas por índice — elas continuam do tamanho certo, apenas
+     * sem nenhum nó marcado com traçado 4/5, então o consumo em corrida
+     * simplesmente não encontra nenhuma escapada até uma mudança futura
+     * reconectar o novo objeto a esse fluxo.
+     */
     private void gerarEscapeMap() {
         escapeMap = new HashMap<PontoEscape, List<No>>();
         pista4Full = new ArrayList<No>();
         pista4Full.addAll(pista2Full);
         pista5Full = new ArrayList<No>();
         pista5Full.addAll(pista1Full);
-        List<No> nosDaPista = getPistaFull();
-        List<ObjetoPista> objetos = getObjetos();
-        if (objetos == null) {
-            return;
-        }
-        for (ObjetoPista objetoPista : objetos) {
-            if (!(objetoPista instanceof ObjetoEscapada)) {
-                continue;
-            }
-            ObjetoEscapada objetoEscapada = (ObjetoEscapada) objetoPista;
-            Point pointDerrapagem = objetoEscapada.centro();
-            if (pointDerrapagem == null) {
-                continue;
-            }
-            No noPerto = null;
-            double menorDistancia = Double.MAX_VALUE;
-            for (Iterator iterator2 = nosDaPista.iterator(); iterator2.hasNext(); ) {
-                No no = (No) iterator2.next();
-                Point pointPista = (Point) no.getPoint();
-                double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(pointPista, pointDerrapagem);
-                if (distaciaEntrePontos < menorDistancia) {
-                    menorDistancia = distaciaEntrePontos;
-                    noPerto = no;
-                }
-            }
-            if (noPerto == null) {
-                continue;
-            }
-            Point p = noPerto.getPoint();
-            Rectangle2D rectangle = new Rectangle2D.Double((p.x - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
-                    (p.y - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO), Carro.ALTURA * Carro.FATOR_AREA_CARRO,
-                    Carro.ALTURA * Carro.FATOR_AREA_CARRO);
-            int cont = noPerto.getIndex();
-            int traz = cont - 44;
-            int frente = cont + 44;
-            Point trazCar = ((No) nosDaPista.get(traz)).getPoint();
-            Point frenteCar = ((No) nosDaPista.get(frente)).getPoint();
-            double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
-            Point p1 = GeoUtil.calculaPonto(calculaAngulo, Util.inteiro(Carro.ALTURA * getMultiplicadorLarguraPista()),
-                    new Point(Util.inteiro(rectangle.getCenterX()), Util.inteiro(rectangle.getCenterY())));
-            Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180,
-                    Util.inteiro(Carro.ALTURA * getMultiplicadorLarguraPista()),
-                    new Point(Util.inteiro(rectangle.getCenterX()), Util.inteiro(rectangle.getCenterY())));
-            double distaciaEntrePontos1 = GeoUtil.distaciaEntrePontos(p1, pointDerrapagem);
-            double distaciaEntrePontos2 = GeoUtil.distaciaEntrePontos(p2, pointDerrapagem);
-            // Onda da escapada: largura do objeto = comprimento da zona (em
-            // nós), altura do objeto = amplitude (crista), 1:1 em pixels —
-            // sem fator de escala adicional, para que ajustar essas
-            // propriedades no editor mude o traçado exatamente na mesma
-            // proporção. A direção do afastamento é calculada uma única vez
-            // aqui (calculaAngulo) e reaproveitada por toda a zona — a onda
-            // não segue a curvatura da pista nó a nó. O campo "ângulo" do
-            // objeto, quando >= 1, funciona como multiplicador extra de
-            // largura/altura (comprimento/amplitude); abaixo de 1 não
-            // multiplica (mantém largura/altura como estão).
-            double multiplicadorOnda = objetoEscapada.getAngulo() >= 1 ? objetoEscapada.getAngulo() : 1;
-            int crista = Util.inteiro(objetoEscapada.getAltura() * multiplicadorOnda);
-            int index = noPerto.getIndex();
-            int contMax = index + Util.inteiro(objetoEscapada.getLargura() * multiplicadorOnda);
-            if (distaciaEntrePontos1 < distaciaEntrePontos2) {
-                PontoEscape ponto = new PontoEscape();
-                ponto.setPoint(pointDerrapagem);
-                ponto.setPista(5);
-                pista5Full.set(index, pista1Full.get(index));
-                preencheTracadoEscapeSuave(pista5Full, pista1Full, nosDaPista, index, contMax, crista, calculaAngulo, 0, 5);
-                escapeMap.put(ponto, pista5Full);
-            }
-            if (distaciaEntrePontos2 < distaciaEntrePontos1) {
-                PontoEscape ponto = new PontoEscape();
-                ponto.setPoint(pointDerrapagem);
-                ponto.setPista(4);
-                pista4Full.set(index, pista2Full.get(index));
-                preencheTracadoEscapeSuave(pista4Full, pista2Full, nosDaPista, index, contMax, crista, calculaAngulo, 180, 4);
-                escapeMap.put(ponto, pista4Full);
-            }
-        }
         for (int i = 0; i < pista4Full.size(); i++) {
             No no = pista4Full.get(i);
-            if (no.getTracado() != 4) {
+            if (no == null || no.getTracado() != 4) {
                 pista4Full.set(i, null);
             }
         }
         for (int i = 0; i < pista5Full.size(); i++) {
             No no = pista5Full.get(i);
-            if (no.getTracado() != 5) {
+            if (no == null || no.getTracado() != 5) {
                 pista5Full.set(i, null);
             }
-        }
-    }
-
-    /**
-     * Preenche o trecho [index, contMax) de {@code destino} com uma onda
-     * pura: o afastamento lateral segue uma senoide simétrica (zero nas
-     * duas pontas da zona, crista {@code max} na metade — comprimento e
-     * amplitude vêm 1:1 da largura/altura do objeto Escapada), numa única
-     * direção fixa ({@code angulo}, calculada uma vez pelo chamador a
-     * partir do nó de gatilho). Diferente da versão anterior, a onda não
-     * recalcula a direção nó a nó nem limita o afastamento pela curvatura
-     * local da pista — ela é definida só pela largura/altura/posição do
-     * objeto Escapada, sem depender do traçado da pista.
-     */
-    private void preencheTracadoEscapeSuave(List<No> destino, List<No> bordaOriginal, List<No> nosDaPista,
-            int index, int contMax, int max, double angulo, double anguloAdicional, int tracado) {
-        int fim = Math.min(contMax, Math.min(bordaOriginal.size(), nosDaPista.size()));
-        int comprimentoZona = fim - index;
-        if (comprimentoZona <= 0) {
-            return;
-        }
-        for (int idx = 0; idx < comprimentoZona; idx++) {
-            int i = index + idx;
-            double t = (double) idx / (double) comprimentoZona;
-            double offset = max * Math.sin(Math.PI * t);
-            No noOriginal = bordaOriginal.get(i);
-            Point pOffset = GeoUtil.calculaPonto(angulo + anguloAdicional, Util.inteiro(offset),
-                    noOriginal.getPoint());
-            No newNo = new No();
-            newNo.setPoint(pOffset);
-            newNo.setTipo(nosDaPista.get(i).getTipo());
-            newNo.setTracado(tracado);
-            destino.set(i, newNo);
         }
     }
 
     public static void main(String[] args) {
     }
 
+    /**
+     * {@code ObjetoEscapada} não tem mais um único "centro" de acionamento
+     * (ver javadoc de {@link #gerarEscapeMap()}) — {@link #escapeList} fica
+     * sempre vazia a partir desta mudança; nenhum código fora desta classe a
+     * consome.
+     */
     private void gerarEscapeList() {
         escapeList = new ArrayList<Point>();
-        List<ObjetoPista> objetos = getObjetos();
-        if (objetos != null) {
-            for (ObjetoPista objetoPista : objetos) {
-                if (objetoPista instanceof ObjetoEscapada) {
-                    ObjetoEscapada objetoEscapada = (ObjetoEscapada) objetoPista;
-                    escapeList.add(objetoEscapada.centro());
-                }
-            }
-        }
     }
 
     public int getParadaBoxIndex() {
@@ -771,11 +674,11 @@ public class Circuito implements Serializable {
         this.ciclo = ciclo;
     }
 
-    public double getDistanciaKm() {
+    public int getDistanciaKm() {
         return distanciaKm;
     }
 
-    public void setDistanciaKm(double distanciaKm) {
+    public void setDistanciaKm(int distanciaKm) {
         this.distanciaKm = distanciaKm;
     }
 

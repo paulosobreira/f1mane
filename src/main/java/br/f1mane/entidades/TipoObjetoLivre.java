@@ -10,5 +10,7 @@ public enum TipoObjetoLivre {
     VEGETACAO_SIMPLES,
     VEGETACAO_DENSA,
     AGUA,
-    BRITA
+    BRITA,
+    LISTRADO,
+    XADREZ
 }

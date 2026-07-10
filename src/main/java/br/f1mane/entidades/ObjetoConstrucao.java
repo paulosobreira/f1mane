@@ -15,8 +15,10 @@ public class ObjetoConstrucao extends ObjetoDesenho {
 
 	/** Raio dos cantos arredondados (forma aninhada e cantos da popa/ponta do barco). */
 	private static final int ARCO_CANTO = 15;
-	/** Margem entre forma externa e interna, e vão entre os dois módulos do CAMINHAO — a "borda" do objeto. */
+	/** Margem entre forma externa e interna de todos os tipos, incluindo os dois módulos do CAMINHAO — a "borda" do objeto. */
 	private static final int MARGEM_INTERNA = 10;
+	/** Vão entre os dois módulos (cabine e carroceria) do CAMINHAO — metade de {@link #MARGEM_INTERNA}, separado dela para poder ser menor que a borda. */
+	private static final int VAO_MODULOS_CAMINHAO = MARGEM_INTERNA / 2;
 
 	private TipoObjetoConstrucao tipo = TipoObjetoConstrucao.QUADRADO;
 	/** Percentual (0-90) do comprimento ocupado pela seção afunilada do tipo BARCO. */
@@ -97,12 +99,13 @@ public class ObjetoConstrucao extends ObjetoDesenho {
 	/**
 	 * Largura realmente ocupada pela forma do {@link #tipo} atual. Igual a
 	 * {@code largura} para a maioria dos tipos, mas {@code CAMINHAO} soma
-	 * também o vão de {@link #MARGEM_INTERNA} entre os dois módulos (cabine
-	 * + vão + carroceria), que fica fora do valor de {@code largura} em si.
+	 * também o vão de {@link #VAO_MODULOS_CAMINHAO} entre os dois módulos
+	 * (cabine + vão + carroceria), que fica fora do valor de {@code largura}
+	 * em si.
 	 */
 	private int larguraEfetiva() {
 		if (tipo == TipoObjetoConstrucao.CAMINHAO) {
-			return largura + MARGEM_INTERNA;
+			return largura + VAO_MODULOS_CAMINHAO;
 		}
 		return largura;
 	}
@@ -178,17 +181,18 @@ public class ObjetoConstrucao extends ObjetoDesenho {
 	 * carroceria (módulo 2) tem o dobro da largura da cabine (módulo 1),
 	 * ambos com a mesma altura. Largura e altura são ambas aplicadas (cabine
 	 * = largura/3, carroceria = 2×largura/3), com um vão de
-	 * {@link #MARGEM_INTERNA} entre os dois módulos — a mesma distância já
-	 * usada como margem entre forma externa e interna.
+	 * {@link #VAO_MODULOS_CAMINHAO} entre os dois módulos — metade da margem
+	 * ({@link #MARGEM_INTERNA}) usada entre forma externa e interna de cada
+	 * módulo, que permanece inalterada.
 	 */
 	private void desenhaCaminhao(Graphics2D g2d, double zoom, int x, int y) {
 		int larguraCabine = larguraCabineCaminhao();
 		int larguraCarroceria = larguraCarroceriaCaminhao();
-		double centroX = x + (larguraCabine + MARGEM_INTERNA + larguraCarroceria) / 2.0;
+		double centroX = x + (larguraCabine + VAO_MODULOS_CAMINHAO + larguraCarroceria) / 2.0;
 		double centroY = y + altura / 2.0;
 		desenhaFormaAninhadaComPivo(g2d, zoom, x, y, larguraCabine, altura, false, centroX, centroY);
-		desenhaFormaAninhadaComPivo(g2d, zoom, x + larguraCabine + MARGEM_INTERNA, y, larguraCarroceria, altura, false,
-				centroX, centroY);
+		desenhaFormaAninhadaComPivo(g2d, zoom, x + larguraCabine + VAO_MODULOS_CAMINHAO, y, larguraCarroceria, altura,
+				false, centroX, centroY);
 	}
 
 	/**

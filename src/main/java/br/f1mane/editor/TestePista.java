@@ -1,13 +1,15 @@
 package br.f1mane.editor;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import br.nnpe.Logger;
 import br.f1mane.entidades.Circuito;
 import br.f1mane.entidades.No;
-import br.f1mane.entidades.PontoEscape;
+import br.f1mane.entidades.ObjetoEscapada;
+import br.f1mane.entidades.ObjetoPista;
 
 public class TestePista {
 	protected static final long SEEP_TIME = 100;
@@ -141,10 +143,11 @@ public class TestePista {
 	 * teste, ver {@link #iniciarTeste}, {@link #pararTeste} e
 	 * {@link #testarEscapada()}), o carro de teste fica sempre no traçado
 	 * central, ignorando qualquer zona de escapada. Só com
-	 * {@code modoEscapada} ligado é que ele passa a seguir o traçado de
-	 * escapada (nós de {@code Circuito.getEscapeMap()}) em vez da pista
-	 * normal quando o índice cai dentro de uma zona de escapada — igual
-	 * acontece com a pista normal e o box.
+	 * {@code modoEscapada} ligado é que ele passa a seguir o trajeto de um
+	 * {@link ObjetoEscapada} (entrada → trajeto livre → saída) em vez da
+	 * pista normal, quando o índice cai dentro do intervalo
+	 * [{@code indiceEntrada}, {@code indiceSaida}] ancorado no traçado em que
+	 * essa escapada foi definida — igual acontece com a pista normal e o box.
 	 */
 	protected void posicionaCarroConsiderandoEscapada(int cont, List pontosPista) {
 		List tracadoEscapada = modoEscapada ? obterTracadoEscapadaAtivo(cont) : null;
@@ -168,22 +171,112 @@ public class TestePista {
 	}
 
 	/**
-	 * Retorna o traçado de escapada (lista de nós do mesmo tamanho da
-	 * pista, com {@code null} fora da zona) que tem um nó não nulo no
-	 * índice informado, ou {@code null} se nenhuma zona de escapada cobre
-	 * esse índice.
+	 * Procura, entre os {@link ObjetoEscapada} do circuito, um cujo intervalo
+	 * [{@code indiceEntrada}, {@code indiceSaida}] cubra {@code index} — esse
+	 * intervalo é ancorado a nós reais do traçado em que a escapada foi
+	 * definida (gravado pelo editor na validação de entrada/saída, ver
+	 * {@code MainPanelEditor.noMaisProximoTracado1e2}/{@code noMaisProximoDoTracado}),
+	 * então só ativa quando o carro está passando pelo trecho da pista onde
+	 * essa escapada realmente existe. Se encontrar, retorna o traçado de
+	 * escapada (lista de nós do mesmo tamanho da pista, com {@code null} fora
+	 * da zona, interpolado ao longo do trajeto de pontos da escapada); senão,
+	 * {@code null}.
 	 */
-	private List obterTracadoEscapadaAtivo(int index) {
-		Map<PontoEscape, List<No>> escapeMap = circuito.getEscapeMap();
-		if (escapeMap == null) {
+	private List<No> obterTracadoEscapadaAtivo(int index) {
+		List<ObjetoPista> objetos = circuito.getObjetos();
+		if (objetos == null) {
 			return null;
 		}
-		for (List<No> tracado : escapeMap.values()) {
-			if (index >= 0 && index < tracado.size() && tracado.get(index) != null) {
-				return tracado;
+		List pontosPistaAtual = circuito.getPistaFull();
+		int tamanho = pontosPistaAtual != null ? pontosPistaAtual.size() : 0;
+		for (ObjetoPista objetoPista : objetos) {
+			if (!(objetoPista instanceof ObjetoEscapada)) {
+				continue;
 			}
+			ObjetoEscapada escapada = (ObjetoEscapada) objetoPista;
+			int indiceEntrada = escapada.getIndiceEntrada();
+			int indiceSaida = escapada.getIndiceSaida();
+			if (indiceEntrada < 0 || indiceSaida <= indiceEntrada) {
+				continue;
+			}
+			if (index < indiceEntrada || index > indiceSaida) {
+				continue;
+			}
+			return construirTracadoEscapada(escapada, tamanho);
 		}
 		return null;
+	}
+
+	/**
+	 * Constrói uma lista de nós do tamanho da pista, com {@code null} fora do
+	 * intervalo [{@code indiceEntrada}, {@code indiceSaida}] de
+	 * {@code escapada} e, dentro dele, um nó por índice interpolado (por
+	 * comprimento de arco) ao longo do trajeto de {@link ObjetoEscapada#getPontos()}
+	 * — o índice {@code indiceEntrada} cai exatamente no primeiro ponto
+	 * (entrada) e {@code indiceSaida} no último (saída).
+	 */
+	private List<No> construirTracadoEscapada(ObjetoEscapada escapada, int tamanho) {
+		List<No> resultado = new ArrayList<No>(Collections.<No>nCopies(tamanho, null));
+		List<Point> pontos = escapada.obterPontosAbsolutos();
+		int indiceEntrada = escapada.getIndiceEntrada();
+		int indiceSaida = escapada.getIndiceSaida();
+		if (pontos == null || pontos.size() < 2) {
+			return resultado;
+		}
+		int comprimento = indiceSaida - indiceEntrada;
+		for (int passo = 0; passo <= comprimento; passo++) {
+			int index = indiceEntrada + passo;
+			if (index < 0 || index >= tamanho) {
+				continue;
+			}
+			double t = (double) passo / (double) comprimento;
+			No no = new No();
+			no.setPoint(pontoNoTrajeto(pontos, t));
+			no.setTipo(No.RETA);
+			no.setIndex(index);
+			resultado.set(index, no);
+		}
+		return resultado;
+	}
+
+	/**
+	 * Ponto na posição {@code t} (0 = primeiro ponto, 1 = último) ao longo do
+	 * trajeto poligonal {@code pontos}, interpolado por comprimento de arco
+	 * (não por índice de ponto) — segmentos maiores "valem" proporcionalmente
+	 * mais do intervalo [0,1], então o carro percorre o trajeto em velocidade
+	 * visualmente uniforme, independente de quantos pontos livres o desenhista
+	 * colocou em cada trecho.
+	 */
+	private static Point pontoNoTrajeto(List<Point> pontos, double t) {
+		if (pontos.size() == 1) {
+			return pontos.get(0);
+		}
+		double[] comprimentos = new double[pontos.size() - 1];
+		double total = 0;
+		for (int i = 0; i < comprimentos.length; i++) {
+			comprimentos[i] = pontos.get(i).distance(pontos.get(i + 1));
+			total += comprimentos[i];
+		}
+		if (total == 0) {
+			return pontos.get(0);
+		}
+		double alvo = Math.max(0, Math.min(1, t)) * total;
+		double acumulado = 0;
+		for (int i = 0; i < comprimentos.length; i++) {
+			boolean ultimoSegmento = i == comprimentos.length - 1;
+			if (acumulado + comprimentos[i] >= alvo || ultimoSegmento) {
+				double restante = alvo - acumulado;
+				double fracaoSegmento = comprimentos[i] == 0 ? 0
+						: Math.max(0, Math.min(1, restante / comprimentos[i]));
+				Point a = pontos.get(i);
+				Point b = pontos.get(i + 1);
+				int x = (int) Math.round(a.x + (b.x - a.x) * fracaoSegmento);
+				int y = (int) Math.round(a.y + (b.y - a.y) * fracaoSegmento);
+				return new Point(x, y);
+			}
+			acumulado += comprimentos[i];
+		}
+		return pontos.get(pontos.size() - 1);
 	}
 
 	/**

@@ -136,27 +136,59 @@ public class ObjetoLivre extends ObjetoDesenho {
 			generalPath.transform(translacao);
 		}
 
-		double rad = Math.toRadians((double) getAngulo());
-		AffineTransform affineTransform = AffineTransform
-				.getScaleInstance(1, 1);
-		affineTransform.setToRotation(rad, generalPath.getBounds().getCenterX(),
-				generalPath.getBounds().getCenterY());
-		GeneralPath pathRotacionado = new GeneralPath(generalPath);
-		pathRotacionado.transform(affineTransform);
-		affineTransform.setToScale(zoom, zoom);
-		Shape formaFinal = pathRotacionado.createTransformedShape(affineTransform);
+		// Centro (em espaço de mundo, antes do zoom) usado como pivô de
+		// rotação do PADRÃO (ver desenhaComClipSemAntialiasing) — escalado
+		// por zoom, é o centro da própria forma em espaço de tela. A
+		// silhueta em si (formaZoomLocal) nunca é rotacionada: angulo afeta
+		// só o conteúdo do padrão desenhado dentro dela, não o contorno do
+		// objeto livre.
+		Rectangle boundsMundo = generalPath.getBounds();
+		double pivoX = boundsMundo.getCenterX() * zoom;
+		double pivoY = boundsMundo.getCenterY() * zoom;
+
+		// Forma em espaço de tela (zoom aplicado), sem rotação — é a
+		// silhueta desenhada (fill de fundo) E a base do clip do padrão; o
+		// padrão em si é que é rotacionado via transform do próprio
+		// Graphics2D em desenhaComClipSemAntialiasing.
+		Shape formaZoomLocal = AffineTransform.getScaleInstance(zoom, zoom).createTransformedShape(generalPath);
 
 		g2d.setColor(new Color(getCorPimaria().getRed(), getCorPimaria()
 				.getGreen(), getCorPimaria().getBlue(), getTransparencia()));
-		g2d.fill(formaFinal);
+		g2d.fill(formaZoomLocal);
 
 		if (tipo == TipoObjetoLivre.BRITA) {
-			desenhaBrita(g2d, formaFinal, zoom);
+			desenhaBrita(g2d, formaZoomLocal, pivoX, pivoY, zoom);
 		} else if (tipo == TipoObjetoLivre.VEGETACAO_DENSA || tipo == TipoObjetoLivre.VEGETACAO_SIMPLES) {
-			desenhaPadraoVegetacao(g2d, formaFinal, zoom);
+			desenhaPadraoVegetacao(g2d, formaZoomLocal, pivoX, pivoY, zoom);
+		} else if (tipo == TipoObjetoLivre.LISTRADO) {
+			desenhaPadraoListrado(g2d, formaZoomLocal, pivoX, pivoY, zoom);
+		} else if (tipo == TipoObjetoLivre.XADREZ) {
+			desenhaPadraoXadrez(g2d, formaZoomLocal, pivoX, pivoY, zoom);
 		} else if (tipo != TipoObjetoLivre.POLIGONO_SIMPLES) {
-			desenhaPadraoEmGrade(g2d, formaFinal, zoom);
+			desenhaPadraoEmGrade(g2d, formaZoomLocal, pivoX, pivoY, zoom);
 		}
+	}
+
+	/**
+	 * Retângulo (quadrado) usado como base dos laços de geração dos padrões:
+	 * maior que o bounding box de {@code formaLocal}, com metade do lado
+	 * igual ao raio do círculo circunscrito desse bounding box (a diagonal),
+	 * centrado no mesmo centro. Qualquer ponto do bounding box original
+	 * está a, no máximo, esse raio de distância do centro — então, mesmo
+	 * depois de o padrão ser rotacionado por {@link #getAngulo()} em torno
+	 * do mesmo centro (ver {@link #desenhaComClipSemAntialiasing}), a grade
+	 * gerada continua cobrindo toda a área da forma original (o clip, fixo,
+	 * é quem recorta o excesso), em vez de deixar cantos sem padrão quando
+	 * o bounding box (não quadrado) gira e "encolhe" a cobertura em alguma
+	 * direção.
+	 */
+	private static Rectangle areaCoberturaPadrao(Shape formaLocal) {
+		Rectangle bounds = formaLocal.getBounds();
+		double raio = Math.hypot(bounds.width, bounds.height) / 2.0;
+		int lado = (int) Math.ceil(raio * 2);
+		int cx = (int) Math.round(bounds.getCenterX());
+		int cy = (int) Math.round(bounds.getCenterY());
+		return new Rectangle(cx - lado / 2, cy - lado / 2, lado, lado);
 	}
 
 	/**
@@ -166,9 +198,9 @@ public class ObjetoLivre extends ObjetoDesenho {
 	 * regular (vegetação passou a usar dispersão embaralhada, ver
 	 * {@link #desenhaPadraoVegetacao}).
 	 */
-	private void desenhaPadraoEmGrade(Graphics2D g2d, Shape formaFinal, double zoom) {
-		desenhaComClipSemAntialiasing(g2d, formaFinal, () -> {
-			Rectangle bounds = formaFinal.getBounds();
+	private void desenhaPadraoEmGrade(Graphics2D g2d, Shape formaLocal, double pivoX, double pivoY, double zoom) {
+		desenhaComClipSemAntialiasing(g2d, formaLocal, pivoX, pivoY, () -> {
+			Rectangle bounds = areaCoberturaPadrao(formaLocal);
 			int passo = Math.max(4, (int) Math.round(PASSO_PADRAO_LOCAL * zoom));
 			g2d.setColor(new Color(getCorSecundaria().getRed(), getCorSecundaria().getGreen(),
 					getCorSecundaria().getBlue(), getTransparencia()));
@@ -191,9 +223,9 @@ public class ObjetoLivre extends ObjetoDesenho {
 	 * variação de tamanho bem mais ampla que a simples, que fica quase
 	 * uniforme. Semente fixa: determinístico entre renderizações sucessivas.
 	 */
-	private void desenhaPadraoVegetacao(Graphics2D g2d, Shape formaFinal, double zoom) {
-		desenhaComClipSemAntialiasing(g2d, formaFinal, () -> {
-			Rectangle bounds = formaFinal.getBounds();
+	private void desenhaPadraoVegetacao(Graphics2D g2d, Shape formaLocal, double pivoX, double pivoY, double zoom) {
+		desenhaComClipSemAntialiasing(g2d, formaLocal, pivoX, pivoY, () -> {
+			Rectangle bounds = areaCoberturaPadrao(formaLocal);
 			boolean densa = tipo == TipoObjetoLivre.VEGETACAO_DENSA;
 			double fatorPasso = densa ? FATOR_PASSO_VEGETACAO_DENSA : FATOR_PASSO_VEGETACAO_SIMPLES;
 			double variacaoTamanho = densa ? VARIACAO_TAMANHO_VEGETACAO_DENSA : VARIACAO_TAMANHO_VEGETACAO_SIMPLES;
@@ -244,9 +276,9 @@ public class ObjetoLivre extends ObjetoDesenho {
 	 * semente é fixa e a ordem de varredura é sempre a mesma, então o
 	 * resultado é determinístico entre renderizações sucessivas.
 	 */
-	private void desenhaBrita(Graphics2D g2d, Shape formaFinal, double zoom) {
-		desenhaComClipSemAntialiasing(g2d, formaFinal, () -> {
-			Rectangle bounds = formaFinal.getBounds();
+	private void desenhaBrita(Graphics2D g2d, Shape formaLocal, double pivoX, double pivoY, double zoom) {
+		desenhaComClipSemAntialiasing(g2d, formaLocal, pivoX, pivoY, () -> {
+			Rectangle bounds = areaCoberturaPadrao(formaLocal);
 			int passoBase = Math.max(4, (int) Math.round(PASSO_PADRAO_LOCAL * zoom));
 			int celula = Math.max(2, passoBase / 4);
 			int diametro = Math.max(1, celula / 4);
@@ -264,12 +296,70 @@ public class ObjetoLivre extends ObjetoDesenho {
 	}
 
 	/**
-	 * Aplica o clip da forma e roda {@code desenho}, restaurando o clip
-	 * original ao final. Desliga a antialiasing só durante esse trecho
-	 * (restaurando o valor anterior depois): um {@code fill()} anterior na
-	 * mesma forma (o preenchimento de fundo, chamado por {@link #desenha})
-	 * seguido de {@code clip()}/desenho na MESMA forma com antialiasing
-	 * ligado faz o Java2D simplesmente não pintar mais nada dentro do clip —
+	 * Listrado: listras retas paralelas ao eixo X local, largura igual à
+	 * metade do passo de grade, alternando corSecundaria/vazio. Como o
+	 * desenho roda dentro do sistema de coordenadas já rotacionado por
+	 * {@link #desenhaComClipSemAntialiasing}, as listras acompanham o
+	 * ângulo do objeto automaticamente, sem cálculo de rotação aqui.
+	 */
+	private void desenhaPadraoListrado(Graphics2D g2d, Shape formaLocal, double pivoX, double pivoY, double zoom) {
+		desenhaComClipSemAntialiasing(g2d, formaLocal, pivoX, pivoY, () -> {
+			Rectangle bounds = areaCoberturaPadrao(formaLocal);
+			int passo = Math.max(4, (int) Math.round(PASSO_PADRAO_LOCAL * zoom));
+			int larguraListra = Math.max(1, passo / 2);
+			g2d.setColor(new Color(getCorSecundaria().getRed(), getCorSecundaria().getGreen(),
+					getCorSecundaria().getBlue(), getTransparencia()));
+			for (int y = bounds.y - passo; y < bounds.y + bounds.height + passo; y += passo) {
+				g2d.fillRect(bounds.x - passo, y, bounds.width + passo * 2, larguraListra);
+			}
+		});
+	}
+
+	/**
+	 * Xadrez: grade de células quadradas do mesmo passo dos demais padrões,
+	 * preenchendo com corSecundaria quando {@code (coluna + linha)} é par —
+	 * mesmo mecanismo de rotação via transform do {@link #desenhaPadraoListrado}.
+	 */
+	private void desenhaPadraoXadrez(Graphics2D g2d, Shape formaLocal, double pivoX, double pivoY, double zoom) {
+		desenhaComClipSemAntialiasing(g2d, formaLocal, pivoX, pivoY, () -> {
+			Rectangle bounds = areaCoberturaPadrao(formaLocal);
+			int passo = Math.max(4, (int) Math.round(PASSO_PADRAO_LOCAL * zoom));
+			int coluna = 0;
+			g2d.setColor(new Color(getCorSecundaria().getRed(), getCorSecundaria().getGreen(),
+					getCorSecundaria().getBlue(), getTransparencia()));
+			for (int x = bounds.x - passo; x < bounds.x + bounds.width + passo; x += passo) {
+				int linha = 0;
+				for (int y = bounds.y - passo; y < bounds.y + bounds.height + passo; y += passo) {
+					if ((coluna + linha) % 2 == 0) {
+						g2d.fillRect(x, y, passo, passo);
+					}
+					linha++;
+				}
+				coluna++;
+			}
+		});
+	}
+
+	/**
+	 * Aplica o clip da forma (em espaço LOCAL, não rotacionado — a mesma
+	 * silhueta fixa desenhada pelo fill de fundo) e roda {@code desenho},
+	 * restaurando clip/traço/antialiasing/transform originais ao final. O
+	 * clip é aplicado ANTES de rotacionar o sistema de coordenadas do
+	 * {@code Graphics2D}: como o clip fica fixo em espaço de dispositivo uma
+	 * vez definido (não acompanha mudanças de transform depois), isso trava
+	 * o padrão dentro do contorno real e fixo do objeto. Só DEPOIS o
+	 * {@code Graphics2D} é rotacionado em torno de {@code (pivoX, pivoY)}
+	 * pelo {@code angulo} do objeto — então toda primitiva desenhada dentro
+	 * de {@code desenho} (usando {@code forma}/seus bounds diretamente, sem
+	 * cálculo de rotação) sai rotacionada na tela, mas sempre recortada pela
+	 * silhueta fixa. Resultado: o ângulo gira o CONTEÚDO do padrão (grade,
+	 * dispersão, listras, xadrez), não o contorno do objeto livre em si.
+	 * <p>
+	 * Desliga a antialiasing só durante esse trecho (restaurando o valor
+	 * anterior depois): um {@code fill()} anterior na mesma forma (o
+	 * preenchimento de fundo, chamado por {@link #desenha}) seguido de
+	 * {@code clip()}/desenho na MESMA forma com antialiasing ligado faz o
+	 * Java2D simplesmente não pintar mais nada dentro do clip —
 	 * peculiaridade que só aparece com formas grandes e com segmentos
 	 * autointerceptantes (comuns depois de várias edições de vértice no
 	 * editor), mas a antialiasing do preenchimento em si já rodou antes
@@ -284,16 +374,21 @@ public class ObjetoLivre extends ObjetoDesenho {
 	 * de desenho posicionado depois desse outro desenho na mesma imagem,
 	 * dando a falsa impressão de que nivelDesenho influenciava o padrão.
 	 */
-	private void desenhaComClipSemAntialiasing(Graphics2D g2d, Shape forma, Runnable desenho) {
+	private void desenhaComClipSemAntialiasing(Graphics2D g2d, Shape forma, double pivoX, double pivoY,
+			Runnable desenho) {
+		AffineTransform transformAnterior = g2d.getTransform();
 		Shape clipAnterior = g2d.getClip();
 		Stroke strokeAnterior = g2d.getStroke();
 		Object antialiasingAnterior = g2d.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 		g2d.clip(forma);
+		double rad = Math.toRadians((double) getAngulo());
+		g2d.rotate(rad, pivoX, pivoY);
 		g2d.setStroke(new BasicStroke(1f));
 		try {
 			desenho.run();
 		} finally {
+			g2d.setTransform(transformAnterior);
 			g2d.setClip(clipAnterior);
 			g2d.setStroke(strokeAnterior);
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -304,6 +399,23 @@ public class ObjetoLivre extends ObjetoDesenho {
 	@Override
 	public Rectangle obterArea() {
 		return generalPath.getBounds();
+	}
+
+	/**
+	 * Diferente do padrão da classe base, {@code ObjetoLivre} não rotaciona
+	 * a silhueta pelo {@code angulo} (ver {@link #desenha} — só o padrão
+	 * interno gira), então a área de clique também não deve rotacionar, sob
+	 * pena de não coincidir com a forma realmente desenhada na tela.
+	 */
+	@Override
+	public Rectangle obterAreaClique() {
+		Rectangle base = obterArea();
+		if (base == null) {
+			return null;
+		}
+		Rectangle expandido = new Rectangle(base);
+		expandido.grow(TOLERANCIA_CLIQUE_PX, TOLERANCIA_CLIQUE_PX);
+		return expandido;
 	}
 
 	/** Forma vetorial atual (após {@link #gerar()}), pública para inspeção/edição no editor. */

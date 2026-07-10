@@ -50,7 +50,7 @@ class CircuitoMetadadosArquivoTest {
         circuito.setCorZebra2(Color.RED);
         circuito.setMultiplicadorLarguraPista(1.4);
         circuito.setCiclo(200);
-        circuito.setDistanciaKm(5.278);
+        circuito.setDistanciaKm(5);
 
         // Loop grande o suficiente (e box deslocado para o meio de um dos
         // lados, não perto do nó inicial) para vetorizarPista()/

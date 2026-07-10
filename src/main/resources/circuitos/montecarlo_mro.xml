@@ -8148,41 +8148,6 @@
      </object>
     </void>
     <void method="add">
-     <object class="br.f1mane.entidades.ObjetoEscapada">
-      <void property="corPimaria">
-       <object class="javax.swing.plaf.ColorUIResource" id="ColorUIResource4">
-        <int>238</int>
-        <int>238</int>
-        <int>238</int>
-       </object>
-      </void>
-      <void property="corSecundaria">
-       <object idref="ColorUIResource4"/>
-      </void>
-      <void property="nome">
-       <string>Objeto 36</string>
-      </void>
-      <void property="posicaoQuina">
-       <object class="java.awt.Point" id="Point305">
-        <void class="java.awt.Point" method="getField">
-         <string>x</string>
-         <void method="set">
-          <object idref="Point305"/>
-          <int>3024</int>
-         </void>
-        </void>
-        <void class="java.awt.Point" method="getField">
-         <string>y</string>
-         <void method="set">
-          <object idref="Point305"/>
-          <int>1026</int>
-         </void>
-        </void>
-       </object>
-      </void>
-     </object>
-    </void>
-    <void method="add">
      <object class="br.f1mane.entidades.ObjetoTransparencia" id="ObjetoTransparencia35">
       <void property="altura">
        <int>219</int>

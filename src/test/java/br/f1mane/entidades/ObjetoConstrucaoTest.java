@@ -39,8 +39,8 @@ class ObjetoConstrucaoTest {
         }
     }
 
-    /** Vão entre os dois módulos do CAMINHAO — mesmo valor de ObjetoConstrucao.MARGEM_INTERNA (privado). */
-    private static final int GAP_CAMINHAO = 10;
+    /** Vão entre os dois módulos do CAMINHAO — mesmo valor de ObjetoConstrucao.VAO_MODULOS_CAMINHAO (privado, metade de MARGEM_INTERNA). */
+    private static final int GAP_CAMINHAO = 5;
 
     /**
      * Largura de uma única forma para o tipo dado: igual a {@code largura}
@@ -255,7 +255,7 @@ class ObjetoConstrucaoTest {
      * (externa em corPimaria, interna com margem em corSecundaria) que
      * QUADRADO/REDONDO — não um retângulo liso — então a cor secundária
      * deve aparecer no centro de cada um dos dois módulos, com um vão de
-     * 10px (a mesma distância da margem interna/externa) entre eles.
+     * 5px (metade da margem interna/externa) entre eles.
      */
     @Test
     void caminhao_cadaModuloTemDesenhoInternoComCorSecundaria() {
@@ -279,7 +279,7 @@ class ObjetoConstrucaoTest {
         int larguraCarroceria = 60; // 90-30
         // Centro da cabine (módulo 1, 30x60 em x=20..50).
         int corNoCentroCabine = imagem.getRGB(20 + larguraCabine / 2, 20 + 30);
-        // Centro da carroceria (módulo 2, 60x60, logo após o vão de 10px: x=60..120).
+        // Centro da carroceria (módulo 2, 60x60, logo após o vão: x=55..115).
         int corNoCentroCarroceria = imagem.getRGB(20 + larguraCabine + GAP_CAMINHAO + larguraCarroceria / 2, 20 + 30);
         // No vão entre os dois módulos: não deveria ter nada desenhado (transparente).
         int corNoVao = imagem.getRGB(20 + larguraCabine + GAP_CAMINHAO / 2, 20 + 30);

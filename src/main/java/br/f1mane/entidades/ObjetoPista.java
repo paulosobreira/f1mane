@@ -8,7 +8,7 @@ public abstract class ObjetoPista implements Serializable {
 
 	private static final long serialVersionUID = 4416705642227491612L;
 	/** Margem de tolerância (px de tela) somada à área de clique, para facilitar acertar objetos finos. */
-	private static final int TOLERANCIA_CLIQUE_PX = 6;
+	protected static final int TOLERANCIA_CLIQUE_PX = 6;
 	boolean pintaEmcima;
 	/**
 	 * Nível de desenho em relação à pista (que está no nível 0): valores
