@@ -984,6 +984,9 @@
     <int>255</int>
    </object>
   </void>
+  <void property="distanciaKm">
+   <int>4309</int>
+  </void>
   <void property="ladoBox">
    <int>1</int>
   </void>

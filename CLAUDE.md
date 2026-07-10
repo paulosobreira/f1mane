@@ -96,3 +96,9 @@ Inclui três serviços: `flmane` (porta 80→8080), `db` (MySQL 8.4) e `phpmyadm
 `Global.DEBUG = true` ativa overlays visuais na `PainelCircuito`. Ao ativar, verificar sempre se `pilotoSelecionado != null` antes de acessar nós — o rendering roda em thread separada e o piloto pode ser null durante inicialização.
 
 Logs em `logs/flmane.YYYY-MM-DD.N.log` (rotação diária via Logback).
+
+## Testes e Swing
+
+Testes NUNCA devem disparar componentes Swing reais (`JOptionPane`, `JDialog`, `JFrame.setVisible(true)`, etc.). Vários testes de `MainPanelEditor` disparam `MouseEvent` reais para exercitar o `MouseAdapter` do editor (ex.: `MainPanelEditorEscapadaCliqueTest`), e caminhos de validação inválidos (ex.: ponto de escapada fora do traçado) chamam `alertaPontoEscapadaInvalido()`, que abre um `JOptionPane.showMessageDialog` de verdade — isso trava a suíte esperando interação do usuário.
+
+Para cobrir esses caminhos sem abrir diálogo: use/estenda `MainPanelEditorTestDouble` (em `src/test/java/br/f1mane/editor/`), que sobrescreve `alertaPontoEscapadaInvalido()` para só registrar a chamada. Ao adicionar um novo método de alerta/diálogo em `MainPanelEditor`, torne-o `protected` (não `private`) e adicione o override correspondente no double, em vez de deixar o teste chamar o `JOptionPane` real.

@@ -37,17 +37,17 @@ class CircuitoInfoEditorTest {
     void distanciaKm_padraoEhZero() {
         Circuito circuito = new Circuito();
 
-        assertEquals(0.0, circuito.getDistanciaKm());
+        assertEquals(0, circuito.getDistanciaKm());
     }
 
     @Test
     void setDistanciaKm_gravaValorInformado_semSerAlteradaPorVetorizarPista() {
         Circuito circuito = circuitoDeTeste();
 
-        circuito.setDistanciaKm(5.278);
+        circuito.setDistanciaKm(5);
         circuito.vetorizarPista();
 
-        assertEquals(5.278, circuito.getDistanciaKm(),
+        assertEquals(5, circuito.getDistanciaKm(),
                 "distanciaKm é informada, não deveria mudar ao revetorizar o traçado");
     }
 

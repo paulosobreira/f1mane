@@ -110,11 +110,13 @@ public class FormularioObjetos {
 	 * Reconstrói o painel só com os campos relevantes para o tipo de
 	 * {@code objetoPista}: ObjetoTransparencia usa apenas as propriedades de
 	 * transparência (mais tamanho/ângulo); ObjetoLivre usa tamanho/ângulo, as
-	 * duas cores, o seletor de padrão e o nível; ObjetoEscapada usa
-	 * tamanho/ângulo e as duas cores, sem nível (objeto de função, fora do
-	 * sistema de níveis, como Transparência); os demais tipos (objetos de
-	 * desenho, como Arquibancada/Construcao/GuardRails/Pneus) usam
-	 * tamanho/ângulo, as duas cores e o nível.
+	 * duas cores, o seletor de padrão e o nível; ObjetoEscapada é definida
+	 * por dois pontos (saída/retorno, ver {@link br.f1mane.entidades.ObjetoEscapada})
+	 * em vez de um retângulo, então usa só Largura (espessura do traçado
+	 * desenhado) e as duas cores, sem altura/ângulo/nível — mesmo espírito de
+	 * GuardRails; os demais tipos (objetos de desenho, como
+	 * Arquibancada/Construcao/GuardRails/Pneus) usam tamanho/ângulo, as duas
+	 * cores e o nível.
 	 */
 	private void montarPainelParaTipo(ObjetoPista objetoPista) {
 		panel.removeAll();
@@ -181,13 +183,9 @@ public class FormularioObjetos {
 			panel.add(new JLabel(Lang.msg("nivelDesenhoLabel")));
 			panel.add(nivelDesenho);
 		} else if (objetoPista instanceof ObjetoEscapada) {
-			panel.setLayout(new GridLayout(5, 2));
-			panel.add(new JLabel(Lang.msg("angulo")));
-			panel.add(angulo);
+			panel.setLayout(new GridLayout(3, 2));
 			panel.add(new JLabel(Lang.msg("largura")));
 			panel.add(largura);
-			panel.add(new JLabel(Lang.msg("altura")));
-			panel.add(altura);
 			panel.add(labelLegendaCor1);
 			panel.add(labelCor1);
 			panel.add(labelLegendaCor2);

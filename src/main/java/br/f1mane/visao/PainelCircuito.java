@@ -1769,13 +1769,18 @@ public class PainelCircuito {
                 ObjetoPista objetoPista = (ObjetoPista) iterator.next();
                 if (objetoPista instanceof ObjetoEscapada) {
                     ObjetoEscapada objetoEscapada = (ObjetoEscapada) objetoPista;
-                    ObjetoEscapada objetoEscapadaDesenha = new ObjetoEscapada();
-                    Point delocado = new Point(objetoEscapada.getPosicaoQuina().x - descontoCentraliza.x,
-                            objetoEscapada.getPosicaoQuina().y - descontoCentraliza.y);
-                    objetoEscapadaDesenha.setPosicaoQuina(delocado);
-                    objetoEscapadaDesenha.setLargura(objetoEscapada.getLargura());
-                    objetoEscapadaDesenha.setAltura(objetoEscapada.getAltura());
-                    objetoEscapadaDesenha.desenha(g2d, zoom);
+                    List<Point> pontosAbsolutos = objetoEscapada.obterPontosAbsolutos();
+                    if (pontosAbsolutos != null) {
+                        ObjetoEscapada objetoEscapadaDesenha = new ObjetoEscapada();
+                        List<Point> pontosDeslocados = new ArrayList<Point>();
+                        for (Point p : pontosAbsolutos) {
+                            pontosDeslocados.add(new Point(p.x - descontoCentraliza.x, p.y - descontoCentraliza.y));
+                        }
+                        objetoEscapadaDesenha.setPontos(pontosDeslocados);
+                        objetoEscapadaDesenha.setLargura(objetoEscapada.getLargura());
+                        objetoEscapadaDesenha.gerar();
+                        objetoEscapadaDesenha.desenha(g2d, zoom);
+                    }
                 }
             }
         }

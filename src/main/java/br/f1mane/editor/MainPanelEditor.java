@@ -194,6 +194,8 @@ public class MainPanelEditor extends JPanel {
     private static final int RAIO_MARCADOR_EDICAO_PONTOS_PX = 8;
     /** Raio de tolerância (px de tela) para o snap de pontos de guard rails a nós/outros objetos. */
     private static final int RAIO_SNAP_GUARD_RAILS_PX = 10;
+    /** Tolerância (px de tela) para validar o ponto de entrada/saída de um ObjetoEscapada contra um nó de traçado 1/2. */
+    private static final int TOLERANCIA_ESCAPADA_PX = 2;
     private ObjetoLivre editandoPontosDe;
     private PontoCurva verticeArrastando;
     private boolean arrastandoHasteDoVertice;
@@ -201,6 +203,12 @@ public class MainPanelEditor extends JPanel {
     private ObjetoGuardRails editandoPontosGuardRailsDe;
     private int indicePontoGuardRailsArrastando = -1;
     private boolean arrastouPontoGuardRails;
+    private ObjetoEscapada editandoPontosEscapadaDe;
+    /** Índice do ponto de {@link ObjetoEscapada#getPontos()} sendo arrastado, -1 = nenhum. */
+    private int indicePontoEscapadaArrastando = -1;
+    private boolean arrastouPontoEscapada;
+    /** Posição (espaço local) do ponto antes do arraste atual, para reverter se o solto não validar (só se aplica ao primeiro/último ponto). */
+    private Point pontoEscapadaAnteriorAoArraste;
     /**
      * Pacote-privado (em vez de private) para permitir injeção direta em
      * testes. formularioListaObjetosDesenho espelha circuito.objetosCenario
@@ -488,9 +496,11 @@ public class MainPanelEditor extends JPanel {
             if (objetoPista instanceof ObjetoTransparencia) {
                 objetoPista.setTransparencia(125);
                 desenhandoObjetoLivre = true;
-            } else if (objetoPista instanceof ObjetoLivre || objetoPista instanceof ObjetoGuardRails) {
-                // GuardRails também é desenhado ponto a ponto (encadeamento de
-                // segmentos), como ObjetoLivre — reaproveita o mesmo modo.
+            } else if (objetoPista instanceof ObjetoLivre || objetoPista instanceof ObjetoGuardRails
+                    || objetoPista instanceof ObjetoEscapada) {
+                // GuardRails e Escapada também são desenhados ponto a ponto
+                // (encadeamento de segmentos / par saída-retorno), como
+                // ObjetoLivre — reaproveitam o mesmo modo.
                 desenhandoObjetoLivre = true;
             }
         } catch (Exception e2) {
@@ -1389,6 +1399,10 @@ public class MainPanelEditor extends JPanel {
                         && !desenhandoObjetoLivre && tentarIniciarArrastePontoGuardRails(e)) {
                     return;
                 }
+                if (editandoPontosEscapadaDe != null && isSemSelecao() && !posicionaObjetoPista
+                        && !desenhandoObjetoLivre && tentarIniciarArrastePontoEscapada(e)) {
+                    return;
+                }
                 if (!isSemSelecao() || !SwingUtilities.isLeftMouseButton(e)
                         || posicionaObjetoPista || desenhandoObjetoLivre) {
                     return;
@@ -1435,6 +1449,23 @@ public class MainPanelEditor extends JPanel {
                     repaint();
                     return;
                 }
+                if (indicePontoEscapadaArrastando >= 0) {
+                    arrastouPontoEscapada = true;
+                    Point offset = calculaOffsetTelaEscapada(editandoPontosEscapadaDe);
+                    Point localAlvo = localDaTela(e.getPoint(), offset);
+                    editandoPontosEscapadaDe.getPontos().set(indicePontoEscapadaArrastando, localAlvo);
+                    editandoPontosEscapadaDe.gerar();
+                    // Resincroniza posicaoQuina com os bounds atuais de
+                    // pontos (offset volta a ficar em 0,0) — sem isso, a
+                    // PRÓXIMA chamada a calculaOffsetTelaEscapada (no
+                    // próximo mouseDragged, ou no mouseReleased) calcularia
+                    // um deslocamento errado a partir daqui, corrompendo a
+                    // posição gravada mesmo quando o índice de nó continua
+                    // correto (ver finalizarArrastePontoEscapada).
+                    editandoPontosEscapadaDe.setPosicaoQuina(editandoPontosEscapadaDe.obterArea().getLocation());
+                    repaint();
+                    return;
+                }
                 if (objetoArrastando == null) {
                     return;
                 }
@@ -1455,6 +1486,11 @@ public class MainPanelEditor extends JPanel {
                     indicePontoGuardRailsArrastando = -1;
                     repaint();
                 }
+                if (indicePontoEscapadaArrastando >= 0) {
+                    finalizarArrastePontoEscapada(e.getPoint());
+                    indicePontoEscapadaArrastando = -1;
+                    repaint();
+                }
                 objetoArrastando = null;
             }
 
@@ -1465,6 +1501,10 @@ public class MainPanelEditor extends JPanel {
                 }
                 if (arrastouPontoGuardRails) {
                     arrastouPontoGuardRails = false;
+                    return;
+                }
+                if (arrastouPontoEscapada) {
+                    arrastouPontoEscapada = false;
                     return;
                 }
                 if (arrastouObjeto) {
@@ -1575,6 +1615,52 @@ public class MainPanelEditor extends JPanel {
                     }
                     repaint();
                     return;
+                } else if (desenhandoObjetoLivre && (objetoPista instanceof ObjetoEscapada)) {
+                    ObjetoEscapada escapada = (ObjetoEscapada) objetoPista;
+                    if (e.getButton() == MouseEvent.BUTTON1) {
+                        if (escapada.getPontos().isEmpty()) {
+                            // Primeiro clique = nó de entrada: precisa validar
+                            // contra o traçado 1 ou 2 (nunca o 0/central).
+                            No noEntrada = noMaisProximoTracado1e2(ultimoClicado);
+                            if (noEntrada == null) {
+                                alertaPontoEscapadaInvalido();
+                            } else {
+                                escapada.getPontos().add(noEntrada.getPoint());
+                                escapada.setTracadoOrigem(noEntrada.getTracado());
+                                escapada.setIndiceEntrada(noEntrada.getIndex());
+                            }
+                        } else {
+                            // Pontos seguintes = trajeto da zona de escapada:
+                            // livres, sem validação nenhuma.
+                            escapada.getPontos().add(ultimoClicado);
+                        }
+                    } else if (escapada.getPontos().isEmpty()) {
+                        // Botão direito sem nenhum ponto de entrada ainda: não
+                        // há o que finalizar.
+                        alertaPontoEscapadaInvalido();
+                    } else {
+                        // Clique direito = nó de saída: precisa validar contra
+                        // o MESMO traçado da entrada, e finaliza o objeto.
+                        No noSaida = noMaisProximoDoTracado(ultimoClicado, escapada.getTracadoOrigem());
+                        if (noSaida == null) {
+                            alertaPontoEscapadaInvalido();
+                        } else {
+                            escapada.getPontos().add(noSaida.getPoint());
+                            escapada.setIndiceSaida(noSaida.getIndex());
+                            desenhandoObjetoLivre = false;
+                            posicionaObjetoPista = false;
+                            if (circuito.getObjetos() == null)
+                                circuito.setObjetos(new ArrayList<ObjetoPista>());
+                            circuito.getObjetos().add(escapada);
+                            formularioListaObjetosFuncao.listarObjetos();
+                            escapada.setNome("Objeto " + circuito.getObjetos().size());
+                            escapada.gerar();
+                            escapada.setPosicaoQuina(escapada.obterArea().getLocation());
+                            objetoPista = null;
+                        }
+                    }
+                    repaint();
+                    return;
                 } else if (posicionaObjetoPista && objetoPista != null) {
                     List<ObjetoPista> listaAlvo;
                     FormularioListaObjetos formularioListaAlvo;
@@ -1642,9 +1728,14 @@ public class MainPanelEditor extends JPanel {
         // ficam sem efeito.
         boolean ehObjetoLivre = alvo instanceof ObjetoLivre;
         boolean ehGuardRails = alvo instanceof ObjetoGuardRails;
+        // Escapada também é definida por pontos (saída/retorno), não por um
+        // retângulo largura×altura rotacionado — mesmo motivo de GuardRails
+        // esconder Altura/Ângulo, mas Largura continua valendo como
+        // espessura do traçado desenhado.
+        boolean ehObjetoEscapada = alvo instanceof ObjetoEscapada;
         boolean mostraLargura = !ehObjetoLivre;
-        boolean mostraAltura = !ehObjetoLivre && !ehGuardRails;
-        boolean mostraAngulo = !ehObjetoLivre && !ehGuardRails;
+        boolean mostraAltura = !ehObjetoLivre && !ehGuardRails && !ehObjetoEscapada;
+        boolean mostraAngulo = !ehObjetoLivre && !ehGuardRails && !ehObjetoEscapada;
         // Empilhamento (quantidade/direção/grau) é transversal a qualquer
         // tipo de ObjetoConstrucao; afunilamento só faz sentido para BARCO.
         boolean ehObjetoConstrucao = alvo instanceof ObjetoConstrucao;
@@ -1722,6 +1813,22 @@ public class MainPanelEditor extends JPanel {
                         encerrarEdicaoPontosGuardRails();
                     } else {
                         iniciarEdicaoPontosGuardRails(guardRails);
+                    }
+                }
+            });
+            panel.add(editarPontosButton);
+            panel.add(new JLabel());
+        }
+        if (alvo instanceof ObjetoEscapada) {
+            final ObjetoEscapada escapada = (ObjetoEscapada) alvo;
+            boolean editandoEsteObjeto = escapada.equals(editandoPontosEscapadaDe);
+            JButton editarPontosButton = new JButton(editandoEsteObjeto ? Lang.msg("pararDeEditarPontos") : Lang.msg("editarPontos"));
+            editarPontosButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    if (escapada.equals(editandoPontosEscapadaDe)) {
+                        encerrarEdicaoPontosEscapada();
+                    } else {
+                        iniciarEdicaoPontosEscapada(escapada);
                     }
                 }
             });
@@ -2025,6 +2132,129 @@ public class MainPanelEditor extends JPanel {
     }
 
     /**
+     * Liga o modo de edição de pontos (mover qualquer ponto do encadeamento)
+     * para um ObjetoEscapada já posicionado no circuito — análogo a
+     * {@link #iniciarEdicaoPontosGuardRails(ObjetoGuardRails)}. O primeiro e
+     * o último ponto (entrada/saída) continuam validados contra o traçado ao
+     * serem soltos; os do meio (trajeto livre) não têm validação nenhuma.
+     */
+    public void iniciarEdicaoPontosEscapada(ObjetoEscapada escapada) {
+        escapada.gerar();
+        editandoPontosEscapadaDe = escapada;
+        objetoPista = escapada;
+        repaint();
+    }
+
+    public void encerrarEdicaoPontosEscapada() {
+        editandoPontosEscapadaDe = null;
+        indicePontoEscapadaArrastando = -1;
+        repaint();
+    }
+
+    /**
+     * Deslocamento entre o espaço local de {@link ObjetoEscapada#getPontos()}
+     * e a tela — mesma ideia de {@link #calculaOffsetTelaGuardRails(ObjetoGuardRails)}.
+     */
+    private Point calculaOffsetTelaEscapada(ObjetoEscapada escapada) {
+        if (escapada == null || escapada.getPosicaoQuina() == null) {
+            return new Point(0, 0);
+        }
+        escapada.gerar();
+        Rectangle boundsLocal = escapada.obterArea();
+        return new Point(escapada.getPosicaoQuina().x - boundsLocal.x,
+                escapada.getPosicaoQuina().y - boundsLocal.y);
+    }
+
+    /**
+     * Testa se o clique atingiu algum ponto de {@link #editandoPontosEscapadaDe}
+     * e, se sim, inicia o arraste correspondente, guardando a posição atual
+     * em {@link #pontoEscapadaAnteriorAoArraste} para permitir reverter se o
+     * ponto solto for o primeiro/último e não validar (ver
+     * {@link #finalizarArrastePontoEscapada(Point)}).
+     */
+    private boolean tentarIniciarArrastePontoEscapada(MouseEvent e) {
+        if (editandoPontosEscapadaDe == null || !SwingUtilities.isLeftMouseButton(e)) {
+            return false;
+        }
+        Point offset = calculaOffsetTelaEscapada(editandoPontosEscapadaDe);
+        List<Point> pontos = editandoPontosEscapadaDe.getPontos();
+        for (int i = 0; i < pontos.size(); i++) {
+            Point posTela = telaDoLocal(pontos.get(i), offset);
+            if (distancia(e.getPoint(), posTela) <= RAIO_MARCADOR_EDICAO_PONTOS_PX) {
+                indicePontoEscapadaArrastando = i;
+                pontoEscapadaAnteriorAoArraste = pontos.get(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Se o ponto arrastado ({@link #indicePontoEscapadaArrastando}) for o
+     * PRIMEIRO (entrada) ou o ÚLTIMO (saída) do encadeamento, valida
+     * {@code pontoTela} contra o traçado correspondente (1 ou 2 para a
+     * entrada; o mesmo {@code tracadoOrigem} da entrada para a saída) — se
+     * válido, ancora nesse nó (atualizando {@code tracadoOrigem} quando é a
+     * entrada que está sendo movida); se inválido, mostra o alerta e reverte
+     * para {@link #pontoEscapadaAnteriorAoArraste}. Pontos intermediários
+     * (trajeto livre) não passam por nenhuma validação — a posição já foi
+     * atualizada ao vivo durante o arraste em {@code mouseDragged}.
+     */
+    private void finalizarArrastePontoEscapada(Point pontoTela) {
+        List<Point> pontos = editandoPontosEscapadaDe.getPontos();
+        int indice = indicePontoEscapadaArrastando;
+        boolean primeiro = indice == 0;
+        boolean ultimo = indice == pontos.size() - 1;
+        if (!primeiro && !ultimo) {
+            editandoPontosEscapadaDe.gerar();
+            editandoPontosEscapadaDe.setPosicaoQuina(editandoPontosEscapadaDe.obterArea().getLocation());
+            return;
+        }
+        No noValido = primeiro ? noMaisProximoTracado1e2(pontoTela)
+                : noMaisProximoDoTracado(pontoTela, editandoPontosEscapadaDe.getTracadoOrigem());
+        Point offset = calculaOffsetTelaEscapada(editandoPontosEscapadaDe);
+        if (noValido == null) {
+            alertaPontoEscapadaInvalido();
+            pontos.set(indice, pontoEscapadaAnteriorAoArraste);
+        } else {
+            Point localValido = localDaTela(noValido.getPoint(), offset);
+            pontos.set(indice, localValido);
+            if (primeiro) {
+                editandoPontosEscapadaDe.setTracadoOrigem(noValido.getTracado());
+                editandoPontosEscapadaDe.setIndiceEntrada(noValido.getIndex());
+            } else {
+                editandoPontosEscapadaDe.setIndiceSaida(noValido.getIndex());
+            }
+        }
+        editandoPontosEscapadaDe.gerar();
+        // Resincroniza posicaoQuina com os bounds atuais de pontos (offset
+        // volta a 0,0) — ver comentário equivalente em mouseDragged; sem
+        // isso, editar um segundo ponto na mesma sessão de edição usaria um
+        // deslocamento calculado a partir de um posicaoQuina defasado,
+        // gravando a posição errada mesmo com o índice de nó correto — daí a
+        // escapada "não ser reconhecida" pelo Teste Pista até recarregar o
+        // circuito (que sempre revetoriza e recria os objetos do zero).
+        editandoPontosEscapadaDe.setPosicaoQuina(editandoPontosEscapadaDe.obterArea().getLocation());
+    }
+
+    private void desenhaMarcadoresEdicaoPontosEscapada(Graphics2D g2d) {
+        if (editandoPontosEscapadaDe == null) {
+            return;
+        }
+        Point offset = calculaOffsetTelaEscapada(editandoPontosEscapadaDe);
+        for (Point ponto : editandoPontosEscapadaDe.getPontos()) {
+            desenhaMarcadorAmareloPreto(g2d, telaDoLocal(ponto, offset));
+        }
+    }
+
+    private void desenhaMarcadorAmareloPreto(Graphics2D g2d, Point posTela) {
+        g2d.setColor(Color.YELLOW);
+        g2d.fillOval(posTela.x - 5, posTela.y - 5, 10, 10);
+        g2d.setColor(Color.BLACK);
+        g2d.drawOval(posTela.x - 5, posTela.y - 5, 10, 10);
+    }
+
+    /**
      * Aproxima {@code candidatoTela} (em espaço de tela) do nó de pista ou
      * ponto de outro objeto de cenário mais próximo, se algum estiver dentro
      * de {@link #RAIO_SNAP_GUARD_RAILS_PX}; caso contrário retorna o próprio
@@ -2095,6 +2325,63 @@ public class MainPanelEditor extends JPanel {
             resultado.add(objeto.getPosicaoQuina());
         }
         return resultado;
+    }
+
+    /**
+     * Nó mais próximo de {@code candidatoTela} dentre os traçados 1 e 2 da
+     * pista (nunca o traçado 0/central), dentro de {@link #TOLERANCIA_ESCAPADA_PX};
+     * {@code null} se nenhum nó dos dois traçados estiver perto o bastante.
+     * Usado para validar/ancorar o nó de ENTRADA (primeiro ponto) de um
+     * {@link ObjetoEscapada}.
+     */
+    private No noMaisProximoTracado1e2(Point candidatoTela) {
+        No melhorPista1 = noMaisProximoDoTracado(candidatoTela, 1);
+        No melhorPista2 = noMaisProximoDoTracado(candidatoTela, 2);
+        if (melhorPista1 == null) {
+            return melhorPista2;
+        }
+        if (melhorPista2 == null) {
+            return melhorPista1;
+        }
+        return distancia(candidatoTela, melhorPista1.getPoint()) <= distancia(candidatoTela, melhorPista2.getPoint())
+                ? melhorPista1 : melhorPista2;
+    }
+
+    /**
+     * Nó mais próximo de {@code candidatoTela} dentro do traçado
+     * {@code tracado} (1 ou 2), dentro de {@link #TOLERANCIA_ESCAPADA_PX};
+     * {@code null} se nenhum nó desse traçado estiver perto o bastante. Usado
+     * também para validar/ancorar o nó de SAÍDA (último ponto, clique
+     * direito) de um {@link ObjetoEscapada}, restrito ao mesmo traçado da
+     * entrada.
+     */
+    private No noMaisProximoDoTracado(Point candidatoTela, int tracado) {
+        List<No> lista = tracado == 2 ? circuito.getPista2Full() : circuito.getPista1Full();
+        if (lista == null) {
+            return null;
+        }
+        No melhor = null;
+        double menorDistancia = TOLERANCIA_ESCAPADA_PX;
+        for (No no : lista) {
+            double d = distancia(candidatoTela, no.getPoint());
+            if (d <= menorDistancia) {
+                menorDistancia = d;
+                melhor = no;
+            }
+        }
+        return melhor;
+    }
+
+    /**
+     * Alerta padrão (mesmo estilo de diálogo já usado para outras validações
+     * do editor) quando um clique não atinge um ponto de escapada válido.
+     * Protected (em vez de private) para que testes possam sobrescrever com
+     * um double que não abre diálogo Swing de verdade — ver
+     * MainPanelEditorTestDouble.
+     */
+    protected void alertaPontoEscapadaInvalido() {
+        JOptionPane.showMessageDialog(this, Lang.msg("pontoEscapadaInvalido"), Lang.msg("039"),
+                JOptionPane.ERROR_MESSAGE);
     }
 
     private static void limpaMouseListeners(JLabel... labels) {
@@ -2292,6 +2579,7 @@ public class MainPanelEditor extends JPanel {
         desenhaObjetosNivel(g2d, 0);
         desenhaPreObjetoLivre(g2d);
         desenhaPreObjetoGuardRails(g2d);
+        desenhaPreObjetoEscapada(g2d);
         desenhaPreObjetoTransparencia(g2d);
         // Níveis positivos por cima, do menor para o maior (mais em cima).
         for (Integer nivel : niveis) {
@@ -2301,6 +2589,7 @@ public class MainPanelEditor extends JPanel {
         }
         desenhaMarcadoresEdicaoPontos(g2d);
         desenhaMarcadoresEdicaoPontosGuardRails(g2d);
+        desenhaMarcadoresEdicaoPontosEscapada(g2d);
         desenhaObjetoSelecionadoNoCanvas(g2d);
         desenhaListaObjetos(g2d);
         desenhaPainelClassico(g2d);
@@ -2483,8 +2772,47 @@ public class MainPanelEditor extends JPanel {
             if (!objetoDeFuncao && !desenhaObjetosDesenho) {
                 continue;
             }
+            if (!estaVisivelNoViewport(objetoPista)) {
+                continue;
+            }
             objetoPista.desenha(g2d, zoom);
         }
+    }
+
+    /**
+     * Testa se {@code objetoPista} pode estar visível no retângulo atual de
+     * {@link #limitesViewPort()}, para pular {@code desenha()} de objetos
+     * claramente fora de tela. Usa {@code obterArea()} diretamente quando o
+     * objeto não está rotacionado; quando {@code angulo != 0}, usa um
+     * retângulo expandido ao raio do círculo circunscrito de
+     * largura/altura (centrado no centro de {@code obterArea()}) em vez de
+     * rotacionar a área via {@code AffineTransform} a cada frame — mais
+     * barato, e nunca sub-estima a área ocupada pela forma rotacionada.
+     * {@code scrollPane} pode não estar montado ainda (ex.: testes que
+     * instanciam {@code MainPanelEditor} sem a janela completa) — nesse
+     * caso não há viewport pra testar, então não corta nada.
+     */
+    private boolean estaVisivelNoViewport(ObjetoPista objetoPista) {
+        if (scrollPane == null) {
+            return true;
+        }
+        Rectangle area = objetoPista.obterArea();
+        if (area == null || area.width <= 0 || area.height <= 0) {
+            // obterArea() de alguns tipos (ex.: ObjetoArquibancada,
+            // ObjetoConstrucao) só reflete o desenho real depois da primeira
+            // chamada a desenha() — antes disso vem vazia/zerada. Sem saber
+            // a área real, não corta (mais seguro desenhar de mais uma vez
+            // do que esconder um objeto que deveria aparecer); a partir do
+            // próximo frame, já com a área populada, o corte volta a valer.
+            return true;
+        }
+        Rectangle retanguloTeste = area;
+        if (objetoPista.getAngulo() != 0) {
+            double raio = Math.hypot(area.width, area.height) / 2.0;
+            retanguloTeste = new Rectangle((int) Math.floor(area.getCenterX() - raio),
+                    (int) Math.floor(area.getCenterY() - raio), (int) Math.ceil(raio * 2), (int) Math.ceil(raio * 2));
+        }
+        return retanguloTeste.intersects(((Rectangle) limitesViewPort()));
     }
 
     private void desenhaPreObjetoTransparencia(Graphics2D g2d) {
@@ -2542,6 +2870,31 @@ public class MainPanelEditor extends JPanel {
         int raioPonto = 6;
         Point ant = null;
         for (Point p : guardRails.getPontos()) {
+            int px = Util.inteiro(p.x * zoom);
+            int py = Util.inteiro(p.y * zoom);
+            if (ant != null) {
+                g2d.drawLine(Util.inteiro(ant.x * zoom), Util.inteiro(ant.y * zoom), px, py);
+            }
+            g2d.fillOval(px - raioPonto, py - raioPonto, raioPonto * 2, raioPonto * 2);
+            ant = p;
+        }
+        g2d.setStroke(strokeAnterior);
+        g2d.setColor(corAnterior);
+    }
+
+    /** Preview do ObjetoEscapada em criação: encadeamento de pontos já clicados (entrada + trajeto livre até agora), igual ao de GuardRails. */
+    private void desenhaPreObjetoEscapada(Graphics2D g2d) {
+        if (objetoPista == null || !desenhandoObjetoLivre || !(objetoPista instanceof ObjetoEscapada)) {
+            return;
+        }
+        ObjetoEscapada escapada = (ObjetoEscapada) objetoPista;
+        Stroke strokeAnterior = g2d.getStroke();
+        Color corAnterior = g2d.getColor();
+        g2d.setColor(Color.MAGENTA);
+        g2d.setStroke(new BasicStroke(3f));
+        int raioPonto = 6;
+        Point ant = null;
+        for (Point p : escapada.getPontos()) {
             int px = Util.inteiro(p.x * zoom);
             int py = Util.inteiro(p.y * zoom);
             if (ant != null) {
@@ -2980,7 +3333,7 @@ public class MainPanelEditor extends JPanel {
         circuito.setMultiplicadorLarguraPista(multiplicadorLarguraPista);
         circuito.setProbalidadeChuva(Integer.parseInt(probalidadeChuvaText.getText()));
         circuito.setNome(nomePistaText.getText());
-        circuito.setDistanciaKm(Double.parseDouble(distanciaKmText.getText().replace(',', '.')));
+        circuito.setDistanciaKm(Integer.parseInt(distanciaKmText.getText().trim()));
         if (!vetorizarCircuito()) {
             return;
         }
@@ -3313,6 +3666,18 @@ public class MainPanelEditor extends JPanel {
             dst.setQuantidadeEmpilhamento(src.getQuantidadeEmpilhamento());
             dst.setDirecaoEmpilhamento(src.getDirecaoEmpilhamento());
             dst.setGrauEmpilhamento(src.getGrauEmpilhamento());
+        }
+        if (origem instanceof ObjetoEscapada) {
+            ObjetoEscapada src = (ObjetoEscapada) origem;
+            ObjetoEscapada dst = (ObjetoEscapada) objetoPistaNovo;
+            dst.setPontos(new ArrayList<Point>());
+            for (Point point : src.getPontos()) {
+                dst.getPontos().add(new Point(point.x, point.y));
+            }
+            dst.setTracadoOrigem(src.getTracadoOrigem());
+            dst.setIndiceEntrada(src.getIndiceEntrada());
+            dst.setIndiceSaida(src.getIndiceSaida());
+            dst.gerar();
         }
         return objetoPistaNovo;
     }
