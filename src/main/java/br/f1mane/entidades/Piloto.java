@@ -1043,10 +1043,8 @@ public class Piloto implements Serializable, PilotoSuave {
             }
         }
 
-        int limiteUltimasVoltas = 80;
-        if (controleJogo.isBoxRapido()) {
-            limiteUltimasVoltas = 85;
-        }
+        /** Box deixou de ter velocidade "rápida"/"lenta" sorteada por corrida — limite único (média de 80/85). */
+        int limiteUltimasVoltas = 83;
 
         if (box && corridaPorcentagem > limiteUltimasVoltas && getQtdeParadasBox() > 0) {
             box = false;
@@ -1556,6 +1554,13 @@ public class Piloto implements Serializable, PilotoSuave {
         return avancoLimitado;
     }
 
+    /** Modo de pilotagem de antes de entrar no traçado de fuga (4/5) — restaurado ao voltar, ver {@link #processaEscapadaDaPista()}. */
+    private String modoPilotagemAntesDaFuga;
+    /** Giro de antes de entrar no traçado de fuga (4/5) — restaurado ao voltar. */
+    private int giroAntesDaFuga;
+    /** Se o piloto estava no traçado de fuga (4/5) no ciclo anterior — usado só para detectar a transição de saída e restaurar modo/giro. */
+    private boolean estavaNoTracadoDeFuga;
+
     public void processaEscapadaDaPista() {
         if (controleJogo.isSafetyCarNaPista()) {
             return;
@@ -1566,9 +1571,31 @@ public class Piloto implements Serializable, PilotoSuave {
         if (getPtosBox() != 0) {
             return;
         }
-        if (verificaForaPista(this)) {
-            ganho *= 0.50;
+        /**
+         * Redução de velocidade/modo/giro vale só enquanto o piloto está
+         * literalmente no traçado de fuga (4 ou 5) — não durante toda a
+         * janela de retorno (animação de troca de traçado), que é só o
+         * suavizado visual da posição lateral, comum a qualquer mudança de
+         * traçado. Modo/giro de antes são salvos ao entrar e restaurados
+         * assim que o traçado deixa de ser 4/5, em vez de depender de outro
+         * método (ex.: processaIAnovoIndex) resetar pra NORMAL/GIRO_NOR_VAL —
+         * esse reset pode nunca rodar (ex.: com colisao != null), deixando o
+         * piloto travado em LENTO/giro mínimo pra sempre depois de escapar.
+         */
+        boolean noTracadoDeFuga = getTracado() == 4 || getTracado() == 5;
+        if (noTracadoDeFuga) {
+            if (!estavaNoTracadoDeFuga) {
+                modoPilotagemAntesDaFuga = modoPilotagem;
+                giroAntesDaFuga = getCarro().getGiro();
+            }
+            ganho *= 0.40;
+            getCarro().setGiro(Carro.GIRO_MIN_VAL);
+            setModoPilotagem(LENTO);
+        } else if (estavaNoTracadoDeFuga) {
+            setModoPilotagem(modoPilotagemAntesDaFuga);
+            getCarro().setGiro(giroAntesDaFuga);
         }
+        estavaNoTracadoDeFuga = noTracadoDeFuga;
         /**
          * Escapa para os tracados 4 ou 5
          */
@@ -1600,6 +1627,199 @@ public class Piloto implements Serializable, PilotoSuave {
             }
         }
 
+        processaEscapadaAncoradaAoTracado();
+        processaSaidaDaEscapada();
+    }
+
+    /**
+     * Tolerância (em índices de nó) para o índice atual já ter passado
+     * ligeiramente da entrada de uma escapada no mesmo ciclo em que a
+     * ultrapassa (o índice avança por {@code avancoLimitado}, que pode ser
+     * maior que 1 por ciclo — ver {@code processaNovoIndex} — então um salto
+     * grande pode pular exatamente por cima do índice de entrada). Além
+     * dessa tolerância, a entrada é considerada perdida/já passada: o
+     * piloto NÃO pode mais escapar por essa zona, só pela próxima (ver bug
+     * relatado onde carros em qualquer ponto dentro do intervalo da zona —
+     * por exemplo após uma troca de traçado lateral no meio dela, sem
+     * relação nenhuma com a entrada — eram forçados a escapar).
+     */
+    private static final int TOLERANCIA_INDICES_ENTRADA_JA_PASSADA = 20;
+
+    /**
+     * Reconecta a corrida ao novo modelo de {@link ObjetoEscapada} (ancorado
+     * ao traçado via indiceEntrada/indiceSaida) — roda em paralelo ao
+     * gatilho cego acima, sem alterá-lo (decisão explícita da mudança
+     * escapada-ia-corrida-box-uniforme). Só relevante quando o piloto está
+     * no traçado 1 ou 2, já que zonas de escapada nunca são ancoradas ao
+     * traçado 0. Não persiste estado entre ciclos: a cada chamada, recalcula
+     * do zero qual é a próxima escapada à frente no traçado atual. Piloto em
+     * modo LENTO nunca escapa; qualquer outro tem uma última chance via
+     * teste de habilidade no próprio gatilho (ver corpo do método).
+     */
+    private void processaEscapadaAncoradaAoTracado() {
+        int tracadoAtual = getTracado();
+        if (tracadoAtual != 1 && tracadoAtual != 2) {
+            return;
+        }
+        ObjetoEscapada zona = proximaEscapadaNoTracadoAtual(tracadoAtual);
+        if (zona == null) {
+            return;
+        }
+        int distancia = zona.getIndiceEntrada() - getNoAtual().getIndex();
+        if (distancia > 100) {
+            return;
+        }
+        if (distancia < -TOLERANCIA_INDICES_ENTRADA_JA_PASSADA) {
+            /** Entrada já passada há tempo (não foi um mero salto de 1 ciclo): essa zona não vale mais. */
+            return;
+        }
+        boolean comprometido = distancia <= 40
+                && ((AGRESSIVO.equals(modoPilotagem) && getStress() > Global.LIMITE_ESTRESSE_PARA_ESCAPADA_ANCORADA)
+                        || Global.FORCAR_ESCAPADA_TESTE);
+        if (!comprometido && distancia > 0) {
+            /** Tenta evitar a zona voltando pro tracado central; se falhar, tenta de novo nos proximos ciclos. */
+            mudarTracado(0);
+            return;
+        }
+        if (distancia <= 0 && getTracado() == tracadoAtual) {
+            /**
+             * Chegou na entrada (comprometido ou por ter falhado em
+             * desviar). Piloto em modo LENTO nunca escapa, mesmo com stress
+             * acima do limite — e qualquer piloto controlado pela IA tem uma
+             * última chance de se salvar: um teste de habilidade pra mudar
+             * pra LENTO no próprio gatilho da escapada; se passar, não
+             * escapa por essa zona (fica em LENTO, mas continua no traçado
+             * 1/2). Jogador humano em modo manual NÃO recebe esse teste
+             * automático — a tarefa de entrar em modo LENTO pra não escapar
+             * é dele, não da IA. Só se o teste falhar (ou não se aplicar,
+             * por ser jogador humano manual) é que a escapada é forçada.
+             */
+            if (LENTO.equals(modoPilotagem)) {
+                return;
+            }
+            boolean jogadorHumanoManual = isJogadorHumano()
+                    && Global.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual());
+            if (!jogadorHumanoManual && testeHabilidadePiloto()) {
+                setModoPilotagem(LENTO);
+                return;
+            }
+            mudarTracado(laneDeFugaDoTracadoOrigem(tracadoAtual), true);
+        }
+    }
+
+    /**
+     * Traçado de fuga (4 ou 5) correspondente ao traçado de origem (1 ou 2)
+     * de uma escapada — confirmado por {@code mudarTracado} (só permite
+     * RETORNAR de 4 para 2 e de 5 para 1) e pelo antigo
+     * {@code escapaTracado()} (exigia traçado 1 pra lado 5, traçado 2 pra
+     * lado 4): origem 1 → foge pelo traçado 5; origem 2 → foge pelo traçado
+     * 4. NÃO é 1→4/2→5 (erro corrigido após bug relatado em produção onde
+     * carros saíam pelo traçado 1 e voltavam no traçado 2).
+     */
+    private static int laneDeFugaDoTracadoOrigem(int tracadoOrigem) {
+        return tracadoOrigem == 1 ? 5 : 4;
+    }
+
+    /**
+     * Traçado de origem (1 ou 2) de onde veio quem está fugindo pelo
+     * traçado informado (4 ou 5) — inverso de
+     * {@link #laneDeFugaDoTracadoOrigem(int)}.
+     */
+    private static int tracadoOrigemDoLaneDeFuga(int laneDeFuga) {
+        return laneDeFuga == 5 ? 1 : 2;
+    }
+
+    /**
+     * Reconecta o RETORNO da escapada: enquanto o piloto está no traçado de
+     * fuga (4 ou 5), monitora a zona de {@link ObjetoEscapada} ativa nesse
+     * traçado e, a 100 índices de nó ou menos do fim dela
+     * ({@code indiceSaida}), faz um teste de habilidade do piloto a cada
+     * ciclo para decidir se ele já consegue voltar ao traçado de origem (o
+     * MESMO de onde saiu, nunca o outro) — ao suceder, força
+     * {@code mudarTracado} de volta pra esse traçado, o que também encerra
+     * (via {@code verificaForaPista}) a redução de velocidade/giro/modo da
+     * escapada assim que a animação de troca terminar.
+     */
+    private void processaSaidaDaEscapada() {
+        int tracadoFuga = getTracado();
+        if (tracadoFuga != 4 && tracadoFuga != 5) {
+            return;
+        }
+        ObjetoEscapada zona = escapadaAtivaNoTracadoDeFuga(tracadoFuga);
+        if (zona == null) {
+            return;
+        }
+        int distanciaSaida = zona.getIndiceSaida() - getNoAtual().getIndex();
+        if (distanciaSaida > 100 || distanciaSaida < 0) {
+            return;
+        }
+        if (testeHabilidadePiloto()) {
+            mudarTracado(tracadoOrigemDoLaneDeFuga(tracadoFuga), true);
+        }
+    }
+
+    /**
+     * {@link ObjetoEscapada} cujo traçado de fuga correspondente
+     * ({@link #laneDeFugaDoTracadoOrigem(int)} do seu {@code tracadoOrigem})
+     * é {@code tracadoFuga}, e cujo intervalo
+     * [{@code indiceEntrada}, {@code indiceSaida}] cobre o índice atual do
+     * piloto — ou {@code null} se nenhuma.
+     */
+    private ObjetoEscapada escapadaAtivaNoTracadoDeFuga(int tracadoFuga) {
+        List<ObjetoPista> objetos = controleJogo.getCircuito().getObjetos();
+        if (objetos == null) {
+            return null;
+        }
+        int tracadoOrigemAlvo = tracadoOrigemDoLaneDeFuga(tracadoFuga);
+        int indiceAtual = getNoAtual().getIndex();
+        for (ObjetoPista objetoPista : objetos) {
+            if (!(objetoPista instanceof ObjetoEscapada)) {
+                continue;
+            }
+            ObjetoEscapada escapada = (ObjetoEscapada) objetoPista;
+            if (escapada.getTracadoOrigem() != tracadoOrigemAlvo) {
+                continue;
+            }
+            if (escapada.getIndiceEntrada() < 0 || escapada.getIndiceSaida() <= escapada.getIndiceEntrada()) {
+                continue;
+            }
+            if (indiceAtual < escapada.getIndiceEntrada() || indiceAtual > escapada.getIndiceSaida()) {
+                continue;
+            }
+            return escapada;
+        }
+        return null;
+    }
+
+    /**
+     * {@link ObjetoEscapada} mais próxima à frente do piloto, ancorada no
+     * mesmo traçado (1 ou 2) em que o piloto está agora, que ainda não foi
+     * totalmente ultrapassada ({@code indiceSaida >= índice atual}) — ou
+     * {@code null} se não houver nenhuma.
+     */
+    private ObjetoEscapada proximaEscapadaNoTracadoAtual(int tracadoAtual) {
+        List<ObjetoPista> objetos = controleJogo.getCircuito().getObjetos();
+        if (objetos == null) {
+            return null;
+        }
+        int indiceAtual = getNoAtual().getIndex();
+        ObjetoEscapada maisProxima = null;
+        for (ObjetoPista objetoPista : objetos) {
+            if (!(objetoPista instanceof ObjetoEscapada)) {
+                continue;
+            }
+            ObjetoEscapada escapada = (ObjetoEscapada) objetoPista;
+            if (escapada.getTracadoOrigem() != tracadoAtual) {
+                continue;
+            }
+            if (escapada.getIndiceEntrada() < 0 || escapada.getIndiceSaida() < indiceAtual) {
+                continue;
+            }
+            if (maisProxima == null || escapada.getIndiceEntrada() < maisProxima.getIndiceEntrada()) {
+                maisProxima = escapada;
+            }
+        }
+        return maisProxima;
     }
 
     public void processaTravouRodas() {

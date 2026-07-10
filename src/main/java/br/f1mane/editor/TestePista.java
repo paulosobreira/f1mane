@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
 import br.f1mane.entidades.Circuito;
 import br.f1mane.entidades.No;
@@ -231,52 +232,12 @@ public class TestePista {
 			}
 			double t = (double) passo / (double) comprimento;
 			No no = new No();
-			no.setPoint(pontoNoTrajeto(pontos, t));
+			no.setPoint(GeoUtil.pontoNoTrajeto(pontos, t));
 			no.setTipo(No.RETA);
 			no.setIndex(index);
 			resultado.set(index, no);
 		}
 		return resultado;
-	}
-
-	/**
-	 * Ponto na posição {@code t} (0 = primeiro ponto, 1 = último) ao longo do
-	 * trajeto poligonal {@code pontos}, interpolado por comprimento de arco
-	 * (não por índice de ponto) — segmentos maiores "valem" proporcionalmente
-	 * mais do intervalo [0,1], então o carro percorre o trajeto em velocidade
-	 * visualmente uniforme, independente de quantos pontos livres o desenhista
-	 * colocou em cada trecho.
-	 */
-	private static Point pontoNoTrajeto(List<Point> pontos, double t) {
-		if (pontos.size() == 1) {
-			return pontos.get(0);
-		}
-		double[] comprimentos = new double[pontos.size() - 1];
-		double total = 0;
-		for (int i = 0; i < comprimentos.length; i++) {
-			comprimentos[i] = pontos.get(i).distance(pontos.get(i + 1));
-			total += comprimentos[i];
-		}
-		if (total == 0) {
-			return pontos.get(0);
-		}
-		double alvo = Math.max(0, Math.min(1, t)) * total;
-		double acumulado = 0;
-		for (int i = 0; i < comprimentos.length; i++) {
-			boolean ultimoSegmento = i == comprimentos.length - 1;
-			if (acumulado + comprimentos[i] >= alvo || ultimoSegmento) {
-				double restante = alvo - acumulado;
-				double fracaoSegmento = comprimentos[i] == 0 ? 0
-						: Math.max(0, Math.min(1, restante / comprimentos[i]));
-				Point a = pontos.get(i);
-				Point b = pontos.get(i + 1);
-				int x = (int) Math.round(a.x + (b.x - a.x) * fracaoSegmento);
-				int y = (int) Math.round(a.y + (b.y - a.y) * fracaoSegmento);
-				return new Point(x, y);
-			}
-			acumulado += comprimentos[i];
-		}
-		return pontos.get(pontos.size() - 1);
 	}
 
 	/**

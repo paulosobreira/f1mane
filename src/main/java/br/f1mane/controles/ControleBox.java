@@ -37,16 +37,19 @@ public class ControleBox {
     private Hashtable<Carro, Carro> boxEquipesOcupado;
     private Circuito circuito;
     private List carrosBox;
-    private boolean boxRapido = false;
+    /**
+     * Incrementos únicos de progresso/velocidade de box (média entre os
+     * antigos "boxRapido"/"boxLento" de cada cenário) — o box deixou de
+     * sortear rápido/lento por corrida, tem sempre a mesma velocidade.
+     */
+    private static final int VELOCIDADE_BOX_LIMITE = Math.round((20 + 15) / 2.0f);
+    private static final int VELOCIDADE_BOX_RETA = Math.round((25 + 20) / 2.0f);
+    private static final int VELOCIDADE_BOX_CURVA_ALTA = Math.round((20 + 15) / 2.0f);
+    private static final int VELOCIDADE_BOX_DEMAIS = Math.round((15 + 10) / 2.0f);
     private int ultIndiceParada = 0;
     private int alta = 0;
     private int media = 0;
     private int baixa = 0;
-
-
-    public boolean isBoxRapido() {
-        return boxRapido;
-    }
 
     public List getCarrosBox() {
         return carrosBox;
@@ -69,9 +72,6 @@ public class ControleBox {
         calculaQtdeNosPistaRefBox();
         if (saidaBox == null) {
             throw new Exception("Saida box não encontrada!");
-        }
-        if (controleJogo.getRandom().nextDouble() < .5) {
-            boxRapido = true;
         }
         geraBoxesEquipes(carrosBox);
         processaNosCircuito();
@@ -235,13 +235,13 @@ public class ControleBox {
                     /**
                      * gera limite velocidade no box
                      */
-                    ptosBox += (boxRapido ? 20 : 15);
+                    ptosBox += VELOCIDADE_BOX_LIMITE;
                 } else if (box.verificaRetaOuLargada()) {
-                    ptosBox += (boxRapido ? 25 : 20);
+                    ptosBox += VELOCIDADE_BOX_RETA;
                 } else if (box.verificaCurvaAlta()) {
-                    ptosBox += (boxRapido ? 20 : 15);
+                    ptosBox += VELOCIDADE_BOX_CURVA_ALTA;
                 } else {
-                    ptosBox += (boxRapido ? 15 : 10);
+                    ptosBox += VELOCIDADE_BOX_DEMAIS;
                 }
                 int novosPtsBox = Util.inteiro(ptosBox) + piloto.getPtosBox();
                 piloto.setPtosBox(novosPtsBox);

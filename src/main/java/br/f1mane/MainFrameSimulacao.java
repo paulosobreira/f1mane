@@ -32,7 +32,6 @@ public class MainFrameSimulacao extends MainFrame {
     private String clima;
     private String temporada;
     private boolean abrasivo;
-    private boolean boxRapido;
     private double fatorAcidente;
     private long seed;
 
@@ -99,7 +98,6 @@ public class MainFrameSimulacao extends MainFrame {
                     reabastecimento, 0, null, null, false, true);
             Thread.sleep(5000);
             abrasivo = controleJogo.asfaltoAbrasivoReal();
-            boxRapido = controleJogo.isBoxRapido();
             seed = controleJogo.getRandom().getSeed();
             mostraDadosSimulacao();
         } catch (Exception e) {
@@ -140,7 +138,6 @@ public class MainFrameSimulacao extends MainFrame {
         Logger.logar("Turbulencia : " + turbulencia);
         Logger.logar("TrocaPneus : " + trocaPneus);
         Logger.logar("Abrasivo : " + abrasivo);
-        Logger.logar("Box Rapido : " + boxRapido);
         Logger.logar("Fator Acidente : " + fatorAcidente);
         Logger.logar("Seed usada " + seed);
         Logger.logar("#########################################################################");

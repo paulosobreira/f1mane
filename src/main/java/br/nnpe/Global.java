@@ -15,6 +15,14 @@ public final class Global {
     public static final double VELOCIDADE_PISTA = 1;
     public static final int TAMANHO_RETA_DRS = 1500;
     public static final double LIMITE_ESTRESSE_PARA_RERRAR_CURVA = 90;
+    /**
+     * Limite de estresse (separado de {@link #LIMITE_ESTRESSE_PARA_RERRAR_CURVA},
+     * que continua exclusivo do gatilho cego antigo em
+     * Piloto.processaEscapadaDaPista) usado só pelo comprometimento da
+     * escapada ancorada ao traçado (Piloto.processaEscapadaAncoradaAoTracado)
+     * — pode ser calibrado independentemente, sem afetar o gatilho cego.
+     */
+    public static final double LIMITE_ESTRESSE_PARA_ESCAPADA_ANCORADA = 90;
     public static double MOD_GANHO_SUAVE = 4;
     public static double MOD_GANHO_SUAVE_MULTIPLAYER = 2.0;
     public static boolean DESENHA_DIFF_REAL_SUAVE = false;
@@ -65,6 +73,15 @@ public final class Global {
      * os renderers (Swing e web).
      */
     public static final double CHANCE_FUMACA_TRAVADA_RODA = 0.6;
+
+    /**
+     * Para validar em corrida a mecânica de escapada ancorada ao traçado
+     * (ver Piloto.processaEscapadaAncoradaAoTracado): quando true, ignora a
+     * checagem de modo agressivo + estresse acima do limite, comprometendo
+     * qualquer piloto assim que estiver na posição/traçado certos perto da
+     * entrada de uma zona — a exigência de posição continua valendo.
+     */
+    public static boolean FORCAR_ESCAPADA_TESTE = false;
 
     private Global() {
     }

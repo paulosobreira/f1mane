@@ -1231,14 +1231,6 @@ public class ControleJogoLocal extends ControleRecursos
     }
 
     @Override
-    public boolean isBoxRapido() {
-        if (controleCorrida == null) {
-            return false;
-        }
-        return controleCorrida.getControleBox().isBoxRapido();
-    }
-
-    @Override
     public List<String> listaInfo() {
         if (gerenciadorVisual != null) {
             return gerenciadorVisual.getBufferTextual();
@@ -1643,7 +1635,6 @@ public class ControleJogoLocal extends ControleRecursos
         campos.add("asfaltoAbrasivo = " + this.asfaltoAbrasivo() + "<br>");
         campos.add("porcentagemChuvaCircuito = "
                 + this.porcentagemChuvaCircuito() + "<br>");
-        campos.add("isBoxRapido = " + this.isBoxRapido() + "<br>");
         campos.add("verificaPistaEmborrachada = "
                 + this.verificaPistaEmborrachada() + "<br>");
         campos.add("porcentagemCorridaConcluida = "
