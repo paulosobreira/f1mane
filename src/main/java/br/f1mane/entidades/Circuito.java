@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -371,34 +372,79 @@ public class Circuito implements Serializable {
      * {@code ObjetoEscapada} deixou de ser uma elipse solta com
      * largura/altura/ângulo interpretados como comprimento/amplitude de uma
      * onda (ver o novo modelo de saída/retorno ancorado ao traçado, em
-     * {@link ObjetoEscapada}) — por isso este método não gera mais nenhuma
-     * zona de escapada a partir dos objetos do circuito. Continua populando
-     * {@link #pista4Full}/{@link #pista5Full} (espelhando
-     * {@link #pista2Full}/{@link #pista1Full}, do mesmo tamanho) e
-     * {@link #escapeMap} (sempre vazio) só para preservar a compatibilidade
-     * de {@code Piloto.processaEscapadaDaPista()} e das telas de debug que
-     * leem essas listas por índice — elas continuam do tamanho certo, apenas
-     * sem nenhum nó marcado com traçado 4/5, então o consumo em corrida
-     * simplesmente não encontra nenhuma escapada até uma mudança futura
-     * reconectar o novo objeto a esse fluxo.
+     * {@link ObjetoEscapada}) — este método popula {@link #pista4Full}/
+     * {@link #pista5Full} a partir dos {@link ObjetoEscapada} do circuito:
+     * para cada um com {@code indiceEntrada}/{@code indiceSaida} válidos,
+     * gera nós de traçado 4 (quando {@code tracadoOrigem == 1}) ou 5 (quando
+     * {@code tracadoOrigem == 2}) interpolados ao longo do trajeto de pontos,
+     * nos índices {@code [indiceEntrada, indiceSaida]} — o resto de cada
+     * lista permanece {@code null}. O mapeamento 1→4/2→5 (e não 1→5/2→4)
+     * é exigido pelas regras já existentes de {@code Piloto.mudarTracado}:
+     * um piloto só volta de 4 para {0,1} e de 5 para {0,2}. {@link #escapeMap}
+     * continua sempre vazio (só para compatibilidade de
+     * {@code Piloto.escapaTracado()}/{@code processaPontoEscape()}, que
+     * seguem inertes).
      */
     private void gerarEscapeMap() {
         escapeMap = new HashMap<PontoEscape, List<No>>();
-        pista4Full = new ArrayList<No>();
-        pista4Full.addAll(pista2Full);
-        pista5Full = new ArrayList<No>();
-        pista5Full.addAll(pista1Full);
-        for (int i = 0; i < pista4Full.size(); i++) {
-            No no = pista4Full.get(i);
-            if (no == null || no.getTracado() != 4) {
-                pista4Full.set(i, null);
-            }
+        int tamanho = pistaFull.size();
+        pista4Full = new ArrayList<No>(Collections.<No>nCopies(tamanho, null));
+        pista5Full = new ArrayList<No>(Collections.<No>nCopies(tamanho, null));
+        List<ObjetoPista> objetosCircuito = getObjetos();
+        if (objetosCircuito == null) {
+            return;
         }
-        for (int i = 0; i < pista5Full.size(); i++) {
-            No no = pista5Full.get(i);
-            if (no == null || no.getTracado() != 5) {
-                pista5Full.set(i, null);
+        for (ObjetoPista objetoPista : objetosCircuito) {
+            if (!(objetoPista instanceof ObjetoEscapada)) {
+                continue;
             }
+            preencherTracadoEscapada((ObjetoEscapada) objetoPista, tamanho);
+        }
+    }
+
+    /**
+     * Preenche, em {@link #pista4Full} ou {@link #pista5Full} (conforme
+     * {@code escapada.getTracadoOrigem()}), os índices
+     * {@code [indiceEntrada, indiceSaida]} com nós interpolados por
+     * comprimento de arco ao longo de {@code escapada.obterPontosAbsolutos()}
+     * — mesmo algoritmo usado pelo editor em
+     * {@code TestePista.construirTracadoEscapada}/{@link GeoUtil#pontoNoTrajeto}.
+     * Sem efeito (não lança exceção) quando os índices não são válidos ou o
+     * trajeto tem menos de 2 pontos.
+     * <p>
+     * Mapeamento tracadoOrigem→traçado de fuga é {@code 1→5}/{@code 2→4}
+     * (não {@code 1→4}/{@code 2→5}) — confirmado por
+     * {@code Piloto.mudarTracado} (bloqueia 4→{0,1} e 5→{0,2}, ou seja, só
+     * permite RETORNAR de 4 para 2 e de 5 para 1) e pelo antigo
+     * {@code Piloto.escapaTracado()} (exigia traçado 1 pra usar o lado 5 e
+     * traçado 2 pra usar o lado 4). Trocado depois de um bug relatado em
+     * produção onde carros saíam pelo traçado 1 e voltavam no traçado 2.
+     */
+    private void preencherTracadoEscapada(ObjetoEscapada escapada, int tamanho) {
+        int indiceEntrada = escapada.getIndiceEntrada();
+        int indiceSaida = escapada.getIndiceSaida();
+        if (indiceEntrada < 0 || indiceSaida <= indiceEntrada) {
+            return;
+        }
+        List<Point> pontos = escapada.obterPontosAbsolutos();
+        if (pontos == null || pontos.size() < 2) {
+            return;
+        }
+        int tracado = escapada.getTracadoOrigem() == 1 ? 5 : 4;
+        List<No> destino = tracado == 4 ? pista4Full : pista5Full;
+        int comprimento = indiceSaida - indiceEntrada;
+        for (int passo = 0; passo <= comprimento; passo++) {
+            int index = indiceEntrada + passo;
+            if (index < 0 || index >= tamanho) {
+                continue;
+            }
+            double t = (double) passo / (double) comprimento;
+            No no = new No();
+            no.setPoint(GeoUtil.pontoNoTrajeto(pontos, t));
+            no.setTipo(No.RETA);
+            no.setIndex(index);
+            no.setTracado(tracado);
+            destino.set(index, no);
         }
     }
 

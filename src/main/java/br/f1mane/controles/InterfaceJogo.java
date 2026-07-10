@@ -249,8 +249,6 @@ public interface InterfaceJogo {
 
     public int porcentagemChuvaCircuito();
 
-    public boolean isBoxRapido();
-
     public JPanel painelNarracao();
 
     public void forcaSafatyCar();

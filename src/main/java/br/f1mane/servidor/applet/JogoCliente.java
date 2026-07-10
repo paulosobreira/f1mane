@@ -864,11 +864,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
     }
 
     @Override
-    public boolean isBoxRapido() {
-        return false;
-    }
-
-    @Override
     public List listaInfo() {
         if (gerenciadorVisual != null) {
             return gerenciadorVisual.getBufferTextual();
