@@ -5087,7 +5087,7 @@ public class PainelCircuito {
         g2d.setColor(transpMenus);
         g2d.fillRoundRect(limitesViewPort.x + pointDesenhaVelo.x, limitesViewPort.y + pointDesenhaVelo.y + 35, 160, 35,
                 0, 0);
-        Color corVelocidade = OcilaCor.porcentVermelho100Verde0((100 * velocidade / 330));
+        Color corVelocidade = OcilaCor.porcentVermelho100Verde0((100 * velocidade / Piloto.TETO_VELOCIDADE_MAX));
         g2d.setStroke(trilhoMiniPista);
 
         if (controleJogo.isSafetyCarNaPista()) {

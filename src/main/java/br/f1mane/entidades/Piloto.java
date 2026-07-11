@@ -31,6 +31,10 @@ public class Piloto implements Serializable, PilotoSuave {
     public static final String NORMAL = "NORMAL";
     public static final String LENTO = "LENTO";
     public static final int METADE_CARRO = 20;
+    /** Piso da faixa de oscilação da velocidade no limite máximo (km/h). */
+    public static final int TETO_VELOCIDADE_MIN = 370;
+    /** Teto absoluto de velocidade — nunca ultrapassado (km/h). */
+    public static final int TETO_VELOCIDADE_MAX = 375;
     private int id;
     private Carro carro = new Carro();
     private String nome;
@@ -154,6 +158,17 @@ public class Piloto implements Serializable, PilotoSuave {
     private int velocidade;
     @JsonIgnore
     private int velocidadeAnterior;
+    @JsonIgnore
+    private int velocidadeTetoOscilacao = TETO_VELOCIDADE_MIN;
+    @JsonIgnore
+    private boolean velocidadeTetoSubindo = true;
+    /** Estado da rampa artificial de reta sustentada — só afeta velocidadeExibir, nunca velocidade (ver calculaVelocidadeExibir). */
+    @JsonIgnore
+    private long tempoContinuoNaRetaMs;
+    @JsonIgnore
+    private int velocidadeExibirTetoOscilacao = TETO_VELOCIDADE_MIN;
+    @JsonIgnore
+    private boolean velocidadeExibirTetoSubindo = true;
     @JsonIgnore
     private transient String setUpIncial;
     @JsonIgnore
@@ -1304,6 +1319,26 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     private int calculoVelocidade(double ganho) {
+        int distanciaKm = controleJogo.getCircuito().getDistanciaKm();
+        int velocidadeCalculada = (distanciaKm != 0) ? calculoVelocidadeReal(ganho, distanciaKm)
+                : calculoVelocidadeFallback(ganho);
+        return aplicaTetoVelocidade(velocidadeCalculada);
+    }
+
+    /**
+     * distanciaKm é gravado em metros (ver Circuito.getDistanciaKm()) — daí o
+     * 3600.0 (e não 3_600_000.0) já embutir a conversão metros -> km.
+     */
+    private int calculoVelocidadeReal(double ganho, int distanciaKm) {
+        int nosPorVolta = controleJogo.getNosDaPista().size();
+        long tempoCicloMs = controleJogo.tempoCicloCircuito();
+        if (nosPorVolta == 0 || tempoCicloMs == 0) {
+            return calculoVelocidadeFallback(ganho);
+        }
+        return Util.inteiro((ganho * distanciaKm * 3600.0) / (nosPorVolta * tempoCicloMs));
+    }
+
+    private int calculoVelocidadeFallback(double ganho) {
         int val = 290;
         double porcent = getCarro().getPorcentagemCombustivel() / 100.0;
         val += (21 - (porcent / 5.0));
@@ -1312,6 +1347,28 @@ public class Piloto implements Serializable, PilotoSuave {
             naReta = noAtual.verificaRetaOuLargada();
         }
         return Util.inteiro(((val * ganho * ((naReta) ? 1 : 0.7) / ganhoMax) + ganho * ((naReta) ? 1 : 0.7)));
+    }
+
+    private int aplicaTetoVelocidade(int velocidadeCalculada) {
+        if (velocidadeCalculada < TETO_VELOCIDADE_MIN) {
+            velocidadeTetoSubindo = true;
+            velocidadeTetoOscilacao = TETO_VELOCIDADE_MIN;
+            return velocidadeCalculada;
+        }
+        if (velocidadeTetoSubindo) {
+            velocidadeTetoOscilacao++;
+            if (velocidadeTetoOscilacao >= TETO_VELOCIDADE_MAX) {
+                velocidadeTetoOscilacao = TETO_VELOCIDADE_MAX;
+                velocidadeTetoSubindo = false;
+            }
+        } else {
+            velocidadeTetoOscilacao--;
+            if (velocidadeTetoOscilacao <= TETO_VELOCIDADE_MIN) {
+                velocidadeTetoOscilacao = TETO_VELOCIDADE_MIN;
+                velocidadeTetoSubindo = true;
+            }
+        }
+        return velocidadeTetoOscilacao;
     }
 
     public void processaColisao() {
@@ -3692,9 +3749,25 @@ public class Piloto implements Serializable, PilotoSuave {
         this.indiceTracado = indiceTracado;
     }
 
+    /** A partir de quanto tempo contínuo numa reta o efeito artificial de "esticar até o teto" entra em ação. */
+    private static final long LIMIAR_RETA_SUSTENTADA_MS = 3000;
+    /** Incremento artificial de velocidade exibida por ciclo, uma vez na reta sustentada (ignora a velocidade real). */
+    private static final int INCREMENTO_VELOCIDADE_RETA_SUSTENTADA = 2;
+    /** Acima disso, o incremento da reta sustentada fica mais tênue (sobe mais devagar). */
+    private static final int LIMIAR_VELOCIDADE_INCREMENTO_TENUE = 300;
+    /** Acima disso, fica ainda mais tênue — só um incremento a cada poucos ciclos, pra o teto só ser alcançado em retas bem longas. */
+    private static final int LIMIAR_VELOCIDADE_INCREMENTO_MUITO_TENUE = 340;
+    private static final int CICLOS_POR_INCREMENTO_MUITO_TENUE = 3;
+
     public void calculaVelocidadeExibir() {
         if (controleJogo.isJogoPausado()) {
             setVelocidadeExibir(0);
+            return;
+        }
+        atualizaTempoContinuoNaReta();
+        boolean naZonaFrenagem = noAtual != null && controleJogo.isNoZonaFrenagem(noAtual);
+        if (tempoContinuoNaRetaMs >= LIMIAR_RETA_SUSTENTADA_MS && !naZonaFrenagem) {
+            aplicaRetaSustentadaNaVelocidadeExibir();
             return;
         }
         int incAcell = 6;
@@ -3740,6 +3813,79 @@ public class Piloto implements Serializable, PilotoSuave {
         }
         int velocidade = (controleJogo.isSafetyCarNaPista() ? getVelocidadeExibir() / 2 : getVelocidadeExibir());
         setVelocidadeExibir(velocidade);
+    }
+
+    /**
+     * Zera a contagem assim que o nó atual deixa de ser reta/largada, ou o
+     * piloto está no traçado de fuga (4/5 — mesmo problema resolvido em
+     * PilotoGanhoTracadoDeFugaTest: o nó da pista principal não muda de tipo
+     * só por o piloto estar fisicamente na escapada).
+     */
+    private void atualizaTempoContinuoNaReta() {
+        boolean noTracadoDeFuga = getTracado() == 4 || getTracado() == 5;
+        boolean emRetaContinua = noAtual != null && noAtual.verificaRetaOuLargada() && !noTracadoDeFuga;
+        if (emRetaContinua) {
+            tempoContinuoNaRetaMs += controleJogo.tempoCicloCircuito();
+        } else {
+            tempoContinuoNaRetaMs = 0;
+        }
+    }
+
+    /**
+     * Efeito artificial, só no valor exibido: depois de
+     * LIMIAR_RETA_SUSTENTADA_MS numa reta contínua, ignora a velocidade real
+     * (velocidade/ganho) e faz velocidadeExibir subir aos poucos até o teto
+     * (370-375), simulando o carro esticando a reta até a velocidade máxima.
+     * velocidade (o valor real, usado por física/rede/efeitos) não é tocado
+     * — sai desse modo assim que o nó muda pra curva/escapada (ver
+     * atualizaTempoContinuoNaReta) ou entra na zona de frenagem
+     * (controleJogo.isNoZonaFrenagem — ver chamada em calculaVelocidadeExibir),
+     * voltando à suavização normal em direção à velocidade real (que já cai
+     * naturalmente ao frear). O incremento em si fica mais tênue conforme
+     * velocidadeExibir sobe (ver calculaIncrementoRetaSustentada), então o
+     * teto só é alcançado de fato em retas bem longas.
+     */
+    private void aplicaRetaSustentadaNaVelocidadeExibir() {
+        int candidato = getVelocidadeExibir() + calculaIncrementoRetaSustentada();
+        if (candidato < TETO_VELOCIDADE_MIN) {
+            velocidadeExibirTetoSubindo = true;
+            velocidadeExibirTetoOscilacao = TETO_VELOCIDADE_MIN;
+        } else if (velocidadeExibirTetoSubindo) {
+            velocidadeExibirTetoOscilacao++;
+            if (velocidadeExibirTetoOscilacao >= TETO_VELOCIDADE_MAX) {
+                velocidadeExibirTetoOscilacao = TETO_VELOCIDADE_MAX;
+                velocidadeExibirTetoSubindo = false;
+            }
+            candidato = velocidadeExibirTetoOscilacao;
+        } else {
+            velocidadeExibirTetoOscilacao--;
+            if (velocidadeExibirTetoOscilacao <= TETO_VELOCIDADE_MIN) {
+                velocidadeExibirTetoOscilacao = TETO_VELOCIDADE_MIN;
+                velocidadeExibirTetoSubindo = true;
+            }
+            candidato = velocidadeExibirTetoOscilacao;
+        }
+        setVelocidadeExibir(controleJogo.isSafetyCarNaPista() ? candidato / 2 : candidato);
+    }
+
+    /**
+     * Quanto maior velocidadeExibir, mais tênue o incremento da reta
+     * sustentada: abaixo de LIMIAR_VELOCIDADE_INCREMENTO_TENUE (300),
+     * incremento cheio a cada ciclo; dali até LIMIAR_VELOCIDADE_INCREMENTO_MUITO_TENUE
+     * (340), metade; a partir de 340, só 1 a cada CICLOS_POR_INCREMENTO_MUITO_TENUE
+     * ciclos (usando tempoContinuoNaRetaMs como relógio, sem precisar de mais
+     * um campo de estado) — o teto só é alcançado de fato em retas bem longas.
+     */
+    private int calculaIncrementoRetaSustentada() {
+        int velocidadeAtual = getVelocidadeExibir();
+        if (velocidadeAtual < LIMIAR_VELOCIDADE_INCREMENTO_TENUE) {
+            return INCREMENTO_VELOCIDADE_RETA_SUSTENTADA;
+        }
+        if (velocidadeAtual < LIMIAR_VELOCIDADE_INCREMENTO_MUITO_TENUE) {
+            return 1;
+        }
+        long ciclosNaReta = tempoContinuoNaRetaMs / controleJogo.tempoCicloCircuito();
+        return (ciclosNaReta % CICLOS_POR_INCREMENTO_MUITO_TENUE == 0) ? 1 : 0;
     }
 
     public boolean verificaColisaoAoMudarDeTracado(int pos) {
