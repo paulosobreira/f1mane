@@ -28,7 +28,6 @@ public final class Global {
     public static boolean DESENHA_DIFF_REAL_SUAVE = false;
 
     public static boolean DEBUG_SEM_CHUVA = false;
-    public static boolean FORCE_MODELO_V2 = true;
     public static final int CARGA_ERS = 100;
     public static final int DURABILIDADE_AREOFOLIO = 5;
 
@@ -39,7 +38,14 @@ public final class Global {
 
     public static boolean LOG_COLISAO = false;
 
-    public static boolean GERAR_IMAGEM_CIRCUITO_EM_MEMORIA = true;
+    /**
+     * Substitui a antiga GERAR_IMAGEM_CIRCUITO_EM_MEMORIA: ativo gera a
+     * imagem do circuito proceduralmente em memória (em vez de carregar o
+     * arquivo de fundo real), usa os nomes-homenagem de carro/piloto (em vez
+     * dos nomes reais), e prioriza o modelo colorido genérico sobre sprite
+     * sheet/arquivo individual pra carro/capacete.
+     */
+    public static boolean MODO_HOMENAGEM = true;
 
     /** Tamanho (em nós de reta) da zona de frenagem antes de um cluster de curva baixa qualificado. */
     public static final int TAMANHO_ZONA_FRENAGEM = 300;

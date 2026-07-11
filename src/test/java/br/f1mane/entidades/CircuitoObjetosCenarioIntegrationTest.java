@@ -25,7 +25,7 @@ import br.nnpe.Global;
  * - round-trip de um objeto de cenário via XMLEncoder/XMLDecoder, confirmando
  *   que a serialização reflexiva já usada para circuitos funciona para os
  *   novos tipos sem mudança de schema;
- * - a flag Global.GERAR_IMAGEM_CIRCUITO_EM_MEMORIA alternando entre ler o
+ * - a flag Global.MODO_HOMENAGEM alternando entre ler o
  *   jpg estático e gerar a imagem em memória em CarregadorRecursos.
  *
  * Validação manual ainda pendente (fora do alcance deste teste): criar os
@@ -38,7 +38,7 @@ class CircuitoObjetosCenarioIntegrationTest {
 
     @AfterEach
     void resetFlag() {
-        Global.GERAR_IMAGEM_CIRCUITO_EM_MEMORIA = false;
+        Global.MODO_HOMENAGEM = false;
     }
 
     @Test
@@ -76,7 +76,7 @@ class CircuitoObjetosCenarioIntegrationTest {
 
     @Test
     void flagDesativada_carregaBackGroundJogo_leJpgEstatico() throws Exception {
-        Global.GERAR_IMAGEM_CIRCUITO_EM_MEMORIA = false;
+        Global.MODO_HOMENAGEM = false;
         Circuito circuito = CarregadorRecursos.carregarCircuito(CIRCUITO_TESTE);
         circuito.vetorizarPista();
 
@@ -98,7 +98,7 @@ class CircuitoObjetosCenarioIntegrationTest {
         objetosCenario.add(pneus);
         circuito.setObjetosCenario(objetosCenario);
 
-        Global.GERAR_IMAGEM_CIRCUITO_EM_MEMORIA = true;
+        Global.MODO_HOMENAGEM = true;
         BufferedImage gerada = CarregadorRecursos.carregaBackGroundJogo(circuito.getBackGround(), null, circuito);
 
         assertNotNull(gerada);

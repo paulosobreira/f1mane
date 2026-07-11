@@ -421,7 +421,7 @@ public class LetsRace {
     public Response circuitoJpg(@PathParam("nmCircuito") String nmCircuito) {
         try {
             BufferedImage buffer;
-            if (Global.GERAR_IMAGEM_CIRCUITO_EM_MEMORIA && nmCircuito.endsWith(".jpg")) {
+            if (Global.MODO_HOMENAGEM && nmCircuito.endsWith(".jpg")) {
                 String nomeArquivoCircuito = nmCircuito.substring(0,
                         nmCircuito.length() - ".jpg".length()) + ".xml";
                 Circuito circuito = CarregadorRecursos.carregarCircuito(nomeArquivoCircuito);
