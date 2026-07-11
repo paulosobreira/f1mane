@@ -3,6 +3,8 @@ package br.f1mane.entidades;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.awt.Point;
@@ -81,6 +83,10 @@ class PilotoEscapadaAncoradaTracadoTest {
         piloto.setNome("Piloto");
         Carro carro = new Carro();
         carro.setPiloto(piloto);
+        // Pneus "novos" por padrão (Carro.porcentagemDesgastePneus é 0 se nunca setado, o que
+        // pareceria pneu criticamente gasto pra regra de pneus<20% — testes que querem exercitar
+        // essa regra setam explicitamente um valor baixo).
+        carro.setPorcentagemDesgastePneus(100);
         piloto.setCarro(carro);
         piloto.setControleJogo(controleJogo);
         piloto.setNoAtual(pista.get(index));
@@ -116,7 +122,10 @@ class PilotoEscapadaAncoradaTracadoTest {
     }
 
     @Test
-    void agressivoEEstressado_umIndiceAlemDaJanelaDe40_aindaTentaDesviar() {
+    void agressivoEEstressado_umIndiceAlemDaJanelaDe40_naoMudaDeTracadoAindaAntesDaEntrada() {
+        // A lógica de escapada não dirige mais o carro pra longe da zona (ver D15 do design.md) —
+        // ela só decide comprometimento/escapada a partir de onde o piloto já está. A 41 índices
+        // (ainda longe da entrada), nada deveria mudar o traçado nesse ciclo.
         registrarEscapada(criarEscapada(1, 301, 400));
         Piloto piloto = criarPiloto(260, 1);
         piloto.setModoPilotagem(Piloto.AGRESSIVO);
@@ -124,11 +133,11 @@ class PilotoEscapadaAncoradaTracadoTest {
 
         piloto.processaEscapadaDaPista();
 
-        assertEquals(0, piloto.getTracado(), "a 41 índices (janela caiu de 50 pra 40) ainda não deveria se comprometer");
+        assertEquals(1, piloto.getTracado(), "longe da entrada, nada deveria mudar o traçado ainda — a lógica de escapada não desvia pro traçado 0 por conta própria");
     }
 
     @Test
-    void agressivoEEstressado_foraDaJanelaDe40_aindaTentaDesviar() {
+    void agressivoEEstressado_foraDaJanelaDe40_naoMudaDeTracadoAindaAntesDaEntrada() {
         registrarEscapada(criarEscapada(1, 340, 400));
         Piloto piloto = criarPiloto(260, 1);
         piloto.setModoPilotagem(Piloto.AGRESSIVO);
@@ -136,24 +145,27 @@ class PilotoEscapadaAncoradaTracadoTest {
 
         piloto.processaEscapadaDaPista();
 
-        assertEquals(0, piloto.getTracado(), "a 80 índices (>40) ainda não deveria se comprometer, e a tentativa de desvio deveria ter sucesso (sem colisão/cooldown)");
+        assertEquals(1, piloto.getTracado(), "a 80 índices, ainda longe da entrada, nada deveria mudar o traçado nesse ciclo");
     }
 
     @Test
     void carroDentroDaZonaMuitoAlemDaEntrada_naoForcaEscapada_soZonasAindaAlcancaveis() {
         // Regressão: carro chega no traçado 1 bem depois da entrada (200), por exemplo por
         // uma troca de traçado lateral no meio da zona, sem nenhuma relação com a entrada em
-        // si — antes da correção, qualquer índice dentro de [entrada, saida] disparava a
-        // escapada forçada, mesmo estando muito além da entrada. Isso inflava demais a taxa
-        // de escapadas.
-        registrarEscapada(criarEscapada(1, 200, 400));
-        Piloto piloto = criarPiloto(350, 1);
+        // si — antes da correção original (D9), qualquer índice dentro de [entrada, saida]
+        // disparava a escapada forçada, mesmo estando muito além da entrada. Isso inflava demais
+        // a taxa de escapadas. Zona larga (500 índices, perto da mais estreita em Interlagos, 451)
+        // e distância bem maior que a tolerância atual (150), pra continuar válido depois do
+        // aumento de 20 pra 150 (bug de escapadas "aleatoriamente" puladas — ver javadoc da
+        // constante).
+        registrarEscapada(criarEscapada(1, 200, 700));
+        Piloto piloto = criarPiloto(550, 1);
         piloto.setModoPilotagem(Piloto.AGRESSIVO);
         piloto.setStress(95);
 
         piloto.processaEscapadaDaPista();
 
-        assertEquals(1, piloto.getTracado(), "150 índices além da entrada é longe demais pra ainda contar — essa zona já foi perdida");
+        assertEquals(1, piloto.getTracado(), "350 índices além da entrada é longe demais pra ainda contar (bem além da tolerância de 150) — essa zona já foi perdida");
     }
 
     @Test
@@ -172,7 +184,28 @@ class PilotoEscapadaAncoradaTracadoTest {
     }
 
     @Test
-    void pilotoNormal_dentroDe100Indices_tentaDesviarComSucesso() {
+    void carroComSaltoGrandeDeGanho_140IndicesAlemDaEntrada_aindaForcaEscapada() {
+        // Regressão do bug relatado em Interlagos: com a tolerância antiga (20), um salto de
+        // ganho real (~50-55 num único ciclo, ver javadoc da constante) podia levar o índice de
+        // "ainda não chegou" direto pra além da tolerância, sem nunca passar por um ciclo em que a
+        // escapada disparasse — parecia aleatório entre voltas. 140 índices além da entrada
+        // simula esse salto grande; com a tolerância aumentada pra 150, ainda deveria forçar a
+        // escapada normalmente.
+        registrarEscapada(criarEscapada(1, 200, 700));
+        Piloto piloto = criarPiloto(340, 1);
+        piloto.setModoPilotagem(Piloto.AGRESSIVO);
+        piloto.setStress(95);
+
+        piloto.processaEscapadaDaPista();
+
+        assertEquals(5, piloto.getTracado(),
+                "140 índices além da entrada (dentro da nova tolerância de 150) ainda deveria forçar a escapada, mesmo sendo um salto bem maior que o antigo limite de 20");
+    }
+
+    @Test
+    void pilotoNormal_dentroDe100Indices_naoMudaDeTracadoAindaAntesDaEntrada() {
+        // Piloto normal (não "em risco") longe da entrada: a lógica de escapada não faz nada
+        // além de monitorar — não desvia o carro por conta própria (ver D15 do design.md).
         registrarEscapada(criarEscapada(2, 340, 400));
         Piloto piloto = criarPiloto(260, 2);
         piloto.setModoPilotagem(Piloto.NORMAL);
@@ -180,11 +213,16 @@ class PilotoEscapadaAncoradaTracadoTest {
 
         piloto.processaEscapadaDaPista();
 
-        assertEquals(0, piloto.getTracado(), "piloto normal deveria conseguir desviar para o traçado 0 dentro da janela de 100 índices");
+        assertEquals(2, piloto.getTracado(), "longe da entrada, nada deveria mudar o traçado do piloto normal nesse ciclo");
     }
 
     @Test
-    void pilotoNormal_alcancaAEntradaAindaNoTracadoOrigem1_forcaEscapadaNoTracado5() {
+    void pilotoNormal_naoEmRisco_alcancaAEntradaNoTracadoOrigem1_naoEscapa() {
+        // Correção de bug relatado: piloto NORMAL, sem stress e com pneus ok não está "em risco"
+        // (ver emRiscoDeEscapada()) — não deveria ser testado nem forçado a escapar só por
+        // alcançar a entrada ainda no traçado 1/2. Antes desta correção, qualquer piloto que
+        // chegasse na entrada recebia uma "última chance" que quase sempre falhava (habilidade
+        // baixa/1000), fazendo praticamente todo mundo escapar, independente das regras.
         registrarEscapada(criarEscapada(1, 300, 360));
         Piloto piloto = criarPiloto(300, 1);
         piloto.setModoPilotagem(Piloto.NORMAL);
@@ -192,13 +230,12 @@ class PilotoEscapadaAncoradaTracadoTest {
 
         piloto.processaEscapadaDaPista();
 
-        assertEquals(5, piloto.getTracado(),
-                "ao alcançar a entrada ainda no traçado 1, deveria forçar a escapada para o traçado 5 "
-                        + "(mudarTracado só permite voltar de 5 pra 1, nunca de 4 pra 1 — por isso a fuga do traçado 1 tem que ser pelo 5)");
+        assertEquals(1, piloto.getTracado(),
+                "piloto não em risco (normal, sem stress, pneus ok) não deveria escapar só por alcançar a entrada");
     }
 
     @Test
-    void pilotoNormal_alcancaAEntradaAindaNoTracadoOrigem2_forcaEscapadaNoTracado4() {
+    void pilotoNormal_naoEmRisco_alcancaAEntradaNoTracadoOrigem2_naoEscapa() {
         registrarEscapada(criarEscapada(2, 300, 360));
         Piloto piloto = criarPiloto(300, 2);
         piloto.setModoPilotagem(Piloto.NORMAL);
@@ -206,9 +243,42 @@ class PilotoEscapadaAncoradaTracadoTest {
 
         piloto.processaEscapadaDaPista();
 
+        assertEquals(2, piloto.getTracado(),
+                "piloto não em risco (normal, sem stress, pneus ok) não deveria escapar só por alcançar a entrada");
+    }
+
+    @Test
+    void pneusBaixos_alcancaAEntradaAindaNoTracadoOrigem1_forcaEscapadaNoTracado5() {
+        registrarEscapada(criarEscapada(1, 300, 360));
+        Piloto piloto = criarPiloto(300, 1);
+        piloto.setModoPilotagem(Piloto.NORMAL);
+        piloto.setStress(0);
+        piloto.getCarro().setPorcentagemDesgastePneus(15);
+        // habilidade padrão (0): teste de habilidade falha sempre.
+
+        piloto.processaEscapadaDaPista();
+
+        assertEquals(5, piloto.getTracado(),
+                "piloto em risco (pneus <20%) que falha no teste, ao alcançar a entrada ainda no traçado 1, deveria "
+                        + "forçar a escapada para o traçado 5 (mudarTracado só permite voltar de 5 pra 1, nunca de 4 "
+                        + "pra 1 — por isso a fuga do traçado 1 tem que ser pelo 5)");
+    }
+
+    @Test
+    void pneusBaixos_alcancaAEntradaAindaNoTracadoOrigem2_forcaEscapadaNoTracado4() {
+        registrarEscapada(criarEscapada(2, 300, 360));
+        Piloto piloto = criarPiloto(300, 2);
+        piloto.setModoPilotagem(Piloto.NORMAL);
+        piloto.setStress(0);
+        piloto.getCarro().setPorcentagemDesgastePneus(15);
+        // habilidade padrão (0): teste de habilidade falha sempre.
+
+        piloto.processaEscapadaDaPista();
+
         assertEquals(4, piloto.getTracado(),
-                "ao alcançar a entrada ainda no traçado 2, deveria forçar a escapada para o traçado 4 "
-                        + "(mudarTracado só permite voltar de 4 pra 2, nunca de 5 pra 2 — por isso a fuga do traçado 2 tem que ser pelo 4)");
+                "piloto em risco (pneus <20%) que falha no teste, ao alcançar a entrada ainda no traçado 2, deveria "
+                        + "forçar a escapada para o traçado 4 (mudarTracado só permite voltar de 4 pra 2, nunca de 5 "
+                        + "pra 2 — por isso a fuga do traçado 2 tem que ser pelo 4)");
     }
 
     @Test
@@ -229,6 +299,8 @@ class PilotoEscapadaAncoradaTracadoTest {
         Piloto piloto = criarPiloto(300, 1);
         piloto.setModoPilotagem(Piloto.NORMAL);
         piloto.setStress(0);
+        // pneus baixos colocam o piloto em risco (só piloto em risco é testado/pode escapar).
+        piloto.getCarro().setPorcentagemDesgastePneus(15);
         piloto.setHabilidade(1000);
         when(controleJogo.getRandom().nextDouble()).thenReturn(0.0);
 
@@ -244,6 +316,8 @@ class PilotoEscapadaAncoradaTracadoTest {
         Piloto piloto = criarPiloto(300, 1);
         piloto.setModoPilotagem(Piloto.NORMAL);
         piloto.setStress(0);
+        // pneus baixos colocam o piloto em risco (só piloto em risco é testado/pode escapar).
+        piloto.getCarro().setPorcentagemDesgastePneus(15);
         // habilidade padrão (0): teste de habilidade falha sempre.
 
         piloto.processaEscapadaDaPista();
@@ -264,6 +338,8 @@ class PilotoEscapadaAncoradaTracadoTest {
         piloto.setJogadorHumano(true);
         piloto.setModoPilotagem(Piloto.NORMAL);
         piloto.setStress(0);
+        // pneus baixos colocam o piloto em risco (só piloto em risco é testado/pode escapar).
+        piloto.getCarro().setPorcentagemDesgastePneus(15);
         // habilidade máxima + nextDouble()=0.0 passaria no teste se ele fosse aplicado.
         piloto.setHabilidade(1000);
         when(controleJogo.getRandom().nextDouble()).thenReturn(0.0);
@@ -298,6 +374,8 @@ class PilotoEscapadaAncoradaTracadoTest {
         piloto.setJogadorHumano(true);
         piloto.setModoPilotagem(Piloto.NORMAL);
         piloto.setStress(0);
+        // pneus baixos colocam o piloto em risco (só piloto em risco é testado/pode escapar).
+        piloto.getCarro().setPorcentagemDesgastePneus(15);
         piloto.setHabilidade(1000);
         when(controleJogo.getRandom().nextDouble()).thenReturn(0.0);
 
@@ -359,6 +437,37 @@ class PilotoEscapadaAncoradaTracadoTest {
     }
 
     @Test
+    void saidaDaEscapada_saltoGrandeAlemDoFim_dentroDaTolerancia_aindaTentaVoltar() {
+        // Regressão: bug análogo ao da entrada (índice avança por avancoLimitado, que pode ser
+        // >1 por ciclo — aqui reduzido pelo multiplicador de ganho de 0.8 do traçado de fuga, mas
+        // ainda relevante). Sem tolerância nenhuma no lado da saída, um piloto que ultrapassasse
+        // indiceSaida antes de um teste de habilidade bem-sucedido ficava preso no traçado de fuga
+        // pra sempre — escapadaAtivaNoTracadoDeFuga() parava de encontrar a zona.
+        registrarEscapada(criarEscapada(1, 200, 360));
+        Piloto piloto = criarPiloto(420, 5); // 60 índices além de indiceSaida (360), dentro da nova tolerância (100)
+        piloto.setHabilidade(1000);
+        when(controleJogo.getRandom().nextDouble()).thenReturn(0.0);
+
+        piloto.processaEscapadaDaPista();
+
+        assertEquals(1, piloto.getTracado(),
+                "60 índices além do fim (dentro da tolerância de 100) ainda deveria testar e voltar pro traçado de origem, mesmo já tendo ultrapassado indiceSaida");
+    }
+
+    @Test
+    void saidaDaEscapada_muitoAlemDoFim_foraDaTolerancia_naoTentaVoltar() {
+        registrarEscapada(criarEscapada(1, 200, 360));
+        Piloto piloto = criarPiloto(510, 5); // 150 índices além de indiceSaida (360), além da tolerância (100)
+        piloto.setHabilidade(1000);
+        when(controleJogo.getRandom().nextDouble()).thenReturn(0.0);
+
+        piloto.processaEscapadaDaPista();
+
+        assertEquals(5, piloto.getTracado(),
+                "150 índices além do fim é longe demais pra ainda contar (além da tolerância de 100) — não deveria tentar voltar, mesmo com habilidade máxima");
+    }
+
+    @Test
     void semEscapadaNoTracadoAtual_naoFazNada() {
         registrarEscapada(criarEscapada(2, 300, 360));
         Piloto piloto = criarPiloto(280, 1);
@@ -397,6 +506,23 @@ class PilotoEscapadaAncoradaTracadoTest {
     }
 
     @Test
+    void flagGlobalDeTeste_forcaEscapadaMesmoComPilotoEmLento() {
+        // Pedido do usuário: com a flag de validação ativa, nem a exceção de LENTO deveria
+        // impedir a escapada — a flag é justamente pra garantir que a mecânica dispare sem
+        // exceção nenhuma num cenário controlado.
+        Global.FORCAR_ESCAPADA_TESTE = true;
+        registrarEscapada(criarEscapada(1, 300, 360));
+        Piloto piloto = criarPiloto(300, 1);
+        piloto.setModoPilotagem(Piloto.LENTO);
+        piloto.setStress(0);
+
+        piloto.processaEscapadaDaPista();
+
+        assertEquals(5, piloto.getTracado(),
+                "com a flag ativa, mesmo um piloto em modo LENTO deveria escapar ao alcançar a entrada");
+    }
+
+    @Test
     void velocidadeEModoReduzidosDuranteATracado4() {
         Piloto piloto = criarPiloto(320, 4);
         piloto.setModoPilotagem(Piloto.AGRESSIVO);
@@ -405,7 +531,7 @@ class PilotoEscapadaAncoradaTracadoTest {
 
         piloto.processaEscapadaDaPista();
 
-        assertEquals(40, piloto.getGanho(), "ganho deveria ser reduzido a 0.4x durante a escapada");
+        assertEquals(80, piloto.getGanho(), "ganho deveria ser reduzido a 0.8x durante a escapada");
         assertEquals(Carro.GIRO_MIN_VAL, piloto.getCarro().getGiro(), "giro deveria ser travado no mínimo durante a escapada");
         assertEquals(Piloto.LENTO, piloto.getModoPilotagem(), "modo deveria ser travado em LENTO durante a escapada");
     }
@@ -451,6 +577,166 @@ class PilotoEscapadaAncoradaTracadoTest {
     }
 
     @Test
+    void flagGlobalDeTeste_alemDe40Indices_naoConsegueMaisDesviar() {
+        // Regressão do bug relatado: "FORCAR_ESCAPADA_TESTE não está funcionando". Antes da
+        // correção, a flag só suprimia a checagem de agressivo+estresse DENTRO da janela de 40
+        // índices; entre 41 e 100 o piloto continuava tentando (e, sem colisão, conseguindo)
+        // desviar pro traçado 0 normalmente, escapando da zona antes de nunca ficar
+        // "comprometido" — na prática a flag nunca surtia efeito numa corrida de validação.
+        Global.FORCAR_ESCAPADA_TESTE = true;
+        registrarEscapada(criarEscapada(1, 300, 400));
+        Piloto piloto = criarPiloto(250, 1);
+        piloto.setModoPilotagem(Piloto.NORMAL);
+        piloto.setStress(0);
+
+        piloto.processaEscapadaDaPista();
+
+        assertEquals(1, piloto.getTracado(),
+                "com a flag ativa, o piloto não deveria conseguir desviar pro traçado 0 mesmo a 50 índices (>40) da entrada");
+    }
+
+    @Test
+    void pneusAbaixoDe20PorCento_dentroDe40Indices_comprometeSemTentarDesviar() {
+        registrarEscapada(criarEscapada(1, 300, 360));
+        Piloto piloto = criarPiloto(260, 1);
+        piloto.setModoPilotagem(Piloto.NORMAL);
+        piloto.setStress(0);
+        piloto.getCarro().setPorcentagemDesgastePneus(15);
+
+        piloto.processaEscapadaDaPista();
+
+        assertEquals(1, piloto.getTracado(),
+                "pneus abaixo de 20% deveriam comprometer o piloto (sem tentar desviar) a 40 índices da entrada, mesmo sem stress/agressividade");
+    }
+
+    @Test
+    void pneusAbaixoDe20PorCento_alemDe40Indices_recebeTestePreventivoMasNaoMudaDeTracadoAinda() {
+        // Longe da entrada, a lógica de escapada não desvia o carro (D15) — mas o piloto "em
+        // risco" (pneus baixos) já ganha o teste preventivo (habilidade padrão 0: falha sempre).
+        registrarEscapada(criarEscapada(1, 301, 400));
+        Piloto piloto = criarPiloto(260, 1);
+        piloto.setModoPilotagem(Piloto.NORMAL);
+        piloto.setStress(0);
+        piloto.getCarro().setPorcentagemDesgastePneus(15);
+
+        piloto.processaEscapadaDaPista();
+
+        assertEquals(1, piloto.getTracado(), "nada deveria mudar o traçado antes da entrada, mesmo em risco");
+        assertEquals(Piloto.NORMAL, piloto.getModoPilotagem(), "teste preventivo sem sucesso (habilidade padrão) não deveria mudar o modo");
+    }
+
+    @Test
+    void pneusAbaixoDe20PorCentoEEmLento_naoContaComoEmRisco() {
+        // "o piloto não tiver lento no traçado com escapada vai escapar" — se já está em LENTO,
+        // pneus baixos não deveriam colocá-lo em risco (a tarefa de ficar lento já foi cumprida).
+        // Como a lógica de escapada não desvia mais o carro (D15), a única forma observável de
+        // "não está em risco" é o teste de habilidade preventivo nunca ser chamado.
+        registrarEscapada(criarEscapada(1, 301, 400));
+        Piloto piloto = criarPiloto(260, 1);
+        piloto.setModoPilotagem(Piloto.LENTO);
+        piloto.setStress(0);
+        piloto.getCarro().setPorcentagemDesgastePneus(15);
+
+        piloto.processaEscapadaDaPista();
+
+        assertEquals(1, piloto.getTracado(), "nada deveria mudar o traçado antes da entrada");
+        assertEquals(Piloto.LENTO, piloto.getModoPilotagem(), "modo não deveria ser alterado");
+        verify(controleJogo.getRandom(), never()).nextDouble();
+    }
+
+    @Test
+    void testePreventivoA100Indices_bemSucedido_viraLentoAntesDaJanelaDeComprometimento() {
+        registrarEscapada(criarEscapada(1, 300, 400));
+        Piloto piloto = criarPiloto(200, 1);
+        piloto.setModoPilotagem(Piloto.NORMAL);
+        piloto.setStress(0);
+        piloto.getCarro().setPorcentagemDesgastePneus(10);
+        piloto.setHabilidade(1000);
+        when(controleJogo.getRandom().nextDouble()).thenReturn(0.0);
+
+        piloto.processaEscapadaDaPista();
+
+        assertEquals(1, piloto.getTracado(), "teste preventivo bem-sucedido não deveria mudar o traçado, só o modo");
+        assertEquals(Piloto.LENTO, piloto.getModoPilotagem(),
+                "a 100 índices da entrada, com pneus baixos e teste de habilidade bem-sucedido, deveria virar LENTO preventivamente");
+    }
+
+    @Test
+    void testePreventivoBemSucedido_ficaLivreDaZonaMesmoQueModoSejaResetadoDepois() {
+        // A fonte de verdade de "já ficou livre" é o cache por zona/volta, não modoPilotagem —
+        // porque outra lógica de IA (processaIAnovoIndex) pode resetar o modo pra NORMAL antes do
+        // piloto alcançar a entrada, e mesmo assim ele não deveria escapar mais por essa zona.
+        registrarEscapada(criarEscapada(1, 300, 400));
+        Piloto piloto = criarPiloto(200, 1);
+        piloto.setModoPilotagem(Piloto.NORMAL);
+        piloto.setStress(0);
+        piloto.getCarro().setPorcentagemDesgastePneus(10);
+        piloto.setHabilidade(1000);
+        when(controleJogo.getRandom().nextDouble()).thenReturn(0.0);
+        piloto.processaEscapadaDaPista();
+        assertEquals(Piloto.LENTO, piloto.getModoPilotagem());
+
+        // Simula outra lógica de IA resetando o modo, e o piloto avançando até a entrada.
+        piloto.setModoPilotagem(Piloto.NORMAL);
+        piloto.setNoAtual(pista.get(300));
+
+        piloto.processaEscapadaDaPista();
+
+        assertEquals(1, piloto.getTracado(),
+                "mesmo com o modo resetado pra NORMAL por fora, o piloto não deveria escapar — já tinha ficado livre dessa zona nesta volta");
+    }
+
+    @Test
+    void testePreventivoFalha_naoTestaDeNovoNoGatilho_forcaEscapadaDireto() {
+        // Zona bem mais longa que a janela de retorno (100 índices) pra não confundir com o
+        // teste de habilidade SEPARADO de processaSaidaDaEscapada (retorno da escapada, fora do
+        // escopo desta mudança) — com uma zona curta, o retorno dispararia no mesmo ciclo da
+        // entrada e chamaria testeHabilidadePiloto() de novo, inflando a contagem verificada abaixo.
+        registrarEscapada(criarEscapada(1, 300, 500));
+        Piloto piloto = criarPiloto(260, 1);
+        piloto.setModoPilotagem(Piloto.NORMAL);
+        piloto.setStress(0);
+        piloto.getCarro().setPorcentagemDesgastePneus(10);
+        // habilidade padrão (0): teste de habilidade falha sempre.
+
+        piloto.processaEscapadaDaPista();
+        assertEquals(1, piloto.getTracado(), "aos 40 índices, comprometido, ainda não deveria ter alcançado a entrada");
+
+        // Se o gatilho testasse de novo aqui, habilidade máxima + nextDouble()=0.0 passaria
+        // sempre — isolando exatamente o comportamento sendo verificado (ausência de reteste).
+        piloto.setHabilidade(1000);
+        when(controleJogo.getRandom().nextDouble()).thenReturn(0.0);
+        piloto.setNoAtual(pista.get(300));
+        piloto.processaEscapadaDaPista();
+
+        assertEquals(5, piloto.getTracado(),
+                "sem sucesso no teste preventivo (a 40 índices), deveria forçar a escapada ao alcançar a entrada sem testar de novo, "
+                        + "mesmo com habilidade máxima agora e um teste hipotético que sempre passaria");
+    }
+
+    @Test
+    void testePreventivo_resetaAoMudarDeVolta_permitindoNovoTeste() {
+        registrarEscapada(criarEscapada(1, 300, 360));
+        Piloto piloto = criarPiloto(260, 1);
+        piloto.setModoPilotagem(Piloto.NORMAL);
+        piloto.setStress(0);
+        piloto.getCarro().setPorcentagemDesgastePneus(10);
+        // habilidade padrão (0): primeiro teste (na volta 0) falha sempre.
+
+        piloto.processaEscapadaDaPista();
+        assertEquals(Piloto.NORMAL, piloto.getModoPilotagem(), "primeiro teste (volta 0) deveria ter falhado, sem virar LENTO");
+
+        piloto.setNumeroVolta(1);
+        piloto.setHabilidade(1000);
+        when(controleJogo.getRandom().nextDouble()).thenReturn(0.0);
+
+        piloto.processaEscapadaDaPista();
+
+        assertEquals(Piloto.LENTO, piloto.getModoPilotagem(),
+                "na volta seguinte, o cache deveria ter sido limpo, permitindo um novo teste preventivo (que agora passa)");
+    }
+
+    @Test
     void gatilhoCegoExistente_continuaFuncionandoSemAlteracao() {
         // Regressão: o gatilho cego (stress+agressivo+curva baixa no traçado 0, empurrando
         // pra 1/2 aleatoriamente) não deveria ter sido alterado por esta mudança — roda em
@@ -466,6 +752,80 @@ class PilotoEscapadaAncoradaTracadoTest {
         piloto.processaEscapadaDaPista();
 
         assertEquals(1, piloto.getTracado(), "gatilho cego deveria continuar empurrando pro traçado 1 ou 2 quando em curva baixa no traçado 0");
+    }
+
+    @Test
+    void aposDerrapagemDoGatilhoCego_naoVoltaAutomaticamenteProTracadoZero() {
+        // Regressão do bug relatado pelo usuário: o gatilho cego manda o piloto de 0 pra 1/2
+        // (derrapagem por perda de controle, ver teste acima). No ciclo seguinte, se houvesse uma
+        // escapada à frente nesse traçado a mais de 40 índices (fora da antiga janela de
+        // comprometimento), a lógica de escapada tentava mudarTracado(0) pra evitar a zona —
+        // fazendo o piloto "se recompor" e voltar pro traçado seguro logo depois de ter perdido o
+        // controle, o que não faz sentido (ver D15 do design.md: quem decide voltar ao traçado 0
+        // é a lógica geral de condução/o jogador, nunca a lógica de escapada).
+        when(controleJogo.getRandom().intervalo(1, 2)).thenReturn(1);
+        registrarEscapada(criarEscapada(1, 340, 400));
+        Piloto piloto = criarPiloto(260, 0);
+        piloto.setModoPilotagem(Piloto.AGRESSIVO);
+        piloto.setStress(95);
+        piloto.getCarro().setPorcentagemDesgastePneus(10);
+        No noAtual = piloto.getNoAtual();
+        noAtual.setTipo(No.CURVA_BAIXA);
+
+        piloto.processaEscapadaDaPista();
+        assertEquals(1, piloto.getTracado(), "gatilho cego deveria ter mandado o piloto pro traçado 1 (derrapagem)");
+
+        // Ciclo seguinte: já não está mais em curva baixa (saiu da curva que causou a derrapagem),
+        // continua agressivo+estressado — a zona de escapada está a 80 índices (>40) à frente.
+        noAtual.setTipo(No.RETA);
+        piloto.processaEscapadaDaPista();
+
+        assertEquals(1, piloto.getTracado(),
+                "não deveria voltar automaticamente pro traçado 0 só porque há uma escapada à frente");
+    }
+
+    // ---- volta 1 usa exatamente a mesma regra das demais voltas (decisão explícita do usuário:
+    // reverte a tentativa de desligar a mecânica na volta 1 — ver tasks.md item 8a) ----
+
+    @Test
+    void volta1_mesmaRegraDeQualquerOutraVolta_escapaNormalmente() {
+        when(controleJogo.getNumVoltaAtual()).thenReturn(1);
+        registrarEscapada(criarEscapada(1, 300, 360));
+        Piloto piloto = criarPiloto(300, 1);
+        piloto.setModoPilotagem(Piloto.AGRESSIVO);
+        piloto.setStress(95);
+
+        piloto.processaEscapadaDaPista();
+
+        assertEquals(5, piloto.getTracado(),
+                "não deveria haver diferença de regra entre a volta 1 e as demais — agressivo+estressado na entrada escapa igual em qualquer volta");
+    }
+
+    @Test
+    void volta1_naoMudaDeTracadoAindaAntesDaEntrada_comoQualquerOutraVolta() {
+        when(controleJogo.getNumVoltaAtual()).thenReturn(1);
+        registrarEscapada(criarEscapada(1, 340, 400));
+        Piloto piloto = criarPiloto(260, 1);
+        piloto.setModoPilotagem(Piloto.NORMAL);
+        piloto.setStress(0);
+
+        piloto.processaEscapadaDaPista();
+
+        assertEquals(1, piloto.getTracado(), "longe da entrada, nada deveria mudar o traçado na volta 1, exatamente como em qualquer outra volta");
+    }
+
+    @Test
+    void volta1_retornoDoTracadoDeFugaFuncionaComoQualquerOutraVolta() {
+        when(controleJogo.getNumVoltaAtual()).thenReturn(1);
+        registrarEscapada(criarEscapada(1, 200, 360));
+        Piloto piloto = criarPiloto(280, 5);
+        piloto.setHabilidade(1000);
+        when(controleJogo.getRandom().nextDouble()).thenReturn(0.0);
+
+        piloto.processaEscapadaDaPista();
+
+        assertEquals(1, piloto.getTracado(),
+                "o retorno do traçado de fuga (processaSaidaDaEscapada) também não deveria ter regra diferente na volta 1");
     }
 
 }

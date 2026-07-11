@@ -1412,6 +1412,9 @@ public class Piloto implements Serializable, PilotoSuave {
      * impedem a saida mesmo com o tracado do lado totalmente vazio.
      */
     boolean tentarEscaparFilaIndiana() {
+        if (isJogadorHumano()) {
+            return false;
+        }
         if (ciclosPresoFila < 8) {
             return false;
         }
@@ -1561,6 +1564,32 @@ public class Piloto implements Serializable, PilotoSuave {
     /** Se o piloto estava no traçado de fuga (4/5) no ciclo anterior — usado só para detectar a transição de saída e restaurar modo/giro. */
     private boolean estavaNoTracadoDeFuga;
 
+    /**
+     * Resultado (passou/falhou) do único teste de habilidade de cada
+     * {@link ObjetoEscapada} já resolvida nesta volta, feito assim que o
+     * piloto fica "em risco" (ver {@link #emRiscoDeEscapada()}) dentro da
+     * janela de 100 índices da entrada — ver
+     * {@link #processaEscapadaAncoradaAoTracado()}. Só uma entrada por
+     * zona por volta: uma vez presente aqui, a zona não é testada de novo
+     * até a volta mudar. É a fonte de verdade de "já ficou livre desta
+     * escapada nesta volta" — não depende de {@code modoPilotagem}
+     * continuar {@code LENTO}, porque outra lógica (ex.:
+     * {@code processaIAnovoIndex}) pode resetar o modo pra NORMAL antes do
+     * piloto alcançar a entrada.
+     */
+    private final Map<ObjetoEscapada, Boolean> resultadoTesteEscapadaPorZonaNestaVolta = new HashMap<>();
+    /** Volta em que {@link #resultadoTesteEscapadaPorZonaNestaVolta} foi populado pela última vez — usada só pra saber quando limpar o cache ao virar a volta. */
+    private int numeroVoltaDoCacheDeTesteEscapada = -1;
+
+    /** Limpa {@link #resultadoTesteEscapadaPorZonaNestaVolta} quando a volta muda, sem precisar de nenhum outro gatilho externo de reset. */
+    private void garanteCacheDeTesteEscapadaDaVoltaAtual() {
+        int voltaAtual = getNumeroVolta();
+        if (voltaAtual != numeroVoltaDoCacheDeTesteEscapada) {
+            resultadoTesteEscapadaPorZonaNestaVolta.clear();
+            numeroVoltaDoCacheDeTesteEscapada = voltaAtual;
+        }
+    }
+
     public void processaEscapadaDaPista() {
         if (controleJogo.isSafetyCarNaPista()) {
             return;
@@ -1588,7 +1617,7 @@ public class Piloto implements Serializable, PilotoSuave {
                 modoPilotagemAntesDaFuga = modoPilotagem;
                 giroAntesDaFuga = getCarro().getGiro();
             }
-            ganho *= 0.40;
+            ganho *= 0.60;
             getCarro().setGiro(Carro.GIRO_MIN_VAL);
             setModoPilotagem(LENTO);
         } else if (estavaNoTracadoDeFuga) {
@@ -1642,8 +1671,27 @@ public class Piloto implements Serializable, PilotoSuave {
      * relatado onde carros em qualquer ponto dentro do intervalo da zona —
      * por exemplo após uma troca de traçado lateral no meio dela, sem
      * relação nenhuma com a entrada — eram forçados a escapar).
+     * <p>
+     * Aumentado de 20 pra 150 (bug relatado: em Interlagos, com
+     * {@code Global.FORCAR_ESCAPADA_TESTE} ativo, algumas zonas não
+     * escapavam — parecia aleatório entre voltas). Causa raiz: 20 é menor
+     * que o {@code ganho} máximo real de um único ciclo (~50-55, ex.:
+     * reta com potência+aerodinâmica testados com sucesso, ou curva com
+     * pneu macio "quente" — ver {@code Piloto.calculaModificadorPrincipal}/
+     * {@code Carro.calculaModificadorPneu}). Isso permitia o índice, num
+     * salto só, sair de "ainda não chegou" (distância positiva pequena)
+     * direto pra "muito além" (distância negativa maior que -20) sem nunca
+     * passar por um ciclo em que a escapada fosse disparada — já que o
+     * ganho tem componentes aleatórios (testes de habilidade, DRS/ERS,
+     * pneu), isso variava de piloto pra piloto e de volta pra volta, dando
+     * a impressão de comportamento aleatório. 150 dá margem confortável
+     * acima do ganho máximo real, e ainda fica bem abaixo da largura típica
+     * das zonas de escapada reais (ex.: Interlagos tem zonas de 451 a 995
+     * índices), então não reintroduz o bug original (carro aparecendo bem
+     * no meio de uma zona, sem relação com a entrada, sendo forçado a
+     * escapar) na prática.
      */
-    private static final int TOLERANCIA_INDICES_ENTRADA_JA_PASSADA = 20;
+    private static final int TOLERANCIA_INDICES_ENTRADA_JA_PASSADA = 150;
 
     /**
      * Reconecta a corrida ao novo modelo de {@link ObjetoEscapada} (ancorado
@@ -1651,10 +1699,39 @@ public class Piloto implements Serializable, PilotoSuave {
      * gatilho cego acima, sem alterá-lo (decisão explícita da mudança
      * escapada-ia-corrida-box-uniforme). Só relevante quando o piloto está
      * no traçado 1 ou 2, já que zonas de escapada nunca são ancoradas ao
-     * traçado 0. Não persiste estado entre ciclos: a cada chamada, recalcula
-     * do zero qual é a próxima escapada à frente no traçado atual. Piloto em
-     * modo LENTO nunca escapa; qualquer outro tem uma última chance via
-     * teste de habilidade no próprio gatilho (ver corpo do método).
+     * traçado 0. Não persiste estado entre ciclos (fora do cache de teste
+     * por volta): a cada chamada, recalcula do zero qual é a próxima
+     * escapada à frente no traçado atual. Piloto em modo LENTO nunca
+     * escapa.
+     * <p>
+     * Só quem está de fato "em risco" (ver {@link #emRiscoDeEscapada()}:
+     * agressivo+estressado, ou pneus abaixo de 20%) pode ser forçado a
+     * escapar — um piloto normal que simplesmente esteja cruzando o
+     * traçado 1/2 quando alcança uma zona NÃO é testado e NÃO escapa
+     * (correção de bug relatado: sem essa restrição, como a lógica não
+     * desvia mais o carro pra longe da zona — ver D15 do design.md —, todo
+     * piloto que passasse pelo traçado 1/2 numa escapada acabava sendo
+     * forçado por esse teste, dando a impressão de que
+     * {@code FORCAR_ESCAPADA_TESTE} estivesse sempre ligada). Um único
+     * teste de habilidade por zona por volta (ver
+     * {@link #resultadoTesteEscapadaPorZonaNestaVolta}): assim que o
+     * piloto fica em risco em qualquer ponto dentro da janela de detecção
+     * da zona ({@code distancia} entre -150 e 100, a mesma janela usada
+     * pra achar a escapada), decide de uma vez se ele se salva (LENTO,
+     * livre da zona pelo resto da volta) ou fica marcado pra escapar
+     * (força {@code mudarTracado} assim que {@code distancia <= 0} —
+     * inclusive no mesmo ciclo, se o piloto já tiver saltado a entrada de
+     * uma vez). Uma vez resolvida (com ou sem sucesso) ou definitivamente
+     * fora de alcance, a zona não é mais reavaliada nesta volta; só na
+     * volta seguinte.
+     * <p>
+     * NÃO tenta desviar pro traçado 0 pra evitar a zona (removido — ver
+     * D15 do design.md): decidir se/quando sair do traçado 1/2 de volta pro
+     * 0 é responsabilidade exclusiva da lógica geral de condução
+     * ({@code processaMudarTracado()}/{@code processaIAnovoIndex()} pra
+     * IA, ou do próprio jogador em modo manual) — a lógica de escapada só
+     * decide se o piloto escapa ou não a partir de onde ele já está,
+     * nunca dirige o carro pra longe da zona por conta própria.
      */
     private void processaEscapadaAncoradaAoTracado() {
         int tracadoAtual = getTracado();
@@ -1673,38 +1750,83 @@ public class Piloto implements Serializable, PilotoSuave {
             /** Entrada já passada há tempo (não foi um mero salto de 1 ciclo): essa zona não vale mais. */
             return;
         }
-        boolean comprometido = distancia <= 40
-                && ((AGRESSIVO.equals(modoPilotagem) && getStress() > Global.LIMITE_ESTRESSE_PARA_ESCAPADA_ANCORADA)
-                        || Global.FORCAR_ESCAPADA_TESTE);
-        if (!comprometido && distancia > 0) {
-            /** Tenta evitar a zona voltando pro tracado central; se falhar, tenta de novo nos proximos ciclos. */
-            mudarTracado(0);
+
+        garanteCacheDeTesteEscapadaDaVoltaAtual();
+
+        /**
+         * FORCAR_ESCAPADA_TESTE força a escapada incondicionalmente,
+         * inclusive por cima da exceção de LENTO e da checagem de risco —
+         * é a flag de validação, o objetivo é garantir que a mecânica
+         * dispare de verdade em qualquer cenário controlado, sem exceção
+         * nenhuma (nem geometria além do traçado/janela, nem modo do
+         * piloto, nem estar "em risco").
+         */
+        if (Global.FORCAR_ESCAPADA_TESTE) {
+            if (distancia <= 0 && getTracado() == tracadoAtual) {
+                mudarTracado(laneDeFugaDoTracadoOrigem(tracadoAtual), true);
+            }
             return;
         }
-        if (distancia <= 0 && getTracado() == tracadoAtual) {
-            /**
-             * Chegou na entrada (comprometido ou por ter falhado em
-             * desviar). Piloto em modo LENTO nunca escapa, mesmo com stress
-             * acima do limite — e qualquer piloto controlado pela IA tem uma
-             * última chance de se salvar: um teste de habilidade pra mudar
-             * pra LENTO no próprio gatilho da escapada; se passar, não
-             * escapa por essa zona (fica em LENTO, mas continua no traçado
-             * 1/2). Jogador humano em modo manual NÃO recebe esse teste
-             * automático — a tarefa de entrar em modo LENTO pra não escapar
-             * é dele, não da IA. Só se o teste falhar (ou não se aplicar,
-             * por ser jogador humano manual) é que a escapada é forçada.
-             */
-            if (LENTO.equals(modoPilotagem)) {
+
+        if (LENTO.equals(modoPilotagem)) {
+            return;
+        }
+
+        Boolean resultado = resultadoTesteEscapadaPorZonaNestaVolta.get(zona);
+        if (resultado == null) {
+            if (!emRiscoDeEscapada()) {
+                /**
+                 * Nunca ficou em risco enquanto a zona ainda era alcançável
+                 * (dentro da janela de detecção) — passa pela zona sem
+                 * teste e sem escapar; só reavaliado na próxima volta.
+                 */
                 return;
             }
+            /**
+             * Jogador humano em modo manual NÃO recebe o teste de
+             * habilidade automático — a tarefa de entrar em modo LENTO pra
+             * não escapar é dele, não da IA; fica marcado pra escapar
+             * direto, sem chance de se salvar.
+             */
             boolean jogadorHumanoManual = isJogadorHumano()
                     && Global.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual());
-            if (!jogadorHumanoManual && testeHabilidadePiloto()) {
+            boolean passou = !jogadorHumanoManual && testeHabilidadePiloto();
+            resultadoTesteEscapadaPorZonaNestaVolta.put(zona, passou);
+            if (passou) {
                 setModoPilotagem(LENTO);
-                return;
             }
+            resultado = passou;
+        }
+
+        if (Boolean.TRUE.equals(resultado)) {
+            /** Já se salvou por essa zona nesta volta — fica livre dela até a volta mudar. */
+            return;
+        }
+
+        if (distancia <= 0 && getTracado() == tracadoAtual) {
             mudarTracado(laneDeFugaDoTracadoOrigem(tracadoAtual), true);
         }
+    }
+
+    /**
+     * Condições de negócio que colocam o piloto "em risco" de se comprometer
+     * com uma escapada (só quem está em risco pode ser testado/forçado a
+     * escapar — ver {@link #processaEscapadaAncoradaAoTracado()}):
+     * agressivo com estresse acima do limite (regra original), ou pneus
+     * abaixo de 20% enquanto o piloto não estiver em modo LENTO (nova
+     * regra — pneus gastos também colocam o piloto em risco de escapar,
+     * independente de stress/modo). Um piloto que nunca satisfizer nenhuma
+     * dessas condições enquanto ainda dá tempo (antes de passar pela
+     * entrada) simplesmente não é testado e não escapa por essa zona.
+     * {@link Global#FORCAR_ESCAPADA_TESTE} NÃO entra aqui de propósito —
+     * ela pula essa checagem inteiramente (ver chamador), pra permanecer
+     * determinística.
+     */
+    private boolean emRiscoDeEscapada() {
+        boolean agressivoEEstressado = AGRESSIVO.equals(modoPilotagem)
+                && getStress() > Global.LIMITE_ESTRESSE_PARA_ESCAPADA_ANCORADA;
+        boolean pneusBaixos = carro.getPorcentagemDesgastePneus() < 20 && !LENTO.equals(modoPilotagem);
+        return agressivoEEstressado || pneusBaixos;
     }
 
     /**
@@ -1730,6 +1852,31 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     /**
+     * Tolerância (em índices de nó) para o índice atual já ter passado
+     * ligeiramente de {@code indiceSaida} no mesmo ciclo em que a ultrapassa
+     * — mesmo problema, no lado da SAÍDA, que
+     * {@link #TOLERANCIA_INDICES_ENTRADA_JA_PASSADA} resolve no lado da
+     * entrada (ver javadoc dela pra a mecânica completa do salto de ciclo).
+     * Bug relatado: sem essa tolerância (checagem exigia
+     * {@code distanciaSaida >= 0} exato), um piloto cujo teste de
+     * habilidade falhasse em todos os ciclos dentro da janela de retorno
+     * (mais provável em pilotos de habilidade baixa — poucos ciclos, cada
+     * um com chance {@code habilidade/1000}) podia ter o índice ultrapassar
+     * {@code indiceSaida} de uma vez, e a partir daí
+     * {@link #escapadaAtivaNoTracadoDeFuga(int)} parava de encontrar a zona
+     * (exige {@code indiceAtual <= indiceSaida}) — o piloto ficava preso no
+     * traçado de fuga (4/5) pra sempre, já que nada mais no jogo o traz de
+     * volta fora dessa lógica. Diferente do lado da entrada, aqui um valor
+     * generoso não tem custo (não reintroduz nenhum "forçar
+     * indevidamente" — só continua tentando trazer de volta um piloto que já
+     * está, por definição, no traçado de fuga): 100, do mesmo tamanho da
+     * janela de retorno, cobre com folga o avanço máximo real por ciclo
+     * nesse trecho (~40-60, já reduzido pelo multiplicador de 0.8 do ganho
+     * enquanto no traçado de fuga — ver {@code processaEscapadaDaPista}).
+     */
+    private static final int TOLERANCIA_INDICES_SAIDA_JA_PASSADA = 100;
+
+    /**
      * Reconecta o RETORNO da escapada: enquanto o piloto está no traçado de
      * fuga (4 ou 5), monitora a zona de {@link ObjetoEscapada} ativa nesse
      * traçado e, a 100 índices de nó ou menos do fim dela
@@ -1750,7 +1897,7 @@ public class Piloto implements Serializable, PilotoSuave {
             return;
         }
         int distanciaSaida = zona.getIndiceSaida() - getNoAtual().getIndex();
-        if (distanciaSaida > 100 || distanciaSaida < 0) {
+        if (distanciaSaida > 100 || distanciaSaida < -TOLERANCIA_INDICES_SAIDA_JA_PASSADA) {
             return;
         }
         if (testeHabilidadePiloto()) {
@@ -1762,8 +1909,13 @@ public class Piloto implements Serializable, PilotoSuave {
      * {@link ObjetoEscapada} cujo traçado de fuga correspondente
      * ({@link #laneDeFugaDoTracadoOrigem(int)} do seu {@code tracadoOrigem})
      * é {@code tracadoFuga}, e cujo intervalo
-     * [{@code indiceEntrada}, {@code indiceSaida}] cobre o índice atual do
-     * piloto — ou {@code null} se nenhuma.
+     * [{@code indiceEntrada}, {@code indiceSaida} +
+     * {@link #TOLERANCIA_INDICES_SAIDA_JA_PASSADA}] cobre o índice atual do
+     * piloto — ou {@code null} se nenhuma. A tolerância além de
+     * {@code indiceSaida} existe pro mesmo motivo documentado nela: sem
+     * ela, um piloto que ultrapassasse a saída antes de um teste de
+     * habilidade bem-sucedido nunca mais encontraria essa zona aqui, e
+     * ficaria preso no traçado de fuga.
      */
     private ObjetoEscapada escapadaAtivaNoTracadoDeFuga(int tracadoFuga) {
         List<ObjetoPista> objetos = controleJogo.getCircuito().getObjetos();
@@ -1783,7 +1935,8 @@ public class Piloto implements Serializable, PilotoSuave {
             if (escapada.getIndiceEntrada() < 0 || escapada.getIndiceSaida() <= escapada.getIndiceEntrada()) {
                 continue;
             }
-            if (indiceAtual < escapada.getIndiceEntrada() || indiceAtual > escapada.getIndiceSaida()) {
+            if (indiceAtual < escapada.getIndiceEntrada()
+                    || indiceAtual > escapada.getIndiceSaida() + TOLERANCIA_INDICES_SAIDA_JA_PASSADA) {
                 continue;
             }
             return escapada;
@@ -2191,13 +2344,33 @@ public class Piloto implements Serializable, PilotoSuave {
         sofreuDanoAereofolioNesteTick = false;
     }
 
+    /**
+     * Autopilot = IA decidindo giro/ERS/DRS/ataque-defesa e a escolha
+     * proativa de traçado no lugar do jogador humano. Sempre desligado
+     * online (o jogador humano nunca é pilotado pela IA em multiplayer,
+     * mesmo que o automaticoManual da partida esteja em AUTOMATICO) e no
+     * solo em modo manual.
+     */
+    private boolean autopilotDesligado() {
+        return isJogadorHumano() &&
+                (Global.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual())
+                        || controleJogo instanceof JogoServidor);
+    }
+
+    /**
+     * Leitura pura (sem decrementar): o decremento de manualTemporario ja
+     * acontece uma vez por ciclo em processaIAnovoIndex(), que roda antes
+     * de processaMudarTracado() no pipeline de processaNovoIndex().
+     */
+    private boolean autopilotAtivo() {
+        return !autopilotDesligado() && !isManualTemporario();
+    }
+
     private void processaIAnovoIndex() {
         if (colisao != null || isRecebeuBanderada() || controleJogo.isModoQualify()) {
             return;
         }
-        if (isJogadorHumano() &&
-                (Global.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual())
-                        || controleJogo instanceof JogoServidor)) {
+        if (autopilotDesligado()) {
             return;
         }
 
@@ -2286,14 +2459,11 @@ public class Piloto implements Serializable, PilotoSuave {
         return false;
     }
 
-    private void processaMudarTracado() {
+    void processaMudarTracado() {
         if (isRecebeuBanderada()) {
             return;
         }
         if (controleJogo.isModoQualify()) {
-            return;
-        }
-        if (isJogadorHumano() && Global.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual())) {
             return;
         }
         if (!noAtual.verificaRetaOuLargada() && !controleJogo.isSafetyCarNaPista()) {
@@ -2350,9 +2520,9 @@ public class Piloto implements Serializable, PilotoSuave {
             /**
              * Preso em fila indiana com tracado lateral livre: ja mudou.
              */
-        } else if ((evitaBaterCarroFrente && carroPilotoDaFrenteRetardatario != null
+        } else if (autopilotAtivo() && ((evitaBaterCarroFrente && carroPilotoDaFrenteRetardatario != null
                 && getTracado() == carroPilotoDaFrenteRetardatario.getPiloto().getTracado())
-                || calculaDiffParaProximoRetardatario < (testeHabilidadePiloto() ? 100 : 150)) {
+                || calculaDiffParaProximoRetardatario < (testeHabilidadePiloto() ? 100 : 150))) {
             desviaPilotoNaFrente(this, carroPilotoDaFrenteRetardatario.getPiloto());
         } else if (controleJogo.getNumVoltaAtual() > 1 && !isJogadorHumano() && testeHabilidadePiloto()
                 && pontoEscape != null && calculaDiffParaProximoRetardatario > 150
@@ -2368,7 +2538,7 @@ public class Piloto implements Serializable, PilotoSuave {
                     mudarTracado(1);
                 }
             }
-        } else if ((calculaDiffParaProximoRetardatarioMesmoTracado < calculaDiferencaParaAnterior
+        } else if (autopilotAtivo() && (calculaDiffParaProximoRetardatarioMesmoTracado < calculaDiferencaParaAnterior
                 && calculaDiffParaProximoRetardatarioMesmoTracado < (testeHabilidadePilotoCarro() ? 150 : 200))) {
             desviaPilotoNaFrente(this, carroPilotoDaFrenteRetardatario.getPiloto());
         } else if (!isJogadorHumano() && carroPilotoAtras != null && mudouTracadoReta <= 1
@@ -2672,15 +2842,53 @@ public class Piloto implements Serializable, PilotoSuave {
             p5 = controleJogo.getCircuito().getPista5Full().get(noAtual.getIndex()) != null
                     ? controleJogo.getCircuito().getPista5Full().get(noAtual.getIndex()).getPoint()
                     : p1;
+            /**
+             * Fallback de p4 é p2 (não p1) — mesmo padrão já usado em
+             * PainelCircuito.centralizaCarroDesenhar. Consistente com o
+             * mapeamento 2→4 (só retorna a 2, nunca a 1): fora do trecho da
+             * escapada (pista4Full nulo nesse índice), a posição de
+             * referência do traçado de fuga 4 é a origem 2, não 1 (esse
+             * "p1" aqui era um bug de copy-paste da linha de p5 acima, onde
+             * p1 é o fallback correto).
+             */
             p4 = controleJogo.getCircuito().getPista4Full().get(noAtual.getIndex()) != null
                     ? controleJogo.getCircuito().getPista4Full().get(noAtual.getIndex()).getPoint()
-                    : p1;
+                    : p2;
         }
         if (p4 == null) {
             p4 = p2;
         }
         if (p5 == null) {
             p5 = p1;
+        }
+
+        /**
+         * calculaAngulo acima (linha ~2773) foi calculado só a partir de
+         * "lista" (pista normal/base, traçado 0) — errado quando o piloto
+         * está de fato no traçado de fuga 4/5, cuja geometria
+         * (pista4Full/pista5Full) pode curvar de um jeito bem diferente da
+         * pista base no mesmo intervalo de índices. Sem isso, a caixa de
+         * colisão (trazeiraColisao/diateiraColisao, calculadas abaixo a
+         * partir de calculaAngulo) fica orientada com o ângulo da pista
+         * base em vez do ângulo real da escapada — mesmo bug já corrigido
+         * na renderização (PainelCircuito.centralizaCarroDesenhar) e já
+         * tratado corretamente pelo cliente web (vdp.js,
+         * vdp_desenhaCarrosCima). Recalcula usando os mesmos índices
+         * traz/frente já resolvidos acima, mas lidos de
+         * pista4Full/pista5Full (com o mesmo fallback pra
+         * pista2Full/pista1Full usado para p4/p5, pros índices fora do
+         * trecho da escapada).
+         */
+        if (!noAtual.isBox() && (getTracado() == 4 || getTracado() == 5)) {
+            List<No> pistaFuga = getTracado() == 4 ? controleJogo.getCircuito().getPista4Full()
+                    : controleJogo.getCircuito().getPista5Full();
+            List<No> pistaFugaFallback = getTracado() == 4 ? controleJogo.getCircuito().getPista2Full()
+                    : controleJogo.getCircuito().getPista1Full();
+            No noTraz = pistaFuga.get(traz) != null ? pistaFuga.get(traz) : pistaFugaFallback.get(traz);
+            No noFrente = pistaFuga.get(frente) != null ? pistaFuga.get(frente) : pistaFugaFallback.get(frente);
+            Point trazFuga = noTraz.getPoint();
+            Point frenteFuga = noFrente.getPoint();
+            calculaAngulo = GeoUtil.calculaAngulo(frenteFuga, trazFuga, 0);
         }
         if (getTracado() == 0) {
             carx = p.x;
@@ -3038,7 +3246,27 @@ public class Piloto implements Serializable, PilotoSuave {
         return carro.testePotencia() && testeHabilidadePiloto();
     }
 
+    /**
+     * A "escada" de ganho (reta/curva alta/curva baixa) normalmente é
+     * escolhida pelo tipo do nó ATUAL do piloto — mas {@code noAtual} vem
+     * sempre da pista principal ({@code processarCiclo()}), pelo mesmo
+     * índice, independente do traçado lateral em que o carro está. Ou
+     * seja, o tipo do nó interpolado da própria escapada
+     * ({@code pista4Full}/{@code pista5Full}, sempre {@code No.RETA}) NUNCA
+     * é consultado aqui — quem decide a escada real é o trecho da pista
+     * principal que fica "por baixo" da zona de escapada, o que varia por
+     * zona e por circuito (bug relatado: numa das zonas de Interlagos, a
+     * pista principal é majoritariamente reta, deixando a escapada rápida
+     * demais mesmo com o multiplicador de 0.4 em cima). Corrigido forçando
+     * a escada de curva baixa (a mais lenta) sempre que o piloto está de
+     * fato no traçado de fuga (4/5), sem depender do que a pista principal
+     * tem naquele índice.
+     */
     private int calculaModificadorPrincipal() {
+        boolean noTracadoDeFuga = getTracado() == 4 || getTracado() == 5;
+        boolean reta = !noTracadoDeFuga && noAtual.verificaRetaOuLargada();
+        boolean curvaAlta = !noTracadoDeFuga && getNoAtual().verificaCurvaAlta();
+        boolean curvaBaixa = noTracadoDeFuga || getNoAtual().verificaCurvaBaixa();
         double comparador = 0.3;
         if (Carro.GIRO_MAX_VAL == getCarro().getGiro()) {
             comparador += getCarro().testePotencia() ? 0.3 : 0.2;
@@ -3049,7 +3277,7 @@ public class Piloto implements Serializable, PilotoSuave {
         if (Carro.GIRO_MIN_VAL == getCarro().getGiro()) {
             comparador += getCarro().testePotencia() ? 0.0 : -0.1;
         }
-        if (!noAtual.verificaRetaOuLargada()) {
+        if (!reta) {
             if (AGRESSIVO.equals(modoPilotagem)) {
                 comparador += testeHabilidadePiloto() ? 0.3 : 0.2;
             }
@@ -3063,26 +3291,24 @@ public class Piloto implements Serializable, PilotoSuave {
         if (usandoErs()) {
             comparador += 0.2;
         }
-        if (controleJogo.isChovendo() && !getNoAtual().verificaRetaOuLargada()) {
+        if (controleJogo.isChovendo() && !reta) {
             comparador -= testeHabilidadePilotoAerodinamica() ? 0.2 : 0.3;
         }
-        if (getNoAtual().verificaRetaOuLargada() && testeHabilidadePiloto() && getCarro().testePotencia()
-                && getCarro().testeAerodinamica()) {
+        if (reta && testeHabilidadePiloto() && getCarro().testePotencia() && getCarro().testeAerodinamica()) {
             return (controleJogo.getRandom().nextDouble() < comparador ? 50 : 45);
-        } else if (getNoAtual().verificaRetaOuLargada() && getCarro().testePotencia()
-                && getCarro().testeAerodinamica()) {
+        } else if (reta && getCarro().testePotencia() && getCarro().testeAerodinamica()) {
             return (controleJogo.getRandom().nextDouble() < comparador ? 45 : 40);
-        } else if (getNoAtual().verificaRetaOuLargada() && getCarro().testePotencia()) {
+        } else if (reta && getCarro().testePotencia()) {
             return (controleJogo.getRandom().nextDouble() < comparador ? 40 : 35);
-        } else if (getNoAtual().verificaRetaOuLargada()) {
+        } else if (reta) {
             return (controleJogo.getRandom().nextDouble() < comparador ? 35 : 30);
-        } else if (getNoAtual().verificaCurvaAlta() && testeHabilidadePilotoAerodinamica()) {
+        } else if (curvaAlta && testeHabilidadePilotoAerodinamica()) {
             return (controleJogo.getRandom().nextDouble() < comparador ? 30 : 25);
-        } else if (getNoAtual().verificaCurvaAlta()) {
+        } else if (curvaAlta) {
             return (controleJogo.getRandom().nextDouble() < comparador ? 25 : 20);
-        } else if (getNoAtual().verificaCurvaBaixa() && testeHabilidadePilotoFreios()) {
+        } else if (curvaBaixa && testeHabilidadePilotoFreios()) {
             return (controleJogo.getRandom().nextDouble() < comparador ? 20 : 15);
-        } else if (getNoAtual().verificaCurvaBaixa()) {
+        } else if (curvaBaixa) {
             return (controleJogo.getRandom().nextDouble() < comparador ? 15 : 10);
         } else {
             return (controleJogo.getRandom().nextDouble() < comparador) ? 10 : 5;
@@ -3338,7 +3564,20 @@ public class Piloto implements Serializable, PilotoSuave {
         if (getTracado() == 5 && (mudarTracado == 0 || mudarTracado == 2)) {
             return false;
         }
-        if (getTracado() == 0 && (mudarTracado == 4 || mudarTracado == 5)) {
+        /**
+         * Entrar em 4/5 (traçados de fuga) só é permitido via mudança forçada
+         * — é assim que toda a lógica legítima de escapada entra neles (ver
+         * processaEscapadaAncoradaAoTracado()/escapaTracado(), sempre com
+         * forcaMudar=true). Sem essa checagem, nada impedia origem 1 ou 2
+         * (só a origem 0 era bloqueada abaixo antes desta correção) —
+         * bug relatado: um piloto podia ser empurrado pra 4/5 por lógica
+         * totalmente alheia à escapada, ex. o piloto copiando o traçado do
+         * carro logo atrás (processaMudarTracado(), ramo "mudouTracadoReta")
+         * quando esse carro de trás por acaso estivesse escapando — ou via
+         * a API do jogador (ControleJogosServer.mudarTracado()), que nunca
+         * valida o valor recebido do cliente.
+         */
+        if (!forcaMudar && (mudarTracado == 4 || mudarTracado == 5)) {
             return false;
         }
         if (getTracado() == mudarTracado) {
