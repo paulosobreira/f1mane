@@ -68,7 +68,7 @@
 
 **(discutido com o usuário — 8b implementada; as demais aguardam decisão)**
 
-- [ ] 8a. Ignorar a lógica nova inteira (`processaEscapadaAncoradaAoTracado`/`processaSaidaDaEscapada`) durante a volta 1 (`controleJogo.getNumVoltaAtual() <= 1`), no mesmo espírito de `iaTentaUsarDRS()` (`getNumVoltaAtual() > 1`) — volta 1 tem caos de largada com muita troca de traçado lateral, inflando a chance de coincidir com uma zona.
+- [ ] 8a. **Implementado e depois revertido.** Tentativa: ignorar a lógica nova inteira (`processaEscapadaAncoradaAoTracado`/`processaSaidaDaEscapada`) durante a volta 1 (`controleJogo.getNumVoltaAtual() <= 1`), no mesmo espírito de `iaTentaUsarDRS()`. **Decisão final do usuário (revertida): não deve haver diferença nenhuma de regra entre a volta 1 e as demais — a mecânica de escapada usa sempre a mesma regra, em qualquer volta.** Guard removido dos dois métodos; testes trocados por `volta1_mesmaRegraDeQualquerOutraVolta_escapaNormalmente`, `volta1_tentaDesviarNormalmenteComoQualquerOutraVolta`, `volta1_retornoDoTracadoDeFugaFuncionaComoQualquerOutraVolta` em `PilotoEscapadaAncoradaTracadoTest`, confirmando ausência de tratamento especial pra volta 1.
 - [x] 8b. Novo `Global.LIMITE_ESTRESSE_PARA_ESCAPADA_ANCORADA` (default 90, igual ao antigo), usado só em `processaEscapadaAncoradaAoTracado` no lugar de `getValorLimiteStressePararErrarCurva()`/`Global.LIMITE_ESTRESSE_PARA_RERRAR_CURVA` — o gatilho cego antigo continua usando o threshold original, intocado; agora dá pra calibrar a mecânica nova sem afetar a antiga.
 - [ ] 8c. Gate de probabilidade adicional (ex.: `controleJogo.getRandom().nextDouble() < CHANCE_ESCAPAR`) mesmo quando comprometido, pra nem todo comprometimento resultar em escapada de fato.
 - [ ] 8d. Tornar a tentativa de desvio (`mudarTracado(0)` no não-comprometido) forçada (`forcaMudar=true`), pra ter mais sucesso e gerar menos "falhas de desvio" que acabam em escapada.
@@ -105,8 +105,69 @@
 - [x] 12.5 Spec (`escapada-ia-corrida/spec.md`) e design (`design.md`, D12, supersede D4) atualizados.
 - [x] 12.6 `mvn test` completo rodado novamente — 0 falhas.
 
+## 13. Tolerância análoga no lado da saída (piloto podia ficar preso no traçado de fuga pra sempre)
+
+**(achado ao investigar a causa raiz do bug relatado em Interlagos que motivou o aumento da tolerância de entrada — item 9 — mesmo mecanismo, dessa vez no retorno)**
+
+- [x] 13.1 Causa raiz confirmada: `processaSaidaDaEscapada()` exigia `distanciaSaida >= 0` exato, e `escapadaAtivaNoTracadoDeFuga()` só considerava a zona ativa enquanto `indiceAtual <= indiceSaida`. Um piloto cujo `testeHabilidadePiloto()` falhasse durante toda a janela de retorno podia ter o índice ultrapassar `indiceSaida` num salto só (mesmo mecanismo do item 9, com avanço reduzido pelo multiplicador de ganho 0.4 do traçado de fuga — ~20-30 por ciclo em vez de ~50-55), ficando preso no traçado de fuga pra sempre (nada mais no jogo o traz de volta fora dessa lógica).
+- [x] 13.2 Nova constante `Piloto.TOLERANCIA_INDICES_SAIDA_JA_PASSADA = 100`, usada em `escapadaAtivaNoTracadoDeFuga()` (zona ativa até `indiceSaida + 100`) e `processaSaidaDaEscapada()` (`distanciaSaida` aceito até `-100`).
+- [x] 13.3 Testes adicionados em `PilotoEscapadaAncoradaTracadoTest`: `saidaDaEscapada_saltoGrandeAlemDoFim_dentroDaTolerancia_aindaTentaVoltar`, `saidaDaEscapada_muitoAlemDoFim_foraDaTolerancia_naoTentaVoltar`.
+- [x] 13.4 Spec (`escapada-ia-corrida/spec.md`, novo requisito) e design (`design.md`, D14) atualizados.
+- [x] 13.5 `mvn test` completo rodado novamente — 0 falhas.
+
+## 14. Remove a tentativa de desvio (mudarTracado(0)) — lógica de escapada nunca mais dirige o carro
+
+**(bug relatado pelo usuário: "derrapagem" observada do traçado 1/2 pro 0, que na visão dele não deveria acontecer)**
+
+- [x] 14.1 Causa raiz confirmada: o gatilho cego manda o piloto de 0 pra 1/2 (derrapagem) e retorna no mesmo ciclo, sem rodar a lógica de escapada nova. No ciclo seguinte, com o piloto ainda agressivo+estressado mas a escapada a mais de 40 índices (comum, já que a janela de detecção vai até 100), a tentativa de desvio (D3) mandava ele de volta pro traçado 0 — parecendo uma "derrapagem" na direção errada.
+- [x] 14.2 Decisão do usuário: a lógica de escapada não deve dirigir o carro pra longe da zona por conta própria — quem decide isso é a condução geral (`processaMudarTracado`/`processaIAnovoIndex` pra IA, ou o jogador em modo manual). Bloco `mudarTracado(0)` (e a variável `comprometido`, que só existia pra essa decisão) removidos inteiramente de `processaEscapadaAncoradaAoTracado()`.
+- [x] 14.3 Testes ajustados em `PilotoEscapadaAncoradaTracadoTest` (6 testes que dependiam do desvio reescritos pra confirmar ausência de movimento antes da entrada) e novo teste `aposDerrapagemDoGatilhoCego_naoVoltaAutomaticamenteProTracadoZero` cobrindo o cenário exato do bug relatado.
+- [x] 14.4 Spec (`escapada-ia-corrida/spec.md`, Goals e requisitos atualizados) e design (`design.md`, D15, supersede D3) atualizados.
+- [x] 14.5 `mvn test` completo rodado novamente — 0 falhas.
+
+## 15. Ganho na escapada força escada de curva baixa (independente do trecho real da pista principal)
+
+**(bug relatado pelo usuário: mesmo com o multiplicador de 0.4, o traçado de fuga ainda parecia rápido demais)**
+
+- [x] 15.1 Hipótese inicial (`no.setTipo(No.RETA)` em `Circuito.preencherTracadoEscapada()`) verificada e descartada antes de implementar — esse campo nunca é lido pra física, já que `Piloto.getNoAtual()` sempre vem da pista principal (mesmo índice), não de `pista4Full`/`pista5Full`.
+- [x] 15.2 Causa raiz confirmada empiricamente (circuito real carregado, tipos de nó contados nas 3 zonas de Interlagos): a escada de ganho usada na escapada é a do trecho da pista PRINCIPAL por baixo, que varia por zona — uma das zonas de Interlagos é 72% reta, herdando a escada mais rápida do jogo (30-50) mesmo dentro da escapada.
+- [x] 15.3 `Piloto.calculaModificadorPrincipal()` alterado: variáveis locais `reta`/`curvaAlta`/`curvaBaixa` substituem as chamadas diretas a `noAtual.verificaXxx()`, forçando `curvaBaixa=true` (e `reta`/`curvaAlta=false`) sempre que `getTracado() == 4 || 5`, independente do tipo real do nó.
+- [x] 15.4 Novo teste `PilotoGanhoTracadoDeFugaTest` (3 testes, usando `GameRandom(1)` pra determinismo): confirma ganho base 10 (curva baixa forçada) no traçado de fuga mesmo com nó reta por baixo, vs. 30 (reta) fora do traçado de fuga com o mesmo nó — regressão confirmada.
+- [x] 15.5 Spec (`escapada-ia-corrida/spec.md`, novo requisito) e design (`design.md`, D16) atualizados, incluindo a limitação aceita (modificadores de combustível/pneu em `Carro.calcularModificadorCarro()` ainda leem o tipo real do nó, fora do escopo desta correção).
+- [x] 15.6 `mvn test` completo rodado novamente — 0 falhas.
+
+## 16. Só piloto "em risco" pode ser testado/forçado a escapar (corrige efeito colateral do item 14)
+
+**(bug relatado pelo usuário, playtest em Interlagos: todo piloto estava escapando independente das regras, "como se `FORCAR_ESCAPADA_TESTE` estivesse sempre ligada")**
+
+- [x] 16.1 Causa raiz confirmada: o item 14 removeu a tentativa de desvio (`mudarTracado(0)`), que numa corrida real fazia a maioria dos pilotos NÃO comprometidos sair do traçado 1/2 antes de alcançar a entrada. A "última chance clássica" no gatilho, porém, sempre se aplicava a QUALQUER piloto (comprometido ou não) que chegasse lá — um teste de habilidade com no máximo ~10% de chance de sucesso (`habilidade/1000`). Sem a tentativa de desvio, praticamente todo piloto que cruzasse o traçado 1/2 numa zona passou a cair nesse teste de baixíssima chance e a escapar.
+- [x] 16.2 Decisão do usuário: só escapa quem está de fato "marcado pra escapar" — `(AGRESSIVO && stress > limite && !testeHabilidadePiloto())` OU `(pneu < 20% && !LENTO && !testeHabilidadePiloto())`. Um piloto normal que nunca ficar em risco não é testado e não escapa.
+- [x] 16.3 `processaEscapadaAncoradaAoTracado()` reescrito: teste preventivo (100 índices antes da entrada) e "última chance clássica" no gatilho unificados num único teste por zona por volta, gated por `emRiscoDeEscapada()`. Testa assim que o piloto fica em risco em qualquer ponto da janela de detecção da zona (-150 a 100, a mesma usada pra achar a zona); se falhar, fica marcado no cache e a escapada é forçada assim que `distancia <= 0` (preservando a tolerância de salto de ciclo do item 9).
+- [x] 16.4 Testes em `PilotoEscapadaAncoradaTracadoTest` ajustados: 2 testes que assumiam escapada de piloto NORMAL sem risco reescritos pra confirmar ausência de escapada (`pilotoNormal_naoEmRisco_...`), 2 novos testes cobrindo a escapada real de piloto em risco por pneus baixos (`pneusBaixos_...`), e 4 testes de teste-de-habilidade/jogador-humano ajustados pra usar pneus baixos como condição de risco. `mvn test` completo rodado novamente — 545 testes, 0 falhas.
+- [x] 16.5 Spec (`escapada-ia-corrida/spec.md`, requisitos unificados) e design (`design.md`, D17) atualizados.
+
+## 17. `mudarTracado()` só permite entrar em 4/5 via mudança forçada
+
+**(investigação pedida pelo usuário: suspeita de que um piloto da frente pudesse ser arrastado pro traçado de fuga por um piloto de trás que estava escapando)**
+
+- [x] 17.1 `desviaPilotoNaFrente()` (lógica de retardatário) confirmada segura — só atribui 0/1/2, nunca copia o traçado de outro carro. Vetor real encontrado em outro lugar: o ramo de defesa de posição `mudouTracadoReta` em `processaMudarTracado()` chama `mudarTracado(carroPilotoAtras.getPiloto().getTracado())` sem validar o valor copiado.
+- [x] 17.2 Causa raiz: `mudarTracado()` só bloqueava entrada em 4/5 partindo da origem 0; nada impedia origem 1 ou 2. Segundo vetor do mesmo problema encontrado na API do jogador (`ControleJogosServer.mudarTracado()`), que repassa o traçado vindo do cliente sem validação.
+- [x] 17.3 Guard geral adicionado em `mudarTracado(int, boolean, boolean)`: `!forcaMudar && (mudarTracado == 4 || 5)` bloqueia. Toda mudança legítima pra 4/5 já usa `forcaMudar=true`, então nenhum chamador legítimo foi afetado.
+- [x] 17.4 Novo `PilotoMudarTracadoNaoEntraEmFugaTest` (5 testes): guard direto em `mudarTracado()`, mudança forçada continua funcionando, e o cenário de integração exato relatado (piloto da frente não é arrastado pro traçado de fuga por um piloto de trás escapando; controle confirmando que o espelhamento de traçado normal 0/1/2 continua funcionando). `mvn test` completo — 550 testes, 0 falhas.
+- [x] 17.5 Design (`design.md`, D18) atualizado.
+
+## 18. Multiplicador de ganho no traçado de fuga sobe de 0.4 para 0.8
+
+**(pedido do usuário: já que o D16 força a escada de ganho mais lenta do jogo (curva baixa) no traçado de fuga, a redução extra de 0.4x ficava excessiva — dupla penalização)**
+
+- [x] 18.1 `Piloto.processaEscapadaDaPista()`: `ganho *= 0.40` trocado por `ganho *= 0.80`.
+- [x] 18.2 Comentários que citavam o valor antigo (javadoc de `TOLERANCIA_INDICES_SAIDA_JA_PASSADA`, comentário do teste de tolerância de salto no retorno) atualizados para 0.8/~40-60 (o comentário histórico do D16, que descreve o bug encontrado quando o multiplicador AINDA era 0.4, foi mantido como está — é uma nota histórica, não uma descrição do comportamento atual).
+- [x] 18.3 Teste `velocidadeEModoReduzidosDuranteATracado4` atualizado (espera 80 em vez de 40, ganho inicial 100).
+- [x] 18.4 Spec (`escapada-ia-corrida/spec.md`) e design (`design.md`, D19) atualizados.
+- [x] 18.5 `mvn test` completo rodado novamente — sem falhas.
+
 ## 7. Validação manual
 
 - [ ] 7.1 Desenhar pelo menos uma `ObjetoEscapada` num circuito de teste (editor), rodar uma simulação headless (`MainFrameSimulacao`) com `Global.FORCAR_ESCAPADA_TESTE = true` e confirmar nos logs/telemetria que pilotos realmente passam pelo traçado 4/5 na zona desenhada, sem exceção.
-- [ ] 7.2 Rodar a mesma simulação com a flag desativada e confirmar que só pilotos agressivos e muito estressados (ou que falharem em desviar) escapam, e que o restante circula normalmente.
+- [ ] 7.2 Rodar a mesma simulação com a flag desativada e confirmar que só pilotos "em risco" (agressivos+estressados, ou pneus baixos) que falharem no teste de habilidade escapam, e que o restante circula normalmente sem ser desviado pela lógica de escapada.
 - [ ] 7.3 Confirmar visualmente (ou por log) que a velocidade cai perceptivelmente durante a janela de escapada e volta ao normal depois do retorno.

@@ -3024,6 +3024,30 @@ public class PainelCircuito {
             if (p5 == null) {
                 p5 = p1;
             }
+
+            /**
+             * O ângulo (dianteira/traseira) acima foi calculado só a partir
+             * de "lista" (pista normal/base, traçado 0) — errado quando o
+             * piloto está de fato no traçado de fuga 4/5, cuja geometria
+             * (pista4Full/pista5Full) pode curvar de um jeito bem diferente
+             * da pista base no mesmo intervalo de índices. Recalcula usando
+             * os mesmos índices traz/frente já resolvidos acima, mas lidos
+             * de pista4Full/pista5Full (com o mesmo fallback pra
+             * pista2Full/pista1Full usado para p4/p5, pros índices fora do
+             * trecho da escapada) — mesmo padrão já usado por
+             * vdp_desenhaCarrosCima() no cliente web (vdp.js).
+             */
+            if (piloto.getTracado() == 4 || piloto.getTracado() == 5) {
+                List<No> pistaFuga = piloto.getTracado() == 4 ? circuito.getPista4Full() : circuito.getPista5Full();
+                List<No> pistaFugaFallback = piloto.getTracado() == 4 ? circuito.getPista2Full()
+                        : circuito.getPista1Full();
+                No noTraz = pistaFuga.get(traz) != null ? pistaFuga.get(traz) : pistaFugaFallback.get(traz);
+                No noFrente = pistaFuga.get(frente) != null ? pistaFuga.get(frente) : pistaFugaFallback.get(frente);
+                Point trazFuga = noTraz.getPoint();
+                Point frenteFuga = noFrente.getPoint();
+                calculaAngulo = GeoUtil.calculaAngulo(frenteFuga, trazFuga, 0);
+                piloto.setAngulo(Double.valueOf(calculaAngulo));
+            }
         }
 
         piloto.setP1(p1);
