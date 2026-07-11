@@ -62,6 +62,10 @@ public class Carro implements Serializable {
     private String nome;
 
     @JsonIgnore
+    private String nomeOriginal;
+    @JsonIgnore
+    private String nomeHomenagem;
+    @JsonIgnore
     private String img;
     @JsonIgnore
     private int durabilidadeAereofolio;
@@ -305,6 +309,22 @@ public class Carro implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getNomeOriginal() {
+        return nomeOriginal;
+    }
+
+    public void setNomeOriginal(String nomeOriginal) {
+        this.nomeOriginal = nomeOriginal;
+    }
+
+    public String getNomeHomenagem() {
+        return nomeHomenagem;
+    }
+
+    public void setNomeHomenagem(String nomeHomenagem) {
+        this.nomeHomenagem = nomeHomenagem;
     }
 
     public String getImg() {

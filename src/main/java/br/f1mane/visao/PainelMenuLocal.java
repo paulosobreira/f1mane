@@ -2081,7 +2081,7 @@ public class PainelMenuLocal {
         Font fontOri = g2d.getFont();
         g2d.setFont(new Font(fontOri.getName(), Font.BOLD, fontOri.getSize()));
         RoundRectangle2D pilotoRect = pilotosRect.get(i);
-        String nmPilotoStr = (piloto.getNome() + " " + piloto.getCarro().getNome()).toUpperCase();
+        String nmPilotoStr = (piloto.getNome() + " - " + piloto.getCarro().getNome()).toUpperCase();
         int tamNmPiloto = Util.calculaLarguraText(nmPilotoStr, g2d);
         pilotoRect.setFrame(x - 15, y, tamNmPiloto + 10, 18);
         Color c = corRectPiloto(g2d, piloto, 1);

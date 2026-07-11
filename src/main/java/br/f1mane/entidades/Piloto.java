@@ -40,6 +40,8 @@ public class Piloto implements Serializable, PilotoSuave {
     private String nome;
     private String nomeAbreviado;
     private String nomeCarro;
+    @JsonIgnore
+    private String chaveCarro;
     private String nomeJogador;
     private String imgJogador;
     private int posicao;
@@ -173,6 +175,8 @@ public class Piloto implements Serializable, PilotoSuave {
     private transient String setUpIncial;
     @JsonIgnore
     private String nomeOriginal;
+    @JsonIgnore
+    private String nomeHomenagem;
     @JsonIgnore
     private transient int habilidadeAntesQualify;
     @JsonIgnore
@@ -863,6 +867,21 @@ public class Piloto implements Serializable, PilotoSuave {
 
     public void setNomeCarro(String carro) {
         this.nomeCarro = carro;
+    }
+
+    /**
+     * Chave real do carro (a chave de carros.properties, ex.: "McLaren-MP4/1"),
+     * usada por {@code CarregadorRecursos.ligarPilotosCarros} pra parear o
+     * piloto ao Carro correto — nomeCarro é o nome de EXIBIÇÃO (que pode ser
+     * o nome-homenagem, não determinístico a partir da chave), então não dá
+     * pra usá-lo como chave de pareamento.
+     */
+    public String getChaveCarro() {
+        return chaveCarro;
+    }
+
+    public void setChaveCarro(String chaveCarro) {
+        this.chaveCarro = chaveCarro;
     }
 
     public int getHabilidade() {
@@ -3989,6 +4008,14 @@ public class Piloto implements Serializable, PilotoSuave {
 
     public void setNomeOriginal(String nomeOriginal) {
         this.nomeOriginal = nomeOriginal;
+    }
+
+    public String getNomeHomenagem() {
+        return nomeHomenagem;
+    }
+
+    public void setNomeHomenagem(String nomeHomenagem) {
+        this.nomeHomenagem = nomeHomenagem;
     }
 
     public boolean testeHabilidadePilotoAerodinamica() {

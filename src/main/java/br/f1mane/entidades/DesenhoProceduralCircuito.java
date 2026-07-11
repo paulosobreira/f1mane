@@ -83,7 +83,7 @@ public final class DesenhoProceduralCircuito {
 	 * também na imagem gerada em memória para a corrida (ver {@link #desenha}
 	 * e {@code CarregadorRecursos.carregaBackGroundJogo}) — antes essas
 	 * marcações só apareciam no editor, nunca no jogo quando
-	 * {@code Global.GERAR_IMAGEM_CIRCUITO_EM_MEMORIA} está ativa.
+	 * {@code Global.MODO_HOMENAGEM} está ativa.
 	 * <p>
 	 * O espaçamento entre vagas ({@link #MULTI_VAGAS_BOX}, mais uma folga
 	 * mínima de {@link #ESPACO_MINIMO_ENTRE_VAGAS_PIXELS}px) nunca é

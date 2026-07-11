@@ -253,13 +253,13 @@ public class CarregadorRecursos {
      * Usado pelo carregamento de imagem de fundo em corrida (não pelo
      * editor de circuitos, que precisa sempre da imagem real de arquivo
      * para servir de referência visual). Quando
-     * {@link Global#GERAR_IMAGEM_CIRCUITO_EM_MEMORIA} está ativa, gera a
+     * {@link Global#MODO_HOMENAGEM} está ativa, gera a
      * imagem em memória via {@link DesenhoProceduralCircuito} em vez de ler
      * {@code circuitos/<backGroundStr>} do disco.
      */
     public static BufferedImage carregaBackGroundJogo(String backGroundStr,
                                                        JPanel panel, Circuito circuito) {
-        if (Global.GERAR_IMAGEM_CIRCUITO_EM_MEMORIA && circuito != null) {
+        if (Global.MODO_HOMENAGEM && circuito != null) {
             BufferedImage backGround = DesenhoProceduralCircuito.geraImagem(circuito);
             if (panel != null) {
                 panel.setSize(backGround.getWidth(), backGround.getHeight());
@@ -495,6 +495,37 @@ public class CarregadorRecursos {
         return bufferedImage;
     }
 
+    /**
+     * Resolve o nome exibido de um carro/piloto: em Global.MODO_HOMENAGEM,
+     * usa nomeHomenagem (quando preenchido); senão, usa o nome real. Substitui
+     * as antigas chamadas a Util.substVogais() pra piloto/carro (o utilitário
+     * em si continua em uso pra nomes de circuito, fora deste escopo).
+     */
+    private static String resolveNomeHomenagem(String nomeReal, String nomeHomenagem) {
+        if (Global.MODO_HOMENAGEM && !Util.isNullOrEmpty(nomeHomenagem)) {
+            return nomeHomenagem;
+        }
+        return nomeReal;
+    }
+
+    /**
+     * Lê o 11º campo (nomeHomenagem) da linha de carrosProperties referente
+     * a chaveCarro, sem materializar a lista inteira de Carro — usado só pra
+     * resolver o nome de exibição de Piloto.nomeCarro de forma consistente
+     * com Carro.nome (ver resolveNomeHomenagem).
+     */
+    private static String nomeHomenagemDoCarro(Properties carrosProperties, String chaveCarro) {
+        String prop = carrosProperties.getProperty(chaveCarro);
+        if (prop == null) {
+            return null;
+        }
+        String[] values = prop.split(",");
+        if (values.length > 10 && !Util.isNullOrEmpty(values[10])) {
+            return values[10].trim();
+        }
+        return null;
+    }
+
     public List<Piloto> carregarListaPilotos(String temporarada)
             throws IOException {
         List<Piloto> retorno = new ArrayList<Piloto>();
@@ -503,6 +534,10 @@ public class CarregadorRecursos {
         properties.load(recursoComoStream(
                 "properties/" + temporarada + "/pilotos.properties"));
 
+        Properties carrosProperties = new Properties();
+        carrosProperties.load(recursoComoStream(
+                "properties/" + temporarada + "/carros.properties"));
+
         Enumeration propNames = properties.propertyNames();
         int cont = 1;
         while (propNames.hasMoreElements()) {
@@ -510,10 +545,19 @@ public class CarregadorRecursos {
             piloto.setId(cont++);
             String name = (String) propNames.nextElement();
             String prop = properties.getProperty(name);
+            String[] values = prop.split(",");
+            String chaveCarro = values[0];
+
             piloto.setNomeOriginal(name);
-            piloto.setNome(Util.substVogais(name));
-            piloto.setNomeCarro(Util.substVogais(prop.split(",")[0]));
-            int duasCasas = Integer.parseInt(prop.split(",")[1]);
+            if (values.length > 2 && !Util.isNullOrEmpty(values[2])) {
+                piloto.setNomeHomenagem(values[2].trim());
+            }
+            piloto.setNome(resolveNomeHomenagem(name, piloto.getNomeHomenagem()));
+
+            piloto.setChaveCarro(chaveCarro);
+            piloto.setNomeCarro(resolveNomeHomenagem(chaveCarro, nomeHomenagemDoCarro(carrosProperties, chaveCarro)));
+
+            int duasCasas = Integer.parseInt(values[1]);
             piloto.setHabilidadeReal(
                     Integer.parseInt(String.valueOf(duasCasas) + "0"));
             piloto.setHabilidade(piloto.getHabilidadeReal());
@@ -558,8 +602,12 @@ public class CarregadorRecursos {
             carro.setId(id++);
             String name = (String) propNames.nextElement();
             String prop = properties.getProperty(name);
-            carro.setNome(Util.substVogais(name));
             String[] values = prop.split(",");
+            carro.setNomeOriginal(name);
+            if (values.length > 10 && !Util.isNullOrEmpty(values[10])) {
+                carro.setNomeHomenagem(values[10].trim());
+            }
+            carro.setNome(resolveNomeHomenagem(name, carro.getNomeHomenagem()));
             carro.setPotencia(Integer.parseInt(values[0]));
             carro.setPotenciaReal(Integer.parseInt(values[0]));
             if (values.length > 8) {
@@ -597,7 +645,7 @@ public class CarregadorRecursos {
             Piloto piloto = (Piloto) iter.next();
             for (Iterator iterator = carros.iterator(); iterator.hasNext(); ) {
                 Carro carro = (Carro) iterator.next();
-                if (piloto.getNomeCarro().equals(carro.getNome())) {
+                if (piloto.getChaveCarro() != null && piloto.getChaveCarro().equals(carro.getNomeOriginal())) {
                     piloto.setCarro(criarCopiaCarro(carro, piloto));
                 }
             }
@@ -608,6 +656,8 @@ public class CarregadorRecursos {
         Carro carroNovo = new Carro();
         carroNovo.setId(carro.getId());
         carroNovo.setNome(carro.getNome());
+        carroNovo.setNomeOriginal(carro.getNomeOriginal());
+        carroNovo.setNomeHomenagem(carro.getNomeHomenagem());
         carroNovo.setCor1(carro.getCor1());
         carroNovo.setCor2(carro.getCor2());
         carroNovo.setImg(carro.getImg());
@@ -658,7 +708,7 @@ public class CarregadorRecursos {
         return temporadasPilotosDefauts;
     }
 
-    private static String extrairTime(String imgPath) {
+    public static String extrairTime(String imgPath) {
         if (imgPath == null) return null;
         String nome = imgPath.substring(imgPath.lastIndexOf('/') + 1);
         if (nome.endsWith(".png")) {
@@ -721,12 +771,12 @@ public class CarregadorRecursos {
         return pilotos;
     }
 
-    private static int indiceTime(String temporada, String teamName) {
+    public static int indiceTime(String temporada, String teamName) {
         List<String> times = getTimesOrdenados(temporada);
         return times.indexOf(teamName);
     }
 
-    private static int indicePiloto(String temporada, String driverKey) {
+    public static int indicePiloto(String temporada, String driverKey) {
         List<String> pilotos = getPilotosOrdenados(temporada);
         return pilotos.indexOf(driverKey);
     }
@@ -868,7 +918,7 @@ public class CarregadorRecursos {
         if (temporada == null) {
             return desenhaCapacete(piloto);
         }
-        if (Global.FORCE_MODELO_V2) {
+        if (Global.MODO_HOMENAGEM) {
             return desenhaCapacete(piloto);
         }
         try {
@@ -926,7 +976,7 @@ public class CarregadorRecursos {
         if (Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro().getDanificado())) {
             return obterCarroLadoSemAreofolio(piloto, temporada);
         }
-        if (Global.FORCE_MODELO_V2) {
+        if (Global.MODO_HOMENAGEM) {
             return desenhaCarroLado(carro);
         }
         BufferedImage carroLado = bufferCarrosLado.get(carro.getNome());
@@ -1009,7 +1059,7 @@ public class CarregadorRecursos {
     public BufferedImage obterCarroCimaSemAreofolio(Piloto piloto,
                                                     String temporada) {
         Carro carro = piloto.getCarro();
-        if (Global.FORCE_MODELO_V2) {
+        if (Global.MODO_HOMENAGEM) {
             return desenhaCarroCimaSemAsa(carro);
         }
         BufferedImage carroCima = bufferCarrosCimaSemAreofolio
@@ -1066,7 +1116,7 @@ public class CarregadorRecursos {
         if (Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro().getDanificado())) {
             return obterCarroCimaSemAreofolio(piloto, temporada);
         }
-        if (Global.FORCE_MODELO_V2) {
+        if (Global.MODO_HOMENAGEM) {
             preAquecerSemAsa(carro);
             return desenhaCarroCima(carro);
         }
@@ -1307,7 +1357,7 @@ public class CarregadorRecursos {
      * (ex.: "albert_park_mro.xml" -> "albert_park_mro.jpg") em vez de
      * depender de uma propriedade gravada no XML.
      * <p>
-     * Com {@link Global#GERAR_IMAGEM_CIRCUITO_EM_MEMORIA} ativa, o nome é
+     * Com {@link Global#MODO_HOMENAGEM} ativa, o nome é
      * atribuído sempre, mesmo sem o jpg nos recursos: os *_mro.jpg ficam de
      * fora do jar final (são só referência de edição, ver exclusão no
      * pom.xml) e o nome vira apenas a chave que o cliente web usa em
@@ -1317,7 +1367,7 @@ public class CarregadorRecursos {
      */
     private static void aplicarBackGroundPorConvencao(Circuito circuito, String nmCircuitoXml) {
         String nomeJpg = nmCircuitoXml.replaceFirst("\\.xml$", ".jpg");
-        if (Global.GERAR_IMAGEM_CIRCUITO_EM_MEMORIA
+        if (Global.MODO_HOMENAGEM
                 || CarregadorRecursos.recursoURL("circuitos/" + nomeJpg) != null) {
             circuito.definirBackGroundPorConvencao(nomeJpg);
         }
