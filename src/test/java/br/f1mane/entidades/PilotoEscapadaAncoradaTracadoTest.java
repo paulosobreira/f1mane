@@ -531,7 +531,7 @@ class PilotoEscapadaAncoradaTracadoTest {
 
         piloto.processaEscapadaDaPista();
 
-        assertEquals(80, piloto.getGanho(), "ganho deveria ser reduzido a 0.8x durante a escapada");
+        assertEquals(60, piloto.getGanho(), "ganho deveria ser reduzido a 0.6x durante a escapada");
         assertEquals(Carro.GIRO_MIN_VAL, piloto.getCarro().getGiro(), "giro deveria ser travado no mínimo durante a escapada");
         assertEquals(Piloto.LENTO, piloto.getModoPilotagem(), "modo deveria ser travado em LENTO durante a escapada");
     }
