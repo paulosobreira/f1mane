@@ -28,7 +28,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.beans.Transient;
 import java.beans.XMLEncoder;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -1090,17 +1089,6 @@ public class MainPanelEditor extends JPanel {
 
     public void iniciarComNavegacao() {
         popularCircuitos();
-        if (!circuitosXml.isEmpty()) {
-            indiceCircuito = 0;
-            String arquivo = circuitosXml.get(indiceCircuito);
-            try {
-                carregarCircuitoExistente(arquivo);
-                return;
-            } catch (Exception e) {
-                e.printStackTrace();
-                srcFrame.dialogDeErro(e);
-            }
-        }
         indiceCircuito = -1;
         testePista = new TestePista(this, circuito);
         iniciaEditor();
@@ -1163,8 +1151,7 @@ public class MainPanelEditor extends JPanel {
     }
 
     private JPanel gerarListsNosPistaBox() {
-        JPanel controlPanel = new JPanel();
-        controlPanel.setLayout(new GridLayout(2, 1));
+        JPanel controlPanel = new JPanel(new BorderLayout());
 
         pistaJList = new JList(new DefaultListModel());
         pistaJList.setCellRenderer(new ListCellRenderer() {
@@ -1268,29 +1255,25 @@ public class MainPanelEditor extends JPanel {
         JPanel pistas = new JPanel();
         pistas.setLayout(new BorderLayout());
         pistas.add(radioPistaPanel, BorderLayout.NORTH);
-        JScrollPane pistaJListJScrollPane = new JScrollPane(pistaJList) {
-            @Override
-            @Transient
-            public Dimension getPreferredSize() {
-                return new Dimension(super.getPreferredSize().height, 160);
-            }
-        };
+        JScrollPane pistaJListJScrollPane = new JScrollPane(pistaJList);
         pistas.add(pistaJListJScrollPane, BorderLayout.CENTER);
-        controlPanel.add(pistas);
         JPanel boxes = new JPanel();
         boxes.setLayout(new BorderLayout());
         radioPistaPanel = new JPanel();
         radioPistaPanel.add(new JLabel(Lang.msg("033")));
         boxes.add(radioPistaPanel, BorderLayout.NORTH);
-        JScrollPane boxJListJScrollPane = new JScrollPane(boxJList) {
-            @Override
-            @Transient
-            public Dimension getPreferredSize() {
-                return new Dimension(super.getPreferredSize().height, 160);
-            }
-        };
+        JScrollPane boxJListJScrollPane = new JScrollPane(boxJList);
         boxes.add(boxJListJScrollPane, BorderLayout.CENTER);
-        controlPanel.add(boxes);
+
+        // Split vertical (não GridLayout de altura fixa): pista e box têm o
+        // mesmo conteúdo (rótulo + lista, sem botões próprios — os controles
+        // de nó ficam em gerarPainelControlesNos(), compartilhados acima).
+        // 50/50 mantém a proporção atual como ponto de partida, mas agora
+        // redimensionável pelo usuário.
+        JSplitPane splitNos = new JSplitPane(JSplitPane.VERTICAL_SPLIT, pistas, boxes);
+        splitNos.setResizeWeight(0.5);
+        splitNos.setOneTouchExpandable(true);
+        controlPanel.add(splitNos, BorderLayout.CENTER);
         return controlPanel;
     }
 
@@ -2384,6 +2367,61 @@ public class MainPanelEditor extends JPanel {
                 JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * true se existir ao menos uma ObjetoEscapada sem ponto de saída
+     * ancorado (indiceSaida == -1) — validação usada por salvarPista() para
+     * bloquear o salvamento de uma escapada inacabada.
+     */
+    private boolean existeEscapadaIncompleta() {
+        if (circuito.getObjetos() == null) {
+            return false;
+        }
+        for (ObjetoPista objeto : circuito.getObjetos()) {
+            if (objeto instanceof ObjetoEscapada && ((ObjetoEscapada) objeto).getIndiceSaida() == -1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Alerta (mesmo padrão de alertaPontoEscapadaInvalido()) quando
+     * salvarPista() encontra uma ObjetoEscapada incompleta. Protected para
+     * permitir override em MainPanelEditorTestDouble.
+     */
+    protected void alertaEscapadaIncompleta() {
+        JOptionPane.showMessageDialog(this, Lang.msg("escapadaIncompleta"), Lang.msg("039"),
+                JOptionPane.ERROR_MESSAGE);
+    }
+
+    /**
+     * Lê o campo de distância em quilômetros sem lançar
+     * NumberFormatException — texto vazio ou não numérico vira 0, que
+     * salvarPista() trata como "não informado".
+     */
+    private int parseDistanciaKmOuZero(String texto) {
+        String valor = texto == null ? "" : texto.trim();
+        if (valor.isEmpty()) {
+            return 0;
+        }
+        try {
+            return Integer.parseInt(valor);
+        } catch (NumberFormatException ex) {
+            return 0;
+        }
+    }
+
+    /**
+     * Alerta (mesmo padrão de alertaPontoEscapadaInvalido()) quando
+     * salvarPista() encontra a distância do circuito não informada (campo
+     * vazio ou valor <= 0). Protected para permitir override em
+     * MainPanelEditorTestDouble.
+     */
+    protected void alertaDistanciaNaoInformada() {
+        JOptionPane.showMessageDialog(this, Lang.msg("distanciaCircuitoNaoInformada"), Lang.msg("039"),
+                JOptionPane.ERROR_MESSAGE);
+    }
+
     private static void limpaMouseListeners(JLabel... labels) {
         for (JLabel label : labels) {
             for (java.awt.event.MouseListener listener : label.getMouseListeners()) {
@@ -3311,6 +3349,15 @@ public class MainPanelEditor extends JPanel {
     }
 
     public void salvarPista() throws IOException {
+        if (existeEscapadaIncompleta()) {
+            alertaEscapadaIncompleta();
+            return;
+        }
+        int distanciaKm = parseDistanciaKmOuZero(distanciaKmText.getText());
+        if (distanciaKm <= 0) {
+            alertaDistanciaNaoInformada();
+            return;
+        }
         if (file == null) {
             JFileChooser fileChooser = new JFileChooser(new File("src/main/resources/circuitos"));
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -3333,7 +3380,7 @@ public class MainPanelEditor extends JPanel {
         circuito.setMultiplicadorLarguraPista(multiplicadorLarguraPista);
         circuito.setProbalidadeChuva(Integer.parseInt(probalidadeChuvaText.getText()));
         circuito.setNome(nomePistaText.getText());
-        circuito.setDistanciaKm(Integer.parseInt(distanciaKmText.getText().trim()));
+        circuito.setDistanciaKm(distanciaKm);
         if (!vetorizarCircuito()) {
             return;
         }
