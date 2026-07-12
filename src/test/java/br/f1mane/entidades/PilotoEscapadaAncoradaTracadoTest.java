@@ -13,7 +13,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -40,7 +39,6 @@ class PilotoEscapadaAncoradaTracadoTest {
 
     @BeforeEach
     void setUp() {
-        Global.FORCAR_ESCAPADA_TESTE = false;
         pista = new ArrayList<>();
         for (int i = 0; i < TAMANHO_PISTA; i++) {
             pista.add(criarNo(i, i, 100));
@@ -68,11 +66,6 @@ class PilotoEscapadaAncoradaTracadoTest {
         when(circuito.getMultiplicadorLarguraPista()).thenReturn(1.0);
         when(circuito.getObjetos()).thenReturn(new ArrayList<>());
         when(controleJogo.getCircuito()).thenReturn(circuito);
-    }
-
-    @AfterEach
-    void tearDown() {
-        Global.FORCAR_ESCAPADA_TESTE = false;
     }
 
     private No criarNo(int index, int x, int y) {
@@ -476,60 +469,6 @@ class PilotoEscapadaAncoradaTracadoTest {
         piloto.processaEscapadaDaPista();
 
         verify(controleJogo.getRandom(), never()).nextDouble();
-    }
-
-    // ---- FORCAR_ESCAPADA_TESTE ----
-
-    @Test
-    void flagGlobalDeTeste_comprometePilotoNormalNaoEstressado() {
-        Global.FORCAR_ESCAPADA_TESTE = true;
-        registrarEscapada(criarEscapada(1, 300, 360));
-        Piloto piloto = criarPiloto(300, 1);
-        piloto.setModoPilotagem(Piloto.NORMAL);
-        piloto.setStress(0);
-
-        piloto.processaEscapadaDaPista();
-
-        assertEquals(5, piloto.getTracado(), "com a flag ativa, mesmo um piloto normal/não estressado deveria escapar, sem nenhum teste");
-    }
-
-    @Test
-    void flagGlobalDeTeste_forcaEscapadaMesmoComPilotoEmLento() {
-        Global.FORCAR_ESCAPADA_TESTE = true;
-        registrarEscapada(criarEscapada(1, 300, 360));
-        Piloto piloto = criarPiloto(300, 1);
-        piloto.setModoPilotagem(Piloto.LENTO);
-        piloto.setStress(0);
-
-        piloto.processaEscapadaDaPista();
-
-        assertEquals(5, piloto.getTracado(), "com a flag ativa, mesmo um piloto em modo LENTO deveria escapar ao alcançar a entrada");
-    }
-
-    @Test
-    void flagGlobalDeTeste_naoDispensaExigenciaDePosicaoNoTracado0() {
-        Global.FORCAR_ESCAPADA_TESTE = true;
-        registrarEscapada(criarEscapada(1, 300, 360));
-        Piloto piloto = criarPiloto(260, 0);
-        piloto.setModoPilotagem(Piloto.NORMAL);
-        piloto.setStress(0);
-
-        piloto.processaEscapadaDaPista();
-
-        assertEquals(0, piloto.getTracado(), "no traçado 0 não há zona de escapada relevante, mesmo com a flag de teste ativa");
-    }
-
-    @Test
-    void flagGlobalDeTeste_foraDaNovaJanelaDe150_naoEscapaAinda() {
-        Global.FORCAR_ESCAPADA_TESTE = true;
-        registrarEscapada(criarEscapada(1, 500, 600));
-        Piloto piloto = criarPiloto(300, 1);
-        piloto.setModoPilotagem(Piloto.NORMAL);
-        piloto.setStress(0);
-
-        piloto.processaEscapadaDaPista();
-
-        assertEquals(1, piloto.getTracado(), "a 200 índices (>150) da entrada, a flag ainda não deveria comprometer o piloto");
     }
 
     // ---- Jogador humano em modo manual ----

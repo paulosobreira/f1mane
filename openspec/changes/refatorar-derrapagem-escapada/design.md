@@ -21,13 +21,14 @@ Esta mudança separa as duas mecânicas em conceitos independentes — **derrapa
 
 **Non-Goals:**
 - Não muda o modelo de retorno da escapada (`processaSaidaDaEscapada()`, traçado 4/5 → 1/2) nem a redução de velocidade/giro/modo enquanto no traçado de fuga — isso já está coberto pela spec `escapada-ia-corrida` existente e não foi mencionado no pedido.
-- Não muda `FORCAR_ESCAPADA_TESTE` (flag de validação manual) além do necessário para continuar funcionando com o novo modelo de dois testes.
 - Não introduz nenhuma UI nova; o botão de debug `escapaTracado` em `MainFrame` é removido, não substituído.
+
+**Atualização de tuning**: `Global.FORCAR_ESCAPADA_TESTE` foi removida por completo (campo, uso em `processaEscapadaAncoradaAoTracado()`, e os 4 testes que a exercitavam) — o usuário não precisa mais da flag de validação manual depois de confirmar a mecânica em corrida real. Todas as referências a ela abaixo (D2, Riscos) refletem a versão anterior a essa remoção e ficaram desatualizadas — mantidas só como histórico da decisão original.
 
 ## Decisions
 
 ### D1: Derrapagem vira seu próprio método, sem stress/AGRESSIVO
-`processaEscapadaDaPista()` deixa de ter o `if (stress > 90 && AGRESSIVO)` envolvendo a derrapagem. Novo método privado (ex.: `processaDerrapagem()`), chamado sempre (respeitando as guardas já existentes no topo de `processaEscapadaDaPista()`: safety car, qualify, box):
+`processaEscapadaDaPista()` deixa de ter o `if (stress > 90 && AGRESSIVO)` envolvendo a derrapagem. Novo método privado `processaDerrapagem()`, com suas próprias guardas (safety car, qualify, box — repetidas, não compartilhadas via aninhamento) e chamado como irmã de `processaEscapadaDaPista()` em `processaNovoIndex()` (não mais aninhada dentro dela — decisão pós-tuning do usuário: as duas ficam lado a lado, depois de `processaStress()`, pra ler o stress já atualizado deste ciclo):
 
 ```
 piloto no traçado 0
@@ -43,19 +44,16 @@ Ao disparar: mesma lógica de escolha de lado de hoje (`getTracadoAntigo()` alte
 ### D2: Escapada ancorada usa dois testes sequenciais, sem gate de "risco" separado, com UM ÚNICO PAR de testes por zona por volta (marcado ou não)
 `emRiscoDeEscapada()` é removida. O ponto crítico, herdado sem alteração do modelo atual (que já usa `resultadoTesteEscapadaPorZonaNestaVolta` exatamente com esse propósito) e que este design deixa explícito para não ser perdido na implementação: **o par de testes (A, depois B se A não marcou) só roda UMA VEZ por `ObjetoEscapada` por piloto por volta — independentemente do resultado.** Se o piloto passar nos dois (não marcado), ele NÃO é testado de novo nesta volta para essa zona, mesmo que continue satisfazendo as pré-condições de risco em ciclos seguintes, mais perto da entrada. Isso é o que já acontece hoje (requisito pré-existente "um único teste de habilidade por zona por volta") — este change só troca o teste único por um par sequencial, sem tocar na regra de "uma vez por volta".
 
-`processaEscapadaAncoradaAoTracado()` passa a ter, no lugar do teste único de hoje:
+`processaEscapadaAncoradaAoTracado()` passa a ter, no lugar do teste único de hoje (pseudocódigo já refletindo os ajustes de tuning de D2-TUNING abaixo — não a versão inicial):
 
 ```
 Boolean resultado = resultadoTesteEscapadaPorZonaNestaVolta.get(zona);
 if (resultado == null) {
     // Zona ainda não avaliada nesta volta — único ponto em que os testes rodam.
-    boolean marcado = getStress() > Global.LIMITE_ESTRESSE_PARA_ESCAPADA_ANCORADA
-                       && AGRESSIVO.equals(modoPilotagem)
-                       && !testeHabilidadePiloto();          // teste A
+    boolean marcado = testeEscapadaStress();   // teste A: stress > 90 && !testeHabilidadePiloto()
     if (!marcado) {
-        marcado = carro.getPorcentagemDesgastePneus() < 30
-                  && !LENTO.equals(modoPilotagem)
-                  && !testeHabilidadePiloto();                // teste B, só roda se A não marcou
+        marcado = testeEscapadaPneus();        // teste B, só roda se A não marcou:
+                                                // pneus < 30% && stress >= 70 && !testeHabilidadePilotoFreios()
     }
     resultadoTesteEscapadaPorZonaNestaVolta.put(zona, marcado);
     resultado = marcado;
@@ -73,13 +71,26 @@ if (distancia <= 0 && getTracado() == tracadoAtual) {
 
 O `if (resultado == null)` é o único guard que decide "já testei ou não" — ele é indiferente ao valor computado (`true` ou `false`), por isso um piloto que passou nos dois testes ao entrar na janela (ex.: a 150 índices) não volta a ser testado a 100, 50 ou 10 índices da entrada, mesmo continuando `AGRESSIVO`+estressado ou com pneus baixos o tempo todo. Só a mudança de volta (`garanteCacheDeTesteEscapadaDaVoltaAtual()`, já existente, limpando o mapa) libera um novo teste para essa mesma zona.
 
-`FORCAR_ESCAPADA_TESTE` continua bypassando os dois testes (comportamento inalterado). Jogador humano em modo manual continua sem receber teste automático (ver D5).
+`FORCAR_ESCAPADA_TESTE` continua bypassando os dois testes (comportamento inalterado). Jogador humano em modo manual **passa a receber o mesmo teste automático que a IA** (mudança de tuning — ver D2-TUNING item 5; a versão inicial deste design tinha uma exceção que marcava o humano manual direto, sem chance de se salvar).
 
-Curto-circuito do `&&` evita chamar `testeHabilidadePiloto()` (que consome RNG) quando a pré-condição de stress/agressividade ou pneus/LENTO já não se aplica — preserva a determinicidade dos testes existentes (mesmo RNG usado hoje) e o comportamento de `PilotoEscapadaAncoradaTracadoTest` de "teste nunca é chamado" quando a condição de entrada não é satisfeita.
+Curto-circuito do `&&` evita chamar `testeHabilidadePiloto()`/`testeHabilidadePilotoFreios()` (que consomem RNG) quando a pré-condição de cada teste ainda não se aplica — preserva a determinicidade dos testes (RNG só consumido quando a pré-condição já é verdadeira) e o comportamento de `PilotoEscapadaAncoradaTracadoTest` de "teste nunca é chamado" quando a condição de entrada não é satisfeita.
 
 **Por que dois testes e não um `||`/`&&` combinado?** O pedido explicitamente descreve dois testes em sequência com fontes de risco diferentes (agressividade vs. pneus) — cada um representa uma causa distinta de "escapar", e um teste separado por causa preserva a granularidade dos cenários de teste já existentes (ex.: `pneusBaixos_alcancaAEntradaAindaNoTracadoOrigem1_forcaEscapadaNoTracado5`).
 
-**Recompensa por "quase escapar" preservada**: no modelo atual, sobreviver ao único teste de habilidade (estando em risco) força `setModoPilotagem(LENTO)` — o piloto "se assusta" e desacelera, ficando imune ao resto da zona nesta volta. O pedido do usuário não menciona remover esse efeito, então ele é preservado por causa: sempre que a pré-condição de um teste (A ou B) é satisfeita — ou seja, o teste de habilidade daquela causa foi de fato consultado — e `testeHabilidadePiloto()` retorna sucesso (o piloto não foi marcado por aquela causa), `Piloto` SHALL mudar para `modoPilotagem == LENTO`. Se nenhuma pré-condição se aplicou (o piloto nunca esteve em risco por nenhuma causa), nada muda, como hoje.
+**Recompensa por "quase escapar" — REMOVIDA no tuning (ver D2-TUNING abaixo).** A versão inicial deste design preservava `setModoPilotagem(LENTO)` no sucesso de cada teste; o usuário removeu esse efeito durante a sessão de tuning pós-implementação. Sucesso agora só evita a marca, sem nenhum efeito colateral.
+
+### D2-TUNING: Ajustes de `testeEscapadaStress()`/`testeEscapadaPneus()` feitos na sessão de tuning (pós-implementação inicial)
+
+Depois da primeira implementação de D2, o usuário testou em corrida e pediu os seguintes ajustes, todos já aplicados no código (`Piloto.testeEscapadaStress()`/`testeEscapadaPneus()`, `Global.LIMITE_ESTRESSE_PARA_ESCAPADA_PNEUS`):
+
+1. **Teste A (stress) não exige mais `AGRESSIVO`** — pré-condição virou só `getStress() > Global.LIMITE_ESTRESSE_PARA_ESCAPADA_ANCORADA`. Consequência: como `LENTO` e `AGRESSIVO` eram mutuamente exclusivos, um piloto `LENTO` nunca podia ser marcado pelo teste A antes; agora pode, se o stress estiver acima do limite.
+2. **Teste B (pneus) ganhou uma segunda pré-condição obrigatória de stress, não mais opcional**: `carro.getPorcentagemDesgastePneus() < 30 && getStress() >= Global.LIMITE_ESTRESSE_PARA_ESCAPADA_PNEUS` (nova constante, 70 — mais baixo que o limite do teste A, 90). As duas condições são exigidas **juntas** (`&&`), não é "pneus baixos OU stress alto" — um piloto só é candidato ao teste B se tiver pneus gastos **e** já estiver com stress elevado (ainda que abaixo do limite do teste A).
+3. **Teste B passou a usar `testeHabilidadePilotoFreios()`** (não mais `testeHabilidadePiloto()`) — o teste de habilidade genérico não fazia sentido pra uma causa ligada a pneus/frenagem; o teste específico de freios já existe no codebase (`carro.testeFreios() && testeHabilidadePiloto()`) e é usado em outros contextos de frenagem/derrapagem (ex.: `Piloto.testeHabilidadePilotoFreios()`, já usado por `processaDerrapagem()`).
+4. **Exclusão de `LENTO` removida do teste B** — igual ao teste A, um piloto já `LENTO` agora pode ser marcado por essa causa também. "LENTO nunca escapa" não é mais garantido para nenhuma das duas causas.
+5. **Exceção de jogador humano em modo manual removida dos dois testes** — `isJogadorHumanoEmModoManual()` foi apagado (ficou sem uso); jogador humano agora passa pelo mesmo `testeHabilidadePiloto()`/`testeHabilidadePilotoFreios()` que a IA, em vez de ser marcado direto sem chance. Isso também torna a referência a "jogador humano continua sem receber teste automático" no parágrafo de `FORCAR_ESCAPADA_TESTE` acima **desatualizada especificamente pra este ponto** — a flag de teste continua bypassando tudo (isso não mudou), mas fora dela não existe mais tratamento diferenciado por jogador humano manual.
+6. **Recompensa `setModoPilotagem(LENTO)` no sucesso removida dos dois testes** (ver nota acima) — sucesso simplesmente não marca, sem efeito colateral.
+
+Ambos os métodos, no formato atual, colapsam pré-condição + teste de habilidade numa única expressão booleana com curto-circuito (`emRisco = <precondição> && !<testeDeHabilidade>`), em vez do `if` aninhado da versão inicial — comportamento equivalente (RNG só é consumido quando a pré-condição já é verdadeira), só reescrito de forma mais compacta.
 
 ### D3: Janela de detecção recalibrada para 150 índices à frente
 `if (distancia > 100) return;` vira `if (distancia > 150) return;`, alinhando a janela de detecção/teste com a tolerância de entrada-já-passada (`TOLERANCIA_INDICES_ENTRADA_JA_PASSADA`, já 150) — a janela passa a ser simétrica: de -150 (tolerância de salto) a +150 (detecção). `TOLERANCIA_INDICES_ENTRADA_JA_PASSADA` não muda de valor, só passa a ser numericamente igual ao novo limite de detecção (coincidência conveniente, não uma junção de conceitos: seguem sendo dois parâmetros logicamente distintos, testados por cenários separados).

@@ -89,20 +89,11 @@ Quando um piloto marcado para escapar nesta zona (por qualquer um dos dois teste
 - **WHEN** um piloto marcado para escapar (teste 2, pneus) alcança `indiceEntrada` de um `ObjetoEscapada` com `tracadoOrigem == 1`, já em `modoPilotagem == LENTO` (mudado depois de ter sido marcado), ainda no traçado 1
 - **THEN** o piloto muda (forçado) para o traçado 5
 
+## REMOVED Requirements
+
 ### Requirement: Variável global força a escapada de forma determinística, sem RNG nem exceções
-`Global` SHALL expor uma flag booleana (`FORCAR_ESCAPADA_TESTE`, default `false`) que, quando `true`, força qualquer piloto no traçado 1 ou 2 a escapar ao alcançar `indiceEntrada` de um `ObjetoEscapada` no seu traçado atual, dentro da janela de 150 índices — sem depender de `modoPilotagem`/`getStress()`/pneus, sem os testes 1/2 preventivos, e sobrepondo até a exceção de `modoPilotagem == LENTO`. A exigência de traçado/posição (estar no traçado 1 ou 2, dentro da janela de 150 índices da entrada) SHALL continuar valendo — a flag não teleporta nem ignora geometria.
-
-#### Scenario: Flag ativa compromete piloto normal e não estressado
-- **WHEN** `Global.FORCAR_ESCAPADA_TESTE` é `true` e um piloto com `modoPilotagem == NORMAL` e `stress` baixo alcança `indiceEntrada` de um `ObjetoEscapada` com `tracadoOrigem == 1`, ainda no traçado 1
-- **THEN** o piloto escapa, sem nenhum teste de habilidade
-
-#### Scenario: Flag ativa escapa mesmo com o piloto em modo LENTO
-- **WHEN** `Global.FORCAR_ESCAPADA_TESTE` é `true` e um piloto com `modoPilotagem == LENTO` alcança `indiceEntrada` de um `ObjetoEscapada` no seu traçado atual
-- **THEN** o piloto escapa mesmo assim — a flag sobrepõe até a exceção de LENTO
-
-#### Scenario: Flag ativa não dispensa a exigência de posição
-- **WHEN** `Global.FORCAR_ESCAPADA_TESTE` é `true` e um piloto está no traçado 0, ou a mais de 150 índices de qualquer entrada de escapada no seu traçado
-- **THEN** o piloto não escapa nesse ciclo
+**Reason**: `Global.FORCAR_ESCAPADA_TESTE` era uma flag de validação manual usada só pra confirmar a mecânica em corrida controlada — o usuário já validou o comportamento e pediu a remoção completa (campo, uso em `processaEscapadaAncoradaAoTracado()`, e os testes que a exercitavam). A escapada ancorada não tem mais nenhum caminho que force o teste incondicionalmente.
+**Migration**: Nenhuma — não havia consumidor em produção, só os testes de `PilotoEscapadaAncoradaTracadoTest`, que foram removidos junto.
 
 ## ADDED Requirements
 

@@ -23,6 +23,13 @@ public final class Global {
      * — pode ser calibrado independentemente, sem afetar o gatilho cego.
      */
     public static final double LIMITE_ESTRESSE_PARA_ESCAPADA_ANCORADA = 90;
+    /**
+     * Segundo limite de estresse da escapada ancorada, mais baixo que
+     * {@link #LIMITE_ESTRESSE_PARA_ESCAPADA_ANCORADA} — usado como
+     * pré-condição alternativa do teste de pneus
+     * (Piloto.testeEscapadaPneus()), junto com pneus abaixo de 30%.
+     */
+    public static final double LIMITE_ESTRESSE_PARA_ESCAPADA_PNEUS = 70;
     public static double MOD_GANHO_SUAVE = 4;
     public static double MOD_GANHO_SUAVE_MULTIPLAYER = 2.0;
     public static boolean DESENHA_DIFF_REAL_SUAVE = false;
@@ -79,30 +86,6 @@ public final class Global {
      * os renderers (Swing e web).
      */
     public static final double CHANCE_FUMACA_TRAVADA_RODA = 0.6;
-
-    /**
-     * Para validar em corrida a mecânica de escapada ancorada ao traçado
-     * (ver Piloto.processaEscapadaAncoradaAoTracado): quando true, ignora a
-     * checagem de modo agressivo + estresse acima do limite (e o teste de
-     * habilidade que poderia salvar o piloto), comprometendo qualquer
-     * piloto assim que estiver no traçado 1/2 dentro da janela de 100
-     * índices de uma zona — a exigência de traçado continua valendo, só não
-     * teleporta nem ignora geometria.
-     * <p>
-     * Corrigido (bug relatado): antes, a flag só valia dentro dos últimos
-     * 40 índices (mesma janela do gatilho normal); fora dela, o piloto
-     * tentava desviar pro traçado 0 normalmente e, como não há colisão numa
-     * corrida controlada de validação, quase sempre conseguia — nunca
-     * chegando a ficar comprometido, e a flag na prática não tinha efeito
-     * nenhum. Agora ela também suprime a tentativa de desvio.
-     * <p>
-     * Também sobrepõe a exceção de {@code modoPilotagem == LENTO} (pedido
-     * do usuário): com a flag ativa, mesmo um piloto já em LENTO escapa ao
-     * alcançar a entrada — só o traçado/janela de posição continuam
-     * valendo. Fora do modo de teste (flag desligada), LENTO continua
-     * sempre imune, como antes.
-     */
-    public static boolean FORCAR_ESCAPADA_TESTE = false;
 
     private Global() {
     }
