@@ -720,7 +720,7 @@ public class Carro implements Serializable {
                     desgPneus += 10;
             }
         }
-        if (!no.verificaRetaOuLargada() && Piloto.AGRESSIVO.equals(getPiloto().getModoPilotagem())) {
+        if (!no.verificaRetaOuLargada() && Piloto.AGRESSIVO.equals(getPiloto().getModoPilotagemEfetivo())) {
             desgPneus += 10;
         }
 

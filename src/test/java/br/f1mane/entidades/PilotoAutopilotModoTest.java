@@ -286,4 +286,89 @@ class PilotoAutopilotModoTest {
         assertTrue(bot.tentarEscaparFilaIndiana());
         assertEquals(1, bot.getTracado());
     }
+
+    // ---- 6: modoPilotagem/giro do jogador humano manual — exceções sempre-ativas continuam,
+    //         decisão proativa da IA (processaIAnovoIndex/modoIADefesaAtaque) não afeta ----
+
+    @Test
+    void humanoManual_eForcadoParaLentoAoSerUltrapassadoComoRetardatario() {
+        InterfaceJogo controleJogo = mock(InterfaceJogo.class);
+        List<No> pista = criarPista();
+        List<Piloto> pilotos = new ArrayList<>();
+        configurarBase(controleJogo, pista, pilotos);
+        when(controleJogo.getAutomaticoManual()).thenReturn(Global.CONTROLE_MANUAL);
+        when(controleJogo.isCorridaTerminada()).thenReturn(false);
+
+        Piloto humano = criarPiloto(controleJogo, pista, pilotos, "Humano", 100, 1);
+        humano.setJogadorHumano(true);
+        humano.setModoPilotagem(Piloto.AGRESSIVO);
+        humano.getCarro().setGiro(Carro.GIRO_MAX_VAL);
+        humano.setNumeroVolta(1);
+        humano.setPtosPista(500);
+
+        Piloto bot = criarPiloto(controleJogo, pista, pilotos, "Bot", 90, 1);
+        bot.setNumeroVolta(2);
+        bot.setPtosPista(1000);
+
+        bot.desviaPilotoNaFrente(bot, humano);
+
+        assertEquals(Piloto.LENTO, humano.getModoPilotagem(),
+                "desvio de retardatário continua forçando LENTO no humano manual — exceção sempre-ativa, não protegida pela chave automático/manual");
+        assertEquals(Carro.GIRO_MIN_VAL, humano.getCarro().getGiro());
+    }
+
+    @Test
+    void humanoManual_eForcadoParaLentoPelaBandeirada() {
+        InterfaceJogo controleJogo = mock(InterfaceJogo.class);
+        List<No> pista = criarPista();
+        List<Piloto> pilotos = new ArrayList<>();
+        configurarBase(controleJogo, pista, pilotos);
+        when(controleJogo.getAutomaticoManual()).thenReturn(Global.CONTROLE_MANUAL);
+
+        Piloto humano = criarPiloto(controleJogo, pista, pilotos, "Humano", 100, 1);
+        humano.setJogadorHumano(true);
+        humano.setModoPilotagem(Piloto.AGRESSIVO);
+        humano.getCarro().setGiro(Carro.GIRO_MAX_VAL);
+        humano.setRecebeuBanderada(true);
+
+        // processaMudancaRegime() é privado — a bandeirada é o próprio gatilho de entrada dele
+        // dentro do ciclo normal; aqui exercitamos via reflexão pra isolar só essa regra.
+        try {
+            java.lang.reflect.Method metodo = Piloto.class.getDeclaredMethod("processaMudancaRegime");
+            metodo.setAccessible(true);
+            metodo.invoke(humano);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertEquals(Piloto.LENTO, humano.getModoPilotagem(),
+                "bandeirada continua forçando LENTO no humano manual — exceção sempre-ativa, não protegida pela chave automático/manual");
+        assertEquals(Carro.GIRO_MIN_VAL, humano.getCarro().getGiro());
+    }
+
+    @Test
+    void humanoManual_processaIAnovoIndex_naoAlteraModoPilotagemNemGiro() {
+        InterfaceJogo controleJogo = mock(InterfaceJogo.class);
+        List<No> pista = criarPista();
+        List<Piloto> pilotos = new ArrayList<>();
+        configurarBase(controleJogo, pista, pilotos);
+        when(controleJogo.getAutomaticoManual()).thenReturn(Global.CONTROLE_MANUAL);
+
+        Piloto humano = criarPiloto(controleJogo, pista, pilotos, "Humano", 100, 1);
+        humano.setJogadorHumano(true);
+        humano.setModoPilotagem(Piloto.AGRESSIVO);
+        humano.getCarro().setGiro(Carro.GIRO_MAX_VAL);
+
+        try {
+            java.lang.reflect.Method metodo = Piloto.class.getDeclaredMethod("processaIAnovoIndex");
+            metodo.setAccessible(true);
+            metodo.invoke(humano);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertEquals(Piloto.AGRESSIVO, humano.getModoPilotagem(),
+                "processaIAnovoIndex() retorna cedo pra humano manual (autopilotDesligado()) — único caminho realmente coberto pela chave automático/manual");
+        assertEquals(Carro.GIRO_MAX_VAL, humano.getCarro().getGiro());
+    }
 }

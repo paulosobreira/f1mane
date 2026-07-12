@@ -74,6 +74,10 @@ class PilotoDerrapagemTest {
         // Pneus "novos" por padrão — testes que exercitam a regra de pneus<30% setam
         // explicitamente um valor baixo.
         carro.setPorcentagemDesgastePneus(100);
+        // Freios altos por padrão — sem isso, testeHabilidadePilotoFreios() falha sempre
+        // (Carro.testeFreios() fica em 0 por padrão), mascarando cenários de sucesso no teste de
+        // habilidade. Testes que querem exercitar o caminho de falha zeram explicitamente.
+        carro.setFreios(1000);
         piloto.setCarro(carro);
         piloto.setControleJogo(controleJogo);
         No no = pista.get(10);
