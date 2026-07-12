@@ -231,7 +231,7 @@ public class ControleCorrida {
         if (fatorAcidenteMomento < 0.1) {
             fatorAcidenteMomento = 0.1;
         }
-        if (Piloto.AGRESSIVO.equals(piloto.getModoPilotagem()) && controleJogo.getRandom().nextDouble() > fatorAcidenteMomento) {
+        if (Piloto.AGRESSIVO.equals(piloto.getModoPilotagemEfetivo()) && controleJogo.getRandom().nextDouble() > fatorAcidenteMomento) {
             if (piloto.isJogadorHumano()) {
                 verificaAcidenteJogadorHumano(piloto, pilotoNaFrente, fatorAcidenteMomento);
             } else {
@@ -291,7 +291,7 @@ public class ControleCorrida {
 
     private void verificaAcidenteJogadorHumano(Piloto piloto, Piloto pilotoNaFrente, double fatorAcidenteLocal) {
         int stress = (int) (100 * fatorAcidenteLocal);
-        if (!Piloto.AGRESSIVO.equals(piloto.getModoPilotagem())) {
+        if (!Piloto.AGRESSIVO.equals(piloto.getModoPilotagemEfetivo())) {
             return;
         }
         No noAtual = piloto.getNoAtual();
@@ -303,7 +303,7 @@ public class ControleCorrida {
                             piloto.nomeJogadorFormatado(), piloto.getNome(), pilotoNaFrente.getNome()})));
                 }
             }
-        } else if ((noAtual.verificaCurvaAlta()) && (piloto.getStress() > stress) && Piloto.AGRESSIVO.equals(piloto.getModoPilotagem())) {
+        } else if ((noAtual.verificaCurvaAlta()) && (piloto.getStress() > stress) && Piloto.AGRESSIVO.equals(piloto.getModoPilotagemEfetivo())) {
             piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
             controleJogo.infoPrioritaria(Lang.msg("015", new String[]{piloto.nomeJogadorFormatado(),
                     Html.vermelho(piloto.getNome()), pilotoNaFrente.getNome()}));

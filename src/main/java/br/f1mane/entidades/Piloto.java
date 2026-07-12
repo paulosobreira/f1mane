@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -243,6 +245,9 @@ public class Piloto implements Serializable, PilotoSuave {
     private boolean colisaoCentro;
     @JsonIgnore
     private int ciclosPresoFila;
+    /** Contador irmão de {@link #ciclosPresoFila}, mas sem exigir sobreposição física de colisão — ver {@link #atualizaCiclosPresoFilaProximidade()}. */
+    @JsonIgnore
+    private int ciclosPresoFilaProximidade;
     @JsonIgnore
     private double limiteEvitarBatrCarroFrente;
     @JsonIgnore
@@ -1464,6 +1469,7 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     public void processaPenalidadeColisao() {
+        atualizaCiclosPresoFilaProximidade();
         if (getColisao() == null) {
             ciclosPresoFila = 0;
             return;
@@ -1494,6 +1500,61 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     /**
+     * Contador irmão de {@link #ciclosPresoFila}, mas sem exigir sobreposição
+     * física de colisão (que só é detectada quando as caixas de colisão
+     * literalmente se tocam) — considera "preso" também um piloto à frente na
+     * mesma linha dentro de {@link Global#JANELA_FILA_SEM_COLISAO} índices,
+     * com {@code ganho} igual ou abaixo de {@link Global#GANHO_LIMITE_FILA_SEM_COLISAO}.
+     * Valores iniciais deliberadamente agressivos (janela mais generosa,
+     * limite de ganho mais permissivo, limiar de ciclos mais baixo que
+     * {@link #ciclosPresoFila}) — a recalibrar pra baixo conforme observação
+     * em corrida real, ver {@link Global#JANELA_FILA_SEM_COLISAO}.
+     */
+    private void atualizaCiclosPresoFilaProximidade() {
+        No no = getNoAtual();
+        List<No> pista = controleJogo.getNosDaPista();
+        if (no == null || pista == null || pista.isEmpty()) {
+            ciclosPresoFilaProximidade = 0;
+            return;
+        }
+        int n = pista.size();
+        int meuIndex = no.getIndex();
+        List<Piloto> pilotos = controleJogo.getPilotos();
+        boolean carroPertoNaMesmaLinha = false;
+        for (int i = 0; i < pilotos.size(); i++) {
+            Piloto outro = pilotos.get(i);
+            if (outro == null || outro.equals(this)) {
+                continue;
+            }
+            No noOutro = outro.getNoAtual();
+            if (noOutro == null) {
+                continue;
+            }
+            boolean mesmaLinha = outro.getTracado() == this.tracado
+                    || (outro.getIndiceTracado() > 0 && outro.getTracadoAntigo() == this.tracado);
+            if (!mesmaLinha) {
+                continue;
+            }
+            int d = noOutro.getIndex() - meuIndex;
+            if (d > n / 2) {
+                d -= n;
+            }
+            if (d < -n / 2) {
+                d += n;
+            }
+            if (d > 0 && d <= Global.JANELA_FILA_SEM_COLISAO) {
+                carroPertoNaMesmaLinha = true;
+                break;
+            }
+        }
+        if (carroPertoNaMesmaLinha && ganho <= Global.GANHO_LIMITE_FILA_SEM_COLISAO) {
+            ciclosPresoFilaProximidade++;
+        } else {
+            ciclosPresoFilaProximidade = 0;
+        }
+    }
+
+    /**
      * Escapa da fila indiana: preso ha varios ciclos atras de um carro lento
      * na mesma linha, muda para um tracado lateral comprovadamente livre. A
      * verificacao padrao de mudanca de tracado bloqueia quando qualquer carro
@@ -1504,7 +1565,7 @@ public class Piloto implements Serializable, PilotoSuave {
         if (isJogadorHumano()) {
             return false;
         }
-        if (ciclosPresoFila < 8) {
+        if (ciclosPresoFila < 8 && ciclosPresoFilaProximidade < Global.LIMIAR_CICLOS_FILA_SEM_COLISAO) {
             return false;
         }
         if (controleJogo.isSafetyCarNaPista() || isRecebeuBanderada()) {
@@ -1527,6 +1588,7 @@ public class Piloto implements Serializable, PilotoSuave {
         for (int i = 0; i < alvos.length; i++) {
             if (verificaTracadoLivreParaEscapar(alvos[i]) && mudarTracado(alvos[i], false, true)) {
                 ciclosPresoFila = 0;
+                ciclosPresoFilaProximidade = 0;
                 if (Global.LOG_COLISAO) {
                     Logger.logar("[ESCAPE_FILA] piloto=" + getNome() + " de=" + tracadoAtual + " para=" + alvos[i]
                             + " idx=" + (getNoAtual() != null ? getNoAtual().getIndex() : -1)
@@ -1697,7 +1759,18 @@ public class Piloto implements Serializable, PilotoSuave {
         if (controleJogo.isModoQualify()) {
             return;
         }
-        if (getPtosBox() != 0) {
+        if (isBox() || getPtosBox() != 0) {
+            /**
+             * Piloto indo pro box (desde a decisão, isBox(), não só quando
+             * já fisicamente na pit lane, getPtosBox() != 0) é excluído da
+             * escapada. Se já estava marcado (impedidoDeMudarTracadoPorEscapada)
+             * antes de decidir ir pro box, libera a trava aqui — sem isso,
+             * ela nunca mais seria limpa (só processaEscapadaAncoradaAoTracado(),
+             * que deixa de rodar, faz isso), travando o piloto pra qualquer
+             * mudança de traçado (inclusive entrar no box) pelo resto da
+             * corrida.
+             */
+            impedidoDeMudarTracadoPorEscapada = false;
             return;
         }
         /**
@@ -1857,6 +1930,15 @@ public class Piloto implements Serializable, PilotoSuave {
      * ciclo JÁ PASSADA da entrada.
      */
     private static final int JANELA_DETECCAO_ENTRADA_ESCAPADA = 150;
+
+    /**
+     * Camada 2 da entrada no box (ver spec {@code tracado-safe-lane-change}):
+     * dentro dessa distância (em índices de nó) de {@code entradaBoxIndex},
+     * a tentativa de mudar pro traçado do box passa a ser forçada (ignora
+     * cooldown/animação em andamento), em vez de só a tentativa não forçada
+     * da camada 1 (janela maior, ver {@code verificaEntradaBox}).
+     */
+    private static final int JANELA_ENTRADA_BOX_FORCADA = 100;
 
     /**
      * Reconecta a corrida ao novo modelo de {@link ObjetoEscapada} (ancorado
@@ -2337,7 +2419,7 @@ public class Piloto implements Serializable, PilotoSuave {
                 retardaFreiandoReta = true;
             }
 
-            if (!retardaFreiandoReta && Piloto.AGRESSIVO.equals(getModoPilotagem())) {
+            if (!retardaFreiandoReta && Piloto.AGRESSIVO.equals(getModoPilotagemEfetivo())) {
                 retardaFreiandoReta = true;
             }
 
@@ -2357,7 +2439,7 @@ public class Piloto implements Serializable, PilotoSuave {
                 retardaFreiandoReta = false;
             }
             if (retardaFreiandoReta) {
-                if (getStress() > 50 && Piloto.AGRESSIVO.equals(getModoPilotagem())) {
+                if (getStress() > 50 && Piloto.AGRESSIVO.equals(getModoPilotagemEfetivo())) {
                     controleJogo.travouRodas(this);
                 }
                 minMulti += (testPilotoPneus) ? 0.2 : 0.1;
@@ -2413,8 +2495,21 @@ public class Piloto implements Serializable, PilotoSuave {
         }
     }
 
-    private void processaUsoDRS() {
+    void processaUsoDRS() {
         if (!controleJogo.isDrs()) {
+            return;
+        }
+        if (isBox() || getPtosBox() != 0) {
+            /**
+             * Sem DRS a caminho do box nem dentro dele — desde a decisão
+             * (isBox()), não só fisicamente na pit lane (getPtosBox() != 0).
+             * Sem isso, o indicador de DRS na tela continuava piscando
+             * (Piloto.isPodeUsarDRS()) até o piloto entrar fisicamente na
+             * pit lane, mesmo já a caminho do box.
+             */
+            getCarro().setAsa(Carro.MAIS_ASA);
+            ativarDRS = false;
+            podeUsarDRS = false;
             return;
         }
         if (verificaPodeUsarDRS() && ativarDRS) {
@@ -2428,7 +2523,7 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     private boolean verificaPodeUsarDRS() {
-        if (getPtosBox() != 0) {
+        if (isBox() || getPtosBox() != 0) {
             podeUsarDRS = false;
             return false;
         }
@@ -2491,15 +2586,15 @@ public class Piloto implements Serializable, PilotoSuave {
             return;
         }
         if (no.verificaCurvaBaixa()) {
-            if (AGRESSIVO.equals(getModoPilotagem())) {
+            if (AGRESSIVO.equals(getModoPilotagemEfetivo())) {
                 incStress(testeHabilidadePilotoAerodinamicaFreios() ? 10 : 20);
-            } else if (NORMAL.equals(getModoPilotagem())) {
+            } else if (NORMAL.equals(getModoPilotagemEfetivo())) {
                 incStress(testeHabilidadePilotoAerodinamicaFreios() ? 5 : 10);
             }
         } else if (no.verificaCurvaAlta()) {
-            if (AGRESSIVO.equals(getModoPilotagem())) {
+            if (AGRESSIVO.equals(getModoPilotagemEfetivo())) {
                 incStress(testeHabilidadePilotoCarro() ? 10 : 20);
-            } else if (NORMAL.equals(getModoPilotagem())) {
+            } else if (NORMAL.equals(getModoPilotagemEfetivo())) {
                 incStress(testeHabilidadePilotoCarro() ? 5 : 10);
             }
         }
@@ -2687,75 +2782,162 @@ public class Piloto implements Serializable, PilotoSuave {
         if (!noAtual.verificaRetaOuLargada() && !controleJogo.isSafetyCarNaPista()) {
             mudouTracadoReta = 0;
         }
-        Piloto pilotoBateu = controleJogo.getPilotoBateu();
-        if (controleJogo.isSafetyCarNaPista() && pilotoBateu != null && !getNoAtual().isBox()
-                && !pilotoBateu.getCarro().isRecolhido() && getTracado() == pilotoBateu.getTracado()) {
-            int indiceCarro = pilotoBateu.getNoAtual().getIndex();
-
-            int traz = indiceCarro - 300;
-            int frente = indiceCarro + 100;
-
-            List lista = pilotoBateu.obterPista();
-
-            if (traz < 0) {
-                traz = (lista.size() - 1) + traz;
-            }
-            if (frente > (lista.size() - 1)) {
-                frente = (frente - (lista.size() - 1)) - 1;
-            }
-            if (getTracado() == 4) {
-                mudarTracado(2);
-            } else if (getTracado() == 5) {
-                mudarTracado(1);
-            } else if (getNoAtual().getIndex() >= traz && getNoAtual().getIndex() <= frente
-                    && getIndiceTracado() == 0) {
-                /**
-                 * So forca o desvio com a animacao anterior concluida; o
-                 * branch roda a cada ciclo, entao apenas espera a vez.
-                 */
-                int novapos = 0;
-                if (pilotoBateu.getTracado() == 0) {
-                    novapos = controleJogo.getRandom().intervalo(1, 2);
-                }
-                mudarTracado(novapos, true);
-                return;
+        /**
+         * Não faz parte da lista de causas mutuamente exclusivas abaixo: um
+         * piloto já no traçado de fuga (4/5) que precisa desviar de um carro
+         * batido sob safety car AGE aqui e continua avaliando as demais
+         * causas no mesmo ciclo (só o sub-caso "desvio forçado com animação
+         * concluída" interrompe processaMudarTracado() de vez, com o
+         * `return` original).
+         */
+        if (desviaCarroBatidoSobSafetyCar()) {
+            return;
+        }
+        List<BooleanSupplier> causasMudancaTracado = Arrays.asList(
+                this::processaEntradaSaidaBox,
+                this::tentarEscaparFilaIndiana,
+                this::evitaColidirComRetardatario,
+                this::desviaRetardatarioMesmoTracado,
+                this::espelhaTracadoCarroAtras,
+                this::recentralizaSemTrafego);
+        for (BooleanSupplier causa : causasMudancaTracado) {
+            if (causa.getAsBoolean()) {
+                break;
             }
         }
+    }
+
+    /**
+     * Desvio de carro batido sob safety car — ver comentário em
+     * {@link #processaMudarTracado()} sobre por que não é mutuamente
+     * exclusivo com as demais causas. Retorna {@code true} apenas no
+     * sub-caso "desvio forçado com animação concluída", sinalizando pra
+     * {@code processaMudarTracado()} encerrar o ciclo ali mesmo — os
+     * sub-casos de tracado 4/5 agem mas retornam {@code false}, deixando as
+     * demais causas serem avaliadas no mesmo ciclo (comportamento original).
+     */
+    private boolean desviaCarroBatidoSobSafetyCar() {
+        Piloto pilotoBateu = controleJogo.getPilotoBateu();
+        if (!(controleJogo.isSafetyCarNaPista() && pilotoBateu != null && !getNoAtual().isBox()
+                && !pilotoBateu.getCarro().isRecolhido() && getTracado() == pilotoBateu.getTracado())) {
+            return false;
+        }
+        int indiceCarro = pilotoBateu.getNoAtual().getIndex();
+
+        int traz = indiceCarro - 300;
+        int frente = indiceCarro + 100;
+
+        List lista = pilotoBateu.obterPista();
+
+        if (traz < 0) {
+            traz = (lista.size() - 1) + traz;
+        }
+        if (frente > (lista.size() - 1)) {
+            frente = (frente - (lista.size() - 1)) - 1;
+        }
+        if (getTracado() == 4) {
+            mudarTracado(2);
+        } else if (getTracado() == 5) {
+            mudarTracado(1);
+        } else if (getNoAtual().getIndex() >= traz && getNoAtual().getIndex() <= frente
+                && getIndiceTracado() == 0) {
+            /**
+             * So forca o desvio com a animacao anterior concluida; o
+             * branch roda a cada ciclo, entao apenas espera a vez.
+             */
+            int novapos = 0;
+            if (pilotoBateu.getTracado() == 0) {
+                novapos = controleJogo.getRandom().intervalo(1, 2);
+            }
+            mudarTracado(novapos, true);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Entrada/saída de faixa de boxes: snap forçado ao sair, snap não
+     * forçado de volta ao 0 ao completar a saída, e a entrada no box em
+     * três camadas (ver spec {@code tracado-safe-lane-change} — camadas 1/2
+     * aqui, camada 3 em {@link #posicionarNoBox(int)}).
+     */
+    private boolean processaEntradaSaidaBox() {
         if (isBoxSaiuNestaVolta() && controleJogo.verificaSaidaBox(this)) {
             mudarTracado(controleJogo.getCircuito().getLadoBoxSaidaBox(), true);
-        } else if (getTracado() == controleJogo.getCircuito().getLadoBoxSaidaBox()
+            return true;
+        }
+        if (getTracado() == controleJogo.getCircuito().getLadoBoxSaidaBox()
                 && controleJogo.verificaSaidaBox(this) && getNumeroVolta() > 0) {
             mudarTracado(0);
-        } else if (isBox() && getTracado() != controleJogo.getCircuito().getLadoBoxSaidaBox()
+            return true;
+        }
+        if (isBox() && getTracado() != controleJogo.getCircuito().getLadoBoxSaidaBox()
                 && controleJogo.verificaEntradaBox(this)) {
-            if (getTracado() == 0) {
-                mudarTracado(controleJogo.getCircuito().getLadoBoxSaidaBox());
-            } else {
-                mudarTracado(0);
-            }
-
-        } else if (tentarEscaparFilaIndiana()) {
             /**
-             * Preso em fila indiana com tracado lateral livre: ja mudou.
+             * Camada 1 (fora da janela forçada): tentativa não forçada,
+             * sujeita às guardas normais. Camada 2 (dentro de
+             * JANELA_ENTRADA_BOX_FORCADA índices da entrada): mesma
+             * tentativa, mas forçada (ignora cooldown/animação em
+             * andamento) — ainda passa pelo traçado 0 como intermediário
+             * quando vem do lado oposto, então nunca precisa do bypass do
+             * bloqueio 1↔2. Camada 3 (fallback garantido) é
+             * Piloto.posicionarNoBox(), acionada em ControleBox ao parar.
              */
-        } else if (autopilotAtivo() && ((evitaBaterCarroFrente && carroPilotoDaFrenteRetardatario != null
+            boolean forcarEntradaBox = (controleJogo.getCircuito().getEntradaBoxIndex()
+                    - getNoAtual().getIndex()) <= JANELA_ENTRADA_BOX_FORCADA;
+            if (getTracado() == 0) {
+                mudarTracado(controleJogo.getCircuito().getLadoBoxSaidaBox(), forcarEntradaBox);
+            } else {
+                mudarTracado(0, forcarEntradaBox);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /** Evita colidir com um retardatário à frente (mesmo traçado, ou perto demais). Só piloto automático ativo. */
+    private boolean evitaColidirComRetardatario() {
+        if (autopilotAtivo() && ((evitaBaterCarroFrente && carroPilotoDaFrenteRetardatario != null
                 && getTracado() == carroPilotoDaFrenteRetardatario.getPiloto().getTracado())
                 || calculaDiffParaProximoRetardatario < (testeHabilidadePiloto() ? 100 : 150))) {
             desviaPilotoNaFrente(this, carroPilotoDaFrenteRetardatario.getPiloto());
-        } else if (autopilotAtivo() && (calculaDiffParaProximoRetardatarioMesmoTracado < calculaDiferencaParaAnterior
+            return true;
+        }
+        return false;
+    }
+
+    /** Desvia de um retardatário mais à frente no mesmo traçado. Só piloto automático ativo. */
+    private boolean desviaRetardatarioMesmoTracado() {
+        if (autopilotAtivo() && (calculaDiffParaProximoRetardatarioMesmoTracado < calculaDiferencaParaAnterior
                 && calculaDiffParaProximoRetardatarioMesmoTracado < (testeHabilidadePilotoCarro() ? 150 : 200))) {
             desviaPilotoNaFrente(this, carroPilotoDaFrenteRetardatario.getPiloto());
-        } else if (!isJogadorHumano() && carroPilotoAtras != null && mudouTracadoReta <= 1
+            return true;
+        }
+        return false;
+    }
+
+    /** IA espelha o traçado do carro logo atrás, numa reta, pra facilitar ultrapassagem. Só piloto de IA. */
+    private boolean espelhaTracadoCarroAtras() {
+        if (!isJogadorHumano() && carroPilotoAtras != null && mudouTracadoReta <= 1
                 && calculaDiferencaParaAnterior < 150 && carroPilotoAtras.getPiloto().getTracado() != getTracado()
                 && calculaDiferencaParaAnterior > 100 && carroPilotoAtras.getPiloto().getPtosBox() == 0
                 && testeHabilidadePiloto() && !isFreiandoReta()) {
             if (mudarTracado(carroPilotoAtras.getPiloto().getTracado()) && noAtual.verificaRetaOuLargada()) {
                 mudouTracadoReta++;
             }
-        } else if (!isJogadorHumano() && calculaDiferencaParaAnterior > 250
+            return true;
+        }
+        return false;
+    }
+
+    /** Sem tráfego relevante à frente nem atrás, IA recentraliza no traçado 0. Só piloto de IA. */
+    private boolean recentralizaSemTrafego() {
+        if (!isJogadorHumano() && calculaDiferencaParaAnterior > 250
                 && calculaDiffParaProximoRetardatario > 250) {
             mudarTracado(0);
+            return true;
         }
+        return false;
     }
 
     public void desviaPilotoNaFrente(Piloto piloto, Piloto pilotoNaFrente) {
@@ -3268,7 +3450,7 @@ public class Piloto implements Serializable, PilotoSuave {
             getCarro().setGiro(Carro.GIRO_MIN_VAL);
             return;
         }
-        if (AGRESSIVO.equals(getModoPilotagem())) {
+        if (AGRESSIVO.equals(getModoPilotagemEfetivo())) {
             mensangesModoAgressivo();
         }
         if (LENTO.equals(getModoPilotagem())) {
@@ -3276,7 +3458,7 @@ public class Piloto implements Serializable, PilotoSuave {
         }
     }
 
-    private void modoIADefesaAtaque() {
+    void modoIADefesaAtaque() {
         if (!testeHabilidadePiloto()) {
             return;
         }
@@ -3289,6 +3471,18 @@ public class Piloto implements Serializable, PilotoSuave {
                     && ativarDRS && controleJogo.isDrs() && Carro.MENOS_ASA.equals(getCarro().getAsa()));
         } else {
             maxPilotagem = temPneu && stress < valorLimiteStressePararErrarCurva;
+            /**
+             * Acima de stress 95, AGRESSIVO já não traz ganho nenhum (ver
+             * getModoPilotagemEfetivo()) — a decisão automática tem uma
+             * chance de reconhecer isso e recuar pra NORMAL por conta
+             * própria, via teste de habilidade. Não é garantia: em caso de
+             * falha, a decisão automática ainda escolhe AGRESSIVO. Escopo
+             * exclusivo desta decisão automática — não afeta o jogador
+             * humano escolhendo AGRESSIVO manualmente.
+             */
+            if (maxPilotagem && stress > 95 && testeHabilidadePilotoCarro()) {
+                maxPilotagem = false;
+            }
         }
         if (maxPilotagem) {
             setModoPilotagem(AGRESSIVO);
@@ -3330,7 +3524,7 @@ public class Piloto implements Serializable, PilotoSuave {
         if (controleJogo.getRandom().nextDouble() < 0.995) {
             return;
         }
-        if (AGRESSIVO.equals(getModoPilotagem())) {
+        if (AGRESSIVO.equals(getModoPilotagemEfetivo())) {
             if (controleJogo.isChovendo()) {
                 controleJogo
                         .info(Html.negrito(nomeJogadorFormatado() + " " + getNome()) + Html.negrito(Lang.msg("052")));
@@ -3394,13 +3588,14 @@ public class Piloto implements Serializable, PilotoSuave {
             comparador += getCarro().testePotencia() ? 0.0 : -0.1;
         }
         if (!reta) {
-            if (AGRESSIVO.equals(modoPilotagem)) {
+            String modoEfetivo = getModoPilotagemEfetivo();
+            if (AGRESSIVO.equals(modoEfetivo)) {
                 comparador += testeHabilidadePiloto() ? 0.3 : 0.2;
             }
-            if (NORMAL.equals(modoPilotagem)) {
+            if (NORMAL.equals(modoEfetivo)) {
                 comparador += testeHabilidadePiloto() ? 0.1 : 0.0;
             }
-            if (LENTO.equals(modoPilotagem)) {
+            if (LENTO.equals(modoEfetivo)) {
                 comparador += testeHabilidadePiloto() ? 0.0 : -0.1;
             }
         }
@@ -3545,6 +3740,22 @@ public class Piloto implements Serializable, PilotoSuave {
         return modoPilotagem;
     }
 
+    /**
+     * Agressividade efetiva pra fins de GAMEPLAY (ganho, geração de estresse,
+     * chance de acidente, freada mal-sucedida, etc.): quando armazenado como
+     * `AGRESSIVO` com `stress > 95`, retorna `NORMAL` — acima desse patamar,
+     * empurrar o carro deixa de trazer qualquer ganho. NÃO usar pra
+     * renderização/HUD (`PainelCircuito.java`), que deve continuar mostrando
+     * o piloto como `AGRESSIVO`; use {@link #getModoPilotagem()} nesses
+     * casos, já que o campo armazenado nunca é alterado por esta regra.
+     */
+    public String getModoPilotagemEfetivo() {
+        if (AGRESSIVO.equals(modoPilotagem) && stress > 95) {
+            return NORMAL;
+        }
+        return modoPilotagem;
+    }
+
     public void setModoPilotagem(String modoPilotagem) {
         this.modoPilotagem = modoPilotagem;
     }
@@ -3561,9 +3772,9 @@ public class Piloto implements Serializable, PilotoSuave {
      * (mantém a ausência de decaimento passivo que já tinha).
      */
     public void decStress(int val) {
-        if (NORMAL.equals(getModoPilotagem())) {
+        if (NORMAL.equals(getModoPilotagemEfetivo())) {
             val = Math.round(val * 1.1f);
-        } else if (LENTO.equals(getModoPilotagem())) {
+        } else if (LENTO.equals(getModoPilotagemEfetivo())) {
             val = Math.round(val * 1.5f);
         }
         if (stress > 0 && (stress - val) > 0
@@ -3583,7 +3794,7 @@ public class Piloto implements Serializable, PilotoSuave {
         if (isRecebeuBanderada()) {
             return;
         }
-        if (AGRESSIVO.equals(getModoPilotagem()) || NORMAL.equals(getModoPilotagem())) {
+        if (AGRESSIVO.equals(getModoPilotagemEfetivo()) || NORMAL.equals(getModoPilotagemEfetivo())) {
             val = Math.round(val * 0.5f);
         }
         if (val < 1) {
@@ -3602,9 +3813,12 @@ public class Piloto implements Serializable, PilotoSuave {
             if ((controleJogo.getRandom().nextDouble() < ((900 - getPosicao() * 17.5) / 1000.0)))
                 stress += val;
         }
-        if (stress >= 99 && AGRESSIVO.equals(getModoPilotagem())) {
-            setModoPilotagem(NORMAL);
-        }
+        /**
+         * Auto-downgrade pra NORMAL em stress>=99 removido — substituído pela
+         * regra de agressividade efetiva ({@link #getModoPilotagemEfetivo()}),
+         * que já neutraliza o ganho de AGRESSIVO a partir de stress>95 sem
+         * mutar o campo armazenado (o piloto continua exibido como AGRESSIVO).
+         */
     }
 
     public void setStress(int stress) {
@@ -3758,33 +3972,70 @@ public class Piloto implements Serializable, PilotoSuave {
              * nunca acumula tempo suficiente para conseguir mudar de tracado.
              */
             ultimaMudancaPos = System.currentTimeMillis();
-            int tracadoAntigoAnterior = getTracadoAntigo();
-            int indiceRestante = indiceTracado;
-            setTracadoAntigo(getTracado());
-            setTracado(mudarTracado);
-            calculaIndiceTracado();
-            if (indiceRestante > 0) {
-                /**
-                 * Mudanca forcada no meio da animacao anterior. Se esta
-                 * voltando para a linha de origem, continua da posicao
-                 * lateral atual (espelha o progresso) em vez de teleportar
-                 * o carro para o inicio da nova interpolacao.
-                 */
-                if (mudarTracado == tracadoAntigoAnterior) {
-                    int continua = indiceTracado - indiceRestante;
-                    if (continua < 1) {
-                        continua = 1;
-                    }
-                    setIndiceTracado(continua);
-                }
-                if (Global.LOG_COLISAO) {
-                    Logger.logar("[TRACADO_RESET] piloto=" + getNome() + " de=" + getTracadoAntigo() + " para="
-                            + mudarTracado + " antAnterior=" + tracadoAntigoAnterior + " restante=" + indiceRestante
-                            + " forca=" + forcaMudar);
-                }
-            }
+            efetivaMudancaTracado(mudarTracado, forcaMudar);
             return true;
         }
+    }
+
+    /**
+     * Bookkeeping da mudança de traçado propriamente dita (salvar
+     * {@code tracadoAntigo}, aplicar o novo {@code tracado}, recalcular
+     * {@code indiceTracado} — espelhando o progresso já percorrido se estiver
+     * voltando pro traçado de origem no meio de uma animação), reaproveitado
+     * tanto pelo fluxo normal de {@link #mudarTracado(int, boolean, boolean)}
+     * quanto por {@link #posicionarNoBox(int)}, que ignora as demais guardas
+     * (cooldown, animação em andamento, bloqueio 1↔2) mas precisa do mesmo
+     * bookkeeping pra não corromper o estado da animação de traçado.
+     */
+    private void efetivaMudancaTracado(int alvo, boolean forcaMudar) {
+        int tracadoAntigoAnterior = getTracadoAntigo();
+        int indiceRestante = indiceTracado;
+        setTracadoAntigo(getTracado());
+        setTracado(alvo);
+        calculaIndiceTracado();
+        if (indiceRestante > 0) {
+            /**
+             * Mudanca forcada no meio da animacao anterior. Se esta
+             * voltando para a linha de origem, continua da posicao
+             * lateral atual (espelha o progresso) em vez de teleportar
+             * o carro para o inicio da nova interpolacao.
+             */
+            if (alvo == tracadoAntigoAnterior) {
+                int continua = indiceTracado - indiceRestante;
+                if (continua < 1) {
+                    continua = 1;
+                }
+                setIndiceTracado(continua);
+            }
+            if (Global.LOG_COLISAO) {
+                Logger.logar("[TRACADO_RESET] piloto=" + getNome() + " de=" + getTracadoAntigo() + " para=" + alvo
+                        + " antAnterior=" + tracadoAntigoAnterior + " restante=" + indiceRestante + " forca="
+                        + forcaMudar);
+            }
+        }
+    }
+
+    /**
+     * Posicionamento garantido no box (camada 3 de {@code tracado-safe-lane-change}):
+     * último recurso quando a aproximação suave/forçada (camadas 1/2, em
+     * {@link #processaMudarTracado()}) não conseguiu levar o piloto pro
+     * traçado do box a tempo. Ignora cooldown, animação em andamento e o
+     * bloqueio de troca direta entre os traçados 1 e 2 — não se aplica aqui
+     * porque o lado do box é fixo pela geometria do circuito, independente
+     * do traçado de origem do piloto. Só respeita a trava de escapada
+     * ancorada; se o piloto já estiver no traçado alvo, é um no-op (não
+     * reseta {@code indiceTracado}/{@code tracadoAntigo} à toa).
+     */
+    public boolean posicionarNoBox(int alvo) {
+        if (getTracado() == alvo) {
+            return false;
+        }
+        if (impedidoDeMudarTracadoPorEscapada) {
+            return false;
+        }
+        ultimaMudancaPos = System.currentTimeMillis();
+        efetivaMudancaTracado(alvo, true);
+        return true;
     }
 
     public void calculaIndiceTracado() {

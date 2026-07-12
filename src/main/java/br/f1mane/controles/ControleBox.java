@@ -287,7 +287,7 @@ public class ControleBox {
         Logger.logar(piloto.getNome() + " Parou no Box : " + piloto.getNumeroVolta());
         piloto.setVelocidade(0);
         int qtdeCombust;
-        piloto.setTracado(controleJogo.getCircuito().getLadoBox() == 1 ? 2 : 1);
+        piloto.posicionarNoBox(controleJogo.getCircuito().getLadoBox() == 1 ? 2 : 1);
         if (piloto.isJogadorHumano()) {
             Integer combust = controleJogo.getCombustBox(piloto);
             if (controleJogo.isSemReabastecimento()) {

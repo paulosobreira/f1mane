@@ -94,6 +94,12 @@ class PilotoEscapadaAncoradaTracadoTest {
         // pareceria pneu criticamente gasto pra regra de pneus<30% — testes que querem exercitar
         // essa regra setam explicitamente um valor baixo).
         carro.setPorcentagemDesgastePneus(100);
+        // Potência/freios altos por padrão — sem isso, testeHabilidadePilotoCarro()/Freios() falham
+        // sempre (Carro.testePotencia()/testeFreios() ficam em 0 por padrão), mascarando cenários de
+        // "sucesso no teste de habilidade". Testes que querem exercitar o caminho de falha zeram
+        // explicitamente.
+        carro.setPotencia(1000);
+        carro.setFreios(1000);
         piloto.setCarro(carro);
         piloto.setControleJogo(controleJogo);
         piloto.setNoAtual(pista.get(index));
@@ -248,7 +254,8 @@ class PilotoEscapadaAncoradaTracadoTest {
         piloto.processaEscapadaDaPista();
 
         assertEquals(1, piloto.getTracado(), "ainda longe da entrada, só marcado");
-        verify(controleJogo.getRandom(), org.mockito.Mockito.times(1)).nextDouble();
+        // 2 chamadas: testePotencia() (sucede, potência alta) + testeHabilidadePiloto() (falha, habilidade padrão 0).
+        verify(controleJogo.getRandom(), org.mockito.Mockito.times(2)).nextDouble();
     }
 
     @Test
@@ -327,7 +334,8 @@ class PilotoEscapadaAncoradaTracadoTest {
 
         piloto.processaEscapadaDaPista();
         assertEquals(1, piloto.getTracado(), "ainda longe da entrada, só marcado, não escapa ainda");
-        verify(controleJogo.getRandom(), org.mockito.Mockito.times(1)).nextDouble();
+        // 2 chamadas: testePotencia() (sucede, potência alta) + testeHabilidadePiloto() (falha, habilidade padrão 0).
+        verify(controleJogo.getRandom(), org.mockito.Mockito.times(2)).nextDouble();
 
         piloto.setNoAtual(pista.get(300));
         piloto.processaEscapadaDaPista();
@@ -373,10 +381,11 @@ class PilotoEscapadaAncoradaTracadoTest {
         Piloto piloto = criarPiloto(260, 1);
         piloto.setModoPilotagem(Piloto.AGRESSIVO);
         piloto.setStress(95);
-        // habilidade/potência padrão (0): primeiro teste (na volta 0) marca sempre, com 1 chamada de RNG.
+        // habilidade padrão (0): primeiro teste (na volta 0) marca sempre, com 2 chamadas de RNG
+        // (testePotencia() sucede, potência alta do fixture; testeHabilidadePiloto() falha, habilidade padrão 0).
 
         piloto.processaEscapadaDaPista();
-        verify(controleJogo.getRandom(), org.mockito.Mockito.times(1)).nextDouble();
+        verify(controleJogo.getRandom(), org.mockito.Mockito.times(2)).nextDouble();
 
         // Nova volta: stress dentro da janela do teste 2 (>=70) mas abaixo da do teste 1 (>90),
         // pneus baixos, e agora com habilidade/freios altos pra passar no teste 2 (2 chamadas de
@@ -391,7 +400,7 @@ class PilotoEscapadaAncoradaTracadoTest {
 
         piloto.processaEscapadaDaPista();
 
-        verify(controleJogo.getRandom(), org.mockito.Mockito.times(3)).nextDouble();
+        verify(controleJogo.getRandom(), org.mockito.Mockito.times(4)).nextDouble();
         assertEquals(Piloto.NORMAL, piloto.getModoPilotagem(),
                 "na volta seguinte, o cache deveria ter sido limpo, permitindo um novo teste (agora pelo teste 2, que passa, sem recompensa de LENTO)");
     }
@@ -479,7 +488,8 @@ class PilotoEscapadaAncoradaTracadoTest {
 
         piloto.processaEscapadaDaPista();
 
-        verify(controleJogo.getRandom(), org.mockito.Mockito.times(1)).nextDouble();
+        // 2 chamadas: testePotencia() (sucede, potência alta) + testeHabilidadePiloto() (falha, habilidade padrão 0).
+        verify(controleJogo.getRandom(), org.mockito.Mockito.times(2)).nextDouble();
     }
 
     @Test
@@ -686,5 +696,41 @@ class PilotoEscapadaAncoradaTracadoTest {
 
         assertEquals(5, piloto.getTracado(),
                 "não deveria haver diferença de regra entre a volta 1 e as demais — agressivo+estressado na entrada escapa igual em qualquer volta");
+    }
+
+    // ---- Piloto indo pro box é excluído da escapada desde a decisão ----
+
+    @Test
+    void pilotoDecidiuIrProBox_naoETestadoNemMarcadoPelaEscapada() {
+        registrarEscapada(criarEscapada(1, 300, 360));
+        Piloto piloto = criarPiloto(300, 1);
+        piloto.setModoPilotagem(Piloto.AGRESSIVO);
+        piloto.setStress(95);
+        piloto.setBox(true); // decidiu ir pro box, mas ainda na pista principal (getPtosBox() == 0).
+
+        piloto.processaEscapadaDaPista();
+
+        assertEquals(1, piloto.getTracado(), "piloto indo pro box não deveria ser marcado nem escapar, mesmo satisfazendo a pré-condição de risco");
+        verify(controleJogo.getRandom(), never()).nextDouble();
+    }
+
+    @Test
+    void pilotoJaMarcadoPelaEscapada_decideIrProBox_travaELiberada() {
+        registrarEscapada(criarEscapada(1, 300, 400));
+        Piloto piloto = criarPiloto(260, 1);
+        piloto.setModoPilotagem(Piloto.AGRESSIVO);
+        piloto.setStress(95);
+        piloto.getCarro().setPotencia(0); // força falha no teste de habilidade, garantindo a marca.
+
+        piloto.processaEscapadaDaPista();
+        assertEquals(1, piloto.getTracado(), "ainda longe da entrada, só marcado");
+
+        piloto.setBox(true);
+        piloto.processaEscapadaDaPista();
+
+        // Trava liberada: mudarTracado por qualquer outra via volta a funcionar normalmente.
+        boolean mudou = piloto.mudarTracado(0);
+        assertTrue(mudou, "trava de escapada deveria ter sido liberada ao decidir ir pro box, mesmo já marcado");
+        assertEquals(0, piloto.getTracado());
     }
 }

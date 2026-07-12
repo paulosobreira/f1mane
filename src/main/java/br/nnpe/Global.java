@@ -30,6 +30,19 @@ public final class Global {
      * (Piloto.testeEscapadaPneus()), junto com pneus abaixo de 30%.
      */
     public static final double LIMITE_ESTRESSE_PARA_ESCAPADA_PNEUS = 70;
+    /**
+     * Fila indiana sem colisão física literal (Piloto.processaPenalidadeColisao/
+     * tentarEscaparFilaIndiana): janela de índices à frente, na mesma linha,
+     * pra contar como "preso" mesmo sem sobreposição de caixa de colisão.
+     * Valor inicial deliberadamente agressivo (mais fácil de disparar que o
+     * caminho de colisão física) — a pedido do usuário, pra recalibrar pra
+     * baixo depois de observar em corrida real, não pra cima.
+     */
+    public static final int JANELA_FILA_SEM_COLISAO = 70;
+    /** Limite de {@code ganho} pra fila indiana sem colisão física — mais permissivo que o `<= 10` da colisão física. */
+    public static final double GANHO_LIMITE_FILA_SEM_COLISAO = 15;
+    /** Limiar de ciclos consecutivos pra fila indiana sem colisão física — metade do limiar de 8 da colisão física. */
+    public static final int LIMIAR_CICLOS_FILA_SEM_COLISAO = 4;
     public static double MOD_GANHO_SUAVE = 4;
     public static double MOD_GANHO_SUAVE_MULTIPLAYER = 2.0;
     public static boolean DESENHA_DIFF_REAL_SUAVE = false;

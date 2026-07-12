@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import br.f1mane.controles.InterfaceJogo;
+import br.nnpe.Global;
 
 /**
  * Cobre a cadeia completa da correcao de overlap: deteccao de colisao com
@@ -172,7 +173,10 @@ class PilotoPenalidadeEscapeFilaTest {
     @Test
     void tentarEscaparFilaIndiana_poucosCiclosPreso_naoEscapa() {
         Piloto atras = criarPiloto("Atras", 100, 0);
-        Piloto frente = criarPiloto("Frente", 140, 0);
+        // Frente bem além da janela de proximidade (50 índices) pra isolar só o contador de
+        // colisão física literal (ciclosPresoFila) — não interferir com o contador novo
+        // (ciclosPresoFilaProximidade), que teria seu próprio limiar (4) mais baixo.
+        Piloto frente = criarPiloto("Frente", 400, 0);
         prendeNaFila(atras, frente, 7);
 
         assertFalse(atras.tentarEscaparFilaIndiana());
@@ -182,7 +186,7 @@ class PilotoPenalidadeEscapeFilaTest {
     @Test
     void tentarEscaparFilaIndiana_semColisaoContadorZera() {
         Piloto atras = criarPiloto("Atras", 100, 0);
-        Piloto frente = criarPiloto("Frente", 140, 0);
+        Piloto frente = criarPiloto("Frente", 400, 0); // fora da janela de proximidade, ver comentário acima.
         prendeNaFila(atras, frente, 7);
 
         // colisao some por um ciclo: contador zera
@@ -228,6 +232,49 @@ class PilotoPenalidadeEscapeFilaTest {
 
         assertFalse(atras.tentarEscaparFilaIndiana());
         assertEquals(0, atras.getTracado());
+    }
+
+    // ---- fila indiana sem colisão física literal (ciclosPresoFilaProximidade) ----
+
+    @Test
+    void tentarEscaparFilaIndiana_semColisaoFisica_masPertoNaMesmaLinha_escapaComLimiarMenor() {
+        Piloto atras = criarPiloto("Atras", 100, 0);
+        Piloto frente = criarPiloto("Frente", 140, 0); // 40 índices à frente, dentro da janela de 50.
+        atras.setGanho(10); // <= 15 (limite da proximidade), sem nunca chamar setColisao().
+
+        for (int i = 0; i < Global.LIMIAR_CICLOS_FILA_SEM_COLISAO; i++) {
+            atras.processaPenalidadeColisao();
+        }
+
+        assertNull(atras.getColisao(), "não deveria haver colisão física detectada — o caminho é só por proximidade");
+        assertTrue(atras.tentarEscaparFilaIndiana());
+        assertEquals(1, atras.getTracado());
+    }
+
+    @Test
+    void tentarEscaparFilaIndiana_foraDaJanelaDeProximidade_naoAcionaOCaminhoNovo() {
+        Piloto atras = criarPiloto("Atras", 100, 0);
+        Piloto frente = criarPiloto("Frente", 200, 0); // 100 índices à frente, fora da janela de 50.
+        atras.setGanho(10);
+
+        for (int i = 0; i < 10; i++) {
+            atras.processaPenalidadeColisao();
+        }
+
+        assertFalse(atras.tentarEscaparFilaIndiana());
+    }
+
+    @Test
+    void tentarEscaparFilaIndiana_dentroDaJanelaMasGanhoAcimaDoLimite_naoAcionaOCaminhoNovo() {
+        Piloto atras = criarPiloto("Atras", 100, 0);
+        Piloto frente = criarPiloto("Frente", 140, 0);
+        atras.setGanho(20); // > 15, acima do limite de ganho da proximidade.
+
+        for (int i = 0; i < 10; i++) {
+            atras.processaPenalidadeColisao();
+        }
+
+        assertFalse(atras.tentarEscaparFilaIndiana());
     }
 
     // ---- cooldown de mudanca de tracado cobre a animacao ----
