@@ -77,6 +77,7 @@ public class PainelCircuito {
     private BasicStroke pista;
     private BasicStroke pistaTinta;
     private BasicStroke box;
+    private BasicStroke boxBorda;
     private BasicStroke zebra;
 
     private static final DecimalFormat mil = new DecimalFormat("000");
@@ -2573,12 +2574,17 @@ public class PainelCircuito {
             pistaTinta = new BasicStroke(Util.inteiro(larguraPistaPixeis), BasicStroke.CAP_ROUND,
                     BasicStroke.JOIN_ROUND);
             box = new BasicStroke(Util.inteiro(larguraPistaPixeis * .4), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+            // Borda branca do box: mais larga que o próprio stroke do box
+            // (.4), pra sobrar uma margem visível ao redor da linha central
+            // cinza, no mesmo espírito de pistaTinta/pista pra pista.
+            boxBorda = new BasicStroke(Util.inteiro(larguraPistaPixeis * .5), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
             zebra = new BasicStroke(Util.inteiro(larguraPistaPixeis * 1.05), BasicStroke.CAP_BUTT,
                     BasicStroke.JOIN_MITER, 10f, new float[]{10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10}, 0);
             gerarBoxes();
         }
         desenhaTintaPistaZebra(g2d);
         desenhaPista(g2d);
+        desenhaTintaPistaBox(g2d);
         desenhaPistaBox(g2d);
         desenhaBoxes(g2d);
         DesenhoProceduralCircuito.desenhaLinhaDeLargada(g2d, circuito, zoom, descontoCentraliza);
@@ -2616,12 +2622,14 @@ public class PainelCircuito {
             pistaTinta = new BasicStroke(Util.inteiro(larguraPistaPixeis), BasicStroke.CAP_ROUND,
                     BasicStroke.JOIN_ROUND);
             box = new BasicStroke(Util.inteiro(larguraPistaPixeis * .4), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+            boxBorda = new BasicStroke(Util.inteiro(larguraPistaPixeis * .5), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
             zebra = new BasicStroke(Util.inteiro(larguraPistaPixeis * 1.05), BasicStroke.CAP_BUTT,
                     BasicStroke.JOIN_MITER, 10f, new float[]{10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10}, 0);
             gerarBoxes();
         }
         desenhaTintaPistaZebra(g2d);
         desenhaPista(g2d);
+        desenhaTintaPistaBox(g2d);
         desenhaPistaBox(g2d);
         desenhaBoxes(g2d);
         return image;
@@ -5358,6 +5366,51 @@ public class PainelCircuito {
                 Util.inteiro((noFinal.getX() - descontoCentraliza.x) * zoom),
                 Util.inteiro((noFinal.getY() - descontoCentraliza.y) * zoom));
         g2d.setStroke(stroke);
+    }
+
+    /**
+     * @param fechado true fecha o caminho de volta ao primeiro nó (caso da
+     *                pista, que é um loop); false deixa o caminho aberto,
+     *                do primeiro ao último nó só (caso do box, que é um
+     *                trajeto de entrada até a saída, não um loop).
+     */
+    private GeneralPath construirCaminho(List<No> nos, boolean fechado) {
+        GeneralPath caminho = new GeneralPath();
+        No oldNo = null;
+        for (No no : nos) {
+            int x = Util.inteiro((no.getX() - descontoCentraliza.x) * zoom);
+            int y = Util.inteiro((no.getY() - descontoCentraliza.y) * zoom);
+            if (oldNo == null) {
+                caminho.moveTo(x, y);
+            } else {
+                caminho.lineTo(x, y);
+            }
+            oldNo = no;
+        }
+        if (fechado) {
+            No noInicial = nos.get(0);
+            caminho.lineTo(Util.inteiro((noInicial.getX() - descontoCentraliza.x) * zoom),
+                    Util.inteiro((noInicial.getY() - descontoCentraliza.y) * zoom));
+        }
+        return caminho;
+    }
+
+    /**
+     * Borda branca ao longo do traçado do box, no mesmo espírito de
+     * desenhaTintaPistaZebra() pintar a borda da pista — mas, diferente
+     * dela, suprimida (via Area.subtract) nos trechos em que a borda do box
+     * cairia dentro da área já pintada pelo traçado da pista, pra não
+     * desenhar branco por cima do asfalto/zebra da pista.
+     */
+    private void desenhaTintaPistaBox(Graphics2D g2d) {
+        Shape formaPista = pista.createStrokedShape(construirCaminho(circuito.getPistaKey(), true));
+        Shape formaBordaBox = boxBorda.createStrokedShape(construirCaminho(circuito.getBoxKey(), false));
+
+        Area areaBorda = new Area(formaBordaBox);
+        areaBorda.subtract(new Area(formaPista));
+
+        g2d.setColor(Color.WHITE);
+        g2d.fill(areaBorda);
     }
 
     private void desenhaPistaBox(Graphics2D g2d) {

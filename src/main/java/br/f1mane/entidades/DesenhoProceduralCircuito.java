@@ -4,7 +4,9 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
@@ -50,11 +52,17 @@ public final class DesenhoProceduralCircuito {
 				BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 		BasicStroke box = new BasicStroke(Util.inteiro(larguraPistaPixeis * .4),
 				BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+		// Borda branca do box: mais larga que o próprio stroke do box (.4),
+		// pra sobrar uma margem visível ao redor da linha central cinza, no
+		// mesmo espírito de pistaTinta/pista pra pista.
+		BasicStroke boxBorda = new BasicStroke(Util.inteiro(larguraPistaPixeis * .5),
+				BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 		BasicStroke zebra = new BasicStroke(Util.inteiro(larguraPistaPixeis * 1.05),
 				BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[]{10, 10}, 0);
 
 		desenhaTintaPistaEZebra(g2d, circuito, zoom, pistaTinta, zebra);
 		desenhaPista(g2d, circuito, zoom, pista);
+		desenhaTintaPistaBox(g2d, circuito, zoom, pista, boxBorda);
 		desenhaPistaBox(g2d, circuito, zoom, box);
 	}
 
@@ -427,6 +435,9 @@ public final class DesenhoProceduralCircuito {
 
 	private static void desenhaPista(Graphics2D g2d, Circuito circuito, double zoom,
 			BasicStroke stroke) {
+		if (circuito.getPistaKey() == null || circuito.getPistaKey().isEmpty()) {
+			return;
+		}
 		g2d.setColor(circuito.getCorAsfalto() != null ? circuito.getCorAsfalto() : COR_PISTA);
 		g2d.setStroke(stroke);
 		No oldNo = null;
@@ -441,6 +452,55 @@ public final class DesenhoProceduralCircuito {
 		No noFinal = circuito.getPistaKey().get(0);
 		g2d.drawLine(Util.inteiro(oldNo.getX() * zoom), Util.inteiro(oldNo.getY() * zoom),
 				Util.inteiro(noFinal.getX() * zoom), Util.inteiro(noFinal.getY() * zoom));
+	}
+
+	/**
+	 * @param fechado true fecha o caminho de volta ao primeiro nó (caso da
+	 *                pista, que é um loop); false deixa o caminho aberto, do
+	 *                primeiro ao último nó só (caso do box, que é um
+	 *                trajeto de entrada até a saída, não um loop).
+	 */
+	private static GeneralPath construirCaminho(List<No> nos, double zoom, boolean fechado) {
+		GeneralPath caminho = new GeneralPath();
+		No oldNo = null;
+		for (No no : nos) {
+			int x = Util.inteiro(no.getX() * zoom);
+			int y = Util.inteiro(no.getY() * zoom);
+			if (oldNo == null) {
+				caminho.moveTo(x, y);
+			} else {
+				caminho.lineTo(x, y);
+			}
+			oldNo = no;
+		}
+		if (fechado) {
+			No noInicial = nos.get(0);
+			caminho.lineTo(Util.inteiro(noInicial.getX() * zoom), Util.inteiro(noInicial.getY() * zoom));
+		}
+		return caminho;
+	}
+
+	/**
+	 * Borda branca ao longo do traçado do box, no mesmo espírito de
+	 * desenhaTintaPistaEZebra() pintar a borda da pista — mas, diferente
+	 * dela, suprimida (via Area.subtract) nos trechos em que a borda do box
+	 * cairia dentro da área já pintada pelo traçado da pista, pra não
+	 * desenhar branco por cima do asfalto/zebra da pista.
+	 */
+	private static void desenhaTintaPistaBox(Graphics2D g2d, Circuito circuito, double zoom,
+			BasicStroke pista, BasicStroke boxBorda) {
+		if (circuito.getPistaKey() == null || circuito.getPistaKey().isEmpty()
+				|| circuito.getBoxKey() == null || circuito.getBoxKey().isEmpty()) {
+			return;
+		}
+		Shape formaPista = pista.createStrokedShape(construirCaminho(circuito.getPistaKey(), zoom, true));
+		Shape formaBordaBox = boxBorda.createStrokedShape(construirCaminho(circuito.getBoxKey(), zoom, false));
+
+		Area areaBorda = new Area(formaBordaBox);
+		areaBorda.subtract(new Area(formaPista));
+
+		g2d.setColor(Color.WHITE);
+		g2d.fill(areaBorda);
 	}
 
 	private static void desenhaPistaBox(Graphics2D g2d, Circuito circuito, double zoom,
@@ -465,6 +525,9 @@ public final class DesenhoProceduralCircuito {
 
 	private static void desenhaTintaPistaEZebra(Graphics2D g2d, Circuito circuito, double zoom,
 			BasicStroke pistaTinta, BasicStroke zebra) {
+		if (circuito.getPistaKey() == null || circuito.getPistaKey().isEmpty()) {
+			return;
+		}
 		// As cores customizadas valem só para a faixa de zebra das curvas —
 		// corZebra1 como fundo sólido e corZebra2 como listras — cada uma com
 		// seu próprio fallback (branco/vermelho). A tinta de borda no resto

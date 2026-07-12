@@ -196,6 +196,28 @@ class DesenhoProceduralCircuitoTest {
                 "nível 20 deveria ficar por cima do nível 1 — sem limite, quanto maior, mais em cima");
     }
 
+    // ---- circuito vazio (editor sem nenhum circuito carregado) ----
+
+    /**
+     * Regressão: com o editor não carregando mais nenhum circuito ao
+     * iniciar (melhorias-editor-circuito), MainPanelEditor.paintComponent()
+     * passa a chamar desenhaPistaZebraEBox() com um Circuito recém-criado
+     * (pistaKey/boxKey vazios) — antes disso nunca acontecia, pois o editor
+     * sempre carregava um circuito real primeiro.
+     */
+    @Test
+    void desenhaPistaZebraEBox_comCircuitoVazio_naoLancaExcecao() {
+        Circuito circuito = new Circuito();
+
+        BufferedImage imagem = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = imagem.createGraphics();
+        try {
+            assertDoesNotThrow(() -> DesenhoProceduralCircuito.desenhaPistaZebraEBox(g2d, circuito, 1.0));
+        } finally {
+            g2d.dispose();
+        }
+    }
+
     // ---- zebra e box customizáveis (circuito-cores-box-zebra) ----
 
     @Test
@@ -286,6 +308,54 @@ class DesenhoProceduralCircuitoTest {
         assertTrue(imagemContemCor(imagem, Color.WHITE), "esperava fallback para branco na cor não definida");
         assertTrue(imagemContemCor(imagem, zebra2), "corZebra2 sozinha já deveria aparecer nas listras da curva");
         assertTrue(!imagemContemCor(imagem, Color.RED), "não deveria usar o vermelho padrão com corZebra2 definida");
+    }
+
+    // ---- borda branca do box com interseção suprimida (melhorias-editor-circuito) ----
+
+    @Test
+    void desenhaPistaZebraEBox_desenhaBordaBrancaAoRedorDoTracadoDoBoxLongeDaPista() {
+        Circuito circuito = circuitoComBoxDeTeste();
+        // O segmento (2100,2400)-(2600,2400) do box fica bem longe do
+        // retângulo da pista (1000,1000)-(2000,2000): a borda branca deveria
+        // aparecer ali, fora do próprio stroke cinza central do box.
+        BufferedImage imagem = new BufferedImage(3000, 3000, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = imagem.createGraphics();
+        try {
+            DesenhoProceduralCircuito.desenhaPistaZebraEBox(g2d, circuito, 1.0);
+        } finally {
+            g2d.dispose();
+        }
+
+        assertEquals(Color.WHITE.getRGB(), imagem.getRGB(2350, 2368),
+                "esperava borda branca do box no trecho livre, fora da linha cinza central e longe da pista");
+    }
+
+    /**
+     * Regressão: diferente da pista (um loop fechado), o traçado do box vai
+     * da entrada até a saída sem voltar ao primeiro nó — desenhaPistaBox()
+     * original já tratava isso como caminho aberto (a linha de "fechamento"
+     * ali é um no-op, do último nó pra ele mesmo). A primeira versão de
+     * desenhaTintaPistaBox() fechava o caminho de volta ao primeiro nó do
+     * box (mesma lógica usada pra pista), criando uma faixa branca larga e
+     * espúria entre o primeiro e o último nó do box.
+     */
+    @Test
+    void desenhaPistaZebraEBox_naoFechaOTracadoDoBoxDeVoltaAoPrimeiroNo() {
+        Circuito circuito = circuitoComBoxDeTeste();
+        // Box: (2100,1900) -> (2100,2400) -> (2600,2400). O "fechamento"
+        // indevido ligaria (2600,2400) de volta a (2100,1900) — ponto médio
+        // dessa diagonal, longe de ambos os segmentos reais do box e da
+        // pista, não deveria ter nada desenhado.
+        BufferedImage imagem = new BufferedImage(3000, 3000, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = imagem.createGraphics();
+        try {
+            DesenhoProceduralCircuito.desenhaPistaZebraEBox(g2d, circuito, 1.0);
+        } finally {
+            g2d.dispose();
+        }
+
+        assertEquals(Color.BLACK.getRGB(), imagem.getRGB(2350, 2150),
+                "não deveria haver nenhum desenho no ponto médio do fechamento indevido entrada-saída do box");
     }
 
     // ---- box customizável (circuito-cores-box-zebra) ----
