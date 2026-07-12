@@ -26,7 +26,7 @@ public class GeoUtil {
 	 * mais do intervalo [0,1], então um percurso ao longo do trajeto anda em
 	 * velocidade visualmente uniforme, independente de quantos pontos livres
 	 * existem em cada trecho. Compartilhado entre o editor ({@code TestePista})
-	 * e a simulação de corrida ({@code Circuito.gerarEscapeMap()}).
+	 * e a simulação de corrida ({@code Circuito.gerarTracadosDeFuga()}).
 	 */
 	public static Point pontoNoTrajeto(List<Point> pontos, double t) {
 		if (pontos.size() == 1) {

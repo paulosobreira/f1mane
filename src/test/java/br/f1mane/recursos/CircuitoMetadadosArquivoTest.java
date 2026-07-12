@@ -199,7 +199,6 @@ class CircuitoMetadadosArquivoTest {
 
         assertEquals(circuitoCarregado.getPistaFull().size(), circuitoManual.getPistaFull().size());
         assertEquals(circuitoCarregado.getBoxFull().size(), circuitoManual.getBoxFull().size());
-        assertEquals(circuitoCarregado.getEscapeMap().size(), circuitoManual.getEscapeMap().size());
     }
 
     @Test

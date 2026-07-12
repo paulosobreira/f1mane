@@ -11,12 +11,12 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 /**
- * Cobre a reconexão de {@code Circuito.gerarEscapeMap()} ao novo modelo de
+ * Cobre a reconexão de {@code Circuito.gerarTracadosDeFuga()} ao modelo de
  * {@link ObjetoEscapada}: {@code pista4Full}/{@code pista5Full} passam a ser
  * derivadas dos objetos do circuito (ao invés de sempre nulas), com o
  * mapeamento tracadoOrigem==1 → traçado 5 / tracadoOrigem==2 → traçado 4
  * exigido pelas regras de retorno de {@code Piloto.mudarTracado} (só permite
- * voltar de 4 pra 2 e de 5 pra 1) e pelo antigo {@code escapaTracado()}.
+ * voltar de 4 pra 2 e de 5 pra 1).
  */
 class CircuitoEscapadaTracadoTest {
 

@@ -236,6 +236,19 @@ public class ControleEstatisticas {
         if (info == null) {
             return;
         }
+        if (!info.startsWith("<font")) {
+            /**
+             * Rede de segurança: toda mensagem exibida precisa vir dentro de
+             * uma tag {@code <font>} própria (ver {@link Html#preto(String)}
+             * e afins) — sem isso, o parser HTML do JEditorPane do Swing
+             * pode simplesmente engolir texto solto no início da mensagem
+             * (ex.: o prefixo {@code (NomeDoJogador)}). Quem chamou
+             * esqueceu de envolver com um {@code Html.*}: aplica o padrão
+             * aqui em vez de deixar a mensagem sair quebrada.
+             */
+            info = Html.preto(info);
+        }
+        Logger.logar("[info" + (prioritaria ? " prioritaria" : "") + "] " + info);
         if (controleJogo.isModoQualify()) {
             return;
         }

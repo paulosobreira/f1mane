@@ -326,7 +326,7 @@ class DesenhoProceduralCircuitoTest {
             g2d.dispose();
         }
 
-        assertEquals(Color.WHITE.getRGB(), imagem.getRGB(2350, 2368),
+        assertEquals(Color.WHITE.getRGB(), imagem.getRGB(2350, 2370),
                 "esperava borda branca do box no trecho livre, fora da linha cinza central e longe da pista");
     }
 

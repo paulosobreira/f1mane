@@ -29,10 +29,10 @@ import java.util.List;
  * A validação em si fica no editor ({@code MainPanelEditor}), não aqui: esta
  * classe só guarda os pontos já validados e desenha o trajeto entre eles.
  * Substitui o modelo anterior (elipse solta, com largura/altura/ângulo
- * interpretados como comprimento/amplitude de uma onda gerada por
- * {@code Circuito.gerarEscapeMap()}). Consumo em tempo de corrida
- * ({@code Piloto.processaEscapadaDaPista()}) não é afetado por este novo
- * modelo — fica para uma mudança futura.
+ * interpretados como comprimento/amplitude de uma onda). Consumido em tempo
+ * de corrida por {@code Piloto.processaEscapadaAncoradaAoTracado()}, ancorado
+ * ao traçado via {@code indiceEntrada}/{@code indiceSaida} e derivado em
+ * {@code Circuito.gerarTracadosDeFuga()}.
  */
 public class ObjetoEscapada extends ObjetoPista {
 

@@ -65,8 +65,6 @@ public class Circuito implements Serializable {
     @JsonIgnore
     private transient List<No> boxKey = new ArrayList<No>();
     @JsonIgnore
-    private Map<PontoEscape, List<No>> escapeMap = new HashMap<PontoEscape, List<No>>();
-    @JsonIgnore
     private double multiplicadorPista;
     @JsonIgnore
     private double multiplicadorLarguraPista;
@@ -266,12 +264,12 @@ public class Circuito implements Serializable {
         gerarTracado1e2Box();
         gerarTracado1e2Pista();
         gerarEscapeList();
-        gerarEscapeMap();
+        gerarTracadosDeFuga();
     }
 
     /**
-     * Reprocessa só o traçado de escapada (pista4Full/pista5Full/escapeMap),
-     * sem revetorizar a pista inteira. Usado pelo editor para atualizar o
+     * Reprocessa só o traçado de escapada (pista4Full/pista5Full), sem
+     * revetorizar a pista inteira. Usado pelo editor para atualizar o
      * desenho dos nós de escapada em tempo real ao mover um objeto Escapada
      * ou ajustar sua largura/altura (comprimento/amplitude da onda), sem o
      * custo de {@link #vetorizarPista}. Requer que a pista já tenha sido
@@ -280,7 +278,7 @@ public class Circuito implements Serializable {
      */
     public synchronized void reprocessarEscapadas() {
         gerarEscapeList();
-        gerarEscapeMap();
+        gerarTracadosDeFuga();
     }
 
     private void gerarTracado1e2Pista() {
@@ -369,24 +367,17 @@ public class Circuito implements Serializable {
     }
 
     /**
-     * {@code ObjetoEscapada} deixou de ser uma elipse solta com
-     * largura/altura/ângulo interpretados como comprimento/amplitude de uma
-     * onda (ver o novo modelo de saída/retorno ancorado ao traçado, em
-     * {@link ObjetoEscapada}) — este método popula {@link #pista4Full}/
-     * {@link #pista5Full} a partir dos {@link ObjetoEscapada} do circuito:
-     * para cada um com {@code indiceEntrada}/{@code indiceSaida} válidos,
-     * gera nós de traçado 4 (quando {@code tracadoOrigem == 1}) ou 5 (quando
+     * Popula {@link #pista4Full}/{@link #pista5Full} a partir dos
+     * {@link ObjetoEscapada} do circuito: para cada um com
+     * {@code indiceEntrada}/{@code indiceSaida} válidos, gera nós de
+     * traçado 4 (quando {@code tracadoOrigem == 1}) ou 5 (quando
      * {@code tracadoOrigem == 2}) interpolados ao longo do trajeto de pontos,
      * nos índices {@code [indiceEntrada, indiceSaida]} — o resto de cada
      * lista permanece {@code null}. O mapeamento 1→4/2→5 (e não 1→5/2→4)
      * é exigido pelas regras já existentes de {@code Piloto.mudarTracado}:
-     * um piloto só volta de 4 para {0,1} e de 5 para {0,2}. {@link #escapeMap}
-     * continua sempre vazio (só para compatibilidade de
-     * {@code Piloto.escapaTracado()}/{@code processaPontoEscape()}, que
-     * seguem inertes).
+     * um piloto só volta de 4 para {0,1} e de 5 para {0,2}.
      */
-    private void gerarEscapeMap() {
-        escapeMap = new HashMap<PontoEscape, List<No>>();
+    private void gerarTracadosDeFuga() {
         int tamanho = pistaFull.size();
         pista4Full = new ArrayList<No>(Collections.<No>nCopies(tamanho, null));
         pista5Full = new ArrayList<No>(Collections.<No>nCopies(tamanho, null));
@@ -415,10 +406,9 @@ public class Circuito implements Serializable {
      * Mapeamento tracadoOrigem→traçado de fuga é {@code 1→5}/{@code 2→4}
      * (não {@code 1→4}/{@code 2→5}) — confirmado por
      * {@code Piloto.mudarTracado} (bloqueia 4→{0,1} e 5→{0,2}, ou seja, só
-     * permite RETORNAR de 4 para 2 e de 5 para 1) e pelo antigo
-     * {@code Piloto.escapaTracado()} (exigia traçado 1 pra usar o lado 5 e
-     * traçado 2 pra usar o lado 4). Trocado depois de um bug relatado em
-     * produção onde carros saíam pelo traçado 1 e voltavam no traçado 2.
+     * permite RETORNAR de 4 para 2 e de 5 para 1). Trocado depois de um bug
+     * relatado em produção onde carros saíam pelo traçado 1 e voltavam no
+     * traçado 2.
      */
     private void preencherTracadoEscapada(ObjetoEscapada escapada, int tamanho) {
         int indiceEntrada = escapada.getIndiceEntrada();
@@ -453,9 +443,9 @@ public class Circuito implements Serializable {
 
     /**
      * {@code ObjetoEscapada} não tem mais um único "centro" de acionamento
-     * (ver javadoc de {@link #gerarEscapeMap()}) — {@link #escapeList} fica
-     * sempre vazia a partir desta mudança; nenhum código fora desta classe a
-     * consome.
+     * (ver javadoc de {@link #gerarTracadosDeFuga()}) — {@link #escapeList}
+     * fica sempre vazia a partir desta mudança; nenhum código fora desta
+     * classe a consome.
      */
     private void gerarEscapeList() {
         escapeList = new ArrayList<Point>();
@@ -800,14 +790,6 @@ public class Circuito implements Serializable {
         return pista2Full;
     }
 
-    public Map<PontoEscape, List<No>> getEscapeMap() {
-        return escapeMap;
-    }
-
-    public void setEscapeMap(Map<PontoEscape, List<No>> escapeMap) {
-        this.escapeMap = escapeMap;
-    }
-
     public void setPistaKey(List<No> pistaKey) {
         this.pistaKey = pistaKey;
     }
@@ -1029,7 +1011,6 @@ public class Circuito implements Serializable {
                 ", objetosNoTransparencia=" + objetosNoTransparencia +
                 ", pistaKey=" + (pistaKey != null ? String.valueOf(pistaKey.size()) : "null") +
                 ", boxKey=" + (boxKey != null ? String.valueOf(boxKey.size()) : "null") +
-                ", escapeMap=" + escapeMap.size() +
                 ", objetos=" + (objetos != null ? String.valueOf(objetos.size()) : "null") +
                 ", escapeList=" + escapeList.size() +
                 ", corFundo=" + corFundo +

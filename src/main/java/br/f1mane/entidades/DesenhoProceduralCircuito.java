@@ -52,10 +52,12 @@ public final class DesenhoProceduralCircuito {
 				BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 		BasicStroke box = new BasicStroke(Util.inteiro(larguraPistaPixeis * .4),
 				BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-		// Borda branca do box: mais larga que o próprio stroke do box (.4),
-		// pra sobrar uma margem visível ao redor da linha central cinza, no
-		// mesmo espírito de pistaTinta/pista pra pista.
-		BasicStroke boxBorda = new BasicStroke(Util.inteiro(larguraPistaPixeis * .5),
+		// Borda branca do box: margem de .05 (mesma proporção que zebra já
+		// usa sobre pista, 1.05 vs 1.0) somada ao próprio stroke do box
+		// (.4) — .5 chegava a produzir uma margem 2x mais larga que a da
+		// pista principal (bug relatado), além de não bater com
+		// PainelCircuito (usado pra gerar a imagem de fundo da corrida).
+		BasicStroke boxBorda = new BasicStroke(Util.inteiro(larguraPistaPixeis * .45),
 				BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 		BasicStroke zebra = new BasicStroke(Util.inteiro(larguraPistaPixeis * 1.05),
 				BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[]{10, 10}, 0);

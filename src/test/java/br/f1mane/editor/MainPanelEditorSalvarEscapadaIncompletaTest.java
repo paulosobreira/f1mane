@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,12 @@ class MainPanelEditorSalvarEscapadaIncompletaTest {
         return (boolean) metodo.invoke(editor);
     }
 
+    private void setCampo(MainPanelEditor editor, String campo, Object valor) throws Exception {
+        Field f = MainPanelEditor.class.getDeclaredField(campo);
+        f.setAccessible(true);
+        f.set(editor, valor);
+    }
+
     @Test
     void salvar_comEscapadaSemSaidaDefinida_ehBloqueadoEChamaAlerta() throws Exception {
         MainPanelEditorTestDouble editor = new MainPanelEditorTestDouble();
@@ -41,6 +48,39 @@ class MainPanelEditorSalvarEscapadaIncompletaTest {
         editor.salvarPista();
 
         assertEquals(1, editor.getAlertasEscapadaIncompleta());
+    }
+
+    @Test
+    void salvar_comEscapadaSendoDesenhadaAindaNaoFinalizada_ehBloqueadoEChamaAlerta() throws Exception {
+        // Bug relatado: escapada com a entrada já clicada, mas ainda sem o
+        // clique direito que finaliza (indiceSaida) e a adiciona a
+        // circuito.getObjetos() — o desenho em andamento não aparecia na
+        // lista de objetos, então a checagem antiga não a via e deixava
+        // salvar, descartando o desenho em progresso silenciosamente.
+        MainPanelEditorTestDouble editor = new MainPanelEditorTestDouble();
+        Circuito circuito = new Circuito();
+        circuito.setObjetos(new ArrayList<>());
+        editor.setCircuito(circuito);
+        ObjetoEscapada emDesenho = new ObjetoEscapada();
+        emDesenho.setTracadoOrigem(1);
+        setCampo(editor, "objetoPista", emDesenho);
+        setCampo(editor, "desenhandoObjetoLivre", true);
+
+        editor.salvarPista();
+
+        assertEquals(1, editor.getAlertasEscapadaIncompleta());
+    }
+
+    @Test
+    void existeEscapadaIncompleta_comEscapadaSendoDesenhada_retornaTrue() throws Exception {
+        MainPanelEditor editor = new MainPanelEditor();
+        Circuito circuito = new Circuito();
+        circuito.setObjetos(new ArrayList<>());
+        editor.setCircuito(circuito);
+        setCampo(editor, "objetoPista", new ObjetoEscapada());
+        setCampo(editor, "desenhandoObjetoLivre", true);
+
+        assertTrue(existeEscapadaIncompleta(editor));
     }
 
     @Test

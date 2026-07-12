@@ -1785,35 +1785,6 @@ public class PainelCircuito {
                 }
             }
         }
-        Map<PontoEscape, List<No>> escapeMap = circuito.getEscapeMap();
-        for (Iterator<PontoEscape> iterator = escapeMap.keySet().iterator(); iterator.hasNext(); ) {
-            PontoEscape key = iterator.next();
-            List<No> list = escapeMap.get(key);
-            Point pOld = null;
-            for (Iterator iterator2 = list.iterator(); iterator2.hasNext(); ) {
-                No no2 = (No) iterator2.next();
-                if (no2 == null) {
-                    pOld = null;
-                    continue;
-                }
-                if (no2.getTracado() == 4 || no2.getTracado() == 5) {
-                    g2d.setColor(ObjetoEscapada.red);
-                    Point pNew = new Point(Util.inteiro(((no2.getX() - 5) - descontoCentraliza.x) * zoom),
-                            Util.inteiro(((no2.getY() - 5) - descontoCentraliza.y) * zoom));
-                    if (pOld != null) {
-                        g2d.drawLine(pOld.x, pOld.y, pNew.x, pNew.y);
-                    }
-                    pOld = pNew;
-                } else {
-                    pOld = null;
-                }
-            }
-        }
-        No noindexEscape = circuito.getPistaFull().get(pilotoSelecionado.getIndexRefEscape());
-        if (noindexEscape != null) {
-            g2d.drawString("Esc", noindexEscape.getPoint().x - descontoCentraliza.x,
-                    noindexEscape.getPoint().y - descontoCentraliza.y);
-        }
         if (pontoClicado != null) {
             g2d.setColor(gre);
             g2d.fillOval(pontoClicado.x, pontoClicado.y, 10, 10);
@@ -2574,10 +2545,11 @@ public class PainelCircuito {
             pistaTinta = new BasicStroke(Util.inteiro(larguraPistaPixeis), BasicStroke.CAP_ROUND,
                     BasicStroke.JOIN_ROUND);
             box = new BasicStroke(Util.inteiro(larguraPistaPixeis * .4), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-            // Borda branca do box: mais larga que o próprio stroke do box
-            // (.4), pra sobrar uma margem visível ao redor da linha central
-            // cinza, no mesmo espírito de pistaTinta/pista pra pista.
-            boxBorda = new BasicStroke(Util.inteiro(larguraPistaPixeis * .5), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+            // Borda branca do box: margem de .05 (mesma proporção que zebra
+            // já usa sobre pista, 1.05 vs 1.0) somada ao próprio stroke do
+            // box (.4) — .5 chegava a produzir uma margem 2x mais larga que
+            // a da pista principal (bug relatado).
+            boxBorda = new BasicStroke(Util.inteiro(larguraPistaPixeis * .45), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
             zebra = new BasicStroke(Util.inteiro(larguraPistaPixeis * 1.05), BasicStroke.CAP_BUTT,
                     BasicStroke.JOIN_MITER, 10f, new float[]{10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10}, 0);
             gerarBoxes();
@@ -2622,7 +2594,8 @@ public class PainelCircuito {
             pistaTinta = new BasicStroke(Util.inteiro(larguraPistaPixeis), BasicStroke.CAP_ROUND,
                     BasicStroke.JOIN_ROUND);
             box = new BasicStroke(Util.inteiro(larguraPistaPixeis * .4), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-            boxBorda = new BasicStroke(Util.inteiro(larguraPistaPixeis * .5), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+            // Mesma margem de .05 usada em desenhaBackGroundComStrokes() (ver comentário lá).
+            boxBorda = new BasicStroke(Util.inteiro(larguraPistaPixeis * .45), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
             zebra = new BasicStroke(Util.inteiro(larguraPistaPixeis * 1.05), BasicStroke.CAP_BUTT,
                     BasicStroke.JOIN_MITER, 10f, new float[]{10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10}, 0);
             gerarBoxes();
@@ -3508,46 +3481,7 @@ public class PainelCircuito {
         if (!piloto.decContTravouRodas() || piloto.isMarcaPneu()) {
             return;
         }
-        double distancia = piloto.getDistanciaDerrapada();
-        Point pontoDerrapada = piloto.getPontoDerrapada();
-        if (pontoDerrapada != null && distancia < (2 * Carro.RAIO_DERRAPAGEM)) {
-            int ladoDerrapa = controleJogo.obterLadoEscape(piloto.getPontoDerrapada());
-            if (ladoDerrapa == 5) {
-                if (gerenciadorVisual.getRandom().nextDouble() > 0.5) {
-                    desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosD1);
-                } else {
-                    desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosD2);
-                }
-                if (gerenciadorVisual.getRandom().nextDouble() > 0.5) {
-                    desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosD3);
-                } else {
-                    desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosD4);
-                }
-                if (gerenciadorVisual.getRandom().nextDouble() > 0.5) {
-                    desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosD5);
-                } else {
-                    desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosD1);
-                }
-
-            }
-            if (ladoDerrapa == 4) {
-                if (gerenciadorVisual.getRandom().nextDouble() > 0.5) {
-                    desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosE1);
-                } else {
-                    desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosE2);
-                }
-                if (gerenciadorVisual.getRandom().nextDouble() > 0.5) {
-                    desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosE3);
-                } else {
-                    desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosE4);
-                }
-                if (gerenciadorVisual.getRandom().nextDouble() > 0.5) {
-                    desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosE5);
-                } else {
-                    desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx, cary, g2d, carroCimaFreiosE1);
-                }
-            }
-        } else if (gerenciadorVisual.getRandom().nextDouble() > 0.7) {
+        if (gerenciadorVisual.getRandom().nextDouble() > 0.7) {
             desenhaFumacaTravarRodasRandom(g2d, width, height, carx, cary, afZoom, afRotate);
         }
     }

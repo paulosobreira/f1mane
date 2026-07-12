@@ -89,7 +89,6 @@ import br.f1mane.entidades.ObjetoPista;
 import br.f1mane.entidades.ObjetoTransparencia;
 import br.f1mane.entidades.TipoObjetoConstrucao;
 import br.f1mane.entidades.PontoCurva;
-import br.f1mane.entidades.PontoEscape;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
 import br.f1mane.visao.PainelCircuito;
@@ -2370,9 +2369,17 @@ public class MainPanelEditor extends JPanel {
     /**
      * true se existir ao menos uma ObjetoEscapada sem ponto de saída
      * ancorado (indiceSaida == -1) — validação usada por salvarPista() para
-     * bloquear o salvamento de uma escapada inacabada.
+     * bloquear o salvamento de uma escapada inacabada. Também conta uma
+     * escapada sendo desenhada no momento (clique de entrada já dado, ainda
+     * sem o clique direito que finaliza): esse objeto só entra em
+     * circuito.getObjetos() ao ser finalizado, então sem essa checagem
+     * salvarPista() não a via e descartava silenciosamente o desenho em
+     * andamento (bug relatado).
      */
     private boolean existeEscapadaIncompleta() {
+        if (desenhandoObjetoLivre && objetoPista instanceof ObjetoEscapada) {
+            return true;
+        }
         if (circuito.getObjetos() == null) {
             return false;
         }
@@ -3311,30 +3318,6 @@ public class MainPanelEditor extends JPanel {
             else
                 g2d.setColor(Color.LIGHT_GRAY);
             g2d.fillOval(testePista.getTestCar().x - 2, testePista.getTestCar().y - 2, 8, 8);
-        }
-
-        Map<PontoEscape, List<No>> escapeMap = circuito.getEscapeMap();
-        for (Iterator<PontoEscape> iterator = escapeMap.keySet().iterator(); iterator.hasNext(); ) {
-            PontoEscape key = iterator.next();
-            List<No> list = escapeMap.get(key);
-            Point pOld = null;
-            for (Iterator iterator2 = list.iterator(); iterator2.hasNext(); ) {
-                No no2 = (No) iterator2.next();
-                if (no2 == null) {
-                    pOld = null;
-                    continue;
-                }
-                if (no2.getTracado() == 4 || no2.getTracado() == 5) {
-                    g2d.setColor(ObjetoEscapada.red);
-                    Point pNew = new Point(Util.inteiro(no2.getX() - 5), Util.inteiro(no2.getY() - 5));
-                    if (pOld != null) {
-                        g2d.drawLine(pOld.x, pOld.y, pNew.x, pNew.y);
-                    }
-                    pOld = pNew;
-                } else {
-                    pOld = null;
-                }
-            }
         }
 
     }
