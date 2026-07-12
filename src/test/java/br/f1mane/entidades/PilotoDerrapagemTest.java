@@ -84,13 +84,23 @@ class PilotoDerrapagemTest {
         return piloto;
     }
 
+    private void registrarEscapada(int tracadoOrigem, int indiceEntrada, int indiceSaida) {
+        ObjetoEscapada escapada = new ObjetoEscapada();
+        escapada.setTracadoOrigem(tracadoOrigem);
+        escapada.setIndiceEntrada(indiceEntrada);
+        escapada.setIndiceSaida(indiceSaida);
+        List<ObjetoPista> objetos = new ArrayList<>();
+        objetos.add(escapada);
+        when(circuito.getObjetos()).thenReturn(objetos);
+    }
+
     @Test
     void curvaBaixa_pneusBaixos_falhaNoTesteDeFreios_derrapaParaTracado1Ou2() {
         Piloto piloto = criarPiloto(No.CURVA_BAIXA);
         piloto.getCarro().setPorcentagemDesgastePneus(15);
         // freios/habilidade padrão (0): testeHabilidadePilotoFreios() falha sempre.
 
-        piloto.processaEscapadaDaPista();
+        piloto.processaDerrapagem();
 
         assertEquals(1, piloto.getTracado(), "curva baixa + pneus baixos + falha no teste de freios deveria derrapar");
         verify(controleJogo, times(1)).travouRodas(piloto);
@@ -101,7 +111,7 @@ class PilotoDerrapagemTest {
         Piloto piloto = criarPiloto(No.CURVA_ALTA);
         piloto.getCarro().setPorcentagemDesgastePneus(15);
 
-        piloto.processaEscapadaDaPista();
+        piloto.processaDerrapagem();
 
         assertEquals(1, piloto.getTracado(), "curva alta também deveria derrapar, do mesmo jeito que curva baixa");
     }
@@ -111,7 +121,7 @@ class PilotoDerrapagemTest {
         Piloto piloto = criarPiloto(No.CURVA_BAIXA);
         piloto.getCarro().setPorcentagemDesgastePneus(50);
 
-        piloto.processaEscapadaDaPista();
+        piloto.processaDerrapagem();
 
         assertEquals(0, piloto.getTracado(), "pneus acima de 30% não deveriam derrapar, mesmo com falha no teste de freios");
     }
@@ -121,7 +131,7 @@ class PilotoDerrapagemTest {
         Piloto piloto = criarPiloto(No.CURVA_BAIXA);
         piloto.getCarro().setPorcentagemDesgastePneus(30);
 
-        piloto.processaEscapadaDaPista();
+        piloto.processaDerrapagem();
 
         assertEquals(0, piloto.getTracado(), "pneus exatamente em 30% não deveriam satisfazer a pré-condição (exige < 30)");
     }
@@ -134,7 +144,7 @@ class PilotoDerrapagemTest {
         piloto.setHabilidade(1000);
         when(controleJogo.getRandom().nextDouble()).thenReturn(0.0);
 
-        piloto.processaEscapadaDaPista();
+        piloto.processaDerrapagem();
 
         assertEquals(0, piloto.getTracado(), "sucesso no teste de freios deveria evitar a derrapagem");
     }
@@ -144,7 +154,7 @@ class PilotoDerrapagemTest {
         Piloto piloto = criarPiloto(No.RETA);
         piloto.getCarro().setPorcentagemDesgastePneus(15);
 
-        piloto.processaEscapadaDaPista();
+        piloto.processaDerrapagem();
 
         assertEquals(0, piloto.getTracado(), "fora de curva (reta) não deveria derrapar, mesmo com pneus baixos e falha no teste");
     }
@@ -157,42 +167,42 @@ class PilotoDerrapagemTest {
         piloto.setModoPilotagem(Piloto.NORMAL);
         piloto.setStress(0);
 
-        piloto.processaEscapadaDaPista();
+        piloto.processaDerrapagem();
 
         assertEquals(1, piloto.getTracado(), "derrapagem deveria disparar mesmo em modo NORMAL e stress zero");
     }
 
     @Test
-    void escolhaDeLado_comTracadoAntigo1_vaiParaTracado2() {
+    void escolhaDeLado_comEscapadaAFrenteNoTracado2_vaiParaTracado2() {
         Piloto piloto = criarPiloto(No.CURVA_BAIXA);
         piloto.getCarro().setPorcentagemDesgastePneus(15);
-        piloto.setTracadoAntigo(1);
+        registrarEscapada(2, 20, 40);
 
-        piloto.processaEscapadaDaPista();
+        piloto.processaDerrapagem();
 
-        assertEquals(2, piloto.getTracado(), "com traçado anterior 1, deveria derrapar pro lado oposto (2)");
+        assertEquals(2, piloto.getTracado(), "com escapada à frente ancorada no traçado 2, deveria derrapar pra esse lado");
     }
 
     @Test
-    void escolhaDeLado_comTracadoAntigo2_vaiParaTracado1() {
+    void escolhaDeLado_comEscapadaAFrenteNoTracado1_vaiParaTracado1() {
         Piloto piloto = criarPiloto(No.CURVA_BAIXA);
         piloto.getCarro().setPorcentagemDesgastePneus(15);
-        piloto.setTracadoAntigo(2);
+        registrarEscapada(1, 20, 40);
 
-        piloto.processaEscapadaDaPista();
+        piloto.processaDerrapagem();
 
-        assertEquals(1, piloto.getTracado(), "com traçado anterior 2, deveria derrapar pro lado oposto (1)");
+        assertEquals(1, piloto.getTracado(), "com escapada à frente ancorada no traçado 1, deveria derrapar pra esse lado");
     }
 
     @Test
-    void escolhaDeLado_semTracadoAntigo_sorteia() {
+    void escolhaDeLado_semEscapadaAFrenteNoCircuito_sorteia() {
         Piloto piloto = criarPiloto(No.CURVA_BAIXA);
         piloto.getCarro().setPorcentagemDesgastePneus(15);
-        // getTracadoAntigo() == 0 por padrão.
+        // circuito.getObjetos() vazio por padrão (setUp) — nenhuma escapada à frente.
 
-        piloto.processaEscapadaDaPista();
+        piloto.processaDerrapagem();
 
-        assertEquals(1, piloto.getTracado(), "sem traçado anterior, o lado deveria vir do sorteio (mockado pra 1)");
+        assertEquals(1, piloto.getTracado(), "sem escapada à frente no circuito, o lado deveria vir do sorteio (mockado pra 1)");
         verify(controleJogo.getRandom(), times(1)).intervalo(1, 2);
     }
 
@@ -202,7 +212,7 @@ class PilotoDerrapagemTest {
         Piloto piloto = criarPiloto(No.CURVA_BAIXA);
         piloto.getCarro().setPorcentagemDesgastePneus(15);
 
-        piloto.processaEscapadaDaPista();
+        piloto.processaDerrapagem();
 
         assertEquals(0, piloto.getTracado(), "com safety car na pista, a derrapagem não deveria disparar");
     }
@@ -213,7 +223,7 @@ class PilotoDerrapagemTest {
         Piloto piloto = criarPiloto(No.CURVA_BAIXA);
         piloto.getCarro().setPorcentagemDesgastePneus(15);
 
-        piloto.processaEscapadaDaPista();
+        piloto.processaDerrapagem();
 
         assertEquals(0, piloto.getTracado(), "em modo qualify, a derrapagem não deveria disparar");
     }
@@ -224,7 +234,7 @@ class PilotoDerrapagemTest {
         piloto.getCarro().setPorcentagemDesgastePneus(15);
         piloto.setPtosBox(5);
 
-        piloto.processaEscapadaDaPista();
+        piloto.processaDerrapagem();
 
         assertEquals(0, piloto.getTracado(), "piloto em rota de box não deveria derrapar");
     }
@@ -237,7 +247,7 @@ class PilotoDerrapagemTest {
         piloto.getCarro().setPorcentagemDesgastePneus(15);
         piloto.setIndiceTracado(10);
 
-        piloto.processaEscapadaDaPista();
+        piloto.processaDerrapagem();
 
         assertEquals(0, piloto.getTracado(), "com animação de troca em andamento, a derrapagem deveria ser adiada, não aplicada nesse ciclo");
     }

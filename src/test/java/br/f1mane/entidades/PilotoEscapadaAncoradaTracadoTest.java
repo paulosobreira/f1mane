@@ -22,11 +22,21 @@ import br.nnpe.Global;
 /**
  * Cobre a escapada ancorada ao traçado (traçado 1/2 → 4/5 via
  * {@link ObjetoEscapada}): dois testes sequenciais por causa de risco
- * (agressividade+stress, depois pneus), um único par por zona por piloto por
- * volta (mesmo resultado marcado ou não), execução independente de
- * {@code modoPilotagem} no momento, e a trava de mudança de traçado enquanto
+ * (stress, depois pneus), nenhum dos dois exige {@code AGRESSIVO} nem exclui
+ * {@code LENTO} (sem exceção pro jogador humano em modo manual), um único par
+ * por zona por piloto por volta (mesmo resultado marcado ou não), execução
+ * independente de {@code modoPilotagem} no momento, sem recompensa de
+ * {@code LENTO} em caso de sucesso, e a trava de mudança de traçado enquanto
  * marcado. A derrapagem (traçado 0 → 1/2) tem seus próprios testes em
  * {@code PilotoDerrapagemTest}.
+ * <p>
+ * Nos testes de "sucesso" (skill test passa, não marca), o carro precisa de
+ * {@code potencia}/{@code freios} explicitamente altos além de
+ * {@code habilidade}: {@link br.f1mane.entidades.Piloto#testeHabilidadePilotoCarro()}
+ * e {@link br.f1mane.entidades.Piloto#testeHabilidadePilotoFreios()} também
+ * dependem de {@code Carro.testePotencia()}/{@code Carro.testeFreios()}, que
+ * ficam em 0 por padrão em {@link #criarPiloto(int, int)} — sem isso, o teste
+ * de habilidade falha sempre, mesmo com {@code habilidade=1000}.
  */
 class PilotoEscapadaAncoradaTracadoTest {
 
@@ -106,7 +116,7 @@ class PilotoEscapadaAncoradaTracadoTest {
         when(circuito.getObjetos()).thenReturn(objetos);
     }
 
-    // ---- Teste 1: agressividade + stress ----
+    // ---- Teste 1: stress (não exige AGRESSIVO, não exclui LENTO) ----
 
     @Test
     void teste1_agressivoEEstressado_dentroDaJanela_marcaQuandoFalha() {
@@ -122,16 +132,16 @@ class PilotoEscapadaAncoradaTracadoTest {
     }
 
     @Test
-    void teste1_precondicaoNaoSatisfeita_naoConsomeRNG_naoMarca() {
+    void teste1_naoExigeAgressivo_marcaComQualquerModoSeStressAlto() {
         registrarEscapada(criarEscapada(1, 300, 360));
         Piloto piloto = criarPiloto(300, 1);
         piloto.setModoPilotagem(Piloto.NORMAL);
         piloto.setStress(95);
+        // habilidade/potência padrão (0): testeHabilidadePilotoCarro() falha sempre.
 
         piloto.processaEscapadaDaPista();
 
-        assertEquals(1, piloto.getTracado(), "sem AGRESSIVO, o teste 1 não deveria marcar mesmo com stress alto");
-        verify(controleJogo.getRandom(), never()).nextDouble();
+        assertEquals(5, piloto.getTracado(), "teste 1 não exige mais AGRESSIVO: stress acima do limite já basta pra marcar, em qualquer modo");
     }
 
     @Test
@@ -148,18 +158,19 @@ class PilotoEscapadaAncoradaTracadoTest {
     }
 
     @Test
-    void teste1_sucesso_evitaAMarcaEViraLento() {
+    void teste1_sucesso_evitaAMarca_semRecompensaDeLento() {
         registrarEscapada(criarEscapada(1, 300, 360));
         Piloto piloto = criarPiloto(300, 1);
         piloto.setModoPilotagem(Piloto.AGRESSIVO);
         piloto.setStress(95);
         piloto.setHabilidade(1000);
+        piloto.getCarro().setPotencia(1000);
         when(controleJogo.getRandom().nextDouble()).thenReturn(0.0);
 
         piloto.processaEscapadaDaPista();
 
         assertEquals(1, piloto.getTracado(), "sucesso no teste 1 não deveria escapar");
-        assertEquals(Piloto.LENTO, piloto.getModoPilotagem(), "sucesso no teste 1 deveria virar LENTO (recompensa por quase escapar)");
+        assertEquals(Piloto.AGRESSIVO, piloto.getModoPilotagem(), "sucesso no teste 1 não dá mais recompensa de LENTO (removida no tuning)");
     }
 
     // ---- Teste 2: pneus (só avaliado se o teste 1 não marcou) ----
@@ -169,7 +180,7 @@ class PilotoEscapadaAncoradaTracadoTest {
         registrarEscapada(criarEscapada(1, 300, 360));
         Piloto piloto = criarPiloto(300, 1);
         piloto.setModoPilotagem(Piloto.NORMAL);
-        piloto.setStress(0);
+        piloto.setStress(70);
         piloto.getCarro().setPorcentagemDesgastePneus(15);
         // habilidade padrão (0): teste de habilidade falha sempre.
 
@@ -185,7 +196,7 @@ class PilotoEscapadaAncoradaTracadoTest {
         registrarEscapada(criarEscapada(2, 300, 360));
         Piloto piloto = criarPiloto(300, 2);
         piloto.setModoPilotagem(Piloto.NORMAL);
-        piloto.setStress(0);
+        piloto.setStress(70);
         piloto.getCarro().setPorcentagemDesgastePneus(15);
 
         piloto.processaEscapadaDaPista();
@@ -242,12 +253,13 @@ class PilotoEscapadaAncoradaTracadoTest {
 
     @Test
     void teste2_avaliadoNoMesmoCiclo_quandoTeste1NaoSeAplica() {
-        // stress alto mas não AGRESSIVO: pré-condição do teste 1 é falsa (sem RNG), então o
-        // teste 2 (pneus) é avaliado no mesmo ciclo.
+        // stress dentro da janela do teste 2 (>=70) mas abaixo do limite do teste 1 (>90):
+        // pré-condição do teste 1 é falsa (sem RNG), então o teste 2 (pneus) é avaliado no
+        // mesmo ciclo.
         registrarEscapada(criarEscapada(1, 300, 360));
         Piloto piloto = criarPiloto(300, 1);
         piloto.setModoPilotagem(Piloto.NORMAL);
-        piloto.setStress(95);
+        piloto.setStress(70);
         piloto.getCarro().setPorcentagemDesgastePneus(15);
 
         piloto.processaEscapadaDaPista();
@@ -256,35 +268,36 @@ class PilotoEscapadaAncoradaTracadoTest {
     }
 
     @Test
-    void teste2_pilotoJaEmLento_nuncaMarcaPorEssaCausa() {
-        // "LENTO nunca escapa": um piloto já LENTO não satisfaz a pré-condição do teste 2
-        // (exige modoPilotagem != LENTO), então nunca é marcado por essa causa.
+    void teste2_pilotoJaEmLento_naoExcluiMaisDoTeste2_marcaSeFalhar() {
+        // LENTO não é mais excluído do teste 2 (removido no tuning): pneus baixos + stress
+        // ainda marcam, mesmo já em LENTO.
         registrarEscapada(criarEscapada(1, 300, 360));
         Piloto piloto = criarPiloto(300, 1);
         piloto.setModoPilotagem(Piloto.LENTO);
-        piloto.setStress(0);
+        piloto.setStress(70);
         piloto.getCarro().setPorcentagemDesgastePneus(15);
+        // habilidade/freios padrão (0): testeHabilidadePilotoFreios() falha sempre.
 
         piloto.processaEscapadaDaPista();
 
-        assertEquals(1, piloto.getTracado(), "piloto já em LENTO nunca deveria escapar, mesmo com pneus baixos");
-        verify(controleJogo.getRandom(), never()).nextDouble();
+        assertEquals(5, piloto.getTracado(), "teste 2 não exclui mais LENTO: pneus baixos + stress ainda marcam, mesmo já em LENTO");
     }
 
     @Test
-    void teste2_sucesso_evitaAMarcaEViraLento() {
+    void teste2_sucesso_evitaAMarca_semRecompensaDeLento() {
         registrarEscapada(criarEscapada(1, 300, 360));
         Piloto piloto = criarPiloto(300, 1);
         piloto.setModoPilotagem(Piloto.NORMAL);
-        piloto.setStress(0);
+        piloto.setStress(70);
         piloto.getCarro().setPorcentagemDesgastePneus(15);
         piloto.setHabilidade(1000);
+        piloto.getCarro().setFreios(1000);
         when(controleJogo.getRandom().nextDouble()).thenReturn(0.0);
 
         piloto.processaEscapadaDaPista();
 
         assertEquals(1, piloto.getTracado());
-        assertEquals(Piloto.LENTO, piloto.getModoPilotagem(), "sucesso no teste 2 deveria virar LENTO");
+        assertEquals(Piloto.NORMAL, piloto.getModoPilotagem(), "sucesso no teste 2 não dá mais recompensa de LENTO (removida no tuning)");
     }
 
     @Test
@@ -333,11 +346,13 @@ class PilotoEscapadaAncoradaTracadoTest {
         piloto.setModoPilotagem(Piloto.AGRESSIVO);
         piloto.setStress(95);
         piloto.setHabilidade(1000);
+        piloto.getCarro().setPotencia(1000);
         when(controleJogo.getRandom().nextDouble()).thenReturn(0.0);
 
         piloto.processaEscapadaDaPista();
-        assertEquals(Piloto.LENTO, piloto.getModoPilotagem(), "sucesso no teste 1 deveria já ter virado LENTO");
-        verify(controleJogo.getRandom(), org.mockito.Mockito.times(1)).nextDouble();
+        assertEquals(1, piloto.getTracado(), "sucesso no teste 1: não deveria ter escapado ainda");
+        assertEquals(Piloto.AGRESSIVO, piloto.getModoPilotagem(), "sucesso no teste 1 não dá mais recompensa de LENTO");
+        verify(controleJogo.getRandom(), org.mockito.Mockito.times(2)).nextDouble();
 
         // Volta a ficar "em risco" (AGRESSIVO), mais perto da entrada — não deveria ser
         // retestado, já que essa zona já tem resultado (não marcado) em cache nesta volta.
@@ -349,7 +364,7 @@ class PilotoEscapadaAncoradaTracadoTest {
         piloto.processaEscapadaDaPista();
 
         assertEquals(1, piloto.getTracado(), "não deveria escapar — o resultado 'não marcado' já estava em cache");
-        verify(controleJogo.getRandom(), org.mockito.Mockito.times(1)).nextDouble();
+        verify(controleJogo.getRandom(), org.mockito.Mockito.times(2)).nextDouble();
     }
 
     @Test
@@ -358,22 +373,27 @@ class PilotoEscapadaAncoradaTracadoTest {
         Piloto piloto = criarPiloto(260, 1);
         piloto.setModoPilotagem(Piloto.AGRESSIVO);
         piloto.setStress(95);
-        // habilidade padrão (0): primeiro teste (na volta 0) falha (marca) sempre.
+        // habilidade/potência padrão (0): primeiro teste (na volta 0) marca sempre, com 1 chamada de RNG.
 
         piloto.processaEscapadaDaPista();
-        assertEquals(Piloto.AGRESSIVO, piloto.getModoPilotagem(), "marcado, não deveria ter virado LENTO");
+        verify(controleJogo.getRandom(), org.mockito.Mockito.times(1)).nextDouble();
 
+        // Nova volta: stress dentro da janela do teste 2 (>=70) mas abaixo da do teste 1 (>90),
+        // pneus baixos, e agora com habilidade/freios altos pra passar no teste 2 (2 chamadas de
+        // RNG a mais: testeFreios() + testeHabilidadePiloto()).
         piloto.setNumeroVolta(1);
         piloto.setModoPilotagem(Piloto.NORMAL);
-        piloto.setStress(95);
+        piloto.setStress(70);
         piloto.getCarro().setPorcentagemDesgastePneus(15);
         piloto.setHabilidade(1000);
+        piloto.getCarro().setFreios(1000);
         when(controleJogo.getRandom().nextDouble()).thenReturn(0.0);
 
         piloto.processaEscapadaDaPista();
 
-        assertEquals(Piloto.LENTO, piloto.getModoPilotagem(),
-                "na volta seguinte, o cache deveria ter sido limpo, permitindo um novo teste (agora pelo teste 2, que passa)");
+        verify(controleJogo.getRandom(), org.mockito.Mockito.times(3)).nextDouble();
+        assertEquals(Piloto.NORMAL, piloto.getModoPilotagem(),
+                "na volta seguinte, o cache deveria ter sido limpo, permitindo um novo teste (agora pelo teste 2, que passa, sem recompensa de LENTO)");
     }
 
     // ---- Execução independe de modoPilotagem no momento (marcado ignora mudança de modo depois) ----
@@ -397,15 +417,18 @@ class PilotoEscapadaAncoradaTracadoTest {
     }
 
     @Test
-    void pilotoEmLento_antesDeSerMarcado_nuncaEscapa() {
+    void pilotoEmLento_naoExcluiMaisDoTeste1_escapaSeFalhar() {
+        // LENTO não é mais excluído do teste 1 (removido no tuning): stress acima do limite
+        // ainda marca, mesmo já em LENTO.
         registrarEscapada(criarEscapada(1, 300, 360));
         Piloto piloto = criarPiloto(300, 1);
         piloto.setModoPilotagem(Piloto.LENTO);
         piloto.setStress(95);
+        // habilidade/potência padrão (0): testeHabilidadePilotoCarro() falha sempre.
 
         piloto.processaEscapadaDaPista();
 
-        assertEquals(1, piloto.getTracado(), "piloto já em LENTO antes de qualquer teste nunca deveria escapar");
+        assertEquals(5, piloto.getTracado(), "teste 1 não exclui mais LENTO: stress acima do limite ainda marca, mesmo já em LENTO");
     }
 
     // ---- Trava de mudança de traçado enquanto marcado ----
@@ -471,58 +494,58 @@ class PilotoEscapadaAncoradaTracadoTest {
         verify(controleJogo.getRandom(), never()).nextDouble();
     }
 
-    // ---- Jogador humano em modo manual ----
+    // ---- Jogador humano (manual ou automático): sem exceção, mesma regra da IA ----
 
     @Test
-    void jogadorHumanoEmModoManual_naoRecebeTesteDeHabilidade_escapaNormalmente() {
+    void jogadorHumanoEmModoManual_semExcecao_escapaQuandoFalhaNoTeste() {
         registrarEscapada(criarEscapada(1, 300, 500));
         when(controleJogo.getAutomaticoManual()).thenReturn(Global.CONTROLE_MANUAL);
         Piloto piloto = criarPiloto(300, 1);
         piloto.setJogadorHumano(true);
         piloto.setModoPilotagem(Piloto.AGRESSIVO);
         piloto.setStress(95);
-        // habilidade máxima + nextDouble()=0.0 passaria no teste se ele fosse aplicado.
-        piloto.setHabilidade(1000);
-        when(controleJogo.getRandom().nextDouble()).thenReturn(0.0);
+        // habilidade/potência padrão (0): testeHabilidadePilotoCarro() falha sempre, igual pra IA.
 
         piloto.processaEscapadaDaPista();
 
         assertEquals(5, piloto.getTracado(),
-                "jogador humano em modo manual não recebe o teste de habilidade automático — escapa normalmente, mesmo com habilidade máxima");
-        assertEquals(Piloto.AGRESSIVO, piloto.getModoPilotagem(), "não deveria ter sido mudado pra LENTO automaticamente");
+                "jogador humano em modo manual não tem exceção: escapa ao falhar no teste, igual a um piloto de IA");
+        assertEquals(Piloto.AGRESSIVO, piloto.getModoPilotagem(), "não há mais recompensa de LENTO");
     }
 
     @Test
-    void jogadorHumanoEmModoManual_seJaEstiverEmLento_naoEscapa() {
+    void jogadorHumanoEmModoManual_semExcecao_evitaAMarcaComSucessoNoTeste() {
         registrarEscapada(criarEscapada(1, 300, 360));
         when(controleJogo.getAutomaticoManual()).thenReturn(Global.CONTROLE_MANUAL);
-        Piloto piloto = criarPiloto(300, 1);
-        piloto.setJogadorHumano(true);
-        piloto.setModoPilotagem(Piloto.LENTO);
-        piloto.setStress(95);
-
-        piloto.processaEscapadaDaPista();
-
-        assertEquals(1, piloto.getTracado(),
-                "se o próprio jogador já colocou o carro em modo LENTO, ele continua não escapando — a tarefa era dele, e ele cumpriu");
-    }
-
-    @Test
-    void jogadorHumanoEmModoAutomatico_continuaRecebendoOTesteDeHabilidade() {
-        registrarEscapada(criarEscapada(1, 300, 360));
-        when(controleJogo.getAutomaticoManual()).thenReturn(Global.CONTROLE_AUTOMATICO);
         Piloto piloto = criarPiloto(300, 1);
         piloto.setJogadorHumano(true);
         piloto.setModoPilotagem(Piloto.AGRESSIVO);
         piloto.setStress(95);
         piloto.setHabilidade(1000);
+        piloto.getCarro().setPotencia(1000);
         when(controleJogo.getRandom().nextDouble()).thenReturn(0.0);
 
         piloto.processaEscapadaDaPista();
 
         assertEquals(1, piloto.getTracado(),
-                "jogador humano em modo AUTOMATICO (não manual) continua recebendo o teste de habilidade, como um piloto de IA");
-        assertEquals(Piloto.LENTO, piloto.getModoPilotagem());
+                "sucesso no teste também evita a marca pro jogador humano em modo manual, sem exceção");
+    }
+
+    @Test
+    void jogadorHumanoEmModoAutomatico_mesmaRegraDoManual() {
+        registrarEscapada(criarEscapada(1, 300, 500));
+        when(controleJogo.getAutomaticoManual()).thenReturn(Global.CONTROLE_AUTOMATICO);
+        Piloto piloto = criarPiloto(300, 1);
+        piloto.setJogadorHumano(true);
+        piloto.setModoPilotagem(Piloto.AGRESSIVO);
+        piloto.setStress(95);
+        // habilidade/potência padrão (0): testeHabilidadePilotoCarro() falha sempre, igual pra IA.
+
+        piloto.processaEscapadaDaPista();
+
+        assertEquals(5, piloto.getTracado(),
+                "modo automático segue a mesma regra do manual — não há diferença de tratamento pro jogador humano");
+        assertEquals(Piloto.AGRESSIVO, piloto.getModoPilotagem());
     }
 
     // ---- Entrada já passada (tolerância de salto de ciclo) e zona alcançável ----

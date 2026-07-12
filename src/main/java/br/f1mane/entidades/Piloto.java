@@ -1759,7 +1759,7 @@ public class Piloto implements Serializable, PilotoSuave {
      * rota de box), repetidas aqui já que cada uma roda de forma
      * independente.
      */
-    private void processaDerrapagem() {
+    public void processaDerrapagem() {
         if (controleJogo.isSafetyCarNaPista()) {
             return;
         }
@@ -1925,6 +1925,8 @@ public class Piloto implements Serializable, PilotoSuave {
             resultado = marcado;
             if (marcado) {
                 impedidoDeMudarTracadoPorEscapada = true;
+            } else {
+                notificaTesteEscapada();
             }
         }
 
@@ -1942,7 +1944,56 @@ public class Piloto implements Serializable, PilotoSuave {
              */
             impedidoDeMudarTracadoPorEscapada = false;
             mudarTracado(laneDeFugaDoTracadoOrigem(tracadoAtual), true);
+            notificaEscapadaExecutada();
         }
+    }
+
+    /**
+     * Regra de elegibilidade compartilhada pelas notificações de escapada
+     * ({@link #notificaTesteEscapada()} e {@link #notificaEscapadaExecutada()}):
+     * jogador humano OU piloto entre os 3 primeiros.
+     */
+    private boolean elegivelParaNotificacaoDeEscapada() {
+        return isJogadorHumano() || getPosicao() <= 3;
+    }
+
+    /**
+     * Notifica (mensagem não prioritária) o piloto que passou no teste de
+     * escapada numa curva — ou seja, NÃO foi marcado pra escapar —,
+     * restrito ao jogador humano ou a pilotos entre os 3 primeiros. Só
+     * dispara quando alguma pré-condição de risco realmente se aplicou
+     * ({@link #precondicaoTesteEscapadaStress()} ou
+     * {@link #precondicaoTesteEscapadaPneus()}); sem risco nenhum, não há
+     * "quase" a notificar.
+     */
+    private void notificaTesteEscapada() {
+        if (!elegivelParaNotificacaoDeEscapada()) {
+            return;
+        }
+        String chave;
+        if (precondicaoTesteEscapadaStress()) {
+            chave = "quaseErraCurvaRapido";
+        } else if (precondicaoTesteEscapadaPneus()) {
+            chave = "quaseErraCurvaPneusGastos";
+        } else {
+            return;
+        }
+        controleJogo.info(Html.preto(Lang.msg(chave, new String[] { nomeJogadorFormatado(), Html.negrito(getNome()) })));
+    }
+
+    /**
+     * Notifica (mensagem prioritária, em vermelho pra chamar mais atenção)
+     * o piloto marcado no momento em que a escapada é de fato executada
+     * (entrada no traçado de fuga, ver {@link #mudarTracado(int, boolean)}
+     * logo acima), restrito ao jogador humano ou a pilotos entre os 3
+     * primeiros — mesma regra de {@link #notificaTesteEscapada()}.
+     */
+    private void notificaEscapadaExecutada() {
+        if (!elegivelParaNotificacaoDeEscapada()) {
+            return;
+        }
+        controleJogo.infoPrioritaria(Html.vermelho(
+                Lang.msg("sofreEscapadaDePista", new String[] { nomeJogadorFormatado(), Html.negrito(getNome()) })));
     }
 
     /**
@@ -1960,11 +2011,15 @@ public class Piloto implements Serializable, PilotoSuave {
      * tuning).
      */
     private boolean testeEscapadaStress() {
-        boolean emRisco = getStress() > Global.LIMITE_ESTRESSE_PARA_ESCAPADA_ANCORADA  && !testeHabilidadePilotoCarro();
-        if (!emRisco) {
+        if (!precondicaoTesteEscapadaStress()) {
             return false;
         }
-        return true;
+        return !testeHabilidadePilotoCarro();
+    }
+
+    /** Pré-condição (sem RNG) do {@link #testeEscapadaStress()}: usada também pra decidir a mensagem de quase-escapada quando o piloto passa no teste de habilidade (ver {@link #notificaTesteEscapada()}). */
+    private boolean precondicaoTesteEscapadaStress() {
+        return getStress() > Global.LIMITE_ESTRESSE_PARA_ESCAPADA_ANCORADA;
     }
 
     /**
@@ -1982,12 +2037,15 @@ public class Piloto implements Serializable, PilotoSuave {
      * recompensa de {@code LENTO}.
      */
     private boolean testeEscapadaPneus() {
-        boolean emRisco = carro.getPorcentagemDesgastePneus() < 30
-                && getStress() >= Global.LIMITE_ESTRESSE_PARA_ESCAPADA_PNEUS && !testeHabilidadePilotoFreios();
-        if (!emRisco) {
+        if (!precondicaoTesteEscapadaPneus()) {
             return false;
         }
-        return true;
+        return !testeHabilidadePilotoFreios();
+    }
+
+    /** Pré-condição (sem RNG) do {@link #testeEscapadaPneus()}: usada também pra decidir a mensagem de quase-escapada quando o piloto passa no teste de habilidade (ver {@link #notificaTesteEscapada()}). */
+    private boolean precondicaoTesteEscapadaPneus() {
+        return carro.getPorcentagemDesgastePneus() < 30 && getStress() >= Global.LIMITE_ESTRESSE_PARA_ESCAPADA_PNEUS;
     }
 
     /**
