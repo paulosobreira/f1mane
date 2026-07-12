@@ -549,6 +549,41 @@
     </object>
    </void>
   </void>
+  <void property="corAsfalto">
+   <object class="java.awt.Color">
+    <int>153</int>
+    <int>153</int>
+    <int>153</int>
+    <int>255</int>
+   </object>
+  </void>
+  <void property="corBox1">
+   <object class="java.awt.Color">
+    <int>204</int>
+    <object idref="Integer0"/>
+    <object idref="Integer0"/>
+    <int>255</int>
+   </object>
+  </void>
+  <void property="corBox2">
+   <object class="java.awt.Color">
+    <int>255</int>
+    <int>255</int>
+    <int>255</int>
+    <int>255</int>
+   </object>
+  </void>
+  <void property="corFundo">
+   <object class="java.awt.Color">
+    <int>92</int>
+    <int>103</int>
+    <int>61</int>
+    <int>255</int>
+   </object>
+  </void>
+  <void property="distanciaKm">
+   <int>4675</int>
+  </void>
   <void property="ladoBox">
    <int>2</int>
   </void>
@@ -556,7 +591,7 @@
    <int>1</int>
   </void>
   <void property="multiplicadorLarguraPista">
-   <double>1.6</double>
+   <double>1.7000000000000002</double>
   </void>
   <void property="nome">
    <string>Catalunya</string>
