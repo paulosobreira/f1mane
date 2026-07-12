@@ -352,17 +352,6 @@ public abstract class ControleRecursos {
         return zonaFrenagemPosicoes.get(no);
     }
 
-    public int obterLadoEscape(Point pontoDerrapada) {
-        Set<PontoEscape> keySet = circuito.getEscapeMap().keySet();
-        for (Iterator iterator = keySet.iterator(); iterator.hasNext(); ) {
-            PontoEscape pontoEscapeKey = (PontoEscape) iterator.next();
-            if (pontoEscapeKey.getPoint().equals(pontoDerrapada)) {
-                return pontoEscapeKey.getPista();
-            }
-        }
-        return 0;
-    }
-
     public List obterPista(Piloto piloto) {
         No noPiloto = piloto.getNoAtual();
         return obterPista(noPiloto);

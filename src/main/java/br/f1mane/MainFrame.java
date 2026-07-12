@@ -226,20 +226,6 @@ public class MainFrame extends JFrame {
 
         menuDebug.add(climaLimpo);
 
-        JMenuItem escapaTracado = new JMenuItem("escapaTracado") {
-            public String getText() {
-                return Lang.msg("escapaTracado");
-            }
-
-        };
-        escapaTracado.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                controleJogo.getPilotoSelecionado().escapaTracado();
-            }
-        });
-
-        menuDebug.add(escapaTracado);
-
         JMenuItem desenhaBkg = new JMenuItem("desenhaBkg") {
             public String getText() {
                 return Lang.msg("desenhaBkg");

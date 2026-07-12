@@ -5,19 +5,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.awt.Point;
-import java.lang.reflect.Field;
-
 import org.junit.jupiter.api.Test;
 
 import br.f1mane.controles.InterfaceJogo;
 
 /**
  * Os eventos que antes acionavam o bloqueio invisível de `ciclosDesconcentrado`
- * (escapar da pista sob pressão, ceder passagem, ser ultrapassado) agora só
- * geram estresse — nenhuma ação do piloto fica mais suprimida por causa deles.
- * Valor cheio reduzido pela metade, e à metade de novo se `testeHabilidadePiloto()`
- * for bem-sucedido.
+ * (ceder passagem, ser ultrapassado) agora só geram estresse — nenhuma ação do
+ * piloto fica mais suprimida por causa deles.
  */
 class PilotoDesconcentracaoConvertidaTest {
 
@@ -45,51 +40,6 @@ class PilotoDesconcentracaoConvertidaTest {
         no.setTipo(No.CURVA_ALTA);
         piloto.setNoAtual(no);
         return piloto;
-    }
-
-    private void setCampo(Piloto piloto, String campo, Object valor) throws Exception {
-        Field f = Piloto.class.getDeclaredField(campo);
-        f.setAccessible(true);
-        f.set(piloto, valor);
-    }
-
-    @Test
-    void processaEscapadaDaPista_escapaSobPressao_incrementaEstresseSemHabilidade() throws Exception {
-        Piloto piloto = criarPiloto(0.0); // testeHabilidadePiloto() falha (habilidade default 0)
-        InterfaceJogo controleJogo = piloto.getControleJogo();
-        piloto.setModoPilotagem(Piloto.AGRESSIVO);
-        piloto.setStress(95); // > Global.LIMITE_ESTRESSE_PARA_RERRAR_CURVA (90)
-        piloto.setTracado(0);
-        piloto.setIndiceTracado(0);
-        setCampo(piloto, "pontoEscape", new Point(1, 1));
-        setCampo(piloto, "distanciaEscape", 10.0);
-        setCampo(piloto, "indexRefEscape", 15); // >= noAtual.getIndex() (10)
-        when(controleJogo.obterLadoEscape(any())).thenReturn(1);
-
-        piloto.processaEscapadaDaPista();
-
-        // incStress(3): AGRESSIVO escala por 0.5 (round(1.5)=2), mas o cap "stress>90" de incStress() força val=1
-        assertEquals(96, piloto.getStress(), "sem sucesso no teste de habilidade, deveria incrementar 1 (95 -> 96, capado por stress>90)");
-    }
-
-    @Test
-    void processaEscapadaDaPista_escapaSobPressao_incrementaMenosComHabilidade() throws Exception {
-        Piloto piloto = criarPiloto(0.0);
-        InterfaceJogo controleJogo = piloto.getControleJogo();
-        piloto.setHabilidade(999); // com random=0.0, testeHabilidadePiloto() = true (0.0 < 999/1000)
-        piloto.setModoPilotagem(Piloto.AGRESSIVO);
-        piloto.setStress(95);
-        piloto.setTracado(0);
-        piloto.setIndiceTracado(0);
-        setCampo(piloto, "pontoEscape", new Point(1, 1));
-        setCampo(piloto, "distanciaEscape", 10.0);
-        setCampo(piloto, "indexRefEscape", 15);
-        when(controleJogo.obterLadoEscape(any())).thenReturn(1);
-
-        piloto.processaEscapadaDaPista();
-
-        // incStress(1), AGRESSIVO escala por 0.5 -> round(0.5) = 1
-        assertEquals(96, piloto.getStress(), "com sucesso no teste de habilidade, deveria incrementar 1 (95 -> 96)");
     }
 
     @Test

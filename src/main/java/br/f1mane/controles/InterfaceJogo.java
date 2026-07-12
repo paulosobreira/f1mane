@@ -261,8 +261,6 @@ public interface InterfaceJogo {
 
     public int getLag();
 
-    public int obterLadoEscape(Point pontoDerrapada);
-
     public void decrementaTracado();
 
     public int calculaDiffParaProximoRetardatario(Piloto piloto,
