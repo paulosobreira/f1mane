@@ -68,6 +68,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -162,6 +163,43 @@ public class MainPanelEditor extends JPanel {
     private JComboBox tipoNoCombo;
 
     private JScrollPane scrollPane;
+    /**
+     * Controla o adiamento do desenho da camada de objetos durante o pan por
+     * seta (ver {@link #esquerda()}/{@link #direita()}/{@link #cima()}/
+     * {@link #baixo()}): {@code paintComponent} só desenha os objetos do
+     * circuito quando este timer NÃO está rodando; cada passo de pan reinicia
+     * o timer (adiando o desenho dos objetos por mais 0,5s) mas continua
+     * chamando {@code repaint()} normalmente a cada passo, pra manter fundo,
+     * traçado e os overlays fixos ao canto da viewport (desenhaInfo/
+     * desenhaControles, posicionados via limitesViewPort()) sempre corretos —
+     * repintar tudo MENOS os objetos é barato; era só a iteração sobre os
+     * objetos que motivou o adiamento (ver design.md).
+     * <p>
+     * Antes desta versão, o repaint em si era pulado durante o pan: isso
+     * quebrava desenhaInfo/desenhaControles, porque eles não são conteúdo
+     * estático em coordenadas de circuito (que o blit-scroll da JViewport
+     * desloca corretamente) — são desenhados relativos à viewport atual, e
+     * ficavam "presos" na posição do frame anterior, arrastados pelo blit-
+     * scroll como um artefato visual sobre o fundo até o próximo repaint.
+     */
+    private final Timer timerRedesenhoObjetosPosScroll = criarTimerRedesenhoObjetosPosScroll();
+
+    private Timer criarTimerRedesenhoObjetosPosScroll() {
+        Timer timer = new Timer(500, e -> repaint());
+        timer.setRepeats(false);
+        return timer;
+    }
+
+    /** Chamado a cada passo de pan por seta: adia o desenho dos objetos por mais 0,5s e repinta o resto do frame normalmente. */
+    private void iniciarOuEstenderDebounceRedesenhoPosScroll() {
+        timerRedesenhoObjetosPosScroll.restart();
+        repaint();
+    }
+
+    /** {@code paintComponent} só desenha a camada de objetos quando não há um gesto de pan por seta em andamento. */
+    private boolean deveDesenharObjetos() {
+        return !timerRedesenhoObjetosPosScroll.isRunning();
+    }
 
     public final double zoom = 1;
     private BufferedImage carroCima;
@@ -1597,7 +1635,7 @@ public class MainPanelEditor extends JPanel {
                     return;
                 }
                 p.x -= 40;
-                repaint();
+                iniciarOuEstenderDebounceRedesenhoPosScroll();
                 scrollPane.getViewport().setViewPosition(p);
             }
         });
@@ -1612,7 +1650,7 @@ public class MainPanelEditor extends JPanel {
                     return;
                 }
                 p.x += 40;
-                repaint();
+                iniciarOuEstenderDebounceRedesenhoPosScroll();
                 scrollPane.getViewport().setViewPosition(p);
 
             }
@@ -1628,7 +1666,7 @@ public class MainPanelEditor extends JPanel {
                     return;
                 }
                 p.y -= 40;
-                repaint();
+                iniciarOuEstenderDebounceRedesenhoPosScroll();
                 scrollPane.getViewport().setViewPosition(p);
 
             }
@@ -1645,7 +1683,7 @@ public class MainPanelEditor extends JPanel {
                     return;
                 }
                 p.y += 40;
-                repaint();
+                iniciarOuEstenderDebounceRedesenhoPosScroll();
                 scrollPane.getViewport().setViewPosition(p);
 
             }
@@ -3124,11 +3162,20 @@ public class MainPanelEditor extends JPanel {
         // chamada de niveisDesenhoOrdenados()/desenhaObjetosNivel(), como
         // antes) evita realocar/concatenar objetos+objetosCenario várias
         // vezes por frame — ver design.md, decisão de performance.
-        List<ObjetoPista> todosOsObjetos = todosObjetos();
-        List<Integer> niveis = niveisDesenhoOrdenados(todosOsObjetos);
-        for (Integer nivel : niveis) {
-            if (nivel < 0) {
-                desenhaObjetosNivel(g2d, nivel, todosOsObjetos);
+        //
+        // desenharObjetos == false durante um gesto de pan por seta em
+        // andamento (ver timerRedesenhoObjetosPosScroll): pula a iteração
+        // sobre todos os objetos do circuito, que é o custo que motivou o
+        // adiamento. O resto do frame (fundo, traçado, overlays fixos à
+        // viewport) continua sendo desenhado normalmente a cada repaint.
+        boolean desenharObjetos = deveDesenharObjetos();
+        List<ObjetoPista> todosOsObjetos = desenharObjetos ? todosObjetos() : Collections.emptyList();
+        List<Integer> niveis = desenharObjetos ? niveisDesenhoOrdenados(todosOsObjetos) : Collections.emptyList();
+        if (desenharObjetos) {
+            for (Integer nivel : niveis) {
+                if (nivel < 0) {
+                    desenhaObjetosNivel(g2d, nivel, todosOsObjetos);
+                }
             }
         }
 
@@ -3142,16 +3189,20 @@ public class MainPanelEditor extends JPanel {
         DesenhoProceduralCircuito.desenhaLinhaDeLargada(g2d, circuito, zoom);
         desenhaGrid(g2d);
         desenhaBoxes(g2d);
-        desenhaObjetosNivel(g2d, 0, todosOsObjetos);
+        if (desenharObjetos) {
+            desenhaObjetosNivel(g2d, 0, todosOsObjetos);
+        }
         desenhaPreObjetoLivre(g2d);
         desenhaPreObjetoGuardRails(g2d);
         desenhaPreObjetoArquibancada(g2d);
         desenhaPreObjetoEscapada(g2d);
         desenhaPreObjetoTransparencia(g2d);
         // Níveis positivos por cima, do menor para o maior (mais em cima).
-        for (Integer nivel : niveis) {
-            if (nivel > 0) {
-                desenhaObjetosNivel(g2d, nivel, todosOsObjetos);
+        if (desenharObjetos) {
+            for (Integer nivel : niveis) {
+                if (nivel > 0) {
+                    desenhaObjetosNivel(g2d, nivel, todosOsObjetos);
+                }
             }
         }
         desenhaMarcadoresEdicaoPontos(g2d);

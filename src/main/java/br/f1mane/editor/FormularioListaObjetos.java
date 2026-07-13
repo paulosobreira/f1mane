@@ -3,6 +3,8 @@ package br.f1mane.editor;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -200,11 +202,16 @@ public class FormularioListaObjetos {
 		remover.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int sel = list.getSelectedIndex();
-				if (sel == -1)
-					return;
-				defaultListModelOP.remove(sel);
-				atualizarCircuito();
+				removerObjetoSelecionado();
+			}
+		});
+
+		list.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+					removerObjetoSelecionado();
+				}
 			}
 		});
 
@@ -313,6 +320,20 @@ public class FormularioListaObjetos {
 				defaultListModelOP.addElement(op);
 			}
 		}
+	}
+
+	/**
+	 * Remove o objeto atualmente selecionado na lista (usado tanto pelo botão
+	 * "Remover" quanto pela tecla Delete com foco na lista) — sem efeito se
+	 * não houver seleção.
+	 */
+	private void removerObjetoSelecionado() {
+		int sel = list.getSelectedIndex();
+		if (sel == -1) {
+			return;
+		}
+		defaultListModelOP.remove(sel);
+		atualizarCircuito();
 	}
 
 	protected void atualizarCircuito() {
