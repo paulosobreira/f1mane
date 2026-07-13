@@ -5,11 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JList;
 
 import org.junit.jupiter.api.Test;
 
@@ -123,6 +125,64 @@ class FormularioListaObjetosUnificadaTest {
 
         assertTrue(circuito.getObjetosCenario().isEmpty());
         assertEquals(List.of(f1), circuito.getObjetos());
+    }
+
+    @Test
+    void deleteNaLista_comSelecao_removeDaColecaoCorreta() {
+        MainPanelEditor editor = new MainPanelEditor();
+        Circuito circuito = new Circuito();
+        ObjetoLivre c1 = objetoLivre("C1");
+        ObjetoEscapada f1 = objetoEscapada("F1");
+        circuito.setObjetosCenario(new ArrayList<>(List.of(c1)));
+        circuito.setObjetos(new ArrayList<>(List.of(f1)));
+        editor.setCircuito(circuito);
+
+        FormularioListaObjetos formulario = FormularioListaObjetos.unificada(editor);
+        formulario.listarObjetos();
+        formulario.selecaoProgramatica = true;
+        try {
+            formulario.getList().setSelectedIndex(0);
+        } finally {
+            formulario.selecaoProgramatica = false;
+        }
+
+        pressionarDelete(formulario.getList());
+
+        assertTrue(circuito.getObjetosCenario().isEmpty());
+        assertEquals(List.of(f1), circuito.getObjetos());
+    }
+
+    @Test
+    void deleteNaLista_semSelecao_naoAlteraNada() {
+        MainPanelEditor editor = new MainPanelEditor();
+        Circuito circuito = new Circuito();
+        ObjetoLivre c1 = objetoLivre("C1");
+        circuito.setObjetosCenario(new ArrayList<>(List.of(c1)));
+        circuito.setObjetos(new ArrayList<>());
+        editor.setCircuito(circuito);
+
+        FormularioListaObjetos formulario = FormularioListaObjetos.unificada(editor);
+        formulario.listarObjetos();
+
+        pressionarDelete(formulario.getList());
+
+        assertEquals(List.of(c1), circuito.getObjetosCenario());
+        assertEquals(1, formulario.getDefaultListModelOP().getSize());
+    }
+
+    /**
+     * Invoca diretamente os KeyListener registrados na lista, em vez de
+     * {@code dispatchEvent} — em ambiente headless (sem foco/peer real), o
+     * roteamento padrão de KeyEvent via KeyboardFocusManager não entrega o
+     * evento aos listeners, então chamamos {@code keyPressed} diretamente,
+     * como o próprio AWT faria internamente com um componente focado.
+     */
+    private static void pressionarDelete(JList lista) {
+        KeyEvent evento = new KeyEvent(lista, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0,
+                KeyEvent.VK_DELETE, KeyEvent.CHAR_UNDEFINED);
+        for (java.awt.event.KeyListener listener : lista.getKeyListeners()) {
+            listener.keyPressed(evento);
+        }
     }
 
     @Test
