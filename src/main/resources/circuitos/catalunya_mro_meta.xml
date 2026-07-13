@@ -551,9 +551,9 @@
   </void>
   <void property="corAsfalto">
    <object class="java.awt.Color">
-    <int>153</int>
-    <int>153</int>
-    <int>153</int>
+    <int>127</int>
+    <int>118</int>
+    <int>116</int>
     <int>255</int>
    </object>
   </void>

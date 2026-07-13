@@ -19,6 +19,7 @@ import javax.swing.event.ChangeListener;
 import br.nnpe.Logger;
 import br.f1mane.recursos.idiomas.Lang;
 import br.f1mane.entidades.DirecaoEmpilhamento;
+import br.f1mane.entidades.ObjetoArquibancada;
 import br.f1mane.entidades.ObjetoConstrucao;
 import br.f1mane.entidades.ObjetoDesenho;
 import br.f1mane.entidades.ObjetoEscapada;
@@ -114,9 +115,11 @@ public class FormularioObjetos {
 	 * por dois pontos (saída/retorno, ver {@link br.f1mane.entidades.ObjetoEscapada})
 	 * em vez de um retângulo, então usa só Largura (espessura do traçado
 	 * desenhado) e as duas cores, sem altura/ângulo/nível — mesmo espírito de
-	 * GuardRails; os demais tipos (objetos de desenho, como
-	 * Arquibancada/Construcao/GuardRails/Pneus) usam tamanho/ângulo, as duas
-	 * cores e o nível.
+	 * GuardRails; Arquibancada e GuardRails são desenhadas ponto a ponto
+	 * (encadeamento de segmentos), então usam só Largura (espessura do lance/
+	 * barreira), as duas cores e o nível, sem altura/ângulo; os demais tipos
+	 * (objetos de desenho, como Construcao/Pneus) usam tamanho/ângulo, as
+	 * duas cores e o nível.
 	 */
 	private void montarPainelParaTipo(ObjetoPista objetoPista) {
 		panel.removeAll();
@@ -180,6 +183,21 @@ public class FormularioObjetos {
 			panel.add(larguraLinhaGuardRails);
 			panel.add(new JLabel(Lang.msg("vaoEntreLinhas")));
 			panel.add(vaoEntreLinhasGuardRails);
+			panel.add(new JLabel(Lang.msg("nivelDesenhoLabel")));
+			panel.add(nivelDesenho);
+		} else if (objetoPista instanceof ObjetoArquibancada) {
+			// Arquibancada também passou a ser desenhada ponto a ponto no
+			// editor (clique a clique, botão direito finaliza), como
+			// GuardRails: Altura e Ângulo não fazem sentido, mas Largura
+			// continua valendo — é a espessura do lance ao longo de todo o
+			// encadeamento.
+			panel.setLayout(new GridLayout(4, 2));
+			panel.add(new JLabel(Lang.msg("largura")));
+			panel.add(largura);
+			panel.add(labelLegendaCor1);
+			panel.add(labelCor1);
+			panel.add(labelLegendaCor2);
+			panel.add(labelCor2);
 			panel.add(new JLabel(Lang.msg("nivelDesenhoLabel")));
 			panel.add(nivelDesenho);
 		} else if (objetoPista instanceof ObjetoEscapada) {
