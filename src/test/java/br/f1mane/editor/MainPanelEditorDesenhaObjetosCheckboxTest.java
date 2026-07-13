@@ -37,19 +37,30 @@ class MainPanelEditorDesenhaObjetosCheckboxTest {
 
     private ObjetoArquibancada objetoDeDesenho(int x, int y) {
         ObjetoArquibancada objeto = new ObjetoArquibancada();
+        // Arquibancada é desenhada por um encadeamento de pontos (ver
+        // ObjetoArquibancada): sem pontos, não há área visível.
+        List<Point> pontos = new ArrayList<>();
+        pontos.add(new Point(0, 0));
+        pontos.add(new Point(0, 100));
+        objeto.setPontos(pontos);
+        objeto.gerar();
         objeto.setPosicaoQuina(new Point(x, y));
         objeto.setCorPimaria(new Color(200, 10, 200));
         return objeto;
     }
 
     private BufferedImage renderiza(MainPanelEditor editor, Circuito circuito) throws Exception {
+        java.lang.reflect.Method todosObjetos = MainPanelEditor.class.getDeclaredMethod("todosObjetos");
+        todosObjetos.setAccessible(true);
+        List<ObjetoPista> todos = (List<ObjetoPista>) todosObjetos.invoke(editor);
+
         java.lang.reflect.Method metodo = MainPanelEditor.class.getDeclaredMethod(
-                "desenhaObjetosNivel", Graphics2D.class, int.class);
+                "desenhaObjetosNivel", Graphics2D.class, int.class, List.class);
         metodo.setAccessible(true);
         BufferedImage imagem = new BufferedImage(400, 400, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = imagem.createGraphics();
         try {
-            metodo.invoke(editor, g2d, 0);
+            metodo.invoke(editor, g2d, 0, todos);
         } finally {
             g2d.dispose();
         }

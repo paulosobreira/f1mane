@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -36,6 +37,15 @@ public class FormularioListaObjetos {
 	 * depender do editor estar totalmente montado (scrollPane etc.).
 	 */
 	boolean selecaoProgramatica;
+	/**
+	 * Modo unificado (ver {@link #unificada(MainPanelEditor)}): em vez de
+	 * espelhar uma única coleção do {@link Circuito} via {@code listaAccessor},
+	 * lê concatenando {@code objetosCenario} + {@code objetos} (filtrados por
+	 * {@link MainPanelEditor#tipoVisivel(ObjetoPista)}), e ao gravar separa
+	 * cada item de volta pra coleção certa conforme
+	 * {@link TipoObjetoPista#isCenario()}.
+	 */
+	private boolean unificada;
 
 	public DefaultListModel getDefaultListModelOP() {
 		return defaultListModelOP;
@@ -77,6 +87,24 @@ public class FormularioListaObjetos {
 		this.editor = editor;
 		this.listaAccessor = listaAccessor;
 		defaultListModelOP = new DefaultListModel();
+		iniciarComponentes(mostrarMoverPrimeiroEUltimo);
+	}
+
+	/**
+	 * Lista única de objetos do editor: substitui as duas instâncias
+	 * separadas (uma para {@code objetosCenario}, outra para {@code objetos})
+	 * por uma só, que lê/escreve nas duas coleções do {@link Circuito} ao
+	 * mesmo tempo — ver {@link #listarObjetos()}/{@link #atualizarCircuito()}.
+	 * Sempre com Primeiro/Ultimo habilitados (útil pros itens de cenário
+	 * misturados na lista, harmless pros de função).
+	 */
+	public static FormularioListaObjetos unificada(MainPanelEditor editor) {
+		FormularioListaObjetos formulario = new FormularioListaObjetos(editor, Circuito::getObjetos, true);
+		formulario.unificada = true;
+		return formulario;
+	}
+
+	private void iniciarComponentes(boolean mostrarMoverPrimeiroEUltimo) {
 		list = new JList(defaultListModelOP);
 		list.addListSelectionListener(new ListSelectionListener() {
 
@@ -231,11 +259,57 @@ public class FormularioListaObjetos {
 		}
 	}
 
+	/**
+	 * Reentrância própria: {@code defaultListModelOP.clear()} dispara um
+	 * instante de "seleção vazia" que pode fazer um listener externo (ver
+	 * {@code MainPanelEditor.atualizarEstadoSelecaoParaFiltro()}) reagir
+	 * chamando {@code listarObjetos()} de novo antes desta chamada (a de
+	 * fora) terminar de repopular — sem este guard, a chamada de fora
+	 * retomaria depois da de dentro e adicionaria tudo de novo por cima,
+	 * duplicando o conteúdo do model. A chamada reentrante simplesmente não
+	 * faz nada: a de fora, ao retomar, lê o estado (já atualizado pela
+	 * reentrante) direto do Circuito/tipoVisivel, então o resultado final é
+	 * o mesmo de uma única execução.
+	 */
+	private boolean processandoListagem;
+
 	public void listarObjetos() {
-		List<ObjetoPista> objetoPista = listaAccessor.apply(editor.getCircuito());
-		if (objetoPista != null) {
-			defaultListModelOP.clear();
-			for (ObjetoPista op : objetoPista) {
+		if (processandoListagem) {
+			return;
+		}
+		processandoListagem = true;
+		try {
+			if (unificada) {
+				Circuito circuito = editor.getCircuito();
+				defaultListModelOP.clear();
+				adicionarVisiveis(circuito.getObjetosCenario());
+				adicionarVisiveis(circuito.getObjetos());
+				return;
+			}
+			List<ObjetoPista> objetoPista = listaAccessor.apply(editor.getCircuito());
+			if (objetoPista != null) {
+				defaultListModelOP.clear();
+				for (ObjetoPista op : objetoPista) {
+					defaultListModelOP.addElement(op);
+				}
+			}
+		} finally {
+			processandoListagem = false;
+		}
+	}
+
+	/**
+	 * Modo unificado: só entram no {@code DefaultListModel} os objetos
+	 * atualmente visíveis pelo filtro do editor (tipo ou "Somente
+	 * Selecionado") — objetos escondidos continuam em {@code lista}
+	 * (Circuito), só não aparecem na lista do editor nem no desenho.
+	 */
+	private void adicionarVisiveis(List<ObjetoPista> lista) {
+		if (lista == null) {
+			return;
+		}
+		for (ObjetoPista op : lista) {
+			if (editor.tipoVisivel(op)) {
 				defaultListModelOP.addElement(op);
 			}
 		}
@@ -243,6 +317,32 @@ public class FormularioListaObjetos {
 
 	protected void atualizarCircuito() {
 		Circuito circuito = editor.getCircuito();
+		if (unificada) {
+			List<ObjetoPista> cenario = new ArrayList<ObjetoPista>();
+			List<ObjetoPista> funcao = new ArrayList<ObjetoPista>();
+			for (int i = 0; i < defaultListModelOP.getSize(); i++) {
+				ObjetoPista op = (ObjetoPista) defaultListModelOP.getElementAt(i);
+				if (TipoObjetoPista.de(op).isCenario()) {
+					cenario.add(op);
+				} else {
+					funcao.add(op);
+				}
+			}
+			// Objetos escondidos pelo filtro (tipoVisivel == false) nunca
+			// entram em defaultListModelOP, então uma reordenação/remoção
+			// feita só sobre o subconjunto visível não deve apagá-los do
+			// circuito — são reanexados ao final de cada coleção, na ordem
+			// relativa original entre si. Um objeto removido pelo botão
+			// "Remover" continua tipoVisivel==true (não foi escondido, foi
+			// deletado do model), então não é reanexado aqui.
+			reanexarEscondidos(circuito.getObjetosCenario(), cenario);
+			reanexarEscondidos(circuito.getObjetos(), funcao);
+			circuito.setObjetosCenario(cenario);
+			circuito.setObjetos(funcao);
+			circuito.vetorizarPista();
+			editor.repaint();
+			return;
+		}
 		List<ObjetoPista> objetos = listaAccessor.apply(circuito);
 		objetos.clear();
 		for (int i = 0; i < defaultListModelOP.getSize(); i++) {
@@ -250,6 +350,22 @@ public class FormularioListaObjetos {
 		}
 		circuito.vetorizarPista();
 		editor.repaint();
+	}
+
+	/**
+	 * Reanexa em {@code destino}, na ordem original entre si, os itens de
+	 * {@code original} atualmente escondidos pelo filtro do editor — ver
+	 * comentário em {@link #atualizarCircuito()}.
+	 */
+	private void reanexarEscondidos(List<ObjetoPista> original, List<ObjetoPista> destino) {
+		if (original == null) {
+			return;
+		}
+		for (ObjetoPista objeto : original) {
+			if (!editor.tipoVisivel(objeto)) {
+				destino.add(objeto);
+			}
+		}
 	}
 
 	public JPanel getObjetos() {

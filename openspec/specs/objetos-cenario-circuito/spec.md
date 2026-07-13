@@ -124,16 +124,16 @@ A lógica de desenho procedural do circuito (traçado de pista, zebra, box e obj
 - **WHEN** o editor de circuitos desenha um circuito em modo sem imagem de fundo, e a mesma versão do circuito é usada para gerar a imagem de fundo em memória
 - **THEN** ambos os desenhos (pista, zebra, box e objetos não excluídos) são produzidos pelo mesmo componente de desenho, não por duas implementações separadas mantidas manualmente em sincronia
 
-### Requirement: Objetos de cenário ficam numa lista separada, como pista e box
-`Circuito` SHALL manter os objetos de cenário (`ObjetoArquibancada`, `ObjetoConstrucao`, `ObjetoGuardRails`, `ObjetoPneus`) numa lista própria (`objetosCenario`), distinta da lista `objetos` que continua contendo `ObjetoEscapada` e `ObjetoTransparencia`. O editor de circuitos SHALL exibir e gerenciar as listas `objetos` e `objetosCenario` dentro da seção de objetos de um único `JSplitPane` lateral compartilhado com a seção de nós de pista/box (ver requisito "Editor consolida nós e objetos em um único split pane lateral"), em vez de painéis EAST/WEST separados.
+### Requirement: Objetos de cenário e de função ficam em uma lista única no editor
+`Circuito` SHALL manter os objetos de cenário (`ObjetoArquibancada`, `ObjetoConstrucao`, `ObjetoGuardRails`, `ObjetoPneus`) numa lista própria (`objetosCenario`), distinta da lista `objetos` que continua contendo `ObjetoEscapada` e `ObjetoTransparencia` — essa separação em duas coleções no modelo de dados não muda. O editor de circuitos SHALL, no entanto, exibir e gerenciar `objetos` e `objetosCenario` como uma única lista visual dentro da seção de objetos do `JSplitPane` lateral compartilhado com a seção de nós de pista/box (ver requisito "Editor consolida nós e objetos em um único split pane lateral"), em vez de duas listas separadas.
 
-#### Scenario: Criar um objeto de cenário adiciona à lista correta
+#### Scenario: Criar um objeto de cenário adiciona à coleção correta
 - **WHEN** o usuário cria um `ObjetoArquibancada`, `ObjetoConstrucao`, `ObjetoGuardRails` ou `ObjetoPneus` pelo editor
-- **THEN** o objeto é adicionado a `circuito.getObjetosCenario()`, e aparece na lista dedicada a objetos de cenário dentro da seção de objetos do split pane, não na lista `objetos`
+- **THEN** o objeto é adicionado a `circuito.getObjetosCenario()`, e aparece na lista única de objetos dentro da seção de objetos do split pane
 
-#### Scenario: Criar Escapada ou Transparência continua indo para a lista objetos
+#### Scenario: Criar Escapada ou Transparência continua indo para a coleção objetos
 - **WHEN** o usuário cria um `ObjetoEscapada` ou `ObjetoTransparencia` pelo editor
-- **THEN** o objeto é adicionado a `circuito.getObjetos()`, como antes desta mudança, e aparece na lista `objetos` dentro da mesma seção de objetos do split pane
+- **THEN** o objeto é adicionado a `circuito.getObjetos()`, como antes desta mudança, e aparece na mesma lista única de objetos dentro da seção de objetos do split pane, junto dos objetos de cenário
 
 ### Requirement: Editor consolida nós e objetos em um único split pane lateral
 O editor de circuitos SHALL apresentar as listas de nós (`pistaJList`/`boxJList`) e as listas de objetos de pista (`objetos`/`objetosCenario`) em um único `JSplitPane` posicionado em uma única lateral da janela (não mais em painéis WEST e EAST separados), com uma seção dedicada a nós e outra dedicada a objetos.
@@ -150,11 +150,11 @@ As ações relativas à edição de nós (inserir nó via clique com tipo seleci
 - **THEN** os controles "Apagar Ultimo NO" e "Apaga Nó na lista Selecionada" estão visíveis dentro dessa seção, junto das listas `pistaJList`/`boxJList`
 
 ### Requirement: Ações de objeto ficam agrupadas na seção de objetos do split pane
-As ações relativas a objetos de pista (criar via "Criar Objeto", remover, reordenar via Cima/Baixo/Primeiro/Ultimo, editar) SHALL ficar agrupadas dentro da seção de objetos do split pane, reutilizando `FormularioListaObjetos` para as duas listas (`objetos` e `objetosCenario`), em vez de o botão "Criar Objeto" ficar em um painel de botões separado fora do split pane.
+As ações relativas a objetos de pista (criar via "Criar Objeto", remover, reordenar via Cima/Baixo/Primeiro/Ultimo, editar) SHALL ficar agrupadas dentro da seção de objetos do split pane, operando sobre a lista única de objetos (`objetos` e `objetosCenario` combinados) através de um único `FormularioListaObjetos`, em vez do botão "Criar Objeto" ficar em um painel de botões separado fora do split pane ou de dois `FormularioListaObjetos` independentes.
 
-#### Scenario: Botão Criar Objeto aparece junto às listas de objeto
+#### Scenario: Botão Criar Objeto aparece junto à lista de objetos
 - **WHEN** o usuário abre a seção de objetos do split pane
-- **THEN** o controle "Criar Objeto" está visível dentro dessa seção, junto das listas `objetos` e `objetosCenario` e seus botões Cima/Baixo/Primeiro/Ultimo/Editar/Remover
+- **THEN** o controle "Criar Objeto" está visível dentro dessa seção, junto da lista única de objetos e seus botões Cima/Baixo/Primeiro/Ultimo/Editar/Remover
 
 ### Requirement: Menu de contexto para ajuste rápido de objeto
 Ao clicar com o botão direito sobre um objeto (de qualquer uma das duas listas) no editor de circuitos, o sistema SHALL exibir um menu de contexto com controles para largura, altura e ângulo de rotação, que gravam a alteração diretamente no objeto e atualizam o desenho, sem exigir abrir o formulário modal completo.

@@ -80,6 +80,7 @@ import br.f1mane.controles.ControleEstatisticas;
 import br.f1mane.controles.ControleRecursos;
 import br.f1mane.entidades.DirecaoEmpilhamento;
 import br.f1mane.entidades.No;
+import br.f1mane.entidades.ObjetoArquibancada;
 import br.f1mane.entidades.ObjetoConstrucao;
 import br.f1mane.entidades.ObjetoDesenho;
 import br.f1mane.entidades.ObjetoEscapada;
@@ -201,6 +202,9 @@ public class MainPanelEditor extends JPanel {
     private ObjetoGuardRails editandoPontosGuardRailsDe;
     private int indicePontoGuardRailsArrastando = -1;
     private boolean arrastouPontoGuardRails;
+    private ObjetoArquibancada editandoPontosArquibancadaDe;
+    private int indicePontoArquibancadaArrastando = -1;
+    private boolean arrastouPontoArquibancada;
     private ObjetoEscapada editandoPontosEscapadaDe;
     /** Índice do ponto de {@link ObjetoEscapada#getPontos()} sendo arrastado, -1 = nenhum. */
     private int indicePontoEscapadaArrastando = -1;
@@ -209,14 +213,41 @@ public class MainPanelEditor extends JPanel {
     private Point pontoEscapadaAnteriorAoArraste;
     /**
      * Pacote-privado (em vez de private) para permitir injeção direta em
-     * testes. formularioListaObjetosDesenho espelha circuito.objetosCenario
-     * (objetos de desenho: Livre, Arquibancada, Construcao, GuardRails,
-     * Pneus — todos com nível); formularioListaObjetosFuncao espelha
-     * circuito.objetos (objetos de função: Escapada, Transparencia — sem
-     * nível, tratamento próprio em corrida).
+     * testes. Lista única de objetos do editor — espelha, juntas,
+     * circuito.objetosCenario (objetos de desenho: Livre, Arquibancada,
+     * Construcao, GuardRails, Pneus — todos com nível) e circuito.objetos
+     * (objetos de função: Escapada, Transparencia — sem nível, tratamento
+     * próprio em corrida). Cada objeto continua sendo gravado na coleção do
+     * Circuito correspondente ao seu tipo (ver FormularioListaObjetos#unificada).
      */
-    FormularioListaObjetos formularioListaObjetosDesenho;
-    FormularioListaObjetos formularioListaObjetosFuncao;
+    FormularioListaObjetos formularioListaObjetos;
+    /**
+     * Estado do filtro por tipo (grupo 2 do painel de filtro): true = tipo
+     * visível na lista/canvas, false = escondido. Só tipos atualmente
+     * presentes no circuito têm entrada aqui — ver atualizarPainelFiltroTipos().
+     */
+    private final Map<TipoObjetoPista, Boolean> tiposVisiveis = new java.util.EnumMap<>(TipoObjetoPista.class);
+    private final Map<TipoObjetoPista, JCheckBox> checkboxesPorTipo = new java.util.EnumMap<>(TipoObjetoPista.class);
+    private JCheckBox mostrarTodosCheck;
+    private JCheckBox mostrarNenhumCheck;
+    private JCheckBox somenteSelecionadoCheck;
+    private JPanel painelTiposCheckboxes;
+    /** Objeto em foco do modo "Somente Selecionado"; null quando o modo não está ativo. */
+    private ObjetoPista focoSomenteSelecionado;
+    /**
+     * Suprime atualizarEstadoSelecaoParaFiltro() enquanto um método do
+     * próprio painel de filtro (marcarTodosOsTipos/marcarSomenteSelecionado/
+     * desmarcarSomenteSelecionado/checkbox de tipo) está no meio de
+     * listarObjetos() — sem isto, o DefaultListModel.clear() interno de
+     * listarObjetos() dispara um instante de seleção vazia, o
+     * ListSelectionListener reage chamando desmarcarSomenteSelecionado() de
+     * novo (reentrante) antes do listarObjetos() original terminar de
+     * repopular, e o resultado fica duplicado. Não suprime o gatilho
+     * legítimo de apagarObjetoSelecionado() (que chama listarObjetos() sem
+     * este guard) — é assim que a seção 5.5 (encerrar o modo ao remover o
+     * objeto em foco) continua funcionando.
+     */
+    private boolean ajustandoFiltroObjetos;
     /** "Área de transferência" de cor (Copiar Cor/Colar Cor); null enquanto nada foi copiado ainda. */
     private Color corCopiada1;
     private Color corCopiada2;
@@ -413,16 +444,12 @@ public class MainPanelEditor extends JPanel {
     }
 
     /**
-     * Copia a cor primária e secundária do objeto selecionado (na lista de
-     * objetos ou na de cenário — a primeira das duas que tiver seleção) para
-     * uso posterior em {@link #colarCorObjetosSelecionados()}. Sem seleção em
-     * nenhuma das duas listas, não faz nada.
+     * Copia a cor primária e secundária do objeto selecionado na lista de
+     * objetos para uso posterior em {@link #colarCorObjetosSelecionados()}.
+     * Sem seleção, não faz nada.
      */
     void copiarCorObjetoSelecionado() {
-        ObjetoPista origem = primeiroSelecionado(formularioListaObjetosFuncao);
-        if (origem == null) {
-            origem = primeiroSelecionado(formularioListaObjetosDesenho);
-        }
+        ObjetoPista origem = primeiroSelecionado(formularioListaObjetos);
         if (origem == null) {
             return;
         }
@@ -432,17 +459,14 @@ public class MainPanelEditor extends JPanel {
 
     /**
      * Aplica a cor copiada por {@link #copiarCorObjetoSelecionado()} a todos
-     * os objetos atualmente selecionados, somando a seleção das duas listas
-     * (objetos e cenário) — suporta colar em vários objetos de uma vez. Sem
-     * nada copiado antes, ou sem nenhuma seleção, não faz nada.
+     * os objetos atualmente selecionados — suporta colar em vários objetos
+     * de uma vez. Sem nada copiado antes, ou sem nenhuma seleção, não faz nada.
      */
     void colarCorObjetosSelecionados() {
         if (corCopiada1 == null && corCopiada2 == null) {
             return;
         }
-        List<ObjetoPista> selecionados = new ArrayList<ObjetoPista>();
-        selecionados.addAll(todosSelecionados(formularioListaObjetosFuncao));
-        selecionados.addAll(todosSelecionados(formularioListaObjetosDesenho));
+        List<ObjetoPista> selecionados = todosSelecionados(formularioListaObjetos);
         if (selecionados.isEmpty()) {
             return;
         }
@@ -495,10 +519,10 @@ public class MainPanelEditor extends JPanel {
                 objetoPista.setTransparencia(125);
                 desenhandoObjetoLivre = true;
             } else if (objetoPista instanceof ObjetoLivre || objetoPista instanceof ObjetoGuardRails
-                    || objetoPista instanceof ObjetoEscapada) {
-                // GuardRails e Escapada também são desenhados ponto a ponto
-                // (encadeamento de segmentos / par saída-retorno), como
-                // ObjetoLivre — reaproveitam o mesmo modo.
+                    || objetoPista instanceof ObjetoArquibancada || objetoPista instanceof ObjetoEscapada) {
+                // GuardRails, Arquibancada e Escapada também são desenhados
+                // ponto a ponto (encadeamento de segmentos / par
+                // saída-retorno), como ObjetoLivre — reaproveitam o mesmo modo.
                 desenhandoObjetoLivre = true;
             }
         } catch (Exception e2) {
@@ -529,13 +553,20 @@ public class MainPanelEditor extends JPanel {
         if (editandoPontosGuardRailsDe == objetoPista) {
             encerrarEdicaoPontosGuardRails();
         }
+        if (editandoPontosArquibancadaDe == objetoPista) {
+            encerrarEdicaoPontosArquibancada();
+        }
         objetoPista = null;
         objetoArrastando = null;
-        if (removidoDeCenario && formularioListaObjetosDesenho != null) {
-            formularioListaObjetosDesenho.listarObjetos();
-        }
-        if (removidoDeObjetos && formularioListaObjetosFuncao != null) {
-            formularioListaObjetosFuncao.listarObjetos();
+        // Se o objeto removido era o foco do modo "Somente Selecionado", o
+        // ListSelectionListener registrado em gerarSecaoObjetos() detecta a
+        // seleção sumindo (a lista, filtrada só pro objeto em foco, fica
+        // vazia após listarObjetos()) e encerra o modo automaticamente via
+        // atualizarEstadoSelecaoParaFiltro() — sem precisar de um caminho
+        // separado aqui.
+        if (formularioListaObjetos != null) {
+            formularioListaObjetos.listarObjetos();
+            atualizarPainelFiltroTipos();
         }
         repaint();
     }
@@ -634,33 +665,296 @@ public class MainPanelEditor extends JPanel {
      * (Escapada, Transparencia), que não têm nível — não fazem sentido
      * "acima"/"abaixo" da pista, têm tratamento próprio em corrida.
      */
+    /**
+     * Lista única de objetos (substitui as antigas listaDesenho/listaFuncao
+     * em JSplitPane): a lista ocupa o CENTER (estica pro espaço disponível,
+     * como já acontecia dentro de cada FormularioListaObjetos), o painel de
+     * filtro por tipo fica sempre visível no SOUTH.
+     */
     private JPanel gerarSecaoObjetos() {
         JPanel secao = new JPanel(new BorderLayout());
         secao.add(gerarBotaoCriarObjeto(), BorderLayout.NORTH);
-        formularioListaObjetosDesenho = new FormularioListaObjetos(this, Circuito::getObjetosCenario, true);
-        formularioListaObjetosDesenho.listarObjetos();
-        formularioListaObjetosFuncao = new FormularioListaObjetos(this, Circuito::getObjetos);
-        formularioListaObjetosFuncao.listarObjetos();
+        formularioListaObjetos = FormularioListaObjetos.unificada(this);
+        formularioListaObjetos.getList().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                atualizarEstadoSelecaoParaFiltro();
+            }
+        });
 
-        JPanel listaDesenho = new JPanel(new BorderLayout());
-        listaDesenho.add(new JLabel(Lang.msg("objetosDesenhoLabel")), BorderLayout.NORTH);
-        listaDesenho.add(formularioListaObjetosDesenho.getObjetos(), BorderLayout.CENTER);
+        JPanel painelFiltro = gerarPainelFiltroObjetos();
 
-        JPanel listaFuncao = new JPanel(new BorderLayout());
-        listaFuncao.add(new JLabel(Lang.msg("objetosFuncaoLabel")), BorderLayout.NORTH);
-        listaFuncao.add(formularioListaObjetosFuncao.getObjetos(), BorderLayout.CENTER);
+        JPanel listaEFiltro = new JPanel(new BorderLayout());
+        listaEFiltro.add(formularioListaObjetos.getObjetos(), BorderLayout.CENTER);
+        listaEFiltro.add(painelFiltro, BorderLayout.SOUTH);
+        secao.add(listaEFiltro, BorderLayout.CENTER);
 
-        // Split vertical (não BorderLayout com altura fixa): a lista de cima
-        // tem lista+5 botões (Cima/Baixo/Primeiro/Ultimo/Remover) e a de
-        // baixo lista+3 (Cima/Baixo/Remover); uma altura em pixels fixa
-        // espremia as listas até sumir. 70/30 garante os 30% pedidos
-        // independente do conteúdo.
-        JSplitPane splitListas = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-                listaDesenho, listaFuncao);
-        splitListas.setResizeWeight(0.7);
-        splitListas.setOneTouchExpandable(true);
-        secao.add(splitListas, BorderLayout.CENTER);
+        formularioListaObjetos.listarObjetos();
+        atualizarPainelFiltroTipos();
         return secao;
+    }
+
+    /**
+     * Painel de filtro por tipo, abaixo da lista única: grupo 1 (checkboxes
+     * mutuamente exclusivos "Mostrar Todos"/"Mostrar Nenhum"/"Somente
+     * Selecionado"), uma linha divisória, e o grupo 2 (checkbox dinâmico por
+     * tipo presente no circuito, populado por {@link #atualizarPainelFiltroTipos()}).
+     */
+    private JPanel gerarPainelFiltroObjetos() {
+        JPanel grupo1 = new JPanel(new GridLayout(0, 1));
+        mostrarTodosCheck = new JCheckBox(Lang.msg("mostrarTodosObjetosFiltro"));
+        mostrarNenhumCheck = new JCheckBox(Lang.msg("mostrarNenhumObjetoFiltro"));
+        somenteSelecionadoCheck = new JCheckBox(Lang.msg("somenteSelecionadoFiltro"));
+        somenteSelecionadoCheck.setEnabled(false);
+
+        mostrarTodosCheck.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                marcarTodosOsTipos(true);
+            }
+        });
+        mostrarNenhumCheck.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                marcarTodosOsTipos(false);
+            }
+        });
+        somenteSelecionadoCheck.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (somenteSelecionadoCheck.isSelected()) {
+                    marcarSomenteSelecionado();
+                } else {
+                    desmarcarSomenteSelecionado();
+                }
+            }
+        });
+
+        grupo1.add(mostrarTodosCheck);
+        grupo1.add(mostrarNenhumCheck);
+        grupo1.add(somenteSelecionadoCheck);
+        grupo1.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        javax.swing.JSeparator separador = new javax.swing.JSeparator(SwingConstants.HORIZONTAL);
+        separador.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        painelTiposCheckboxes = new JPanel(new GridLayout(0, 1));
+        painelTiposCheckboxes.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JPanel painelFiltro = new JPanel();
+        painelFiltro.setLayout(new javax.swing.BoxLayout(painelFiltro, javax.swing.BoxLayout.Y_AXIS));
+        painelFiltro.add(grupo1);
+        painelFiltro.add(separador);
+        painelFiltro.add(painelTiposCheckboxes);
+        return painelFiltro;
+    }
+
+    /**
+     * Predicado único de visibilidade, consultado pela lista (via
+     * FormularioListaObjetos), pelo desenho (desenhaObjetosNivel) e pela
+     * seleção por clique no canvas (encontraObjetoPistaNaLista). Modo
+     * "Somente Selecionado" tem prioridade: quando ativo, só o objeto em
+     * foco é visível, independente de tiposVisiveis. Pacote-privado (não
+     * private) para FormularioListaObjetos poder consultar.
+     */
+    boolean tipoVisivel(ObjetoPista objeto) {
+        if (focoSomenteSelecionado != null) {
+            return objeto == focoSomenteSelecionado;
+        }
+        Boolean visivel = tiposVisiveis.get(TipoObjetoPista.de(objeto));
+        return visivel == null || visivel;
+    }
+
+    /**
+     * Recalcula o conjunto de tipos presentes no circuito (união de objetos
+     * e objetosCenario) e reconstrói o grupo 2 do painel de filtro — um
+     * checkbox por tipo presente, na ordem de TipoObjetoPista.values().
+     * Chamado sempre que um objeto é criado ou removido, mesmos pontos que
+     * já chamam formularioListaObjetos.listarObjetos().
+     */
+    private void atualizarPainelFiltroTipos() {
+        if (painelTiposCheckboxes == null) {
+            return;
+        }
+        java.util.Set<TipoObjetoPista> presentes = java.util.EnumSet.noneOf(TipoObjetoPista.class);
+        for (ObjetoPista objeto : todosObjetos()) {
+            presentes.add(TipoObjetoPista.de(objeto));
+        }
+        tiposVisiveis.keySet().retainAll(presentes);
+        for (TipoObjetoPista tipo : presentes) {
+            tiposVisiveis.putIfAbsent(tipo, true);
+        }
+
+        checkboxesPorTipo.clear();
+        painelTiposCheckboxes.removeAll();
+        boolean modoFoco = focoSomenteSelecionado != null;
+        for (TipoObjetoPista tipo : TipoObjetoPista.values()) {
+            if (!presentes.contains(tipo)) {
+                continue;
+            }
+            final TipoObjetoPista tipoFinal = tipo;
+            JCheckBox checkbox = new JCheckBox(tipo.toString());
+            checkbox.setSelected(Boolean.TRUE.equals(tiposVisiveis.get(tipo)));
+            checkbox.setEnabled(!modoFoco);
+            checkbox.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    tiposVisiveis.put(tipoFinal, checkbox.isSelected());
+                    sincronizarCheckboxesGrupo1();
+                    ajustandoFiltroObjetos = true;
+                    try {
+                        formularioListaObjetos.listarObjetos();
+                    } finally {
+                        ajustandoFiltroObjetos = false;
+                    }
+                    repaint();
+                }
+            });
+            checkboxesPorTipo.put(tipo, checkbox);
+            painelTiposCheckboxes.add(checkbox);
+        }
+        painelTiposCheckboxes.revalidate();
+        painelTiposCheckboxes.repaint();
+        sincronizarCheckboxesGrupo1();
+    }
+
+    /**
+     * Marca (visivel=true) ou desmarca (visivel=false) todos os checkboxes
+     * de tipo presentes de uma vez — "Mostrar Todos"/"Mostrar Nenhum".
+     * Encerra o modo "Somente Selecionado" se estava ativo, já que essa ação
+     * é sobre o grupo 2 (tipos), não sobre um objeto específico.
+     */
+    private void marcarTodosOsTipos(boolean visivel) {
+        focoSomenteSelecionado = null;
+        for (TipoObjetoPista tipo : new ArrayList<TipoObjetoPista>(tiposVisiveis.keySet())) {
+            tiposVisiveis.put(tipo, visivel);
+        }
+        for (Map.Entry<TipoObjetoPista, JCheckBox> entry : checkboxesPorTipo.entrySet()) {
+            entry.getValue().setSelected(visivel);
+            entry.getValue().setEnabled(true);
+        }
+        mostrarTodosCheck.setEnabled(true);
+        mostrarNenhumCheck.setEnabled(true);
+        sincronizarCheckboxesGrupo1();
+        ajustandoFiltroObjetos = true;
+        try {
+            formularioListaObjetos.listarObjetos();
+        } finally {
+            ajustandoFiltroObjetos = false;
+        }
+        repaint();
+    }
+
+    /**
+     * Recalcula o estado marcado/desmarcado de "Mostrar Todos"/"Mostrar
+     * Nenhum"/"Somente Selecionado" a partir do estado real (tiposVisiveis e
+     * focoSomenteSelecionado), em vez de confiar no clique bruto do usuário
+     * — os três funcionam como indicadores de estado, não switches
+     * independentes. Também reabilita/desabilita "Somente Selecionado"
+     * conforme haver ou não seleção atual.
+     */
+    private void sincronizarCheckboxesGrupo1() {
+        boolean modoFoco = focoSomenteSelecionado != null;
+        somenteSelecionadoCheck.setSelected(modoFoco);
+        if (modoFoco) {
+            mostrarTodosCheck.setSelected(false);
+            mostrarNenhumCheck.setSelected(false);
+        } else {
+            boolean todos = !tiposVisiveis.isEmpty();
+            boolean nenhum = !tiposVisiveis.isEmpty();
+            for (Boolean visivel : tiposVisiveis.values()) {
+                if (Boolean.TRUE.equals(visivel)) {
+                    nenhum = false;
+                } else {
+                    todos = false;
+                }
+            }
+            mostrarTodosCheck.setSelected(todos);
+            mostrarNenhumCheck.setSelected(nenhum);
+            ObjetoPista selecionado = primeiroSelecionado(formularioListaObjetos);
+            somenteSelecionadoCheck.setEnabled(selecionado != null);
+        }
+    }
+
+    /**
+     * Ativa o modo "Somente Selecionado": só possível com uma seleção
+     * atual. Desabilita o grupo 2 (e Mostrar Todos/Nenhum) sem alterar seus
+     * valores, e restringe a lista/desenho ao objeto em foco.
+     */
+    private void marcarSomenteSelecionado() {
+        ObjetoPista selecionado = primeiroSelecionado(formularioListaObjetos);
+        if (selecionado == null) {
+            somenteSelecionadoCheck.setSelected(false);
+            return;
+        }
+        focoSomenteSelecionado = selecionado;
+        mostrarTodosCheck.setEnabled(false);
+        mostrarNenhumCheck.setEnabled(false);
+        for (JCheckBox checkbox : checkboxesPorTipo.values()) {
+            checkbox.setEnabled(false);
+        }
+        // ajustandoFiltroObjetos suprime atualizarEstadoSelecaoParaFiltro()
+        // durante o clear()/repopula interno de listarObjetos() — sem isto,
+        // o instante de seleção vazia no meio do clear() dispararia
+        // desmarcarSomenteSelecionado() reentrante antes deste método
+        // terminar, duplicando o conteúdo do model (clear() do listarObjetos
+        // de fora + addElement()s dos dois listarObjetos() empilhados).
+        ajustandoFiltroObjetos = true;
+        try {
+            formularioListaObjetos.listarObjetos();
+            // Reseleciona o objeto em foco na lista já filtrada (listarObjetos()
+            // limpa o DefaultListModel e o repovoa, o que perde a seleção do
+            // JList).
+            formularioListaObjetos.selecionarSemCentralizar(focoSomenteSelecionado);
+        } finally {
+            ajustandoFiltroObjetos = false;
+        }
+        repaint();
+    }
+
+    /**
+     * Desativa o modo "Somente Selecionado", manual (usuário desmarcou o
+     * checkbox) ou automaticamente (objeto em foco removido, ou seleção
+     * perdida por qualquer outro caminho — ver atualizarEstadoSelecaoParaFiltro()).
+     * Restaura a visibilidade conforme tiposVisiveis, sem alterá-lo.
+     */
+    private void desmarcarSomenteSelecionado() {
+        focoSomenteSelecionado = null;
+        somenteSelecionadoCheck.setSelected(false);
+        mostrarTodosCheck.setEnabled(true);
+        mostrarNenhumCheck.setEnabled(true);
+        for (JCheckBox checkbox : checkboxesPorTipo.values()) {
+            checkbox.setEnabled(true);
+        }
+        sincronizarCheckboxesGrupo1();
+        ajustandoFiltroObjetos = true;
+        try {
+            formularioListaObjetos.listarObjetos();
+        } finally {
+            ajustandoFiltroObjetos = false;
+        }
+        repaint();
+    }
+
+    /**
+     * Reage a qualquer mudança de seleção na lista única: habilita/desabilita
+     * "Somente Selecionado" conforme haver seleção, e encerra o modo
+     * automaticamente se a seleção deixar de ser o objeto em foco (removido,
+     * ou perdida por qualquer outro caminho) — cobre tanto remoção quanto
+     * qualquer outra forma de perder a seleção com um único mecanismo.
+     */
+    private void atualizarEstadoSelecaoParaFiltro() {
+        if (ajustandoFiltroObjetos) {
+            return;
+        }
+        ObjetoPista selecionado = primeiroSelecionado(formularioListaObjetos);
+        if (focoSomenteSelecionado != null) {
+            if (selecionado != focoSomenteSelecionado) {
+                desmarcarSomenteSelecionado();
+            }
+            return;
+        }
+        somenteSelecionadoCheck.setEnabled(selecionado != null);
     }
 
     private JSplitPane gerarSplitPaneLateral() {
@@ -1381,6 +1675,10 @@ public class MainPanelEditor extends JPanel {
                         && !desenhandoObjetoLivre && tentarIniciarArrastePontoGuardRails(e)) {
                     return;
                 }
+                if (editandoPontosArquibancadaDe != null && isSemSelecao() && !posicionaObjetoPista
+                        && !desenhandoObjetoLivre && tentarIniciarArrastePontoArquibancada(e)) {
+                    return;
+                }
                 if (editandoPontosEscapadaDe != null && isSemSelecao() && !posicionaObjetoPista
                         && !desenhandoObjetoLivre && tentarIniciarArrastePontoEscapada(e)) {
                     return;
@@ -1431,6 +1729,15 @@ public class MainPanelEditor extends JPanel {
                     repaint();
                     return;
                 }
+                if (indicePontoArquibancadaArrastando >= 0) {
+                    arrastouPontoArquibancada = true;
+                    Point offset = calculaOffsetTelaArquibancada(editandoPontosArquibancadaDe);
+                    Point localAlvo = localDaTela(e.getPoint(), offset);
+                    editandoPontosArquibancadaDe.getPontos().set(indicePontoArquibancadaArrastando, localAlvo);
+                    editandoPontosArquibancadaDe.gerar();
+                    repaint();
+                    return;
+                }
                 if (indicePontoEscapadaArrastando >= 0) {
                     arrastouPontoEscapada = true;
                     Point offset = calculaOffsetTelaEscapada(editandoPontosEscapadaDe);
@@ -1468,6 +1775,14 @@ public class MainPanelEditor extends JPanel {
                     indicePontoGuardRailsArrastando = -1;
                     repaint();
                 }
+                if (indicePontoArquibancadaArrastando >= 0) {
+                    Point telaComSnap = aplicaSnap(e.getPoint(), editandoPontosArquibancadaDe);
+                    Point offset = calculaOffsetTelaArquibancada(editandoPontosArquibancadaDe);
+                    Point localComSnap = localDaTela(telaComSnap, offset);
+                    editandoPontosArquibancadaDe.moverPonto(indicePontoArquibancadaArrastando, localComSnap);
+                    indicePontoArquibancadaArrastando = -1;
+                    repaint();
+                }
                 if (indicePontoEscapadaArrastando >= 0) {
                     finalizarArrastePontoEscapada(e.getPoint());
                     indicePontoEscapadaArrastando = -1;
@@ -1483,6 +1798,10 @@ public class MainPanelEditor extends JPanel {
                 }
                 if (arrastouPontoGuardRails) {
                     arrastouPontoGuardRails = false;
+                    return;
+                }
+                if (arrastouPontoArquibancada) {
+                    arrastouPontoArquibancada = false;
                     return;
                 }
                 if (arrastouPontoEscapada) {
@@ -1522,6 +1841,21 @@ public class MainPanelEditor extends JPanel {
                         return;
                     }
                 }
+                if (editandoPontosArquibancadaDe != null && !desenhandoObjetoLivre) {
+                    if (SwingUtilities.isRightMouseButton(e)) {
+                        if (!removerPontoArquibancadaSeAtingido(e.getPoint())) {
+                            mostraMenuContextoObjeto(e);
+                        } else {
+                            repaint();
+                        }
+                        return;
+                    }
+                    if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 1 && !posicionaObjetoPista) {
+                        tentarInserirPontoArquibancada(e.getPoint());
+                        repaint();
+                        return;
+                    }
+                }
                 if (SwingUtilities.isRightMouseButton(e) && !posicionaObjetoPista && !desenhandoObjetoLivre) {
                     mostraMenuContextoObjeto(e);
                     return;
@@ -1545,7 +1879,8 @@ public class MainPanelEditor extends JPanel {
                         if (circuito.getObjetos() == null)
                             circuito.setObjetos(new ArrayList<ObjetoPista>());
                         circuito.getObjetos().add(objetoTransparencia);
-                        formularioListaObjetosFuncao.listarObjetos();
+                        formularioListaObjetos.listarObjetos();
+                        atualizarPainelFiltroTipos();
                         objetoTransparencia.setNome("Objeto " + circuito.getObjetos().size());
                         objetoTransparencia.gerar();
                         // posicaoQuina precisa ficar definida (mesmo que igual aos bounds
@@ -1569,7 +1904,8 @@ public class MainPanelEditor extends JPanel {
                         if (circuito.getObjetosCenario() == null)
                             circuito.setObjetosCenario(new ArrayList<ObjetoPista>());
                         circuito.getObjetosCenario().add(objetoLivre);
-                        formularioListaObjetosDesenho.listarObjetos();
+                        formularioListaObjetos.listarObjetos();
+                        atualizarPainelFiltroTipos();
                         objetoLivre.setNome("Objeto " + circuito.getObjetosCenario().size());
                         objetoLivre.gerar();
                         objetoLivre.setPosicaoQuina(objetoLivre.obterArea().getLocation());
@@ -1589,10 +1925,32 @@ public class MainPanelEditor extends JPanel {
                         if (circuito.getObjetosCenario() == null)
                             circuito.setObjetosCenario(new ArrayList<ObjetoPista>());
                         circuito.getObjetosCenario().add(guardRails);
-                        formularioListaObjetosDesenho.listarObjetos();
+                        formularioListaObjetos.listarObjetos();
+                        atualizarPainelFiltroTipos();
                         guardRails.setNome("Objeto " + circuito.getObjetosCenario().size());
                         guardRails.gerar();
                         guardRails.setPosicaoQuina(guardRails.obterArea().getLocation());
+                        objetoPista = null;
+                    }
+                    repaint();
+                    return;
+                } else if (desenhandoObjetoLivre && (objetoPista instanceof ObjetoArquibancada)) {
+                    ObjetoArquibancada arquibancada = (ObjetoArquibancada) objetoPista;
+                    if (e.getButton() == MouseEvent.BUTTON1) {
+                        arquibancada.getPontos().add(aplicaSnap(ultimoClicado, arquibancada));
+                    } else {
+                        desenhandoObjetoLivre = false;
+                        posicionaObjetoPista = false;
+                        // Arquibancada é objeto de cenário/desenho (ver TipoObjetoPista.ARQUIBANCADA),
+                        // não de função como Transparencia — vai para objetosCenario.
+                        if (circuito.getObjetosCenario() == null)
+                            circuito.setObjetosCenario(new ArrayList<ObjetoPista>());
+                        circuito.getObjetosCenario().add(arquibancada);
+                        formularioListaObjetos.listarObjetos();
+                        atualizarPainelFiltroTipos();
+                        arquibancada.setNome("Objeto " + circuito.getObjetosCenario().size());
+                        arquibancada.gerar();
+                        arquibancada.setPosicaoQuina(arquibancada.obterArea().getLocation());
                         objetoPista = null;
                     }
                     repaint();
@@ -1634,7 +1992,8 @@ public class MainPanelEditor extends JPanel {
                             if (circuito.getObjetos() == null)
                                 circuito.setObjetos(new ArrayList<ObjetoPista>());
                             circuito.getObjetos().add(escapada);
-                            formularioListaObjetosFuncao.listarObjetos();
+                            formularioListaObjetos.listarObjetos();
+                            atualizarPainelFiltroTipos();
                             escapada.setNome("Objeto " + circuito.getObjetos().size());
                             escapada.gerar();
                             escapada.setPosicaoQuina(escapada.obterArea().getLocation());
@@ -1645,26 +2004,24 @@ public class MainPanelEditor extends JPanel {
                     return;
                 } else if (posicionaObjetoPista && objetoPista != null) {
                     List<ObjetoPista> listaAlvo;
-                    FormularioListaObjetos formularioListaAlvo;
                     if (criandoObjetoCenario) {
                         if (circuito.getObjetosCenario() == null) {
                             circuito.setObjetosCenario(new ArrayList<ObjetoPista>());
                         }
                         listaAlvo = circuito.getObjetosCenario();
-                        formularioListaAlvo = formularioListaObjetosDesenho;
                     } else {
                         if (circuito.getObjetos() == null) {
                             circuito.setObjetos(new ArrayList<ObjetoPista>());
                         }
                         listaAlvo = circuito.getObjetos();
-                        formularioListaAlvo = formularioListaObjetosFuncao;
                     }
                     Point quina = new Point(ultimoClicado);
                     quina.x -= objetoPista.getLargura() / 2;
                     quina.y -= objetoPista.getAltura() / 2;
                     objetoPista.setPosicaoQuina(quina);
                     listaAlvo.add(objetoPista);
-                    formularioListaAlvo.listarObjetos();
+                    formularioListaObjetos.listarObjetos();
+                    atualizarPainelFiltroTipos();
                     objetoPista.setNome("Objeto " + listaAlvo.size());
                     reprocessaEscapadaSeNecessario(objetoPista);
                     repaint();
@@ -1710,14 +2067,19 @@ public class MainPanelEditor extends JPanel {
         // ficam sem efeito.
         boolean ehObjetoLivre = alvo instanceof ObjetoLivre;
         boolean ehGuardRails = alvo instanceof ObjetoGuardRails;
+        // Arquibancada também passou a ser desenhada por pontos (ver
+        // ObjetoArquibancada), mesmo motivo de GuardRails esconder
+        // Altura/Ângulo — Largura continua valendo como espessura do lance
+        // ao longo de todo o encadeamento.
+        boolean ehArquibancada = alvo instanceof ObjetoArquibancada;
         // Escapada também é definida por pontos (saída/retorno), não por um
         // retângulo largura×altura rotacionado — mesmo motivo de GuardRails
         // esconder Altura/Ângulo, mas Largura continua valendo como
         // espessura do traçado desenhado.
         boolean ehObjetoEscapada = alvo instanceof ObjetoEscapada;
         boolean mostraLargura = !ehObjetoLivre;
-        boolean mostraAltura = !ehObjetoLivre && !ehGuardRails && !ehObjetoEscapada;
-        boolean mostraAngulo = !ehObjetoLivre && !ehGuardRails && !ehObjetoEscapada;
+        boolean mostraAltura = !ehObjetoLivre && !ehGuardRails && !ehArquibancada && !ehObjetoEscapada;
+        boolean mostraAngulo = !ehObjetoLivre && !ehGuardRails && !ehArquibancada && !ehObjetoEscapada;
         // Empilhamento (quantidade/direção/grau) é transversal a qualquer
         // tipo de ObjetoConstrucao; afunilamento só faz sentido para BARCO.
         boolean ehObjetoConstrucao = alvo instanceof ObjetoConstrucao;
@@ -1795,6 +2157,22 @@ public class MainPanelEditor extends JPanel {
                         encerrarEdicaoPontosGuardRails();
                     } else {
                         iniciarEdicaoPontosGuardRails(guardRails);
+                    }
+                }
+            });
+            panel.add(editarPontosButton);
+            panel.add(new JLabel());
+        }
+        if (alvo instanceof ObjetoArquibancada) {
+            final ObjetoArquibancada arquibancada = (ObjetoArquibancada) alvo;
+            boolean editandoEsteObjeto = arquibancada.equals(editandoPontosArquibancadaDe);
+            JButton editarPontosButton = new JButton(editandoEsteObjeto ? Lang.msg("pararDeEditarPontos") : Lang.msg("editarPontos"));
+            editarPontosButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    if (arquibancada.equals(editandoPontosArquibancadaDe)) {
+                        encerrarEdicaoPontosArquibancada();
+                    } else {
+                        iniciarEdicaoPontosArquibancada(arquibancada);
                     }
                 }
             });
@@ -2114,6 +2492,120 @@ public class MainPanelEditor extends JPanel {
     }
 
     /**
+     * Liga o modo de edição de pontos (mover, inserir, remover) para um
+     * ObjetoArquibancada já posicionado no circuito — análogo a
+     * {@link #iniciarEdicaoPontosGuardRails(ObjetoGuardRails)}.
+     */
+    public void iniciarEdicaoPontosArquibancada(ObjetoArquibancada arquibancada) {
+        arquibancada.gerar();
+        editandoPontosArquibancadaDe = arquibancada;
+        objetoPista = arquibancada;
+        repaint();
+    }
+
+    public void encerrarEdicaoPontosArquibancada() {
+        editandoPontosArquibancadaDe = null;
+        indicePontoArquibancadaArrastando = -1;
+        repaint();
+    }
+
+    /**
+     * Deslocamento entre o espaço local de {@link ObjetoArquibancada#getPontos()}
+     * (onde os pontos foram originalmente clicados/criados) e a tela — mesma
+     * ideia de {@link #calculaOffsetTelaGuardRails(ObjetoGuardRails)}.
+     */
+    private Point calculaOffsetTelaArquibancada(ObjetoArquibancada arquibancada) {
+        if (arquibancada == null || arquibancada.getPosicaoQuina() == null) {
+            return new Point(0, 0);
+        }
+        arquibancada.gerar();
+        Rectangle boundsLocal = arquibancada.obterArea();
+        return new Point(arquibancada.getPosicaoQuina().x - boundsLocal.x,
+                arquibancada.getPosicaoQuina().y - boundsLocal.y);
+    }
+
+    /**
+     * Testa se o clique atingiu um ponto existente de
+     * {@link #editandoPontosArquibancadaDe} e, se sim, inicia o arraste desse
+     * ponto (só botão esquerdo — direito é tratado em
+     * {@link #removerPontoArquibancadaSeAtingido(Point)}).
+     */
+    private boolean tentarIniciarArrastePontoArquibancada(MouseEvent e) {
+        if (editandoPontosArquibancadaDe == null || !SwingUtilities.isLeftMouseButton(e)) {
+            return false;
+        }
+        Point offset = calculaOffsetTelaArquibancada(editandoPontosArquibancadaDe);
+        List<Point> pontos = editandoPontosArquibancadaDe.getPontos();
+        for (int i = 0; i < pontos.size(); i++) {
+            Point posTela = telaDoLocal(pontos.get(i), offset);
+            if (distancia(e.getPoint(), posTela) <= RAIO_MARCADOR_EDICAO_PONTOS_PX) {
+                indicePontoArquibancadaArrastando = i;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Remove o ponto de {@link #editandoPontosArquibancadaDe} atingido por {@code pontoTela}, se houver. */
+    private boolean removerPontoArquibancadaSeAtingido(Point pontoTela) {
+        if (editandoPontosArquibancadaDe == null) {
+            return false;
+        }
+        Point offset = calculaOffsetTelaArquibancada(editandoPontosArquibancadaDe);
+        List<Point> pontos = editandoPontosArquibancadaDe.getPontos();
+        for (int i = 0; i < pontos.size(); i++) {
+            if (distancia(pontoTela, telaDoLocal(pontos.get(i), offset)) <= RAIO_MARCADOR_EDICAO_PONTOS_PX) {
+                editandoPontosArquibancadaDe.removerPonto(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Se {@code pontoTela} não atingir nenhum ponto existente mas estiver
+     * perto o bastante de algum segmento do encadeamento, insere um novo
+     * ponto ali (com snap aplicado), aumentando o encadeamento em um ponto.
+     */
+    private boolean tentarInserirPontoArquibancada(Point pontoTela) {
+        if (editandoPontosArquibancadaDe == null) {
+            return false;
+        }
+        Point offset = calculaOffsetTelaArquibancada(editandoPontosArquibancadaDe);
+        List<Point> pontos = editandoPontosArquibancadaDe.getPontos();
+        for (Point ponto : pontos) {
+            if (distancia(pontoTela, telaDoLocal(ponto, offset)) <= RAIO_MARCADOR_EDICAO_PONTOS_PX) {
+                return false;
+            }
+        }
+        for (int i = 0; i < pontos.size() - 1; i++) {
+            Point aTela = telaDoLocal(pontos.get(i), offset);
+            Point bTela = telaDoLocal(pontos.get(i + 1), offset);
+            if (distanciaAoSegmento(pontoTela, aTela, bTela) <= RAIO_MARCADOR_EDICAO_PONTOS_PX) {
+                Point telaComSnap = aplicaSnap(pontoTela, editandoPontosArquibancadaDe);
+                Point localComSnap = localDaTela(telaComSnap, offset);
+                editandoPontosArquibancadaDe.inserirPonto(i, localComSnap);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void desenhaMarcadoresEdicaoPontosArquibancada(Graphics2D g2d) {
+        if (editandoPontosArquibancadaDe == null) {
+            return;
+        }
+        Point offset = calculaOffsetTelaArquibancada(editandoPontosArquibancadaDe);
+        for (Point ponto : editandoPontosArquibancadaDe.getPontos()) {
+            Point posTela = telaDoLocal(ponto, offset);
+            g2d.setColor(Color.YELLOW);
+            g2d.fillOval(posTela.x - 5, posTela.y - 5, 10, 10);
+            g2d.setColor(Color.BLACK);
+            g2d.drawOval(posTela.x - 5, posTela.y - 5, 10, 10);
+        }
+    }
+
+    /**
      * Liga o modo de edição de pontos (mover qualquer ponto do encadeamento)
      * para um ObjetoEscapada já posicionado no circuito — análogo a
      * {@link #iniciarEdicaoPontosGuardRails(ObjetoGuardRails)}. O primeiro e
@@ -2288,6 +2780,12 @@ public class MainPanelEditor extends JPanel {
             ObjetoGuardRails guardRails = (ObjetoGuardRails) objeto;
             Point offset = calculaOffsetTelaGuardRails(guardRails);
             for (Point ponto : guardRails.getPontos()) {
+                resultado.add(telaDoLocal(ponto, offset));
+            }
+        } else if (objeto instanceof ObjetoArquibancada) {
+            ObjetoArquibancada arquibancada = (ObjetoArquibancada) objeto;
+            Point offset = calculaOffsetTelaArquibancada(arquibancada);
+            for (Point ponto : arquibancada.getPontos()) {
                 resultado.add(telaDoLocal(ponto, offset));
             }
         } else if (objeto instanceof ObjetoLivre) {
@@ -2493,6 +2991,9 @@ public class MainPanelEditor extends JPanel {
         }
         for (int i = lista.size() - 1; i >= 0; i--) {
             ObjetoPista objetoPista = lista.get(i);
+            if (!tipoVisivel(objetoPista)) {
+                continue;
+            }
             if (objetoPista.obterAreaClique().contains(point)) {
                 return objetoPista;
             }
@@ -2515,14 +3016,29 @@ public class MainPanelEditor extends JPanel {
         return todos;
     }
 
+    /** Conta objetos sem concatenar as duas listas — usado só pelo contador de debug em {@link #desenhaInfo}. */
+    private int totalObjetos() {
+        int total = 0;
+        if (circuito.getObjetos() != null) {
+            total += circuito.getObjetos().size();
+        }
+        if (circuito.getObjetosCenario() != null) {
+            total += circuito.getObjetosCenario().size();
+        }
+        return total;
+    }
+
     /**
      * Níveis de desenho distintos em uso pelos objetos do circuito, em ordem
      * crescente — não há limite de faixa, então o desenho por nível percorre
-     * exatamente os níveis que existem, não um intervalo fixo.
+     * exatamente os níveis que existem, não um intervalo fixo. Recebe a
+     * lista já concatenada (ver {@link #paintComponent(Graphics)}) em vez de
+     * chamar {@link #todosObjetos()} de novo — evita realocar/concatenar a
+     * lista completa de objetos uma vez a mais por frame.
      */
-    private List<Integer> niveisDesenhoOrdenados() {
+    private List<Integer> niveisDesenhoOrdenados(List<ObjetoPista> todos) {
         java.util.TreeSet<Integer> niveis = new java.util.TreeSet<Integer>();
-        for (ObjetoPista objetoPista : todosObjetos()) {
+        for (ObjetoPista objetoPista : todos) {
             niveis.add(objetoPista.getNivelDesenho());
         }
         return new ArrayList<Integer>(niveis);
@@ -2604,10 +3120,15 @@ public class MainPanelEditor extends JPanel {
 
         // 3. Objetos em níveis negativos ficam abaixo da pista (nível 0), do
         // mais negativo (mais no fundo) para o mais próximo de zero.
-        List<Integer> niveis = niveisDesenhoOrdenados();
+        // todosObjetos() calculada uma única vez aqui (em vez de a cada
+        // chamada de niveisDesenhoOrdenados()/desenhaObjetosNivel(), como
+        // antes) evita realocar/concatenar objetos+objetosCenario várias
+        // vezes por frame — ver design.md, decisão de performance.
+        List<ObjetoPista> todosOsObjetos = todosObjetos();
+        List<Integer> niveis = niveisDesenhoOrdenados(todosOsObjetos);
         for (Integer nivel : niveis) {
             if (nivel < 0) {
-                desenhaObjetosNivel(g2d, nivel);
+                desenhaObjetosNivel(g2d, nivel, todosOsObjetos);
             }
         }
 
@@ -2621,19 +3142,21 @@ public class MainPanelEditor extends JPanel {
         DesenhoProceduralCircuito.desenhaLinhaDeLargada(g2d, circuito, zoom);
         desenhaGrid(g2d);
         desenhaBoxes(g2d);
-        desenhaObjetosNivel(g2d, 0);
+        desenhaObjetosNivel(g2d, 0, todosOsObjetos);
         desenhaPreObjetoLivre(g2d);
         desenhaPreObjetoGuardRails(g2d);
+        desenhaPreObjetoArquibancada(g2d);
         desenhaPreObjetoEscapada(g2d);
         desenhaPreObjetoTransparencia(g2d);
         // Níveis positivos por cima, do menor para o maior (mais em cima).
         for (Integer nivel : niveis) {
             if (nivel > 0) {
-                desenhaObjetosNivel(g2d, nivel);
+                desenhaObjetosNivel(g2d, nivel, todosOsObjetos);
             }
         }
         desenhaMarcadoresEdicaoPontos(g2d);
         desenhaMarcadoresEdicaoPontosGuardRails(g2d);
+        desenhaMarcadoresEdicaoPontosArquibancada(g2d);
         desenhaMarcadoresEdicaoPontosEscapada(g2d);
         desenhaObjetoSelecionadoNoCanvas(g2d);
         desenhaListaObjetos(g2d);
@@ -2707,7 +3230,11 @@ public class MainPanelEditor extends JPanel {
         if (ativo == null || ativo.getPosicaoQuina() == null) {
             return;
         }
-        Rectangle area = ativo.obterArea();
+        // obterAreaVisual() (não obterArea()): pra objetos desenhados por
+        // encadeamento de pontos (ex.: ObjetoArquibancada), obterArea() é só
+        // o retângulo bruto da centerline, sem a espessura do lance —
+        // obterAreaVisual() é quem reflete a forma realmente desenhada.
+        Rectangle area = ativo.obterAreaVisual();
         if (area == null) {
             return;
         }
@@ -2727,10 +3254,7 @@ public class MainPanelEditor extends JPanel {
     }
 
     private void desenhaListaObjetos(Graphics2D g2d) {
-        ObjetoPista objetoPista = primeiroSelecionado(formularioListaObjetosDesenho);
-        if (objetoPista == null) {
-            objetoPista = primeiroSelecionado(formularioListaObjetosFuncao);
-        }
+        ObjetoPista objetoPista = primeiroSelecionado(formularioListaObjetos);
         if (objetoPista == null) {
             return;
         }
@@ -2741,9 +3265,17 @@ public class MainPanelEditor extends JPanel {
         g2d.setColor(Color.BLACK);
         g2d.drawString(objetoPista.getNome().split(" ")[1], loc.x, loc.y + 10);
         if (objetoPista.getPosicaoQuina() != null) {
-            g2d.setColor(Color.ORANGE);
-            g2d.drawRect(objetoPista.getPosicaoQuina().x, objetoPista.getPosicaoQuina().y,
-                    objetoPista.getLargura(), objetoPista.getAltura());
+            // obterAreaVisual() (não largura/altura brutos, nem obterArea()
+            // pra objetos por encadeamento de pontos) — reflete a forma
+            // realmente desenhada; usar os campos brutos desenhava aqui um
+            // retângulo solto, sem relação com o desenho, que crescia/
+            // encolhia sozinho ao alterar largura/altura pelos atalhos de
+            // teclado.
+            Rectangle area = objetoPista.obterAreaVisual();
+            if (area != null) {
+                g2d.setColor(Color.ORANGE);
+                g2d.drawRect(area.x, area.y, area.width, area.height);
+            }
         }
     }
 
@@ -2764,7 +3296,7 @@ public class MainPanelEditor extends JPanel {
         g2d.drawString("Box : " + testePista.isIrProBox(), x, y);
         if (circuito.getObjetos() != null || circuito.getObjetosCenario() != null) {
             y += 20;
-            g2d.drawString("Num Objetos : " + todosObjetos().size(), x, y);
+            g2d.drawString("Num Objetos : " + totalObjetos(), x, y);
         }
         int noAlta = 0;
         int noMedia = 0;
@@ -2804,15 +3336,25 @@ public class MainPanelEditor extends JPanel {
     /**
      * O checkbox "Objetos" só afeta objetos de desenho (Livre, Arquibancada,
      * Construcao, GuardRails, Pneus); Escapada e Transparencia são objetos de
-     * função e continuam sempre desenhados, independente do checkbox.
+     * função e continuam sempre desenhados, independente do checkbox — e
+     * ambos continuam sujeitos ao filtro por tipo (tipoVisivel), que é
+     * ortogonal e cumulativo. Recebe a lista já concatenada (ver
+     * {@link #paintComponent(Graphics)}) em vez de chamar
+     * {@link #todosObjetos()} de novo a cada nível/frame. tipoVisivel (só
+     * lookup em mapa) é testado antes de estaVisivelNoViewport (calcula
+     * obterArea(), mais caro), pra descartar mais cedo o que já sabemos que
+     * não deve aparecer.
      */
-    private void desenhaObjetosNivel(Graphics2D g2d, int nivel) {
+    private void desenhaObjetosNivel(Graphics2D g2d, int nivel, List<ObjetoPista> todos) {
         if (circuito == null) {
             return;
         }
-        for (ObjetoPista objetoPista : todosObjetos()) {
+        for (ObjetoPista objetoPista : todos) {
             if (objetoPista.getNivelDesenho() != nivel)
                 continue;
+            if (!tipoVisivel(objetoPista)) {
+                continue;
+            }
             boolean objetoDeFuncao = objetoPista instanceof ObjetoEscapada || objetoPista instanceof ObjetoTransparencia;
             if (!objetoDeFuncao && !desenhaObjetosDesenho) {
                 continue;
@@ -2915,6 +3457,31 @@ public class MainPanelEditor extends JPanel {
         int raioPonto = 6;
         Point ant = null;
         for (Point p : guardRails.getPontos()) {
+            int px = Util.inteiro(p.x * zoom);
+            int py = Util.inteiro(p.y * zoom);
+            if (ant != null) {
+                g2d.drawLine(Util.inteiro(ant.x * zoom), Util.inteiro(ant.y * zoom), px, py);
+            }
+            g2d.fillOval(px - raioPonto, py - raioPonto, raioPonto * 2, raioPonto * 2);
+            ant = p;
+        }
+        g2d.setStroke(strokeAnterior);
+        g2d.setColor(corAnterior);
+    }
+
+    /** Preview do ObjetoArquibancada em criação: encadeamento de pontos já clicados, igual ao de GuardRails. */
+    private void desenhaPreObjetoArquibancada(Graphics2D g2d) {
+        if (objetoPista == null || !desenhandoObjetoLivre || !(objetoPista instanceof ObjetoArquibancada)) {
+            return;
+        }
+        ObjetoArquibancada arquibancada = (ObjetoArquibancada) objetoPista;
+        Stroke strokeAnterior = g2d.getStroke();
+        Color corAnterior = g2d.getColor();
+        g2d.setColor(Color.MAGENTA);
+        g2d.setStroke(new BasicStroke(3f));
+        int raioPonto = 6;
+        Point ant = null;
+        for (Point p : arquibancada.getPontos()) {
             int px = Util.inteiro(p.x * zoom);
             int py = Util.inteiro(p.y * zoom);
             if (ant != null) {
@@ -3688,6 +4255,15 @@ public class MainPanelEditor extends JPanel {
             }
             dst.gerar();
         }
+        if (origem instanceof ObjetoArquibancada) {
+            ObjetoArquibancada src = (ObjetoArquibancada) origem;
+            ObjetoArquibancada dst = (ObjetoArquibancada) objetoPistaNovo;
+            dst.setPontos(new ArrayList<Point>());
+            for (Point point : src.getPontos()) {
+                dst.getPontos().add(new Point(point.x, point.y));
+            }
+            dst.gerar();
+        }
         if (origem instanceof ObjetoConstrucao) {
             ObjetoConstrucao src = (ObjetoConstrucao) origem;
             ObjetoConstrucao dst = (ObjetoConstrucao) objetoPistaNovo;
@@ -3733,12 +4309,9 @@ public class MainPanelEditor extends JPanel {
             return;
         }
         objetoPista.setNivelDesenho(objetoPista.getNivelDesenho() + delta);
-        // os rótulos das listas exibem o nível entre parênteses
-        if (formularioListaObjetosDesenho != null) {
-            formularioListaObjetosDesenho.getList().repaint();
-        }
-        if (formularioListaObjetosFuncao != null) {
-            formularioListaObjetosFuncao.getList().repaint();
+        // o rótulo da lista exibe o nível entre parênteses
+        if (formularioListaObjetos != null) {
+            formularioListaObjetos.getList().repaint();
         }
         repaint();
     }
@@ -3749,11 +4322,8 @@ public class MainPanelEditor extends JPanel {
      * centralização do viewport (o objeto já está visível — foi clicado).
      */
     private void selecionarNasListas(ObjetoPista objeto) {
-        if (formularioListaObjetosDesenho != null) {
-            formularioListaObjetosDesenho.selecionarSemCentralizar(objeto);
-        }
-        if (formularioListaObjetosFuncao != null) {
-            formularioListaObjetosFuncao.selecionarSemCentralizar(objeto);
+        if (formularioListaObjetos != null) {
+            formularioListaObjetos.selecionarSemCentralizar(objeto);
         }
     }
 
@@ -3766,11 +4336,8 @@ public class MainPanelEditor extends JPanel {
                 List<ObjetoPista> listaAlvo = origemCenario ? circuito.getObjetosCenario() : circuito.getObjetos();
                 listaAlvo.add(objetoPistaNovo);
                 objetoPistaNovo.setNome("Objeto " + listaAlvo.size());
-                if (origemCenario) {
-                    formularioListaObjetosDesenho.listarObjetos();
-                } else {
-                    formularioListaObjetosFuncao.listarObjetos();
-                }
+                formularioListaObjetos.listarObjetos();
+                atualizarPainelFiltroTipos();
 
             } catch (Exception e) {
                 e.printStackTrace();

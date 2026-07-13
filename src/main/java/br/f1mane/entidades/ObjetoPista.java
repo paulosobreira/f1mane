@@ -72,17 +72,33 @@ public abstract class ObjetoPista implements Serializable {
 	public abstract Rectangle obterArea();
 
 	/**
+	 * Área "real" ocupada visualmente pelo objeto — por padrão igual a
+	 * {@link #obterArea()}, mas subtipos cuja área bruta não reflete a
+	 * espessura/extensão real do desenho (ex.: {@code ObjetoArquibancada},
+	 * desenhado por um encadeamento de pontos onde {@code obterArea()} é só
+	 * o retângulo da centerline, sem a largura do lance) sobrescrevem este
+	 * método. Base tanto de {@link #obterAreaClique()} quanto do contorno
+	 * visual de seleção desenhado no editor — as duas coisas precisam
+	 * coincidir com o que é realmente desenhado, não com o retângulo bruto
+	 * que {@code obterArea()} guarda para fins de posicionamento/lógica de
+	 * jogo.
+	 */
+	public Rectangle obterAreaVisual() {
+		return obterArea();
+	}
+
+	/**
 	 * Área usada para detectar clique/seleção no editor: como
-	 * {@link #obterArea()}, mas com uma margem de tolerância e considerando
-	 * a rotação ({@code angulo}) em torno do próprio centro, para coincidir
-	 * com a forma realmente desenhada (que é rotacionada só na hora de
-	 * pintar, não no retângulo bruto que cada subtipo guarda). {@code
-	 * obterArea()} continua retornando o retângulo sem rotação porque
-	 * também é usado por lógica de jogo (ex.: máscara de transparência do
-	 * box), que não deve mudar de comportamento.
+	 * {@link #obterAreaVisual()}, mas com uma margem de tolerância e
+	 * considerando a rotação ({@code angulo}) em torno do próprio centro,
+	 * para coincidir com a forma realmente desenhada (que é rotacionada só
+	 * na hora de pintar, não no retângulo bruto que cada subtipo guarda).
+	 * {@code obterArea()} continua retornando o retângulo sem rotação nem
+	 * expansão porque também é usado por lógica de jogo (ex.: máscara de
+	 * transparência do box), que não deve mudar de comportamento.
 	 */
 	public Rectangle obterAreaClique() {
-		Rectangle base = obterArea();
+		Rectangle base = obterAreaVisual();
 		if (base == null) {
 			return base;
 		}

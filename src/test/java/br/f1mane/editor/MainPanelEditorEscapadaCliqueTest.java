@@ -56,10 +56,10 @@ class MainPanelEditorEscapadaCliqueTest {
         metodo.setAccessible(true);
         metodo.invoke(editor, (JFrame) null);
         // Finalizar a criação de um ObjetoEscapada chama
-        // formularioListaObjetosFuncao.listarObjetos(); sem passar pela janela
+        // formularioListaObjetos.listarObjetos(); sem passar pela janela
         // completa do editor esse campo (pacote-privado, pensado para injeção
         // em teste) fica null.
-        editor.formularioListaObjetosFuncao = new FormularioListaObjetos(editor);
+        editor.formularioListaObjetos = FormularioListaObjetos.unificada(editor);
     }
 
     private static void setField(MainPanelEditor editor, String nome, Object valor) throws Exception {

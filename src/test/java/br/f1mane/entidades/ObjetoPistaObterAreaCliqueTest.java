@@ -31,8 +31,8 @@ class ObjetoPistaObterAreaCliqueTest {
         }
     }
 
-    private ObjetoArquibancada criarObjeto(int largura, int altura, double angulo) {
-        ObjetoArquibancada objeto = new ObjetoArquibancada();
+    private ObjetoConstrucao criarObjeto(int largura, int altura, double angulo) {
+        ObjetoConstrucao objeto = new ObjetoConstrucao();
         objeto.setPosicaoQuina(new Point(0, 0));
         objeto.setLargura(largura);
         objeto.setAltura(altura);
@@ -43,7 +43,7 @@ class ObjetoPistaObterAreaCliqueTest {
 
     @Test
     void obterAreaClique_semRotacao_retornaAreaExpandidaPelaTolerancia() {
-        ObjetoArquibancada objeto = criarObjeto(100, 20, 0);
+        ObjetoConstrucao objeto = criarObjeto(100, 20, 0);
 
         Rectangle areaBase = objeto.obterArea();
         Rectangle areaClique = objeto.obterAreaClique();
@@ -56,7 +56,7 @@ class ObjetoPistaObterAreaCliqueTest {
 
     @Test
     void obterAreaClique_comRotacao_cobreAAreaRealmenteDesenhada() {
-        ObjetoArquibancada objeto = criarObjeto(100, 20, 90);
+        ObjetoConstrucao objeto = criarObjeto(100, 20, 90);
 
         // ponto fora do retângulo bruto (0,0,100,20) mas dentro do
         // retângulo delimitador da forma rotacionada 90° em torno do centro (50,10)
@@ -70,7 +70,7 @@ class ObjetoPistaObterAreaCliqueTest {
 
     @Test
     void obterArea_naoMudaComRotacao_soObterAreaCliqueMuda() {
-        ObjetoArquibancada objeto = criarObjeto(100, 20, 90);
+        ObjetoConstrucao objeto = criarObjeto(100, 20, 90);
 
         // obterArea() é usado também por lógica de jogo (ex.: máscara de
         // transparência do box) e não deve passar a incluir rotação.

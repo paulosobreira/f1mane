@@ -42,6 +42,33 @@ public enum TipoObjetoPista {
 	}
 
 	/**
+	 * Caminho inverso de {@link #criar()}: determina o {@link TipoObjetoPista}
+	 * de uma instância {@link ObjetoPista} já existente, pela sua classe
+	 * concreta. Lança {@link IllegalArgumentException} para uma classe não
+	 * mapeada, em vez de retornar {@code null} — um tipo desconhecido deve
+	 * falhar alto, não desaparecer silenciosamente de filtros/listas.
+	 */
+	public static TipoObjetoPista de(ObjetoPista objeto) {
+		if (objeto instanceof ObjetoArquibancada) {
+			return ARQUIBANCADA;
+		} else if (objeto instanceof ObjetoConstrucao) {
+			return CONSTRUCAO;
+		} else if (objeto instanceof ObjetoGuardRails) {
+			return GUARD_RAILS;
+		} else if (objeto instanceof ObjetoPneus) {
+			return PNEUS;
+		} else if (objeto instanceof ObjetoLivre) {
+			return LIVRE;
+		} else if (objeto instanceof ObjetoEscapada) {
+			return ESCAPADA;
+		} else if (objeto instanceof ObjetoTransparencia) {
+			return TRANSPARENCIA;
+		}
+		throw new IllegalArgumentException(
+				"Nenhum TipoObjetoPista mapeado para " + objeto.getClass().getName());
+	}
+
+	/**
 	 * @return true se este tipo pertence à lista de objetos de cenário
 	 *         (Circuito.objetosCenario), false se pertence à lista original
 	 *         (Circuito.objetos, Escapada/Transparencia).

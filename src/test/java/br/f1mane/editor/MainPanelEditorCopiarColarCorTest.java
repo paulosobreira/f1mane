@@ -22,11 +22,11 @@ import br.f1mane.recursos.idiomas.Lang;
 
 /**
  * Copiar Cor / Colar Cor: copia corPimaria/corSecundaria do objeto
- * selecionado (lista de objetos ou de cenário) e aplica em todos os objetos
- * selecionados no momento de colar, somando a seleção das duas listas —
- * suporta colar em vários objetos de uma vez. Também cobre os botões
- * "Primeiro"/"Ultimo": ausentes na lista de objetos de função, presentes só
- * na de objetos de desenho.
+ * selecionado na lista única de objetos e aplica em todos os objetos
+ * selecionados no momento de colar — suporta colar em vários objetos de uma
+ * vez, mesmo misturando itens vindos de circuito.objetos e
+ * circuito.objetosCenario. Também cobre os botões "Primeiro"/"Ultimo",
+ * sempre presentes na lista única.
  */
 class MainPanelEditorCopiarColarCorTest {
 
@@ -45,10 +45,8 @@ class MainPanelEditorCopiarColarCorTest {
         circuito.setObjetosCenario(objetosCenario);
         editor.setCircuito(circuito);
 
-        editor.formularioListaObjetosFuncao = new FormularioListaObjetos(editor);
-        editor.formularioListaObjetosFuncao.listarObjetos();
-        editor.formularioListaObjetosDesenho = new FormularioListaObjetos(editor, Circuito::getObjetosCenario);
-        editor.formularioListaObjetosDesenho.listarObjetos();
+        editor.formularioListaObjetos = FormularioListaObjetos.unificada(editor);
+        editor.formularioListaObjetos.listarObjetos();
         return editor;
     }
 
@@ -69,18 +67,18 @@ class MainPanelEditorCopiarColarCorTest {
     }
 
     @Test
-    void copiarCor_pegaCorDoObjetoSelecionadoNaListaDeObjetos() {
+    void copiarCor_pegaCorDoObjetoSelecionadoNaLista() {
         ObjetoLivre alvo = criarObjeto("Alvo", new Color(10, 20, 30), new Color(40, 50, 60));
         ObjetoLivre outro = criarObjeto("Outro", Color.BLACK, Color.WHITE);
         MainPanelEditor editor = editorComListasPopuladas(
                 new ArrayList<>(List.of(outro, alvo)), new ArrayList<>());
-        editor.formularioListaObjetosFuncao.selecionarSemCentralizar(alvo);
+        editor.formularioListaObjetos.selecionarSemCentralizar(alvo);
 
         editor.copiarCorObjetoSelecionado();
 
         ObjetoLivre destino = criarObjeto("Destino", Color.GRAY, Color.GRAY);
-        editor.formularioListaObjetosDesenho.getDefaultListModelOP().addElement(destino);
-        editor.formularioListaObjetosDesenho.selecionarSemCentralizar(destino);
+        editor.formularioListaObjetos.getDefaultListModelOP().addElement(destino);
+        editor.formularioListaObjetos.selecionarSemCentralizar(destino);
         editor.colarCorObjetosSelecionados();
 
         assertEquals(new Color(10, 20, 30), destino.getCorPimaria());
@@ -88,13 +86,13 @@ class MainPanelEditorCopiarColarCorTest {
     }
 
     @Test
-    void copiarCor_semSelecaoEmNenhumaLista_naoAlteraNadaAoColar() {
+    void copiarCor_semSelecao_naoAlteraNadaAoColar() {
         ObjetoLivre destino = criarObjeto("Destino", Color.GRAY, Color.GRAY);
         MainPanelEditor editor = editorComListasPopuladas(
                 new ArrayList<>(List.of(destino)), new ArrayList<>());
 
         editor.copiarCorObjetoSelecionado();
-        editor.formularioListaObjetosFuncao.selecionarSemCentralizar(destino);
+        editor.formularioListaObjetos.selecionarSemCentralizar(destino);
         editor.colarCorObjetosSelecionados();
 
         assertEquals(Color.GRAY, destino.getCorPimaria(), "nada foi copiado, colar não deveria alterar a cor");
@@ -109,10 +107,10 @@ class MainPanelEditorCopiarColarCorTest {
         MainPanelEditor editor = editorComListasPopuladas(
                 new ArrayList<>(List.of(origem, destino1, destino2, destino3)), new ArrayList<>());
 
-        editor.formularioListaObjetosFuncao.selecionarSemCentralizar(origem);
+        editor.formularioListaObjetos.selecionarSemCentralizar(origem);
         editor.copiarCorObjetoSelecionado();
 
-        selecionarIndicesSemCentralizar(editor.formularioListaObjetosFuncao, 1, 2, 3);
+        selecionarIndicesSemCentralizar(editor.formularioListaObjetos, 1, 2, 3);
         editor.colarCorObjetosSelecionados();
 
         for (ObjetoLivre destino : List.of(destino1, destino2, destino3)) {
@@ -122,22 +120,23 @@ class MainPanelEditorCopiarColarCorTest {
     }
 
     @Test
-    void colarCor_somaSelecaoDasDuasListas() {
+    void colarCor_aplicaMisturandoObjetosDeCenarioEDeFuncao() {
         ObjetoLivre origem = criarObjeto("Origem", Color.RED, Color.BLUE);
-        ObjetoLivre destinoObjetos = criarObjeto("DestinoObjetos", Color.GRAY, Color.GRAY);
+        ObjetoLivre destinoFuncao = criarObjeto("DestinoFuncao", Color.GRAY, Color.GRAY);
         ObjetoLivre destinoCenario = criarObjeto("DestinoCenario", Color.GRAY, Color.GRAY);
         MainPanelEditor editor = editorComListasPopuladas(
-                new ArrayList<>(List.of(origem, destinoObjetos)),
+                new ArrayList<>(List.of(origem, destinoFuncao)),
                 new ArrayList<>(List.of(destinoCenario)));
 
-        editor.formularioListaObjetosFuncao.selecionarSemCentralizar(origem);
+        editor.formularioListaObjetos.selecionarSemCentralizar(origem);
         editor.copiarCorObjetoSelecionado();
 
-        editor.formularioListaObjetosFuncao.selecionarSemCentralizar(destinoObjetos);
-        editor.formularioListaObjetosDesenho.selecionarSemCentralizar(destinoCenario);
+        // listarObjetos() unificado concatena objetosCenario primeiro,
+        // depois objetos: índice 0=destinoCenario, 1=origem, 2=destinoFuncao.
+        selecionarIndicesSemCentralizar(editor.formularioListaObjetos, 0, 2);
         editor.colarCorObjetosSelecionados();
 
-        assertEquals(Color.RED, destinoObjetos.getCorPimaria());
+        assertEquals(Color.RED, destinoFuncao.getCorPimaria());
         assertEquals(Color.RED, destinoCenario.getCorPimaria());
     }
 
@@ -146,9 +145,9 @@ class MainPanelEditorCopiarColarCorTest {
         ObjetoLivre origem = criarObjeto("Origem", Color.RED, Color.BLUE);
         MainPanelEditor editor = editorComListasPopuladas(
                 new ArrayList<>(List.of(origem)), new ArrayList<>());
-        editor.formularioListaObjetosFuncao.selecionarSemCentralizar(origem);
+        editor.formularioListaObjetos.selecionarSemCentralizar(origem);
         editor.copiarCorObjetoSelecionado();
-        editor.formularioListaObjetosFuncao.selecionarSemCentralizar(null);
+        editor.formularioListaObjetos.selecionarSemCentralizar(null);
 
         editor.colarCorObjetosSelecionados();
     }
@@ -172,37 +171,14 @@ class MainPanelEditorCopiarColarCorTest {
      * JOptionPane.showMessageDialog modal de verdade neste ambiente
      * (headless=false), que bloquearia o teste esperando interação.
      * <p>
-     * A lista de objetos de função (construtor padrão/2 args, sem o terceiro
-     * parâmetro) continua sem Primeiro/Ultimo — só a lista de objetos de
-     * desenho (ver {@link #listaDeObjetosDeDesenho_temBotoesPrimeiroEUltimo})
-     * ganhou esses botões de volta.
+     * A lista única do editor (FormularioListaObjetos.unificada) sempre
+     * habilita Primeiro/Ultimo agora — útil pros itens de cenário
+     * misturados na lista, sem efeito adicional pros de função
+     * (Escapada/Transparência), que não têm um botão próprio separado.
      */
     @Test
-    void listaDeObjetosDeFuncao_naoTemBotoesPrimeiroEUltimoNemEditar_masMantemCimaEBaixoERemover() {
-        FormularioListaObjetos formulario = new FormularioListaObjetos(new MainPanelEditor());
-
-        List<String> textos = new ArrayList<>();
-        for (JButton botao : todosOsBotoes(formulario.getObjetos())) {
-            textos.add(botao.getText());
-        }
-
-        assertFalse(textos.contains(Lang.msg("moverParaPrimeiro")), "objetos de função não deveriam ter o botão Primeiro");
-        assertFalse(textos.contains(Lang.msg("moverParaUltimo")), "objetos de função não deveriam ter o botão Ultimo");
-        assertFalse(textos.contains("Editar"), "botão Editar deveria ter sido removido (duplo-clique no lugar)");
-        assertTrue(textos.contains(Lang.msg("287")));
-        assertTrue(textos.contains(Lang.msg("288")));
-        assertTrue(textos.contains(Lang.msg("removerObjetoLista")));
-    }
-
-    /**
-     * Objetos de desenho (Livre, Arquibancada, Construcao, GuardRails,
-     * Pneus) recuperaram os botões Primeiro/Ultimo — a ordem na lista é a
-     * ordem de desenho dentro do mesmo nível, e mover direto pro início/fim
-     * é mais rápido que clicar Cima/Baixo repetidamente numa lista longa.
-     */
-    @Test
-    void listaDeObjetosDeDesenho_temBotoesPrimeiroEUltimo() {
-        FormularioListaObjetos formulario = new FormularioListaObjetos(new MainPanelEditor(), Circuito::getObjetosCenario, true);
+    void listaUnificada_temBotoesPrimeiroEUltimoERemoverMasNaoEditar() {
+        FormularioListaObjetos formulario = FormularioListaObjetos.unificada(new MainPanelEditor());
 
         List<String> textos = new ArrayList<>();
         for (JButton botao : todosOsBotoes(formulario.getObjetos())) {
@@ -214,6 +190,7 @@ class MainPanelEditorCopiarColarCorTest {
         assertTrue(textos.contains(Lang.msg("287")));
         assertTrue(textos.contains(Lang.msg("288")));
         assertTrue(textos.contains(Lang.msg("removerObjetoLista")));
+        assertFalse(textos.contains("Editar"), "botão Editar deveria ter sido removido (duplo-clique no lugar)");
     }
 
     /**

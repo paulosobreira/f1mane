@@ -52,7 +52,7 @@ class MainPanelEditorEscapadaRevetorizarTest {
         Method metodo = MainPanelEditor.class.getDeclaredMethod("adicionaEventosMouse", JFrame.class);
         metodo.setAccessible(true);
         metodo.invoke(editor, (JFrame) null);
-        editor.formularioListaObjetosFuncao = new FormularioListaObjetos(editor);
+        editor.formularioListaObjetos = FormularioListaObjetos.unificada(editor);
     }
 
     private static void setField(MainPanelEditor editor, String nome, Object valor) throws Exception {

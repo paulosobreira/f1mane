@@ -53,13 +53,19 @@ class MainPanelEditorViewportCullingTest {
         return (Boolean) metodo.invoke(editor, objeto);
     }
 
+    @SuppressWarnings("unchecked")
     private static BufferedImage renderiza(MainPanelEditor editor, int largura, int altura) throws Exception {
-        Method metodo = MainPanelEditor.class.getDeclaredMethod("desenhaObjetosNivel", Graphics2D.class, int.class);
+        Method todosObjetos = MainPanelEditor.class.getDeclaredMethod("todosObjetos");
+        todosObjetos.setAccessible(true);
+        List<ObjetoPista> todos = (List<ObjetoPista>) todosObjetos.invoke(editor);
+
+        Method metodo = MainPanelEditor.class.getDeclaredMethod(
+                "desenhaObjetosNivel", Graphics2D.class, int.class, List.class);
         metodo.setAccessible(true);
         BufferedImage imagem = new BufferedImage(largura, altura, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = imagem.createGraphics();
         try {
-            metodo.invoke(editor, g2d, 0);
+            metodo.invoke(editor, g2d, 0, todos);
         } finally {
             g2d.dispose();
         }
