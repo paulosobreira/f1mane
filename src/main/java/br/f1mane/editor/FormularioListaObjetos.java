@@ -229,6 +229,9 @@ public class FormularioListaObjetos {
 					return;
 				}
 				ObjetoPista objetoPista = (ObjetoPista) defaultListModelOP.get(indice);
+				if (!FormularioListaObjetos.this.editor.temPropriedadesEditaveisPorDialogo(objetoPista)) {
+					return;
+				}
 				FormularioObjetos formularioObjetos = new FormularioObjetos(
 						FormularioListaObjetos.this.editor);
 				formularioObjetos.objetoLivreFormulario(objetoPista);

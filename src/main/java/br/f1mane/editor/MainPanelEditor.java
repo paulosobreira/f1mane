@@ -243,12 +243,6 @@ public class MainPanelEditor extends JPanel {
     private ObjetoArquibancada editandoPontosArquibancadaDe;
     private int indicePontoArquibancadaArrastando = -1;
     private boolean arrastouPontoArquibancada;
-    private ObjetoEscapada editandoPontosEscapadaDe;
-    /** Índice do ponto de {@link ObjetoEscapada#getPontos()} sendo arrastado, -1 = nenhum. */
-    private int indicePontoEscapadaArrastando = -1;
-    private boolean arrastouPontoEscapada;
-    /** Posição (espaço local) do ponto antes do arraste atual, para reverter se o solto não validar (só se aplica ao primeiro/último ponto). */
-    private Point pontoEscapadaAnteriorAoArraste;
     /**
      * Pacote-privado (em vez de private) para permitir injeção direta em
      * testes. Lista única de objetos do editor — espelha, juntas,
@@ -1717,10 +1711,6 @@ public class MainPanelEditor extends JPanel {
                         && !desenhandoObjetoLivre && tentarIniciarArrastePontoArquibancada(e)) {
                     return;
                 }
-                if (editandoPontosEscapadaDe != null && isSemSelecao() && !posicionaObjetoPista
-                        && !desenhandoObjetoLivre && tentarIniciarArrastePontoEscapada(e)) {
-                    return;
-                }
                 if (!isSemSelecao() || !SwingUtilities.isLeftMouseButton(e)
                         || posicionaObjetoPista || desenhandoObjetoLivre) {
                     return;
@@ -1776,23 +1766,6 @@ public class MainPanelEditor extends JPanel {
                     repaint();
                     return;
                 }
-                if (indicePontoEscapadaArrastando >= 0) {
-                    arrastouPontoEscapada = true;
-                    Point offset = calculaOffsetTelaEscapada(editandoPontosEscapadaDe);
-                    Point localAlvo = localDaTela(e.getPoint(), offset);
-                    editandoPontosEscapadaDe.getPontos().set(indicePontoEscapadaArrastando, localAlvo);
-                    editandoPontosEscapadaDe.gerar();
-                    // Resincroniza posicaoQuina com os bounds atuais de
-                    // pontos (offset volta a ficar em 0,0) — sem isso, a
-                    // PRÓXIMA chamada a calculaOffsetTelaEscapada (no
-                    // próximo mouseDragged, ou no mouseReleased) calcularia
-                    // um deslocamento errado a partir daqui, corrompendo a
-                    // posição gravada mesmo quando o índice de nó continua
-                    // correto (ver finalizarArrastePontoEscapada).
-                    editandoPontosEscapadaDe.setPosicaoQuina(editandoPontosEscapadaDe.obterArea().getLocation());
-                    repaint();
-                    return;
-                }
                 if (objetoArrastando == null) {
                     return;
                 }
@@ -1821,11 +1794,6 @@ public class MainPanelEditor extends JPanel {
                     indicePontoArquibancadaArrastando = -1;
                     repaint();
                 }
-                if (indicePontoEscapadaArrastando >= 0) {
-                    finalizarArrastePontoEscapada(e.getPoint());
-                    indicePontoEscapadaArrastando = -1;
-                    repaint();
-                }
                 objetoArrastando = null;
             }
 
@@ -1840,10 +1808,6 @@ public class MainPanelEditor extends JPanel {
                 }
                 if (arrastouPontoArquibancada) {
                     arrastouPontoArquibancada = false;
-                    return;
-                }
-                if (arrastouPontoEscapada) {
-                    arrastouPontoEscapada = false;
                     return;
                 }
                 if (arrastouObjeto) {
@@ -2211,22 +2175,6 @@ public class MainPanelEditor extends JPanel {
                         encerrarEdicaoPontosArquibancada();
                     } else {
                         iniciarEdicaoPontosArquibancada(arquibancada);
-                    }
-                }
-            });
-            panel.add(editarPontosButton);
-            panel.add(new JLabel());
-        }
-        if (alvo instanceof ObjetoEscapada) {
-            final ObjetoEscapada escapada = (ObjetoEscapada) alvo;
-            boolean editandoEsteObjeto = escapada.equals(editandoPontosEscapadaDe);
-            JButton editarPontosButton = new JButton(editandoEsteObjeto ? Lang.msg("pararDeEditarPontos") : Lang.msg("editarPontos"));
-            editarPontosButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    if (escapada.equals(editandoPontosEscapadaDe)) {
-                        encerrarEdicaoPontosEscapada();
-                    } else {
-                        iniciarEdicaoPontosEscapada(escapada);
                     }
                 }
             });
@@ -2644,129 +2592,6 @@ public class MainPanelEditor extends JPanel {
     }
 
     /**
-     * Liga o modo de edição de pontos (mover qualquer ponto do encadeamento)
-     * para um ObjetoEscapada já posicionado no circuito — análogo a
-     * {@link #iniciarEdicaoPontosGuardRails(ObjetoGuardRails)}. O primeiro e
-     * o último ponto (entrada/saída) continuam validados contra o traçado ao
-     * serem soltos; os do meio (trajeto livre) não têm validação nenhuma.
-     */
-    public void iniciarEdicaoPontosEscapada(ObjetoEscapada escapada) {
-        escapada.gerar();
-        editandoPontosEscapadaDe = escapada;
-        objetoPista = escapada;
-        repaint();
-    }
-
-    public void encerrarEdicaoPontosEscapada() {
-        editandoPontosEscapadaDe = null;
-        indicePontoEscapadaArrastando = -1;
-        repaint();
-    }
-
-    /**
-     * Deslocamento entre o espaço local de {@link ObjetoEscapada#getPontos()}
-     * e a tela — mesma ideia de {@link #calculaOffsetTelaGuardRails(ObjetoGuardRails)}.
-     */
-    private Point calculaOffsetTelaEscapada(ObjetoEscapada escapada) {
-        if (escapada == null || escapada.getPosicaoQuina() == null) {
-            return new Point(0, 0);
-        }
-        escapada.gerar();
-        Rectangle boundsLocal = escapada.obterArea();
-        return new Point(escapada.getPosicaoQuina().x - boundsLocal.x,
-                escapada.getPosicaoQuina().y - boundsLocal.y);
-    }
-
-    /**
-     * Testa se o clique atingiu algum ponto de {@link #editandoPontosEscapadaDe}
-     * e, se sim, inicia o arraste correspondente, guardando a posição atual
-     * em {@link #pontoEscapadaAnteriorAoArraste} para permitir reverter se o
-     * ponto solto for o primeiro/último e não validar (ver
-     * {@link #finalizarArrastePontoEscapada(Point)}).
-     */
-    private boolean tentarIniciarArrastePontoEscapada(MouseEvent e) {
-        if (editandoPontosEscapadaDe == null || !SwingUtilities.isLeftMouseButton(e)) {
-            return false;
-        }
-        Point offset = calculaOffsetTelaEscapada(editandoPontosEscapadaDe);
-        List<Point> pontos = editandoPontosEscapadaDe.getPontos();
-        for (int i = 0; i < pontos.size(); i++) {
-            Point posTela = telaDoLocal(pontos.get(i), offset);
-            if (distancia(e.getPoint(), posTela) <= RAIO_MARCADOR_EDICAO_PONTOS_PX) {
-                indicePontoEscapadaArrastando = i;
-                pontoEscapadaAnteriorAoArraste = pontos.get(i);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Se o ponto arrastado ({@link #indicePontoEscapadaArrastando}) for o
-     * PRIMEIRO (entrada) ou o ÚLTIMO (saída) do encadeamento, valida
-     * {@code pontoTela} contra o traçado correspondente (1 ou 2 para a
-     * entrada; o mesmo {@code tracadoOrigem} da entrada para a saída) — se
-     * válido, ancora nesse nó (atualizando {@code tracadoOrigem} quando é a
-     * entrada que está sendo movida); se inválido, mostra o alerta e reverte
-     * para {@link #pontoEscapadaAnteriorAoArraste}. Pontos intermediários
-     * (trajeto livre) não passam por nenhuma validação — a posição já foi
-     * atualizada ao vivo durante o arraste em {@code mouseDragged}.
-     */
-    private void finalizarArrastePontoEscapada(Point pontoTela) {
-        List<Point> pontos = editandoPontosEscapadaDe.getPontos();
-        int indice = indicePontoEscapadaArrastando;
-        boolean primeiro = indice == 0;
-        boolean ultimo = indice == pontos.size() - 1;
-        if (!primeiro && !ultimo) {
-            editandoPontosEscapadaDe.gerar();
-            editandoPontosEscapadaDe.setPosicaoQuina(editandoPontosEscapadaDe.obterArea().getLocation());
-            return;
-        }
-        No noValido = primeiro ? noMaisProximoTracado1e2(pontoTela)
-                : noMaisProximoDoTracado(pontoTela, editandoPontosEscapadaDe.getTracadoOrigem());
-        Point offset = calculaOffsetTelaEscapada(editandoPontosEscapadaDe);
-        if (noValido == null) {
-            alertaPontoEscapadaInvalido();
-            pontos.set(indice, pontoEscapadaAnteriorAoArraste);
-        } else {
-            Point localValido = localDaTela(noValido.getPoint(), offset);
-            pontos.set(indice, localValido);
-            if (primeiro) {
-                editandoPontosEscapadaDe.setTracadoOrigem(noValido.getTracado());
-                editandoPontosEscapadaDe.setIndiceEntrada(noValido.getIndex());
-            } else {
-                editandoPontosEscapadaDe.setIndiceSaida(noValido.getIndex());
-            }
-        }
-        editandoPontosEscapadaDe.gerar();
-        // Resincroniza posicaoQuina com os bounds atuais de pontos (offset
-        // volta a 0,0) — ver comentário equivalente em mouseDragged; sem
-        // isso, editar um segundo ponto na mesma sessão de edição usaria um
-        // deslocamento calculado a partir de um posicaoQuina defasado,
-        // gravando a posição errada mesmo com o índice de nó correto — daí a
-        // escapada "não ser reconhecida" pelo Teste Pista até recarregar o
-        // circuito (que sempre revetoriza e recria os objetos do zero).
-        editandoPontosEscapadaDe.setPosicaoQuina(editandoPontosEscapadaDe.obterArea().getLocation());
-    }
-
-    private void desenhaMarcadoresEdicaoPontosEscapada(Graphics2D g2d) {
-        if (editandoPontosEscapadaDe == null) {
-            return;
-        }
-        Point offset = calculaOffsetTelaEscapada(editandoPontosEscapadaDe);
-        for (Point ponto : editandoPontosEscapadaDe.getPontos()) {
-            desenhaMarcadorAmareloPreto(g2d, telaDoLocal(ponto, offset));
-        }
-    }
-
-    private void desenhaMarcadorAmareloPreto(Graphics2D g2d, Point posTela) {
-        g2d.setColor(Color.YELLOW);
-        g2d.fillOval(posTela.x - 5, posTela.y - 5, 10, 10);
-        g2d.setColor(Color.BLACK);
-        g2d.drawOval(posTela.x - 5, posTela.y - 5, 10, 10);
-    }
-
-    /**
      * Aproxima {@code candidatoTela} (em espaço de tela) do nó de pista ou
      * ponto de outro objeto de cenário mais próximo, se algum estiver dentro
      * de {@link #RAIO_SNAP_GUARD_RAILS_PX}; caso contrário retorna o próprio
@@ -2996,10 +2821,25 @@ public class MainPanelEditor extends JPanel {
 
     protected void editaObjetoPista(Point point) {
         ObjetoPista encontrado = encontraObjetoPista(point);
-        if (encontrado != null) {
+        if (encontrado != null && temPropriedadesEditaveisPorDialogo(encontrado)) {
             FormularioObjetos formularioObjetos = new FormularioObjetos(MainPanelEditor.this);
             formularioObjetos.objetoLivreFormulario(encontrado);
         }
+    }
+
+    /**
+     * ObjetoEscapada não tem propriedades editáveis pelo diálogo de
+     * duplo-clique ({@link FormularioObjetos}): Largura já é ajustável pelo
+     * painel rápido do menu de contexto (clique direito), e a cor é fixa
+     * (vermelho/branco, ver construtor de {@code ObjetoEscapada}) — não faz
+     * sentido pra um objeto de função que só marca uma zona da pista. A
+     * geometria (pontos) se edita só por "Editar Pontos", não por esse
+     * diálogo. Extraído como predicado (em vez de checar inline nos dois
+     * pontos de duplo-clique — canvas e lista de objetos) pra dar cobertura
+     * de teste sem precisar exercitar o diálogo Swing real.
+     */
+    boolean temPropriedadesEditaveisPorDialogo(ObjetoPista objeto) {
+        return !(objeto instanceof ObjetoEscapada);
     }
 
     /**
@@ -3029,6 +2869,16 @@ public class MainPanelEditor extends JPanel {
         }
         for (int i = lista.size() - 1; i >= 0; i--) {
             ObjetoPista objetoPista = lista.get(i);
+            // ObjetoEscapada, uma vez criada, não tem NENHUMA interação por
+            // clique no canvas (seleção, arraste do objeto inteiro, menu de
+            // contexto, edição de pontos, diálogo de propriedades) — só pode
+            // ser removida pela lista de objetos (botão "Remover" ou tecla
+            // Delete, que não passam por aqui). Excluir aqui, no ponto único
+            // de hit-testing por clique, desarma todos os fluxos acima de
+            // uma vez.
+            if (objetoPista instanceof ObjetoEscapada) {
+                continue;
+            }
             if (!tipoVisivel(objetoPista)) {
                 continue;
             }
@@ -3208,7 +3058,6 @@ public class MainPanelEditor extends JPanel {
         desenhaMarcadoresEdicaoPontos(g2d);
         desenhaMarcadoresEdicaoPontosGuardRails(g2d);
         desenhaMarcadoresEdicaoPontosArquibancada(g2d);
-        desenhaMarcadoresEdicaoPontosEscapada(g2d);
         desenhaObjetoSelecionadoNoCanvas(g2d);
         desenhaListaObjetos(g2d);
         desenhaPainelClassico(g2d);
