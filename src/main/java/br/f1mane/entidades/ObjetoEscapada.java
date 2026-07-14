@@ -212,6 +212,25 @@ public class ObjetoEscapada extends ObjetoPista {
 		return caminho.getBounds();
 	}
 
+	/**
+	 * {@link #obterArea()} é só o retângulo bruto dos vértices clicados, sem
+	 * considerar {@link #largura} — mesmo motivo de
+	 * {@link ObjetoArquibancada#obterAreaVisual()}: sem essa folga, só era
+	 * possível selecionar/arrastar o objeto clicando bem em cima de um dos
+	 * pontos originais, não em qualquer parte do traçado desenhado.
+	 */
+	@Override
+	public Rectangle obterAreaVisual() {
+		Rectangle base = obterArea();
+		if (base == null) {
+			return null;
+		}
+		int folga = (Math.max(1, getLargura()) + 1) / 2;
+		Rectangle expandido = new Rectangle(base);
+		expandido.grow(folga, folga);
+		return expandido;
+	}
+
 	public static void main(String[] args) {
 	}
 
