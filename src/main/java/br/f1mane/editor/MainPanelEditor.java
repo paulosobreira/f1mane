@@ -28,14 +28,18 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -327,6 +331,15 @@ public class MainPanelEditor extends JPanel {
     }
 
     private boolean vetorizarCircuito() {
+        return vetorizarCircuito(true);
+    }
+
+    /**
+     * @param mostrarErros false suprime os JOptionPane de validação (usado
+     * pelo salvamento automático — ver {@link #autoSalvarComBackup()} —, que
+     * não deve interromper o usuário a cada objeto incluído).
+     */
+    private boolean vetorizarCircuito(boolean mostrarErros) {
         mx = 0;
         my = 0;
         larguraPistaPixeis = 0;
@@ -342,8 +355,10 @@ public class MainPanelEditor extends JPanel {
             }
         }
         if (!temLargada) {
-            JOptionPane.showMessageDialog(null, Lang.msg("obrigatorioNoLargada"), Lang.msg("039"),
-                    JOptionPane.ERROR_MESSAGE);
+            if (mostrarErros) {
+                JOptionPane.showMessageDialog(null, Lang.msg("obrigatorioNoLargada"), Lang.msg("039"),
+                        JOptionPane.ERROR_MESSAGE);
+            }
             return false;
         }
 
@@ -359,8 +374,10 @@ public class MainPanelEditor extends JPanel {
         }
         multiplicadorLarguraPista = circuito.getMultiplicadorLarguraPista();
         if (multiplicadorLarguraPista < 1.0 || multiplicadorLarguraPista > 2.0) {
-            JOptionPane.showMessageDialog(null, Lang.msg("multiplicadorLarguraPista"), Lang.msg("039"),
-                    JOptionPane.INFORMATION_MESSAGE);
+            if (mostrarErros) {
+                JOptionPane.showMessageDialog(null, Lang.msg("multiplicadorLarguraPista"), Lang.msg("039"),
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
             return false;
         }
         if (defaultListModel.size() > 10) {
@@ -1425,6 +1442,16 @@ public class MainPanelEditor extends JPanel {
     private void carregarCircuitoExistente(String arquivoXml) throws IOException, ClassNotFoundException {
         file = new File("src/main/resources/circuitos/" + arquivoXml);
         circuito = CarregadorRecursos.carregarCircuito(arquivoXml);
+        aplicarCircuitoCarregadoNaUI();
+    }
+
+    /**
+     * Reflete o {@code Circuito} atualmente em {@link #circuito} na UI do
+     * editor (listas, campos, canvas) — usado tanto ao navegar pra um
+     * circuito existente quanto por {@link #desfazerUltimaInclusao()} depois
+     * de restaurar o circuito a partir do backup.
+     */
+    private void aplicarCircuitoCarregadoNaUI() {
         testePista = new TestePista(this, circuito);
         backGround = CarregadorRecursos.carregaBackGround(circuito.getBackGround(), this, circuito);
         iniciaEditor();
@@ -1891,6 +1918,7 @@ public class MainPanelEditor extends JPanel {
                         // objeto (posicaoQuina == null é tratado como "não arrastável").
                         objetoTransparencia.setPosicaoQuina(objetoTransparencia.obterArea().getLocation());
                         objetoPista = null;
+                        autoSalvarComBackup();
                     }
                     repaint();
                     return;
@@ -1912,6 +1940,7 @@ public class MainPanelEditor extends JPanel {
                         objetoLivre.gerar();
                         objetoLivre.setPosicaoQuina(objetoLivre.obterArea().getLocation());
                         objetoPista = null;
+                        autoSalvarComBackup();
                     }
                     repaint();
                     return;
@@ -1933,6 +1962,7 @@ public class MainPanelEditor extends JPanel {
                         guardRails.gerar();
                         guardRails.setPosicaoQuina(guardRails.obterArea().getLocation());
                         objetoPista = null;
+                        autoSalvarComBackup();
                     }
                     repaint();
                     return;
@@ -1954,6 +1984,7 @@ public class MainPanelEditor extends JPanel {
                         arquibancada.gerar();
                         arquibancada.setPosicaoQuina(arquibancada.obterArea().getLocation());
                         objetoPista = null;
+                        autoSalvarComBackup();
                     }
                     repaint();
                     return;
@@ -2000,6 +2031,7 @@ public class MainPanelEditor extends JPanel {
                             escapada.gerar();
                             escapada.setPosicaoQuina(escapada.obterArea().getLocation());
                             objetoPista = null;
+                            autoSalvarComBackup();
                         }
                     }
                     repaint();
@@ -2026,6 +2058,7 @@ public class MainPanelEditor extends JPanel {
                     atualizarPainelFiltroTipos();
                     objetoPista.setNome("Objeto " + listaAlvo.size());
                     reprocessaEscapadaSeNecessario(objetoPista);
+                    autoSalvarComBackup();
                     repaint();
                     posicionaObjetoPista = false;
                     return;
@@ -3070,7 +3103,7 @@ public class MainPanelEditor extends JPanel {
         int x = limitesViewPort.getBounds().x + limitesViewPort.width - 200;
         int y = limitesViewPort.getBounds().y + 20;
         g2d.setColor(PainelCircuito.lightWhiteRain);
-        g2d.fillRoundRect(x - 15, y - 15, 200, 260, 15, 15);
+        g2d.fillRoundRect(x - 15, y - 15, 200, 280, 15, 15);
         g2d.setColor(Color.black);
         g2d.drawString("Alt ativado " + (srcFrame.isAltApertado() ? "SIM" : "NÃO"), x, y);
         String esquera = "Move tela Esquerda";
@@ -3116,6 +3149,8 @@ public class MainPanelEditor extends JPanel {
         g2d.drawString(Lang.msg("atalhoSobeNivel"), x, y);
         y += 20;
         g2d.drawString(Lang.msg("atalhoDesceNivel"), x, y);
+        y += 20;
+        g2d.drawString(Lang.msg("atalhoDesfazer"), x, y);
     }
 
     /**
@@ -3826,20 +3861,37 @@ public class MainPanelEditor extends JPanel {
             }
             file = new File(fileName);
         }
+        sincronizarCamposNoCircuito(distanciaKm);
+        if (!gravarCircuitoEmDisco(true)) {
+            return;
+        }
+        JOptionPane.showMessageDialog(this.getSrcFrame(), circuito.getNome(),
+                Lang.msg("salvoComSucesso"), JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void sincronizarCamposNoCircuito(int distanciaKm) {
         circuito.setUsaBkg(true);
         circuito.setMultiplicadorLarguraPista(multiplicadorLarguraPista);
         circuito.setProbalidadeChuva(Integer.parseInt(probalidadeChuvaText.getText()));
         circuito.setNome(nomePistaText.getText());
         circuito.setDistanciaKm(distanciaKm);
-        if (!vetorizarCircuito()) {
-            return;
+    }
+
+    /**
+     * Gravação pura em disco (sem diálogos de validação nem confirmação de
+     * sucesso), reaproveitada pelo salvamento manual ({@link #salvarPista()})
+     * e pelo automático ({@link #autoSalvarComBackup()}). Requer {@code file}
+     * já associado.
+     */
+    private boolean gravarCircuitoEmDisco(boolean mostrarErrosDeVetorizacao) throws IOException {
+        if (!vetorizarCircuito(mostrarErrosDeVetorizacao)) {
+            return false;
         }
         salvarCircuitoEmArquivo(circuito.copiaParaArquivoObjetos(), file);
         File arquivoMeta = new File(file.getParentFile(), CarregadorRecursos.nomeArquivoMetadados(file.getName()));
         salvarCircuitoEmArquivo(circuito.copiaParaArquivoMetadados(), arquivoMeta);
         CarregadorRecursos.atualizarAtivoEmCircuitosProperties(file.getName(), circuito.isAtivo());
-        JOptionPane.showMessageDialog(this.getSrcFrame(), circuito.getNome(),
-                Lang.msg("salvoComSucesso"), JOptionPane.INFORMATION_MESSAGE);
+        return true;
     }
 
     private void salvarCircuitoEmArquivo(Circuito circuitoParaSalvar, File arquivo) throws IOException {
@@ -3851,6 +3903,109 @@ public class MainPanelEditor extends JPanel {
         String save = new String(byteArrayOutputStream.toByteArray()) + "</java>";
         fileOutputStream.write(save.getBytes());
         fileOutputStream.close();
+    }
+
+    /**
+     * Salva automaticamente ao incluir um objeto, mantendo um backup do
+     * estado anterior pra permitir desfazer (Ctrl+Z, ver
+     * {@link #desfazerUltimaInclusao()}). No-op se o circuito ainda não tem
+     * arquivo associado (nunca foi salvo manualmente) — ver capability
+     * editor-autosave-undo. Não abre nenhum diálogo: erros são só logados,
+     * pra não interromper o fluxo de criação de objetos.
+     */
+    private void autoSalvarComBackup() {
+        if (file == null) {
+            return;
+        }
+        try {
+            File arquivoMeta = new File(file.getParentFile(), CarregadorRecursos.nomeArquivoMetadados(file.getName()));
+            fazerBackupSeExistir(file);
+            fazerBackupSeExistir(arquivoMeta);
+            sincronizarCamposNoCircuito(parseDistanciaKmOuZero(distanciaKmText.getText()));
+            gravarCircuitoEmDisco(false);
+        } catch (Exception ex) {
+            Logger.logarExept(ex);
+        }
+    }
+
+    private void fazerBackupSeExistir(File original) throws IOException {
+        if (!original.exists()) {
+            return;
+        }
+        Files.copy(original.toPath(), arquivoBackup(original).toPath(), StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    private static File arquivoBackup(File original) {
+        return new File(original.getParentFile(), original.getName() + ".bak");
+    }
+
+    /**
+     * Desfaz a última inclusão de objeto salva automaticamente: restaura os
+     * arquivos principais a partir do backup e recarrega o circuito exibido
+     * a partir desse estado restaurado. No-op silencioso se não houver
+     * backup (nenhum autosave ocorreu ainda nesta sessão).
+     */
+    public void desfazerUltimaInclusao() {
+        if (!restaurarCircuitoDoBackup()) {
+            return;
+        }
+        aplicarCircuitoCarregadoNaUI();
+        repaint();
+    }
+
+    /**
+     * Parte de {@link #desfazerUltimaInclusao()} que restaura os arquivos e
+     * o {@link #circuito} em memória, sem tocar na UI (nada de
+     * {@code srcFrame}/{@code iniciaEditor()}) — separada pra ser testável
+     * sem precisar de uma janela real, do mesmo jeito que
+     * {@link #aplicarCircuitoCarregadoNaUI()} já separa a parte de UI de
+     * {@code carregarCircuitoExistente()}. Retorna {@code false} (sem
+     * alterar nada) se não houver arquivo associado ou backup disponível.
+     */
+    private boolean restaurarCircuitoDoBackup() {
+        if (file == null) {
+            return false;
+        }
+        File arquivoMeta = new File(file.getParentFile(), CarregadorRecursos.nomeArquivoMetadados(file.getName()));
+        File backupObjetos = arquivoBackup(file);
+        File backupMeta = arquivoBackup(arquivoMeta);
+        if (!backupObjetos.exists() || !backupMeta.exists()) {
+            return false;
+        }
+        try {
+            Files.copy(backupObjetos.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(backupMeta.toPath(), arquivoMeta.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Circuito restaurado = decodificarCircuitoDeArquivos(file, arquivoMeta);
+            restaurado.setAtivo(circuito.isAtivo());
+            restaurado.definirBackGroundPorConvencao(circuito.getBackGround());
+            circuito = restaurado;
+            return true;
+        } catch (Exception ex) {
+            Logger.logarExept(ex);
+            return false;
+        }
+    }
+
+    /**
+     * Decodifica um {@code Circuito} diretamente dos arquivos em disco (não
+     * via classpath/cache de {@link CarregadorRecursos#carregarCircuito}),
+     * pra garantir que {@link #desfazerUltimaInclusao()} leia exatamente o
+     * conteúdo recém-restaurado do backup.
+     */
+    private static Circuito decodificarCircuitoDeArquivos(File arquivoObjetos, File arquivoMeta) throws IOException {
+        Circuito circuitoObjetos;
+        try (InputStream in = new FileInputStream(arquivoObjetos)) {
+            circuitoObjetos = (Circuito) new XMLDecoder(in).readObject();
+        }
+        if (!arquivoMeta.exists()) {
+            return circuitoObjetos;
+        }
+        try (InputStream in = new FileInputStream(arquivoMeta)) {
+            Circuito circuitoMeta = (Circuito) new XMLDecoder(in).readObject();
+            circuitoMeta.setObjetos(circuitoObjetos.getObjetos());
+            circuitoMeta.setObjetosCenario(circuitoObjetos.getObjetosCenario());
+            return circuitoMeta;
+        }
     }
 
     public Dimension getPreferredSize() {
@@ -4238,6 +4393,7 @@ public class MainPanelEditor extends JPanel {
                 objetoPistaNovo.setNome("Objeto " + listaAlvo.size());
                 formularioListaObjetos.listarObjetos();
                 atualizarPainelFiltroTipos();
+                autoSalvarComBackup();
 
             } catch (Exception e) {
                 e.printStackTrace();

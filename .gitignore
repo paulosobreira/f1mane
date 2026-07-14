@@ -8,3 +8,4 @@ logs
 .vscode
 .claude
 .opencode
+*.xml.bak
