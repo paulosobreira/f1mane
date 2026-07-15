@@ -81,6 +81,10 @@ public class EditorCircuitos extends JFrame {
                         throw new RuntimeException(ex);
                     }
                 }
+                if (e.isControlDown() && keyCode == KeyEvent.VK_Z) {
+                    editor.desfazerUltimaInclusao();
+                    return;
+                }
                 if (e.isAltDown()) {
                     altApertado = true;
                     if (keyCode == KeyEvent.VK_LEFT) {

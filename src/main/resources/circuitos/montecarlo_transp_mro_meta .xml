@@ -999,41 +999,6 @@
   <void property="ciclo">
    <int>140</int>
   </void>
-  <void property="corAsfalto">
-   <object class="java.awt.Color">
-    <int>107</int>
-    <int>103</int>
-    <int>100</int>
-    <int>255</int>
-   </object>
-  </void>
-  <void property="corBox1">
-   <object class="java.awt.Color">
-    <int>255</int>
-    <int>255</int>
-    <int>255</int>
-    <int>255</int>
-   </object>
-  </void>
-  <void property="corBox2">
-   <object class="java.awt.Color">
-    <int>255</int>
-    <int>51</int>
-    <int>51</int>
-    <int>255</int>
-   </object>
-  </void>
-  <void property="corFundo">
-   <object class="java.awt.Color">
-    <int>130</int>
-    <int>130</int>
-    <int>130</int>
-    <int>255</int>
-   </object>
-  </void>
-  <void property="distanciaKm">
-   <int>3333</int>
-  </void>
   <void property="ladoBox">
    <int>1</int>
   </void>
@@ -1041,7 +1006,7 @@
    <int>1</int>
   </void>
   <void property="multiplicadorLarguraPista">
-   <double>1.3</double>
+   <double>1.1</double>
   </void>
   <void property="nome">
    <string>Monte Carlo</string>
