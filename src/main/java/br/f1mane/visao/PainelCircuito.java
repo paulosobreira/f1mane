@@ -3338,16 +3338,9 @@ public class PainelCircuito {
                 if (!(objetoPista instanceof ObjetoTransparencia))
                     continue;
                 ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
-                if (objetoPista.isTransparenciaBox()
-                        && controleJogo.obterPista(piloto.getNoAtual()) != controleJogo.getNosDoBox()) {
+                boolean estaNoBoxPiloto = controleJogo.obterPista(piloto.getNoAtual()) == controleJogo.getNosDoBox();
+                if (!transparenciaAplicavel(objetoPista, indexNoAtual, estaNoBoxPiloto)) {
                     continue;
-                }
-                if (objetoPista.getInicioTransparencia() != 0 && objetoPista.getFimTransparencia() != 0) {
-                    int inicio = objetoPista.getInicioTransparencia();
-                    int fim = objetoPista.getFimTransparencia();
-                    if (indexNoAtual < inicio || indexNoAtual > fim) {
-                        continue;
-                    }
                 }
                 Rectangle obterArea = objetoTransparencia.obterArea();
                 if (objetoTransparencia.getPosicaoQuina() != null && !limitesViewPort.contains(((objetoTransparencia.getPosicaoQuina().x - descontoCentraliza.x) * zoom),
@@ -3394,6 +3387,34 @@ public class PainelCircuito {
         }
         desenhaChuvaFaiscasCarroCima(g2d, piloto, width);
         g2d.setStroke(stroke);
+    }
+
+    /**
+     * Decide se o recorte de transparência de {@code objetoPista} (um
+     * ObjetoTransparencia) deve ser aplicado ao carro atualmente no nó de
+     * índice {@code indexAtual}, que está ou não nos nós de box
+     * ({@code estaNoBox}). Reaproveitado por qualquer "carro" desenhado por
+     * cima (piloto, safety car, preview de teste do editor) para não deixar
+     * a checagem divergir entre eles de novo (ver mudança
+     * transparencia-intervalo-safetycar-preview).
+     * <p>
+     * Regras: se o objeto é restrito a box ({@code transparenciaBox}) e o
+     * carro não está nos nós de box, nunca se aplica. Senão, se
+     * {@code inicioTransparencia}/{@code fimTransparencia} forem ambos
+     * diferentes de 0, só se aplica dentro desse intervalo de nó; 0/0
+     * continua significando "sem intervalo configurado", aplicando-se ao
+     * circuito inteiro (compatibilidade com XMLs antigos).
+     */
+    private boolean transparenciaAplicavel(ObjetoPista objetoPista, int indexAtual, boolean estaNoBox) {
+        if (objetoPista.isTransparenciaBox() && !estaNoBox) {
+            return false;
+        }
+        int inicio = objetoPista.getInicioTransparencia();
+        int fim = objetoPista.getFimTransparencia();
+        if (inicio != 0 && fim != 0 && (indexAtual < inicio || indexAtual > fim)) {
+            return false;
+        }
+        return true;
     }
 
     private void desenhaSetasCarroCima(Graphics2D g2d, Piloto piloto, int width, int height, int imagemCarroX,
@@ -4731,14 +4752,24 @@ public class PainelCircuito {
             op2.filter(zoomBuffer, rotateBuffer);
 
             if (circuito.isUsaBkg() && circuito.getObjetos() != null) {
+                boolean estaNoBoxSafetyCar = controleJogo.obterPista(safetyCar.getNoAtual()) == controleJogo.getNosDoBox();
                 for (ObjetoPista objetoPista : circuito.getObjetos()) {
                     if (!(objetoPista instanceof ObjetoTransparencia))
                         continue;
-                    if (objetoPista.isPintaEmcima()) {
-                        continue;
-                    }
+                    // Sem checagem de isPintaEmcima() aqui — igual ao piloto
+                    // (desenhaCarroCima), que nunca teve essa restrição.
+                    // Objetos de transparência criados no editor nascem com
+                    // nivelDesenho 100 por padrão (ver mudança
+                    // editor-marcadores-transparencia), o que sempre torna
+                    // isPintaEmcima() true; manter essa checagem aqui
+                    // desabilitaria o recorte de transparência do safety car
+                    // para qualquer objeto novo, quebrando a paridade com o
+                    // piloto que é o objetivo desta mudança.
                     if (!limitesViewPort.contains(((objetoPista.getPosicaoQuina().x - descontoCentraliza.x) * zoom),
                             ((objetoPista.getPosicaoQuina().y - descontoCentraliza.y) * zoom))) {
+                        continue;
+                    }
+                    if (!transparenciaAplicavel(objetoPista, cont, estaNoBoxSafetyCar)) {
                         continue;
                     }
                     ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;

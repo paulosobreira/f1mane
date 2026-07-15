@@ -21,6 +21,10 @@ public class TestePista {
 	private boolean alive;
 	private boolean irProBox;
 	private boolean modoEscapada;
+	/** Índice do nó atual do carro de teste — na pista principal (posicionaCarro/posicionaCarroConsiderandoEscapada) ou em pontosBox (posicionaCarroBox), conforme estaNoBox. */
+	private int indexAtual;
+	/** true só durante o trecho em que o carro de teste está percorrendo pontosBox (ver posicionaCarroBox); false na pista principal, inclusive em modo escapada. */
+	private boolean estaNoBox;
 	private List pontosPista;
 	private List pontosBox;
 	private final MainPanelEditor editor;
@@ -41,6 +45,14 @@ public class TestePista {
 
 	public void setTestCar(Point testCar) {
 		this.testCar = testCar;
+	}
+
+	public int getIndexAtual() {
+		return indexAtual;
+	}
+
+	public boolean isEstaNoBox() {
+		return estaNoBox;
 	}
 
 	public void iniciarTeste(final double multi) throws Exception {
@@ -134,6 +146,8 @@ public class TestePista {
 		frenteCar = ((No) lista.get(frente)).getPoint();
 
 		testCar = no.getPoint();
+		indexAtual = cont;
+		estaNoBox = false;
 
 	}
 
@@ -169,6 +183,8 @@ public class TestePista {
 		trazCar = noNaListaOuFallback(tracadoEscapada, pontosPista, traz).getPoint();
 		frenteCar = noNaListaOuFallback(tracadoEscapada, pontosPista, frente).getPoint();
 		testCar = noNaListaOuFallback(tracadoEscapada, pontosPista, cont).getPoint();
+		indexAtual = cont;
+		estaNoBox = false;
 	}
 
 	/**
@@ -268,6 +284,8 @@ public class TestePista {
 		frenteCar = ((No) lista.get(frente)).getPoint();
 
 		testCar = no.getPoint();
+		indexAtual = cont;
+		estaNoBox = true;
 
 	}
 

@@ -1800,6 +1800,7 @@ public class MainPanelEditor extends JPanel {
                 objetoArrastando.setPosicaoQuina(
                         new Point(e.getX() - offsetArraste.x, e.getY() - offsetArraste.y));
                 reprocessaEscapadaSeNecessario(objetoArrastando);
+                recalculaTransparenciaSeNecessario(objetoArrastando);
                 repaint();
             }
 
@@ -1905,6 +1906,9 @@ public class MainPanelEditor extends JPanel {
                         // (botão direito) pra qualquer objeto dali em diante.
                         posicionaObjetoPista = false;
                         objetoTransparencia.setTransparencia(125);
+                        // Objeto de função: sempre por cima de qualquer cenário comum,
+                        // sem exigir ajuste manual (ver mudança editor-marcadores-transparencia).
+                        objetoTransparencia.setNivelDesenho(100);
                         if (circuito.getObjetos() == null)
                             circuito.setObjetos(new ArrayList<ObjetoPista>());
                         circuito.getObjetos().add(objetoTransparencia);
@@ -1917,6 +1921,7 @@ public class MainPanelEditor extends JPanel {
                         // clicado e arrastado depois — sem isso mousePressed() ignora o
                         // objeto (posicaoQuina == null é tratado como "não arrastável").
                         objetoTransparencia.setPosicaoQuina(objetoTransparencia.obterArea().getLocation());
+                        recalculaTransparenciaSeNecessario(objetoTransparencia);
                         objetoPista = null;
                         autoSalvarComBackup();
                     }
@@ -2137,6 +2142,7 @@ public class MainPanelEditor extends JPanel {
                 public void stateChanged(ChangeEvent e) {
                     alvo.setLargura(((Integer) larguraSpinner.getValue()).intValue());
                     reprocessaEscapadaSeNecessario(alvo);
+                    recalculaTransparenciaSeNecessario(alvo);
                     repaint();
                 }
             });
@@ -2149,6 +2155,7 @@ public class MainPanelEditor extends JPanel {
                 public void stateChanged(ChangeEvent e) {
                     alvo.setAltura(((Integer) alturaSpinner.getValue()).intValue());
                     reprocessaEscapadaSeNecessario(alvo);
+                    recalculaTransparenciaSeNecessario(alvo);
                     repaint();
                 }
             });
@@ -2162,6 +2169,7 @@ public class MainPanelEditor extends JPanel {
                 public void stateChanged(ChangeEvent e) {
                     alvo.setAngulo(((Integer) anguloSpinner.getValue()).doubleValue());
                     reprocessaEscapadaSeNecessario(alvo);
+                    recalculaTransparenciaSeNecessario(alvo);
                     repaint();
                 }
             });
@@ -3079,7 +3087,6 @@ public class MainPanelEditor extends JPanel {
         desenhaPreObjetoGuardRails(g2d);
         desenhaPreObjetoArquibancada(g2d);
         desenhaPreObjetoEscapada(g2d);
-        desenhaPreObjetoTransparencia(g2d);
         // Níveis positivos por cima, do menor para o maior (mais em cima).
         if (desenharObjetos) {
             for (Integer nivel : niveis) {
@@ -3088,6 +3095,13 @@ public class MainPanelEditor extends JPanel {
                 }
             }
         }
+        // Traço em desenho e marcadores de intervalo de ObjetoTransparencia
+        // desenhados depois de qualquer objeto de nível positivo (inclusive
+        // outras transparências já no nível 100 padrão) — sem isso, ficavam
+        // escondidos atrás de objetos por cima, dificultando ver por onde a
+        // transparência está sendo desenhada/editada.
+        desenhaPreObjetoTransparencia(g2d);
+        desenhaMarcadoresIntervaloTransparencia(g2d);
         desenhaMarcadoresEdicaoPontos(g2d);
         desenhaMarcadoresEdicaoPontosGuardRails(g2d);
         desenhaMarcadoresEdicaoPontosArquibancada(g2d);
@@ -3338,22 +3352,80 @@ public class MainPanelEditor extends JPanel {
     }
 
     private void desenhaPreObjetoTransparencia(Graphics2D g2d) {
-        g2d.setColor(Color.BLACK);
-        if (objetoPista == null || !desenhandoObjetoLivre || !(objetoPista instanceof ObjetoTransparencia))
+        if (objetoPista == null || !desenhandoObjetoLivre || !(objetoPista instanceof ObjetoTransparencia)) {
             return;
+        }
         ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
         if (objetoTransparencia.getPontos().size() == 1) {
             return;
         }
+        // Traço destacado (cor + espessura), mesmo padrão de desenhaPreObjetoLivre —
+        // ciano em vez de magenta, que fica reservado ao marcador de início de
+        // intervalo (ver desenhaMarcadoresIntervaloTransparencia).
+        Stroke strokeAnterior = g2d.getStroke();
+        Color corAnterior = g2d.getColor();
+        g2d.setColor(Color.CYAN);
+        g2d.setStroke(new BasicStroke(3f));
+        int raioPonto = 6;
         Point ant = null;
         for (Point p : objetoTransparencia.getPontos()) {
+            int px = Util.inteiro(p.x * zoom);
+            int py = Util.inteiro(p.y * zoom);
             if (ant != null) {
-                g2d.drawLine(Util.inteiro(ant.x * zoom), Util.inteiro(ant.y * zoom), Util.inteiro(p.x * zoom),
-                        Util.inteiro(p.y * zoom));
+                g2d.drawLine(Util.inteiro(ant.x * zoom), Util.inteiro(ant.y * zoom), px, py);
             }
+            g2d.fillOval(px - raioPonto, py - raioPonto, raioPonto * 2, raioPonto * 2);
             ant = p;
         }
+        g2d.setStroke(strokeAnterior);
+        g2d.setColor(corAnterior);
+    }
 
+    /**
+     * Desenha, só quando o objeto selecionado na lista é uma
+     * ObjetoTransparencia com intervalo configurado (inicioTransparencia ou
+     * fimTransparencia diferente de 0), um traço tracejado perpendicular à
+     * pista em cada nó do intervalo — magenta no nó de início, verde no nó
+     * de fim — cobrindo a largura da pista naquele ponto. Mesmo cálculo
+     * geométrico usado por DesenhoProceduralCircuito.desenhaLinhaDeLargada
+     * (ângulo local a partir do nó vizinho em circuito.getPistaFull()), mas
+     * tracejado em vez de quadriculado, e restrito ao objeto selecionado.
+     */
+    private void desenhaMarcadoresIntervaloTransparencia(Graphics2D g2d) {
+        ObjetoPista selecionado = primeiroSelecionado(formularioListaObjetos);
+        if (!(selecionado instanceof ObjetoTransparencia)) {
+            return;
+        }
+        ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) selecionado;
+        int inicio = objetoTransparencia.getInicioTransparencia();
+        int fim = objetoTransparencia.getFimTransparencia();
+        if (inicio == 0 && fim == 0) {
+            return;
+        }
+        List<No> pistaFull = circuito.getPistaFull();
+        Stroke strokeAnterior = g2d.getStroke();
+        Color corAnterior = g2d.getColor();
+        g2d.setStroke(new BasicStroke(3f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f,
+                new float[] { 8f, 6f }, 0f));
+        desenhaMarcadorIntervaloTransparencia(g2d, pistaFull, inicio, Color.MAGENTA);
+        desenhaMarcadorIntervaloTransparencia(g2d, pistaFull, fim, new Color(0, 170, 0));
+        g2d.setStroke(strokeAnterior);
+        g2d.setColor(corAnterior);
+    }
+
+    private void desenhaMarcadorIntervaloTransparencia(Graphics2D g2d, List<No> pistaFull, int index, Color cor) {
+        if (pistaFull == null || pistaFull.isEmpty() || index < 0 || index >= pistaFull.size()) {
+            return;
+        }
+        No no = pistaFull.get(index);
+        No vizinho = pistaFull.get((index + 1) % pistaFull.size());
+        double anguloPista = GeoUtil.calculaAngulo(no.getPoint(), vizinho.getPoint(), 0);
+        Point centro = new Point(Util.inteiro(no.getX() * zoom), Util.inteiro(no.getY() * zoom));
+        int metadeLargura = larguraPistaPixeis / 2;
+        Point p1 = GeoUtil.calculaPonto(anguloPista, metadeLargura, centro);
+        Point p2 = GeoUtil.calculaPonto(anguloPista, -metadeLargura, centro);
+        g2d.setColor(cor);
+        g2d.drawLine(p1.x, p1.y, p2.x, p2.y);
     }
 
     private void desenhaPreObjetoLivre(Graphics2D g2d) {
@@ -3648,9 +3720,14 @@ public class MainPanelEditor extends JPanel {
             op2.filter(zoomBuffer, rotateBuffer);
 
             if (circuito.getObjetos() != null) {
+                int indexAtualTeste = testePista.getIndexAtual();
+                boolean estaNoBoxTeste = testePista.isEstaNoBox();
                 for (ObjetoPista objetoPista : circuito.getObjetos()) {
                     if (!(objetoPista instanceof ObjetoTransparencia))
                         continue;
+                    if (!transparenciaAplicavel(objetoPista, indexAtualTeste, estaNoBoxTeste)) {
+                        continue;
+                    }
                     ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
                     Rectangle obterArea = objetoTransparencia.obterArea();
                     Graphics2D gImage = rotateBuffer.createGraphics();
@@ -3669,6 +3746,25 @@ public class MainPanelEditor extends JPanel {
             g2d.fillOval(Util.inteiro(testePista.trazCar.x * zoom), Util.inteiro(testePista.trazCar.y * zoom),
                     Util.inteiro(5 * zoom), Util.inteiro(5 * zoom));
         }
+    }
+
+    /**
+     * Cópia local de {@code PainelCircuito.transparenciaAplicavel} — mesma
+     * regra, para o preview de teste do editor não usar `desenhaCarro` de um
+     * ObjetoTransparencia fora do intervalo/box configurados. Duplicada em
+     * vez de compartilhada porque `editor` depende de `visao`, não o
+     * contrário (ver design.md de transparencia-intervalo-safetycar-preview).
+     */
+    private boolean transparenciaAplicavel(ObjetoPista objetoPista, int indexAtual, boolean estaNoBox) {
+        if (objetoPista.isTransparenciaBox() && !estaNoBox) {
+            return false;
+        }
+        int inicio = objetoPista.getInicioTransparencia();
+        int fim = objetoPista.getFimTransparencia();
+        if (inicio != 0 && fim != 0 && (indexAtual < inicio || indexAtual > fim)) {
+            return false;
+        }
+        return true;
     }
 
     public Shape limitesViewPort() {
@@ -4169,11 +4265,72 @@ public class MainPanelEditor extends JPanel {
         }
     }
 
+    /**
+     * Se {@code alvo} for uma ObjetoTransparencia, recalcula automaticamente
+     * inicioTransparencia/fimTransparencia a partir dos nós da pista
+     * principal cobertos pela área atual do objeto (ver
+     * {@link #recalculaIntervaloTransparencia(ObjetoTransparencia)}) — chamado
+     * em todo lugar que move ou redimensiona um objeto, mesmo padrão de
+     * {@link #reprocessaEscapadaSeNecessario(ObjetoPista)}.
+     */
+    void recalculaTransparenciaSeNecessario(ObjetoPista alvo) {
+        if (alvo instanceof ObjetoTransparencia) {
+            recalculaIntervaloTransparencia((ObjetoTransparencia) alvo);
+        }
+    }
+
+    /**
+     * Define inicioTransparencia/fimTransparencia de {@code objeto} como o
+     * menor/maior índice, respectivamente, dentre os nós de
+     * {@code circuito.getPistaFull()} cujo ponto cai dentro da área bruta do
+     * objeto ({@code obterArea()} — a mesma área usada em tempo de jogo pelo
+     * filtro de intervalo, ver mudança transparencia-intervalo-safetycar-preview).
+     * Se nenhum nó da pista principal cair na área, os dois campos ficam em
+     * 0 (equivalente a "sem intervalo configurado", já a convenção existente
+     * pra aplicar o objeto ao circuito inteiro).
+     */
+    void recalculaIntervaloTransparencia(ObjetoTransparencia objeto) {
+        // obterArea() (polygon.getBounds()) só reflete a posicaoQuina atual
+        // depois de uma chamada a desenha() (que faz o translate do polygon
+        // internamente) — reposicionar (arrastar/setas) muda posicaoQuina na
+        // hora, mas o próximo desenha() só acontece no próximo repaint
+        // assíncrono. Pra não depender do momento em que o Swing decide
+        // repintar, ancora aqui a área bruta em posicaoQuina diretamente, em
+        // vez de confiar em obterArea() já traduzida.
+        Rectangle area = objeto.obterArea();
+        if (area != null && objeto.getPosicaoQuina() != null) {
+            area = new Rectangle(objeto.getPosicaoQuina().x, objeto.getPosicaoQuina().y, area.width, area.height);
+        }
+        List<No> pistaFull = circuito.getPistaFull();
+        if (area == null || pistaFull == null) {
+            objeto.setInicioTransparencia(0);
+            objeto.setFimTransparencia(0);
+            return;
+        }
+        int menorIndex = -1;
+        int maiorIndex = -1;
+        for (No no : pistaFull) {
+            if (!area.contains(no.getPoint())) {
+                continue;
+            }
+            int index = no.getIndex();
+            if (menorIndex == -1 || index < menorIndex) {
+                menorIndex = index;
+            }
+            if (maiorIndex == -1 || index > maiorIndex) {
+                maiorIndex = index;
+            }
+        }
+        objeto.setInicioTransparencia(menorIndex == -1 ? 0 : menorIndex);
+        objeto.setFimTransparencia(maiorIndex == -1 ? 0 : maiorIndex);
+    }
+
     public void esquerdaObj() {
         if (objetoPista != null && objetoPista.getPosicaoQuina() != null) {
             Point p = objetoPista.getPosicaoQuina();
             p.x -= 5;
             reprocessaEscapadaSeNecessario(objetoPista);
+            recalculaTransparenciaSeNecessario(objetoPista);
             repaint();
             return;
         }
@@ -4184,6 +4341,7 @@ public class MainPanelEditor extends JPanel {
             Point p = objetoPista.getPosicaoQuina();
             p.x += 5;
             reprocessaEscapadaSeNecessario(objetoPista);
+            recalculaTransparenciaSeNecessario(objetoPista);
             repaint();
             return;
         }
@@ -4194,6 +4352,7 @@ public class MainPanelEditor extends JPanel {
             Point p = objetoPista.getPosicaoQuina();
             p.y -= 5;
             reprocessaEscapadaSeNecessario(objetoPista);
+            recalculaTransparenciaSeNecessario(objetoPista);
             repaint();
             return;
         }
@@ -4204,6 +4363,7 @@ public class MainPanelEditor extends JPanel {
             Point p = objetoPista.getPosicaoQuina();
             p.y += 5;
             reprocessaEscapadaSeNecessario(objetoPista);
+            recalculaTransparenciaSeNecessario(objetoPista);
             repaint();
             return;
         }
