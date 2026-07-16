@@ -24,8 +24,8 @@ class CarregadorRecursosCircuitoAtivoTest {
 
     @Test
     void circuitoAtivo_leDeCircuitosProperties_false() {
-        assertFalse(CarregadorRecursos.circuitoAtivo("monza_mro.xml"),
-                "monza está com ativo=false em circuitos.properties");
+        assertFalse(CarregadorRecursos.circuitoAtivo("yas_marina_mro.xml"),
+                "yas_marina está com ativo=false em circuitos.properties");
     }
 
     @Test

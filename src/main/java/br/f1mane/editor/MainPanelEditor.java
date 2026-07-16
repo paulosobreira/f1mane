@@ -1442,6 +1442,13 @@ public class MainPanelEditor extends JPanel {
     private void carregarCircuitoExistente(String arquivoXml) throws IOException, ClassNotFoundException {
         file = new File("src/main/resources/circuitos/" + arquivoXml);
         circuito = CarregadorRecursos.carregarCircuito(arquivoXml);
+        // circuito.isAtivo() acima veio de CarregadorRecursos.circuitoAtivo(),
+        // que lê via classpath (cópia em target/classes, só atualizada num
+        // build) — sobrescreve aqui com a leitura direta do arquivo-fonte,
+        // que é o que salvarPista()/gravarCircuitoEmDisco() realmente grava,
+        // pra o checkbox "Ativo" refletir o último salvamento ao navegar de
+        // volta pro circuito (ver CarregadorRecursos.lerAtivoDaFonte).
+        circuito.setAtivo(CarregadorRecursos.lerAtivoDaFonte(arquivoXml));
         aplicarCircuitoCarregadoNaUI();
     }
 

@@ -1313,6 +1313,54 @@ public class CarregadorRecursos {
     }
 
     /**
+     * Lê o campo "ativo" direto do arquivo-fonte
+     * {@code src/main/resources/properties/circuitos.properties} — ao
+     * contrário de {@link #circuitoAtivo}/{@link #lerAtivoDeCircuitosProperties},
+     * que leem via classpath ({@code recursoComoStream}, resolvido para a
+     * cópia em {@code target/classes} ou dentro do jar), essa cópia só é
+     * atualizada num build (`mvn compile`/rebuild da IDE) — nunca
+     * automaticamente quando {@link #atualizarAtivoEmCircuitosProperties}
+     * grava no arquivo-fonte. Isso fazia o editor de circuitos, rodando a
+     * partir de uma build já carregada, mostrar o checkbox "Ativo"
+     * desmarcado ao navegar de volta para um circuito recém-salvo como
+     * ativo — o valor salvo estava certo no arquivo-fonte, só não refletia
+     * na UI porque a releitura ia pela cópia desatualizada. Uso exclusivo
+     * do editor (ferramenta de desenvolvimento, que já lê/escreve outros
+     * recursos relativos à raiz do projeto, nunca via classpath); o jogo em
+     * si continua usando {@link #circuitoAtivo}, que é o correto quando
+     * rodando a partir do jar empacotado (sem acesso a {@code src/main/resources}).
+     */
+    public static boolean lerAtivoDaFonte(String nmCircuitoXml) {
+        return lerAtivoDaFonte(new File("src/main/resources/properties/circuitos.properties"), nmCircuitoXml);
+    }
+
+    /**
+     * Mesma lógica de {@link #lerAtivoDaFonte(String)}, mas recebendo o
+     * arquivo alvo explicitamente — usado por testes para não depender do
+     * {@code circuitos.properties} real do projeto.
+     */
+    static boolean lerAtivoDaFonte(File arquivo, String nmCircuitoXml) {
+        if (!arquivo.exists()) {
+            return false;
+        }
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(new FileInputStream(arquivo), StandardCharsets.UTF_8))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                int idxIgual = linha.indexOf('=');
+                if (idxIgual > 0 && linha.substring(0, idxIgual).equals(nmCircuitoXml)) {
+                    String[] campos = linha.substring(idxIgual + 1).split(",", -1);
+                    return campos.length > 1 && Boolean.parseBoolean(campos[1].trim());
+                }
+            }
+        } catch (IOException e) {
+            Logger.logarExept(e);
+            return false;
+        }
+        return false;
+    }
+
+    /**
      * Mesma lógica de {@link #atualizarAtivoEmCircuitosProperties(String, boolean)},
      * mas recebendo o arquivo alvo explicitamente — usado por testes para não
      * mutar o {@code circuitos.properties} real do projeto.

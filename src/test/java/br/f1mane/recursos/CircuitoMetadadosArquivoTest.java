@@ -225,6 +225,45 @@ class CircuitoMetadadosArquivoTest {
         assertEquals("circuitoC_mro.xml=Circuito C,false", linhas.get(2), "linha de C não deveria mudar");
     }
 
+    /**
+     * Regressão: o editor de circuitos mostrava o checkbox "Ativo" desmarcado
+     * ao navegar de volta para um circuito recém-salvo como ativo, porque a
+     * releitura ({@link CarregadorRecursos#circuitoAtivo}) ia via classpath
+     * (cópia em {@code target/classes}, só atualizada num build), enquanto
+     * {@link CarregadorRecursos#atualizarAtivoEmCircuitosProperties} grava
+     * direto no arquivo-fonte. {@link CarregadorRecursos#lerAtivoDaFonte}
+     * lê do mesmo arquivo-fonte que o salvamento grava, então precisa
+     * enxergar o valor imediatamente, sem depender de rebuild.
+     */
+    @Test
+    void lerAtivoDaFonte_enxergaValorGravadoPeloSalvamentoSemRebuild(@TempDir File tempDir) throws Exception {
+        File arquivo = new File(tempDir, "circuitos.properties");
+        try (FileWriter writer = new FileWriter(arquivo)) {
+            writer.write("monza_mro.xml=Monza,false\n");
+        }
+        assertFalse(CarregadorRecursos.lerAtivoDaFonte(arquivo, "monza_mro.xml"));
+
+        CarregadorRecursos.atualizarAtivoEmCircuitosProperties(arquivo, "monza_mro.xml", true);
+
+        assertTrue(CarregadorRecursos.lerAtivoDaFonte(arquivo, "monza_mro.xml"),
+                "deveria enxergar o valor recém-gravado no arquivo-fonte imediatamente");
+    }
+
+    @Test
+    void lerAtivoDaFonte_semLinhaCorrespondente_retornaFalse(@TempDir File tempDir) throws Exception {
+        File arquivo = new File(tempDir, "circuitos.properties");
+        try (FileWriter writer = new FileWriter(arquivo)) {
+            writer.write("outroCircuito_mro.xml=Outro,true\n");
+        }
+
+        assertFalse(CarregadorRecursos.lerAtivoDaFonte(arquivo, "monza_mro.xml"));
+    }
+
+    @Test
+    void lerAtivoDaFonte_arquivoInexistente_retornaFalseSemLancarExcecao() {
+        assertFalse(CarregadorRecursos.lerAtivoDaFonte(new File("nao_existe.properties"), "monza_mro.xml"));
+    }
+
     private List<String> lerLinhas(File arquivo) throws Exception {
         List<String> linhas = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(arquivo))) {
