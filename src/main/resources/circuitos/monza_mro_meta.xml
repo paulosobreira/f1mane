@@ -318,6 +318,41 @@
   <void property="ciclo">
    <int>180</int>
   </void>
+  <void property="corAsfalto">
+   <object class="java.awt.Color">
+    <int>126</int>
+    <int>126</int>
+    <int>126</int>
+    <int>255</int>
+   </object>
+  </void>
+  <void property="corBox1">
+   <object class="java.awt.Color">
+    <object idref="Integer0"/>
+    <int>61</int>
+    <int>199</int>
+    <int>255</int>
+   </object>
+  </void>
+  <void property="corBox2">
+   <object class="java.awt.Color">
+    <int>255</int>
+    <int>12</int>
+    <int>29</int>
+    <int>255</int>
+   </object>
+  </void>
+  <void property="corFundo">
+   <object class="java.awt.Color">
+    <int>116</int>
+    <int>136</int>
+    <int>90</int>
+    <int>255</int>
+   </object>
+  </void>
+  <void property="distanciaKm">
+   <int>5793</int>
+  </void>
   <void property="ladoBox">
    <int>2</int>
   </void>
@@ -325,7 +360,7 @@
    <int>1</int>
   </void>
   <void property="multiplicadorLarguraPista">
-   <double>1.4000000000000001</double>
+   <double>1.6</double>
   </void>
   <void property="nome">
    <string>Monza</string>
