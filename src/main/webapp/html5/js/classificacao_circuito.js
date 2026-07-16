@@ -16,6 +16,11 @@ $('#circuitoCarousel').on('slide.bs.carousel', function(event) {
 
 $('#circuitoCarousel').carousel('pause');
 
+$('.carousel').carousel({
+	pause: true,
+	interval: false
+	});
+
 function circuitoClassificacao(circuitoSelecionado) {
 	var urlServico = "/flmane/rest/letsRace/circuitoClassificacao/" + circuitoSelecionado;
 	$.ajax({

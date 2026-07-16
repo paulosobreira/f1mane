@@ -146,6 +146,15 @@ function rgbToHexUrlSafe(r, g, b) {
     return componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
+function destacarAoAparecer($el) {
+	if ($el.is(':hidden')) {
+		$el.addClass('destaque-surgimento');
+		$el.one('animationend', function() {
+			$(this).removeClass('destaque-surgimento');
+		});
+	}
+}
+
 function imgError(image) {
     image.onerror = "";
     image.src = "/flmane/rest/letsRace/png/profile-0";

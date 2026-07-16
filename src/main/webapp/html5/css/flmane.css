@@ -1,4 +1,26 @@
 @CHARSET "UTF-8";
+
+/* Paleta pastel do tema. Tons escolhidos para manter contraste minimo AA
+   (4.5:1 texto/fundo, 3:1 bordas/componentes selecionaveis) sobre --cor-fundo,
+   --cor-fundo-alt e --cor-superficie. */
+:root {
+	--cor-fundo: #f6f2fb;
+	--cor-fundo-alt: #eef7f3;
+	--cor-fundo-neutro: #e7e9ef;
+	--cor-superficie: #ffffff;
+	--cor-texto: #3a3550;
+	--cor-texto-claro: #ffffff;
+	--cor-borda: #9678bd;
+	--cor-destaque: #eb93b3;
+	--cor-destaque-escuro: #d97ea3;
+	--cor-sucesso: #8fd4b8;
+	--cor-perigo: #ea9099;
+	--cor-aviso: #f5c98c;
+	--cor-neutro: #b7c2d1;
+	--cor-neutro-escuro: #5a6b81;
+	--cor-sombra: rgba(58, 53, 80, 0.35);
+}
+
 @media (orientation: landscape) {
 	.body {
 	 margin: 0;
@@ -19,14 +41,14 @@
 	  width: 200px;
 	  height: 200px;
 	  margin: -75px 0 0 -75px;
-	  border: 5px solid #f3f3f3;
+	  border: 5px solid var(--cor-fundo-neutro);
 	  border-radius: 50%;
-	  border-top: 5px solid grey;
+	  border-top: 5px solid var(--cor-neutro-escuro);
 	  width: 120px;
 	  height: 120px;
 	  -webkit-animation: spin 2s linear infinite;
 	  animation: spin 2s linear infinite;
-	}	
+	}
 }
 
 @media (orientation: portrait) {
@@ -34,7 +56,7 @@
 	 margin: 0;
      background: url(../img/portrait.jpg);
      background-size: 100%,100%;
-     background-color: gray;  
+     background-color: gray;
 	 background-repeat:no-repeat;
      background-attachment: fixed;
 	 width: 100%;
@@ -50,14 +72,14 @@
 	  width: 200px;
 	  height: 200px;
 	  margin: -75px 0 0 -75px;
-	  border: 5px solid #f3f3f3;
+	  border: 5px solid var(--cor-fundo-neutro);
 	  border-radius: 50%;
-	  border-top: 5px solid grey;
+	  border-top: 5px solid var(--cor-neutro-escuro);
 	  width: 120px;
 	  height: 120px;
 	  -webkit-animation: spin 2s linear infinite;
 	  animation: spin 2s linear infinite;
-	}	
+	}
 }
 
 .img-center {
@@ -150,7 +172,7 @@
 	margin-right: 20px; font-size: 22px;
 }
 .black{
-	color: black;
+	color: var(--cor-texto);
 }
 
 .fontLarge{
@@ -173,18 +195,18 @@
 
 .transbox {
   text-align:center;
-  background-color: #ffffff;
+  background-color: var(--cor-superficie);
   border-radius: 5px;
   opacity: 0.8;
   filter: alpha(opacity=60); /* For IE8 and earlier */
-}	
+}
 
 .creditos{
   padding: 10px;
 }
 
 .fundoCinza {
-	background-color: lightGray;
+	background-color: var(--cor-fundo-neutro);
 }
 
 .font-weight-bold {
@@ -211,7 +233,7 @@ ul {
 
 .divPiloto{
 	display: inline;
-    border-left-color: #dce6e6;
+    border-left-color: var(--cor-borda);
     border-left-width: 5px;
     border-left-style: solid;
     padding-left: 4px;
@@ -226,8 +248,8 @@ ul {
 /* The snackbar - position it at the bottom and in the middle of the screen */
 #snackbar {
     visibility: hidden;
-    background-color: #333;
-    color: #fff;
+    background-color: var(--cor-texto);
+    color: var(--cor-texto-claro);
     text-align: center;
     border-radius: 2px;
     padding: 16px;
@@ -283,4 +305,17 @@ However, delay the fade out process for 2.5 seconds */
     text-align: center;
     font-size: 18px;
     border: none;
+}
+
+/* Destaque de surgimento: aplicada via JS nos pontos onde um botao de acao
+   passa de oculto para visivel, e removida no fim da animacao (animationend)
+   para permitir reaplicacao em futuras aparicoes do mesmo elemento. */
+@keyframes destaque-surgimento {
+	0% { transform: scale(0.85); opacity: 0; }
+	60% { transform: scale(1.08); opacity: 1; }
+	100% { transform: scale(1); }
+}
+
+.destaque-surgimento {
+	animation: destaque-surgimento 0.4s ease-out;
 }

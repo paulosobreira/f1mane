@@ -16,6 +16,11 @@ $('#temporadaCarousel').on('slide.bs.carousel', function(event) {
 
 $('#temporadaCarousel').carousel('pause');
 
+$('.carousel').carousel({
+	pause: true,
+	interval: false
+	});
+
 function temporadaClassificacao(temporadaSelecionada) {
 	var urlServico = "/flmane/rest/letsRace/temporadaClassificacao/" + temporadaSelecionada;
 	$.ajax({

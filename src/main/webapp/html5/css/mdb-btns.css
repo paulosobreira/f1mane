@@ -8,8 +8,8 @@ body {
   font-weight: 300;
   font-size: 14px;
   line-height: 1.4;
-  color: #212121;
-  
+  color: var(--cor-texto);
+
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
