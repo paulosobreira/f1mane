@@ -482,6 +482,88 @@ public class CarregadorRecursos {
         return result;
     }
 
+    private static final Map<String, BufferedImage> cacheMonocromatico = new HashMap<>();
+
+    public static void invalidarCacheMonocromatico() {
+        cacheMonocromatico.clear();
+    }
+
+    private static final Map<String, Double> cacheProporcaoLarguraAltura = new HashMap<>();
+
+    /**
+     * Proporção largura/altura original do arquivo (antes de qualquer
+     * redimensionamento) — usada por {@code ObjetoLivre} para saber o quanto
+     * um sprite precisaria ser esticado para preencher um envelope de
+     * proporção diferente da nativa, sem precisar repintar/redimensionar a
+     * imagem só para consultar suas dimensões. Cache PRÓPRIO (não depende de
+     * {@link #carregaImagem} nem da flag {@code cache} setada só em
+     * {@link #getCarregadorRecursos}): é consultada por árvore, a cada
+     * frame, então precisa ficar O(1) já na segunda chamada mesmo se essa
+     * flag nunca tiver sido ligada (ex.: contexto de teste/preview isolado).
+     */
+    public static double obterProporcaoLarguraAltura(String assetPath) {
+        Double proporcaoCacheada = cacheProporcaoLarguraAltura.get(assetPath);
+        if (proporcaoCacheada != null) {
+            return proporcaoCacheada;
+        }
+        BufferedImage img = carregaImagem(assetPath);
+        double proporcao = (double) img.getWidth() / img.getHeight();
+        cacheProporcaoLarguraAltura.put(assetPath, proporcao);
+        return proporcao;
+    }
+
+    /**
+     * Pinta um template em tons de cinza (r==g==b, mesmo espírito de
+     * {@link #pintarModeloV2}, mas com uma única cor-alvo em vez da
+     * substituição dupla verde/branco) com {@code cor}: cada pixel opaco tem
+     * seu brilho (0–1, lido do canal vermelho já que o template é
+     * acromático) usado para escalar o brilho de {@code cor} em espaço HSB —
+     * preserva o shading original do template (realce/sombra) e substitui
+     * matiz+saturação pela de {@code cor}. Usado por {@code ObjetoLivre} para
+     * colorir os sprites de tronco/copa da vegetação densa com
+     * {@code corPimaria}/{@code corSecundaria}.
+     * <p>
+     * Cacheado na RESOLUÇÃO NATIVA do arquivo, chaveado só por
+     * {@code assetPath}+{@code cor} (sem largura/altura de destino): o
+     * redimensionamento (esticamento variável por árvore, zoom do editor)
+     * fica por conta do {@code drawImage(img, x, y, w, h, null)} de quem
+     * chama, na hora de desenhar — bem mais barato que recomputar a
+     * substituição de matiz pixel a pixel e reamostrar de novo a cada
+     * combinação de tamanho, o que antes tornava o desenho da vegetação
+     * densa lento com o esticamento variando por árvore (praticamente todo
+     * tamanho gerava uma chave de cache nova).
+     */
+    public static BufferedImage pintarMonocromatico(String assetPath, Color cor) {
+        String chave = assetPath + "_" + cor.getRGB();
+        BufferedImage cached = cacheMonocromatico.get(chave);
+        if (cached != null) {
+            return cached;
+        }
+
+        BufferedImage src = carregaBufferedImageTransparecia(assetPath);
+        int srcW = src.getWidth();
+        int srcH = src.getHeight();
+
+        float[] hsbCor = Color.RGBtoHSB(cor.getRed(), cor.getGreen(), cor.getBlue(), null);
+        BufferedImage painted = new BufferedImage(srcW, srcH, BufferedImage.TYPE_INT_ARGB);
+        for (int x = 0; x < srcW; x++) {
+            for (int y = 0; y < srcH; y++) {
+                int argb = src.getRGB(x, y);
+                int a = (argb >> 24) & 0xFF;
+                if (a == 0) {
+                    painted.setRGB(x, y, 0);
+                    continue;
+                }
+                int brilhoPixel = (argb >> 16) & 0xFF;
+                int rgb = Color.HSBtoRGB(hsbCor[0], hsbCor[1], hsbCor[2] * (brilhoPixel / 255f));
+                painted.setRGB(x, y, (a << 24) | (rgb & 0x00FFFFFF));
+            }
+        }
+
+        cacheMonocromatico.put(chave, painted);
+        return painted;
+    }
+
     public static BufferedImage carregaImgCarro(String img) {
         BufferedImage bufferedImage = (BufferedImage) bufferCarros.get(img);
         if (bufferedImage != null) {
