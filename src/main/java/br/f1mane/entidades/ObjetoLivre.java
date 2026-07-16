@@ -9,6 +9,7 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +22,42 @@ public class ObjetoLivre extends ObjetoDesenho {
 	private static final long SEMENTE_BRITA = 20260703L;
 	/** Semente fixa da dispersão (posição e tamanho) da vegetação, densa e simples. */
 	private static final long SEMENTE_VEGETACAO = 20260710L;
-	/** Vegetação densa: touceiras bem maiores (célula ~1.6x) e com tamanho bem variado entre si. */
-	private static final double FATOR_PASSO_VEGETACAO_DENSA = 1.6;
+	/**
+	 * Vegetação densa: touceiras bem maiores (célula ~1.6x) e com tamanho bem
+	 * variado entre si. Densidade (touceiras por área, na GRADE DE
+	 * CANDIDATAS — a densidade final desenhada é menor, já que
+	 * {@link #sobrepoeTouceiraAceita} e {@link #cabeInteiraNaSilhueta}
+	 * descartam parte delas) é proporcional a 1/fatorPasso² — histórico:
+	 * dividir por sqrt(3) triplicou a densidade original; multiplicar por
+	 * sqrt(2) reduziu isso à metade (1.5x); dividir de novo por sqrt(2)
+	 * dobrou essa versão, voltando a 3x a densidade original — a versão em
+	 * uso, agora com a grade mais apertada preenchendo as folgas deixadas
+	 * pelas rejeições de sobreposição/borda. Mesma proporção touceira/célula
+	 * de antes (raio acompanha o passo).
+	 */
+	private static final double FATOR_PASSO_VEGETACAO_DENSA = 1.6 / Math.sqrt(3);
 	private static final double VARIACAO_TAMANHO_VEGETACAO_DENSA = 0.6;
 	/** Vegetação simples: mantém o tamanho original da célula, com variação apenas leve entre as marcas. */
 	private static final double FATOR_PASSO_VEGETACAO_SIMPLES = 1.0;
 	private static final double VARIACAO_TAMANHO_VEGETACAO_SIMPLES = 0.15;
+	/**
+	 * Quantidade de silhuetas distintas de "topo de árvore vista de cima"
+	 * usadas pela vegetação densa (ver {@link #formaTopoArvore}) — cada
+	 * touceira sorteia uma delas, no mesmo espírito dos ícones de vegetação
+	 * top-view (várias espécies com contornos bem diferentes: estrela
+	 * pontiaguda, copa arredondada, espinhos finos, lóbulos largos).
+	 */
+	private static final int VARIANTES_TOPO_ARVORE = 4;
+	/**
+	 * Faixa de ampliação aplicada ao raio de cada silhueta de topo de árvore
+	 * (vegetação densa), sorteada por touceira — as marcas ficavam pequenas
+	 * demais em relação ao espaçamento da grade; isso é multiplicado por
+	 * cima do raio já calculado por {@code fatorTamanho}, sem alterar o
+	 * espaçamento (a densidade continua a mesma, só as copas ficam maiores e
+	 * passam a se sobrepor, formando uma copa mais contínua).
+	 */
+	private static final double AMPLIACAO_MIN_TOPO_ARVORE = 2.0;
+	private static final double AMPLIACAO_MAX_TOPO_ARVORE = 3.0;
 
 	/**
 	 * Campo legado (polígono de linhas retas), mantido apenas para leitura de
@@ -222,11 +253,28 @@ public class ObjetoLivre extends ObjetoDesenho {
 	 * cada marca. A densa usa célula maior (touceiras maiores) e uma faixa de
 	 * variação de tamanho bem mais ampla que a simples, que fica quase
 	 * uniforme. Semente fixa: determinístico entre renderizações sucessivas.
+	 * <p>
+	 * Cada touceira da densa é uma silhueta de "topo de árvore" sorteada
+	 * entre {@link #VARIANTES_TOPO_ARVORE} opções (ver {@link #formaTopoArvore}),
+	 * em vez de sempre a mesma marca — o sorteio consome o mesmo
+	 * {@code random} usado pela posição/tamanho, então continua determinístico.
+	 * Copas candidatas que se sobreporiam a uma já aceita (ver
+	 * {@link #sobrepoeTouceiraAceita}) ou que ficariam cortadas pela borda da
+	 * forma (ver {@link #cabeInteiraNaSilhueta}) são descartadas — a célula
+	 * simplesmente fica sem marca, em vez de desenhar uma copa se
+	 * interceptando com a vizinha ou "quebrada" no contorno do objeto. O
+	 * descarte não pula nenhum sorteio do {@code random}, então a sequência
+	 * consumida — e portanto o resultado — continua idêntica entre renderizações.
 	 */
 	private void desenhaPadraoVegetacao(Graphics2D g2d, Shape formaLocal, double pivoX, double pivoY, double zoom) {
+		boolean densa = tipo == TipoObjetoLivre.VEGETACAO_DENSA;
+		Area areaSilhueta = densa ? new Area(formaLocal) : null;
+		AffineTransform rotacaoConteudo = densa
+				? AffineTransform.getRotateInstance(Math.toRadians((double) getAngulo()), pivoX, pivoY)
+				: null;
+		List<double[]> touceirasAceitas = densa ? new ArrayList<double[]>() : null;
 		desenhaComClipSemAntialiasing(g2d, formaLocal, pivoX, pivoY, () -> {
 			Rectangle bounds = areaCoberturaPadrao(formaLocal);
-			boolean densa = tipo == TipoObjetoLivre.VEGETACAO_DENSA;
 			double fatorPasso = densa ? FATOR_PASSO_VEGETACAO_DENSA : FATOR_PASSO_VEGETACAO_SIMPLES;
 			double variacaoTamanho = densa ? VARIACAO_TAMANHO_VEGETACAO_DENSA : VARIACAO_TAMANHO_VEGETACAO_SIMPLES;
 			int passo = Math.max(4, (int) Math.round(PASSO_PADRAO_LOCAL * fatorPasso * zoom));
@@ -239,28 +287,116 @@ public class ObjetoLivre extends ObjetoDesenho {
 					int deslocY = random.nextInt(passo);
 					double fatorTamanho = 1.0 - variacaoTamanho + random.nextDouble() * (2 * variacaoTamanho);
 					int raio = Math.max(2, (int) Math.round((passo / 5.0) * fatorTamanho));
-					// Touceiras da vegetação densa são mais "encorpadas": traço
-					// proporcionalmente mais grosso além de maior, não só mais longo.
-					// A simples usa o traço-base (1px) que desenhaComClipSemAntialiasing
-					// já deixou ajustado — nunca o traço herdado de fora.
 					if (densa) {
-						g2d.setStroke(new BasicStroke(Math.max(1f, raio / 2f)));
+						double fatorAmpliacao = AMPLIACAO_MIN_TOPO_ARVORE
+								+ random.nextDouble() * (AMPLIACAO_MAX_TOPO_ARVORE - AMPLIACAO_MIN_TOPO_ARVORE);
+						raio = Math.max(2, (int) Math.round(raio * fatorAmpliacao));
+						int variante = random.nextInt(VARIANTES_TOPO_ARVORE);
+						double anguloBase = random.nextDouble() * Math.PI * 2;
+						int cx = x + deslocX;
+						int cy = y + deslocY;
+						if (sobrepoeTouceiraAceita(touceirasAceitas, cx, cy, raio)) {
+							continue;
+						}
+						GeneralPath forma = formaTopoArvore(cx, cy, raio, variante, anguloBase);
+						if (!cabeInteiraNaSilhueta(rotacaoConteudo.createTransformedShape(forma), areaSilhueta)) {
+							continue;
+						}
+						g2d.fill(forma);
+						touceirasAceitas.add(new double[] { cx, cy, raio });
+					} else {
+						desenhaPrimitivaPadrao(g2d, x + deslocX, y + deslocY, raio);
 					}
-					desenhaPrimitivaPadrao(g2d, x + deslocX, y + deslocY, raio);
 				}
 			}
 		});
+	}
+
+	/**
+	 * {@code true} se o círculo (centro, raio) da candidata invade o círculo
+	 * de alguma touceira já aceita — aproximação conservadora (usa o raio
+	 * externo da estrela como raio do círculo) suficiente pra garantir que
+	 * copas de vegetação densa nunca se sobreponham entre si. Comparado em
+	 * espaço LOCAL (antes da rotação do conteúdo): como a rotação é uma
+	 * isometria em torno do mesmo pivô pra todas as touceiras, distâncias
+	 * entre centros não mudam, então não é preciso rotacionar nada aqui.
+	 */
+	private boolean sobrepoeTouceiraAceita(List<double[]> touceirasAceitas, double cx, double cy, double raio) {
+		for (double[] outra : touceirasAceitas) {
+			double distancia = Math.hypot(cx - outra[0], cy - outra[1]);
+			if (distancia < raio + outra[2]) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * {@code true} se {@code formaFinal} (já na posição/rotação em que
+	 * efetivamente aparece na tela) cai inteiramente dentro de
+	 * {@code areaSilhueta} (a silhueta fixa e não rotacionada do objeto) —
+	 * usado pra descartar copas que o clip cortaria pela metade na borda do
+	 * objeto livre, em vez de deixá-las aparecer "quebradas".
+	 */
+	private boolean cabeInteiraNaSilhueta(Shape formaFinal, Area areaSilhueta) {
+		Area foraDaSilhueta = new Area(formaFinal);
+		foraDaSilhueta.subtract(areaSilhueta);
+		return foraDaSilhueta.isEmpty();
+	}
+
+	/**
+	 * Silhueta de "topo de árvore vista de cima" (polígono em estrela: raio
+	 * externo e interno alternados a cada vértice), no espírito visual de
+	 * ícones de vegetação top-view — várias plantas/árvores com contornos
+	 * bem diferentes entre si (pontas finas, copa arredondada, espinhos,
+	 * lóbulos largos), não um único glifo repetido. {@code variante} escolhe
+	 * a quantidade de pontas e o quão fundo é o entalhe entre elas;
+	 * {@code anguloBase} gira a silhueta pra as marcas não ficarem todas
+	 * viradas pro mesmo lado. Sempre um polígono simples (não autointerceptante),
+	 * então cada touceira é um único preenchimento contínuo.
+	 */
+	private GeneralPath formaTopoArvore(int cx, int cy, int raio, int variante, double anguloBase) {
+		int pontas;
+		double fatorEntalhe;
+		switch (variante % VARIANTES_TOPO_ARVORE) {
+		case 0: // estrela pontiaguda (tipo folha de bordo/ginkgo vista de cima)
+			pontas = 9;
+			fatorEntalhe = 0.45;
+			break;
+		case 1: // copa arredondada, quase circular, com leve ondulação
+			pontas = 14;
+			fatorEntalhe = 0.85;
+			break;
+		case 2: // espinhos finos (tipo agave/palmeira)
+			pontas = 11;
+			fatorEntalhe = 0.2;
+			break;
+		default: // copa lobulada, poucos lóbulos largos
+			pontas = 6;
+			fatorEntalhe = 0.6;
+			break;
+		}
+		GeneralPath path = new GeneralPath();
+		int totalVertices = pontas * 2;
+		for (int i = 0; i < totalVertices; i++) {
+			double angulo = anguloBase + (Math.PI * i) / pontas;
+			double r = (i % 2 == 0) ? raio : raio * fatorEntalhe;
+			double px = cx + Math.cos(angulo) * r;
+			double py = cy + Math.sin(angulo) * r;
+			if (i == 0) {
+				path.moveTo(px, py);
+			} else {
+				path.lineTo(px, py);
+			}
+		}
+		path.closePath();
+		return path;
 	}
 
 	private void desenhaPrimitivaPadrao(Graphics2D g2d, int cx, int cy, int raio) {
 		switch (tipo) {
 		case VEGETACAO_SIMPLES:
 			g2d.drawLine(cx - raio, cy + raio, cx + raio, cy - raio);
-			break;
-		case VEGETACAO_DENSA:
-			g2d.drawLine(cx - raio, cy, cx + raio, cy);
-			g2d.drawLine(cx, cy - raio, cx, cy + raio);
-			g2d.drawLine(cx - raio, cy + raio, cx, cy - raio / 2);
 			break;
 		case AGUA:
 			g2d.drawArc(cx - raio * 2, cy - raio, raio * 4, raio * 2, 0, 180);
