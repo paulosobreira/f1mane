@@ -103,6 +103,7 @@ function mostrarEntrarJogo() {
 	if (token == null) {
 		return;
 	}
+	destacarAoAparecer($('#btnJogar'));
 	$('#btnJogar').show();
 }
 
@@ -204,6 +205,7 @@ function carregarDadosJogoCampeonato(){
 				window.location = "jogar.html";
 			}else{
 				var campeonato = response;
+				destacarAoAparecer($('#criaJogo'));
 				$('#criaJogo').removeClass('hide');
 				$('#selecionarPiloto').addClass('hide');
 				$('#detalheTemporada').removeClass('hidden');
@@ -361,6 +363,7 @@ function carregarDadosJogoPadrao() {
 }
 
 function preparaJogo() {
+	destacarAoAparecer($('#criaJogo'));
 	$('#criaJogo').removeClass('hide');
 	$('#selecionarPiloto').addClass('hide');
 	$('#temporadaAnterior').remove();

@@ -14,6 +14,14 @@ if (nomeJogo == null) {
 	nomeJogo = getParameter('nomeJogo');
 }
 
+$('#temporadaCarousel').carousel('pause');
+$('#circuitoCarousel').carousel('pause');
+
+$('.carousel').carousel({
+	pause: true,
+	interval: false
+	});
+
 function resultado() {
 	$.ajax({
 		type : "GET",
