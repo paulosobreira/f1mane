@@ -2,6 +2,14 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## IMPORTANTE: nunca desfazer alterações
+
+Nunca desfaça, reverta ou descarte uma alteração no working tree — seja ela feita manualmente pelo usuário (ex.: no editor de circuitos, rodando em paralelo a uma sessão do Claude Code) ou gerada por código/ferramenta (ex.: um teste, um build, o próprio Claude). Isso vale mesmo que a alteração pareça um efeito colateral inesperado de rodar `mvn test` ou qualquer outro comando: não presuma que é algo a "limpar" — investigue a causa antes, e por padrão mantenha o arquivo como está.
+
+Concretamente: não rode `git checkout --`, `git restore`, `git reset --hard`/`--mixed`, `git clean` ou qualquer comando destrutivo equivalente sobre arquivos modificados, a menos que o usuário peça explicitamente naquele momento. Se uma alteração já está no working tree (comitada ou não), o padrão é mantê-la e, quando fizer sentido, comitá-la — nunca descartá-la silenciosamente. Isso inclui alterações que pareçam "só código gerado": também devem ser preservadas e comitadas, não descartadas.
+
+Esta diretiva existe porque, numa sessão anterior, `circuitos.properties` foi revertido repetidas vezes via `git checkout` por engano — presumindo (sem confirmar) que fosse efeito colateral de teste — quando na verdade era o usuário salvando de verdade o campo "Ativo" de um circuito no editor rodando em paralelo. O salvamento real do usuário foi desfeito várias vezes sem que ele soubesse.
+
 ## Build & Run
 
 ```bash
