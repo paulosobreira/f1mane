@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Point;
@@ -99,6 +100,7 @@ import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
 import br.f1mane.visao.PainelCircuito;
 import br.nnpe.GeoUtil;
+import br.nnpe.Global;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
@@ -1280,7 +1282,8 @@ public class MainPanelEditor extends JPanel {
         adicionaEspacoTopo(linha1Painel, gbc, 0, colunaLinha1);
 
         // Linha 2: só controles de teste/visualização — nada aqui é
-        // persistido no circuito (ver gerarBotoesVisualizacao/gerarBotoesTestePista).
+        // persistido no circuito (ver gerarBotoesVisualizacao/gerarBotoesTestePista,
+        // que inclui o checkbox "Padrões" junto com Testar Escapada).
         int[] colunaLinha2 = {0};
         adicionaComponenteTopo(linha2Painel, gbc, 0, colunaLinha2, gerarBotoesVisualizacao());
         adicionaComponenteTopo(linha2Painel, gbc, 0, colunaLinha2, gerarBotoesTestePista());
@@ -4149,7 +4152,13 @@ public class MainPanelEditor extends JPanel {
 
     private JPanel gerarBotoesTestePista() {
         JPanel buttonsPanel1 = new JPanel();
-        buttonsPanel1.setLayout(new GridLayout(1, 6));
+        // FlowLayout (não GridLayout de colunas fixas): os controles usam o
+        // tamanho natural de cada um e fluem lado a lado até o fim da
+        // linha, em vez de forçar todos numa grade de largura igual —
+        // permite adicionar/remover controles (ex.: o checkbox "Padrões")
+        // sem quebrar pra uma linha nova só por causa da contagem fixa de
+        // colunas.
+        buttonsPanel1.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         JCheckBox testaPistaCheck = new JCheckBox(Lang.msg("testePistaCheck"));
         testaPistaCheck.setSelected(testePista != null && testePista.isAlive());
@@ -4187,6 +4196,22 @@ public class MainPanelEditor extends JPanel {
             }
         });
         buttonsPanel1.add(testaEscapadaCheck);
+
+        // Checkbox "Padrões", não persistido por circuito: alterna
+        // Global.padraoObjetoLivreCompleto entre o preenchimento completo
+        // (marcado, padrão) e uma única marca centralizada (desmarcado)
+        // para qualquer ObjetoLivre não sólido — reduz o custo de
+        // redesenho por frame durante a edição. Fica junto dos demais
+        // controles de teste/visualização (mesmo grupo não persistido).
+        JCheckBox padraoCheck = new JCheckBox(Lang.msg("padraoCheck"));
+        padraoCheck.setSelected(Global.padraoObjetoLivreCompleto);
+        padraoCheck.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Global.padraoObjetoLivreCompleto = padraoCheck.isSelected();
+                MainPanelEditor.this.repaint();
+            }
+        });
+        buttonsPanel1.add(padraoCheck);
 
         JButton left = new JButton() {
             @Override

@@ -174,6 +174,7 @@ function cpu_dadosParciais() {
 	if ('24' == dadosParciais.estado) {
 		ativo = false;
 		clearInterval(main);
+		clearInterval(filaCarrosNaoCarregados);
 		window.location.href = "resultado.html?token=" + token + "&nomeJogo=" + nomeJogo;
 	}
 }
@@ -207,6 +208,7 @@ function cpu_sair() {
 	rest_sairJogo();
 	ativo = false;
 	clearInterval(main);
+	clearInterval(filaCarrosNaoCarregados);
 	window.location.href = "index.html?token=" + token;
 }
 
@@ -236,6 +238,9 @@ var fila = setInterval(function() {
 		(funqueue.shift())();
 	}
 }, 100);
+
+var filaCarrosNaoCarregados = setInterval(mid_processaFilaCarrosNaoCarregados,
+	MID_INTERVALO_FILA_CARROS_MS);
 
 // update canvas with some information and animation
 var fps = new FpsCtrl(30, function(e) {

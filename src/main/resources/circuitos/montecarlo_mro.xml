@@ -2491,7 +2491,7 @@
        <int>250</int>
       </void>
       <void property="corPimaria">
-       <object class="java.awt.Color" id="Color10">
+       <object class="java.awt.Color">
         <object idref="Integer0"/>
         <int>102</int>
         <int>51</int>
@@ -3174,7 +3174,7 @@
     <void method="add">
      <object class="br.f1mane.entidades.ObjetoLivre" id="ObjetoLivre0">
       <void property="corPimaria">
-       <object class="java.awt.Color" id="Color11">
+       <object class="java.awt.Color" id="Color10">
         <int>211</int>
         <int>197</int>
         <int>168</int>
@@ -3431,7 +3431,7 @@
        <int>1</int>
       </void>
       <void property="corPimaria">
-       <object idref="Color11"/>
+       <object idref="Color10"/>
       </void>
       <void property="largura">
        <int>1</int>
@@ -3668,7 +3668,7 @@
        <int>1</int>
       </void>
       <void property="corPimaria">
-       <object class="java.awt.Color" id="Color12">
+       <object class="java.awt.Color" id="Color11">
         <int>82</int>
         <int>108</int>
         <int>135</int>
@@ -3676,7 +3676,7 @@
        </object>
       </void>
       <void property="corSecundaria">
-       <object class="java.awt.Color" id="Color13">
+       <object class="java.awt.Color" id="Color12">
         <int>204</int>
         <int>204</int>
         <int>204</int>
@@ -4083,7 +4083,7 @@
        <int>1</int>
       </void>
       <void property="corPimaria">
-       <object idref="Color12"/>
+       <object idref="Color11"/>
       </void>
       <void property="corSecundaria">
        <object class="java.awt.Color">
@@ -4617,7 +4617,7 @@
     <void method="add">
      <object class="br.f1mane.entidades.ObjetoLivre" id="ObjetoLivre4">
       <void property="corPimaria">
-       <object idref="Color11"/>
+       <object idref="Color10"/>
       </void>
       <void property="nivelDesenho">
        <int>-3</int>
@@ -4794,7 +4794,7 @@
     <void method="add">
      <object class="br.f1mane.entidades.ObjetoLivre" id="ObjetoLivre5">
       <void property="corPimaria">
-       <object idref="Color11"/>
+       <object idref="Color10"/>
       </void>
       <void property="nivelDesenho">
        <int>-3</int>
@@ -4953,7 +4953,7 @@
     <void method="add">
      <object class="br.f1mane.entidades.ObjetoLivre" id="ObjetoLivre6">
       <void property="corPimaria">
-       <object idref="Color11"/>
+       <object idref="Color10"/>
       </void>
       <void property="nivelDesenho">
        <int>-4</int>
@@ -5130,7 +5130,7 @@
     <void method="add">
      <object class="br.f1mane.entidades.ObjetoLivre" id="ObjetoLivre7">
       <void property="corPimaria">
-       <object idref="Color11"/>
+       <object idref="Color10"/>
       </void>
       <void property="nivelDesenho">
        <int>-2</int>
@@ -5965,10 +5965,10 @@
        <double>19.0</double>
       </void>
       <void property="corPimaria">
-       <object idref="Color12"/>
+       <object idref="Color11"/>
       </void>
       <void property="corSecundaria">
-       <object idref="Color13"/>
+       <object idref="Color12"/>
       </void>
       <void property="largura">
        <int>1</int>
@@ -6265,10 +6265,10 @@
        <double>19.0</double>
       </void>
       <void property="corPimaria">
-       <object idref="Color12"/>
+       <object idref="Color11"/>
       </void>
       <void property="corSecundaria">
-       <object idref="Color13"/>
+       <object idref="Color12"/>
       </void>
       <void property="largura">
        <int>1</int>
@@ -6529,10 +6529,10 @@
        <double>19.0</double>
       </void>
       <void property="corPimaria">
-       <object idref="Color12"/>
+       <object idref="Color11"/>
       </void>
       <void property="corSecundaria">
-       <object idref="Color13"/>
+       <object idref="Color12"/>
       </void>
       <void property="largura">
        <int>1</int>
@@ -7146,7 +7146,7 @@
        <double>27.0</double>
       </void>
       <void property="corSecundaria">
-       <object class="java.awt.Color" id="Color14">
+       <object class="java.awt.Color" id="Color13">
         <int>122</int>
         <int>152</int>
         <int>154</int>
@@ -7191,7 +7191,7 @@
        <double>23.0</double>
       </void>
       <void property="corSecundaria">
-       <object idref="Color14"/>
+       <object idref="Color13"/>
       </void>
       <void property="largura">
        <int>39</int>
@@ -7231,7 +7231,7 @@
        <double>23.0</double>
       </void>
       <void property="corSecundaria">
-       <object idref="Color14"/>
+       <object idref="Color13"/>
       </void>
       <void property="largura">
        <int>39</int>
@@ -7271,7 +7271,7 @@
        <double>23.0</double>
       </void>
       <void property="corSecundaria">
-       <object idref="Color14"/>
+       <object idref="Color13"/>
       </void>
       <void property="largura">
        <int>39</int>
@@ -7311,7 +7311,7 @@
        <double>23.0</double>
       </void>
       <void property="corSecundaria">
-       <object idref="Color14"/>
+       <object idref="Color13"/>
       </void>
       <void property="largura">
        <int>39</int>
@@ -7351,7 +7351,7 @@
        <double>27.0</double>
       </void>
       <void property="corSecundaria">
-       <object idref="Color14"/>
+       <object idref="Color13"/>
       </void>
       <void property="largura">
        <int>39</int>
@@ -7391,7 +7391,7 @@
        <double>27.0</double>
       </void>
       <void property="corSecundaria">
-       <object idref="Color14"/>
+       <object idref="Color13"/>
       </void>
       <void property="largura">
        <int>39</int>
@@ -7431,7 +7431,7 @@
        <double>27.0</double>
       </void>
       <void property="corSecundaria">
-       <object idref="Color14"/>
+       <object idref="Color13"/>
       </void>
       <void property="largura">
        <int>39</int>
@@ -7471,7 +7471,7 @@
        <double>19.0</double>
       </void>
       <void property="corPimaria">
-       <object class="java.awt.Color" id="Color15">
+       <object class="java.awt.Color" id="Color14">
         <int>168</int>
         <int>168</int>
         <int>168</int>
@@ -8537,13 +8537,18 @@
        <int>1</int>
       </void>
       <void property="corPimaria">
-       <object idref="Color10"/>
+       <object class="java.awt.Color" id="Color15">
+        <int>255</int>
+        <int>153</int>
+        <object idref="Integer0"/>
+        <int>255</int>
+       </object>
       </void>
       <void property="corSecundaria">
        <object class="java.awt.Color" id="Color16">
-        <int>42</int>
-        <int>52</int>
-        <int>27</int>
+        <int>51</int>
+        <int>153</int>
+        <object idref="Integer0"/>
         <int>255</int>
        </object>
       </void>
@@ -8734,7 +8739,7 @@
        <int>1</int>
       </void>
       <void property="corPimaria">
-       <object idref="Color10"/>
+       <object idref="Color15"/>
       </void>
       <void property="corSecundaria">
        <object idref="Color16"/>
@@ -8959,7 +8964,7 @@
        <int>1</int>
       </void>
       <void property="corPimaria">
-       <object idref="Color10"/>
+       <object idref="Color15"/>
       </void>
       <void property="corSecundaria">
        <object idref="Color16"/>
@@ -9290,7 +9295,7 @@
        <int>1</int>
       </void>
       <void property="corPimaria">
-       <object idref="Color10"/>
+       <object idref="Color15"/>
       </void>
       <void property="corSecundaria">
        <object idref="Color16"/>
@@ -9866,7 +9871,7 @@
        <int>1</int>
       </void>
       <void property="corPimaria">
-       <object idref="Color10"/>
+       <object idref="Color15"/>
       </void>
       <void property="corSecundaria">
        <object idref="Color16"/>
@@ -10325,7 +10330,7 @@
        <int>1</int>
       </void>
       <void property="corPimaria">
-       <object idref="Color15"/>
+       <object idref="Color14"/>
       </void>
       <void property="largura">
        <int>1</int>
@@ -10658,7 +10663,7 @@
        <double>19.0</double>
       </void>
       <void property="corPimaria">
-       <object idref="Color15"/>
+       <object idref="Color14"/>
       </void>
       <void property="largura">
        <int>1</int>
@@ -10937,7 +10942,7 @@
        <double>19.0</double>
       </void>
       <void property="corPimaria">
-       <object idref="Color10"/>
+       <object idref="Color15"/>
       </void>
       <void property="corSecundaria">
        <object idref="Color16"/>
@@ -12200,7 +12205,7 @@
        <int>1</int>
       </void>
       <void property="corPimaria">
-       <object idref="Color10"/>
+       <object idref="Color15"/>
       </void>
       <void property="corSecundaria">
        <object idref="Color16"/>
@@ -13177,7 +13182,7 @@
        <int>1</int>
       </void>
       <void property="corPimaria">
-       <object idref="Color11"/>
+       <object idref="Color10"/>
       </void>
       <void property="largura">
        <int>1</int>
@@ -13409,9 +13414,9 @@
       </void>
       <void property="corPimaria">
        <object class="java.awt.Color">
-        <int>124</int>
-        <int>128</int>
-        <int>101</int>
+        <int>204</int>
+        <int>255</int>
+        <object idref="Integer0"/>
         <int>255</int>
        </object>
       </void>
@@ -13550,7 +13555,7 @@
          <string>y</string>
          <void method="set">
           <object idref="Point531"/>
-          <int>1694</int>
+          <int>1693</int>
          </void>
         </void>
        </object>

@@ -23,7 +23,8 @@ import org.junit.jupiter.api.Test;
  * GridBagLayout independente (colunas não compartilhadas entre linhas).
  * Linha 0 = navegação/salvar + nome do circuito/ciclo/tempo de volta/
  * distância; linha 1 = ativo/% chuva/largura da pista/noite/cores; linha 2 =
- * só controles de teste/visualização.
+ * só controles de teste/visualização, incluindo o checkbox "Padrões"
+ * (preview de preenchimento do ObjetoLivre) junto com Testar Escapada.
  */
 class MainPanelEditorTopoNavegacaoTest {
 
@@ -59,6 +60,19 @@ class MainPanelEditorTopoNavegacaoTest {
         for (Component linha : topo.getComponents()) {
             assertInstanceOf(JPanel.class, linha);
         }
+    }
+
+    @Test
+    void linha2_temOCheckboxDePadraoJuntoComEscapada() throws Exception {
+        JPanel topo = gerarTopo();
+        JPanel linha2 = (JPanel) topo.getComponent(2);
+
+        // linha 2 já tinha Testar Pista/Ir ao Box/Testar Escapada (3
+        // checkboxes) + TRACADO/mostrarBackground/mostrarObjetosDesenho (3
+        // checkboxes) = 6; o checkbox "Padrões" some da linha 3 (removida) e
+        // passa a viver aqui, junto com Testar Escapada.
+        assertEquals(7, todosOsComponentesDoTipo(linha2, JCheckBox.class).size(),
+                "linha 2 deveria ter o checkbox \"Padrões\" somado aos 6 já existentes");
     }
 
     @Test

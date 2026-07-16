@@ -1,7 +1,9 @@
 package br.f1mane.entidades;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -11,9 +13,14 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import br.f1mane.recursos.CarregadorRecursos;
+import br.nnpe.Global;
 
 public class ObjetoLivre extends ObjetoDesenho {
 	/** Tamanho (em unidades de mundo, antes do zoom) da célula da grade do padrão de preenchimento. */
@@ -36,28 +43,70 @@ public class ObjetoLivre extends ObjetoDesenho {
 	 * de antes (raio acompanha o passo).
 	 */
 	private static final double FATOR_PASSO_VEGETACAO_DENSA = 1.6 / Math.sqrt(3);
-	private static final double VARIACAO_TAMANHO_VEGETACAO_DENSA = 0.6;
-	/** Vegetação simples: mantém o tamanho original da célula, com variação apenas leve entre as marcas. */
-	private static final double FATOR_PASSO_VEGETACAO_SIMPLES = 1.0;
+	/**
+	 * Vegetação simples: densidade (marcas por área) proporcional a
+	 * 1/fatorPasso² — dividir por sqrt(2) dobra a densidade original (a
+	 * pedido do usuário; sem checagem de sobreposição entre marcas, ao
+	 * contrário da densa, então as relvas/arbustos podem se intersectar
+	 * livremente, o que é aceitável aqui).
+	 */
+	private static final double FATOR_PASSO_VEGETACAO_SIMPLES = 1.0 / Math.sqrt(2);
 	private static final double VARIACAO_TAMANHO_VEGETACAO_SIMPLES = 0.15;
 	/**
-	 * Quantidade de silhuetas distintas de "topo de árvore vista de cima"
-	 * usadas pela vegetação densa (ver {@link #formaTopoArvore}) — cada
-	 * touceira sorteia uma delas, no mesmo espírito dos ícones de vegetação
-	 * top-view (várias espécies com contornos bem diferentes: estrela
-	 * pontiaguda, copa arredondada, espinhos finos, lóbulos largos).
+	 * Sprites de vegetação simples: relva (`vegetacaoRelvaN.png`, pintada com
+	 * {@code corPimaria}) e arbusto (`vegetacaoArbustoN.png`, pintado com
+	 * {@code corSecundaria}), originados da pasta de referência
+	 * `vegetacao-simples/` (nomes `relva-cor1-N`/`arbusto-cor2-N` já indicam
+	 * qual cor cada um usa) e convertidos para template em tons de cinza,
+	 * mesmo espírito dos sprites de árvore da vegetação densa. Cada marca
+	 * sorteia relva OU arbusto (nunca os dois juntos, diferente da árvore
+	 * tronco+copa) e uma variante entre as 4 de cada — SEM esticamento: a
+	 * proporção largura/altura nativa do sprite é sempre preservada (ver
+	 * {@link #desenhaMarcaSimples}), diferente da copa da vegetação densa.
 	 */
-	private static final int VARIANTES_TOPO_ARVORE = 4;
+	private static final int QUANTIDADE_RELVA_SIMPLES = 4;
+	private static final int QUANTIDADE_ARBUSTO_SIMPLES = 4;
 	/**
-	 * Faixa de ampliação aplicada ao raio de cada silhueta de topo de árvore
-	 * (vegetação densa), sorteada por touceira — as marcas ficavam pequenas
-	 * demais em relação ao espaçamento da grade; isso é multiplicado por
-	 * cima do raio já calculado por {@code fatorTamanho}, sem alterar o
-	 * espaçamento (a densidade continua a mesma, só as copas ficam maiores e
-	 * passam a se sobrepor, formando uma copa mais contínua).
+	 * Tamanho de cada marca de vegetação simples (maior dimensão do sprite,
+	 * preservada a proporção nativa), relativo ao tamanho de referência de
+	 * UMA árvore de vegetação densa (a largura da copa, {@code raioCopa*2},
+	 * calculada com os fatores de densidade da densa independente do tipo
+	 * que está sendo desenhado no momento — ver {@link #desenhaPadraoVegetacao}).
 	 */
-	private static final double AMPLIACAO_MIN_TOPO_ARVORE = 2.0;
-	private static final double AMPLIACAO_MAX_TOPO_ARVORE = 3.0;
+	private static final double FATOR_TAMANHO_VEGETACAO_SIMPLES = 1.0 / 3.0;
+	/**
+	 * Modo de preview (checkbox "Padrões" desmarcado): a marca única
+	 * centralizada é ampliada pra {@code FATOR_TAMANHO_EXEMPLO_PREVIEW}
+	 * vezes o tamanho de referência da vegetação DENSA (não o tamanho normal
+	 * de cada tipo), pra exemplificar melhor como o padrão fica — um único
+	 * exemplo grande, fácil de examinar, em vez do tamanho minúsculo que a
+	 * marca teria dentro do preenchimento completo de verdade.
+	 */
+	private static final double FATOR_TAMANHO_EXEMPLO_PREVIEW = 3.0;
+	/**
+	 * Sprites de árvore vista de LADO usados pela vegetação densa: tronco e
+	 * copa são arquivos separados em {@code src/main/resources/png/}
+	 * (`vegetacaoCauleN.png`/`vegetacaoCopaN.png`, N=1..quantidade),
+	 * originados da pasta de referência `vegetacao densa/` trazida ao
+	 * projeto e convertidos para template em tons de cinza (mesmo brilho
+	 * por pixel do original, matiz/saturação removidos) — ver
+	 * {@link br.f1mane.recursos.CarregadorRecursos#pintarMonocromatico}, que
+	 * repinta cada template com {@code corPimaria} (tronco) ou
+	 * {@code corSecundaria} (copa) preservando o shading original. Cada
+	 * touceira sorteia um tronco e uma copa independentemente (variação de
+	 * COMBINAÇÃO, não só de modelo isolado), mas todas as árvores têm o
+	 * MESMO tamanho entre si — sem variação de escala, diferente da vista de
+	 * topo anterior (vista lateral não tem a mesma justificativa de
+	 * profundidade).
+	 */
+	private static final int QUANTIDADE_CAULES_ARVORE_LATERAL = 5;
+	private static final int QUANTIDADE_COPAS_ARVORE_LATERAL = 6;
+	/** Metade da largura da copa (e raio usado no anti-sobreposição), relativo ao passo da grade. */
+	private static final double FATOR_RAIO_COPA_ARVORE_LATERAL = 0.55;
+	/** Altura do tronco, relativa ao raio da copa. */
+	private static final double FATOR_ALTURA_TRONCO_ARVORE_LATERAL = 0.5;
+	/** Largura do tronco, relativa ao raio da copa. */
+	private static final double FATOR_LARGURA_TRONCO_ARVORE_LATERAL = 0.28;
 
 	/**
 	 * Campo legado (polígono de linhas retas), mantido apenas para leitura de
@@ -183,9 +232,18 @@ public class ObjetoLivre extends ObjetoDesenho {
 		// Graphics2D em desenhaComClipSemAntialiasing.
 		Shape formaZoomLocal = AffineTransform.getScaleInstance(zoom, zoom).createTransformedShape(generalPath);
 
-		g2d.setColor(new Color(getCorPimaria().getRed(), getCorPimaria()
-				.getGreen(), getCorPimaria().getBlue(), getTransparencia()));
-		g2d.fill(formaZoomLocal);
+		// VEGETACAO_DENSA e VEGETACAO_SIMPLES não preenchem fundo: corPimaria
+		// e corSecundaria passam a colorir só as marcas individuais (tronco/
+		// copa da árvore, ou relva/arbusto — ver desenhaPadraoVegetacao),
+		// deixando a área transparente onde não há marca. Preenchimento
+		// sólido de corPimaria pra ambas seria idêntico ao usado pela relva,
+		// tornando a relva invisível contra o próprio fundo. Os demais tipos
+		// continuam com o fundo sólido de sempre.
+		if (tipo != TipoObjetoLivre.VEGETACAO_DENSA && tipo != TipoObjetoLivre.VEGETACAO_SIMPLES) {
+			g2d.setColor(new Color(getCorPimaria().getRed(), getCorPimaria()
+					.getGreen(), getCorPimaria().getBlue(), getTransparencia()));
+			g2d.fill(formaZoomLocal);
+		}
 
 		if (tipo == TipoObjetoLivre.BRITA) {
 			desenhaBrita(g2d, formaZoomLocal, pivoX, pivoY, zoom);
@@ -197,6 +255,25 @@ public class ObjetoLivre extends ObjetoDesenho {
 			desenhaPadraoXadrez(g2d, formaZoomLocal, pivoX, pivoY, zoom);
 		} else if (tipo != TipoObjetoLivre.POLIGONO_SIMPLES) {
 			desenhaPadraoEmGrade(g2d, formaZoomLocal, pivoX, pivoY, zoom);
+		}
+
+		// Modo de preview (checkbox "Padrão" desmarcado no editor): só uma
+		// marca de exemplo é desenhada dentro da forma (ver os métodos de
+		// padrão acima), então a borda real do objeto livre deixa de ficar
+		// óbvia — sobretudo em VEGETACAO_DENSA, que nem preenche fundo.
+		// Contorno magenta (cor fixa, não relacionada a corPimaria/
+		// corSecundaria) desenhado por cima exemplifica até onde vai a
+		// forma. Some quando o padrão completo está ligado (a própria
+		// grade/dispersão já deixa a extensão da forma óbvia) e nunca
+		// aparece em POLIGONO_SIMPLES (o checkbox não afeta esse tipo).
+		if (tipo != TipoObjetoLivre.POLIGONO_SIMPLES && !Global.padraoObjetoLivreCompleto) {
+			Color corAnterior = g2d.getColor();
+			Stroke strokeAnterior = g2d.getStroke();
+			g2d.setColor(Color.MAGENTA);
+			g2d.setStroke(new BasicStroke(2f));
+			g2d.draw(formaZoomLocal);
+			g2d.setColor(corAnterior);
+			g2d.setStroke(strokeAnterior);
 		}
 	}
 
@@ -230,6 +307,14 @@ public class ObjetoLivre extends ObjetoDesenho {
 	 * {@link #desenhaPadraoVegetacao}).
 	 */
 	private void desenhaPadraoEmGrade(Graphics2D g2d, Shape formaLocal, double pivoX, double pivoY, double zoom) {
+		// Modo de preview (checkbox "Padrões" desmarcado): diferente da
+		// vegetação (densa/simples, que ganham um exemplo ampliado), os
+		// demais padrões (água aqui, brita/listrado/xadrez análogo) não
+		// desenham nenhuma marca de exemplo — só a borda magenta já
+		// desenhada por ObjetoLivre.desenha() marca a área.
+		if (!Global.padraoObjetoLivreCompleto) {
+			return;
+		}
 		desenhaComClipSemAntialiasing(g2d, formaLocal, pivoX, pivoY, () -> {
 			Rectangle bounds = areaCoberturaPadrao(formaLocal);
 			int passo = Math.max(4, (int) Math.round(PASSO_PADRAO_LOCAL * zoom));
@@ -249,22 +334,36 @@ public class ObjetoLivre extends ObjetoDesenho {
 	/**
 	 * Vegetação (densa e simples): touceiras espalhadas em posições
 	 * pseudo-aleatórias dentro de cada célula (não alinhadas em grade, mesmo
-	 * espírito da {@link #desenhaBrita}) e com tamanho levemente sorteado a
-	 * cada marca. A densa usa célula maior (touceiras maiores) e uma faixa de
-	 * variação de tamanho bem mais ampla que a simples, que fica quase
-	 * uniforme. Semente fixa: determinístico entre renderizações sucessivas.
+	 * espírito da {@link #desenhaBrita}). Semente fixa: determinístico entre
+	 * renderizações sucessivas.
 	 * <p>
-	 * Cada touceira da densa é uma silhueta de "topo de árvore" sorteada
-	 * entre {@link #VARIANTES_TOPO_ARVORE} opções (ver {@link #formaTopoArvore}),
-	 * em vez de sempre a mesma marca — o sorteio consome o mesmo
-	 * {@code random} usado pela posição/tamanho, então continua determinístico.
-	 * Copas candidatas que se sobreporiam a uma já aceita (ver
-	 * {@link #sobrepoeTouceiraAceita}) ou que ficariam cortadas pela borda da
-	 * forma (ver {@link #cabeInteiraNaSilhueta}) são descartadas — a célula
-	 * simplesmente fica sem marca, em vez de desenhar uma copa se
-	 * interceptando com a vizinha ou "quebrada" no contorno do objeto. O
-	 * descarte não pula nenhum sorteio do {@code random}, então a sequência
-	 * consumida — e portanto o resultado — continua idêntica entre renderizações.
+	 * A simples sorteia, por marca, relva ({@code corPimaria}) OU arbusto
+	 * ({@code corSecundaria}) — nunca os dois juntos — e uma variante entre
+	 * as 4 de cada, desenhando o sprite correspondente SEM esticamento (ver
+	 * {@link #desenhaMarcaSimples}), com uma leve variação de escala
+	 * uniforme entre marcas (ver {@code VARIACAO_TAMANHO_VEGETACAO_SIMPLES}
+	 * — mantém a proporção, só aumenta/diminui a marca inteira).
+	 * <p>
+	 * A densa desenha árvores vistas de LADO a partir de sprites (tronco em
+	 * {@code corPimaria}, copa em {@code corSecundaria} — ver
+	 * {@link #desenhaArvoreSeCouber}), sorteando um tronco e uma copa
+	 * INDEPENDENTEMENTE ({@link #QUANTIDADE_CAULES_ARVORE_LATERAL} x
+	 * {@link #QUANTIDADE_COPAS_ARVORE_LATERAL} combinações possíveis). A
+	 * altura da árvore é sempre a mesma (sem variação de escala — vista
+	 * lateral não tem a mesma justificativa de profundidade que a vista de
+	 * topo anterior), mas a LARGURA da copa sorteia, por árvore, um fator de
+	 * esticamento entre a proporção original do sprite (mais estreita/fina)
+	 * e o esticamento total até preencher o envelope quadrado (mais larga) —
+	 * ver {@link #desenhaArvoreSeCouber}. Árvores candidatas que se
+	 * sobreporiam a uma já aceita
+	 * (ver {@link #sobrepoeTouceiraAceita}) ou que ficariam cortadas pela
+	 * borda da forma (ver {@link #cabeInteiraNaSilhueta}) são descartadas —
+	 * a posição simplesmente fica sem árvore, em vez de desenhar uma se
+	 * interceptando com a vizinha ou "quebrada" no contorno do objeto (a
+	 * simples não tem essa checagem — marcas menores, sem o mesmo pedido).
+	 * O descarte não pula nenhum sorteio do {@code random}, então a
+	 * sequência consumida — e portanto o resultado — continua idêntica
+	 * entre renderizações.
 	 */
 	private void desenhaPadraoVegetacao(Graphics2D g2d, Shape formaLocal, double pivoX, double pivoY, double zoom) {
 		boolean densa = tipo == TipoObjetoLivre.VEGETACAO_DENSA;
@@ -273,39 +372,61 @@ public class ObjetoLivre extends ObjetoDesenho {
 				? AffineTransform.getRotateInstance(Math.toRadians((double) getAngulo()), pivoX, pivoY)
 				: null;
 		List<double[]> touceirasAceitas = densa ? new ArrayList<double[]>() : null;
+		// Tamanho de referência da vegetação simples é derivado do tamanho
+		// da árvore de vegetação DENSA (largura da copa), sempre com os
+		// fatores da densa — independente de qual tipo está sendo desenhado
+		// agora — pra "1/3 do tamanho do padrão da vegetação densa" não
+		// mudar se um dia o passo/densidade da própria simples mudar.
+		int passoDensaReferencia = Math.max(4, (int) Math.round(PASSO_PADRAO_LOCAL * FATOR_PASSO_VEGETACAO_DENSA * zoom));
+		double tamanhoBaseSimples = (passoDensaReferencia * FATOR_RAIO_COPA_ARVORE_LATERAL * 2)
+				* FATOR_TAMANHO_VEGETACAO_SIMPLES;
 		desenhaComClipSemAntialiasing(g2d, formaLocal, pivoX, pivoY, () -> {
 			Rectangle bounds = areaCoberturaPadrao(formaLocal);
 			double fatorPasso = densa ? FATOR_PASSO_VEGETACAO_DENSA : FATOR_PASSO_VEGETACAO_SIMPLES;
-			double variacaoTamanho = densa ? VARIACAO_TAMANHO_VEGETACAO_DENSA : VARIACAO_TAMANHO_VEGETACAO_SIMPLES;
 			int passo = Math.max(4, (int) Math.round(PASSO_PADRAO_LOCAL * fatorPasso * zoom));
-			g2d.setColor(new Color(getCorSecundaria().getRed(), getCorSecundaria().getGreen(),
-					getCorSecundaria().getBlue(), getTransparencia()));
+			double raioCopa = passo * FATOR_RAIO_COPA_ARVORE_LATERAL;
+			double alturaTronco = raioCopa * FATOR_ALTURA_TRONCO_ARVORE_LATERAL;
+			double larguraTronco = raioCopa * FATOR_LARGURA_TRONCO_ARVORE_LATERAL;
+			if (!Global.padraoObjetoLivreCompleto) {
+				double cx = bounds.getCenterX();
+				double cy = bounds.getCenterY();
+				if (densa) {
+					desenhaArvoreSeCouber(g2d, cx, cy, raioCopa * FATOR_TAMANHO_EXEMPLO_PREVIEW,
+							alturaTronco * FATOR_TAMANHO_EXEMPLO_PREVIEW, larguraTronco * FATOR_TAMANHO_EXEMPLO_PREVIEW,
+							0, 0, 1.0, rotacaoConteudo, areaSilhueta);
+				} else {
+					double tamanhoDensaReferencia = passoDensaReferencia * FATOR_RAIO_COPA_ARVORE_LATERAL * 2;
+					desenhaMarcaSimples(g2d, cx, cy, tamanhoDensaReferencia * FATOR_TAMANHO_EXEMPLO_PREVIEW, true, 0);
+				}
+				return;
+			}
 			Random random = new Random(SEMENTE_VEGETACAO);
 			for (int y = bounds.y - passo; y < bounds.y + bounds.height + passo; y += passo) {
 				for (int x = bounds.x - passo; x < bounds.x + bounds.width + passo; x += passo) {
 					int deslocX = random.nextInt(passo);
 					int deslocY = random.nextInt(passo);
-					double fatorTamanho = 1.0 - variacaoTamanho + random.nextDouble() * (2 * variacaoTamanho);
-					int raio = Math.max(2, (int) Math.round((passo / 5.0) * fatorTamanho));
 					if (densa) {
-						double fatorAmpliacao = AMPLIACAO_MIN_TOPO_ARVORE
-								+ random.nextDouble() * (AMPLIACAO_MAX_TOPO_ARVORE - AMPLIACAO_MIN_TOPO_ARVORE);
-						raio = Math.max(2, (int) Math.round(raio * fatorAmpliacao));
-						int variante = random.nextInt(VARIANTES_TOPO_ARVORE);
-						double anguloBase = random.nextDouble() * Math.PI * 2;
-						int cx = x + deslocX;
-						int cy = y + deslocY;
-						if (sobrepoeTouceiraAceita(touceirasAceitas, cx, cy, raio)) {
+						int indiceCaule = random.nextInt(QUANTIDADE_CAULES_ARVORE_LATERAL);
+						int indiceCopa = random.nextInt(QUANTIDADE_COPAS_ARVORE_LATERAL);
+						double fatorEsticamentoCopa = random.nextDouble();
+						double cx = x + deslocX;
+						double cy = y + deslocY;
+						if (sobrepoeTouceiraAceita(touceirasAceitas, cx, cy, raioCopa)) {
 							continue;
 						}
-						GeneralPath forma = formaTopoArvore(cx, cy, raio, variante, anguloBase);
-						if (!cabeInteiraNaSilhueta(rotacaoConteudo.createTransformedShape(forma), areaSilhueta)) {
-							continue;
+						boolean desenhou = desenhaArvoreSeCouber(g2d, cx, cy, raioCopa, alturaTronco, larguraTronco,
+								indiceCaule, indiceCopa, fatorEsticamentoCopa, rotacaoConteudo, areaSilhueta);
+						if (desenhou) {
+							touceirasAceitas.add(new double[] { cx, cy, raioCopa });
 						}
-						g2d.fill(forma);
-						touceirasAceitas.add(new double[] { cx, cy, raio });
 					} else {
-						desenhaPrimitivaPadrao(g2d, x + deslocX, y + deslocY, raio);
+						boolean ehRelva = random.nextBoolean();
+						int variante = random.nextInt(ehRelva ? QUANTIDADE_RELVA_SIMPLES : QUANTIDADE_ARBUSTO_SIMPLES);
+						double fatorTamanho = 1.0 - VARIACAO_TAMANHO_VEGETACAO_SIMPLES
+								+ random.nextDouble() * (2 * VARIACAO_TAMANHO_VEGETACAO_SIMPLES);
+						double cx = x + deslocX;
+						double cy = y + deslocY;
+						desenhaMarcaSimples(g2d, cx, cy, tamanhoBaseSimples * fatorTamanho, ehRelva, variante);
 					}
 				}
 			}
@@ -313,13 +434,47 @@ public class ObjetoLivre extends ObjetoDesenho {
 	}
 
 	/**
+	 * Desenha uma marca de vegetação simples (relva em {@code corPimaria} ou
+	 * arbusto em {@code corSecundaria}) centrada em {@code (cx, cy)}, SEM
+	 * esticar o sprite: a proporção largura/altura nativa é sempre
+	 * preservada, escalando a MAIOR dimensão nativa para {@code tamanho} e a
+	 * outra proporcionalmente — diferente da copa da vegetação densa, que
+	 * pode esticar. "Evitar esticamento" foi um pedido explícito do usuário
+	 * pra ver como a vegetação simples fica na proporção original dos
+	 * sprites antes de considerar variar isso também.
+	 */
+	private void desenhaMarcaSimples(Graphics2D g2d, double cx, double cy, double tamanho, boolean ehRelva,
+			int variante) {
+		String caminho = (ehRelva ? "png/vegetacaoRelva" : "png/vegetacaoArbusto") + (variante + 1) + ".png";
+		Color cor = ehRelva ? getCorPimaria() : getCorSecundaria();
+		double proporcao = CarregadorRecursos.obterProporcaoLarguraAltura(caminho);
+		double largura = proporcao >= 1.0 ? tamanho : tamanho * proporcao;
+		double altura = proporcao >= 1.0 ? tamanho / proporcao : tamanho;
+		int w = Math.max(1, (int) Math.round(largura));
+		int h = Math.max(1, (int) Math.round(altura));
+
+		Composite compositeAnterior = g2d.getComposite();
+		Object interpolacaoAnterior = g2d.getRenderingHint(RenderingHints.KEY_INTERPOLATION);
+		if (getTransparencia() < 255) {
+			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, getTransparencia() / 255f));
+		}
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+
+		BufferedImage sprite = CarregadorRecursos.pintarMonocromatico(caminho, cor);
+		g2d.drawImage(sprite, (int) Math.round(cx - w / 2.0), (int) Math.round(cy - h / 2.0), w, h, null);
+
+		g2d.setComposite(compositeAnterior);
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				interpolacaoAnterior != null ? interpolacaoAnterior : RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+	}
+
+	/**
 	 * {@code true} se o círculo (centro, raio) da candidata invade o círculo
-	 * de alguma touceira já aceita — aproximação conservadora (usa o raio
-	 * externo da estrela como raio do círculo) suficiente pra garantir que
-	 * copas de vegetação densa nunca se sobreponham entre si. Comparado em
-	 * espaço LOCAL (antes da rotação do conteúdo): como a rotação é uma
-	 * isometria em torno do mesmo pivô pra todas as touceiras, distâncias
-	 * entre centros não mudam, então não é preciso rotacionar nada aqui.
+	 * de alguma touceira já aceita — suficiente pra garantir que árvores de
+	 * vegetação densa nunca se sobreponham entre si. Comparado em espaço
+	 * LOCAL (antes da rotação do conteúdo): como a rotação é uma isometria em
+	 * torno do mesmo pivô pra todas as touceiras, distâncias entre centros
+	 * não mudam, então não é preciso rotacionar nada aqui.
 	 */
 	private boolean sobrepoeTouceiraAceita(List<double[]> touceirasAceitas, double cx, double cy, double raio) {
 		for (double[] outra : touceirasAceitas) {
@@ -335,8 +490,8 @@ public class ObjetoLivre extends ObjetoDesenho {
 	 * {@code true} se {@code formaFinal} (já na posição/rotação em que
 	 * efetivamente aparece na tela) cai inteiramente dentro de
 	 * {@code areaSilhueta} (a silhueta fixa e não rotacionada do objeto) —
-	 * usado pra descartar copas que o clip cortaria pela metade na borda do
-	 * objeto livre, em vez de deixá-las aparecer "quebradas".
+	 * usado pra descartar árvores que o clip cortaria pela metade na borda
+	 * do objeto livre, em vez de deixá-las aparecer "quebradas".
 	 */
 	private boolean cabeInteiraNaSilhueta(Shape formaFinal, Area areaSilhueta) {
 		Area foraDaSilhueta = new Area(formaFinal);
@@ -345,59 +500,94 @@ public class ObjetoLivre extends ObjetoDesenho {
 	}
 
 	/**
-	 * Silhueta de "topo de árvore vista de cima" (polígono em estrela: raio
-	 * externo e interno alternados a cada vértice), no espírito visual de
-	 * ícones de vegetação top-view — várias plantas/árvores com contornos
-	 * bem diferentes entre si (pontas finas, copa arredondada, espinhos,
-	 * lóbulos largos), não um único glifo repetido. {@code variante} escolhe
-	 * a quantidade de pontas e o quão fundo é o entalhe entre elas;
-	 * {@code anguloBase} gira a silhueta pra as marcas não ficarem todas
-	 * viradas pro mesmo lado. Sempre um polígono simples (não autointerceptante),
-	 * então cada touceira é um único preenchimento contínuo.
+	 * Desenha uma árvore vista de lado centrada em {@code (cx, cy)} a partir
+	 * dos sprites {@code vegetacaoCaule<indiceCaule+1>.png} (tronco, pintado
+	 * com {@code corPimaria}) e {@code vegetacaoCopa<indiceCopa+1>.png}
+	 * (copa, pintada com {@code corSecundaria}) — ver
+	 * {@link CarregadorRecursos#pintarMonocromatico}. Cada sprite é
+	 * esticado para preencher exatamente o mesmo retângulo-envelope que a
+	 * geometria procedural anterior usava (tronco: {@code larguraTronco} x
+	 * {@code alturaTronco}; copa: {@code raioCopa*2} x a altura restante),
+	 * preservando o tamanho uniforme entre árvores independente da
+	 * combinação de tronco/copa sorteada, EXCETO pela largura da copa: em
+	 * vez de sempre esticar o sprite pra preencher o envelope quadrado
+	 * inteiro, {@code fatorEsticamentoCopa} (0–1, sorteado por árvore)
+	 * interpola entre a largura NATURAL do sprite (preservando a proporção
+	 * original — mais estreita/fina, já que os sprites de referência são
+	 * mais altos que largos) em {@code fatorEsticamentoCopa=0} e a largura
+	 * do envelope cheio (esticamento total, mesmo comportamento de antes)
+	 * em {@code fatorEsticamentoCopa=1} — a pedido do usuário, que gostou do
+	 * esticamento mas quis variedade entre copas mais finas e mais largas.
+	 * A copa sempre fica centralizada no mesmo {@code cx}, qualquer que seja
+	 * a largura sorteada. A verificação de contenção usa o envelope CHEIO
+	 * (mais conservadora que o necessário quando a largura real é menor,
+	 * nunca insuficiente). Só desenha se a silhueta combinada (os dois
+	 * retângulos), já rotacionada pelo conteúdo do padrão, couber inteira
+	 * dentro de {@code areaSilhueta} — ver {@link #cabeInteiraNaSilhueta}.
+	 * Quando {@code areaSilhueta}/{@code rotacaoConteudo} são {@code null}
+	 * (não deveria acontecer fora de {@code VEGETACAO_DENSA}), desenha sem
+	 * checar contenção. Retorna {@code true} se a árvore foi desenhada.
 	 */
-	private GeneralPath formaTopoArvore(int cx, int cy, int raio, int variante, double anguloBase) {
-		int pontas;
-		double fatorEntalhe;
-		switch (variante % VARIANTES_TOPO_ARVORE) {
-		case 0: // estrela pontiaguda (tipo folha de bordo/ginkgo vista de cima)
-			pontas = 9;
-			fatorEntalhe = 0.45;
-			break;
-		case 1: // copa arredondada, quase circular, com leve ondulação
-			pontas = 14;
-			fatorEntalhe = 0.85;
-			break;
-		case 2: // espinhos finos (tipo agave/palmeira)
-			pontas = 11;
-			fatorEntalhe = 0.2;
-			break;
-		default: // copa lobulada, poucos lóbulos largos
-			pontas = 6;
-			fatorEntalhe = 0.6;
-			break;
-		}
-		GeneralPath path = new GeneralPath();
-		int totalVertices = pontas * 2;
-		for (int i = 0; i < totalVertices; i++) {
-			double angulo = anguloBase + (Math.PI * i) / pontas;
-			double r = (i % 2 == 0) ? raio : raio * fatorEntalhe;
-			double px = cx + Math.cos(angulo) * r;
-			double py = cy + Math.sin(angulo) * r;
-			if (i == 0) {
-				path.moveTo(px, py);
-			} else {
-				path.lineTo(px, py);
+	private boolean desenhaArvoreSeCouber(Graphics2D g2d, double cx, double cy, double raioCopa,
+			double alturaTronco, double larguraTronco, int indiceCaule, int indiceCopa,
+			double fatorEsticamentoCopa, AffineTransform rotacaoConteudo, Area areaSilhueta) {
+		double alturaTotal = alturaTronco + raioCopa * 2;
+		double topoCopa = cy - alturaTotal / 2.0;
+		double baseTronco = cy + alturaTotal / 2.0;
+		double topoTronco = baseTronco - alturaTronco;
+
+		Rectangle2D.Double retTronco = new Rectangle2D.Double(cx - larguraTronco / 2, topoTronco, larguraTronco,
+				alturaTronco);
+		Rectangle2D.Double retCopa = new Rectangle2D.Double(cx - raioCopa, topoCopa, raioCopa * 2,
+				topoTronco - topoCopa);
+
+		if (areaSilhueta != null && rotacaoConteudo != null) {
+			Area areaArvore = new Area(retTronco);
+			areaArvore.add(new Area(retCopa));
+			if (!cabeInteiraNaSilhueta(rotacaoConteudo.createTransformedShape(areaArvore), areaSilhueta)) {
+				return false;
 			}
 		}
-		path.closePath();
-		return path;
+
+		Composite compositeAnterior = g2d.getComposite();
+		Object interpolacaoAnterior = g2d.getRenderingHint(RenderingHints.KEY_INTERPOLATION);
+		if (getTransparencia() < 255) {
+			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, getTransparencia() / 255f));
+		}
+		// BILINEAR (não a reamostragem progressiva por halvings de
+		// pintarModeloV2): os sprites já vêm cacheados na resolução nativa
+		// por CarregadorRecursos.pintarMonocromatico (só recolore, não
+		// redimensiona), então quem escala pra cada árvore é o próprio
+		// drawImage — precisa ser barato porque roda a cada árvore/frame,
+		// diferente da qualidade one-shot usada pros sprites de carro.
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+
+		int wTronco = Math.max(1, (int) Math.round(larguraTronco));
+		int hTronco = Math.max(1, (int) Math.round(alturaTronco));
+		BufferedImage spriteTronco = CarregadorRecursos.pintarMonocromatico(
+				"png/vegetacaoCaule" + (indiceCaule + 1) + ".png", getCorPimaria());
+		g2d.drawImage(spriteTronco, (int) Math.round(retTronco.x), (int) Math.round(retTronco.y), wTronco, hTronco,
+				null);
+
+		String caminhoCopa = "png/vegetacaoCopa" + (indiceCopa + 1) + ".png";
+		int hCopa = Math.max(1, (int) Math.round(retCopa.height));
+		double proporcaoNativaCopa = CarregadorRecursos.obterProporcaoLarguraAltura(caminhoCopa);
+		double larguraNatural = hCopa * proporcaoNativaCopa;
+		double larguraEsticada = Math.max(larguraNatural,
+				larguraNatural + fatorEsticamentoCopa * (retCopa.width - larguraNatural));
+		int wCopa = Math.max(1, (int) Math.round(Math.min(larguraEsticada, retCopa.width)));
+		int xCopa = (int) Math.round(cx - wCopa / 2.0);
+		BufferedImage spriteCopa = CarregadorRecursos.pintarMonocromatico(caminhoCopa, getCorSecundaria());
+		g2d.drawImage(spriteCopa, xCopa, (int) Math.round(retCopa.y), wCopa, hCopa, null);
+
+		g2d.setComposite(compositeAnterior);
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				interpolacaoAnterior != null ? interpolacaoAnterior : RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+		return true;
 	}
 
 	private void desenhaPrimitivaPadrao(Graphics2D g2d, int cx, int cy, int raio) {
 		switch (tipo) {
-		case VEGETACAO_SIMPLES:
-			g2d.drawLine(cx - raio, cy + raio, cx + raio, cy - raio);
-			break;
 		case AGUA:
 			g2d.drawArc(cx - raio * 2, cy - raio, raio * 4, raio * 2, 0, 180);
 			break;
@@ -413,6 +603,11 @@ public class ObjetoLivre extends ObjetoDesenho {
 	 * resultado é determinístico entre renderizações sucessivas.
 	 */
 	private void desenhaBrita(Graphics2D g2d, Shape formaLocal, double pivoX, double pivoY, double zoom) {
+		// Modo de preview: sem marca de exemplo pra brita — só a borda
+		// magenta (ver ObjetoLivre.desenha()) marca a área.
+		if (!Global.padraoObjetoLivreCompleto) {
+			return;
+		}
 		desenhaComClipSemAntialiasing(g2d, formaLocal, pivoX, pivoY, () -> {
 			Rectangle bounds = areaCoberturaPadrao(formaLocal);
 			int passoBase = Math.max(4, (int) Math.round(PASSO_PADRAO_LOCAL * zoom));
@@ -439,6 +634,11 @@ public class ObjetoLivre extends ObjetoDesenho {
 	 * ângulo do objeto automaticamente, sem cálculo de rotação aqui.
 	 */
 	private void desenhaPadraoListrado(Graphics2D g2d, Shape formaLocal, double pivoX, double pivoY, double zoom) {
+		// Modo de preview: sem marca de exemplo pro listrado — só a borda
+		// magenta (ver ObjetoLivre.desenha()) marca a área.
+		if (!Global.padraoObjetoLivreCompleto) {
+			return;
+		}
 		desenhaComClipSemAntialiasing(g2d, formaLocal, pivoX, pivoY, () -> {
 			Rectangle bounds = areaCoberturaPadrao(formaLocal);
 			int passo = Math.max(4, (int) Math.round(PASSO_PADRAO_LOCAL * zoom));
@@ -457,6 +657,11 @@ public class ObjetoLivre extends ObjetoDesenho {
 	 * mesmo mecanismo de rotação via transform do {@link #desenhaPadraoListrado}.
 	 */
 	private void desenhaPadraoXadrez(Graphics2D g2d, Shape formaLocal, double pivoX, double pivoY, double zoom) {
+		// Modo de preview: sem marca de exemplo pro xadrez — só a borda
+		// magenta (ver ObjetoLivre.desenha()) marca a área.
+		if (!Global.padraoObjetoLivreCompleto) {
+			return;
+		}
 		desenhaComClipSemAntialiasing(g2d, formaLocal, pivoX, pivoY, () -> {
 			Rectangle bounds = areaCoberturaPadrao(formaLocal);
 			int passo = Math.max(4, (int) Math.round(PASSO_PADRAO_LOCAL * zoom));

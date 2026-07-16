@@ -59,6 +59,16 @@ public final class Global {
     public static boolean LOG_COLISAO = false;
 
     /**
+     * Preferência de exibição do EDITOR (não persistida por circuito):
+     * quando false, {@code ObjetoLivre} desenha só uma marca do padrão
+     * procedural (touceira/árvore/listra/célula), centralizada na forma, em
+     * vez do preenchimento completo — reduz o custo de redesenho por frame
+     * durante a edição. Default true preserva o preenchimento completo de
+     * sempre; o runtime de corrida nunca altera esta flag.
+     */
+    public static boolean padraoObjetoLivreCompleto = true;
+
+    /**
      * Substitui a antiga GERAR_IMAGEM_CIRCUITO_EM_MEMORIA: ativo gera a
      * imagem do circuito proceduralmente em memória (em vez de carregar o
      * arquivo de fundo real), usa os nomes-homenagem de carro/piloto (em vez

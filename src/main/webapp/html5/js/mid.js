@@ -27,6 +27,150 @@ var mapaRastroFaisca = new Map();
 var mapaTravadaRodaFumaca = new Map();
 var eixoCarro = 30;
 var preCarrega = true;
+var MID_MAX_TENTATIVAS_IMG = 5;
+var MID_DELAY_RETRY_IMG_MS = 1000;
+var MID_INTERVALO_FILA_CARROS_MS = 5000;
+var mid_filaCarrosNaoCarregados = [];
+var mid_filaCarrosSet = new Set();
+
+/**
+ * Carrega uma imagem via URL e, em caso de falha (rede instável, timeout,
+ * erro transitório no servidor), tenta novamente algumas vezes com um
+ * pequeno atraso antes de desistir. Sem isso, uma falha de rede pontual
+ * deixava o carro (visão de cima) permanentemente quebrado na tela, já
+ * que <img>/Image não tenta novamente sozinho.
+ *
+ * aoFinalizar(sucesso), se informado, é chamado uma única vez: com true
+ * quando a imagem carrega (onload) e com false quando as tentativas se
+ * esgotam sem sucesso. Usado por mid_carregaImagensCarro para saber quando
+ * enfileirar o carro na fila de retry ou invalidar o cache de rotação.
+ */
+function mid_carregaImagemComRetry(img, url, tentativas, aoFinalizar) {
+    tentativas = tentativas || 0;
+    img.onload = function () {
+        if (aoFinalizar) {
+            aoFinalizar(true);
+        }
+    };
+    img.onerror = function () {
+        if (tentativas < MID_MAX_TENTATIVAS_IMG) {
+            setTimeout(function () {
+                mid_carregaImagemComRetry(img, url, tentativas + 1, aoFinalizar);
+            }, MID_DELAY_RETRY_IMG_MS * (tentativas + 1));
+        } else if (aoFinalizar) {
+            aoFinalizar(false);
+        }
+    };
+    img.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_retry=' + tentativas;
+}
+
+/**
+ * Remove do cache de sprites rotacionados (mapaRotacionar, chaveado por
+ * "carro.id-anguloGraus") todas as entradas do carro informado. Necessário
+ * porque vdp_rotacionar desenha o <img> num canvas na hora em que é chamado:
+ * se a imagem ainda não tinha carregado nesse instante (ex.: o preCarrega de
+ * mid_caregaMidia roda 5s após o início do carregamento), o canvas cacheado
+ * fica quebrado para sempre, mesmo depois da imagem terminar de carregar.
+ */
+function mid_invalidaRotacaoCarro(carroId) {
+    var prefixo = carroId + "-";
+    mapaRotacionar.forEach(function (valor, chave) {
+        if (chave.indexOf(prefixo) === 0) {
+            mapaRotacionar.delete(chave);
+        }
+    });
+}
+
+function mid_enfileiraCarroNaoCarregado(pilotoId) {
+    if (mid_filaCarrosSet.has(pilotoId)) {
+        return;
+    }
+    mid_filaCarrosSet.add(pilotoId);
+    mid_filaCarrosNaoCarregados.push(pilotoId);
+}
+
+/**
+ * Carrega (ou recarrega) as 4 imagens de um carro/piloto como uma unidade só.
+ * Se qualquer uma falhar após esgotar as tentativas de
+ * mid_carregaImagemComRetry, o piloto inteiro volta para o fim da fila de
+ * carros não carregados, processada em mid_processaFilaCarrosNaoCarregados.
+ */
+function mid_carregaImagensCarro(piloto) {
+    var temporadaCarro = dadosJogo.temporada;
+    var temporadaCapacete = dadosJogo.temporada;
+    var carroIdBase = piloto.carro.id;
+    var carroId = carroIdBase;
+    var pilotoIdCapacete = piloto.id;
+
+    if (piloto.idCapaceteLivery != null && piloto.temporadaCapaceteLivery != null) {
+        temporadaCapacete = piloto.temporadaCapaceteLivery;
+        pilotoIdCapacete = piloto.idCapaceteLivery;
+    }
+
+    if (piloto.idCarroLivery != null && piloto.temporadaCarroLivery != null) {
+        temporadaCarro = piloto.temporadaCarroLivery;
+        carroId = piloto.idCarroLivery;
+    }
+
+    var pendentes = 4;
+    var algumaFalhou = false;
+
+    function aoFinalizarImagem(sucesso) {
+        pendentes--;
+        if (!sucesso) {
+            algumaFalhou = true;
+        }
+        if (pendentes == 0) {
+            if (algumaFalhou) {
+                mid_enfileiraCarroNaoCarregado(piloto.id);
+            } else {
+                mid_invalidaRotacaoCarro(carroIdBase);
+            }
+        }
+    }
+
+    var imgCarro = carrosImgMap.get(piloto.id) || new Image();
+    mid_carregaImagemComRetry(imgCarro,
+        '/flmane/rest/letsRace/carroCima/' + temporadaCarro + '/' + carroId,
+        0, aoFinalizarImagem);
+    carrosImgMap.set(piloto.id, imgCarro);
+
+    var imgSemAereofolio = carrosImgSemAereofolioMap.get(piloto.id) || new Image();
+    mid_carregaImagemComRetry(imgSemAereofolio,
+        "/flmane/rest/letsRace/carroCimaSemAreofolio/" + temporadaCarro + "/" + carroId,
+        0, aoFinalizarImagem);
+    carrosImgSemAereofolioMap.set(piloto.id, imgSemAereofolio);
+
+    var imgCarroLado = carrosLadoImgMap.get(piloto.id) || new Image();
+    mid_carregaImagemComRetry(imgCarroLado,
+        "/flmane/rest/letsRace/carroLado/" + temporadaCarro + "/" + carroId,
+        0, aoFinalizarImagem);
+    carrosLadoImgMap.set(piloto.id, imgCarroLado);
+
+    var imgCapacete = capaceteImgMap.get(piloto.id) || new Image();
+    mid_carregaImagemComRetry(imgCapacete,
+        "/flmane/rest/letsRace/capacete/" + temporadaCapacete + "/" + pilotoIdCapacete,
+        0, aoFinalizarImagem);
+    capaceteImgMap.set(piloto.id, imgCapacete);
+}
+
+/**
+ * Consumidor da fila: a cada MID_INTERVALO_FILA_CARROS_MS, tira o primeiro
+ * carro da fila e tenta recarregar. Sucesso: fica fora da fila. Falha:
+ * mid_carregaImagensCarro já o recoloca no fim, via aoFinalizarImagem.
+ */
+function mid_processaFilaCarrosNaoCarregados() {
+    if (mid_filaCarrosNaoCarregados.length == 0 || pilotosMap == null) {
+        return;
+    }
+    var pilotoId = mid_filaCarrosNaoCarregados.shift();
+    mid_filaCarrosSet.delete(pilotoId);
+    var piloto = pilotosMap.get(pilotoId);
+    if (piloto == null) {
+        return;
+    }
+    mid_carregaImagensCarro(piloto);
+}
 
 /**
  * Dispara o carregamento do jpg do circuito (gerado sob demanda no
@@ -60,39 +204,8 @@ function mid_caregaMidia() {
 	capaceteImgMap = new Map();
 	for (var i = 0; i < dadosJogo.pilotos.length; i++) {
 		var piloto = dadosJogo.pilotos[i];
-		var imgCarro = new Image();
-		var temporadaCarro = dadosJogo.temporada;
-		var temporadaCapacete = dadosJogo.temporada;
-		var carroId = piloto.carro.id;
-		var pilotoId = piloto.id;
-
-		if (piloto.idCapaceteLivery != null && piloto.temporadaCapaceteLivery != null) {
-			temporadaCapacete = piloto.temporadaCapaceteLivery;
-			pilotoId = piloto.idCapaceteLivery;
-		}
-
-		if (piloto.idCarroLivery != null && piloto.temporadaCarroLivery != null) {
-			temporadaCarro = piloto.temporadaCarroLivery;
-			carroId = piloto.idCarroLivery;
-		}
-
-		imgCarro.src = '/flmane/rest/letsRace/carroCima/' + temporadaCarro + '/' + carroId;
-		carrosImgMap.set(piloto.id, imgCarro);
-
-		var imgSemAereofolio = new Image();
-		imgSemAereofolio.src = "/flmane/rest/letsRace/carroCimaSemAreofolio/" + temporadaCarro + "/" + carroId;
-		carrosImgSemAereofolioMap.set(piloto.id, imgSemAereofolio);
-
-		var imgCarroLado = new Image();
-		imgCarroLado.src = "/flmane/rest/letsRace/carroLado/" + temporadaCarro + "/" + carroId;
-		carrosLadoImgMap.set(piloto.id, imgCarroLado);
-
-		var imgCapacete = new Image();
-		imgCapacete.src = "/flmane/rest/letsRace/capacete/" + temporadaCapacete + "/" + pilotoId;
-		capaceteImgMap.set(piloto.id, imgCapacete);
-
+		mid_carregaImagensCarro(piloto);
 		jogadorImgMap.set(piloto.id, piloto.imgJogador);
-
 	}
 
 	if(preCarrega){
@@ -183,7 +296,7 @@ function mid_caregaMidia() {
 	normalAsa = new Image();
 	normalAsa.src = "/flmane/rest/letsRace/png/normalAsa"
 	safetycar = new Image();
-	safetycar.src = "/flmane/rest/letsRace/png/sfcima"
+	mid_carregaImagemComRetry(safetycar, "/flmane/rest/letsRace/png/sfcima");
 	travadaRoda0 = new Image();
 	travadaRoda0.src = "/flmane/rest/letsRace/png/travadaRoda0/50"
 	travadaRoda1 = new Image();
