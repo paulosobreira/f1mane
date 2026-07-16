@@ -172,7 +172,7 @@ public class MainPanelEditor extends JPanel {
      * seta (ver {@link #esquerda()}/{@link #direita()}/{@link #cima()}/
      * {@link #baixo()}): {@code paintComponent} só desenha os objetos do
      * circuito quando este timer NÃO está rodando; cada passo de pan reinicia
-     * o timer (adiando o desenho dos objetos por mais 0,5s) mas continua
+     * o timer (adiando o desenho dos objetos por mais 0,75s) mas continua
      * chamando {@code repaint()} normalmente a cada passo, pra manter fundo,
      * traçado e os overlays fixos ao canto da viewport (desenhaInfo/
      * desenhaControles, posicionados via limitesViewPort()) sempre corretos —
@@ -189,12 +189,12 @@ public class MainPanelEditor extends JPanel {
     private final Timer timerRedesenhoObjetosPosScroll = criarTimerRedesenhoObjetosPosScroll();
 
     private Timer criarTimerRedesenhoObjetosPosScroll() {
-        Timer timer = new Timer(500, e -> repaint());
+        Timer timer = new Timer(750, e -> repaint());
         timer.setRepeats(false);
         return timer;
     }
 
-    /** Chamado a cada passo de pan por seta: adia o desenho dos objetos por mais 0,5s e repinta o resto do frame normalmente. */
+    /** Chamado a cada passo de pan por seta: adia o desenho dos objetos por mais 0,75s e repinta o resto do frame normalmente. */
     private void iniciarOuEstenderDebounceRedesenhoPosScroll() {
         timerRedesenhoObjetosPosScroll.restart();
         repaint();

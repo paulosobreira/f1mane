@@ -96,7 +96,7 @@ class MainPanelEditorScrollDebounceTest {
                 "viewport deve se mover imediatamente (100 - 40)");
 
         assertTrue(timer.isRunning(), "pan por seta deve iniciar o timer de debounce dos objetos");
-        assertEquals(500, timer.getDelay(), "atraso do redesenho dos objetos deve ser de 0,5 segundos");
+        assertEquals(750, timer.getDelay(), "atraso do redesenho dos objetos deve ser de 0,75 segundos");
         assertFalse(timer.isRepeats(), "o redesenho dos objetos deve disparar uma única vez por período de pan parado");
         assertFalse(deveDesenharObjetos(editor), "com o pan em andamento, o desenho dos objetos deve ficar suspenso");
     }
