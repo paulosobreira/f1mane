@@ -20,6 +20,8 @@
         </encoder>
     </appender>
 
+    <logger name="org.apache.commons.beanutils" level="WARN"/>
+
     <root level="DEBUG">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>

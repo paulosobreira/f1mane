@@ -48,6 +48,14 @@ public final class Global {
     public static boolean DESENHA_DIFF_REAL_SUAVE = false;
 
     public static boolean DEBUG_SEM_CHUVA = false;
+    /**
+     * Piso do tempo médio de volta usado pelo controle de clima antes da
+     * primeira volta do líder fechar (ver ControleClima/ThreadMudancaClima) —
+     * garante que a primeira tentativa de mudança de clima da corrida
+     * dispare em até 1 minuto real, em vez de esperar a estimativa de tempo
+     * de volta do circuito (que pode passar disso).
+     */
+    public static final long TEMPO_MEDIO_VOLTA_CLIMA_MINIMO_MS = 60_000L;
     public static final int CARGA_ERS = 100;
     public static final int DURABILIDADE_AREOFOLIO = 5;
 

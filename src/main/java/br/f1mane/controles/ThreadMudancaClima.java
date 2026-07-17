@@ -29,21 +29,38 @@ public class ThreadMudancaClima extends Thread {
 
     public void run() {
         try {
-            sleep(controleClima.getControleJogo().getRandom().intervalo(3000, 15000));
-            if (Clima.SOL.equals(controleClima.getClima())
-                    || Clima.CHUVA.equals(controleClima.getClima())) {
+            long tempoMedioVoltaMs = controleClima.getControleJogo().tempoMedioVoltaMs();
+            int atrasoMs = controleClima.getControleJogo().getRandom().intervalo(0, (int) tempoMedioVoltaMs);
+            Logger.logar("[ThreadMudancaClima] Disparada, dormindo " + atrasoMs + "ms (tempoMedioVoltaMs="
+                    + tempoMedioVoltaMs + "ms) antes de efetivar a mudanca de clima");
+            sleep(atrasoMs);
+            String climaAntes = controleClima.getClima();
+            if (Clima.SOL.equals(climaAntes) || Clima.CHUVA.equals(climaAntes)) {
                 controleClima.intervaloNublado();
-            } else if (Clima.NUBLADO.equals(controleClima.getClima())) {
+            } else if (Clima.NUBLADO.equals(climaAntes)) {
                 if (controleClima.verificaPossibilidadeChoverNaPista()) {
                     controleClima.intervaloChuva();
                 } else {
                     controleClima.intervaloSol();
                 }
             }
+            String climaDepois = controleClima.getClima();
+            if (java.util.Objects.equals(climaAntes, climaDepois)) {
+                Logger.logar("[ThreadMudancaClima] MUDOU: clima permaneceu " + climaDepois
+                        + " (nenhum dos ramos de transicao se aplicou)");
+            } else {
+                Logger.logar("[ThreadMudancaClima] MUDOU: clima de " + climaAntes + " para " + climaDepois);
+            }
             controleClima.informaMudancaClima();
-            processada = true;
         } catch (Exception e) {
+            Logger.logar("[ThreadMudancaClima] FALHOU ao tentar mudar o clima: " + e);
             Logger.logarExept(e);
+        } finally {
+            // Sempre marca como processada, sucesso ou falha — senão uma única exceção
+            // (ex.: InterruptedException) trava ControleClima.processaPossivelMudancaClima()
+            // em "ADIADA" pra sempre, já que ele só cria uma nova thread quando a anterior
+            // termina de processar.
+            processada = true;
         }
     }
 

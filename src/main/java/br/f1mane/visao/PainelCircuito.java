@@ -2989,6 +2989,11 @@ public class PainelCircuito {
         if (noAtual.isBox()) {
             p1 = circuito.getBox1Full().get(noAtual.getIndex()).getPoint();
             p2 = circuito.getBox2Full().get(noAtual.getIndex()).getPoint();
+            // No box não há pista4Full/pista5Full (faixas de fuga) — mesmo fallback usado
+            // abaixo pros índices fora do trecho da escapada, pra piloto.getP4()/getP5()
+            // nunca ficarem null quando o piloto estava em traçado 4/5 antes de entrar no box.
+            p4 = p2;
+            p5 = p1;
         } else {
             p1 = circuito.getPista1Full().get(noAtual.getIndex()).getPoint();
             p2 = circuito.getPista2Full().get(noAtual.getIndex()).getPoint();

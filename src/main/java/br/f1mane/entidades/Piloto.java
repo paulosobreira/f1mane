@@ -2294,8 +2294,8 @@ public class Piloto implements Serializable, PilotoSuave {
             }
 
             double minMulti = 0.7;
+            minMulti -= controleJogo.getMolhado() * 0.3;
             if (controleJogo.isChovendo()) {
-                minMulti -= 0.3;
                 retardaFreiandoReta = false;
             }
             if (calculaDiffParaProximoRetardatario < 50) {
@@ -3239,8 +3239,8 @@ public class Piloto implements Serializable, PilotoSuave {
         if (usandoErs()) {
             comparador += 0.2;
         }
-        if (controleJogo.isChovendo() && !reta) {
-            comparador -= testeHabilidadePilotoAerodinamica() ? 0.2 : 0.3;
+        if (!reta) {
+            comparador -= controleJogo.getMolhado() * (testeHabilidadePilotoAerodinamica() ? 0.2 : 0.3);
         }
         if (reta && testeHabilidadePiloto() && getCarro().testePotencia() && getCarro().testeAerodinamica()) {
             return (controleJogo.getRandom().nextDouble() < comparador ? 50 : 45);

@@ -93,6 +93,13 @@ public interface InterfaceJogo {
 
     public boolean isChovendo();
 
+    /**
+     * Estado contínuo (0.0 seco a 1.0 chuva plena) usado para interpolar os
+     * bônus/penalidades de ganho relacionados a clima, independente do clima
+     * categórico exibido por {@link #isChovendo()}/{@link #getClima()}.
+     */
+    public double getMolhado();
+
     public void informaMudancaClima();
 
     public void pausarJogo();
@@ -410,6 +417,13 @@ public interface InterfaceJogo {
     double getFatorConsumoCombustivelSemReabastecimento();
 
     long tempoCicloCircuito();
+
+    /**
+     * Tempo médio de volta real, em milissegundos, calculado a partir das voltas já
+     * registradas do piloto líder. Antes da primeira volta do líder fechar, retorna
+     * a estimativa {@code nosDaPista.size() * tempoCicloCircuito()}.
+     */
+    long tempoMedioVoltaMs();
 
     String getAutomaticoManual();
 
