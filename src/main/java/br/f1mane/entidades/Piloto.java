@@ -101,9 +101,12 @@ public class Piloto implements Serializable, PilotoSuave {
     private int stress;
     /**
      * Magnitude de incremento de estresse por freada mal-sucedida sob
-     * pressão, sinalizada por processaFreioNaReta() (que consome e reseta
-     * retardaFreiandoReta no mesmo instante) e consumida por processaStress().
-     * null quando não há incremento pendente neste tick.
+     * pressão, sinalizada por processaFreioNaReta() (que avalia o sorteio no
+     * primeiro tick em que retardaFreiandoReta fica verdadeiro dentro da
+     * zona de frenagem, trava via freioNaRetaAvaliadoNesteEvento pro resto
+     * daquele evento, e reseta a trava ao sair da zona) e consumida por
+     * processaStress(). Vale pra qualquer piloto, não só o top-3. null
+     * quando não há incremento pendente neste tick.
      */
     @JsonIgnore
     private Integer freioNaRetaMalSucedidoNesteTick;
@@ -235,6 +238,8 @@ public class Piloto implements Serializable, PilotoSuave {
     private boolean freiandoReta;
     @JsonIgnore
     private boolean retardaFreiandoReta;
+    @JsonIgnore
+    private boolean freioNaRetaAvaliadoNesteEvento;
     @JsonIgnore
     private int tracadoDelay;
     @JsonIgnore
@@ -2447,19 +2452,21 @@ public class Piloto implements Serializable, PilotoSuave {
             if (multi < minMulti)
                 multi = minMulti;
             ganho *= multi;
-        } else {
-            freiandoReta = false;
-        }
 
-        if (getNoAtual().verificaCurvaBaixa() && retardaFreiandoReta) {
-            if (getPosicao() <= 3 && controleJogo.getRandom().nextDouble() > 0.9 && !testeHabilidadePilotoFreios()) {
-                freioNaRetaMalSucedidoNesteTick = 30 - (getCarro().getPorcentagemDesgastePneus() / 100);
-                if (controleJogo.verificaInfoRelevante(this) && controleJogo.getRandom().nextDouble() > 0.7) {
-                    controleJogo
-                            .info(Lang.msg("014", new String[] { nomeJogadorFormatado(), Html.negrito(getNome()) }));
+            if (retardaFreiandoReta && !freioNaRetaAvaliadoNesteEvento) {
+                freioNaRetaAvaliadoNesteEvento = true;
+                if (controleJogo.getRandom().nextDouble() > 0.9 && !testeHabilidadePilotoFreios()) {
+                    freioNaRetaMalSucedidoNesteTick = 30 - (getCarro().getPorcentagemDesgastePneus() / 100);
+                    if (controleJogo.verificaInfoRelevante(this) && controleJogo.getRandom().nextDouble() > 0.7) {
+                        controleJogo.info(Lang.msg("014",
+                                new String[] { nomeJogadorFormatado(), Html.negrito(getNome()) }));
+                    }
                 }
             }
+        } else {
+            freiandoReta = false;
             retardaFreiandoReta = false;
+            freioNaRetaAvaliadoNesteEvento = false;
         }
     }
 
@@ -3772,8 +3779,8 @@ public class Piloto implements Serializable, PilotoSuave {
      * (mantém a ausência de decaimento passivo que já tinha).
      */
     public void decStress(int val) {
-        if (NORMAL.equals(getModoPilotagemEfetivo())) {
-            val = Math.round(val * 1.1f);
+        if (AGRESSIVO.equals(getModoPilotagemEfetivo())) {
+            val = 0;
         } else if (LENTO.equals(getModoPilotagemEfetivo())) {
             val = Math.round(val * 1.5f);
         }
@@ -3803,10 +3810,10 @@ public class Piloto implements Serializable, PilotoSuave {
         if (stress > 90) {
             val = 1;
         }
-        if (stress > 80 && val > 2) {
+        if (stress > 70 && val > 2) {
             val = 2;
         }
-        if (stress > 70 && val > 3) {
+        if (stress > 50 && val > 3) {
             val = 3;
         }
         if (stress < 100 && (stress + val) < 100) {

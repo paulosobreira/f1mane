@@ -1,37 +1,4 @@
-# piloto-gestao-estresse
-
-## Purpose
-
-Documentar a regra completa e centralizada de quando e quanto o estresse do piloto (`Piloto.stress`) aumenta ou diminui a cada tick. `Piloto.processaStress()` é o único método que decide os gatilhos e valores de `incStress`/`decStress`; os demais métodos do jogo (desgaste de pneu, colisão, fila do box, dano de aerofólio) apenas sinalizam o evento ou leem o estresse atual, sem escrever nele diretamente.
-
-## Requirements
-
-### Requirement: Ponto único de decisão de estresse
-`Piloto.processaStress()` SHALL ser o único método que decide quando e quanto o estresse do piloto (`incStress`/`decStress`) muda a cada tick. Nenhum outro método, em nenhuma outra classe, SHALL chamar `incStress`/`decStress` diretamente.
-
-#### Scenario: Desgaste de pneu não altera estresse diretamente
-- **WHEN** `Carro.calculaDesgastePneus(No)` é executado para qualquer tipo de nó
-- **THEN** o método não chama `incStress`/`decStress` do piloto; ele pode ler `getStress()` para decidir seus próprios efeitos (ex.: desgaste do pneu), mas não escreve no estresse
-
-#### Scenario: Colisão não altera estresse diretamente
-- **WHEN** `Piloto.processaPenalidadeColisao()` é executado com uma colisão em andamento
-- **THEN** o método não chama `incStress` diretamente; a penalidade de estresse por colisão é aplicada por `processaStress()`
-
-#### Scenario: Avanço na fila do box não altera estresse diretamente
-- **WHEN** `ControleBox` avança um piloto na fila do box
-- **THEN** `ControleBox` não chama `decStress` diretamente; a redução de estresse por estar no box é aplicada por `processaStress()`
-
-#### Scenario: Acidente com perda de aerofólio não altera estresse diretamente
-- **WHEN** `ControleCorrida.danificaAreofolio(Piloto)` decide que houve dano de aerofólio
-- **THEN** o método não chama `incStress` diretamente; ele sinaliza o evento para o piloto, e `processaStress()` aplica o incremento de estresse correspondente no mesmo tick
-
-#### Scenario: Tetos de incStress por faixa de stress (limiares revisados)
-- **WHEN** `incStress(val)` é chamado com o piloto em stress acima de 90
-- **THEN** o incremento é limitado a no máximo 1
-- **AND WHEN** `incStress(val)` é chamado com o piloto em stress acima de 70 (e não acima de 90)
-- **THEN** o incremento é limitado a no máximo 2 (era stress acima de 80)
-- **AND WHEN** `incStress(val)` é chamado com o piloto em stress acima de 50 (e não acima de 70)
-- **THEN** o incremento é limitado a no máximo 3 — faixa nova; antes da revisão, stress entre 50 e 70 não tinha nenhum teto e gatilhos grandes (ex.: dano de aerofólio, colisão) passavam com o valor bruto (ou reduzido pela metade em AGRESSIVO/NORMAL)
+## MODIFIED Requirements
 
 ### Requirement: Regras de disparo preservadas
 `Piloto.processaStress()` SHALL reavaliar, para cada gatilho migrado, exatamente a mesma condição e o mesmo valor que existiam antes da consolidação — a mudança é de organização de código, não de comportamento de jogo, exceto pelos gatilhos que substituem a mecânica de desconcentração removida (marcados abaixo), cujos valores são novos por definição, e exceto pelos gatilhos de balanceamento descritos nesta revisão (freada mal-sucedida na reta e recuperação por modo de pilotagem).
@@ -100,9 +67,29 @@ Documentar a regra completa e centralizada de quando e quanto o estresse do pilo
 - **AND WHEN** `decStress()` é chamado com o piloto em modo LENTO
 - **THEN** o valor de recuperação é escalado em 1.5x, inalterado — a ordem relativa AGRESSIVO < NORMAL < LENTO é preservada
 
-### Requirement: Ordem de RNG pode mudar sem afetar comportamento agregado
-A consolidação SHALL poder alterar a ordem em que `GameRandom` é consultado dentro do tick (já que gatilhos antes avaliados em `Carro.calculaDesgastePneus`, que roda antes de `processaStress()`, passam a ser avaliados dentro de `processaStress()`), desde que a frequência e a intensidade agregada das mudanças de estresse permaneçam equivalentes às de antes da mudança.
+### Requirement: Ponto único de decisão de estresse
+`Piloto.processaStress()` SHALL ser o único método que decide quando e quanto o estresse do piloto (`incStress`/`decStress`) muda a cada tick. Nenhum outro método, em nenhuma outra classe, SHALL chamar `incStress`/`decStress` diretamente.
 
-#### Scenario: Seed fixa produz trajetória diferente, comportamento agregado equivalente
-- **WHEN** uma simulação roda com uma seed de RNG fixa antes e depois da consolidação
-- **THEN** a sequência exata de valores sorteados pode diferir (não há garantia de replay bit-a-bit idêntico), mas a distribuição de frequência/intensidade de mudanças de estresse ao longo de uma corrida longa é estatisticamente equivalente
+#### Scenario: Desgaste de pneu não altera estresse diretamente
+- **WHEN** `Carro.calculaDesgastePneus(No)` é executado para qualquer tipo de nó
+- **THEN** o método não chama `incStress`/`decStress` do piloto; ele pode ler `getStress()` para decidir seus próprios efeitos (ex.: desgaste do pneu), mas não escreve no estresse
+
+#### Scenario: Colisão não altera estresse diretamente
+- **WHEN** `Piloto.processaPenalidadeColisao()` é executado com uma colisão em andamento
+- **THEN** o método não chama `incStress` diretamente; a penalidade de estresse por colisão é aplicada por `processaStress()`
+
+#### Scenario: Avanço na fila do box não altera estresse diretamente
+- **WHEN** `ControleBox` avança um piloto na fila do box
+- **THEN** `ControleBox` não chama `decStress` diretamente; a redução de estresse por estar no box é aplicada por `processaStress()`
+
+#### Scenario: Acidente com perda de aerofólio não altera estresse diretamente
+- **WHEN** `ControleCorrida.danificaAreofolio(Piloto)` decide que houve dano de aerofólio
+- **THEN** o método não chama `incStress` diretamente; ele sinaliza o evento para o piloto, e `processaStress()` aplica o incremento de estresse correspondente no mesmo tick
+
+#### Scenario: Tetos de incStress por faixa de stress (limiares revisados)
+- **WHEN** `incStress(val)` é chamado com o piloto em stress acima de 90
+- **THEN** o incremento é limitado a no máximo 1
+- **AND WHEN** `incStress(val)` é chamado com o piloto em stress acima de 70 (e não acima de 90)
+- **THEN** o incremento é limitado a no máximo 2 (era stress acima de 80)
+- **AND WHEN** `incStress(val)` é chamado com o piloto em stress acima de 50 (e não acima de 70)
+- **THEN** o incremento é limitado a no máximo 3 — faixa nova; antes da revisão, stress entre 50 e 70 não tinha nenhum teto e gatilhos grandes (ex.: dano de aerofólio, colisão) passavam com o valor bruto (ou reduzido pela metade em AGRESSIVO/NORMAL)
