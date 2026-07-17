@@ -128,12 +128,12 @@ class PilotoAgressividadeEfetivaTest {
 
         piloto.decStress(10);
 
-        // NORMAL recupera 10% a mais: round(10 * 1.1) = 11.
-        assertEquals(96 - 11, piloto.getStress());
+        // Efetivo NORMAL nao escala mais o valor (era 1.1x): round(10 * 1.0) = 10.
+        assertEquals(96 - 10, piloto.getStress());
     }
 
     @Test
-    void decStress_agressivoComStressBaixo_naoRecuperaBonus() {
+    void decStress_agressivoComStressBaixo_naoRecuperaNada() {
         piloto.setModoPilotagem(Piloto.AGRESSIVO);
         piloto.setStress(50);
         piloto.setPosicao(1);
@@ -141,8 +141,8 @@ class PilotoAgressividadeEfetivaTest {
 
         piloto.decStress(10);
 
-        // AGRESSIVO não recebe bônus de recuperação: val permanece 10.
-        assertEquals(50 - 10, piloto.getStress());
+        // AGRESSIVO agora escala o valor a 0x: nao recupera estresse nenhum.
+        assertEquals(50, piloto.getStress());
     }
 
     @Test

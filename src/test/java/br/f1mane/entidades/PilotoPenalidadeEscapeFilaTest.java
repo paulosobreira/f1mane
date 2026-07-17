@@ -15,7 +15,8 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import br.f1mane.controles.InterfaceJogo;
+import br.f1mane.controles.ControleAutomacao;
+import br.f1mane.controles.ControleJogoLocal;
 import br.nnpe.Global;
 
 /**
@@ -28,7 +29,8 @@ class PilotoPenalidadeEscapeFilaTest {
 
     private static final int TAMANHO_PISTA = 1000;
 
-    private InterfaceJogo controleJogo;
+    private ControleJogoLocal controleJogo;
+    private ControleAutomacao controleAutomacao;
     private List<No> pista;
     private List<Piloto> pilotos;
 
@@ -48,12 +50,12 @@ class PilotoPenalidadeEscapeFilaTest {
         }
         pilotos = new ArrayList<>();
 
-        controleJogo = mock(InterfaceJogo.class);
+        controleJogo = mock(ControleJogoLocal.class);
         when(controleJogo.getNosDaPista()).thenReturn(pista);
         when(controleJogo.getNosDoBox()).thenReturn(new ArrayList<>());
         when(controleJogo.getPilotos()).thenReturn(pilotos);
         when(controleJogo.getPilotosCopia()).thenReturn(pilotos);
-        when(controleJogo.obterPista(any())).thenReturn(pista);
+        when(controleJogo.obterPista(any(No.class))).thenReturn(pista);
         when(controleJogo.isModoQualify()).thenReturn(false);
         when(controleJogo.isSafetyCarNaPista()).thenReturn(false);
         when(controleJogo.isAtualizacaoSuave()).thenReturn(false);
@@ -73,6 +75,8 @@ class PilotoPenalidadeEscapeFilaTest {
         when(circuito.getPista4Full()).thenReturn(pista4);
         when(circuito.getPista5Full()).thenReturn(pista5);
         when(controleJogo.getCircuito()).thenReturn(circuito);
+
+        controleAutomacao = new ControleAutomacao(controleJogo, null);
     }
 
     private No criarNo(int index, int x, int y) {
@@ -166,7 +170,7 @@ class PilotoPenalidadeEscapeFilaTest {
         Piloto frente = criarPiloto("Frente", 140, 0);
         prendeNaFila(atras, frente, 8);
 
-        assertTrue(atras.tentarEscaparFilaIndiana());
+        assertTrue(controleAutomacao.decideTentarEscaparFilaIndiana(atras));
         assertEquals(1, atras.getTracado());
     }
 
@@ -179,7 +183,7 @@ class PilotoPenalidadeEscapeFilaTest {
         Piloto frente = criarPiloto("Frente", 400, 0);
         prendeNaFila(atras, frente, 7);
 
-        assertFalse(atras.tentarEscaparFilaIndiana());
+        assertFalse(controleAutomacao.decideTentarEscaparFilaIndiana(atras));
         assertEquals(0, atras.getTracado());
     }
 
@@ -194,7 +198,7 @@ class PilotoPenalidadeEscapeFilaTest {
         atras.processaPenalidadeColisao();
 
         prendeNaFila(atras, frente, 7);
-        assertFalse(atras.tentarEscaparFilaIndiana());
+        assertFalse(controleAutomacao.decideTentarEscaparFilaIndiana(atras));
     }
 
     @Test
@@ -204,7 +208,7 @@ class PilotoPenalidadeEscapeFilaTest {
         prendeNaFila(atras, frente, 8);
         when(controleJogo.isSafetyCarNaPista()).thenReturn(true);
 
-        assertFalse(atras.tentarEscaparFilaIndiana());
+        assertFalse(controleAutomacao.decideTentarEscaparFilaIndiana(atras));
         assertEquals(0, atras.getTracado());
     }
 
@@ -219,7 +223,7 @@ class PilotoPenalidadeEscapeFilaTest {
             atras.processaPenalidadeColisao();
         }
 
-        assertFalse(atras.tentarEscaparFilaIndiana());
+        assertFalse(controleAutomacao.decideTentarEscaparFilaIndiana(atras));
     }
 
     @Test
@@ -230,7 +234,7 @@ class PilotoPenalidadeEscapeFilaTest {
         criarPiloto("NoTracado2", 120, 2);
         prendeNaFila(atras, frente, 8);
 
-        assertFalse(atras.tentarEscaparFilaIndiana());
+        assertFalse(controleAutomacao.decideTentarEscaparFilaIndiana(atras));
         assertEquals(0, atras.getTracado());
     }
 
@@ -247,7 +251,7 @@ class PilotoPenalidadeEscapeFilaTest {
         }
 
         assertNull(atras.getColisao(), "não deveria haver colisão física detectada — o caminho é só por proximidade");
-        assertTrue(atras.tentarEscaparFilaIndiana());
+        assertTrue(controleAutomacao.decideTentarEscaparFilaIndiana(atras));
         assertEquals(1, atras.getTracado());
     }
 
@@ -261,7 +265,7 @@ class PilotoPenalidadeEscapeFilaTest {
             atras.processaPenalidadeColisao();
         }
 
-        assertFalse(atras.tentarEscaparFilaIndiana());
+        assertFalse(controleAutomacao.decideTentarEscaparFilaIndiana(atras));
     }
 
     @Test
@@ -274,7 +278,7 @@ class PilotoPenalidadeEscapeFilaTest {
             atras.processaPenalidadeColisao();
         }
 
-        assertFalse(atras.tentarEscaparFilaIndiana());
+        assertFalse(controleAutomacao.decideTentarEscaparFilaIndiana(atras));
     }
 
     // ---- cooldown de mudanca de tracado cobre a animacao ----

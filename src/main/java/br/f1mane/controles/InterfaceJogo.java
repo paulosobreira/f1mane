@@ -93,6 +93,13 @@ public interface InterfaceJogo {
 
     public boolean isChovendo();
 
+    /**
+     * Estado contínuo (0.0 seco a 1.0 chuva plena) usado para interpolar os
+     * bônus/penalidades de ganho relacionados a clima, independente do clima
+     * categórico exibido por {@link #isChovendo()}/{@link #getClima()}.
+     */
+    public double getMolhado();
+
     public void informaMudancaClima();
 
     public void pausarJogo();
@@ -177,6 +184,26 @@ public interface InterfaceJogo {
     public void setTemporada(String string);
 
     public void setManualTemporario();
+
+    /** Aciona o tick de decisão de piloto automático (ControleAutomacao) para {@code piloto}. */
+    public void processarAutomacao(Piloto piloto);
+
+    /** Suspende a automação de {@code piloto} temporariamente — chamado internamente por {@code Piloto.setManualTemporario()}. */
+    public void suspenderAutomacaoTemporariamente(Piloto piloto);
+
+    /** Leitura pura de suspensão temporária — chamado internamente por {@code Piloto.isManualTemporario()}. */
+    public boolean isAutomacaoSuspensaTemporariamente(Piloto piloto);
+
+    /** Causas de traçado exclusivas de piloto automático — chamadas por {@code Piloto.processaMudarTracado()}. */
+    public boolean decideTentarEscaparFilaIndiana(Piloto piloto);
+
+    public boolean decideEvitaColidirComRetardatario(Piloto piloto);
+
+    public boolean decideDesviaRetardatarioMesmoTracado(Piloto piloto);
+
+    public boolean decideEspelhaTracadoCarroAtras(Piloto piloto);
+
+    public boolean decideRecentralizaSemTrafego(Piloto piloto);
 
     public BufferedImage obterCarroCima(Piloto piloto);
 
@@ -390,6 +417,13 @@ public interface InterfaceJogo {
     double getFatorConsumoCombustivelSemReabastecimento();
 
     long tempoCicloCircuito();
+
+    /**
+     * Tempo médio de volta real, em milissegundos, calculado a partir das voltas já
+     * registradas do piloto líder. Antes da primeira volta do líder fechar, retorna
+     * a estimativa {@code nosDaPista.size() * tempoCicloCircuito()}.
+     */
+    long tempoMedioVoltaMs();
 
     String getAutomaticoManual();
 

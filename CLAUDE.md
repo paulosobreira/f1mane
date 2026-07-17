@@ -95,6 +95,8 @@ Todas as mensagens ao usuário passam por `Lang.msg("chave")` ou `Lang.decodeTex
 | `mysql` | MySQL em `db:3306/flmane` | Docker / produção |
 | `test` | — | inclui `logback-test.xml` |
 
+**IMPORTANTE: nunca mover `src/main/resources/logback-test.xml`.** Ele parece estar no lugar errado à primeira vista — só o perfil `test` o inclui no build, o que sugere que deveria morar em `src/test/resources`. Não é o caso: o `pom.xml` já tem o mecanismo certo. O build padrão exclui `logback-test.xml` explicitamente do `src/main/resources` (`<exclude>logback-test.xml</exclude>`), e só o perfil `test` o inclui de volta, de propósito, gerando um jar de debug com saída no console (nível DEBUG) em vez do `logback.xml` de produção (nível INFO, só arquivo). Mover o arquivo pra `src/test/resources` quebra esse mecanismo — `mvn package -Ptest` aponta pra `src/main/resources` e para de encontrá-lo, e o jar final perde o log de console mesmo rodando com `-Ptest`. Se precisar silenciar um logger específico em DEBUG (ex.: `org.apache.commons.beanutils`, que loga "Converting ... to type ..." em todo `describe()`/`copyProperties()`), adicione um `<logger name="..." level="WARN"/>` dentro do próprio arquivo — não mexa na localização dele.
+
 ## Docker Compose
 
 Inclui três serviços: `flmane` (porta 80→8080), `db` (MySQL 8.4) e `phpmyadmin` (porta 8080). O container aguarda o healthcheck do MySQL antes de subir.

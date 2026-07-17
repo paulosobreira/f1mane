@@ -104,7 +104,7 @@ class ControleBoxVelocidadeUniformeTest {
     }
 
     private boolean rodarProcessaIaIrBoxComCorridaPorcentagem(int corridaPorcentagem) throws Exception {
-        InterfaceJogo controleJogo = mock(InterfaceJogo.class);
+        ControleJogoLocal controleJogo = mock(ControleJogoLocal.class);
         when(controleJogo.isModoQualify()).thenReturn(false);
         when(controleJogo.isSafetyCarNaPista()).thenReturn(true);
         when(controleJogo.porcentagemCorridaConcluida()).thenReturn(corridaPorcentagem);
@@ -118,9 +118,10 @@ class ControleBoxVelocidadeUniformeTest {
         carro.setPorcentagemDesgastePneus(30);
         piloto.setQtdeParadasBox(1);
 
-        java.lang.reflect.Method metodo = Piloto.class.getDeclaredMethod("processaIaIrBox");
+        ControleAutomacao controleAutomacao = new ControleAutomacao(controleJogo, null);
+        java.lang.reflect.Method metodo = ControleAutomacao.class.getDeclaredMethod("processaIaIrBox", Piloto.class);
         metodo.setAccessible(true);
-        metodo.invoke(piloto);
+        metodo.invoke(controleAutomacao, piloto);
         return piloto.isBox();
     }
 

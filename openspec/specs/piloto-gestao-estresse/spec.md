@@ -25,16 +25,26 @@ Documentar a regra completa e centralizada de quando e quanto o estresse do pilo
 - **WHEN** `ControleCorrida.danificaAreofolio(Piloto)` decide que houve dano de aerofólio
 - **THEN** o método não chama `incStress` diretamente; ele sinaliza o evento para o piloto, e `processaStress()` aplica o incremento de estresse correspondente no mesmo tick
 
+#### Scenario: Tetos de incStress por faixa de stress (limiares revisados)
+- **WHEN** `incStress(val)` é chamado com o piloto em stress acima de 90
+- **THEN** o incremento é limitado a no máximo 1
+- **AND WHEN** `incStress(val)` é chamado com o piloto em stress acima de 70 (e não acima de 90)
+- **THEN** o incremento é limitado a no máximo 2 (era stress acima de 80)
+- **AND WHEN** `incStress(val)` é chamado com o piloto em stress acima de 50 (e não acima de 70)
+- **THEN** o incremento é limitado a no máximo 3 — faixa nova; antes da revisão, stress entre 50 e 70 não tinha nenhum teto e gatilhos grandes (ex.: dano de aerofólio, colisão) passavam com o valor bruto (ou reduzido pela metade em AGRESSIVO/NORMAL)
+
 ### Requirement: Regras de disparo preservadas
-`Piloto.processaStress()` SHALL reavaliar, para cada gatilho migrado, exatamente a mesma condição e o mesmo valor que existiam antes da consolidação — a mudança é de organização de código, não de comportamento de jogo, exceto pelos gatilhos que substituem a mecânica de desconcentração removida (marcados abaixo), cujos valores são novos por definição.
+`Piloto.processaStress()` SHALL reavaliar, para cada gatilho migrado, exatamente a mesma condição e o mesmo valor que existiam antes da consolidação — a mudança é de organização de código, não de comportamento de jogo, exceto pelos gatilhos que substituem a mecânica de desconcentração removida (marcados abaixo), cujos valores são novos por definição, e exceto pelos gatilhos de balanceamento descritos nesta revisão (freada mal-sucedida na reta e recuperação por modo de pilotagem).
 
 #### Scenario: Pneu incompatível com o clima
 - **WHEN** o piloto está numa curva baixa ou alta com pneu incompatível com o clima atual
 - **THEN** `processaStress()` incrementa o estresse em 4 (curva baixa) ou 2 (curva alta), reduzido a 0 se `testeHabilidadePiloto()` for bem-sucedido — igual ao comportamento anterior em `processaPneusIncomaptiveis()`
 
-#### Scenario: Freada mal-sucedida sob pressão (magnitude aumentada)
-- **WHEN** o piloto está em curva baixa, freando na reta, entre os 3 primeiros colocados, com sorteio acima de 0.9 e falha no teste de habilidade de freios
-- **THEN** `processaStress()` incrementa o estresse em `30 - desgastePneus/100` (era `10 - desgastePneus/100`) — aumentado a pedido do usuário pra dar mais peso a esse evento, embora o cap interno de `incStress()` (`stress>70/80/90`) limite o efeito na prática quando o piloto já está estressado, que é o caso mais comum pra esse gatilho
+#### Scenario: Freada mal-sucedida na reta (generalizada para todos os pilotos, avaliada na zona de frenagem)
+- **WHEN** o piloto está na reta, dentro de uma zona de frenagem detectada (não num nó de curva), com `retardaFreiandoReta` ativo, sorteio acima de 0.9 e falha no teste de habilidade de freios
+- **THEN** `processaStress()` incrementa o estresse em `30 - desgastePneus/100`, reduzido na prática pelo cap interno de `incStress()` (`stress>50/70/90`) quando o piloto já está estressado, que é o caso mais comum pra esse gatilho
+- **AND** a restrição anterior de elegibilidade (`getPosicao() <= 3`, top-3) é removida — o gatilho passa a valer para qualquer piloto na pista
+- **AND** o gatilho continua disparando no máximo uma vez por evento de frenagem (a mesma trava de consumo de `retardaFreiandoReta`, resetada no mesmo instante em que o gatilho é avaliado, garante que o sorteio de >0.9 não seja reavaliado a cada tick dentro da zona de frenagem)
 
 #### Scenario: Colisão em andamento (magnitude aumentada, casos agora exclusivos entre si)
 - **WHEN** `evitaBaterCarroFrente` é falso e há uma colisão em andamento (`getColisao() != null`)
@@ -64,6 +74,7 @@ Documentar a regra completa e centralizada de quando e quanto o estresse do pilo
 #### Scenario: Avanço na fila do box
 - **WHEN** o piloto está avançando na fila de espera do box (posição na fila menor que o tamanho total da fila)
 - **THEN** `processaStress()` decrementa o estresse em 2 a cada tick — igual ao comportamento anterior em `ControleBox`
+- **AND** esse decremento passa pelo multiplicador de recuperação por modo (ver cenário "Recuperação por modo de pilotagem" abaixo) — um piloto em modo efetivo AGRESSIVO não recupera nada aqui, diferente de antes desta revisão
 
 #### Scenario: Escapada de pista sob pressão (substitui desconcentração)
 - **WHEN** o piloto escapa da pista com estresse acima do limiar de re-erro de curva, em modo AGRESSIVO
@@ -81,9 +92,13 @@ Documentar a regra completa e centralizada de quando e quanto o estresse do pilo
 - **WHEN** `ControleQualificacao` sorteia uma largada ruim para um piloto não-humano sem habilidade (5% de chance)
 - **THEN** `processaStress()` incrementa o estresse num valor sorteado entre 15 e 20, reduzido à metade se `testeHabilidadePiloto()` for bem-sucedido, no lugar de iniciar o antigo bloqueio de `ciclosDesconcentrado` de 500-700 ciclos
 
-#### Scenario: Recuperação passiva por modo de pilotagem (multiplicador do NORMAL reduzido)
-- **WHEN** `decStress()` é chamado com o piloto em modo NORMAL
-- **THEN** o valor de recuperação é escalado em 1.1x (era 1.25x) — reduzido a pedido do usuário porque a recuperação do NORMAL, somada ao decaimento passivo incondicional por tick, tinha ficado agressiva demais; o multiplicador do modo LENTO permanece em 1.5x e o do AGRESSIVO permanece sem escala (1x), preservando a ordem AGRESSIVO < NORMAL < LENTO
+#### Scenario: Recuperação por modo de pilotagem (AGRESSIVO deixa de recuperar)
+- **WHEN** `decStress()` é chamado com o piloto em modo efetivo AGRESSIVO
+- **THEN** o valor de recuperação é escalado em 0x — o piloto não recupera estresse por essa via, seja no decaimento passivo por tick (que já excluía AGRESSIVO antes desta revisão) ou no avanço na fila do box (que antes aplicava o valor cheio)
+- **AND WHEN** `decStress()` é chamado com o piloto em modo NORMAL
+- **THEN** o valor de recuperação é escalado em 1x (era 1.1x) — reduzido a pedido do usuário
+- **AND WHEN** `decStress()` é chamado com o piloto em modo LENTO
+- **THEN** o valor de recuperação é escalado em 1.5x, inalterado — a ordem relativa AGRESSIVO < NORMAL < LENTO é preservada
 
 ### Requirement: Ordem de RNG pode mudar sem afetar comportamento agregado
 A consolidação SHALL poder alterar a ordem em que `GameRandom` é consultado dentro do tick (já que gatilhos antes avaliados em `Carro.calculaDesgastePneus`, que roda antes de `processaStress()`, passam a ser avaliados dentro de `processaStress()`), desde que a frequência e a intensidade agregada das mudanças de estresse permaneçam equivalentes às de antes da mudança.

@@ -1,6 +1,8 @@
 package br.f1mane.entidades;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -67,6 +69,18 @@ class PilotoFreioNaRetaZonaFrenagemTest {
         }
     }
 
+    private Object getCampo(Piloto piloto, String campo) throws Exception {
+        Field f = Piloto.class.getDeclaredField(campo);
+        f.setAccessible(true);
+        return f.get(piloto);
+    }
+
+    private void setCampo(Piloto piloto, String campo, Object valor) throws Exception {
+        Field f = Piloto.class.getDeclaredField(campo);
+        f.setAccessible(true);
+        f.set(piloto, valor);
+    }
+
     @Test
     void foraDaZonaDeFrenagem_naoAtivaFreiandoRetaNemTravaRodas() {
         when(controleJogo.isNoZonaFrenagem(noReta)).thenReturn(false);
@@ -104,5 +118,40 @@ class PilotoFreioNaRetaZonaFrenagemTest {
 
         assertTrue(piloto.isFreiandoReta());
         verify(controleJogo, times(1)).travouRodas(piloto);
+    }
+
+    @Test
+    void dentroDaZonaDeFrenagem_pilotoForaDoTop3ComSorteioRuim_disparaFreioMalSucedido() throws Exception {
+        when(controleJogo.isNoZonaFrenagem(noReta)).thenReturn(true);
+        when(controleJogo.getRandom().nextDouble()).thenReturn(0.95);
+        Piloto piloto = criarPiloto();
+        piloto.setPosicao(10); // fora do top-3: gatilho deixou de ser exclusivo do pódio
+        piloto.setModoPilotagem(Piloto.AGRESSIVO);
+        neutralizaDiffRetardatario(piloto);
+
+        piloto.processaFreioNaReta();
+
+        assertEquals(30, getCampo(piloto, "freioNaRetaMalSucedidoNesteTick"),
+                "posicao fora do top-3 deve poder disparar o gatilho agora que a restricao foi removida");
+    }
+
+    @Test
+    void dentroDaZonaDeFrenagem_disparaNoMaximoUmaVezPorEventoDeFrenagem() throws Exception {
+        when(controleJogo.isNoZonaFrenagem(noReta)).thenReturn(true);
+        when(controleJogo.getRandom().nextDouble()).thenReturn(0.95);
+        Piloto piloto = criarPiloto();
+        piloto.setModoPilotagem(Piloto.AGRESSIVO);
+        neutralizaDiffRetardatario(piloto);
+
+        piloto.processaFreioNaReta();
+        assertEquals(30, getCampo(piloto, "freioNaRetaMalSucedidoNesteTick"),
+                "primeiro tick dentro da zona deveria avaliar e disparar o gatilho");
+
+        // Simula o consumo do flag por processaStress() no fim do tick, como aconteceria no jogo real.
+        setCampo(piloto, "freioNaRetaMalSucedidoNesteTick", null);
+
+        piloto.processaFreioNaReta();
+        assertNull(getCampo(piloto, "freioNaRetaMalSucedidoNesteTick"),
+                "segundo tick no mesmo evento de frenagem nao deveria reavaliar o sorteio");
     }
 }

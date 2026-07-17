@@ -49,6 +49,7 @@ public class ControleJogoLocal extends ControleRecursos
     protected String circuitoSelecionado = null;
     protected boolean atualizacaoSuave = true;
     private String automaticoManual;
+    private long tempoMedioVoltaMsCache = -1;
 
 
     private MainFrame mainFrame;
@@ -183,6 +184,16 @@ public class ControleJogoLocal extends ControleRecursos
         if (controleCorrida != null)
             return controleCorrida.getControleClima().getClima();
         return null;
+    }
+
+    /**
+     * @see br.f1mane.controles.InterfaceJogo#getMolhado()
+     */
+    public double getMolhado() {
+        if (controleCorrida != null) {
+            return controleCorrida.getControleClima().getMolhado();
+        }
+        return 0.0;
     }
 
     /**
@@ -440,6 +451,7 @@ public class ControleJogoLocal extends ControleRecursos
     public void processaNovaVolta() {
         int qtdeDesqualificados = 0;
         Piloto piloto = pilotos.get(0);
+        tempoMedioVoltaMsCache = calculaTempoMedioVoltaMs();
 
         if (piloto.getNumeroVolta() == (totalVoltasCorrida() - 1)
                 && (piloto.getPosicao() == 1) && !isCorridaTerminada()) {
@@ -813,6 +825,9 @@ public class ControleJogoLocal extends ControleRecursos
         }
 
         String tipoPneu = (String) tpPneu;
+        if (Clima.CHUVA.equals(getClima())) {
+            tipoPneu = Carro.TIPO_PNEU_CHUVA;
+        }
         Integer qtdeCombustPorcent = (Integer) combust;
         if (isSemReabastecimento()) {
             qtdeCombustPorcent = 100;
@@ -963,6 +978,46 @@ public class ControleJogoLocal extends ControleRecursos
         if (getPilotoSelecionado() != null) {
             pilotoSelecionado.setManualTemporario();
         }
+    }
+
+    @Override
+    public void processarAutomacao(Piloto piloto) {
+        controleCorrida.getControleAutomacao().processarTick(piloto);
+    }
+
+    @Override
+    public void suspenderAutomacaoTemporariamente(Piloto piloto) {
+        controleCorrida.getControleAutomacao().suspenderTemporariamente(piloto);
+    }
+
+    @Override
+    public boolean isAutomacaoSuspensaTemporariamente(Piloto piloto) {
+        return controleCorrida.getControleAutomacao().isManualTemporario(piloto);
+    }
+
+    @Override
+    public boolean decideTentarEscaparFilaIndiana(Piloto piloto) {
+        return controleCorrida.getControleAutomacao().decideTentarEscaparFilaIndiana(piloto);
+    }
+
+    @Override
+    public boolean decideEvitaColidirComRetardatario(Piloto piloto) {
+        return controleCorrida.getControleAutomacao().decideEvitaColidirComRetardatario(piloto);
+    }
+
+    @Override
+    public boolean decideDesviaRetardatarioMesmoTracado(Piloto piloto) {
+        return controleCorrida.getControleAutomacao().decideDesviaRetardatarioMesmoTracado(piloto);
+    }
+
+    @Override
+    public boolean decideEspelhaTracadoCarroAtras(Piloto piloto) {
+        return controleCorrida.getControleAutomacao().decideEspelhaTracadoCarroAtras(piloto);
+    }
+
+    @Override
+    public boolean decideRecentralizaSemTrafego(Piloto piloto) {
+        return controleCorrida.getControleAutomacao().decideRecentralizaSemTrafego(piloto);
     }
 
     @Override
@@ -1846,6 +1901,31 @@ public class ControleJogoLocal extends ControleRecursos
     @Override
     public long tempoCicloCircuito() {
         return circuito.getCiclo();
+    }
+
+    /**
+     * @see br.f1mane.controles.InterfaceJogo#tempoMedioVoltaMs()
+     */
+    @Override
+    public long tempoMedioVoltaMs() {
+        if (tempoMedioVoltaMsCache >= 0) {
+            return tempoMedioVoltaMsCache;
+        }
+        return calculaTempoMedioVoltaMs();
+    }
+
+    private long calculaTempoMedioVoltaMs() {
+        if (pilotos != null && !pilotos.isEmpty()) {
+            List<Volta> voltasLider = pilotos.get(0).getVoltas();
+            if (voltasLider != null && !voltasLider.isEmpty()) {
+                long somaCiclos = 0;
+                for (Volta volta : voltasLider) {
+                    somaCiclos += volta.obterTempoVolta().longValue();
+                }
+                return (somaCiclos / voltasLider.size()) * tempoCicloCircuito();
+            }
+        }
+        return Global.TEMPO_MEDIO_VOLTA_CLIMA_MINIMO_MS;
     }
 
     @Override

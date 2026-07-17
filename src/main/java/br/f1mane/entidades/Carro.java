@@ -583,9 +583,22 @@ public class Carro implements Serializable {
     }
 
     private double calculaModificadorPneu(double ganho, No no) {
-        if (getControleJogo().isChovendo() && !no.verificaRetaOuLargada()) {
-            return ganho *= TIPO_PNEU_CHUVA.equals(getTipoPneu()) ? 0.95 : 0.85;
+        double ganhoSeco = calculaModificadorPneuSeco(ganho, no);
+        double ganhoMolhado = calculaModificadorPneuMolhado(ganho, no);
+        double molhado = getControleJogo().getMolhado();
+        return ganhoSeco + molhado * (ganhoMolhado - ganhoSeco);
+    }
+
+    /** Resultado equivalente a "molhado% = 1.0" — fórmula de hoje quando `isChovendo()`. */
+    private double calculaModificadorPneuMolhado(double ganho, No no) {
+        if (no.verificaRetaOuLargada()) {
+            return ganho;
         }
+        return ganho * (TIPO_PNEU_CHUVA.equals(getTipoPneu()) ? 0.95 : 0.85);
+    }
+
+    /** Resultado equivalente a "molhado% = 0.0" — fórmula de hoje quando `!isChovendo()`. */
+    private double calculaModificadorPneuSeco(double ganho, No no) {
         pneuAquecido = getTemperaturaPneus() >= 99;
 
         if (porcentagemDesgastePneus > 90 || porcentagemDesgastePneus < 10) {

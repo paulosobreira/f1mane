@@ -131,8 +131,8 @@ class CarroCalculaDesgastePneusStressTest {
 
         invocaProcessaStressDesgastePneus(piloto);
 
-        // incStress(10) escalado (NORMAL x0.5=5) com stress=75>70: cap ">70"->3 (75+3=78); curva alta não decrementa mais
-        assertEquals(78, piloto.getStress());
+        // incStress(10) escalado (NORMAL x0.5=5) com stress=75>70: cap ">70"->2 (75+2=77); curva alta não decrementa mais
+        assertEquals(77, piloto.getStress());
     }
 
     @Test

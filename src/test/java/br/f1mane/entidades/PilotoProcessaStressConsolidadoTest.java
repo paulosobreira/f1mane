@@ -175,8 +175,23 @@ class PilotoProcessaStressConsolidadoTest {
 
         piloto.processaStressFilaBox();
 
-        // decStress(2) em modo NORMAL (padrao) e escalado por decStress() em 1.1 -> round(2.2) = 2
+        // decStress(2) em modo NORMAL (padrao) e escalado por decStress() em 1x -> 2
         assertEquals(48, piloto.getStress());
+    }
+
+    @Test
+    void processaStressFilaBox_modoAgressivo_naoRecuperaMais() {
+        Piloto piloto = criarPiloto();
+        piloto.setModoPilotagem(Piloto.AGRESSIVO);
+        piloto.setStress(50);
+        when(random.nextDouble()).thenReturn(0.99); // satisfaz o sorteio interno de decStress
+
+        piloto.processaStressFilaBox();
+
+        // decStress(2) em modo AGRESSIVO -> escalado a 0x: essa era a unica via de
+        // recuperacao que sobrava pro AGRESSIVO (o decaimento passivo por tick ja o excluia)
+        assertEquals(50, piloto.getStress(),
+                "AGRESSIVO nao deveria mais recuperar estresse nem mesmo avancando na fila do box");
     }
 
     /**
@@ -259,14 +274,14 @@ class PilotoProcessaStressConsolidadoTest {
     }
 
     @Test
-    void decStress_modoNormal_aumentaEm10Porcento() {
+    void decStress_modoNormal_naoEscala() {
         Piloto piloto = criarPiloto();
         piloto.setStress(50);
         when(random.nextDouble()).thenReturn(0.99); // satisfaz o sorteio interno de decStress
 
         piloto.decStress(10);
 
-        assertEquals(39, piloto.getStress(), "NORMAL deveria aumentar o decremento em 10% (10 -> 11), recuperação mais cadenciada que antes (era 25%)");
+        assertEquals(40, piloto.getStress(), "NORMAL deveria aplicar o decremento em 1x (10 -> 10), sem o bonus de 10% que existia antes");
     }
 
     @Test
@@ -278,11 +293,11 @@ class PilotoProcessaStressConsolidadoTest {
 
         piloto.decStress(10);
 
-        assertEquals(35, piloto.getStress(), "LENTO deveria aumentar o decremento em 50% (10 -> 15), mais que o NORMAL (11)");
+        assertEquals(35, piloto.getStress(), "LENTO deveria aumentar o decremento em 50% (10 -> 15), mais que o NORMAL (10)");
     }
 
     @Test
-    void decStress_modoAgressivo_naoAltera() {
+    void decStress_modoAgressivo_naoRecuperaMais() {
         Piloto piloto = criarPiloto();
         piloto.setModoPilotagem(Piloto.AGRESSIVO);
         piloto.setStress(50);
@@ -290,7 +305,7 @@ class PilotoProcessaStressConsolidadoTest {
 
         piloto.decStress(10);
 
-        assertEquals(40, piloto.getStress(), "AGRESSIVO não deveria alterar o decremento (10 -> 10)");
+        assertEquals(50, piloto.getStress(), "AGRESSIVO deveria escalar o decremento a 0x — nao recupera estresse nenhum (10 -> 0)");
     }
 
     /**
@@ -336,8 +351,73 @@ class PilotoProcessaStressConsolidadoTest {
 
         ultimo.decStress(10);
 
-        // decStress(10) em modo NORMAL (padrao) e escalado por decStress() em 1.1 -> 11
+        // decStress(10) em modo NORMAL (padrao) e escalado por decStress() em 1x -> 10
         assertEquals(50, lider.getStress(), "líder (posição 1, gate 0.69) não deveria recuperar com esse sorteio");
-        assertEquals(39, ultimo.getStress(), "último colocado (posição 20, gate 0.50) deveria recuperar com o mesmo sorteio");
+        assertEquals(40, ultimo.getStress(), "último colocado (posição 20, gate 0.50) deveria recuperar com o mesmo sorteio");
+    }
+
+    /**
+     * Tetos de incStress() por faixa de stress: 50/70/90 -> max 3/2/1.
+     * A faixa 50-70 (antes sem nenhum teto) e a extensao do teto de 2 pra
+     * cobrir 70-90 inteiro (antes só 80-90) são os dois pontos que mudaram.
+     */
+    @Test
+    void incStress_stressAcimaDe50_limitaATres() {
+        Piloto piloto = criarPiloto();
+        piloto.setModoPilotagem(Piloto.LENTO); // LENTO nao escala o valor bruto, isola o teste do teto
+        piloto.setStress(60);
+
+        piloto.incStress(20);
+
+        assertEquals(63, piloto.getStress(), "stress>50 deveria limitar o incremento a 3 (era sem teto nenhum nessa faixa)");
+    }
+
+    @Test
+    void incStress_stressAcimaDe70_limitaADois() {
+        Piloto piloto = criarPiloto();
+        piloto.setModoPilotagem(Piloto.LENTO);
+        piloto.setStress(75);
+
+        piloto.incStress(20);
+
+        assertEquals(77, piloto.getStress(), "stress>70 deveria limitar o incremento a 2 (era limitado a 3 nessa faixa, ate stress 80)");
+    }
+
+    @Test
+    void incStress_stressAcimaDe90_limitaAUm() {
+        Piloto piloto = criarPiloto();
+        piloto.setModoPilotagem(Piloto.LENTO);
+        piloto.setStress(91);
+
+        piloto.incStress(20);
+
+        assertEquals(92, piloto.getStress(), "stress>90 deveria continuar limitando o incremento a 1, sem mudanca nessa faixa");
+    }
+
+    @Test
+    void incStress_stressAbaixoDe50_semTeto() {
+        Piloto piloto = criarPiloto();
+        piloto.setModoPilotagem(Piloto.LENTO);
+        piloto.setStress(40);
+
+        piloto.incStress(20);
+
+        assertEquals(60, piloto.getStress(), "stress<=50 continua sem nenhum teto de incStress");
+    }
+
+    /**
+     * O decaimento passivo por tick em processaStress() (nao incStress/decStress
+     * diretamente) ja excluia AGRESSIVO antes desta revisao — continua excluindo.
+     */
+    @Test
+    void processaStress_modoAgressivo_naoRecuperaPassivamente() throws Exception {
+        Piloto piloto = criarPiloto();
+        piloto.setModoPilotagem(Piloto.AGRESSIVO);
+        piloto.setStress(50);
+
+        invocaPrivado(piloto, "processaStress");
+
+        assertEquals(50, piloto.getStress(),
+                "o decaimento passivo por tick nao chama decStress para AGRESSIVO, com ou sem essa revisao");
     }
 }
