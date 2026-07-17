@@ -966,6 +966,46 @@ public class ControleJogoLocal extends ControleRecursos
     }
 
     @Override
+    public void processarAutomacao(Piloto piloto) {
+        controleCorrida.getControleAutomacao().processarTick(piloto);
+    }
+
+    @Override
+    public void suspenderAutomacaoTemporariamente(Piloto piloto) {
+        controleCorrida.getControleAutomacao().suspenderTemporariamente(piloto);
+    }
+
+    @Override
+    public boolean isAutomacaoSuspensaTemporariamente(Piloto piloto) {
+        return controleCorrida.getControleAutomacao().isManualTemporario(piloto);
+    }
+
+    @Override
+    public boolean decideTentarEscaparFilaIndiana(Piloto piloto) {
+        return controleCorrida.getControleAutomacao().decideTentarEscaparFilaIndiana(piloto);
+    }
+
+    @Override
+    public boolean decideEvitaColidirComRetardatario(Piloto piloto) {
+        return controleCorrida.getControleAutomacao().decideEvitaColidirComRetardatario(piloto);
+    }
+
+    @Override
+    public boolean decideDesviaRetardatarioMesmoTracado(Piloto piloto) {
+        return controleCorrida.getControleAutomacao().decideDesviaRetardatarioMesmoTracado(piloto);
+    }
+
+    @Override
+    public boolean decideEspelhaTracadoCarroAtras(Piloto piloto) {
+        return controleCorrida.getControleAutomacao().decideEspelhaTracadoCarroAtras(piloto);
+    }
+
+    @Override
+    public boolean decideRecentralizaSemTrafego(Piloto piloto) {
+        return controleCorrida.getControleAutomacao().decideRecentralizaSemTrafego(piloto);
+    }
+
+    @Override
     public void ajusteUltrapassagem(Piloto piloto, Piloto pilotoFrente) {
     }
 

@@ -324,15 +324,6 @@ public class Piloto implements Serializable, PilotoSuave {
     @JsonIgnore
     String segundosParaRival;
     protected static final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-    private boolean temMotor;
-    private boolean temCombustivel;
-    private boolean superAquecido;
-    private int porcentagemDesgastePneus;
-    private int porcentagemCombustivel;
-    private int porcentagemMotor;
-    private int porcentagemCorridaRestante;
-    private boolean temPneu;
-    private int manualTemporario;
     @JsonIgnore
     private ArrayList<Integer> listaNosSuaves = new ArrayList<>();
     @JsonIgnore
@@ -1052,85 +1043,6 @@ public class Piloto implements Serializable, PilotoSuave {
         }
     }
 
-    private void processaIaIrBox() {
-        if (controleJogo.isModoQualify()) {
-            return;
-        }
-        if (isJogadorHumano() || isRecebeuBanderada()) {
-            return;
-        }
-        int pneusPorcentagem = getCarro().getPorcentagemDesgastePneus();
-        int combustPorcentagem = getCarro().getPorcentagemCombustivel();
-        int corridaPorcentagem = controleJogo.porcentagemCorridaConcluida();
-        if (controleJogo.isSemReabastecimento()) {
-            combustPorcentagem = 100;
-        }
-
-        if (controleJogo.isSafetyCarNaPista()) {
-            if (combustPorcentagem < 20 || pneusPorcentagem < 50) {
-                box = true;
-            }
-        }
-
-        boolean boxPneus = false;
-        if (pneusPorcentagem < 15) {
-            boxPneus = true;
-        }
-
-        if (boxPneus) {
-            if (voltas.size() > 3) {
-                Volta voltaUltima = voltas.get(voltas.size() - 1);
-                Volta voltaPenultima = voltas.get(voltas.size() - 2);
-                Volta voltaAntiPenultima = voltas.get(voltas.size() - 3);
-                if (voltaUltima.getTempoNumero().longValue() > voltaPenultima.getTempoNumero().longValue()
-                        && voltaUltima.getTempoNumero().longValue() > voltaAntiPenultima.getTempoNumero().longValue()) {
-                    box = true;
-                }
-            }
-            if (colisao == null && noAtual.verificaCurvaBaixa() && (ganho < (.9 * maxGanhoBaixa.doubleValue()))) {
-                box = true;
-            }
-            if (colisao == null && noAtual.verificaCurvaAlta() && (ganho < (.9 * maxGanhoAlta.doubleValue()))) {
-                box = true;
-            }
-        }
-
-        /** Box deixou de ter velocidade "rápida"/"lenta" sorteada por corrida — limite único (média de 80/85). */
-        int limiteUltimasVoltas = 83;
-
-        if (box && corridaPorcentagem > limiteUltimasVoltas && getQtdeParadasBox() > 0) {
-            box = false;
-        }
-
-        if (carro.verificaPneusIncompativeisClima()) {
-            box = true;
-        }
-
-        if (controleJogo.isSemReabastecimento() && !carro.verificaPneusIncompativeisClima()
-                && controleJogo.isSemTrocaPneu() && !carro.verificaDano()) {
-            box = false;
-        }
-
-        if (carro.verificaDano()) {
-            box = true;
-        }
-        if ((controleJogo.isSemReabastecimento() && combustPorcentagem < 5)
-                || (!controleJogo.isSemTrocaPneu() && pneusPorcentagem < 5)) {
-            box = true;
-        }
-        if (controleJogo.verificaUltimaVolta()) {
-            box = false;
-        }
-
-        if (controleJogo.getNumVoltaAtual() < 0) {
-            box = false;
-        }
-
-        if (controleJogo.isCorridaTerminada()) {
-            box = false;
-        }
-    }
-
     public int getPosicao() {
         return posicao;
     }
@@ -1171,8 +1083,7 @@ public class Piloto implements Serializable, PilotoSuave {
         }
         processaGanho();
         calculaCarrosAdjacentes();
-        processaIAnovoIndex();
-        processaIaIrBox();
+        controleJogo.processarAutomacao(this);
         processaUsoERS();
         processaUsoDRS();
         processaFaiscas();
@@ -1557,52 +1468,6 @@ public class Piloto implements Serializable, PilotoSuave {
         } else {
             ciclosPresoFilaProximidade = 0;
         }
-    }
-
-    /**
-     * Escapa da fila indiana: preso ha varios ciclos atras de um carro lento
-     * na mesma linha, muda para um tracado lateral comprovadamente livre. A
-     * verificacao padrao de mudanca de tracado bloqueia quando qualquer carro
-     * fora do tracado alvo esta a 75 nos - numa fila os proprios vizinhos
-     * impedem a saida mesmo com o tracado do lado totalmente vazio.
-     */
-    boolean tentarEscaparFilaIndiana() {
-        if (isJogadorHumano()) {
-            return false;
-        }
-        if (ciclosPresoFila < 8 && ciclosPresoFilaProximidade < Global.LIMIAR_CICLOS_FILA_SEM_COLISAO) {
-            return false;
-        }
-        if (controleJogo.isSafetyCarNaPista() || isRecebeuBanderada()) {
-            return false;
-        }
-        if (getPtosBox() != 0 || isBox()) {
-            return false;
-        }
-        int tracadoAtual = getTracado();
-        if (tracadoAtual != 0 && tracadoAtual != 1 && tracadoAtual != 2) {
-            return false;
-        }
-        int[] alvos;
-        if (tracadoAtual == 0) {
-            int primeiro = controleJogo.getRandom().intervalo(1, 2);
-            alvos = new int[] { primeiro, primeiro == 1 ? 2 : 1 };
-        } else {
-            alvos = new int[] { 0 };
-        }
-        for (int i = 0; i < alvos.length; i++) {
-            if (verificaTracadoLivreParaEscapar(alvos[i]) && mudarTracado(alvos[i], false, true)) {
-                ciclosPresoFila = 0;
-                ciclosPresoFilaProximidade = 0;
-                if (Global.LOG_COLISAO) {
-                    Logger.logar("[ESCAPE_FILA] piloto=" + getNome() + " de=" + tracadoAtual + " para=" + alvos[i]
-                            + " idx=" + (getNoAtual() != null ? getNoAtual().getIndex() : -1)
-                            + " volta=" + getNumeroVolta());
-                }
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -2665,118 +2530,26 @@ public class Piloto implements Serializable, PilotoSuave {
     }
 
     /**
-     * Autopilot = IA decidindo giro/ERS/DRS/ataque-defesa e a escolha
-     * proativa de traçado no lugar do jogador humano. Sempre desligado
-     * online (o jogador humano nunca é pilotado pela IA em multiplayer,
-     * mesmo que o automaticoManual da partida esteja em AUTOMATICO) e no
-     * solo em modo manual.
+     * Suspende o piloto automático (ControleAutomacao) por uma janela de
+     * ciclos, disparado por qualquer entrada do jogador humano local. Não
+     * faz nada se este piloto não for o jogador humano.
      */
-    private boolean autopilotDesligado() {
-        return isJogadorHumano() &&
-                (Global.CONTROLE_MANUAL.equals(controleJogo.getAutomaticoManual())
-                        || controleJogo instanceof JogoServidor);
+    public void setManualTemporario() {
+        if (controleJogo == null) {
+            return;
+        }
+        controleJogo.suspenderAutomacaoTemporariamente(this);
     }
 
     /**
-     * Leitura pura (sem decrementar): o decremento de manualTemporario ja
-     * acontece uma vez por ciclo em processaIAnovoIndex(), que roda antes
-     * de processaMudarTracado() no pipeline de processaNovoIndex().
+     * Pilotos "modelo"/sem partida associada (ex.: TemporadasDefault, usados
+     * pra listar pilotos disponíveis por temporada) nunca têm controleJogo
+     * setado — Jackson chama esse getter ao serializar esses objetos, então
+     * precisa ser seguro sem controleJogo (era um int simples antes da
+     * extração pra ControleAutomacao, nunca dava NPE).
      */
-    private boolean autopilotAtivo() {
-        return !autopilotDesligado() && !isManualTemporario();
-    }
-
-    private void processaIAnovoIndex() {
-        if (colisao != null || isRecebeuBanderada() || controleJogo.isModoQualify()) {
-            return;
-        }
-        if (autopilotDesligado()) {
-            return;
-        }
-
-        if (isManualTemporario()) {
-            decrementaManualTemporario();
-            return;
-        }
-
-        porcentagemDesgastePneus = getCarro().getPorcentagemDesgastePneus();
-        porcentagemCombustivel = getCarro().getPorcentagemCombustivel();
-        superAquecido = getCarro().verificaMotorSuperAquecido();
-        porcentagemMotor = getCarro().getPorcentagemDesgasteMotor();
-        porcentagemCorridaRestante = 100 - controleJogo.porcentagemCorridaConcluida();
-        temMotor = porcentagemMotor > 30 || porcentagemMotor > porcentagemCorridaRestante;
-        temCombustivel = porcentagemCombustivel > 10;
-        if (controleJogo.isSemReabastecimento()) {
-            temCombustivel = porcentagemCombustivel > porcentagemCorridaRestante;
-        }
-        temPneu = porcentagemDesgastePneus > 30;
-        if (controleJogo.isSemTrocaPneu()) {
-            temPneu = porcentagemDesgastePneus > 50 || porcentagemDesgastePneus > porcentagemCorridaRestante;
-        }
-        if (controleJogo.isSafetyCarNaPista() || getPtosBox() != 0 || danificado()) {
-            getCarro().setGiro(Carro.GIRO_MIN_VAL);
-            setModoPilotagem(LENTO);
-            return;
-        }
-        iaTentaUsarErs();
-        if (controleJogo.isDrs()) {
-            iaTentaUsarDRS();
-        }
-        boolean tentaPassarFrete = tentarPassaPilotoDaFrente();
-        boolean tentarEscaparAtras = false;
-        if (!tentaPassarFrete) {
-            tentarEscaparAtras = tentarEscaparPilotoAtras(false);
-        }
-        if (getNumeroVolta() > 0) {
-            if (tentaPassarFrete && calculaDiferencaParaProximo < 100
-                    && carroPilotoDaFrente.getPiloto().getPtosBox() == 0) {
-                ativarErs = true;
-                if (controleJogo.verificaInfoRelevante(this)) {
-                    String txt = Lang.msg("tentaPassarFrete", new String[] { nomeJogadorFormatado(),
-                            Html.negrito(getNome()), Html.negrito(carroPilotoDaFrente.getPiloto().getNome()) });
-                    controleJogo.info(Html.preto(txt));
-                }
-            } else if (tentarEscaparAtras && calculaDiferencaParaAnterior < 100 && getPtosBox() == 0) {
-                ativarErs = true;
-                if (controleJogo.verificaInfoRelevante(this)) {
-                    String txt = Lang.msg("tentarEscaparAtras", new String[] { nomeJogadorFormatado(),
-                            Html.negrito(getNome()), Html.negrito(carroPilotoAtras.getPiloto().getNome()) });
-                    controleJogo.info(Html.preto(txt));
-                }
-            }
-        }
-
-        if (!tentaPassarFrete && !tentarEscaparAtras) {
-            getCarro().setGiro(Carro.GIRO_NOR_VAL);
-            setModoPilotagem(NORMAL);
-        }
-
-        if (getCarro().verificaCondicoesCautelaGiro()) {
-            getCarro().setGiro(Carro.GIRO_MIN_VAL);
-        }
-        if (getCarro().verificaCondicoesCautelaPneu()) {
-            setModoPilotagem(LENTO);
-        }
-    }
-
-    public void setManualTemporario() {
-        if (!isJogadorHumano()) {
-            return;
-        }
-        manualTemporario = 150;
-    }
-
-    private void decrementaManualTemporario() {
-        if (manualTemporario > 0) {
-            manualTemporario--;
-        }
-    }
-
     public boolean isManualTemporario() {
-        if (manualTemporario > 0) {
-            return true;
-        }
-        return false;
+        return controleJogo != null && controleJogo.isAutomacaoSuspensaTemporariamente(this);
     }
 
     void processaMudarTracado() {
@@ -2802,11 +2575,11 @@ public class Piloto implements Serializable, PilotoSuave {
         }
         List<BooleanSupplier> causasMudancaTracado = Arrays.asList(
                 this::processaEntradaSaidaBox,
-                this::tentarEscaparFilaIndiana,
-                this::evitaColidirComRetardatario,
-                this::desviaRetardatarioMesmoTracado,
-                this::espelhaTracadoCarroAtras,
-                this::recentralizaSemTrafego);
+                () -> controleJogo.decideTentarEscaparFilaIndiana(this),
+                () -> controleJogo.decideEvitaColidirComRetardatario(this),
+                () -> controleJogo.decideDesviaRetardatarioMesmoTracado(this),
+                () -> controleJogo.decideEspelhaTracadoCarroAtras(this),
+                () -> controleJogo.decideRecentralizaSemTrafego(this));
         for (BooleanSupplier causa : causasMudancaTracado) {
             if (causa.getAsBoolean()) {
                 break;
@@ -2902,51 +2675,6 @@ public class Piloto implements Serializable, PilotoSuave {
         return false;
     }
 
-    /** Evita colidir com um retardatário à frente (mesmo traçado, ou perto demais). Só piloto automático ativo. */
-    private boolean evitaColidirComRetardatario() {
-        if (autopilotAtivo() && ((evitaBaterCarroFrente && carroPilotoDaFrenteRetardatario != null
-                && getTracado() == carroPilotoDaFrenteRetardatario.getPiloto().getTracado())
-                || calculaDiffParaProximoRetardatario < (testeHabilidadePiloto() ? 100 : 150))) {
-            desviaPilotoNaFrente(this, carroPilotoDaFrenteRetardatario.getPiloto());
-            return true;
-        }
-        return false;
-    }
-
-    /** Desvia de um retardatário mais à frente no mesmo traçado. Só piloto automático ativo. */
-    private boolean desviaRetardatarioMesmoTracado() {
-        if (autopilotAtivo() && (calculaDiffParaProximoRetardatarioMesmoTracado < calculaDiferencaParaAnterior
-                && calculaDiffParaProximoRetardatarioMesmoTracado < (testeHabilidadePilotoCarro() ? 150 : 200))) {
-            desviaPilotoNaFrente(this, carroPilotoDaFrenteRetardatario.getPiloto());
-            return true;
-        }
-        return false;
-    }
-
-    /** IA espelha o traçado do carro logo atrás, numa reta, pra facilitar ultrapassagem. Só piloto de IA. */
-    private boolean espelhaTracadoCarroAtras() {
-        if (!isJogadorHumano() && carroPilotoAtras != null && mudouTracadoReta <= 1
-                && calculaDiferencaParaAnterior < 150 && carroPilotoAtras.getPiloto().getTracado() != getTracado()
-                && calculaDiferencaParaAnterior > 100 && carroPilotoAtras.getPiloto().getPtosBox() == 0
-                && testeHabilidadePiloto() && !isFreiandoReta()) {
-            if (mudarTracado(carroPilotoAtras.getPiloto().getTracado()) && noAtual.verificaRetaOuLargada()) {
-                mudouTracadoReta++;
-            }
-            return true;
-        }
-        return false;
-    }
-
-    /** Sem tráfego relevante à frente nem atrás, IA recentraliza no traçado 0. Só piloto de IA. */
-    private boolean recentralizaSemTrafego() {
-        if (!isJogadorHumano() && calculaDiferencaParaAnterior > 250
-                && calculaDiffParaProximoRetardatario > 250) {
-            mudarTracado(0);
-            return true;
-        }
-        return false;
-    }
-
     public void desviaPilotoNaFrente(Piloto piloto, Piloto pilotoNaFrente) {
         boolean lento = Piloto.LENTO.equals(piloto.getModoPilotagem())
                 && Carro.GIRO_MIN_VAL == piloto.getCarro().getGiro();
@@ -2992,52 +2720,6 @@ public class Piloto implements Serializable, PilotoSuave {
                 && (pilotoNaFrente.getPtosBox() == 0);
     }
 
-    private boolean tentarEscaparPilotoAtras(boolean tentaPassarFrete) {
-        if (tentaPassarFrete) {
-            return false;
-        }
-        if (carroPilotoAtras == null) {
-            return false;
-        }
-        Piloto pilotoAtras = carroPilotoAtras.getPiloto();
-        if (pilotoAtras.getPtosBox() != 0) {
-            return false;
-        }
-        if (calculaDiferencaParaAnterior < (controleJogo.isDrs() ? 600 : 300) && testeHabilidadePilotoCarro()) {
-            modoIADefesaAtaque();
-            return true;
-        }
-        return false;
-    }
-
-    private void iaTentaUsarDRS() {
-        if (controleJogo.isChovendo()) {
-            return;
-        }
-        if (controleJogo.getNumVoltaAtual() <= 1) {
-            return;
-        }
-        if (ativarDRS) {
-            return;
-        }
-        setAtivarDRS(getNoAtual().verificaRetaOuLargada() && testeHabilidadePiloto());
-    }
-
-    private void iaTentaUsarErs() {
-        if (!controleJogo.isErs()) {
-            return;
-        }
-        if (noAtual == null) {
-            return;
-        }
-        int percetagemDeVoltaConcluida = controleJogo.percetagemDeVoltaConcluida(this);
-        if (percetagemDeVoltaConcluida > 20 && noAtual.verificaRetaOuLargada()) {
-            ativarErs = true;
-        }
-        if (percetagemDeVoltaConcluida > 60) {
-            ativarErs = true;
-        }
-    }
 
     public boolean verificaNaoPrecisaDesviar(Piloto pilotoFrente) {
         return pilotoFrente.verificaNaoPrecisaDesenhar();
@@ -3437,20 +3119,6 @@ public class Piloto implements Serializable, PilotoSuave {
         ganho = soma / listGanho.size();
     }
 
-    private boolean tentarPassaPilotoDaFrente() {
-        if (carroPilotoDaFrente == null) {
-            return false;
-        }
-        if (getStress() > getValorLimiteStressePararErrarCurva()) {
-            return false;
-        }
-        if (calculaDiferencaParaProximo < 500 && testeHabilidadePilotoCarro()) {
-            modoIADefesaAtaque();
-            return true;
-        }
-        return false;
-    }
-
     private void processaMudancaRegime() {
         if (isRecebeuBanderada()) {
             setModoPilotagem(Piloto.LENTO);
@@ -3462,44 +3130,6 @@ public class Piloto implements Serializable, PilotoSuave {
         }
         if (LENTO.equals(getModoPilotagem())) {
             mensagemPilotoLento();
-        }
-    }
-
-    void modoIADefesaAtaque() {
-        if (!testeHabilidadePiloto()) {
-            return;
-        }
-        double valorLimiteStressePararErrarCurva = 100;
-        boolean maxPilotagem = false;
-        boolean maxCarro = false;
-
-        if (getNoAtual().verificaRetaOuLargada()) {
-            maxCarro = (!superAquecido && temMotor && temCombustivel && testeHabilidadePilotoCarro()) || (!superAquecido
-                    && ativarDRS && controleJogo.isDrs() && Carro.MENOS_ASA.equals(getCarro().getAsa()));
-        } else {
-            maxPilotagem = temPneu && stress < valorLimiteStressePararErrarCurva;
-            /**
-             * Acima de stress 95, AGRESSIVO já não traz ganho nenhum (ver
-             * getModoPilotagemEfetivo()) — a decisão automática tem uma
-             * chance de reconhecer isso e recuar pra NORMAL por conta
-             * própria, via teste de habilidade. Não é garantia: em caso de
-             * falha, a decisão automática ainda escolhe AGRESSIVO. Escopo
-             * exclusivo desta decisão automática — não afeta o jogador
-             * humano escolhendo AGRESSIVO manualmente.
-             */
-            if (maxPilotagem && stress > 95 && testeHabilidadePilotoCarro()) {
-                maxPilotagem = false;
-            }
-        }
-        if (maxPilotagem) {
-            setModoPilotagem(AGRESSIVO);
-        } else {
-            setModoPilotagem(NORMAL);
-        }
-        if (maxCarro) {
-            getCarro().setGiro(Carro.GIRO_MAX_VAL);
-        } else {
-            getCarro().setGiro(Carro.GIRO_NOR_VAL);
         }
     }
 
@@ -4430,6 +4060,49 @@ public class Piloto implements Serializable, PilotoSuave {
 
     public Carro getCarroPilotoAtras() {
         return carroPilotoAtras;
+    }
+
+    public Carro getCarroPilotoDaFrenteRetardatario() {
+        return carroPilotoDaFrenteRetardatario;
+    }
+
+    @JsonIgnore
+    public int getDiferencaParaAnterior() {
+        return calculaDiferencaParaAnterior;
+    }
+
+    @JsonIgnore
+    public int getDiffParaProximoRetardatario() {
+        return calculaDiffParaProximoRetardatario;
+    }
+
+    public Double getMaxGanhoBaixa() {
+        return maxGanhoBaixa;
+    }
+
+    public Double getMaxGanhoAlta() {
+        return maxGanhoAlta;
+    }
+
+    public int getCiclosPresoFila() {
+        return ciclosPresoFila;
+    }
+
+    public int getCiclosPresoFilaProximidade() {
+        return ciclosPresoFilaProximidade;
+    }
+
+    public void zerarCiclosPresoFila() {
+        ciclosPresoFila = 0;
+        ciclosPresoFilaProximidade = 0;
+    }
+
+    public int getMudouTracadoReta() {
+        return mudouTracadoReta;
+    }
+
+    public void incrementaMudouTracadoReta() {
+        mudouTracadoReta++;
     }
 
     @JsonIgnore

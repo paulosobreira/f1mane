@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -13,7 +14,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import br.f1mane.controles.InterfaceJogo;
+import br.f1mane.controles.ControleAutomacao;
+import br.f1mane.controles.ControleJogoLocal;
 import br.f1mane.servidor.JogoServidor;
 import br.nnpe.Global;
 
@@ -23,6 +25,13 @@ import br.nnpe.Global;
  * solo automatico ligado exceto durante a janela manualTemporario - e
  * confirma que box, desvio de safety car e fila indiana nao dependem dessa
  * chave (continuam valendo pra ambos os modos, ou sao exclusivos de bots).
+ *
+ * A decisão de IA (ControleAutomacao) vive em outro pacote/classe agora;
+ * {@link #ligarControleAutomacao(ControleJogoLocal)} conecta o mock de
+ * controleJogo a uma instância real de ControleAutomacao, igual
+ * ControleJogoLocal faz em produção — sem isso, os métodos decideXxx() da
+ * interface voltariam ao default do Mockito (false) e nada seria exercitado
+ * de verdade.
  */
 class PilotoAutopilotModoTest {
 
@@ -39,7 +48,7 @@ class PilotoAutopilotModoTest {
         return pista;
     }
 
-    private Piloto criarPiloto(InterfaceJogo controleJogo, List<No> pista, List<Piloto> pilotos, String nome,
+    private Piloto criarPiloto(ControleJogoLocal controleJogo, List<No> pista, List<Piloto> pilotos, String nome,
             int index, int tracado) {
         Piloto piloto = new Piloto();
         piloto.setNome(nome);
@@ -53,12 +62,12 @@ class PilotoAutopilotModoTest {
         return piloto;
     }
 
-    private void configurarBase(InterfaceJogo controleJogo, List<No> pista, List<Piloto> pilotos) {
+    private void configurarBase(ControleJogoLocal controleJogo, List<No> pista, List<Piloto> pilotos) {
         when(controleJogo.getNosDaPista()).thenReturn(pista);
         when(controleJogo.getNosDoBox()).thenReturn(new ArrayList<>());
         when(controleJogo.getPilotos()).thenReturn(pilotos);
         when(controleJogo.getPilotosCopia()).thenReturn(pilotos);
-        when(controleJogo.obterPista(any())).thenReturn(pista);
+        when(controleJogo.obterPista(any(No.class))).thenReturn(pista);
         when(controleJogo.isModoQualify()).thenReturn(false);
         when(controleJogo.isSafetyCarNaPista()).thenReturn(false);
         when(controleJogo.isAtualizacaoSuave()).thenReturn(false);
@@ -75,12 +84,42 @@ class PilotoAutopilotModoTest {
         when(controleJogo.getCircuito()).thenReturn(circuito);
     }
 
-    private void configurarRetardatarioProximo(InterfaceJogo controleJogo, Piloto humano, Piloto retardatario) {
+    private void configurarRetardatarioProximo(ControleJogoLocal controleJogo, Piloto humano, Piloto retardatario) {
         when(controleJogo.obterCarroNaFrenteRetardatario(humano, false)).thenReturn(retardatario.getCarro());
         when(controleJogo.calculaDiffParaProximoRetardatario(humano, false)).thenReturn(10);
         when(controleJogo.calculaDiffParaProximoRetardatario(humano, true)).thenReturn(10);
         when(controleJogo.calculaDiferencaParaAnterior(humano)).thenReturn(500);
         when(controleJogo.calculaDiferencaParaProximo(humano)).thenReturn(500);
+    }
+
+    /**
+     * Conecta o mock de controleJogo a uma instância real de ControleAutomacao —
+     * mesmo papel que ControleJogoLocal.processarAutomacao()/decideXxx() cumprem
+     * em produção, delegando pra controleCorrida.getControleAutomacao().
+     */
+    private ControleAutomacao ligarControleAutomacao(ControleJogoLocal controleJogo) {
+        ControleAutomacao controleAutomacao = new ControleAutomacao(controleJogo, null);
+        when(controleJogo.decideTentarEscaparFilaIndiana(any()))
+                .thenAnswer(inv -> controleAutomacao.decideTentarEscaparFilaIndiana(inv.getArgument(0)));
+        when(controleJogo.decideEvitaColidirComRetardatario(any()))
+                .thenAnswer(inv -> controleAutomacao.decideEvitaColidirComRetardatario(inv.getArgument(0)));
+        when(controleJogo.decideDesviaRetardatarioMesmoTracado(any()))
+                .thenAnswer(inv -> controleAutomacao.decideDesviaRetardatarioMesmoTracado(inv.getArgument(0)));
+        when(controleJogo.decideEspelhaTracadoCarroAtras(any()))
+                .thenAnswer(inv -> controleAutomacao.decideEspelhaTracadoCarroAtras(inv.getArgument(0)));
+        when(controleJogo.decideRecentralizaSemTrafego(any()))
+                .thenAnswer(inv -> controleAutomacao.decideRecentralizaSemTrafego(inv.getArgument(0)));
+        doAnswer(inv -> {
+            controleAutomacao.suspenderTemporariamente(inv.getArgument(0));
+            return null;
+        }).when(controleJogo).suspenderAutomacaoTemporariamente(any());
+        when(controleJogo.isAutomacaoSuspensaTemporariamente(any()))
+                .thenAnswer(inv -> controleAutomacao.isManualTemporario(inv.getArgument(0)));
+        doAnswer(inv -> {
+            controleAutomacao.processarTick(inv.getArgument(0));
+            return null;
+        }).when(controleJogo).processarAutomacao(any());
+        return controleAutomacao;
     }
 
     // ---- 3.1: online, jogador humano nunca desvia automaticamente de retardatario ----
@@ -91,6 +130,7 @@ class PilotoAutopilotModoTest {
         List<No> pista = criarPista();
         List<Piloto> pilotos = new ArrayList<>();
         configurarBase(controleJogo, pista, pilotos);
+        ligarControleAutomacao(controleJogo);
         when(controleJogo.getAutomaticoManual()).thenReturn(Global.CONTROLE_AUTOMATICO);
 
         Piloto humano = criarPiloto(controleJogo, pista, pilotos, "Humano", 100, 1);
@@ -108,10 +148,11 @@ class PilotoAutopilotModoTest {
 
     @Test
     void soloManual_humano_nuncaDesviaAutomaticoDeRetardatario() {
-        InterfaceJogo controleJogo = mock(InterfaceJogo.class);
+        ControleJogoLocal controleJogo = mock(ControleJogoLocal.class);
         List<No> pista = criarPista();
         List<Piloto> pilotos = new ArrayList<>();
         configurarBase(controleJogo, pista, pilotos);
+        ligarControleAutomacao(controleJogo);
         when(controleJogo.getAutomaticoManual()).thenReturn(Global.CONTROLE_MANUAL);
 
         Piloto humano = criarPiloto(controleJogo, pista, pilotos, "Humano", 100, 1);
@@ -129,10 +170,11 @@ class PilotoAutopilotModoTest {
 
     @Test
     void soloAutomatico_humano_desviaAutomaticoDeRetardatarioSemEntradaRecente() {
-        InterfaceJogo controleJogo = mock(InterfaceJogo.class);
+        ControleJogoLocal controleJogo = mock(ControleJogoLocal.class);
         List<No> pista = criarPista();
         List<Piloto> pilotos = new ArrayList<>();
         configurarBase(controleJogo, pista, pilotos);
+        ligarControleAutomacao(controleJogo);
         when(controleJogo.getAutomaticoManual()).thenReturn(Global.CONTROLE_AUTOMATICO);
 
         Piloto humano = criarPiloto(controleJogo, pista, pilotos, "Humano", 100, 1);
@@ -148,10 +190,11 @@ class PilotoAutopilotModoTest {
 
     @Test
     void soloAutomatico_humano_naoDesviaDuranteJanelaManualTemporario() {
-        InterfaceJogo controleJogo = mock(InterfaceJogo.class);
+        ControleJogoLocal controleJogo = mock(ControleJogoLocal.class);
         List<No> pista = criarPista();
         List<Piloto> pilotos = new ArrayList<>();
         configurarBase(controleJogo, pista, pilotos);
+        ligarControleAutomacao(controleJogo);
         when(controleJogo.getAutomaticoManual()).thenReturn(Global.CONTROLE_AUTOMATICO);
 
         Piloto humano = criarPiloto(controleJogo, pista, pilotos, "Humano", 100, 1);
@@ -170,7 +213,7 @@ class PilotoAutopilotModoTest {
 
     @Test
     void soloManual_humano_snapDeBoxContinuaAutomatico() {
-        InterfaceJogo controleJogo = mock(InterfaceJogo.class);
+        ControleJogoLocal controleJogo = mock(ControleJogoLocal.class);
         List<No> pista = criarPista();
         List<Piloto> pilotos = new ArrayList<>();
         configurarBase(controleJogo, pista, pilotos);
@@ -208,7 +251,7 @@ class PilotoAutopilotModoTest {
 
     @Test
     void soloManual_humano_desviaDeCarroBatidoSobSafetyCar() {
-        InterfaceJogo controleJogo = mock(InterfaceJogo.class);
+        ControleJogoLocal controleJogo = mock(ControleJogoLocal.class);
         List<No> pista = criarPista();
         List<Piloto> pilotos = new ArrayList<>();
         configurarBase(controleJogo, pista, pilotos);
@@ -248,10 +291,11 @@ class PilotoAutopilotModoTest {
 
     @Test
     void humano_nuncaEscapaDeFilaIndiana() {
-        InterfaceJogo controleJogo = mock(InterfaceJogo.class);
+        ControleJogoLocal controleJogo = mock(ControleJogoLocal.class);
         List<No> pista = criarPista();
         List<Piloto> pilotos = new ArrayList<>();
         configurarBase(controleJogo, pista, pilotos);
+        ControleAutomacao controleAutomacao = ligarControleAutomacao(controleJogo);
         when(controleJogo.getAutomaticoManual()).thenReturn(Global.CONTROLE_AUTOMATICO);
 
         Piloto humano = criarPiloto(controleJogo, pista, pilotos, "Humano", 100, 0);
@@ -263,16 +307,17 @@ class PilotoAutopilotModoTest {
             humano.processaPenalidadeColisao();
         }
 
-        assertFalse(humano.tentarEscaparFilaIndiana());
+        assertFalse(controleAutomacao.decideTentarEscaparFilaIndiana(humano));
         assertEquals(0, humano.getTracado());
     }
 
     @Test
     void bot_continuaEscapandoDeFilaIndianaNormalmente() {
-        InterfaceJogo controleJogo = mock(InterfaceJogo.class);
+        ControleJogoLocal controleJogo = mock(ControleJogoLocal.class);
         List<No> pista = criarPista();
         List<Piloto> pilotos = new ArrayList<>();
         configurarBase(controleJogo, pista, pilotos);
+        ControleAutomacao controleAutomacao = ligarControleAutomacao(controleJogo);
         when(controleJogo.getAutomaticoManual()).thenReturn(Global.CONTROLE_AUTOMATICO);
 
         Piloto bot = criarPiloto(controleJogo, pista, pilotos, "Bot", 100, 0);
@@ -283,16 +328,16 @@ class PilotoAutopilotModoTest {
             bot.processaPenalidadeColisao();
         }
 
-        assertTrue(bot.tentarEscaparFilaIndiana());
+        assertTrue(controleAutomacao.decideTentarEscaparFilaIndiana(bot));
         assertEquals(1, bot.getTracado());
     }
 
     // ---- 6: modoPilotagem/giro do jogador humano manual — exceções sempre-ativas continuam,
-    //         decisão proativa da IA (processaIAnovoIndex/modoIADefesaAtaque) não afeta ----
+    //         decisão proativa da IA (ControleAutomacao) não afeta ----
 
     @Test
     void humanoManual_eForcadoParaLentoAoSerUltrapassadoComoRetardatario() {
-        InterfaceJogo controleJogo = mock(InterfaceJogo.class);
+        ControleJogoLocal controleJogo = mock(ControleJogoLocal.class);
         List<No> pista = criarPista();
         List<Piloto> pilotos = new ArrayList<>();
         configurarBase(controleJogo, pista, pilotos);
@@ -319,7 +364,7 @@ class PilotoAutopilotModoTest {
 
     @Test
     void humanoManual_eForcadoParaLentoPelaBandeirada() {
-        InterfaceJogo controleJogo = mock(InterfaceJogo.class);
+        ControleJogoLocal controleJogo = mock(ControleJogoLocal.class);
         List<No> pista = criarPista();
         List<Piloto> pilotos = new ArrayList<>();
         configurarBase(controleJogo, pista, pilotos);
@@ -348,7 +393,7 @@ class PilotoAutopilotModoTest {
 
     @Test
     void humanoManual_processaIAnovoIndex_naoAlteraModoPilotagemNemGiro() {
-        InterfaceJogo controleJogo = mock(InterfaceJogo.class);
+        ControleJogoLocal controleJogo = mock(ControleJogoLocal.class);
         List<No> pista = criarPista();
         List<Piloto> pilotos = new ArrayList<>();
         configurarBase(controleJogo, pista, pilotos);
@@ -359,10 +404,12 @@ class PilotoAutopilotModoTest {
         humano.setModoPilotagem(Piloto.AGRESSIVO);
         humano.getCarro().setGiro(Carro.GIRO_MAX_VAL);
 
+        ControleAutomacao controleAutomacao = new ControleAutomacao(controleJogo, null);
         try {
-            java.lang.reflect.Method metodo = Piloto.class.getDeclaredMethod("processaIAnovoIndex");
+            java.lang.reflect.Method metodo = ControleAutomacao.class.getDeclaredMethod("processaIAnovoIndex",
+                    Piloto.class);
             metodo.setAccessible(true);
-            metodo.invoke(humano);
+            metodo.invoke(controleAutomacao, humano);
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException(e);
         }

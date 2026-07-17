@@ -682,6 +682,47 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
         monitorJogo.setManualTemporario();
     }
 
+    /** Cliente nunca roda a simulação/tick de automação — sempre server-autoritativo. */
+    @Override
+    public void processarAutomacao(Piloto piloto) {
+
+    }
+
+    @Override
+    public void suspenderAutomacaoTemporariamente(Piloto piloto) {
+
+    }
+
+    @Override
+    public boolean isAutomacaoSuspensaTemporariamente(Piloto piloto) {
+        return false;
+    }
+
+    @Override
+    public boolean decideTentarEscaparFilaIndiana(Piloto piloto) {
+        return false;
+    }
+
+    @Override
+    public boolean decideEvitaColidirComRetardatario(Piloto piloto) {
+        return false;
+    }
+
+    @Override
+    public boolean decideDesviaRetardatarioMesmoTracado(Piloto piloto) {
+        return false;
+    }
+
+    @Override
+    public boolean decideEspelhaTracadoCarroAtras(Piloto piloto) {
+        return false;
+    }
+
+    @Override
+    public boolean decideRecentralizaSemTrafego(Piloto piloto) {
+        return false;
+    }
+
     @Override
     public void ajusteUltrapassagem(Piloto piloto, Piloto pilotoFrente) {
 

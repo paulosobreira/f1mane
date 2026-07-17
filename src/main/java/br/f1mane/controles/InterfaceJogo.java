@@ -178,6 +178,26 @@ public interface InterfaceJogo {
 
     public void setManualTemporario();
 
+    /** Aciona o tick de decisão de piloto automático (ControleAutomacao) para {@code piloto}. */
+    public void processarAutomacao(Piloto piloto);
+
+    /** Suspende a automação de {@code piloto} temporariamente — chamado internamente por {@code Piloto.setManualTemporario()}. */
+    public void suspenderAutomacaoTemporariamente(Piloto piloto);
+
+    /** Leitura pura de suspensão temporária — chamado internamente por {@code Piloto.isManualTemporario()}. */
+    public boolean isAutomacaoSuspensaTemporariamente(Piloto piloto);
+
+    /** Causas de traçado exclusivas de piloto automático — chamadas por {@code Piloto.processaMudarTracado()}. */
+    public boolean decideTentarEscaparFilaIndiana(Piloto piloto);
+
+    public boolean decideEvitaColidirComRetardatario(Piloto piloto);
+
+    public boolean decideDesviaRetardatarioMesmoTracado(Piloto piloto);
+
+    public boolean decideEspelhaTracadoCarroAtras(Piloto piloto);
+
+    public boolean decideRecentralizaSemTrafego(Piloto piloto);
+
     public BufferedImage obterCarroCima(Piloto piloto);
 
     public void ajusteUltrapassagem(Piloto piloto, Piloto pilotoFrente);

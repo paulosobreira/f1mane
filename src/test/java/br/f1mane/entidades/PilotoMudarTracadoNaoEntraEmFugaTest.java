@@ -12,7 +12,8 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import br.f1mane.controles.InterfaceJogo;
+import br.f1mane.controles.ControleAutomacao;
+import br.f1mane.controles.ControleJogoLocal;
 
 /**
  * Cobre um bug relatado pelo usuário: suspeita de que um piloto à FRENTE
@@ -34,7 +35,7 @@ class PilotoMudarTracadoNaoEntraEmFugaTest {
 
     private static final int TAMANHO_PISTA = 1000;
 
-    private InterfaceJogo controleJogo;
+    private ControleJogoLocal controleJogo;
     private List<No> pista;
     private List<Piloto> pilotos;
 
@@ -49,12 +50,12 @@ class PilotoMudarTracadoNaoEntraEmFugaTest {
         }
         pilotos = new ArrayList<>();
 
-        controleJogo = mock(InterfaceJogo.class);
+        controleJogo = mock(ControleJogoLocal.class);
         when(controleJogo.getNosDaPista()).thenReturn(pista);
         when(controleJogo.getNosDoBox()).thenReturn(new ArrayList<>());
         when(controleJogo.getPilotos()).thenReturn(pilotos);
         when(controleJogo.getPilotosCopia()).thenReturn(pilotos);
-        when(controleJogo.obterPista(any())).thenReturn(pista);
+        when(controleJogo.obterPista(any(No.class))).thenReturn(pista);
         when(controleJogo.isModoQualify()).thenReturn(false);
         when(controleJogo.isSafetyCarNaPista()).thenReturn(false);
         when(controleJogo.isAtualizacaoSuave()).thenReturn(false);
@@ -67,6 +68,20 @@ class PilotoMudarTracadoNaoEntraEmFugaTest {
         Circuito circuito = mock(Circuito.class);
         when(circuito.getIndiceTracado()).thenReturn(24.0);
         when(controleJogo.getCircuito()).thenReturn(circuito);
+
+        // As causas de traçado exclusivas de IA agora vivem em ControleAutomacao; o mock de
+        // controleJogo delega pra uma instância real, igual ControleJogoLocal faz em produção.
+        ControleAutomacao controleAutomacao = new ControleAutomacao(controleJogo, null);
+        when(controleJogo.decideTentarEscaparFilaIndiana(any()))
+                .thenAnswer(inv -> controleAutomacao.decideTentarEscaparFilaIndiana(inv.getArgument(0)));
+        when(controleJogo.decideEvitaColidirComRetardatario(any()))
+                .thenAnswer(inv -> controleAutomacao.decideEvitaColidirComRetardatario(inv.getArgument(0)));
+        when(controleJogo.decideDesviaRetardatarioMesmoTracado(any()))
+                .thenAnswer(inv -> controleAutomacao.decideDesviaRetardatarioMesmoTracado(inv.getArgument(0)));
+        when(controleJogo.decideEspelhaTracadoCarroAtras(any()))
+                .thenAnswer(inv -> controleAutomacao.decideEspelhaTracadoCarroAtras(inv.getArgument(0)));
+        when(controleJogo.decideRecentralizaSemTrafego(any()))
+                .thenAnswer(inv -> controleAutomacao.decideRecentralizaSemTrafego(inv.getArgument(0)));
     }
 
     private Piloto criarPiloto(String nome, int index, int tracado) {

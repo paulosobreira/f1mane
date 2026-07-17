@@ -1,28 +1,4 @@
-# Spec: piloto-controle-automatico-manual
-
-## Purpose
-
-Regras que governam quando o piloto automático (IA) pode assumir decisões pelo carro do jogador humano, distinguindo os modos automático e manual em partidas solo e online, e delimitando quais mecânicas de traçado ficam sujeitas a essa chave.
-
-## Requirements
-
-### Requirement: Piloto automático nunca assume o carro do jogador humano em jogo online
-Em qualquer partida online (`controleJogo instanceof JogoServidor` no servidor, ou o equivalente cliente `JogoCliente`), o sistema SHALL tratar o jogador humano como sempre manual para efeito de piloto automático, independentemente do valor de `automaticoManual` guardado em `DadosCriarJogo`/`Campeonato.nivel` para aquela partida. O valor escolhido na criação do jogo continua sendo apenas exibido nas telas do jogo (rótulo), sem afetar esse comportamento.
-
-#### Scenario: Jogador humano online com "Automático" selecionado na criação continua manual
-- **WHEN** um jogador cria ou entra em uma partida online com `automaticoManual` igual a `CONTROLE_AUTOMATICO`
-- **THEN** nenhuma decisão de piloto automático (giro, ERS, DRS, ataque-defesa, escolha proativa de traçado) é tomada pela IA em nome do carro desse jogador
-
-#### Scenario: Jogador humano online com "Manual" selecionado também continua manual
-- **WHEN** um jogador cria ou entra em uma partida online com `automaticoManual` igual a `CONTROLE_MANUAL`
-- **THEN** o comportamento é idêntico ao cenário anterior — nenhuma decisão de piloto automático é tomada pela IA em nome do carro desse jogador
-
-### Requirement: Piloto automático desligado no jogo solo em modo manual
-No jogo solo (Swing), quando a partida foi iniciada com `automaticoManual` igual a `CONTROLE_MANUAL`, o sistema SHALL tratar o carro do jogador humano exatamente como no jogo online: nenhuma decisão de piloto automático assume o carro.
-
-#### Scenario: Solo em modo manual nunca aciona piloto automático
-- **WHEN** uma partida solo é iniciada com `automaticoManual` igual a `CONTROLE_MANUAL` e o jogador está pilotando
-- **THEN** nenhuma decisão de piloto automático (giro, ERS, DRS, ataque-defesa, escolha proativa de traçado) é tomada pela IA em nome do carro do jogador, em nenhum ciclo da corrida
+## MODIFIED Requirements
 
 ### Requirement: Piloto automático ativo por padrão no jogo solo em modo automático, suspenso temporariamente por entrada do jogador
 No jogo solo (Swing), quando a partida foi iniciada com `automaticoManual` igual a `CONTROLE_AUTOMATICO`, o sistema SHALL permitir que decisões de piloto automático (tomadas por `ControleAutomacao`) assumam o carro do jogador humano por padrão. Qualquer entrada do jogador que dispare `ControleAutomacao.suspenderTemporariamente(Piloto)` SHALL suspender essas decisões pelo contador `manualTemporario` (renovado a cada nova entrada, guardado por `ControleAutomacao`), voltando ao piloto automático quando o contador chegar a zero sem nova entrada.
@@ -69,6 +45,8 @@ A chave de piloto automático/manual (regida pelos requisitos desta spec) SHALL 
 #### Scenario: Modo manual não impede ser forçado pra LENTO pela bandeirada
 - **WHEN** o jogador humano está em modo manual e recebe a bandeirada quadriculada
 - **THEN** `modoPilotagem`/`giro` do jogador humano são forçados para `LENTO`/mínimo, sem depender da chave de piloto automático/manual
+
+## ADDED Requirements
 
 ### Requirement: Cooldown de meio segundo por tipo de ação da automação em jogo online
 Em partidas online (`controleJogo instanceof JogoServidor`), `ControleAutomacao` SHALL limitar cada tipo de ação que decide executar em nome de um piloto de IA (modo de pilotagem, giro do motor, ERS, DRS, box, traçado) a no máximo uma execução a cada 500 milissegundos, por piloto, por tipo de ação, independentemente dos outros tipos. Uma tentativa de executar o mesmo tipo de ação antes de decorridos 500ms desde a última execução bem-sucedida daquele tipo para aquele piloto SHALL ser descartada silenciosamente nesse ciclo — sem erro, sem log de aviso, sem consumir a decisão de outro tipo de ação no mesmo ciclo. O timestamp de referência SHALL ser atualizado somente quando a ação é de fato executada, nunca quando é descartada pelo cooldown. Esse limite SHALL NOT se aplicar a partidas solo, nem a nenhuma ação disparada por um jogador humano (online ou local).

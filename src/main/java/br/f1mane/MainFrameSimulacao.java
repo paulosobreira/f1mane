@@ -53,7 +53,7 @@ public class MainFrameSimulacao extends MainFrame {
         setTitle(title);
         try {
             Global.DEBUG = true;
-            Global.LOG_COLISAO = true;
+            Global.LOG_COLISAO = false;
             controleJogo = new ControleJogoLocal(3);
             controleJogo.setMainFrame(this);
             PainelCircuito.desenhaBkg = false;
