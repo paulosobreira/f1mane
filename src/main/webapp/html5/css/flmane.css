@@ -319,3 +319,7 @@ However, delay the fade out process for 2.5 seconds */
 .destaque-surgimento {
 	animation: destaque-surgimento 0.4s ease-out;
 }
+
+.img-right {
+    height: fit-content;
+}
