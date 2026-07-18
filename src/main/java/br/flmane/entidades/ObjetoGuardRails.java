@@ -261,35 +261,75 @@ public class ObjetoGuardRails extends ObjetoDesenho {
 	 * {@link #largura} da barreira (perpendicular ao percurso) — o oposto
 	 * de {@link #construirLinhasVerticais}: periódico na largura, contínuo
 	 * no comprimento, em vez de periódico no comprimento e contínuo na
-	 * largura.
+	 * largura. Cada linha é o traço de um caminho paralelo ao encadeamento
+	 * original (ver {@link #construirCaminhoDeslocado}), não retângulos
+	 * independentes por segmento — do jeito antigo, a normal de cada
+	 * segmento diverge da do vizinho nos vértices onde o traçado muda de
+	 * ângulo, e os retângulos adjacentes quebravam/se sobrepunham ali (o
+	 * mesmo problema já corrigido em {@link ObjetoArquibancada#construirListras}).
 	 */
 	private GeneralPath construirLinhasHorizontais(List<Point2D> vertices) {
 		int quantidadeLinhas = quantidadeLinhasQueCabem(largura);
 		double periodoReal = periodoReal(largura, quantidadeLinhas);
 
+		BasicStroke strokeLinha = new BasicStroke(larguraLinha, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
 		GeneralPath linhas = new GeneralPath();
 		for (int i = 0; i < quantidadeLinhas; i++) {
-			double offsetProximo = -largura / 2.0 + i * periodoReal;
-			double offsetCentro = offsetProximo + larguraLinha / 2.0;
-			for (int s = 0; s < vertices.size() - 1; s++) {
-				Point2D p1 = vertices.get(s);
-				Point2D p2 = vertices.get(s + 1);
-				double dx = p2.getX() - p1.getX();
-				double dy = p2.getY() - p1.getY();
-				double compSeg = Math.hypot(dx, dy);
-				if (compSeg == 0) {
-					continue;
-				}
-				dx /= compSeg;
-				dy /= compSeg;
-				double nx = -dy;
-				double ny = dx;
-				double cx = (p1.getX() + p2.getX()) / 2.0 + nx * offsetCentro;
-				double cy = (p1.getY() + p2.getY()) / 2.0 + ny * offsetCentro;
-				adicionaRetangulo(linhas, cx, cy, dx, dy, compSeg / 2.0, nx, ny, larguraLinha / 2.0);
-			}
+			double offsetCentro = -largura / 2.0 + i * periodoReal + larguraLinha / 2.0;
+			GeneralPath caminhoDeslocado = construirCaminhoDeslocado(vertices, offsetCentro);
+			linhas.append(strokeLinha.createStrokedShape(caminhoDeslocado), false);
 		}
 		return linhas;
+	}
+
+	/**
+	 * Caminho paralelo a {@code vertices}, deslocado {@code offset} pixels
+	 * perpendicularmente à direção do percurso. Nos vértices internos, usa a
+	 * bissetriz (soma normalizada) das normais dos dois segmentos vizinhos em
+	 * vez da normal de um único segmento — mantém o deslocamento contínuo
+	 * através do vértice, sem o qual o caminho "quebraria" ali. Mesma lógica
+	 * de {@link ObjetoArquibancada#construirCaminhoDeslocado}.
+	 */
+	private static GeneralPath construirCaminhoDeslocado(List<Point2D> vertices, double offset) {
+		int quantidadeSegmentos = vertices.size() - 1;
+		double[] normalX = new double[quantidadeSegmentos];
+		double[] normalY = new double[quantidadeSegmentos];
+		for (int s = 0; s < quantidadeSegmentos; s++) {
+			Point2D p1 = vertices.get(s);
+			Point2D p2 = vertices.get(s + 1);
+			double dx = p2.getX() - p1.getX();
+			double dy = p2.getY() - p1.getY();
+			double comp = Math.hypot(dx, dy);
+			normalX[s] = comp == 0 ? 0 : -dy / comp;
+			normalY[s] = comp == 0 ? 0 : dx / comp;
+		}
+
+		GeneralPath caminho = new GeneralPath();
+		for (int j = 0; j < vertices.size(); j++) {
+			double nx;
+			double ny;
+			if (j == 0) {
+				nx = normalX[0];
+				ny = normalY[0];
+			} else if (j == quantidadeSegmentos) {
+				nx = normalX[quantidadeSegmentos - 1];
+				ny = normalY[quantidadeSegmentos - 1];
+			} else {
+				double somaX = normalX[j - 1] + normalX[j];
+				double somaY = normalY[j - 1] + normalY[j];
+				double comp = Math.hypot(somaX, somaY);
+				nx = comp == 0 ? normalX[j] : somaX / comp;
+				ny = comp == 0 ? normalY[j] : somaY / comp;
+			}
+			double x = vertices.get(j).getX() + nx * offset;
+			double y = vertices.get(j).getY() + ny * offset;
+			if (j == 0) {
+				caminho.moveTo(x, y);
+			} else {
+				caminho.lineTo(x, y);
+			}
+		}
+		return caminho;
 	}
 
 	/**
