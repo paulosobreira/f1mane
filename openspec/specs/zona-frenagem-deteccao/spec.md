@@ -58,7 +58,7 @@ Além de marcar quais nós pertencem a uma zona de frenagem, o sistema SHALL cal
 - **THEN** a consulta retorna um valor entre 0.0 e 1.0; para um nó fora de qualquer zona, retorna ausência de valor (não uma posição numérica)
 
 ### Requirement: Zona de frenagem substitui a janela fixa de distância em processaFreioNaReta
-`Piloto.processaFreioNaReta()` SHALL usar a zona de frenagem detectada (em vez de apenas a distância até a curva mais próxima de qualquer tipo) para decidir quando `freiandoReta` deve ser `true` e quando o gatilho de travada de roda (`travouRodas`) pode ocorrer.
+`ControleFreio.processaFreioNaReta()` SHALL usar a zona de frenagem detectada (em vez de apenas a distância até a curva mais próxima de qualquer tipo) para decidir quando `freiandoReta` deve ser `true` e quando o gatilho de travada de roda (`travouRodas`) pode ocorrer.
 
 #### Scenario: Freiando fora de qualquer zona de frenagem detectada não aciona travada de roda por este caminho
 - **WHEN** o piloto está numa reta que não faz parte de nenhuma zona de frenagem detectada

@@ -986,6 +986,26 @@ public class ControleJogoLocal extends ControleRecursos
     }
 
     @Override
+    public void processarUsoDRS(Piloto piloto) {
+        controleCorrida.getControleDrs().processaUsoDRS(piloto);
+    }
+
+    @Override
+    public void processarFreioNaReta(Piloto piloto) {
+        controleCorrida.getControleFreio().processaFreioNaReta(piloto);
+    }
+
+    @Override
+    public void processarDerrapagem(Piloto piloto) {
+        controleCorrida.getControleEscapada().processaDerrapagem(piloto);
+    }
+
+    @Override
+    public void processarEscapadaDaPista(Piloto piloto) {
+        controleCorrida.getControleEscapada().processaEscapadaDaPista(piloto);
+    }
+
+    @Override
     public void suspenderAutomacaoTemporariamente(Piloto piloto) {
         controleCorrida.getControleAutomacao().suspenderTemporariamente(piloto);
     }

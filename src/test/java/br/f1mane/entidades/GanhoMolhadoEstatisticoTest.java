@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 
 import org.junit.jupiter.api.Test;
 
+import br.f1mane.controles.ControleFreio;
 import br.f1mane.controles.InterfaceJogo;
 
 /**
@@ -186,7 +187,7 @@ class GanhoMolhadoEstatisticoTest {
         for (int i = 0; i < AMOSTRAS; i++) {
             Piloto piloto = criarPilotoParaFreioNaReta(molhado, proximaCurva);
             piloto.setGanho(100);
-            piloto.processaFreioNaReta();
+            new ControleFreio(piloto.getControleJogo()).processaFreioNaReta(piloto);
             soma += piloto.getGanho();
         }
         return soma / AMOSTRAS;

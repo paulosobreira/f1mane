@@ -1,10 +1,4 @@
-# Spec: derrapagem-piloto
-
-## Purpose
-
-Define a mecânica de derrapagem do piloto: a transição reativa do traçado 0 para o traçado 1 ou 2 quando o piloto perde tração numa curva com pneus gastos, independente de stress ou modo de pilotagem — distinta da escapada ancorada ao traçado (ver spec `escapada-ia-corrida`), que rege a transição do traçado 1/2 para o 4/5.
-
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: Derrapagem do traçado 0 para o 1/2 é independente de stress e modo de pilotagem
 Enquanto o piloto estiver no traçado 0, em um nó de curva baixa ou curva alta, com pneus abaixo de 30% de vida útil, e falhar em `testeHabilidadePilotoFreios()`, `ControleEscapada` SHALL mudar para o traçado 1 ou 2 (derrapagem) — sem depender de `getStress()` nem de `modoPilotagem`. A escolha de lado SHALL seguir a mesma regra já usada hoje: se `getTracadoAntigo()` for 1, muda para 2; se for 2, muda para 1; se não houver traçado anterior (0), sorteia entre 1 e 2. `ControleEscapada` SHALL chamar `controleJogo.travouRodas(piloto)` ao disparar a derrapagem, sem incrementar `stress` nem emitir mensagem de log.

@@ -697,6 +697,29 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
     }
 
+    /** Cliente nunca roda a simulação/tick de DRS — sempre server-autoritativo. */
+    @Override
+    public void processarUsoDRS(Piloto piloto) {
+
+    }
+
+    /** Cliente nunca roda a simulação/tick de frenagem — sempre server-autoritativo. */
+    @Override
+    public void processarFreioNaReta(Piloto piloto) {
+
+    }
+
+    /** Cliente nunca roda a simulação/tick de derrapagem/escapada — sempre server-autoritativo. */
+    @Override
+    public void processarDerrapagem(Piloto piloto) {
+
+    }
+
+    @Override
+    public void processarEscapadaDaPista(Piloto piloto) {
+
+    }
+
     @Override
     public void suspenderAutomacaoTemporariamente(Piloto piloto) {
 

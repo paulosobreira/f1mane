@@ -205,6 +205,18 @@ public interface InterfaceJogo {
 
     public boolean decideRecentralizaSemTrafego(Piloto piloto);
 
+    /** Aciona o uso de DRS ({@code ControleDrs}) para {@code piloto}. */
+    public void processarUsoDRS(Piloto piloto);
+
+    /** Aciona a frenagem na zona de frenagem ({@code ControleFreio}) para {@code piloto}. */
+    public void processarFreioNaReta(Piloto piloto);
+
+    /** Aciona a derrapagem (traçado 0 → 1/2, {@code ControleEscapada}) para {@code piloto}. */
+    public void processarDerrapagem(Piloto piloto);
+
+    /** Aciona a escapada da pista (traçado 1/2 ↔ 4/5, {@code ControleEscapada}) para {@code piloto}. */
+    public void processarEscapadaDaPista(Piloto piloto);
+
     public BufferedImage obterCarroCima(Piloto piloto);
 
     public void ajusteUltrapassagem(Piloto piloto, Piloto pilotoFrente);

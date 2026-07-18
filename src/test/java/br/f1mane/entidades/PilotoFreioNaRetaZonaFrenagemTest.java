@@ -16,6 +16,7 @@ import java.lang.reflect.Field;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import br.f1mane.controles.ControleFreio;
 import br.f1mane.controles.InterfaceJogo;
 
 /**
@@ -26,12 +27,14 @@ import br.f1mane.controles.InterfaceJogo;
 class PilotoFreioNaRetaZonaFrenagemTest {
 
     private InterfaceJogo controleJogo;
+    private ControleFreio controleFreio;
     private No noReta;
     private No noCurvaBaixa;
 
     @BeforeEach
     void setUp() {
         controleJogo = mock(InterfaceJogo.class);
+        controleFreio = new ControleFreio(controleJogo);
         GameRandom random = mock(GameRandom.class);
         when(controleJogo.getRandom()).thenReturn(random);
         when(controleJogo.isChovendo()).thenReturn(false);
@@ -88,7 +91,7 @@ class PilotoFreioNaRetaZonaFrenagemTest {
         piloto.setStress(60);
         piloto.setModoPilotagem(Piloto.AGRESSIVO);
 
-        piloto.processaFreioNaReta();
+        controleFreio.processaFreioNaReta(piloto);
 
         assertFalse(piloto.isFreiandoReta());
         verify(controleJogo, never()).travouRodas(any(Piloto.class));
@@ -99,7 +102,7 @@ class PilotoFreioNaRetaZonaFrenagemTest {
         when(controleJogo.isNoZonaFrenagem(noReta)).thenReturn(true);
         Piloto piloto = criarPiloto();
 
-        piloto.processaFreioNaReta();
+        controleFreio.processaFreioNaReta(piloto);
 
         assertTrue(piloto.isFreiandoReta());
         // val=50, distAfrente=300 -> multi=1/6 < minMulti(0.7), entao ganho e puxado pro minimo
@@ -114,7 +117,7 @@ class PilotoFreioNaRetaZonaFrenagemTest {
         piloto.setModoPilotagem(Piloto.AGRESSIVO);
         neutralizaDiffRetardatario(piloto);
 
-        piloto.processaFreioNaReta();
+        controleFreio.processaFreioNaReta(piloto);
 
         assertTrue(piloto.isFreiandoReta());
         verify(controleJogo, times(1)).travouRodas(piloto);
@@ -129,7 +132,7 @@ class PilotoFreioNaRetaZonaFrenagemTest {
         piloto.setModoPilotagem(Piloto.AGRESSIVO);
         neutralizaDiffRetardatario(piloto);
 
-        piloto.processaFreioNaReta();
+        controleFreio.processaFreioNaReta(piloto);
 
         assertEquals(30, getCampo(piloto, "freioNaRetaMalSucedidoNesteTick"),
                 "posicao fora do top-3 deve poder disparar o gatilho agora que a restricao foi removida");
@@ -143,14 +146,14 @@ class PilotoFreioNaRetaZonaFrenagemTest {
         piloto.setModoPilotagem(Piloto.AGRESSIVO);
         neutralizaDiffRetardatario(piloto);
 
-        piloto.processaFreioNaReta();
+        controleFreio.processaFreioNaReta(piloto);
         assertEquals(30, getCampo(piloto, "freioNaRetaMalSucedidoNesteTick"),
                 "primeiro tick dentro da zona deveria avaliar e disparar o gatilho");
 
         // Simula o consumo do flag por processaStress() no fim do tick, como aconteceria no jogo real.
         setCampo(piloto, "freioNaRetaMalSucedidoNesteTick", null);
 
-        piloto.processaFreioNaReta();
+        controleFreio.processaFreioNaReta(piloto);
         assertNull(getCampo(piloto, "freioNaRetaMalSucedidoNesteTick"),
                 "segundo tick no mesmo evento de frenagem nao deveria reavaliar o sorteio");
     }

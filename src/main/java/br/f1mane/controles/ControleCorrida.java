@@ -33,6 +33,9 @@ public class ControleCorrida {
     private ControleClima controleClima;
     private ControleQualificacao controleQualificacao;
     private ControleAutomacao controleAutomacao;
+    private ControleDrs controleDrs;
+    private ControleFreio controleFreio;
+    private ControleEscapada controleEscapada;
     private double fatorUtrapassagem;
     private double velocidadePista;
     private boolean corridaIniciada;
@@ -77,6 +80,9 @@ public class ControleCorrida {
         controleCiclo = new ControleCiclo(controleJogo, this);
         controleQualificacao = new ControleQualificacao(controleJogo, controleBox, this);
         controleAutomacao = new ControleAutomacao(controleJogo, this);
+        controleDrs = new ControleDrs(controleJogo);
+        controleFreio = new ControleFreio(controleJogo);
+        controleEscapada = new ControleEscapada(controleJogo);
         if (controleJogo.isSemReabastecimento()) {
             tanqueCheio = (distaciaCorrida + Util.inteiro(distaciaCorrida / 1.4));
         } else {
@@ -102,6 +108,18 @@ public class ControleCorrida {
 
     public ControleAutomacao getControleAutomacao() {
         return controleAutomacao;
+    }
+
+    public ControleDrs getControleDrs() {
+        return controleDrs;
+    }
+
+    public ControleFreio getControleFreio() {
+        return controleFreio;
+    }
+
+    public ControleEscapada getControleEscapada() {
+        return controleEscapada;
     }
 
     private void definirTanqueCheio() {

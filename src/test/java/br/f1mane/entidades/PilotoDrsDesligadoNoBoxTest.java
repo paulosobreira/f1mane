@@ -13,6 +13,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import br.f1mane.controles.ControleDrs;
 import br.f1mane.controles.InterfaceJogo;
 
 /**
@@ -28,6 +29,7 @@ import br.f1mane.controles.InterfaceJogo;
 class PilotoDrsDesligadoNoBoxTest {
 
     private InterfaceJogo controleJogo;
+    private ControleDrs controleDrs;
     private Piloto piloto;
 
     @BeforeEach
@@ -55,6 +57,8 @@ class PilotoDrsDesligadoNoBoxTest {
         GameRandom random = mock(GameRandom.class);
         when(controleJogo.getRandom()).thenReturn(random);
 
+        controleDrs = new ControleDrs(controleJogo);
+
         piloto = new Piloto();
         piloto.setNome("Piloto");
         Carro carro = new Carro();
@@ -72,7 +76,7 @@ class PilotoDrsDesligadoNoBoxTest {
     void decidiuIrProBox_aindaNaPistaPrincipal_drsDesligado() {
         piloto.setBox(true); // decisão de ir pro box — getPtosBox() ainda é 0.
 
-        piloto.processaUsoDRS();
+        controleDrs.processaUsoDRS(piloto);
 
         assertFalse(piloto.isPodeUsarDRS(), "indicador de DRS não deveria mais piscar assim que o piloto decide ir pro box");
         assertFalse(piloto.isAtivarDRS());
@@ -83,7 +87,7 @@ class PilotoDrsDesligadoNoBoxTest {
     void fisicamenteNaPitLane_drsDesligado() {
         piloto.setPtosBox(5);
 
-        piloto.processaUsoDRS();
+        controleDrs.processaUsoDRS(piloto);
 
         assertFalse(piloto.isPodeUsarDRS());
         assertFalse(piloto.isAtivarDRS());
@@ -94,7 +98,7 @@ class PilotoDrsDesligadoNoBoxTest {
     void naoIndoProBox_naoDesligaDrsAToa() {
         // Controle: nem isBox() nem getPtosBox()!=0 — o novo guard de box não deveria disparar,
         // e (num nó de reta) o guard "fora de reta" também não. ativarDRS/asa continuam do setUp.
-        piloto.processaUsoDRS();
+        controleDrs.processaUsoDRS(piloto);
 
         assertEquals(true, piloto.isAtivarDRS(), "fora do box, esta correção não deveria desligar ativarDRS à toa");
         assertEquals(Carro.MENOS_ASA, piloto.getCarro().getAsa());

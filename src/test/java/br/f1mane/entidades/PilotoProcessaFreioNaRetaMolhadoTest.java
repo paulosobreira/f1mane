@@ -8,6 +8,7 @@ import java.lang.reflect.Field;
 
 import org.junit.jupiter.api.Test;
 
+import br.f1mane.controles.ControleFreio;
 import br.f1mane.controles.InterfaceJogo;
 
 /**
@@ -18,6 +19,8 @@ import br.f1mane.controles.InterfaceJogo;
  * piso em si na saída de ganho.
  */
 class PilotoProcessaFreioNaRetaMolhadoTest {
+
+    private ControleFreio controleFreio;
 
     private Piloto criarPiloto(double molhado) throws Exception {
         InterfaceJogo controleJogo = mock(InterfaceJogo.class);
@@ -35,6 +38,7 @@ class PilotoProcessaFreioNaRetaMolhadoTest {
 
         when(controleJogo.obterProxCurva(noReta)).thenReturn(noCurvaBaixa);
         when(controleJogo.isNoZonaFrenagem(noReta)).thenReturn(true);
+        controleFreio = new ControleFreio(controleJogo);
 
         Piloto piloto = new Piloto();
         piloto.setNome("Piloto");
@@ -59,7 +63,7 @@ class PilotoProcessaFreioNaRetaMolhadoTest {
     void molhadoZero_reproduzBitABitOPisoSecoDeHoje() throws Exception {
         Piloto piloto = criarPiloto(0.0);
 
-        piloto.processaFreioNaReta();
+        controleFreio.processaFreioNaReta(piloto);
 
         // minMulti = 0.7 - 0.0*0.3 = 0.7; multi bruto (50/300=0.1667) fica abaixo, entao ganho = 100*0.7
         assertEquals(70.0, piloto.getGanho(), 1e-9);
@@ -69,7 +73,7 @@ class PilotoProcessaFreioNaRetaMolhadoTest {
     void molhadoUm_reproduzBitABitOPisoDeChuvaDeHoje() throws Exception {
         Piloto piloto = criarPiloto(1.0);
 
-        piloto.processaFreioNaReta();
+        controleFreio.processaFreioNaReta(piloto);
 
         // minMulti = 0.7 - 1.0*0.3 = 0.4; ganho = 100*0.4
         assertEquals(40.0, piloto.getGanho(), 1e-9);
@@ -79,7 +83,7 @@ class PilotoProcessaFreioNaRetaMolhadoTest {
     void molhadoIntermediario_produzPisoEntreOsDoisExtremos() throws Exception {
         Piloto piloto = criarPiloto(0.5);
 
-        piloto.processaFreioNaReta();
+        controleFreio.processaFreioNaReta(piloto);
 
         // minMulti = 0.7 - 0.5*0.3 = 0.55; ganho = 100*0.55
         assertEquals(55.0, piloto.getGanho(), 1e-9);

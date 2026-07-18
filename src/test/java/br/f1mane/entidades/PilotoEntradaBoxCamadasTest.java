@@ -14,6 +14,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import br.f1mane.controles.ControleEscapada;
 import br.f1mane.controles.InterfaceJogo;
 import br.nnpe.Global;
 
@@ -182,7 +183,7 @@ class PilotoEntradaBoxCamadasTest {
         piloto.setModoPilotagem(Piloto.AGRESSIVO);
         piloto.setStress(95);
         piloto.getCarro().setPotencia(0); // força falha no teste de habilidade, garantindo a marca.
-        piloto.processaEscapadaDaPista();
+        new ControleEscapada(controleJogo).processaEscapadaDaPista(piloto);
         assertEquals(1, piloto.getTracado(), "ainda longe da entrada, só marcado");
 
         boolean mudou = piloto.posicionarNoBox(2);
