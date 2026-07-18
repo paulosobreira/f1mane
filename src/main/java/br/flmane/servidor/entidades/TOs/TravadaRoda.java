@@ -1,0 +1,85 @@
+package br.flmane.servidor.entidades.TOs;
+
+import java.io.Serializable;
+
+import br.flmane.entidades.GameRandom;
+import br.flmane.entidades.VisualRandom;
+import br.nnpe.Util;
+
+public class TravadaRoda implements Serializable {
+    private int idNo;
+    private int tracado;
+    private int tipo;
+
+    public TravadaRoda() {
+    }
+
+    public TravadaRoda(GameRandom random) {
+        if (random == null && random.nextDouble() > .9) {
+            setTipo(0);
+        } else {
+            setTipo(random.intervalo(1, 2));
+        }
+    }
+
+    public int getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
+    }
+
+    public int getTracado() {
+        return tracado;
+    }
+
+    public void setTracado(int tracado) {
+        this.tracado = tracado;
+    }
+
+    public int getIdNo() {
+        return idNo;
+    }
+
+    public void setIdNo(int idNo) {
+        this.idNo = idNo;
+    }
+
+    @Override
+    public String toString() {
+        return (idNo + " " + tracado + " " + tipo);
+    }
+
+    @Override
+    public int hashCode() {
+        return toString().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return toString().equals(obj.toString());
+    }
+
+    public String encode() {
+        return idNo + "µ" + tracado;
+    }
+
+    public void decode(String val) {
+        if (val == null || val.isEmpty()) {
+            return;
+        }
+        String[] sp = val.split("µ");
+        idNo = parseInt(sp[0]);
+        tracado = parseInt(sp[1]);
+    }
+
+    private int parseInt(String string) {
+        try {
+            string = Util.extrairNumeros(string);
+            return Integer.parseInt(string);
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+}

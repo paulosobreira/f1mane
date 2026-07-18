@@ -7,7 +7,7 @@ Define a mecânica de derrapagem do piloto: a transição reativa do traçado 0 
 ## Requirements
 
 ### Requirement: Derrapagem do traçado 0 para o 1/2 é independente de stress e modo de pilotagem
-Enquanto o piloto estiver no traçado 0, em um nó de curva baixa ou curva alta, com pneus abaixo de 30% de vida útil, e falhar em `testeHabilidadePilotoFreios()`, `Piloto` SHALL mudar para o traçado 1 ou 2 (derrapagem) — sem depender de `getStress()` nem de `modoPilotagem`. A escolha de lado SHALL seguir a mesma regra já usada hoje: se `getTracadoAntigo()` for 1, muda para 2; se for 2, muda para 1; se não houver traçado anterior (0), sorteia entre 1 e 2. `Piloto` SHALL chamar `controleJogo.travouRodas(this)` ao disparar a derrapagem, sem incrementar `stress` nem emitir mensagem de log.
+Enquanto o piloto estiver no traçado 0, em um nó de curva baixa ou curva alta, com pneus abaixo de 30% de vida útil, e falhar em `testeHabilidadePilotoFreios()`, `ControleEscapada` SHALL mudar para o traçado 1 ou 2 (derrapagem) — sem depender de `getStress()` nem de `modoPilotagem`. A escolha de lado SHALL seguir a mesma regra já usada hoje: se `getTracadoAntigo()` for 1, muda para 2; se for 2, muda para 1; se não houver traçado anterior (0), sorteia entre 1 e 2. `ControleEscapada` SHALL chamar `controleJogo.travouRodas(piloto)` ao disparar a derrapagem, sem incrementar `stress` nem emitir mensagem de log.
 
 #### Scenario: Pneus gastos e falha no teste de freios em curva baixa derrapam para o traçado 1 ou 2
 - **WHEN** um piloto está no traçado 0, no nó atual do tipo curva baixa, com pneus abaixo de 30%, e `testeHabilidadePilotoFreios()` falha
@@ -42,7 +42,7 @@ Enquanto o piloto estiver no traçado 0, em um nó de curva baixa ou curva alta,
 - **THEN** o piloto deriva para o traçado 1 ou 2, sorteado por `controleJogo.getRandom().intervalo(1, 2)`
 
 ### Requirement: Guardas de segurança já existentes continuam bloqueando a derrapagem
-`Piloto.processaEscapadaDaPista()` (ou o método que hospeda a derrapagem) SHALL NOT disparar a derrapagem quando o safety car está na pista, quando o modo é qualify, ou quando o piloto está com `getPtosBox() != 0` — as mesmas guardas já aplicadas hoje no topo do método.
+`ControleEscapada.processaDerrapagem()` SHALL NOT disparar a derrapagem quando o safety car está na pista, quando o modo é qualify, ou quando o piloto está com `getPtosBox() != 0` — as mesmas guardas já aplicadas hoje no topo do método.
 
 #### Scenario: Safety car na pista impede a derrapagem
 - **WHEN** o safety car está na pista e um piloto satisfaz as demais condições de derrapagem

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="25.0.2" class="java.beans.XMLDecoder">
- <object class="br.f1mane.entidades.Circuito">
+ <object class="br.flmane.entidades.Circuito">
   <void property="objetos">
    <object class="java.util.ArrayList">
    </object>

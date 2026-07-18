@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="25.0.2" class="java.beans.XMLDecoder">
- <object class="br.f1mane.entidades.Circuito" id="Circuito0">
+ <object class="br.flmane.entidades.Circuito" id="Circuito0">
   <void id="Integer0" property="distanciaKm"/>
   <void property="objetos">
    <object class="java.util.ArrayList">
     <void method="add">
-     <object class="br.f1mane.entidades.ObjetoTransparencia" id="ObjetoTransparencia0">
+     <object class="br.flmane.entidades.ObjetoTransparencia" id="ObjetoTransparencia0">
       <void property="altura">
        <int>153</int>
       </void>
@@ -136,7 +136,7 @@
   <void property="objetosCenario">
    <object class="java.util.ArrayList">
     <void method="add">
-     <object class="br.f1mane.entidades.ObjetoLivre" id="ObjetoLivre0">
+     <object class="br.flmane.entidades.ObjetoLivre" id="ObjetoLivre0">
       <void property="nome">
        <string>Objeto 1</string>
       </void>

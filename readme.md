@@ -13,7 +13,7 @@ Fl-MANE ships as a single JAR (`flmane.jar`) that supports three distinct modes:
 | Mode | How to launch | Description |
 |---|---|---|
 | **Web (HTML5)** | `java -jar flmane.jar` | Embedded Tomcat on port 8080; play via browser |
-| **Solo (Java Swing)** | `java -cp flmane.jar br.f1mane.MainFrame` | Full Swing desktop game, no server required |
+| **Solo (Java Swing)** | `java -cp flmane.jar br.flmane.MainFrame` | Full Swing desktop game, no server required |
 | **Multiplayer client** | Launched from the Swing launcher | Connects to a running Fl-MANE server |
 
 When launched without arguments, the app shows a Swing launcher with QR Code and buttons for all three modes. Use `--headless` (or Docker) to skip the launcher GUI and run server-only.
@@ -135,7 +135,7 @@ java -jar target/flmane.jar
 ```bash
 ./simulacao.sh
 # equivalent to:
-java -cp target/flmane.jar br.f1mane.MainFrameSimulacao 2024 Catalunya 72
+java -cp target/flmane.jar br.flmane.MainFrameSimulacao 2024 Catalunya 72
 ```
 
 ---

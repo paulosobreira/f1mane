@@ -26,7 +26,7 @@ Define a mecânica de escapada (run-off) ancorada ao traçado durante a corrida:
 - **THEN** nenhum nó é gerado para esse objeto (a lista de destino permanece nula nos índices dele), sem lançar exceção durante a vetorização
 
 ### Requirement: Só piloto "em risco" recebe o teste de habilidade da escapada; os demais nunca são testados nem escapam
-Em `Piloto.processaEscapadaAncoradaAoTracado()`, o par de testes abaixo (teste 1, e teste 2 só se o 1 não marcar) SHALL rodar **no máximo uma vez por `ObjetoEscapada` por piloto por volta** — não uma vez por causa de risco, e sim uma vez para a zona inteira, qualquer que seja o desfecho:
+Em `ControleEscapada.processaEscapadaAncoradaAoTracado()`, o par de testes abaixo (teste 1, e teste 2 só se o 1 não marcar) SHALL rodar **no máximo uma vez por `ObjetoEscapada` por piloto por volta** — não uma vez por causa de risco, e sim uma vez para a zona inteira, qualquer que seja o desfecho:
 
 1. **Teste de stress**: `getStress() > Global.LIMITE_ESTRESSE_PARA_ESCAPADA_ANCORADA` (90) E `!testeHabilidadePilotoCarro()`. Não exige `modoPilotagem == AGRESSIVO` nem exclui `LENTO` — qualquer modo de pilotagem satisfaz a pré-condição, desde que o stress esteja acima do limite. Se verdadeiro, o piloto é marcado para escapar nesta zona.
 2. **Teste de pneus** (só avaliado se o teste 1 não marcou): `carro.getPorcentagemDesgastePneus() < 30` E `getStress() >= Global.LIMITE_ESTRESSE_PARA_ESCAPADA_PNEUS` (70, menor que o limite do teste de stress) E `!testeHabilidadePilotoFreios()`. Não exclui `LENTO`. Se verdadeiro, o piloto é marcado para escapar nesta zona.
@@ -75,7 +75,7 @@ Se o índice atual do piloto já ultrapassou `indiceEntrada` de uma `ObjetoEscap
 - **THEN** o piloto ainda é considerado como tendo alcançado a entrada, podendo escapar normalmente
 
 ### Requirement: A lógica de escapada nunca dirige o carro pra longe de uma zona
-`Piloto.processaEscapadaAncoradaAoTracado()` SHALL NOT tentar `mudarTracado(0)` (ou qualquer outra mudança de traçado) só porque existe uma `ObjetoEscapada` à frente no traçado atual do piloto — a decisão de sair do traçado 1 ou 2 de volta para o 0 é SHALL ser feita exclusivamente pela lógica geral de condução (`processaMudarTracado()`/`processaIAnovoIndex()` para pilotos de IA) ou pelo próprio jogador, em modo manual. A lógica de escapada é puramente reativa: a partir de onde o piloto já está no momento em que alcança `indiceEntrada`, decide apenas se ele escapa ou não (ver requisitos seguintes) — nunca movimenta o carro lateralmente por iniciativa própria antes disso.
+`ControleEscapada.processaEscapadaAncoradaAoTracado()` SHALL NOT tentar `mudarTracado(0)` (ou qualquer outra mudança de traçado) só porque existe uma `ObjetoEscapada` à frente no traçado atual do piloto — a decisão de sair do traçado 1 ou 2 de volta para o 0 é SHALL ser feita exclusivamente pela lógica geral de condução (`processaMudarTracado()`/`processaIAnovoIndex()` para pilotos de IA) ou pelo próprio jogador, em modo manual. A lógica de escapada é puramente reativa: a partir de onde o piloto já está no momento em que alcança `indiceEntrada`, decide apenas se ele escapa ou não (ver requisitos seguintes) — nunca movimenta o carro lateralmente por iniciativa própria antes disso.
 
 #### Scenario: Piloto que derrapou para um traçado com escapada à frente não é trazido de volta automaticamente
 - **WHEN** um piloto muda de traçado 0 para 1 ou 2 pela mecânica de derrapagem (ver spec `derrapagem-piloto`) e, num ciclo seguinte, existe uma `ObjetoEscapada` a mais de 150 índices de distância no seu traçado atual
@@ -152,7 +152,7 @@ Se o índice atual do piloto já ultrapassou `indiceSaida` de uma `ObjetoEscapad
 - **THEN** essa zona não é mais considerada ativa nesse traçado de fuga, e nenhum teste de habilidade de retorno relacionado a ela é feito
 
 ### Requirement: Velocidade e modo reduzidos só enquanto literalmente no traçado de fuga, restaurados ao normal ao voltar
-Enquanto (e só enquanto) `getTracado()` for 4 ou 5, `Piloto.processaEscapadaDaPista()` SHALL multiplicar o ganho por 0.8, forçar `carro.setGiro(Carro.GIRO_MIN_VAL)` e `setModoPilotagem(LENTO)`. A redução SHALL NOT se estender à janela de retorno (animação de troca de traçado de volta ao traçado de origem) — assim que o traçado deixa de ser 4 ou 5, `modoPilotagem` e o giro SHALL ser restaurados aos valores de imediatamente antes de entrar no traçado de fuga (não simplesmente resetados para um valor fixo, e não deixados travados em `LENTO`/`GIRO_MIN_VAL` indefinidamente).
+Enquanto (e só enquanto) `getTracado()` for 4 ou 5, `ControleEscapada.processaEscapadaDaPista()` SHALL multiplicar o ganho por 0.8, forçar `carro.setGiro(Carro.GIRO_MIN_VAL)` e `setModoPilotagem(LENTO)`. A redução SHALL NOT se estender à janela de retorno (animação de troca de traçado de volta ao traçado de origem) — assim que o traçado deixa de ser 4 ou 5, `modoPilotagem` e o giro SHALL ser restaurados aos valores de imediatamente antes de entrar no traçado de fuga (não simplesmente resetados para um valor fixo, e não deixados travados em `LENTO`/`GIRO_MIN_VAL` indefinidamente).
 
 #### Scenario: Giro e modo são travados durante a escapada
 - **WHEN** um piloto está no traçado 4 ou 5
@@ -197,7 +197,7 @@ A partir do momento em que um piloto é marcado para escapar por uma `ObjetoEsca
 - **THEN** `mudarTracado` volta a aceitar mudanças de traçado normalmente para esse piloto (sujeito às demais guardas já existentes, como cooldown e colisão)
 
 ### Requirement: Piloto indo pro box é excluído da escapada desde a decisão
-`Piloto.processaEscapadaDaPista()` SHALL retornar sem processar nenhum teste ou execução de escapada quando o piloto tiver decidido ir pro box (`isBox() == true`), não apenas quando já estiver fisicamente dentro da pit lane (`getPtosBox() != 0`, condição já existente e mantida). Se o piloto já estava marcado pela escapada ancorada (`impedidoDeMudarTracadoPorEscapada == true`) no momento em que decide ir pro box, essa trava SHALL ser liberada nesse mesmo ponto, evitando que o piloto fique permanentemente impedido de mudar de traçado (inclusive de entrar no box) pelo resto da corrida.
+`ControleEscapada.processaEscapadaDaPista()` SHALL retornar sem processar nenhum teste ou execução de escapada quando o piloto tiver decidido ir pro box (`isBox() == true`), não apenas quando já estiver fisicamente dentro da pit lane (`getPtosBox() != 0`, condição já existente e mantida). Se o piloto já estava marcado pela escapada ancorada (`impedidoDeMudarTracadoPorEscapada == true`) no momento em que decide ir pro box, essa trava SHALL ser liberada nesse mesmo ponto (via `piloto.setImpedidoDeMudarTracadoPorEscapada(false)`), evitando que o piloto fique permanentemente impedido de mudar de traçado (inclusive de entrar no box) pelo resto da corrida.
 
 #### Scenario: Piloto que decide ir pro box deixa de ser testável pela escapada, mesmo ainda na pista principal
 - **WHEN** um piloto com `stress` acima de 90 decide ir pro box (`isBox()` passa a `true`) enquanto ainda está na pista principal, antes de `getPtosBox()` deixar de ser zero, e entra na janela de detecção de uma `ObjetoEscapada`
@@ -212,7 +212,7 @@ A partir do momento em que um piloto é marcado para escapar por uma `ObjetoEsca
 - **THEN** `processaEscapadaDaPista()` continua retornando sem processar nada, exatamente como já acontecia antes desta mudança
 
 ### Requirement: A mecânica usa a mesma regra em qualquer volta, incluindo a volta 1
-`Piloto.processaEscapadaAncoradaAoTracado()` e `Piloto.processaSaidaDaEscapada()` SHALL NOT ter nenhum tratamento diferente por número de volta — o teste de habilidade preventivo e o gatilho de escapada/retorno se comportam de forma idêntica na volta 1 e em qualquer outra volta (decisão explícita do usuário — ver D13 do design.md, que documenta uma tentativa revertida de desligar a mecânica na volta 1).
+`ControleEscapada.processaEscapadaAncoradaAoTracado()` e `ControleEscapada.processaSaidaDaEscapada()` SHALL NOT ter nenhum tratamento diferente por número de volta — o teste de habilidade preventivo e o gatilho de escapada/retorno se comportam de forma idêntica na volta 1 e em qualquer outra volta (decisão explícita do usuário — ver D13 do design.md, que documenta uma tentativa revertida de desligar a mecânica na volta 1).
 
 #### Scenario: Volta 1 escapa normalmente, sem tratamento especial
 - **WHEN** `controleJogo.getNumVoltaAtual()` é `1` e um piloto agressivo e estressado alcança a entrada de uma `ObjetoEscapada`

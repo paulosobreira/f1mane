@@ -14,7 +14,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>F1Mane Conf</title>
+<title>FlMane Conf</title>
 <style type="text/css">
 body{
     font-family: sans-serif;
@@ -45,7 +45,7 @@ h4 {
 <table>
 	<thead>
 		<tr>
-			<th colspan="2" align="left" ><h3>F1Mane
+			<th colspan="2" align="left" ><h3>FlMane
 			Configuration Environment</h3></th>
 		</tr>
 	</thead>

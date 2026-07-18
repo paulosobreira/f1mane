@@ -98,7 +98,7 @@ for i in "${!SIMULACOES[@]}"; do
 
     echo -n "[$NUM/$TOTAL] $temporada / $circuito / ${voltas}v ... "
 
-    java -cp "$JAR" br.f1mane.MainFrameSimulacao "$temporada" "$circuito" "$voltas" 2>/dev/null
+    java -cp "$JAR" br.flmane.MainFrameSimulacao "$temporada" "$circuito" "$voltas" 2>/dev/null
     EXIT=$?
 
     if [ $EXIT -eq 0 ]; then
