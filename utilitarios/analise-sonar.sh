@@ -8,7 +8,7 @@ cd "$PROJECT_ROOT"
 echo "=== Resetando SonarQube (do zero) ==="
 docker compose rm -sf sonarqube 2>/dev/null || true
 docker compose down 2>/dev/null || true
-docker volume rm -f f1mane_sonarqube_data 2>/dev/null || true
+docker volume rm -f flmane_sonarqube_data 2>/dev/null || true
 
 echo "=== Iniciando SonarQube ==="
 docker compose up -d sonarqube

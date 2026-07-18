@@ -3,14 +3,14 @@ setlocal
 cd /d "%~dp0"
 
 :: =============================================
-::  F1Mane - Gerador de Instalador
+::  FlMane - Gerador de Instalador
 ::  Instalacao por usuario (sem admin)
 :: =============================================
 
 set APP_NAME=FlMane
 set APP_VERSION=1.0
 set MAIN_JAR=FlMane.jar
-set MAIN_CLASS=br.f1mane.MainLauncher
+set MAIN_CLASS=br.flmane.MainLauncher
 set ICON=FlMane.ico
 set DEST=instalador
 set UPGRADE_UUID=A1B2C3D4-E5F6-7890-ABCD-EF1234567890

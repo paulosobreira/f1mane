@@ -46,7 +46,7 @@
 
 O Fl Mane é um simulador de gerenciamento de corrida de monopostos desenvolvido em Java. Ele simula temporadas completas com pit stops, safety car, mudanças climáticas, desgaste de pneus e motor, ERS/DRS e modo campeonato. O jogo suporta tanto o modo solo (um jogador contra a IA) quanto o modo multiplayer via servidor web.
 
-> **Nota sobre o nome**: "F1" é o nome legado do projeto, preservado no pacote Java (`br.f1mane`), no nome do JAR (`flmane.jar`) e em identificadores de código (ex.: `F1ManeDados`). Esses artefatos técnicos não são renomeados; a marca do produto e a documentação usam "Fl Mane".
+> **Nota sobre o nome**: "F1" era o nome legado do projeto. O pacote Java raiz (`br.flmane`) e identificadores de código internos (ex.: `FlManeDados`) já foram renomeados para `br.flmane`/`FlManeDados`, alinhando-os à marca do produto "Fl Mane" usada no nome do JAR (`flmane.jar`), na documentação e na interface.
 
 A arquitetura central é deliberadamente compacta: um único JAR (`flmane.jar`) serve três modos de execução distintos — servidor web com Tomcat embutido, jogo solo em Swing e cliente multiplayer. Essa unificação foi obtida extraindo o diretório `webapp/` do próprio JAR em tempo de execução.
 
@@ -63,25 +63,25 @@ O mesmo JAR `flmane.jar` expõe quatro entry points distintos:
 | Classe | Modo | Comando típico |
 |---|---|---|
 | `MainLauncher` | Servidor web + launcher Swing | `java -jar target/flmane.jar` |
-| `MainFrame` | Jogo solo Swing | `java -cp target/flmane.jar br.f1mane.MainFrame` |
+| `MainFrame` | Jogo solo Swing | `java -cp target/flmane.jar br.flmane.MainFrame` |
 | `AppletPaddock` | Cliente multiplayer Swing | iniciado pelo launcher |
-| `MainFrameSimulacao` | Simulação headless (debug) | `./simulacao.sh` ou `java -cp ... br.f1mane.MainFrameSimulacao 2024 Catalunya 72` |
+| `MainFrameSimulacao` | Simulação headless (debug) | `./simulacao.sh` ou `java -cp ... br.flmane.MainFrameSimulacao 2024 Catalunya 72` |
 
 ### 2.2 MainLauncher — Modo Web
 
-`br.f1mane.MainLauncher` é o entry point padrão do JAR e realiza as seguintes operações em sequência:
+`br.flmane.MainLauncher` é o entry point padrão do JAR e realiza as seguintes operações em sequência:
 
 1. **Extração do webapp**: chama `extrairWebapp()`, que copia o diretório `webapp/` embutido no JAR para um diretório temporário chamado `flmane-webapp` no sistema de arquivos local.
 2. **Inicialização do Tomcat**: sobe Tomcat na porta 8080, mapeando o contexto `/flmane` para o diretório extraído via `addWebapp("/flmane", base.getAbsolutePath())`.
 3. **Launcher Swing**: se nenhum argumento for passado (`args == null || args.length == 0`), exibe uma janela Swing com QR Code e três botões:
    - **Web (HTML5)**: abre `http://localhost:8080/flmane/html5/index.html`
-   - **Solo Java**: lança `br.f1mane.MainFrame`
-   - **Multiplayer Java**: lança `br.f1mane.servidor.applet.AppletPaddock`
+   - **Solo Java**: lança `br.flmane.MainFrame`
+   - **Multiplayer Java**: lança `br.flmane.servidor.applet.AppletPaddock`
 4. **Modo headless**: se invocado com `--headless` (ex.: container Docker), o launcher omite a GUI e sobe apenas o Tomcat.
 
 ### 2.3 MainFrame — Modo Solo
 
-`br.f1mane.MainFrame` abre a janela principal do jogo solo (1280×720 px). Em seu construtor:
+`br.flmane.MainFrame` abre a janela principal do jogo solo (1280×720 px). Em seu construtor:
 
 - Instancia `ControleJogoLocal` como implementação de `InterfaceJogo`
 - Instancia `PainelMenuLocal` como painel principal de navegação
@@ -91,7 +91,7 @@ A partida é iniciada via menu, que chama `controleJogo.iniciarJogoMenuLocal(cir
 
 ### 2.4 AppletPaddock — Modo Multiplayer Cliente
 
-`br.f1mane.servidor.applet.AppletPaddock` é o cliente Java para jogar partidas hospedadas num servidor Fl Mane. Em `init()`:
+`br.flmane.servidor.applet.AppletPaddock` é o cliente Java para jogar partidas hospedadas num servidor Fl Mane. Em `init()`:
 
 - Instancia `ControlePaddockCliente`
 - Chama `controlePaddockCliente.init()` e `controlePaddockCliente.logar()`
@@ -99,7 +99,7 @@ A partida é iniciada via menu, que chama `controleJogo.iniciarJogoMenuLocal(cir
 
 ### 2.5 MainFrameSimulacao — Modo Headless
 
-`br.f1mane.MainFrameSimulacao` é usado para debug e testes de lógica de corrida sem interface gráfica. Aceita três argumentos posicionais: `temporada`, `circuito`, `voltas`.
+`br.flmane.MainFrameSimulacao` é usado para debug e testes de lógica de corrida sem interface gráfica. Aceita três argumentos posicionais: `temporada`, `circuito`, `voltas`.
 
 Diferenças em relação ao `MainFrame`:
 
@@ -117,7 +117,7 @@ Diferenças em relação ao `MainFrame`:
 
 ### 3.1 ControleJogoLocal — Hub Central
 
-`br.f1mane.controles.ControleJogoLocal` implementa `InterfaceJogo` e é o hub central de uma partida. Ele agrega os subsistemas como campos:
+`br.flmane.controles.ControleJogoLocal` implementa `InterfaceJogo` e é o hub central de uma partida. Ele agrega os subsistemas como campos:
 
 ```
 ControleJogoLocal
@@ -143,7 +143,7 @@ Flags de estado e feature:
 
 ### 3.2 ControleCiclo — Tick Loop
 
-`br.f1mane.controles.ControleCiclo` estende `Thread` e implementa o loop de simulação da corrida.
+`br.flmane.controles.ControleCiclo` estende `Thread` e implementa o loop de simulação da corrida.
 
 **Sequência de inicialização** (antes do loop principal):
 1. `Thread.sleep(2000)` — pausa inicial
@@ -171,7 +171,7 @@ para cada ciclo:
 
 #### ControleCorrida
 
-`br.f1mane.controles.ControleCorrida` centraliza a física da corrida:
+`br.flmane.controles.ControleCorrida` centraliza a física da corrida:
 
 - Gerencia o avanço de cada piloto na pista (consumo de `ptosPista`)
 - Calcula consumo de combustível e desgaste de pneus/motor por ciclo
@@ -182,7 +182,7 @@ para cada ciclo:
 
 #### ControleBox
 
-`br.f1mane.controles.ControleBox` gerencia toda a lógica de pit stop:
+`br.flmane.controles.ControleBox` gerencia toda a lógica de pit stop:
 
 | Campo | Tipo | Descrição |
 |---|---|---|
@@ -195,7 +195,7 @@ para cada ciclo:
 
 #### ControleSafetyCar
 
-`br.f1mane.controles.ControleSafetyCar` gerencia a entrada e saída do safety car:
+`br.flmane.controles.ControleSafetyCar` gerencia a entrada e saída do safety car:
 
 - Mantém referência à entidade `SafetyCar` (que implementa `PilotoSuave`)
 - Ativa via `safetyCarNaPista(Piloto piloto)` — chamado quando há acidente grave
@@ -205,7 +205,7 @@ para cada ciclo:
 
 #### ControleClima
 
-`br.f1mane.controles.ControleClima` inicializa e gerencia mudanças climáticas:
+`br.flmane.controles.ControleClima` inicializa e gerencia mudanças climáticas:
 
 - `gerarClimaInicial(Clima climaSel)` — define o clima inicial da corrida; respeita `Global.DEBUG_SEM_CHUVA`
 - Executa em `ThreadMudancaClima` (thread separada) para simular transições climáticas durante a corrida
@@ -213,7 +213,7 @@ para cada ciclo:
 
 #### GerenciadorVisual
 
-`br.f1mane.visao.GerenciadorVisual` é o agregador da interface gráfica do jogo:
+`br.flmane.visao.GerenciadorVisual` é o agregador da interface gráfica do jogo:
 
 - Cria e detém `PainelCircuito painelCircuito` (o canvas de rendering da corrida)
 - Gerencia componentes de configuração pré-corrida:
@@ -230,7 +230,7 @@ para cada ciclo:
 
 ### 4.1 PaddockServer — Singleton de Infraestrutura
 
-`br.f1mane.servidor.PaddockServer` é o ponto de entrada da infraestrutura servidor. Mantém três singletons estáticos:
+`br.flmane.servidor.PaddockServer` é o ponto de entrada da infraestrutura servidor. Mantém três singletons estáticos:
 
 ```java
 private static ControlePaddockServidor controlePaddock
@@ -250,7 +250,7 @@ O método `public static synchronized void init(String realpath)` é idempotente
 
 ### 4.2 REST API — LetsRace
 
-`br.f1mane.servidor.rest.LetsRace` é o único endpoint REST do sistema, implementado com JAX-RS (Jersey). Mapeado em `/letsRace/*`.
+`br.flmane.servidor.rest.LetsRace` é o único endpoint REST do sistema, implementado com JAX-RS (Jersey). Mapeado em `/letsRace/*`.
 
 **Autenticação**: todas as operações de jogo exigem um token de sessão passado no header HTTP `token`. Sessões são gerenciadas em `ControlePaddockServidor`.
 
@@ -270,7 +270,7 @@ Todas as respostas são `@Produces(APPLICATION_JSON)` e retornam objetos `Respon
 
 #### SessaoCliente
 
-`br.f1mane.servidor.entidades.TOs.SessaoCliente` carrega o estado de um jogador conectado:
+`br.flmane.servidor.entidades.TOs.SessaoCliente` carrega o estado de um jogador conectado:
 
 | Campo | Tipo | Descrição |
 |---|---|---|
@@ -287,7 +287,7 @@ Todas as respostas são `@Produces(APPLICATION_JSON)` e retornam objetos `Respon
 
 #### ControleJogosServer e JogoServidor
 
-`br.f1mane.servidor.controles.ControleJogosServer` gerencia o ciclo de vida das instâncias de jogo:
+`br.flmane.servidor.controles.ControleJogosServer` gerencia o ciclo de vida das instâncias de jogo:
 
 ```java
 private Map<SessaoCliente, JogoServidor> mapaJogosCriados
@@ -301,13 +301,13 @@ Quando um cliente solicita criar um jogo, `criarJogo(ClientPaddockPack)`:
 3. Instancia `JogoServidor` com a temporada solicitada
 4. Retorna `SrvPaddockPack` com dados do jogo criado
 
-`br.f1mane.servidor.JogoServidor` estende `ControleJogoLocal` — cada instância é um engine de corrida completo rodando no servidor para aquela partida.
+`br.flmane.servidor.JogoServidor` estende `ControleJogoLocal` — cada instância é um engine de corrida completo rodando no servidor para aquela partida.
 
 `ControlePaddockServidor` coordena também `ControleClassificacao` (ranking global de jogadores) e `ControleCampeonatoServidor` (campeonatos persistidos no banco).
 
 ### 4.4 JogoCliente — Cliente do Protocolo
 
-`br.f1mane.servidor.applet.JogoCliente` estende `ControleRecursos` e implementa `InterfaceJogo`. É o objeto que representa o estado local do jogo no cliente multiplayer.
+`br.flmane.servidor.applet.JogoCliente` estende `ControleRecursos` e implementa `InterfaceJogo`. É o objeto que representa o estado local do jogo no cliente multiplayer.
 
 **Nota sobre implementação parcial**: `JogoCliente` implementa os ~400 métodos de `InterfaceJogo`, mas a grande maioria retorna valores neutros (`null`, `0`, `false`) porque o estado real da corrida reside no servidor. O cliente recebe atualizações periódicas via polling REST e as aplica diretamente nos objetos `Piloto`/`Carro` locais.
 
@@ -322,7 +322,7 @@ Os métodos com implementação funcional no cliente incluem:
 
 ### 5.1 Piloto
 
-`br.f1mane.entidades.Piloto` representa um piloto durante a corrida.
+`br.flmane.entidades.Piloto` representa um piloto durante a corrida.
 
 **Identidade e configuração:**
 
@@ -364,7 +364,7 @@ Os métodos com implementação funcional no cliente incluem:
 
 ### 5.2 Carro
 
-`br.f1mane.entidades.Carro` representa o carro de um piloto com seu estado físico e configuração.
+`br.flmane.entidades.Carro` representa o carro de um piloto com seu estado físico e configuração.
 
 **Tipos de pneu:**
 
@@ -429,7 +429,7 @@ RAIO_DERRAPAGEM = 155
 
 ### 5.3 No
 
-`br.f1mane.entidades.No` é a unidade atômica de um circuito — um ponto com tipo, coordenadas e metadados de pit.
+`br.flmane.entidades.No` é a unidade atômica de um circuito — um ponto com tipo, coordenadas e metadados de pit.
 
 **Tipos de nó** (identificados por constantes `Color`):
 
@@ -465,7 +465,7 @@ boolean verificaCurvaBaixa()     // CURVA_BAIXA
 
 ### 5.4 Circuito
 
-`br.f1mane.entidades.Circuito` agrega a pista completa como listas de `No`.
+`br.flmane.entidades.Circuito` agrega a pista completa como listas de `No`.
 
 **Listas de nós:**
 
@@ -526,10 +526,10 @@ mvn clean package -Pmysql -DskipTests
 
 ### 6.2 Entidades JPA
 
-Todas as entidades de persistência estendem `F1ManeDados`:
+Todas as entidades de persistência estendem `FlManeDados`:
 
 ```
-F1ManeDados  (@MappedSuperclass)
+FlManeDados  (@MappedSuperclass)
 ├── id            : Long    @Id @GeneratedValue(AUTO)
 ├── dataCriacao   : Date    @Column(nullable=false)
 └── loginCriador  : String  @Column(nullable=false, default="Sistema")
@@ -546,7 +546,7 @@ F1ManeDados  (@MappedSuperclass)
 | `DadosCorridaCampeonatoSrv` | — | dados detalhados de corrida de campeonato |
 | `CarreiraDadosSrv` | — | progressão de carreira do jogador |
 
-Todas as entidades ficam em `br.f1mane.servidor.entidades.persistencia`. O acesso ao banco é centralizado em `ControlePersistencia`, que gerencia o `EntityManagerFactory` e as operações CRUD.
+Todas as entidades ficam em `br.flmane.servidor.entidades.persistencia`. O acesso ao banco é centralizado em `ControlePersistencia`, que gerencia o `EntityManagerFactory` e as operações CRUD.
 
 ---
 
@@ -554,7 +554,7 @@ Todas as entidades ficam em `br.f1mane.servidor.entidades.persistencia`. O acess
 
 ### 7.1 PainelCircuito
 
-`br.f1mane.visao.PainelCircuito` é o canvas principal de rendering da corrida. Estende `JPanel` e usa o modelo padrão Swing: o rendering ocorre em `paintComponent(Graphics g)` — não há método `render()` explícito.
+`br.flmane.visao.PainelCircuito` é o canvas principal de rendering da corrida. Estende `JPanel` e usa o modelo padrão Swing: o rendering ocorre em `paintComponent(Graphics g)` — não há método `render()` explícito.
 
 **Flags estáticas de rendering:**
 
@@ -582,7 +582,7 @@ No modo `MainFrameSimulacao`, as três flags são definidas como `false` antes d
 
 ### 7.2 SpriteSheet
 
-`br.f1mane.recursos.SpriteSheet` gerencia a extração de sprites de uma única imagem por temporada. A imagem fonte é carregada de `sprites/tANO.png` (onde `ANO` é o ano da temporada, ex.: `t2024.png`).
+`br.flmane.recursos.SpriteSheet` gerencia a extração de sprites de uma única imagem por temporada. A imagem fonte é carregada de `sprites/tANO.png` (onde `ANO` é o ano da temporada, ex.: `t2024.png`).
 
 **Layout de pixels:**
 
@@ -627,7 +627,7 @@ O script `gerar_spritesheets.py` (na raiz do repositório) monta as imagens de s
 
 ### 8.1 CarregadorRecursos
 
-`br.f1mane.recursos.CarregadorRecursos` é um singleton responsável por carregar e cachear todos os recursos do jogo via classpath.
+`br.flmane.recursos.CarregadorRecursos` é um singleton responsável por carregar e cachear todos os recursos do jogo via classpath.
 
 **Obtenção do singleton:**
 ```java
@@ -662,7 +662,7 @@ A lista de temporadas disponíveis é carregada de `properties/temporadas.proper
 
 ### 8.2 Internacionalização — Lang
 
-`br.f1mane.recursos.idiomas.Lang` centraliza toda a resolução de mensagens do sistema.
+`br.flmane.recursos.idiomas.Lang` centraliza toda a resolução de mensagens do sistema.
 
 **Resolução em modo local (Swing):**
 

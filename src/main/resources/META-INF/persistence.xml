@@ -1,12 +1,12 @@
 <persistence version="3.2"
              xmlns="https://jakarta.ee/xml/ns/persistence">
     <persistence-unit name="flmane-jpa" transaction-type="RESOURCE_LOCAL">
-        <class>br.f1mane.servidor.entidades.persistencia.JogadorDadosSrv</class>
-        <class>br.f1mane.servidor.entidades.persistencia.CarreiraDadosSrv</class>
-        <class>br.f1mane.servidor.entidades.persistencia.CorridasDadosSrv</class>
-        <class>br.f1mane.servidor.entidades.persistencia.CampeonatoSrv</class>
-        <class>br.f1mane.servidor.entidades.persistencia.CorridaCampeonatoSrv</class>
-        <class>br.f1mane.servidor.entidades.persistencia.DadosCorridaCampeonatoSrv</class>
+        <class>br.flmane.servidor.entidades.persistencia.JogadorDadosSrv</class>
+        <class>br.flmane.servidor.entidades.persistencia.CarreiraDadosSrv</class>
+        <class>br.flmane.servidor.entidades.persistencia.CorridasDadosSrv</class>
+        <class>br.flmane.servidor.entidades.persistencia.CampeonatoSrv</class>
+        <class>br.flmane.servidor.entidades.persistencia.CorridaCampeonatoSrv</class>
+        <class>br.flmane.servidor.entidades.persistencia.DadosCorridaCampeonatoSrv</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property

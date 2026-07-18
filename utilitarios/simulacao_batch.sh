@@ -32,7 +32,7 @@ for sim in "${SIMULACOES[@]}"; do
     echo "------------------------------------------"
     echo "Simulando: $temporada $circuito $voltas voltas"
 
-    java -cp "$JAR" br.f1mane.MainFrameSimulacao "$temporada" "$circuito" "$voltas" 2>/dev/null
+    java -cp "$JAR" br.flmane.MainFrameSimulacao "$temporada" "$circuito" "$voltas" 2>/dev/null
 
     LOG=$(ls -t "$LOG_DIR"/*.log 2>/dev/null | head -1)
     if [ -z "$LOG" ]; then
