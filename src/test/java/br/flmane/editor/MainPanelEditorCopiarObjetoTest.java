@@ -15,6 +15,7 @@ import br.flmane.entidades.ObjetoConstrucao;
 import br.flmane.entidades.ObjetoGuardRails;
 import br.flmane.entidades.ObjetoLivre;
 import br.flmane.entidades.ObjetoPista;
+import br.flmane.entidades.ObjetoTransparencia;
 import br.flmane.entidades.PontoCurva;
 import br.flmane.entidades.TipoObjetoConstrucao;
 import br.flmane.entidades.TipoObjetoLivre;
@@ -90,6 +91,32 @@ class MainPanelEditorCopiarObjetoTest {
         ObjetoGuardRails copia = (ObjetoGuardRails) MainPanelEditor.clonarObjetoPista(original);
 
         assertEquals(original.getPontos(), copia.getPontos());
+        assertNotSame(original.getPontos().get(0), copia.getPontos().get(0));
+    }
+
+    /**
+     * ObjetoTransparencia também é desenhado a partir de {@code pontos} (o
+     * polígono de recorte, ver {@code ObjetoTransparencia.gerar()}): sem um
+     * branch dedicado em clonarObjetoPista(), a cópia nascia com pontos
+     * vazios (defaults do construtor) — mesmo bug de padrão de
+     * ObjetoLivre/GuardRails/Arquibancada, só que este tipo tinha ficado de
+     * fora da correção original.
+     */
+    @Test
+    void clonarObjetoTransparencia_duplicaPontos_semCompartilharInstancias() throws Exception {
+        ObjetoTransparencia original = new ObjetoTransparencia();
+        List<Point> pontos = new ArrayList<>();
+        pontos.add(new Point(10, 20));
+        pontos.add(new Point(10, 120));
+        pontos.add(new Point(80, 70));
+        original.setPontos(pontos);
+        original.gerar();
+        original.setPosicaoQuina(original.obterArea().getLocation());
+
+        ObjetoTransparencia copia = (ObjetoTransparencia) MainPanelEditor.clonarObjetoPista(original);
+
+        assertEquals(original.getPontos(), copia.getPontos());
+        assertNotSame(original.getPontos(), copia.getPontos());
         assertNotSame(original.getPontos().get(0), copia.getPontos().get(0));
     }
 

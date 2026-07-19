@@ -326,7 +326,12 @@ public final class DesenhoProceduralCircuito {
 			return;
 		}
 
-		double anguloPista = GeoUtil.calculaAngulo(noLargada.getPoint(), noVizinho.getPoint(), 0);
+		// circuito.getAnguloLargada() (editável no editor, ao lado do campo
+		// de largura da pista) sobrepõe o ângulo calculado a partir da
+		// direção local da pista quando definido.
+		Double anguloOverride = circuito.getAnguloLargada();
+		double anguloPista = anguloOverride != null ? anguloOverride.doubleValue()
+				: GeoUtil.calculaAngulo(noLargada.getPoint(), noVizinho.getPoint(), 0);
 		int larguraPistaPixeis = Util.inteiro(Carro.LARGURA * 1.5
 				* circuito.getMultiplicadorLarguraPista() * zoom);
 		// Lado base já reduzido pela espessura pedida — é a dimensão ao longo
@@ -357,6 +362,28 @@ public final class DesenhoProceduralCircuito {
 				g2d.fill(path.createTransformedShape(transform));
 			}
 		}
+	}
+
+	/**
+	 * Ângulo "natural" da linha de largada (graus): direção local da pista
+	 * no nó de largada, ignorando {@link Circuito#getAnguloLargada()} —
+	 * usado pelo editor de circuitos pra pré-preencher o campo de ângulo com
+	 * o valor calculado antes de qualquer override do usuário. {@code null}
+	 * se o circuito não tiver nó de largada vetorizado, ou não houver nó
+	 * vizinho pra estimar a direção (mesmas condições em que
+	 * {@link #desenhaLinhaDeLargada(Graphics2D, Circuito, double)} não
+	 * desenha nada).
+	 */
+	public static Double calculaAnguloNaturalLargada(Circuito circuito) {
+		No noLargada = localizaNoLargada(circuito.getPistaKey());
+		if (noLargada == null) {
+			return null;
+		}
+		No noVizinho = localizaVizinhoNaPistaFull(circuito.getPistaFull(), noLargada);
+		if (noVizinho == null) {
+			return null;
+		}
+		return GeoUtil.calculaAngulo(noLargada.getPoint(), noVizinho.getPoint(), 0);
 	}
 
 	private static No localizaNoLargada(List<No> pistaKey) {

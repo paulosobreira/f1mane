@@ -41,9 +41,9 @@ class ObjetoDesenhoLimitesTest {
         ObjetoLivre objeto = new ObjetoLivre();
 
         objeto.setAngulo(-1);
-        assertEquals(0, objeto.getAngulo());
+        assertEquals(359, objeto.getAngulo(), "equivalente positivo, módulo 360 — não clampado a 0");
         objeto.setAngulo(-90);
-        assertEquals(0, objeto.getAngulo());
+        assertEquals(270, objeto.getAngulo(), "equivalente positivo, módulo 360 — não clampado a 0");
 
         objeto.setAngulo(270);
         assertEquals(270, objeto.getAngulo(), "valores positivos continuam livres");
@@ -59,7 +59,7 @@ class ObjetoDesenhoLimitesTest {
             objeto.setAngulo(-5);
             assertEquals(1, objeto.getLargura(), objeto.getClass().getSimpleName());
             assertEquals(1, objeto.getAltura(), objeto.getClass().getSimpleName());
-            assertEquals(0.0, objeto.getAngulo(), objeto.getClass().getSimpleName());
+            assertEquals(355.0, objeto.getAngulo(), objeto.getClass().getSimpleName());
         }
     }
 

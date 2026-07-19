@@ -209,6 +209,43 @@ class MainPanelEditorAutoSaveUndoTest {
         assertEquals(2, circuito.getObjetosCenario().size(), "deveria ter o original mais a cópia na mesma lista");
     }
 
+    /**
+     * Pedido do usuário: depois de Alt+C, a cópia (não o original) deveria
+     * virar o objeto ativo do canvas e ficar selecionada na lista — sem
+     * isso, atalhos seguintes (Alt+Seta, PageUp/PageDown, Delete) agiam
+     * sobre o original, exigindo um clique extra na cópia pra "assumir o
+     * controle" dela.
+     */
+    @Test
+    void copiarObjeto_altC_copiaViraObjetoAtivoESelecionadoNaLista() throws Exception {
+        Circuito circuito = circuitoVetorizadoComLargada();
+        MainPanelEditorTestDouble editor = criarEditorProntoParaGravar(circuito, arquivoObjetos);
+
+        ObjetoLivre original = new ObjetoLivre();
+        List<Point> pontosObjeto = new ArrayList<>();
+        pontosObjeto.add(new Point(1500, 1500));
+        pontosObjeto.add(new Point(1600, 1500));
+        pontosObjeto.add(new Point(1550, 1580));
+        original.setPontos(pontosObjeto);
+        original.gerar();
+        original.setPosicaoQuina(original.obterArea().getLocation());
+        original.setNome("Objeto 1");
+        List<ObjetoPista> objetosCenario = new ArrayList<>();
+        objetosCenario.add(original);
+        circuito.setObjetosCenario(objetosCenario);
+        editor.setObjetoPista(original);
+        editor.formularioListaObjetos.listarObjetos();
+        editor.formularioListaObjetos.selecionarSemCentralizar(original);
+
+        editor.copiarObjeto();
+
+        ObjetoPista copia = circuito.getObjetosCenario().get(1);
+        assertEquals(copia, editor.getObjetoPista(),
+                "a cópia deveria virar o objeto ativo do canvas, não continuar no original");
+        assertEquals(copia, editor.formularioListaObjetos.getList().getSelectedValue(),
+                "a cópia deveria ficar selecionada na lista (fonte de verdade do contorno de seleção do canvas)");
+    }
+
     @Test
     void incluirObjeto_semFileAssociado_naoGravaMasIncluiEmMemoria() throws Exception {
         Circuito circuito = circuitoVetorizadoComLargada();

@@ -68,6 +68,14 @@ public class Circuito implements Serializable {
     private double multiplicadorPista;
     @JsonIgnore
     private double multiplicadorLarguraPista;
+    /**
+     * Override do ângulo da linha de largada (graus, 0-360); null usa o
+     * ângulo calculado a partir da direção local da pista no nó de largada
+     * (ver DesenhoProceduralCircuito#calculaAnguloNaturalLargada). Editável
+     * no editor de circuitos, ao lado do campo de largura da pista.
+     */
+    @JsonIgnore
+    private Double anguloLargada;
     @JsonIgnore
     private List<ObjetoPista> objetos;
     @JsonIgnore
@@ -542,6 +550,7 @@ public class Circuito implements Serializable {
         copia.setCorZebra1(corZebra1);
         copia.setCorZebra2(corZebra2);
         copia.setMultiplicadorLarguraPista(multiplicadorLarguraPista);
+        copia.setAnguloLargada(anguloLargada);
         copia.setCiclo(ciclo);
         copia.setDistanciaKm(distanciaKm);
         copia.setPista(new ArrayList<No>(pista));
@@ -600,6 +609,14 @@ public class Circuito implements Serializable {
 
     public double getMultiplicadorLarguraPista() {
         return multiplicadorLarguraPista;
+    }
+
+    public Double getAnguloLargada() {
+        return anguloLargada;
+    }
+
+    public void setAnguloLargada(Double anguloLargada) {
+        this.anguloLargada = anguloLargada;
     }
 
     public List<ObjetoPista> getObjetos() {

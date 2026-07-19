@@ -27,6 +27,10 @@ public abstract class ObjetoDesenho extends ObjetoPista {
 
 	@Override
 	public void setAngulo(double angulo) {
-		super.setAngulo(Math.max(0, angulo));
+		double normalizado = angulo % 360;
+		if (normalizado < 0) {
+			normalizado += 360;
+		}
+		super.setAngulo(normalizado);
 	}
 }

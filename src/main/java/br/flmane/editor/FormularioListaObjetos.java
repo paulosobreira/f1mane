@@ -110,6 +110,7 @@ public class FormularioListaObjetos {
 		list = new JList(defaultListModelOP);
 		list.addListSelectionListener(new ListSelectionListener() {
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				if (selecaoProgramatica) {
@@ -117,6 +118,15 @@ public class FormularioListaObjetos {
 				}
 				FormularioListaObjetos.this.editor.repaint();
 				FormularioListaObjetos.this.editor.desSelecionaNosPista();
+				// Seleção única: sincroniza o "objeto ativo" do canvas (atalhos de
+				// teclado, arraste) com a seleção da lista — sem isto, selecionar
+				// um objeto diferente pela lista deixava o objeto ativo antigo
+				// "fantasma" (ainda respondendo a atalhos, ainda seria apagado por
+				// Delete com foco no canvas). Seleção múltipla ou vazia: nenhum
+				// objeto único responde a atalhos de edição, então zera.
+				List<ObjetoPista> selecionados = list.getSelectedValuesList();
+				FormularioListaObjetos.this.editor
+						.setObjetoPista(selecionados.size() == 1 ? selecionados.get(0) : null);
 				int selectedIndex = list.getSelectedIndex();
 				if (selectedIndex > -1
 						&& selectedIndex < defaultListModelOP.size()) {
@@ -252,7 +262,14 @@ public class FormularioListaObjetos {
 	 * Seleciona {@code objeto} na lista (ou limpa a seleção se ele não
 	 * pertence a ela) sem centralizar o viewport nele — usado quando a
 	 * seleção veio de um clique direto no canvas, onde o objeto já está
-	 * visível e centralizar atrapalharia o arraste.
+	 * visível e centralizar atrapalharia o arraste. O canvas nunca faz nem
+	 * mantém seleção múltipla: sempre força a seleção pra um único item, mesmo
+	 * que uma seleção múltipla anterior (feita pela lista) já inclua esse
+	 * mesmo objeto como o de menor índice — sem o teste de
+	 * {@code getSelectedIndices().length}, esse caso específico não entrava
+	 * no {@code setSelectedIndex(...)} abaixo (o índice já "batia" com
+	 * {@code getSelectedIndex()}, que devolve só o menor da seleção múltipla)
+	 * e a seleção múltipla ficava presa mesmo depois do clique no canvas.
 	 */
 	public void selecionarSemCentralizar(ObjetoPista objeto) {
 		int indice = defaultListModelOP.indexOf(objeto);
@@ -260,7 +277,7 @@ public class FormularioListaObjetos {
 		try {
 			if (indice < 0) {
 				list.clearSelection();
-			} else if (list.getSelectedIndex() != indice) {
+			} else if (list.getSelectedIndex() != indice || list.getSelectedIndices().length != 1) {
 				list.setSelectedIndex(indice);
 				list.ensureIndexIsVisible(indice);
 			}
@@ -326,16 +343,20 @@ public class FormularioListaObjetos {
 	}
 
 	/**
-	 * Remove o objeto atualmente selecionado na lista (usado tanto pelo botão
-	 * "Remover" quanto pela tecla Delete com foco na lista) — sem efeito se
-	 * não houver seleção.
+	 * Remove todos os objetos atualmente selecionados na lista — suporta
+	 * seleção múltipla (usado tanto pelo botão "Remover" quanto pela tecla
+	 * Delete com foco na lista) — sem efeito se não houver seleção. Remove
+	 * dos índices maiores para os menores, para não invalidar os índices
+	 * ainda não processados conforme os itens vão sendo removidos do model.
 	 */
 	private void removerObjetoSelecionado() {
-		int sel = list.getSelectedIndex();
-		if (sel == -1) {
+		int[] indices = list.getSelectedIndices();
+		if (indices.length == 0) {
 			return;
 		}
-		defaultListModelOP.remove(sel);
+		for (int i = indices.length - 1; i >= 0; i--) {
+			defaultListModelOP.remove(indices[i]);
+		}
 		atualizarCircuito();
 	}
 

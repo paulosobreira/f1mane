@@ -2,6 +2,9 @@ package br.flmane.entidades;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
@@ -530,6 +533,80 @@ class DesenhoProceduralCircuitoTest {
                 }
             }
         }
+    }
+
+    @Test
+    void calculaAnguloNaturalLargada_semNoDeLargada_retornaNull() {
+        Circuito circuito = circuitoDeTeste();
+        assertNull(DesenhoProceduralCircuito.calculaAnguloNaturalLargada(circuito));
+    }
+
+    @Test
+    void calculaAnguloNaturalLargada_comNoDeLargada_calculaDirecaoLocalDaPista() {
+        Circuito circuito = circuitoComLargada();
+        Double angulo = DesenhoProceduralCircuito.calculaAnguloNaturalLargada(circuito);
+        assertNotNull(angulo);
+        // Largada em (1000,1000) seguida de reta até (2000,1000): a pista
+        // segue na direção +X ali, direção local deveria ser ~0°.
+        assertEquals(0.0, angulo, 1.0);
+    }
+
+    /**
+     * Regressão: circuito.getAnguloLargada() (editável no editor de
+     * circuitos) precisa sobrepor o ângulo calculado a partir da direção
+     * local da pista quando definido — sem comparar geometria exata (função
+     * de várias constantes internas), confirma que o desenho muda de fato
+     * quando o override é diferente do ângulo natural.
+     */
+    @Test
+    void desenhaLinhaDeLargada_comOverrideDeAngulo_mudaAOrientacaoDoDesenho() {
+        Circuito semOverride = circuitoComLargada();
+        Circuito comOverride = circuitoComLargada();
+        comOverride.setAnguloLargada(90.0);
+
+        BufferedImage imagemSemOverride = renderizaLinhaDeLargada(semOverride);
+        BufferedImage imagemComOverride = renderizaLinhaDeLargada(comOverride);
+
+        assertFalse(imagensIguais(imagemSemOverride, imagemComOverride),
+                "override de ângulo diferente do natural deveria mudar a orientação do desenho da linha de largada");
+    }
+
+    @Test
+    void desenhaLinhaDeLargada_semOverride_usaOAnguloCalculado() {
+        Circuito semOverride = circuitoComLargada();
+        Circuito comOverrideIgualAoNatural = circuitoComLargada();
+        comOverrideIgualAoNatural.setAnguloLargada(
+                DesenhoProceduralCircuito.calculaAnguloNaturalLargada(semOverride));
+
+        BufferedImage imagemSemOverride = renderizaLinhaDeLargada(semOverride);
+        BufferedImage imagemComOverrideIgual = renderizaLinhaDeLargada(comOverrideIgualAoNatural);
+
+        assertTrue(imagensIguais(imagemSemOverride, imagemComOverrideIgual),
+                "sem override, o desenho deveria já corresponder ao ângulo calculado (mesmo resultado de um override igual a ele)");
+    }
+
+    private static BufferedImage renderizaLinhaDeLargada(Circuito circuito) {
+        BufferedImage imagem = new BufferedImage(3000, 3000, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = imagem.createGraphics();
+        try {
+            g2d.setColor(new Color(128, 128, 128));
+            g2d.fillRect(0, 0, imagem.getWidth(), imagem.getHeight());
+            DesenhoProceduralCircuito.desenhaLinhaDeLargada(g2d, circuito, 1.0);
+        } finally {
+            g2d.dispose();
+        }
+        return imagem;
+    }
+
+    private static boolean imagensIguais(BufferedImage a, BufferedImage b) {
+        for (int y = 0; y < a.getHeight(); y++) {
+            for (int x = 0; x < a.getWidth(); x++) {
+                if (a.getRGB(x, y) != b.getRGB(x, y)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /** Varre a imagem inteira procurando um pixel com exatamente essa cor (RGB, ignora alpha). */

@@ -1,10 +1,13 @@
 package br.flmane.editor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -12,6 +15,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JList;
+import javax.swing.JScrollPane;
 
 import org.junit.jupiter.api.Test;
 
@@ -48,6 +52,22 @@ class FormularioListaObjetosUnificadaTest {
         Field campo = MainPanelEditor.class.getDeclaredField("focoSomenteSelecionado");
         campo.setAccessible(true);
         campo.set(editor, objeto);
+    }
+
+    /**
+     * Monta um scrollPane com viewport, necessário pra deixar o
+     * ListSelectionListener rodar sem supressão (centralizarPonto() precisa
+     * de um viewport real) — usado pelos testes que verificam a sincronia
+     * entre a seleção da lista e o objeto ativo do canvas, que só acontece
+     * quando o listener roda de verdade (sem o guard selecaoProgramatica).
+     */
+    private static void configuraViewport(MainPanelEditor editor) throws Exception {
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.getViewport().setSize(400, 400);
+        scrollPane.getViewport().setViewPosition(new Point(0, 0));
+        Field campo = MainPanelEditor.class.getDeclaredField("scrollPane");
+        campo.setAccessible(true);
+        campo.set(editor, scrollPane);
     }
 
     @Test
@@ -125,6 +145,52 @@ class FormularioListaObjetosUnificadaTest {
 
         assertTrue(circuito.getObjetosCenario().isEmpty());
         assertEquals(List.of(f1), circuito.getObjetos());
+    }
+
+    /**
+     * "Remover" precisa suportar seleção múltipla (útil junto com Copiar
+     * Objetos, que também opera sobre a seleção múltipla) — regressão de um
+     * bug em que só o índice retornado por getSelectedIndex() (o menor dos
+     * selecionados) era removido, ignorando o resto da seleção.
+     */
+    @Test
+    void removerVariosObjetosSelecionados_removeTodosDaColecaoCorreta() {
+        MainPanelEditor editor = new MainPanelEditor();
+        Circuito circuito = new Circuito();
+        ObjetoLivre c1 = objetoLivre("C1");
+        ObjetoLivre c2 = objetoLivre("C2");
+        ObjetoEscapada f1 = objetoEscapada("F1");
+        ObjetoEscapada f2 = objetoEscapada("F2");
+        circuito.setObjetosCenario(new ArrayList<>(List.of(c1, c2)));
+        circuito.setObjetos(new ArrayList<>(List.of(f1, f2)));
+        editor.setCircuito(circuito);
+
+        FormularioListaObjetos formulario = FormularioListaObjetos.unificada(editor);
+        formulario.listarObjetos();
+        // modelo unificado: [c1, c2, f1, f2] -- seleciona c1(0), f1(2), f2(3),
+        // deixando só c2 de fora da seleção.
+        formulario.selecaoProgramatica = true;
+        try {
+            formulario.getList().setSelectedIndices(new int[] { 0, 2, 3 });
+        } finally {
+            formulario.selecaoProgramatica = false;
+        }
+        JButton remover = botaoComTexto(formulario.getObjetos(), Lang.msg("removerObjetoLista"));
+        // Remover índices intermediários dispara eventos de seleção "de
+        // passagem" (a seleção remanescente muda a cada remove() do model)
+        // que chamariam centralizarPonto() — suprime com o mesmo mecanismo
+        // de seleção programática usado nos testes de Primeiro/Ultimo, já
+        // que este editor não tem scrollPane montado.
+        formulario.selecaoProgramatica = true;
+        try {
+            remover.doClick();
+        } finally {
+            formulario.selecaoProgramatica = false;
+        }
+
+        assertEquals(List.of(c2), circuito.getObjetosCenario());
+        assertTrue(circuito.getObjetos().isEmpty());
+        assertEquals(List.of(c2), listaModelo(formulario));
     }
 
     @Test
@@ -218,6 +284,118 @@ class FormularioListaObjetosUnificadaTest {
         remover.doClick();
 
         assertEquals(List.of(escondido1, escondido2), circuito.getObjetosCenario());
+    }
+
+    /**
+     * Regressão do "fantasma": selecionar um objeto no canvas (que já
+     * sincroniza a lista, via selecionarNasListas) e depois selecionar um
+     * objeto DIFERENTE só pela lista deixava o objeto do canvas "preso" como
+     * ativo — ainda respondendo a atalhos de teclado, ainda desenhado com seu
+     * próprio contorno, mesmo a lista já mostrando outro selecionado. Agora
+     * a seleção da lista também sincroniza de volta o objeto ativo do canvas.
+     */
+    @Test
+    void selecionarObjetoDiferenteNaLista_atualizaObjetoAtivoDoCanvas() throws Exception {
+        MainPanelEditor editor = new MainPanelEditor();
+        Circuito circuito = new Circuito();
+        ObjetoLivre antigo = objetoLivre("Antigo");
+        ObjetoLivre novo = objetoLivre("Novo");
+        circuito.setObjetosCenario(new ArrayList<>(List.of(antigo, novo)));
+        circuito.setObjetos(new ArrayList<>());
+        editor.setCircuito(circuito);
+        configuraViewport(editor);
+        // Simula uma seleção anterior vinda de um clique direto no canvas
+        // (que não passa pelo ListSelectionListener).
+        editor.setObjetoPista(antigo);
+
+        FormularioListaObjetos formulario = FormularioListaObjetos.unificada(editor);
+        formulario.listarObjetos();
+        formulario.getList().setSelectedIndex(1);
+
+        assertSame(novo, editor.getObjetoPista(),
+                "selecionar um objeto diferente na lista deveria atualizar o objeto ativo do canvas, sem deixar o antigo fantasma");
+    }
+
+    @Test
+    void selecaoMultiplaNaLista_zeraObjetoAtivoDoCanvas() throws Exception {
+        MainPanelEditor editor = new MainPanelEditor();
+        Circuito circuito = new Circuito();
+        ObjetoLivre a = objetoLivre("A");
+        ObjetoLivre b = objetoLivre("B");
+        circuito.setObjetosCenario(new ArrayList<>(List.of(a, b)));
+        circuito.setObjetos(new ArrayList<>());
+        editor.setCircuito(circuito);
+        configuraViewport(editor);
+        editor.setObjetoPista(a);
+
+        FormularioListaObjetos formulario = FormularioListaObjetos.unificada(editor);
+        formulario.listarObjetos();
+        formulario.getList().setSelectedIndices(new int[] { 0, 1 });
+
+        assertNull(editor.getObjetoPista(),
+                "com seleção múltipla, nenhum objeto único deveria responder aos atalhos de edição");
+    }
+
+    @Test
+    void limparSelecaoNaLista_zeraObjetoAtivoDoCanvas() throws Exception {
+        MainPanelEditor editor = new MainPanelEditor();
+        Circuito circuito = new Circuito();
+        ObjetoLivre a = objetoLivre("A");
+        circuito.setObjetosCenario(new ArrayList<>(List.of(a)));
+        circuito.setObjetos(new ArrayList<>());
+        editor.setCircuito(circuito);
+        configuraViewport(editor);
+
+        FormularioListaObjetos formulario = FormularioListaObjetos.unificada(editor);
+        formulario.listarObjetos();
+        formulario.getList().setSelectedIndex(0);
+        formulario.getList().clearSelection();
+
+        assertNull(editor.getObjetoPista());
+    }
+
+    /**
+     * O canvas nunca deve criar nem manter seleção múltipla — clicar num
+     * objeto no canvas sempre colapsa a seleção pra esse único objeto, mesmo
+     * que uma seleção múltipla feita antes pela lista já inclua esse mesmo
+     * objeto como o de MENOR índice (getSelectedIndex() só devolve o menor
+     * dos selecionados numa seleção múltipla, então esse caso específico
+     * "batia" com o índice procurado e o antigo código não recolhia a
+     * seleção pra um único item).
+     */
+    @Test
+    void selecionarSemCentralizar_colapsaSelecaoMultiplaMesmoQuandoObjetoJaEhOMenorIndiceSelecionado() {
+        MainPanelEditor editor = new MainPanelEditor();
+        Circuito circuito = new Circuito();
+        ObjetoLivre a = objetoLivre("A");
+        ObjetoLivre b = objetoLivre("B");
+        ObjetoLivre c = objetoLivre("C");
+        circuito.setObjetosCenario(new ArrayList<>(List.of(a, b, c)));
+        circuito.setObjetos(new ArrayList<>());
+        editor.setCircuito(circuito);
+
+        FormularioListaObjetos formulario = FormularioListaObjetos.unificada(editor);
+        formulario.listarObjetos();
+        // Seleção múltipla feita pela lista: a (índice 0, o "menor") e c
+        // (índice 2).
+        selecionarIndicesSemCentralizar(formulario, 0, 2);
+
+        // Clique no canvas no objeto "a" — já é o menor índice selecionado,
+        // caso em que o bug antigo não recolhia a seleção.
+        formulario.selecionarSemCentralizar(a);
+
+        assertEquals(1, formulario.getList().getSelectedIndices().length,
+                "clicar no canvas deveria colapsar a seleção múltipla pra um único item");
+        assertEquals(0, formulario.getList().getSelectedIndex());
+    }
+
+    private static void selecionarIndicesSemCentralizar(FormularioListaObjetos formulario, int... indices) {
+        formulario.selecaoProgramatica = true;
+        try {
+            formulario.getList().setSelectedIndices(indices);
+        } finally {
+            formulario.selecaoProgramatica = false;
+        }
     }
 
     private static List<ObjetoPista> listaModelo(FormularioListaObjetos formulario) {

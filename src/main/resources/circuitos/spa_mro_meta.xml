@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="25.0.2" class="java.beans.XMLDecoder">
  <object class="br.flmane.entidades.Circuito" id="Circuito0">
+  <void property="anguloLargada">
+   <double>167.0</double>
+  </void>
   <void property="box">
    <void method="add">
     <object class="br.flmane.entidades.No" id="No0">
@@ -633,7 +636,50 @@
    </void>
   </void>
   <void property="ciclo">
-   <int>150</int>
+   <int>157</int>
+  </void>
+  <void property="corAsfalto">
+   <object class="java.awt.Color">
+    <int>136</int>
+    <int>119</int>
+    <int>112</int>
+    <int>255</int>
+   </object>
+  </void>
+  <void property="corBox1">
+   <object class="java.awt.Color">
+    <int>255</int>
+    <int>255</int>
+    <object idref="Integer0"/>
+    <int>255</int>
+   </object>
+  </void>
+  <void property="corBox2">
+   <object class="java.awt.Color">
+    <int>255</int>
+    <object idref="Integer0"/>
+    <object idref="Integer0"/>
+    <int>255</int>
+   </object>
+  </void>
+  <void property="corFundo">
+   <object class="java.awt.Color">
+    <int>99</int>
+    <int>108</int>
+    <int>55</int>
+    <int>255</int>
+   </object>
+  </void>
+  <void property="corZebra1">
+   <object class="java.awt.Color">
+    <int>255</int>
+    <int>255</int>
+    <object idref="Integer0"/>
+    <int>255</int>
+   </object>
+  </void>
+  <void property="distanciaKm">
+   <int>7004</int>
   </void>
   <void property="ladoBox">
    <int>2</int>
@@ -655,14 +701,14 @@
        <string>x</string>
        <void method="set">
         <object idref="Point23"/>
-        <int>5356</int>
+        <int>5231</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point23"/>
-        <int>2068</int>
+        <int>2096</int>
        </void>
       </void>
      </void>
