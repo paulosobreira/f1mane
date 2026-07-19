@@ -2,21 +2,8 @@
 
 ## Purpose
 
-Regras que governam a transição gradual de clima entre condição seca e chuvosa: o timing de disparo das tentativas de mudança de clima (baseado no tempo médio de volta do líder, em vez de um delay fixo de narrativa), a rampa reversível de "molhado%" que substitui o salto abrupto de 0% a 100% de efeito de chuva, a interpolação das fórmulas de `ganho` afetadas por essa rampa, e a obrigatoriedade de pneu de chuva no pit stop — para qualquer piloto, humano incluso — enquanto o clima vigente for chuva.
-
+Regras que governam a transição gradual de clima entre condição seca e chuvosa: o gate por intervalo de voltas sorteado que decide quando tentar uma mudança de clima, o atraso fixo de até 1 minuto entre o disparo e a efetivação da mudança (em vez de um delay fixo de narrativa), a rampa reversível de "molhado%" (fixa em 1min30) que substitui o salto abrupto de 0% a 100% de efeito de chuva, a interpolação das fórmulas de `ganho` afetadas por essa rampa, e a obrigatoriedade de pneu de chuva no pit stop — para qualquer piloto, humano incluso — enquanto o clima vigente for chuva.
 ## Requirements
-
-### Requirement: Tempo médio de volta acessível ao controle de clima
-`ControleClima` SHALL ter acesso a um tempo médio de volta em milissegundos reais (`tempoMedioVoltaMs`), calculado como a média de `Volta.obterTempoVolta()` (convertido para ms via `tempoCicloCircuito()`) das voltas já registradas do piloto líder (primeira posição). Antes da primeira volta do líder ser registrada, o sistema SHALL usar como fallback um valor fixo de 1 minuto (`Global.TEMPO_MEDIO_VOLTA_CLIMA_MINIMO_MS`), garantindo que a primeira tentativa de mudança de clima da corrida dispare em até 1 minuto real — SHALL NOT derivar esse fallback da geometria ou da estimativa de tempo de volta do circuito, que pode ultrapassar 1 minuto.
-
-#### Scenario: Tempo médio de volta calculado a partir das voltas do líder
-- **WHEN** o piloto líder já completou uma ou mais voltas na corrida
-- **THEN** `tempoMedioVoltaMs` é a média das durações reais dessas voltas, em milissegundos
-
-#### Scenario: Fallback antes da primeira volta do líder
-- **WHEN** nenhuma volta do piloto líder foi registrada ainda (início da corrida)
-- **THEN** `tempoMedioVoltaMs` retorna o valor fixo de 1 minuto (60000ms), independente do circuito
-
 ### Requirement: Avaliação de mudança de clima gatilhada por intervalo de voltas sorteado
 `ControleClima.processaPossivelMudancaClima()` é chamada a cada volta nova do líder, mas SHALL NOT tentar disparar uma nova `ThreadMudancaClima` em toda chamada — SHALL só disparar quando o número de voltas sorteado (`intervaloMudancaClima`, sorteado em `quartoVoltas + rnd()·metadeVoltas` na primeira avaliação da corrida, e depois por `intervaloNublado()`/`intervaloSol()`/`intervaloChuva()` a cada transição efetivada) tiver se passado desde a última avaliação. Enquanto esse intervalo não se cumpre, a chamada SHALL retornar sem nenhum efeito. Uma tentativa anterior ainda em andamento (thread ainda dormindo, sem ter concluído seu processamento) SHALL continuar adiando a próxima tentativa, mesmo que o intervalo de voltas já tenha se cumprido.
 
@@ -37,11 +24,11 @@ Regras que governam a transição gradual de clima entre condição seca e chuvo
 - **THEN** nenhuma thread nova é criada nessa volta — a próxima tentativa só acontece quando a thread anterior concluir
 
 ### Requirement: Disparo da mudança de clima em intervalo aleatório dentro do tempo médio de volta
-Uma vez disparada, a transição (`ThreadMudancaClima`) SHALL dormir um atraso aleatório uniformemente distribuído entre 0 e `tempoMedioVoltaMs` antes de efetivar a mudança de clima, substituindo o intervalo fixo de narrativa (3-15 segundos reais) usado anteriormente.
+Uma vez disparada, a transição (`ThreadMudancaClima`) SHALL dormir um atraso aleatório uniformemente distribuído entre 0 e um teto fixo de 1 minuto (`Global.ATRASO_MAX_MUDANCA_CLIMA_MS` = 60000ms) antes de efetivar a mudança de clima, substituindo tanto o intervalo fixo de narrativa (3-15 segundos reais) quanto o tempo médio de volta calculado, usados anteriormente.
 
 #### Scenario: Atraso de disparo dentro da janela do tempo médio de volta
 - **WHEN** `ControleClima` dispara uma nova tentativa de mudança de clima
-- **THEN** a thread responsável pela transição dorme um valor aleatório entre 0 e `tempoMedioVoltaMs` antes de efetivar a mudança e notificar os jogadores
+- **THEN** a thread responsável pela transição dorme um valor aleatório entre 0 e 60000ms (`Global.ATRASO_MAX_MUDANCA_CLIMA_MS`) antes de efetivar a mudança e notificar os jogadores
 
 ### Requirement: Falha ao processar uma tentativa não trava avaliações futuras
 Se `ThreadMudancaClima` lançar qualquer exceção durante seu processamento (incluindo interrupção do sleep), o sistema SHALL ainda assim marcar essa tentativa como concluída, permitindo que uma nova tentativa seja disparada na próxima volta — SHALL NOT deixar o sistema de clima permanentemente travado em "aguardando" pelo resto da corrida por causa de uma única falha.
@@ -51,15 +38,15 @@ Se `ThreadMudancaClima` lançar qualquer exceção durante seu processamento (in
 - **THEN** a thread ainda assim é marcada como processada, e a próxima volta consegue disparar uma nova tentativa normalmente
 
 ### Requirement: Rampa reversível de "molhado%" entre condição seca e chuvosa
-`ControleClima` SHALL manter um valor contínuo "molhado%" (0.0 a 1.0), independente do clima categórico exibido (`SOL`/`NUBLADO`/`CHUVA`). Quando o clima categórico transiciona de `NUBLADO` para `CHUVA`, "molhado%" SHALL subir linearmente de seu valor atual até 1.0 ao longo de aproximadamente um `tempoMedioVoltaMs`. Quando o clima categórico transiciona de `CHUVA` para `NUBLADO`, "molhado%" SHALL descer linearmente de seu valor atual até 0.0 ao longo de aproximadamente um `tempoMedioVoltaMs`. Transições entre `SOL` e `NUBLADO` sem passar por `CHUVA` SHALL NOT alterar "molhado%". Se o clima categórico mudar de direção (seco↔chuva) enquanto uma rampa está em andamento, "molhado%" SHALL inverter sua direção-alvo a partir do valor atual, sem saltar para 0.0 ou 1.0 antes de inverter.
+`ControleClima` SHALL manter um valor contínuo "molhado%" (0.0 a 1.0), independente do clima categórico exibido (`SOL`/`NUBLADO`/`CHUVA`). Quando o clima categórico transiciona de `NUBLADO` para `CHUVA`, "molhado%" SHALL subir linearmente de seu valor atual até 1.0 ao longo de uma duração fixa de 1 minuto e meio (`Global.DURACAO_RAMPA_MOLHADO_MS` = 90000ms). Quando o clima categórico transiciona de `CHUVA` para `NUBLADO`, "molhado%" SHALL descer linearmente de seu valor atual até 0.0 ao longo dessa mesma duração fixa. Transições entre `SOL` e `NUBLADO` sem passar por `CHUVA` SHALL NOT alterar "molhado%". Se o clima categórico mudar de direção (seco↔chuva) enquanto uma rampa está em andamento, "molhado%" SHALL inverter sua direção-alvo a partir do valor atual, sem saltar para 0.0 ou 1.0 antes de inverter.
 
 #### Scenario: Chuva começando sobe "molhado%" gradualmente
 - **WHEN** o clima categórico muda de `NUBLADO` para `CHUVA`
-- **THEN** "molhado%" começa a subir linearmente do valor atual até 1.0, levando aproximadamente `tempoMedioVoltaMs` para atingir 1.0 caso não haja nova mudança de clima nesse intervalo
+- **THEN** "molhado%" começa a subir linearmente do valor atual até 1.0, levando 1 minuto e meio (`Global.DURACAO_RAMPA_MOLHADO_MS`) para atingir 1.0 caso não haja nova mudança de clima nesse intervalo
 
 #### Scenario: Chuva parando desce "molhado%" gradualmente
 - **WHEN** o clima categórico muda de `CHUVA` para `NUBLADO`
-- **THEN** "molhado%" começa a descer linearmente do valor atual até 0.0, levando aproximadamente `tempoMedioVoltaMs` para atingir 0.0 caso não haja nova mudança de clima nesse intervalo
+- **THEN** "molhado%" começa a descer linearmente do valor atual até 0.0, levando 1 minuto e meio (`Global.DURACAO_RAMPA_MOLHADO_MS`) para atingir 0.0 caso não haja nova mudança de clima nesse intervalo
 
 #### Scenario: Transição sol/nublado isolada não afeta "molhado%"
 - **WHEN** o clima categórico muda entre `SOL` e `NUBLADO` sem que `CHUVA` esteja envolvido na transição
@@ -124,3 +111,4 @@ Para qualquer nó classificado como curva alta ou curva baixa, com pneu, asa, po
 #### Scenario: Amostra isolada mais rápida na chuva não viola a garantia
 - **WHEN**, num tick isolado de curva, o `ganho` sorteado com "molhado%" = 1.0 é numericamente maior que o `ganho` sorteado com "molhado%" = 0.0 no mesmo nó, por efeito de sorteios probabilísticos independentes
 - **THEN** essa amostra isolada não constitui violação deste requisito — a garantia é definida sobre o valor esperado, não sobre toda amostra individual
+

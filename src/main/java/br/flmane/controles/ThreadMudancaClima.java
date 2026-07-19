@@ -1,5 +1,6 @@
 package br.flmane.controles;
 
+import br.nnpe.Global;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.flmane.entidades.Clima;
@@ -29,10 +30,10 @@ public class ThreadMudancaClima extends Thread {
 
     public void run() {
         try {
-            long tempoMedioVoltaMs = controleClima.getControleJogo().tempoMedioVoltaMs();
-            int atrasoMs = controleClima.getControleJogo().getRandom().intervalo(0, (int) tempoMedioVoltaMs);
-            Logger.logar("[ThreadMudancaClima] Disparada, dormindo " + atrasoMs + "ms (tempoMedioVoltaMs="
-                    + tempoMedioVoltaMs + "ms) antes de efetivar a mudanca de clima");
+            int atrasoMs = controleClima.getControleJogo().getRandom()
+                    .intervalo(0, (int) Global.ATRASO_MAX_MUDANCA_CLIMA_MS);
+            Logger.logar("[ThreadMudancaClima] Disparada, dormindo " + atrasoMs
+                    + "ms antes de efetivar a mudanca de clima");
             sleep(atrasoMs);
             String climaAntes = controleClima.getClima();
             if (Clima.SOL.equals(climaAntes) || Clima.CHUVA.equals(climaAntes)) {

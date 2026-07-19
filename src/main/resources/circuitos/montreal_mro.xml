@@ -2477,7 +2477,7 @@
      </object>
     </void>
     <void method="add">
-     <object class="br.flmane.entidades.ObjetoConstrucao">
+     <object class="br.flmane.entidades.ObjetoConstrucao" id="ObjetoConstrucao0">
       <void property="altura">
        <int>112</int>
       </void>
@@ -2517,6 +2517,7 @@
       <void property="quantidadeEmpilhamento">
        <int>5</int>
       </void>
+      <void id="Integer2" property="afunilamento"/>
      </object>
     </void>
     <void method="add">
@@ -10063,7 +10064,7 @@
      </object>
     </void>
     <void method="add">
-     <object class="br.flmane.entidades.ObjetoConstrucao" id="ObjetoConstrucao0">
+     <object class="br.flmane.entidades.ObjetoConstrucao" id="ObjetoConstrucao1">
       <void property="corSecundaria">
        <object class="java.awt.Color">
         <int>148</int>
@@ -10078,9 +10079,9 @@
       <void property="grauEmpilhamento">
        <int>16</int>
       </void>
-      <void id="Integer2" property="altura"/>
+      <void id="Integer3" property="altura"/>
       <void property="largura">
-       <object idref="Integer2"/>
+       <object idref="Integer3"/>
       </void>
       <void property="nome">
        <string>Objeto 50</string>
@@ -10724,6 +10725,289 @@
          </void>
         </void>
        </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.flmane.entidades.ObjetoConstrucao">
+      <void property="altura">
+       <object idref="Integer2"/>
+      </void>
+      <void property="angulo">
+       <double>271.0</double>
+      </void>
+      <void property="corPimaria">
+       <object class="java.awt.Color">
+        <int>241</int>
+        <int>9</int>
+        <int>8</int>
+        <int>255</int>
+       </object>
+      </void>
+      <void property="corSecundaria">
+       <object class="java.awt.Color">
+        <int>204</int>
+        <int>204</int>
+        <int>204</int>
+        <int>255</int>
+       </object>
+      </void>
+      <void property="nome">
+       <string>Objeto 60</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point517">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point517"/>
+          <int>1233</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point517"/>
+          <int>2156</int>
+         </void>
+        </void>
+       </object>
+      </void>
+      <void property="tipo">
+       <object class="java.lang.Enum" id="TipoObjetoConstrucao1" method="valueOf">
+        <class>br.flmane.entidades.TipoObjetoConstrucao</class>
+        <string>CAMINHAO</string>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.flmane.entidades.ObjetoConstrucao">
+      <void property="altura">
+       <object idref="Integer2"/>
+      </void>
+      <void property="angulo">
+       <double>271.0</double>
+      </void>
+      <void property="corPimaria">
+       <object class="java.awt.Color" id="Color12">
+        <int>255</int>
+        <int>255</int>
+        <int>255</int>
+        <int>255</int>
+       </object>
+      </void>
+      <void property="corSecundaria">
+       <object class="java.awt.Color" id="Color13">
+        <int>8</int>
+        <int>8</int>
+        <int>99</int>
+        <int>255</int>
+       </object>
+      </void>
+      <void property="nome">
+       <string>Objeto 61</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point518">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point518"/>
+          <int>1327</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point518"/>
+          <int>2158</int>
+         </void>
+        </void>
+       </object>
+      </void>
+      <void property="tipo">
+       <object idref="TipoObjetoConstrucao1"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.flmane.entidades.ObjetoConstrucao">
+      <void property="altura">
+       <object idref="Integer2"/>
+      </void>
+      <void property="angulo">
+       <double>271.0</double>
+      </void>
+      <void property="corPimaria">
+       <object idref="Color12"/>
+      </void>
+      <void property="corSecundaria">
+       <object class="java.awt.Color">
+        <int>231</int>
+        <int>110</int>
+        <int>35</int>
+        <int>255</int>
+       </object>
+      </void>
+      <void property="nome">
+       <string>Objeto 62</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point519">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point519"/>
+          <int>1419</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point519"/>
+          <int>2159</int>
+         </void>
+        </void>
+       </object>
+      </void>
+      <void property="tipo">
+       <object idref="TipoObjetoConstrucao1"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.flmane.entidades.ObjetoConstrucao">
+      <void property="altura">
+       <object idref="Integer2"/>
+      </void>
+      <void property="angulo">
+       <double>271.0</double>
+      </void>
+      <void property="corPimaria">
+       <object idref="Color12"/>
+      </void>
+      <void property="corSecundaria">
+       <object idref="Color13"/>
+      </void>
+      <void property="nome">
+       <string>Objeto 63</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point520">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point520"/>
+          <int>1516</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point520"/>
+          <int>2159</int>
+         </void>
+        </void>
+       </object>
+      </void>
+      <void property="tipo">
+       <object idref="TipoObjetoConstrucao1"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.flmane.entidades.ObjetoConstrucao">
+      <void property="altura">
+       <object idref="Integer2"/>
+      </void>
+      <void property="angulo">
+       <double>271.0</double>
+      </void>
+      <void property="corPimaria">
+       <object class="java.awt.Color">
+        <int>9</int>
+        <int>73</int>
+        <int>209</int>
+        <int>255</int>
+       </object>
+      </void>
+      <void property="corSecundaria">
+       <object class="java.awt.Color" id="Color14">
+        <int>246</int>
+        <int>36</int>
+        <int>85</int>
+        <int>255</int>
+       </object>
+      </void>
+      <void property="nome">
+       <string>Objeto 64</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point521">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point521"/>
+          <int>1613</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point521"/>
+          <int>2161</int>
+         </void>
+        </void>
+       </object>
+      </void>
+      <void property="tipo">
+       <object idref="TipoObjetoConstrucao1"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.flmane.entidades.ObjetoConstrucao">
+      <void property="altura">
+       <object idref="Integer2"/>
+      </void>
+      <void property="angulo">
+       <double>271.0</double>
+      </void>
+      <void property="corPimaria">
+       <object class="java.awt.Color">
+        <int>255</int>
+        <int>254</int>
+        <int>250</int>
+        <int>255</int>
+       </object>
+      </void>
+      <void property="corSecundaria">
+       <object idref="Color14"/>
+      </void>
+      <void property="nome">
+       <string>Objeto 65</string>
+      </void>
+      <void property="posicaoQuina">
+       <object class="java.awt.Point" id="Point522">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point522"/>
+          <int>1707</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point522"/>
+          <int>2167</int>
+         </void>
+        </void>
+       </object>
+      </void>
+      <void property="tipo">
+       <object idref="TipoObjetoConstrucao1"/>
       </void>
      </object>
     </void>

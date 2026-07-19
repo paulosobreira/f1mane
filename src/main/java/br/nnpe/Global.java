@@ -49,13 +49,17 @@ public final class Global {
 
     public static boolean DEBUG_SEM_CHUVA = false;
     /**
-     * Piso do tempo médio de volta usado pelo controle de clima antes da
-     * primeira volta do líder fechar (ver ControleClima/ThreadMudancaClima) —
-     * garante que a primeira tentativa de mudança de clima da corrida
-     * dispare em até 1 minuto real, em vez de esperar a estimativa de tempo
-     * de volta do circuito (que pode passar disso).
+     * Atraso máximo (real, em ms) entre o líder cruzar a linha e uma mudança de
+     * clima sorteada ser efetivamente aplicada (ver ThreadMudancaClima) — sorteado
+     * uniformemente entre 0 e este valor.
      */
-    public static final long TEMPO_MEDIO_VOLTA_CLIMA_MINIMO_MS = 60_000L;
+    public static final long ATRASO_MAX_MUDANCA_CLIMA_MS = 60_000L;
+    /**
+     * Duração fixa (real, em ms) da rampa de "molhado%" — quanto tempo leva pra
+     * interpolar de 0.0 a 1.0 (ou vice-versa) ao entrar ou sair de CHUVA (ver
+     * ControleClima.duracaoRampaCiclos()).
+     */
+    public static final long DURACAO_RAMPA_MOLHADO_MS = 90_000L;
     public static final int CARGA_ERS = 100;
     public static final int DURABILIDADE_AREOFOLIO = 5;
 

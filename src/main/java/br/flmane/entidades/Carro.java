@@ -444,7 +444,7 @@ public class Carro implements Serializable {
 
     private void processaTemperaturaMotor() {
         if (giro == GIRO_MAX_VAL && temperaturaMotor < tempMax) {
-            temperaturaMotor++;
+            temperaturaMotor += calculaIncrementoTemperaturaMotor();
             if (getPiloto().isJogadorHumano() && (temperaturaMotor >= tempMax - 6 && temperaturaMotor <= tempMax - 5)) {
                 getControleJogo().infoPrioritaria(Html.laranja(Lang.msg("temperatura",
                         new String[] { getPiloto().nomeJogadorFormatado(), Html.txtRedBold(getPiloto().getNome()) })));
@@ -470,6 +470,24 @@ public class Carro implements Serializable {
         if (temperaturaMotor < 0) {
             temperaturaMotor = 0;
         }
+    }
+
+    /**
+     * Incremento de temperatura do motor por ciclo em giro máximo. NUBLADO é o
+     * padrão (+1, comportamento inalterado). SOL esquenta um pouco mais rápido
+     * (30% de chance de +2 em vez de +1). CHUVA esquenta mais devagar — o ar mais
+     * frio/úmido ajuda a resfriar (40% de chance de pular o incremento naquele
+     * ciclo, ou seja, +0).
+     */
+    private int calculaIncrementoTemperaturaMotor() {
+        String clima = getControleJogo().getClima();
+        if (Clima.SOL.equals(clima)) {
+            return getControleJogo().getRandom().nextDouble() < 0.3 ? 2 : 1;
+        }
+        if (Clima.CHUVA.equals(clima)) {
+            return getControleJogo().getRandom().nextDouble() < 0.4 ? 0 : 1;
+        }
+        return 1;
     }
 
     public boolean verificaMotorSuperAquecido() {

@@ -430,13 +430,6 @@ public interface InterfaceJogo {
 
     long tempoCicloCircuito();
 
-    /**
-     * Tempo médio de volta real, em milissegundos, calculado a partir das voltas já
-     * registradas do piloto líder. Antes da primeira volta do líder fechar, retorna
-     * a estimativa {@code nosDaPista.size() * tempoCicloCircuito()}.
-     */
-    long tempoMedioVoltaMs();
-
     String getAutomaticoManual();
 
     public GameRandom getRandom();

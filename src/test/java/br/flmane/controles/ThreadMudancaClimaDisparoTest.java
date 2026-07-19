@@ -10,21 +10,20 @@ import org.junit.jupiter.api.Test;
 
 import br.flmane.entidades.Clima;
 import br.flmane.entidades.GameRandom;
+import br.nnpe.Global;
 
 /**
- * {@code ThreadMudancaClima} passou a dormir um valor aleatório entre 0 e
- * {@code tempoMedioVoltaMs()} (em vez do intervalo fixo de narrativa de
- * 3000-15000ms), amarrando o disparo da mudança de clima ao ritmo real da
- * corrida.
+ * {@code ThreadMudancaClima} dorme um valor aleatório entre 0 e
+ * {@code Global.ATRASO_MAX_MUDANCA_CLIMA_MS} (1 minuto fixo) antes de efetivar
+ * a mudança de clima sorteada — não depende mais do tempo médio de volta.
  */
 class ThreadMudancaClimaDisparoTest {
 
     @Test
-    void run_dormeComLimiteSuperiorIgualAoTempoMedioDeVolta() throws Exception {
+    void run_dormeComLimiteSuperiorFixoDeUmMinuto() throws Exception {
         InterfaceJogo controleJogo = mock(InterfaceJogo.class);
         GameRandom random = mock(GameRandom.class);
         when(controleJogo.getRandom()).thenReturn(random);
-        when(controleJogo.tempoMedioVoltaMs()).thenReturn(45000L);
         when(random.intervalo(anyInt(), anyInt())).thenReturn(0);
 
         ControleClima controleClima = new ControleClima(controleJogo, 20);
@@ -32,7 +31,7 @@ class ThreadMudancaClimaDisparoTest {
 
         new ThreadMudancaClima(controleClima).run();
 
-        verify(random).intervalo(0, 45000);
+        verify(random).intervalo(0, (int) Global.ATRASO_MAX_MUDANCA_CLIMA_MS);
     }
 
     /**
@@ -49,7 +48,7 @@ class ThreadMudancaClimaDisparoTest {
         InterfaceJogo controleJogo = mock(InterfaceJogo.class);
         GameRandom random = mock(GameRandom.class);
         when(controleJogo.getRandom()).thenReturn(random);
-        when(controleJogo.tempoMedioVoltaMs()).thenThrow(new RuntimeException("falha simulada"));
+        when(random.intervalo(anyInt(), anyInt())).thenThrow(new RuntimeException("falha simulada"));
 
         ControleClima controleClima = new ControleClima(controleJogo, 20);
         controleClima.setClima(Clima.NUBLADO);

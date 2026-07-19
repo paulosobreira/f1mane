@@ -49,7 +49,6 @@ public class ControleJogoLocal extends ControleRecursos
     protected String circuitoSelecionado = null;
     protected boolean atualizacaoSuave = true;
     private String automaticoManual;
-    private long tempoMedioVoltaMsCache = -1;
 
 
     private MainFrame mainFrame;
@@ -451,7 +450,6 @@ public class ControleJogoLocal extends ControleRecursos
     public void processaNovaVolta() {
         int qtdeDesqualificados = 0;
         Piloto piloto = pilotos.get(0);
-        tempoMedioVoltaMsCache = calculaTempoMedioVoltaMs();
 
         if (piloto.getNumeroVolta() == (totalVoltasCorrida() - 1)
                 && (piloto.getPosicao() == 1) && !isCorridaTerminada()) {
@@ -1921,31 +1919,6 @@ public class ControleJogoLocal extends ControleRecursos
     @Override
     public long tempoCicloCircuito() {
         return circuito.getCiclo();
-    }
-
-    /**
-     * @see br.flmane.controles.InterfaceJogo#tempoMedioVoltaMs()
-     */
-    @Override
-    public long tempoMedioVoltaMs() {
-        if (tempoMedioVoltaMsCache >= 0) {
-            return tempoMedioVoltaMsCache;
-        }
-        return calculaTempoMedioVoltaMs();
-    }
-
-    private long calculaTempoMedioVoltaMs() {
-        if (pilotos != null && !pilotos.isEmpty()) {
-            List<Volta> voltasLider = pilotos.get(0).getVoltas();
-            if (voltasLider != null && !voltasLider.isEmpty()) {
-                long somaCiclos = 0;
-                for (Volta volta : voltasLider) {
-                    somaCiclos += volta.obterTempoVolta().longValue();
-                }
-                return (somaCiclos / voltasLider.size()) * tempoCicloCircuito();
-            }
-        }
-        return Global.TEMPO_MEDIO_VOLTA_CLIMA_MINIMO_MS;
     }
 
     @Override

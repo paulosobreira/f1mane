@@ -138,9 +138,9 @@ public class ControleClima {
      * Valor contínuo (0.0 a 1.0) de "quão molhada" a pista está para efeito dos
      * bônus/penalidades de {@code ganho} interpolados por clima — independente do
      * clima categórico exibido (`SOL`/`NUBLADO`/`CHUVA`). Sobe/desce linearmente ao
-     * longo de aproximadamente um `tempoMedioVoltaMs()` sempre que o clima categórico
-     * entra ou sai de `CHUVA`; reversível a partir do valor atual (ver
-     * {@link #iniciarRampaMolhado(double)}).
+     * longo de {@code Global.DURACAO_RAMPA_MOLHADO_MS} (1min30 fixo) sempre que o
+     * clima categórico entra ou sai de `CHUVA`; reversível a partir do valor atual
+     * (ver {@link #iniciarRampaMolhado(double)}).
      */
     public double getMolhado() {
         long duracaoCiclos = duracaoRampaCiclos();
@@ -186,7 +186,7 @@ public class ControleClima {
         if (tempoCiclo <= 0) {
             return 0;
         }
-        return controleJogo.tempoMedioVoltaMs() / tempoCiclo;
+        return Global.DURACAO_RAMPA_MOLHADO_MS / tempoCiclo;
     }
 
     /**

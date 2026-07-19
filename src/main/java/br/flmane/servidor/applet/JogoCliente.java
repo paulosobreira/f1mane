@@ -325,9 +325,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
     }
 
     /**
-     * O client não roda {@code ControleClima} (ver {@link #tempoMedioVoltaMs()}), então
-     * não há rampa gradual disponível aqui — repassa o equivalente binário de
-     * {@link #isChovendo()}.
+     * O client não roda {@code ControleClima} (autoritativo no servidor via
+     * {@code JogoServidor extends ControleJogoLocal}), então não há rampa gradual
+     * disponível aqui — repassa o equivalente binário de {@link #isChovendo()}.
      */
     public double getMolhado() {
         return isChovendo() ? 1.0 : 0.0;
@@ -1350,17 +1350,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
     @Override
     public long tempoCicloCircuito() {
         return circuito.getCiclo();
-    }
-
-    /**
-     * O client não roda {@code ControleClima}/{@code ThreadMudancaClima} — a simulação de
-     * clima é autoritativa no servidor ({@code JogoServidor extends ControleJogoLocal}).
-     * Este método existe só para satisfazer {@code InterfaceJogo}; retorna a mesma
-     * estimativa usada no servidor antes da primeira volta do líder fechar.
-     */
-    @Override
-    public long tempoMedioVoltaMs() {
-        return Global.TEMPO_MEDIO_VOLTA_CLIMA_MINIMO_MS;
     }
 
     @Override

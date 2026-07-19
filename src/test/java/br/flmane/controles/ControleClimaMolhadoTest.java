@@ -7,24 +7,27 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.Test;
 
 import br.flmane.entidades.Clima;
+import br.nnpe.Global;
 
 /**
  * "molhado%" é o estado contínuo (0.0 a 1.0) que ControleClima usa para
  * interpolar os bônus/penalidades de ganho entre seco e chuva, independente
  * do clima categórico exibido. Sobe/desce à taxa constante de 1.0 unidade a
- * cada tempoMedioVoltaMs, reversível a partir do valor atual.
+ * cada Global.DURACAO_RAMPA_MOLHADO_MS (fixo, 1min30), reversível a partir do
+ * valor atual.
  */
 class ControleClimaMolhadoTest {
 
-    private static final long TEMPO_CICLO_MS = 100L;
-    private static final long TEMPO_MEDIO_VOLTA_MS = 1000L; // 10 ciclos por rampa completa
+    // tempoCicloCircuito escolhido pra dar exatamente 10 ciclos por rampa completa
+    // (Global.DURACAO_RAMPA_MOLHADO_MS / TEMPO_CICLO_MS == 10), preservando os
+    // mesmos números redondos usados nas asserções abaixo.
+    private static final long TEMPO_CICLO_MS = Global.DURACAO_RAMPA_MOLHADO_MS / 10;
 
     private final int[] cicloAtual = {0};
 
     private ControleClima criarControle() {
         InterfaceJogo controleJogo = mock(InterfaceJogo.class);
         when(controleJogo.tempoCicloCircuito()).thenReturn(TEMPO_CICLO_MS);
-        when(controleJogo.tempoMedioVoltaMs()).thenReturn(TEMPO_MEDIO_VOLTA_MS);
         when(controleJogo.getCicloAtual()).thenAnswer(inv -> cicloAtual[0]);
         return new ControleClima(controleJogo, 20);
     }
