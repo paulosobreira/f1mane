@@ -8,11 +8,11 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import br.nnpe.GeoUtil;
@@ -32,6 +32,21 @@ public final class DesenhoProceduralCircuito {
 	private static final int MARGEM_IMAGEM = 500;
 	/** Mesma cor de {@code PainelCircuito.transpMenus}, duplicada aqui pra não criar dependência de entidades para visao. */
 	private static final Color TRANSP_MENUS = new Color(255, 255, 255, 160);
+	/**
+	 * Deslocamento de centralização "neutro" (sem desconto), usado pelos
+	 * métodos de desenho que não têm viewport/scroll (geração de imagem em
+	 * memória) — mesma convenção de {@link #desenhaLinhaDeLargada(Graphics2D, Circuito, double)}.
+	 */
+	private static final Point ORIGEM = new Point(0, 0);
+	/**
+	 * Expoente da parametrização da spline Catmull-Rom usada para suavizar o
+	 * traçado da pista/zebra/box (ver {@link #construirCaminhoSuavizado}).
+	 * 0.5 = centrípeta — evita o overshoot/laço que a variante uniforme
+	 * (alpha 0) produziria quando os nós-chave têm espaçamento bem
+	 * desigual (comum entre um trecho reto longo e um grupo de nós de
+	 * curva próximos).
+	 */
+	private static final double ALPHA_CATMULL_ROM = 0.5;
 
 	private DesenhoProceduralCircuito() {
 	}
@@ -62,10 +77,10 @@ public final class DesenhoProceduralCircuito {
 		BasicStroke zebra = new BasicStroke(Util.inteiro(larguraPistaPixeis * 1.05),
 				BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[]{10, 10}, 0);
 
-		desenhaTintaPistaEZebra(g2d, circuito, zoom, pistaTinta, zebra);
-		desenhaPista(g2d, circuito, zoom, pista);
-		desenhaTintaPistaBox(g2d, circuito, zoom, pista, boxBorda);
-		desenhaPistaBox(g2d, circuito, zoom, box);
+		desenhaTintaPistaEZebra(g2d, circuito, zoom, ORIGEM, pistaTinta, zebra);
+		desenhaPista(g2d, circuito, zoom, ORIGEM, pista);
+		desenhaTintaPistaBox(g2d, circuito, zoom, ORIGEM, pista, boxBorda);
+		desenhaPistaBox(g2d, circuito, zoom, ORIGEM, box);
 	}
 
 	/** Quantidade máxima de vagas de box desenhadas quando todas cabem no espaço disponível. */
@@ -462,51 +477,163 @@ public final class DesenhoProceduralCircuito {
 		return image;
 	}
 
-	private static void desenhaPista(Graphics2D g2d, Circuito circuito, double zoom,
-			BasicStroke stroke) {
+	/**
+	 * Desenha o asfalto da pista como um único traçado suavizado (ver
+	 * {@link #construirCaminhoSuavizado(List, double, Point, boolean)}), em
+	 * vez de segmentos retos nó a nó — elimina as pontas visíveis nas
+	 * mudanças de direção entre nós-chave. {@code descontoCentraliza} é o
+	 * deslocamento de viewport usado por {@code PainelCircuito} ({@link #ORIGEM}
+	 * quando não há viewport, como na geração de imagem em memória).
+	 */
+	public static void desenhaPista(Graphics2D g2d, Circuito circuito, double zoom,
+			Point descontoCentraliza, BasicStroke stroke) {
 		if (circuito.getPistaKey() == null || circuito.getPistaKey().isEmpty()) {
 			return;
 		}
 		g2d.setColor(circuito.getCorAsfalto() != null ? circuito.getCorAsfalto() : COR_PISTA);
 		g2d.setStroke(stroke);
-		No oldNo = null;
-		for (Iterator<No> iter = circuito.getPistaKey().iterator(); iter.hasNext(); ) {
-			No no = iter.next();
-			if (oldNo != null) {
-				g2d.drawLine(Util.inteiro(oldNo.getX() * zoom), Util.inteiro(oldNo.getY() * zoom),
-						Util.inteiro(no.getX() * zoom), Util.inteiro(no.getY() * zoom));
-			}
-			oldNo = no;
-		}
-		No noFinal = circuito.getPistaKey().get(0);
-		g2d.drawLine(Util.inteiro(oldNo.getX() * zoom), Util.inteiro(oldNo.getY() * zoom),
-				Util.inteiro(noFinal.getX() * zoom), Util.inteiro(noFinal.getY() * zoom));
+		g2d.draw(construirCaminhoSuavizado(circuito.getPistaKey(), zoom, descontoCentraliza, true));
 	}
 
 	/**
+	 * Constrói o traçado suavizado (spline Catmull-Rom centrípeta convertida
+	 * em curvas de Bézier cúbicas) que passa exatamente pelos nós de
+	 * {@code nos}, escalados por {@code zoom} e deslocados por
+	 * {@code descontoCentraliza} (viewport de {@code PainelCircuito}; use
+	 * {@link #ORIGEM} quando não houver viewport).
+	 *
 	 * @param fechado true fecha o caminho de volta ao primeiro nó (caso da
-	 *                pista, que é um loop); false deixa o caminho aberto, do
-	 *                primeiro ao último nó só (caso do box, que é um
-	 *                trajeto de entrada até a saída, não um loop).
+	 *                pista, que é um loop, com wrap circular dos vizinhos
+	 *                usados para calcular a tangente nas pontas); false
+	 *                deixa o caminho aberto, do primeiro ao último nó só
+	 *                (caso do box, que é um trajeto de entrada até a saída,
+	 *                não um loop — as pontas usam um ponto fantasma
+	 *                refletido em vez de extrapolar pra fora da lista).
 	 */
-	private static GeneralPath construirCaminho(List<No> nos, double zoom, boolean fechado) {
-		GeneralPath caminho = new GeneralPath();
-		No oldNo = null;
+	public static GeneralPath construirCaminhoSuavizado(List<No> nos, double zoom, Point descontoCentraliza,
+			boolean fechado) {
+		return construirCaminhoSuavizado(converterPontos(nos, zoom, descontoCentraliza), fechado);
+	}
+
+	private static List<Point2D.Double> converterPontos(List<No> nos, double zoom, Point descontoCentraliza) {
+		List<Point2D.Double> pontos = new ArrayList<Point2D.Double>(nos.size());
 		for (No no : nos) {
-			int x = Util.inteiro(no.getX() * zoom);
-			int y = Util.inteiro(no.getY() * zoom);
-			if (oldNo == null) {
-				caminho.moveTo(x, y);
-			} else {
-				caminho.lineTo(x, y);
-			}
-			oldNo = no;
+			pontos.add(new Point2D.Double((no.getX() - descontoCentraliza.x) * zoom,
+					(no.getY() - descontoCentraliza.y) * zoom));
+		}
+		return pontos;
+	}
+
+	private static GeneralPath construirCaminhoSuavizado(List<Point2D.Double> pontos, boolean fechado) {
+		GeneralPath caminho = new GeneralPath();
+		int n = pontos.size();
+		if (n == 0) {
+			return caminho;
+		}
+		caminho.moveTo(pontos.get(0).x, pontos.get(0).y);
+		if (n == 1) {
+			return caminho;
+		}
+		int segmentos = fechado ? n : n - 1;
+		for (int i = 0; i < segmentos; i++) {
+			Point2D.Double p1 = pontos.get(i);
+			Point2D.Double p2 = pontos.get((i + 1) % n);
+			Point2D.Double p0 = pontoVizinho(pontos, i - 1, fechado);
+			Point2D.Double p3 = pontoVizinho(pontos, i + 2, fechado);
+			Point2D.Double[] controle = pontosControleBezier(p0, p1, p2, p3);
+			caminho.curveTo(controle[0].x, controle[0].y, controle[1].x, controle[1].y, p2.x, p2.y);
 		}
 		if (fechado) {
-			No noInicial = nos.get(0);
-			caminho.lineTo(Util.inteiro(noInicial.getX() * zoom), Util.inteiro(noInicial.getY() * zoom));
+			caminho.closePath();
 		}
 		return caminho;
+	}
+
+	/**
+	 * Nó vizinho usado só para estimar a tangente da spline em {@code indice}
+	 * (não faz parte do caminho desenhado). Em caminho fechado, é o próprio
+	 * nó do fim/início da lista (wrap circular); em caminho aberto, fora dos
+	 * limites da lista é um ponto fantasma refletido (2×extremo − vizinho),
+	 * que dá continuidade razoável à tangente na ponta sem extrapolar pra
+	 * fora da lista de nós.
+	 */
+	private static Point2D.Double pontoVizinho(List<Point2D.Double> pontos, int indice, boolean fechado) {
+		int n = pontos.size();
+		if (fechado) {
+			return pontos.get(((indice % n) + n) % n);
+		}
+		if (indice < 0) {
+			Point2D.Double p0 = pontos.get(0);
+			Point2D.Double p1 = pontos.get(Math.min(1, n - 1));
+			return new Point2D.Double(2 * p0.x - p1.x, 2 * p0.y - p1.y);
+		}
+		if (indice >= n) {
+			Point2D.Double pFinal = pontos.get(n - 1);
+			Point2D.Double pAnterior = pontos.get(Math.max(n - 2, 0));
+			return new Point2D.Double(2 * pFinal.x - pAnterior.x, 2 * pFinal.y - pAnterior.y);
+		}
+		return pontos.get(indice);
+	}
+
+	/**
+	 * Converte os quatro pontos {@code p0,p1,p2,p3} (o segmento suavizado
+	 * vai de {@code p1} a {@code p2}, usando {@code p0}/{@code p3} só para
+	 * estimar a tangente nas pontas) nos dois pontos de controle da curva de
+	 * Bézier cúbica equivalente à spline Catmull-Rom centrípeta —
+	 * conversão padrão via parametrização por distância^{@link #ALPHA_CATMULL_ROM}.
+	 */
+	private static Point2D.Double[] pontosControleBezier(Point2D.Double p0, Point2D.Double p1, Point2D.Double p2,
+			Point2D.Double p3) {
+		double t0 = 0;
+		double t1 = t0 + distanciaAlpha(p0, p1);
+		double t2 = t1 + distanciaAlpha(p1, p2);
+		double t3 = t2 + distanciaAlpha(p2, p3);
+
+		Point2D.Double m1 = escala(
+				soma(subtrai(dividir(subtrai(p1, p0), t1 - t0), dividir(subtrai(p2, p0), t2 - t0)),
+						dividir(subtrai(p2, p1), t2 - t1)),
+				t2 - t1);
+		Point2D.Double m2 = escala(
+				soma(subtrai(dividir(subtrai(p2, p1), t2 - t1), dividir(subtrai(p3, p1), t3 - t1)),
+						dividir(subtrai(p3, p2), t3 - t2)),
+				t2 - t1);
+
+		Point2D.Double controle1 = new Point2D.Double(p1.x + m1.x / 3, p1.y + m1.y / 3);
+		Point2D.Double controle2 = new Point2D.Double(p2.x - m2.x / 3, p2.y - m2.y / 3);
+		return new Point2D.Double[]{controle1, controle2};
+	}
+
+	/** Distância euclidiana entre {@code a} e {@code b}, elevada a {@link #ALPHA_CATMULL_ROM}. */
+	private static double distanciaAlpha(Point2D.Double a, Point2D.Double b) {
+		return Math.pow(a.distance(b), ALPHA_CATMULL_ROM);
+	}
+
+	private static Point2D.Double subtrai(Point2D.Double a, Point2D.Double b) {
+		return new Point2D.Double(a.x - b.x, a.y - b.y);
+	}
+
+	private static Point2D.Double soma(Point2D.Double a, Point2D.Double b) {
+		return new Point2D.Double(a.x + b.x, a.y + b.y);
+	}
+
+	private static Point2D.Double escala(Point2D.Double v, double fator) {
+		return new Point2D.Double(v.x * fator, v.y * fator);
+	}
+
+	/**
+	 * Divisão segura: pontos coincidentes (nós duplicados/muito próximos)
+	 * fariam {@code denom} chegar a 0 — nesse caso o termo não contribui em
+	 * nenhuma direção, em vez de gerar {@code NaN}/{@code Infinity}.
+	 */
+	private static Point2D.Double dividir(Point2D.Double v, double denom) {
+		if (Math.abs(denom) < 1e-6) {
+			return new Point2D.Double(0, 0);
+		}
+		return new Point2D.Double(v.x / denom, v.y / denom);
+	}
+
+	private static boolean isCurva(No no) {
+		return No.CURVA_ALTA.equals(no.getTipo()) || No.CURVA_BAIXA.equals(no.getTipo());
 	}
 
 	/**
@@ -516,14 +643,16 @@ public final class DesenhoProceduralCircuito {
 	 * cairia dentro da área já pintada pelo traçado da pista, pra não
 	 * desenhar branco por cima do asfalto/zebra da pista.
 	 */
-	private static void desenhaTintaPistaBox(Graphics2D g2d, Circuito circuito, double zoom,
-			BasicStroke pista, BasicStroke boxBorda) {
+	public static void desenhaTintaPistaBox(Graphics2D g2d, Circuito circuito, double zoom,
+			Point descontoCentraliza, BasicStroke pista, BasicStroke boxBorda) {
 		if (circuito.getPistaKey() == null || circuito.getPistaKey().isEmpty()
 				|| circuito.getBoxKey() == null || circuito.getBoxKey().isEmpty()) {
 			return;
 		}
-		Shape formaPista = pista.createStrokedShape(construirCaminho(circuito.getPistaKey(), zoom, true));
-		Shape formaBordaBox = boxBorda.createStrokedShape(construirCaminho(circuito.getBoxKey(), zoom, false));
+		Shape formaPista = pista
+				.createStrokedShape(construirCaminhoSuavizado(circuito.getPistaKey(), zoom, descontoCentraliza, true));
+		Shape formaBordaBox = boxBorda
+				.createStrokedShape(construirCaminhoSuavizado(circuito.getBoxKey(), zoom, descontoCentraliza, false));
 
 		Area areaBorda = new Area(formaBordaBox);
 		areaBorda.subtract(new Area(formaPista));
@@ -532,29 +661,39 @@ public final class DesenhoProceduralCircuito {
 		g2d.fill(areaBorda);
 	}
 
-	private static void desenhaPistaBox(Graphics2D g2d, Circuito circuito, double zoom,
-			BasicStroke stroke) {
+	/**
+	 * Desenha o asfalto do box como um único traçado suavizado, no mesmo
+	 * espírito de {@link #desenhaPista}, mas aberto (o box é um trajeto de
+	 * entrada até a saída, não um loop).
+	 */
+	public static void desenhaPistaBox(Graphics2D g2d, Circuito circuito, double zoom,
+			Point descontoCentraliza, BasicStroke stroke) {
+		if (circuito.getBoxKey() == null || circuito.getBoxKey().isEmpty()) {
+			return;
+		}
 		g2d.setColor(circuito.getCorAsfalto() != null ? circuito.getCorAsfalto() : COR_PISTA);
 		g2d.setStroke(stroke);
-		No oldNo = null;
-		for (Iterator<No> iter = circuito.getBoxKey().iterator(); iter.hasNext(); ) {
-			No no = iter.next();
-			if (oldNo != null) {
-				g2d.drawLine(Util.inteiro(oldNo.getX() * zoom), Util.inteiro(oldNo.getY() * zoom),
-						Util.inteiro(no.getX() * zoom), Util.inteiro(no.getY() * zoom));
-			}
-			oldNo = no;
-		}
-		if (circuito.getBoxKey() != null && !circuito.getBoxKey().isEmpty()) {
-			No noFinal = circuito.getBoxKey().get(circuito.getBoxKey().size() - 1);
-			g2d.drawLine(Util.inteiro(oldNo.getX() * zoom), Util.inteiro(oldNo.getY() * zoom),
-					Util.inteiro(noFinal.getX() * zoom), Util.inteiro(noFinal.getY() * zoom));
-		}
+		g2d.draw(construirCaminhoSuavizado(circuito.getBoxKey(), zoom, descontoCentraliza, false));
 	}
 
-	private static void desenhaTintaPistaEZebra(Graphics2D g2d, Circuito circuito, double zoom,
-			BasicStroke pistaTinta, BasicStroke zebra) {
-		if (circuito.getPistaKey() == null || circuito.getPistaKey().isEmpty()) {
+	/**
+	 * Desenha a tinta de borda da pista (branca fora das curvas) e a faixa
+	 * de zebra das curvas (corZebra1 sólida + corZebra2 tracejada). Nós-chave
+	 * consecutivos classificados como curva são agrupados em trechos
+	 * contíguos e desenhados como um único traçado suavizado por trecho —
+	 * ao contrário do antigo desenho segmento a segmento, a fase do
+	 * tracejado de {@code zebra} é calculada pelo Java2D sobre o {@code Shape}
+	 * inteiro do trecho, então o padrão de listras fica contínuo/alinhado do
+	 * início ao fim, sem desalinhar nas emendas entre nós-chave internos.
+	 * <p>
+	 * O último segmento (do último nó de volta ao primeiro, fechando o
+	 * laço) é sempre tratado como reta/branco, independentemente do tipo do
+	 * último nó — mesmo comportamento de antes desta mudança.
+	 */
+	public static void desenhaTintaPistaEZebra(Graphics2D g2d, Circuito circuito, double zoom,
+			Point descontoCentraliza, BasicStroke pistaTinta, BasicStroke zebra) {
+		List<No> pistaKey = circuito.getPistaKey();
+		if (pistaKey == null || pistaKey.isEmpty()) {
 			return;
 		}
 		// As cores customizadas valem só para a faixa de zebra das curvas —
@@ -563,29 +702,70 @@ public final class DesenhoProceduralCircuito {
 		// da pista é sempre branca, independente das cores customizadas.
 		Color corZebra1 = circuito.getCorZebra1() != null ? circuito.getCorZebra1() : Color.WHITE;
 		Color corZebra2 = circuito.getCorZebra2() != null ? circuito.getCorZebra2() : Color.RED;
-		No oldNo = null;
-		for (Iterator<No> iter = circuito.getPistaKey().iterator(); iter.hasNext(); ) {
-			No no = iter.next();
-			if (oldNo != null) {
-				boolean curva = No.CURVA_ALTA.equals(oldNo.getTipo()) || No.CURVA_BAIXA.equals(oldNo.getTipo());
-				g2d.setColor(curva ? corZebra1 : Color.WHITE);
-				g2d.setStroke(pistaTinta);
-				g2d.drawLine(Util.inteiro(oldNo.getX() * zoom), Util.inteiro(oldNo.getY() * zoom),
-						Util.inteiro(no.getX() * zoom), Util.inteiro(no.getY() * zoom));
-				if (curva) {
-					g2d.setColor(corZebra2);
-					g2d.setStroke(zebra);
-					g2d.drawLine(Util.inteiro(oldNo.getX() * zoom), Util.inteiro(oldNo.getY() * zoom),
-							Util.inteiro(no.getX() * zoom), Util.inteiro(no.getY() * zoom));
-				}
-			}
-			oldNo = no;
+
+		int n = pistaKey.size();
+		if (n == 1) {
+			return;
 		}
-		No noFinal = circuito.getPistaKey().get(0);
-		g2d.setColor(Color.WHITE);
-		g2d.setStroke(pistaTinta);
-		g2d.drawLine(Util.inteiro(oldNo.getX() * zoom), Util.inteiro(oldNo.getY() * zoom),
-				Util.inteiro(noFinal.getX() * zoom), Util.inteiro(noFinal.getY() * zoom));
+		List<Point2D.Double> pontos = converterPontos(pistaKey, zoom, descontoCentraliza);
+
+		// curva[i] classifica o segmento do nó i para o nó (i+1)%n, usando o
+		// tipo do nó i — igual ao critério de antes desta mudança (baseado
+		// no "oldNo" de cada par). O último segmento (n-1, fecha o laço de
+		// volta ao primeiro nó) é sempre forçado reta/branco.
+		boolean[] curva = new boolean[n];
+		for (int i = 0; i < n - 1; i++) {
+			curva[i] = isCurva(pistaKey.get(i));
+		}
+		curva[n - 1] = false;
+
+		int i = 0;
+		while (i < n) {
+			boolean trechoCurva = curva[i];
+			int inicio = i;
+			while (i < n && curva[i] == trechoCurva) {
+				i++;
+			}
+			int quantidadeSegmentos = i - inicio;
+			GeneralPath trecho = construirSubCaminhoSuavizado(pontos, inicio, quantidadeSegmentos);
+
+			g2d.setColor(trechoCurva ? corZebra1 : Color.WHITE);
+			g2d.setStroke(pistaTinta);
+			g2d.draw(trecho);
+			if (trechoCurva) {
+				g2d.setColor(corZebra2);
+				g2d.setStroke(zebra);
+				g2d.draw(trecho);
+			}
+		}
+	}
+
+	/**
+	 * Constrói um trecho suavizado (aberto) cobrindo {@code quantidadeSegmentos}
+	 * segmentos a partir do nó {@code indiceInicio}, usando o mesmo cálculo
+	 * de tangente Catmull-Rom centrípeta de {@link #construirCaminhoSuavizado},
+	 * mas com os vizinhos buscados de forma circular em {@code pontosFechados}
+	 * (a pista inteira) mesmo fora do trecho — garante que a curva do trecho
+	 * tenha a mesma tangente nas pontas que teria se fizesse parte do laço
+	 * completo, para não criar uma quina visível onde o trecho de zebra
+	 * encontra a reta vizinha.
+	 */
+	private static GeneralPath construirSubCaminhoSuavizado(List<Point2D.Double> pontosFechados, int indiceInicio,
+			int quantidadeSegmentos) {
+		int n = pontosFechados.size();
+		GeneralPath caminho = new GeneralPath();
+		Point2D.Double inicio = pontosFechados.get(indiceInicio % n);
+		caminho.moveTo(inicio.x, inicio.y);
+		for (int passo = 0; passo < quantidadeSegmentos; passo++) {
+			int idx = (indiceInicio + passo) % n;
+			Point2D.Double p0 = pontosFechados.get(((idx - 1) % n + n) % n);
+			Point2D.Double p1 = pontosFechados.get(idx);
+			Point2D.Double p2 = pontosFechados.get((idx + 1) % n);
+			Point2D.Double p3 = pontosFechados.get((idx + 2) % n);
+			Point2D.Double[] controle = pontosControleBezier(p0, p1, p2, p3);
+			caminho.curveTo(controle[0].x, controle[0].y, controle[1].x, controle[1].y, p2.x, p2.y);
+		}
+		return caminho;
 	}
 
 	private static void desenhaObjetos(Graphics2D g2d, Circuito circuito, double zoom, int nivel) {

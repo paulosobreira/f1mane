@@ -97,7 +97,11 @@ class DesenhoProceduralCircuitoTest {
         BufferedImage imagem = DesenhoProceduralCircuito.geraImagem(circuito);
 
         assertEquals(fundo.getRGB(), imagem.getRGB(0, 0));
-        assertEquals(asfalto.getRGB(), imagem.getRGB(1500, 1000));
+        // (1500,1000) era o meio exato do segmento reto (1000,1000)-(2000,1000)
+        // com o traçado antigo (linha reta); com a suavização do traçado
+        // (melhorar-desenho-pista-zebra), a curva desse trecho passa perto de
+        // (1500,875) — ver DesenhoProceduralCircuito.construirCaminhoSuavizado.
+        assertEquals(asfalto.getRGB(), imagem.getRGB(1500, 875));
     }
 
     // ---- níveis de desenho em relação à pista ----
@@ -132,7 +136,12 @@ class DesenhoProceduralCircuitoTest {
 
         BufferedImage imagem = DesenhoProceduralCircuito.geraImagem(circuito);
 
-        assertEquals(circuito.getCorAsfalto().getRGB(), imagem.getRGB(1500, 1000),
+        // (1500,1000) era o meio exato do segmento reto da pista com o
+        // traçado antigo (linha reta); com a suavização do traçado
+        // (melhorar-desenho-pista-zebra) esse trecho passa mais perto de
+        // (1500,875)-(1500,940) — (1500,920) continua dentro do quadrado do
+        // objeto (900-1100 em y) e sob o asfalto suavizado.
+        assertEquals(circuito.getCorAsfalto().getRGB(), imagem.getRGB(1500, 920),
                 "objeto no nível -1 deveria ficar coberto pelo asfalto");
         assertTrue(imagemContemCor(imagem, corObjeto),
                 "as partes do objeto fora da pista continuam visíveis");
@@ -329,7 +338,11 @@ class DesenhoProceduralCircuitoTest {
             g2d.dispose();
         }
 
-        assertEquals(Color.WHITE.getRGB(), imagem.getRGB(2350, 2370),
+        // (2350,2370) era um ponto dentro da borda branca do traçado reto
+        // antigo do box; com a suavização do traçado (melhorar-desenho-pista-zebra)
+        // o trecho do box nessa região passa um pouco mais abaixo — (2235,2405)
+        // continua dentro da borda branca, longe da linha cinza central e da pista.
+        assertEquals(Color.WHITE.getRGB(), imagem.getRGB(2235, 2405),
                 "esperava borda branca do box no trecho livre, fora da linha cinza central e longe da pista");
     }
 
