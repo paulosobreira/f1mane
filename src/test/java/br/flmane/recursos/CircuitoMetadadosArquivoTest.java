@@ -128,6 +128,29 @@ class CircuitoMetadadosArquivoTest {
     }
 
     @Test
+    void copiaParaArquivoMetadados_semAnguloLargadaDefinido_naoGravaAPropriedade() {
+        Circuito circuito = circuitoCompleto();
+        circuito.vetorizarPista();
+
+        String xml = codificar(circuito.copiaParaArquivoMetadados());
+
+        assertFalse(xml.contains("property=\"anguloLargada\""),
+                "sem override, o XML não deveria gravar a propriedade (compatibilidade com circuitos antigos)");
+    }
+
+    @Test
+    void copiaParaArquivoMetadados_comAnguloLargadaDefinido_gravaAPropriedade() {
+        Circuito circuito = circuitoCompleto();
+        circuito.vetorizarPista();
+        circuito.setAnguloLargada(123.0);
+
+        String xml = codificar(circuito.copiaParaArquivoMetadados());
+
+        assertTrue(xml.contains("property=\"anguloLargada\""));
+        assertTrue(xml.contains("123.0"));
+    }
+
+    @Test
     void copiaParaArquivoObjetos_contemSoObjetosENaoMetadados() {
         Circuito circuito = circuitoCompleto();
         circuito.vetorizarPista();

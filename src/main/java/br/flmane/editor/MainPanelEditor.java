@@ -31,6 +31,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,6 +39,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -93,6 +96,7 @@ import br.flmane.entidades.ObjetoEscapada;
 import br.flmane.entidades.ObjetoGuardRails;
 import br.flmane.entidades.ObjetoLivre;
 import br.flmane.entidades.ObjetoPista;
+import br.flmane.entidades.ObjetoPneus;
 import br.flmane.entidades.ObjetoTransparencia;
 import br.flmane.entidades.TipoObjetoConstrucao;
 import br.flmane.entidades.PontoCurva;
@@ -215,6 +219,7 @@ public class MainPanelEditor extends JPanel {
     private double multiplicadorPista = 9;
     private double multiplicadorLarguraPista = 0;
     private JSpinner larguraPistaSpinner;
+    private JSpinner anguloLargadaSpinner;
     private JTextField nomePistaText;
     private JTextField probalidadeChuvaText;
     private JSpinner cicloSpinner;
@@ -228,6 +233,15 @@ public class MainPanelEditor extends JPanel {
     private boolean desenhandoObjetoLivre;
     private boolean posicionaObjetoPista;
     private boolean criandoObjetoCenario;
+    /**
+     * "Facilitador de desenho" de ObjetoPneus: cada par de cliques gera um
+     * ObjetoPneus independente (mesma classe/campos de sempre — não é um
+     * encadeamento de pontos como GuardRails/Arquibancada), e a sequência
+     * continua ativa até o clique direito. Ver clickEditarObjetos().
+     */
+    private boolean desenhandoPneusEmSequencia;
+    /** Primeiro clique do par atual da sequência de Pneus; null aguardando o primeiro. */
+    private Point primeiroCliquePneus;
     private ObjetoPista objetoArrastando;
     private Point offsetArraste;
     private boolean arrastouObjeto;
@@ -289,6 +303,14 @@ public class MainPanelEditor extends JPanel {
     /** "Área de transferência" de cor (Copiar Cor/Colar Cor); null enquanto nada foi copiado ainda. */
     private Color corCopiada1;
     private Color corCopiada2;
+    /** "Área de transferência" de objetos (Copiar Objetos/Colar Objetos); vazia enquanto nada foi copiado ainda. */
+    private List<ObjetoPista> objetosCopiados = new ArrayList<ObjetoPista>();
+    /**
+     * Lote de cópias de {@link #objetosCopiados} aguardando o clique de
+     * posicionamento em {@code clickEditarObjetos()}; null fora do modo de
+     * colagem (ver {@link #colarObjetosSelecionados()}).
+     */
+    private List<ObjetoPista> objetosParaColar;
     protected final DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
     JCheckBox noite = new JCheckBox();
     private final JLabel corFundoLabel = criaIndicadorDeCor();
@@ -466,7 +488,7 @@ public class MainPanelEditor extends JPanel {
     }
 
     private JPanel gerarBotaoCriarObjeto() {
-        JPanel buttonsPanel = new JPanel(new GridLayout(3, 1));
+        JPanel buttonsPanel = new JPanel(new GridLayout(5, 1));
         JButton criarObjeto = new JButton(Lang.msg("criarObjeto"));
         criarObjeto.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -490,6 +512,22 @@ public class MainPanelEditor extends JPanel {
             }
         });
         buttonsPanel.add(colarCor);
+
+        JButton copiarObjetos = new JButton(Lang.msg("copiarObjetos"));
+        copiarObjetos.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                copiarObjetosSelecionados();
+            }
+        });
+        buttonsPanel.add(copiarObjetos);
+
+        JButton colarObjetos = new JButton(Lang.msg("colarObjetos"));
+        colarObjetos.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                colarObjetosSelecionados();
+            }
+        });
+        buttonsPanel.add(colarObjetos);
 
         return buttonsPanel;
     }
@@ -526,6 +564,99 @@ public class MainPanelEditor extends JPanel {
             objetoPista.setCorSecundaria(corCopiada2);
         }
         repaint();
+    }
+
+    /**
+     * Copia todos os objetos atualmente selecionados na lista única para a
+     * memória de objetos copiados (ver {@link #objetosCopiados}), substituindo
+     * qualquer conteúdo copiado anteriormente. Sem seleção, não faz nada.
+     */
+    void copiarObjetosSelecionados() {
+        List<ObjetoPista> selecionados = todosSelecionados(formularioListaObjetos);
+        if (selecionados.isEmpty()) {
+            return;
+        }
+        List<ObjetoPista> copias = new ArrayList<ObjetoPista>();
+        for (ObjetoPista selecionado : selecionados) {
+            copias.add(copiaProfunda(selecionado));
+        }
+        objetosCopiados = copias;
+    }
+
+    /**
+     * Início do colar dos objetos copiados: avisa o usuário (diálogo) que o
+     * próximo clique no canvas define onde o(s) objeto(s) devem aparecer, e
+     * liga o modo de posicionamento ({@link #posicionaObjetoPista}) com um
+     * novo lote de cópias em {@link #objetosParaColar} — a inserção de fato
+     * acontece em {@code clickEditarObjetos()} ao processar esse clique. Sem
+     * nada copiado antes, não faz nada (sem diálogo, sem entrar em modo de
+     * posicionamento).
+     */
+    void colarObjetosSelecionados() {
+        if (objetosCopiados.isEmpty()) {
+            return;
+        }
+        avisarClicarParaColarObjetos();
+        List<ObjetoPista> lote = new ArrayList<ObjetoPista>();
+        for (ObjetoPista copiado : objetosCopiados) {
+            lote.add(copiaProfunda(copiado));
+        }
+        objetosParaColar = lote;
+        posicionaObjetoPista = true;
+    }
+
+    /**
+     * Avisa o usuário que o próximo clique no canvas define onde o(s)
+     * objeto(s) colado(s) devem aparecer — protected para permitir override
+     * em teste sem abrir um JOptionPane real (ver MainPanelEditorTestDouble),
+     * mesmo padrão de {@link #alertaPontoEscapadaInvalido()}.
+     */
+    protected void avisarClicarParaColarObjetos() {
+        JOptionPane.showMessageDialog(this, Lang.msg("clicarParaColarObjetos"));
+    }
+
+    /**
+     * Cópia profunda de {@code origem} via round-trip de serialização Java —
+     * genérica para qualquer subtipo de {@link ObjetoPista}, sem nenhuma
+     * referência de campo mutável (ex. {@code List<Point> pontos}, o cache
+     * {@code GeneralPath}) compartilhada com o original.
+     */
+    private static ObjetoPista copiaProfunda(ObjetoPista origem) {
+        try {
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            ObjectOutputStream saida = new ObjectOutputStream(buffer);
+            saida.writeObject(origem);
+            saida.flush();
+            ObjectInputStream entrada = new ObjectInputStream(new ByteArrayInputStream(buffer.toByteArray()));
+            return (ObjetoPista) entrada.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Força {@code objeto} a recalcular, agora, o estado interno que
+     * {@link ObjetoPista#obterArea()} lê — necessário depois de reposicionar
+     * um objeto colado via {@code setPosicaoQuina(...)}: vários subtipos
+     * (ex. {@code ObjetoGuardRails}/{@code ObjetoLivre}, cujo {@code caminho}
+     * só é transladado para a nova posição dentro de {@code desenha()}; ou
+     * {@code ObjetoConstrucao}, cuja {@code areaTotal} só é recalculada
+     * dentro de {@code desenha()}) só refletem a posição nova depois de uma
+     * chamada real a {@code desenha()}. Sem isto, {@code estaVisivelNoViewport()}
+     * usaria a área antiga (a do objeto original, de antes do clique de
+     * colar) pra decidir se desenha — podendo nunca desenhar o objeto colado
+     * até algum outro repaint "esquentar" essa área por acaso (ex. depois de
+     * recarregar o circuito). Desenha num buffer descartável de 1x1, sem
+     * nenhum efeito visual real.
+     */
+    private void forcarAtualizacaoArea(ObjetoPista objeto) {
+        BufferedImage buffer = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = buffer.createGraphics();
+        try {
+            objeto.desenha(g2d, zoom);
+        } finally {
+            g2d.dispose();
+        }
     }
 
     private static ObjetoPista primeiroSelecionado(FormularioListaObjetos formulario) {
@@ -575,6 +706,15 @@ public class MainPanelEditor extends JPanel {
                 // ponto a ponto (encadeamento de segmentos / par
                 // saída-retorno), como ObjetoLivre — reaproveitam o mesmo modo.
                 desenhandoObjetoLivre = true;
+            } else if (objetoPista instanceof ObjetoPneus) {
+                // "Facilitador de desenho": diferente de GuardRails/Arquibancada,
+                // cada par de cliques gera um ObjetoPneus independente (não um
+                // único objeto acumulando pontos) — o rascunho criado acima não
+                // é usado por este modo, cada par de cliques cria sua própria
+                // instância em clickEditarObjetos().
+                objetoPista = null;
+                desenhandoPneusEmSequencia = true;
+                primeiroCliquePneus = null;
             }
         } catch (Exception e2) {
             e2.printStackTrace();
@@ -1168,6 +1308,27 @@ public class MainPanelEditor extends JPanel {
             }
         });
 
+        // Pré-preenche com o override já salvo (circuito.getAnguloLargada()),
+        // ou com o ângulo calculado a partir da direção local da pista no nó
+        // de largada, se ainda não houver override — só grava um override de
+        // fato quando o usuário mexe no spinner (ChangeListener abaixo),
+        // nunca só por reconstruir esta tela ao trocar de circuito.
+        Double anguloLargadaAtual = circuito != null ? circuito.getAnguloLargada() : null;
+        if (anguloLargadaAtual == null && circuito != null) {
+            anguloLargadaAtual = DesenhoProceduralCircuito.calculaAnguloNaturalLargada(circuito);
+        }
+        double valorInicialAnguloLargada = normalizaAngulo(anguloLargadaAtual != null ? anguloLargadaAtual : 0.0);
+        SpinnerNumberModel modelAnguloLargada = new SpinnerNumberModel(valorInicialAnguloLargada, 0.0, 360.0, 1.0);
+        anguloLargadaSpinner = new JSpinner(modelAnguloLargada);
+        ((JSpinner.DefaultEditor) anguloLargadaSpinner.getEditor()).getTextField().setColumns(5);
+        anguloLargadaSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                circuito.setAnguloLargada((Double) anguloLargadaSpinner.getModel().getValue());
+                repaint();
+            }
+        });
+
         adicionaParTopo(linha0Painel, gbc, 0, colunaLinha0, new JLabel(Lang.msg("nomeCircuito")), nomePistaText);
         adicionaParTopo(linha0Painel, gbc, 0, colunaLinha0, new JLabel(Lang.msg("cicloMsTick")), cicloSpinner);
         adicionaParTopo(linha0Painel, gbc, 0, colunaLinha0, new JLabel(Lang.msg("tempoVoltaEstimado")), tempoVoltaEstimadoLabel);
@@ -1272,6 +1433,7 @@ public class MainPanelEditor extends JPanel {
         adicionaParTopo(linha1Painel, gbc, 0, colunaLinha1, new JLabel(Lang.msg("circuitoAtivo")), ativoCheckBox);
         adicionaParTopo(linha1Painel, gbc, 0, colunaLinha1, new JLabel(Lang.msg("percentualChuva")), probalidadeChuvaText);
         adicionaParTopo(linha1Painel, gbc, 0, colunaLinha1, new JLabel(Lang.msg("largura")), larguraPistaSpinner);
+        adicionaParTopo(linha1Painel, gbc, 0, colunaLinha1, new JLabel(Lang.msg("anguloLargada")), anguloLargadaSpinner);
         adicionaParTopo(linha1Painel, gbc, 0, colunaLinha1, new JLabel(Lang.msg("noite")), noite);
         adicionaParTopo(linha1Painel, gbc, 0, colunaLinha1, new JLabel(Lang.msg("topoFundo")), corFundoLabel);
         adicionaParTopo(linha1Painel, gbc, 0, colunaLinha1, new JLabel(Lang.msg("topoAsfalto")), corAsfaltoLabel);
@@ -2051,7 +2213,122 @@ public class MainPanelEditor extends JPanel {
                     }
                     repaint();
                     return;
+                } else if (posicionaObjetoPista && objetosParaColar != null && !objetosParaColar.isEmpty()) {
+                    ObjetoPista ancora = objetosParaColar.get(0);
+                    Rectangle areaAncora = ancora.obterArea();
+                    Point centroAncora = new Point(areaAncora.x + areaAncora.width / 2,
+                            areaAncora.y + areaAncora.height / 2);
+                    int dx = ultimoClicado.x - centroAncora.x;
+                    int dy = ultimoClicado.y - centroAncora.y;
+                    for (ObjetoPista colado : objetosParaColar) {
+                        List<ObjetoPista> listaAlvoColado;
+                        if (TipoObjetoPista.de(colado).isCenario()) {
+                            if (circuito.getObjetosCenario() == null) {
+                                circuito.setObjetosCenario(new ArrayList<ObjetoPista>());
+                            }
+                            listaAlvoColado = circuito.getObjetosCenario();
+                        } else {
+                            if (circuito.getObjetos() == null) {
+                                circuito.setObjetos(new ArrayList<ObjetoPista>());
+                            }
+                            listaAlvoColado = circuito.getObjetos();
+                        }
+                        Rectangle areaColado = colado.obterArea();
+                        colado.setPosicaoQuina(new Point(areaColado.x + dx, areaColado.y + dy));
+                        forcarAtualizacaoArea(colado);
+                        listaAlvoColado.add(colado);
+                        colado.setNome("Objeto " + listaAlvoColado.size());
+                        reprocessaEscapadaSeNecessario(colado);
+                        recalculaTransparenciaSeNecessario(colado);
+                    }
+                    formularioListaObjetos.listarObjetos();
+                    atualizarPainelFiltroTipos();
+                    autoSalvarComBackup();
+                    repaint();
+                    objetosParaColar = null;
+                    posicionaObjetoPista = false;
+                    return;
+                } else if (posicionaObjetoPista && desenhandoPneusEmSequencia) {
+                    if (SwingUtilities.isRightMouseButton(e)) {
+                        // Encerra a sequência — mesmo padrão de finalização por
+                        // clique direito de GuardRails/Arquibancada.
+                        desenhandoPneusEmSequencia = false;
+                        posicionaObjetoPista = false;
+                        primeiroCliquePneus = null;
+                        repaint();
+                        return;
+                    }
+                    if (primeiroCliquePneus == null) {
+                        primeiroCliquePneus = new Point(ultimoClicado);
+                        repaint();
+                        return;
+                    }
+                    ObjetoPneus novoPneus = new ObjetoPneus();
+                    // Aplica o template lembrado (altura/cores) antes de
+                    // sobrescrever largura/ângulo com os valores derivados
+                    // dos dois cliques — a distância entre eles vira a
+                    // largura (em unidades de grade, 10px cada, mesma
+                    // convenção de ObjetoPneus.desenha()) e o ângulo entre
+                    // eles vira a rotação do objeto; a altura continua vindo
+                    // do template.
+                    MemoriaPropriedadesObjeto.aplicar(novoPneus);
+                    int larguraGrade = Math.max(1,
+                            Util.inteiro(distancia(primeiroCliquePneus, ultimoClicado) / 10.0));
+                    double anguloGraus = GeoUtil.calculaAngulo(primeiroCliquePneus, ultimoClicado, 0);
+                    novoPneus.setLargura(larguraGrade);
+                    novoPneus.setAngulo(anguloGraus);
+                    // ObjetoPneus.desenha() rotaciona a grade em torno do
+                    // PRÓPRIO CENTRO (não em torno da quina) — usar
+                    // primeiroCliquePneus direto como quina só "funcionava"
+                    // pra ângulo 0; em qualquer outro ângulo o bloco girava
+                    // em torno de um centro deslocado e saía da linha dos
+                    // cliques. Em vez disso, calcula a quina de trás pra
+                    // frente: o ponto médio da aresta esquerda (pré-rotação)
+                    // é quem deve cair exatamente em primeiroCliquePneus
+                    // depois de rotacionado — assim o segmento clicado vira
+                    // a linha de centro do bloco pra qualquer ângulo (e, por
+                    // construção, a aresta direita cai exatamente em
+                    // ultimoClicado, já que largura/ângulo vieram desse
+                    // mesmo par de pontos).
+                    double larguraPx = larguraGrade * 10.0;
+                    double alturaPx = novoPneus.getAltura() * 10.0;
+                    double rad = Math.toRadians(anguloGraus);
+                    double centroX = primeiroCliquePneus.x + (larguraPx / 2.0) * Math.cos(rad);
+                    double centroY = primeiroCliquePneus.y + (larguraPx / 2.0) * Math.sin(rad);
+                    novoPneus.setPosicaoQuina(new Point(
+                            Util.inteiro(centroX - larguraPx / 2.0),
+                            Util.inteiro(centroY - alturaPx / 2.0)));
+                    if (circuito.getObjetosCenario() == null) {
+                        circuito.setObjetosCenario(new ArrayList<ObjetoPista>());
+                    }
+                    circuito.getObjetosCenario().add(novoPneus);
+                    novoPneus.setNome("Objeto " + circuito.getObjetosCenario().size());
+                    formularioListaObjetos.listarObjetos();
+                    atualizarPainelFiltroTipos();
+                    autoSalvarComBackup();
+                    repaint();
+                    // A sequência continua como uma corrente contínua (estilo
+                    // reta): o clique que acabou de fechar este objeto já
+                    // vira a ponta pendente do próximo (não reseta pra null),
+                    // então um terceiro clique cria um segundo objeto entre o
+                    // segundo e o terceiro ponto, e assim por diante — só o
+                    // clique direito encerra, sem desfazer os já criados.
+                    primeiroCliquePneus = new Point(ultimoClicado);
+                    return;
                 } else if (posicionaObjetoPista && objetoPista != null) {
+                    // Cópia local: listarObjetos() logo abaixo limpa e repopula o
+                    // DefaultListModel, o que passa por um instante de seleção
+                    // vazia — o ListSelectionListener de FormularioListaObjetos
+                    // reage a isso chamando editor.setObjetoPista(null) (mesmo
+                    // mecanismo documentado em listarObjetos()), zerando o campo
+                    // ANTES do setNome() abaixo rodar. Sem esta cópia local, o
+                    // objeto acabava adicionado ao circuito mas com
+                    // setNome()/reprocessaEscapadaSeNecessario() pulados por
+                    // NullPointerException — objeto "fantasma" sem nome na lista
+                    // (mesmo bug, mesmo mecanismo, que os demais fluxos de
+                    // criação já evitam usando uma variável local em vez do
+                    // campo objetoPista depois de listarObjetos()).
+                    ObjetoPista novoObjeto = objetoPista;
                     List<ObjetoPista> listaAlvo;
                     if (criandoObjetoCenario) {
                         if (circuito.getObjetosCenario() == null) {
@@ -2065,14 +2342,14 @@ public class MainPanelEditor extends JPanel {
                         listaAlvo = circuito.getObjetos();
                     }
                     Point quina = new Point(ultimoClicado);
-                    quina.x -= objetoPista.getLargura() / 2;
-                    quina.y -= objetoPista.getAltura() / 2;
-                    objetoPista.setPosicaoQuina(quina);
-                    listaAlvo.add(objetoPista);
+                    quina.x -= novoObjeto.getLargura() / 2;
+                    quina.y -= novoObjeto.getAltura() / 2;
+                    novoObjeto.setPosicaoQuina(quina);
+                    listaAlvo.add(novoObjeto);
                     formularioListaObjetos.listarObjetos();
                     atualizarPainelFiltroTipos();
-                    objetoPista.setNome("Objeto " + listaAlvo.size());
-                    reprocessaEscapadaSeNecessario(objetoPista);
+                    novoObjeto.setNome("Objeto " + listaAlvo.size());
+                    reprocessaEscapadaSeNecessario(novoObjeto);
                     autoSalvarComBackup();
                     repaint();
                     posicionaObjetoPista = false;
@@ -2335,6 +2612,15 @@ public class MainPanelEditor extends JPanel {
         double dx = a.x - b.x;
         double dy = a.y - b.y;
         return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    /** Normaliza um ângulo em graus (ex.: o retorno de GeoUtil.calculaAngulo, -180 a 180) pra a faixa 0-360 do spinner de ângulo de largada. */
+    private static double normalizaAngulo(double angulo) {
+        double normalizado = angulo % 360;
+        if (normalizado < 0) {
+            normalizado += 360;
+        }
+        return normalizado;
     }
 
     /**
@@ -3097,6 +3383,7 @@ public class MainPanelEditor extends JPanel {
         desenhaPreObjetoGuardRails(g2d);
         desenhaPreObjetoArquibancada(g2d);
         desenhaPreObjetoEscapada(g2d);
+        desenhaPreObjetoPneus(g2d);
         // Níveis positivos por cima, do menor para o maior (mais em cima).
         if (desenharObjetos) {
             for (Integer nivel : niveis) {
@@ -3115,7 +3402,6 @@ public class MainPanelEditor extends JPanel {
         desenhaMarcadoresEdicaoPontos(g2d);
         desenhaMarcadoresEdicaoPontosGuardRails(g2d);
         desenhaMarcadoresEdicaoPontosArquibancada(g2d);
-        desenhaObjetoSelecionadoNoCanvas(g2d);
         desenhaListaObjetos(g2d);
         desenhaPainelClassico(g2d);
         desenhaInfo(g2d);
@@ -3178,33 +3464,39 @@ public class MainPanelEditor extends JPanel {
     }
 
     /**
-     * Contorno ao redor do objeto atualmente "ativo" (o mesmo que as teclas
-     * Z/X, setas e Shift+setas manipulam) — indica visualmente qual objeto
-     * responde aos atalhos de teclado mesmo quando selecionado por clique
-     * direto no canvas, não só pela lista lateral (que já tem seu próprio
-     * indicador em {@link #desenhaListaObjetos}).
+     * Cor do contorno de seleção múltipla (lista única com mais de um item
+     * selecionado, ex. antes de "Copiar Objetos") — distinta do laranja
+     * (SELECAO_UNICA), que fica reservado pra seleção única (é nela, e só
+     * nela, que os atalhos de edição/teclado respondem).
      */
-    private void desenhaObjetoSelecionadoNoCanvas(Graphics2D g2d) {
-        ObjetoPista ativo = objetoPista;
-        if (ativo == null || ativo.getPosicaoQuina() == null) {
+    private static final Color COR_SELECAO_MULTIPLA = Color.CYAN;
+
+    /**
+     * Contorno ao redor de {@code objeto}, acompanhando sua rotação
+     * (ângulo) quando houver — usado tanto pelo indicador de seleção única
+     * no canvas quanto pelos indicadores de seleção (única ou múltipla) da
+     * lista lateral, pra não duplicar a lógica de rotação entre eles.
+     */
+    private void desenhaContornoSelecao(Graphics2D g2d, ObjetoPista objeto, Color cor) {
+        if (objeto == null || objeto.getPosicaoQuina() == null) {
             return;
         }
         // obterAreaVisual() (não obterArea()): pra objetos desenhados por
         // encadeamento de pontos (ex.: ObjetoArquibancada), obterArea() é só
         // o retângulo bruto da centerline, sem a espessura do lance —
         // obterAreaVisual() é quem reflete a forma realmente desenhada.
-        Rectangle area = ativo.obterAreaVisual();
+        Rectangle area = objeto.obterAreaVisual();
         if (area == null) {
             return;
         }
         Stroke strokeAnterior = g2d.getStroke();
         Color corAnterior = g2d.getColor();
-        g2d.setColor(Color.ORANGE);
+        g2d.setColor(cor);
         g2d.setStroke(new BasicStroke(2f));
-        if (ativo.getAngulo() == 0) {
+        if (objeto.getAngulo() == 0) {
             g2d.drawRect(area.x, area.y, area.width, area.height);
         } else {
-            double rad = Math.toRadians(ativo.getAngulo());
+            double rad = Math.toRadians(objeto.getAngulo());
             AffineTransform rotacao = AffineTransform.getRotateInstance(rad, area.getCenterX(), area.getCenterY());
             g2d.draw(rotacao.createTransformedShape(area));
         }
@@ -3212,30 +3504,52 @@ public class MainPanelEditor extends JPanel {
         g2d.setColor(corAnterior);
     }
 
+    /**
+     * Único indicador de seleção do editor — fonte de verdade é sempre a
+     * lista única (a seleção do canvas, por clique direto, já é sincronizada
+     * com a lista em {@code selecionarNasListas()}/{@code FormularioListaObjetos}'s
+     * ListSelectionListener, então não existe mais um "objeto ativo" do
+     * canvas divergente da lista). Cada objeto selecionado ganha etiqueta com
+     * o número e contorno (rotacionado, se o objeto tiver ângulo); a cor do
+     * contorno é laranja pra seleção única (a única em que os atalhos de
+     * teclado editam o objeto) e {@link #COR_SELECAO_MULTIPLA} pra seleção
+     * múltipla.
+     */
     private void desenhaListaObjetos(Graphics2D g2d) {
-        ObjetoPista objetoPista = primeiroSelecionado(formularioListaObjetos);
-        if (objetoPista == null) {
+        List<ObjetoPista> selecionados = todosSelecionados(formularioListaObjetos);
+        if (selecionados.isEmpty()) {
             return;
         }
+        Color cor = selecionados.size() == 1 ? Color.ORANGE : COR_SELECAO_MULTIPLA;
+        for (ObjetoPista objeto : selecionados) {
+            desenhaEtiquetaObjeto(g2d, objeto);
+            desenhaContornoSelecao(g2d, objeto, cor);
+        }
+    }
+
+    private void desenhaEtiquetaObjeto(Graphics2D g2d, ObjetoPista objeto) {
         g2d.setColor(PainelCircuito.lightWhiteRain);
-        Point loc = objetoPista.obterArea().getLocation();
+        Point loc = objeto.obterArea().getLocation();
         loc = new Point((int) (loc.x * zoom), (int) (loc.y * zoom));
         g2d.fillRect(loc.x, loc.y, 22, 12);
         g2d.setColor(Color.BLACK);
-        g2d.drawString(objetoPista.getNome().split(" ")[1], loc.x, loc.y + 10);
-        if (objetoPista.getPosicaoQuina() != null) {
-            // obterAreaVisual() (não largura/altura brutos, nem obterArea()
-            // pra objetos por encadeamento de pontos) — reflete a forma
-            // realmente desenhada; usar os campos brutos desenhava aqui um
-            // retângulo solto, sem relação com o desenho, que crescia/
-            // encolhia sozinho ao alterar largura/altura pelos atalhos de
-            // teclado.
-            Rectangle area = objetoPista.obterAreaVisual();
-            if (area != null) {
-                g2d.setColor(Color.ORANGE);
-                g2d.drawRect(area.x, area.y, area.width, area.height);
-            }
+        g2d.drawString(numeroDaEtiqueta(objeto.getNome()), loc.x, loc.y + 10);
+    }
+
+    /**
+     * "Objeto 42" -> "42". Um objeto sem nome (ex.: legado/corrompido, ver
+     * bug "Objeto 70: null") ou com nome sem espaço (renomeado manualmente
+     * pelo usuário via diálogo, sem seguir o padrão "Objeto N") não deveria
+     * travar TODO o desenho da seleção — antes, {@code nome.split(" ")[1]}
+     * lançava NullPointerException/ArrayIndexOutOfBoundsException a cada
+     * repaint enquanto esse objeto estivesse selecionado.
+     */
+    private static String numeroDaEtiqueta(String nome) {
+        if (nome == null) {
+            return "?";
         }
+        String[] partes = nome.split(" ");
+        return partes.length > 1 ? partes[1] : "?";
     }
 
     private void desenhaInfo(Graphics2D g2d) {
@@ -3533,6 +3847,26 @@ public class MainPanelEditor extends JPanel {
             ant = p;
         }
         g2d.setStroke(strokeAnterior);
+        g2d.setColor(corAnterior);
+    }
+
+    /**
+     * Preview do facilitador de pares de cliques de Pneus: marca em magenta
+     * o clique pendente (a ponta da corrente aguardando o próximo clique pra
+     * fechar o próximo objeto) — mesmo estilo (cor, raio) dos demais
+     * preview de objeto em criação, mas só um ponto (não uma lista de
+     * pontos), já que este modo não acumula pontos num objeto só.
+     */
+    private void desenhaPreObjetoPneus(Graphics2D g2d) {
+        if (!desenhandoPneusEmSequencia || primeiroCliquePneus == null) {
+            return;
+        }
+        Color corAnterior = g2d.getColor();
+        g2d.setColor(Color.MAGENTA);
+        int raioPonto = 6;
+        int px = Util.inteiro(primeiroCliquePneus.x * zoom);
+        int py = Util.inteiro(primeiroCliquePneus.y * zoom);
+        g2d.fillOval(px - raioPonto, py - raioPonto, raioPonto * 2, raioPonto * 2);
         g2d.setColor(corAnterior);
     }
 
@@ -4255,27 +4589,36 @@ public class MainPanelEditor extends JPanel {
         return buttonsPanel1;
     }
 
-    public void centralizarPonto(Point pin) {
-        final Point p = new Point((int) (pin.x * zoom) - (scrollPane.getViewport().getWidth() / 2),
-                (int) (pin.y * zoom) - (scrollPane.getViewport().getHeight() / 2));
-        if (p.x < 0) {
-            p.x = 1;
-        }
-        double maxX = ((getWidth() * zoom) - scrollPane.getViewport().getWidth());
-        if (p.x > maxX) {
-            p.x = Util.inteiro(maxX) - 1;
-        }
-        if (p.y < 0) {
-            p.y = 1;
-        }
-        double maxY = ((getHeight() * zoom) - (scrollPane.getViewport().getHeight()));
-        if (p.y > maxY) {
-            p.y = Util.inteiro(maxY) - 1;
-        }
-
+    public void centralizarPonto(final Point pin) {
+        // O tamanho do viewport (usado pra calcular o offset de centralização
+        // abaixo) só reflete a janela maximizada depois que o pedido de
+        // setExtendedState(MAXIMIZED_BOTH) — feito pelo chamador, ex.
+        // aplicarCircuitoCarregadoNaUI() — é processado pelo window manager,
+        // o que é assíncrono. Calcular usando esse tamanho synchronamente
+        // aqui (antes do invokeLater) podia pegar o tamanho antigo (o do
+        // pack() ainda não maximizado), descentralizando o primeiro
+        // carregamento de um circuito. Adiar TODO o cálculo pra dentro do
+        // invokeLater (não só o setViewPosition) garante que o tamanho lido
+        // já reflita o layout mais recente.
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                Point p = new Point((int) (pin.x * zoom) - (scrollPane.getViewport().getWidth() / 2),
+                        (int) (pin.y * zoom) - (scrollPane.getViewport().getHeight() / 2));
+                if (p.x < 0) {
+                    p.x = 1;
+                }
+                double maxX = ((getWidth() * zoom) - scrollPane.getViewport().getWidth());
+                if (p.x > maxX) {
+                    p.x = Util.inteiro(maxX) - 1;
+                }
+                if (p.y < 0) {
+                    p.y = 1;
+                }
+                double maxY = ((getHeight() * zoom) - (scrollPane.getViewport().getHeight()));
+                if (p.y > maxY) {
+                    p.y = Util.inteiro(maxY) - 1;
+                }
                 repaint();
                 scrollPane.getViewport().setViewPosition(p);
             }
@@ -4532,6 +4875,15 @@ public class MainPanelEditor extends JPanel {
             dst.setIndiceSaida(src.getIndiceSaida());
             dst.gerar();
         }
+        if (origem instanceof ObjetoTransparencia) {
+            ObjetoTransparencia src = (ObjetoTransparencia) origem;
+            ObjetoTransparencia dst = (ObjetoTransparencia) objetoPistaNovo;
+            dst.setPontos(new ArrayList<Point>());
+            for (Point point : src.getPontos()) {
+                dst.getPontos().add(new Point(point.x, point.y));
+            }
+            dst.gerar();
+        }
         return objetoPistaNovo;
     }
 
@@ -4585,6 +4937,22 @@ public class MainPanelEditor extends JPanel {
                 objetoPistaNovo.setNome("Objeto " + listaAlvo.size());
                 formularioListaObjetos.listarObjetos();
                 atualizarPainelFiltroTipos();
+                // A cópia vira o objeto ativo do canvas (não o original) —
+                // Alt+Setas/PageUp/PageDown/Delete já atuam nela na
+                // sequência, sem exigir um clique extra pra selecioná-la
+                // primeiro (útil pra "abrir um leque" de cópias repetindo
+                // Alt+C, Alt+Seta, Alt+C, Alt+Seta...). selecionarNasListas()
+                // sincroniza a lista sem centralizar (a cópia nasce em cima
+                // do original, já visível) e requestFocus() garante que o
+                // KeyListener de atalhos (ligado ao JFrame, ver
+                // EditorCircuitos.ativarKeysEditor()) continue recebendo as
+                // teclas depois desta ação, sem depender do mouse ainda
+                // estar sobre o canvas (ver mouseEntered).
+                objetoPista = objetoPistaNovo;
+                selecionarNasListas(objetoPistaNovo);
+                if (srcFrame != null) {
+                    srcFrame.requestFocus();
+                }
                 autoSalvarComBackup();
 
             } catch (Exception e) {

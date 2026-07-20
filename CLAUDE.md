@@ -10,6 +10,12 @@ Concretamente: não rode `git checkout --`, `git restore`, `git reset --hard`/`-
 
 Esta diretiva existe porque, numa sessão anterior, `circuitos.properties` foi revertido repetidas vezes via `git checkout` por engano — presumindo (sem confirmar) que fosse efeito colateral de teste — quando na verdade era o usuário salvando de verdade o campo "Ativo" de um circuito no editor rodando em paralelo. O salvamento real do usuário foi desfeito várias vezes sem que ele soubesse.
 
+## IMPORTANTE: manter o binário atualizado após qualquer alteração
+
+Sempre que uma alteração em código Java (`src/main/java/...`) for feita nesta sessão, rode `mvn clean package -Ph2 -DskipTests` (gera `target/flmane.jar`) antes de considerar a tarefa concluída ou de pedir para o usuário testar manualmente. `mvn test`/`mvn compile` sozinhos recompilam as classes, mas **não** atualizam o jar que o usuário efetivamente roda (`java -cp target/flmane.jar br.flmane.editor.EditorCircuitos` ou o atalho "FlMane") — testar contra um jar desatualizado é a causa mais provável de "corrigi isso e continua acontecendo" quando o código-fonte já está correto.
+
+Esta diretiva existe porque, numa sessão anterior, uma correção de bug foi validada só por testes automatizados (que recompilam a partir do source) e o usuário reportou que o problema "ainda" acontecia ao testar manualmente — boa parte da investigação subsequente foi gasta descartando hipóteses de bug no código antes de considerar que o jar testado podia estar desatualizado.
+
 ## Build & Run
 
 ```bash

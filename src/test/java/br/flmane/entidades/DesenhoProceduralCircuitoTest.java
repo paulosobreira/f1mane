@@ -2,6 +2,9 @@ package br.flmane.entidades;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
@@ -94,7 +97,11 @@ class DesenhoProceduralCircuitoTest {
         BufferedImage imagem = DesenhoProceduralCircuito.geraImagem(circuito);
 
         assertEquals(fundo.getRGB(), imagem.getRGB(0, 0));
-        assertEquals(asfalto.getRGB(), imagem.getRGB(1500, 1000));
+        // (1500,1000) era o meio exato do segmento reto (1000,1000)-(2000,1000)
+        // com o traçado antigo (linha reta); com a suavização do traçado
+        // (melhorar-desenho-pista-zebra), a curva desse trecho passa perto de
+        // (1500,875) — ver DesenhoProceduralCircuito.construirCaminhoSuavizado.
+        assertEquals(asfalto.getRGB(), imagem.getRGB(1500, 875));
     }
 
     // ---- níveis de desenho em relação à pista ----
@@ -129,7 +136,12 @@ class DesenhoProceduralCircuitoTest {
 
         BufferedImage imagem = DesenhoProceduralCircuito.geraImagem(circuito);
 
-        assertEquals(circuito.getCorAsfalto().getRGB(), imagem.getRGB(1500, 1000),
+        // (1500,1000) era o meio exato do segmento reto da pista com o
+        // traçado antigo (linha reta); com a suavização do traçado
+        // (melhorar-desenho-pista-zebra) esse trecho passa mais perto de
+        // (1500,875)-(1500,940) — (1500,920) continua dentro do quadrado do
+        // objeto (900-1100 em y) e sob o asfalto suavizado.
+        assertEquals(circuito.getCorAsfalto().getRGB(), imagem.getRGB(1500, 920),
                 "objeto no nível -1 deveria ficar coberto pelo asfalto");
         assertTrue(imagemContemCor(imagem, corObjeto),
                 "as partes do objeto fora da pista continuam visíveis");
@@ -326,7 +338,11 @@ class DesenhoProceduralCircuitoTest {
             g2d.dispose();
         }
 
-        assertEquals(Color.WHITE.getRGB(), imagem.getRGB(2350, 2370),
+        // (2350,2370) era um ponto dentro da borda branca do traçado reto
+        // antigo do box; com a suavização do traçado (melhorar-desenho-pista-zebra)
+        // o trecho do box nessa região passa um pouco mais abaixo — (2235,2405)
+        // continua dentro da borda branca, longe da linha cinza central e da pista.
+        assertEquals(Color.WHITE.getRGB(), imagem.getRGB(2235, 2405),
                 "esperava borda branca do box no trecho livre, fora da linha cinza central e longe da pista");
     }
 
@@ -530,6 +546,80 @@ class DesenhoProceduralCircuitoTest {
                 }
             }
         }
+    }
+
+    @Test
+    void calculaAnguloNaturalLargada_semNoDeLargada_retornaNull() {
+        Circuito circuito = circuitoDeTeste();
+        assertNull(DesenhoProceduralCircuito.calculaAnguloNaturalLargada(circuito));
+    }
+
+    @Test
+    void calculaAnguloNaturalLargada_comNoDeLargada_calculaDirecaoLocalDaPista() {
+        Circuito circuito = circuitoComLargada();
+        Double angulo = DesenhoProceduralCircuito.calculaAnguloNaturalLargada(circuito);
+        assertNotNull(angulo);
+        // Largada em (1000,1000) seguida de reta até (2000,1000): a pista
+        // segue na direção +X ali, direção local deveria ser ~0°.
+        assertEquals(0.0, angulo, 1.0);
+    }
+
+    /**
+     * Regressão: circuito.getAnguloLargada() (editável no editor de
+     * circuitos) precisa sobrepor o ângulo calculado a partir da direção
+     * local da pista quando definido — sem comparar geometria exata (função
+     * de várias constantes internas), confirma que o desenho muda de fato
+     * quando o override é diferente do ângulo natural.
+     */
+    @Test
+    void desenhaLinhaDeLargada_comOverrideDeAngulo_mudaAOrientacaoDoDesenho() {
+        Circuito semOverride = circuitoComLargada();
+        Circuito comOverride = circuitoComLargada();
+        comOverride.setAnguloLargada(90.0);
+
+        BufferedImage imagemSemOverride = renderizaLinhaDeLargada(semOverride);
+        BufferedImage imagemComOverride = renderizaLinhaDeLargada(comOverride);
+
+        assertFalse(imagensIguais(imagemSemOverride, imagemComOverride),
+                "override de ângulo diferente do natural deveria mudar a orientação do desenho da linha de largada");
+    }
+
+    @Test
+    void desenhaLinhaDeLargada_semOverride_usaOAnguloCalculado() {
+        Circuito semOverride = circuitoComLargada();
+        Circuito comOverrideIgualAoNatural = circuitoComLargada();
+        comOverrideIgualAoNatural.setAnguloLargada(
+                DesenhoProceduralCircuito.calculaAnguloNaturalLargada(semOverride));
+
+        BufferedImage imagemSemOverride = renderizaLinhaDeLargada(semOverride);
+        BufferedImage imagemComOverrideIgual = renderizaLinhaDeLargada(comOverrideIgualAoNatural);
+
+        assertTrue(imagensIguais(imagemSemOverride, imagemComOverrideIgual),
+                "sem override, o desenho deveria já corresponder ao ângulo calculado (mesmo resultado de um override igual a ele)");
+    }
+
+    private static BufferedImage renderizaLinhaDeLargada(Circuito circuito) {
+        BufferedImage imagem = new BufferedImage(3000, 3000, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = imagem.createGraphics();
+        try {
+            g2d.setColor(new Color(128, 128, 128));
+            g2d.fillRect(0, 0, imagem.getWidth(), imagem.getHeight());
+            DesenhoProceduralCircuito.desenhaLinhaDeLargada(g2d, circuito, 1.0);
+        } finally {
+            g2d.dispose();
+        }
+        return imagem;
+    }
+
+    private static boolean imagensIguais(BufferedImage a, BufferedImage b) {
+        for (int y = 0; y < a.getHeight(); y++) {
+            for (int x = 0; x < a.getWidth(); x++) {
+                if (a.getRGB(x, y) != b.getRGB(x, y)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /** Varre a imagem inteira procurando um pixel com exatamente essa cor (RGB, ignora alpha). */

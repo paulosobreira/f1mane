@@ -99,15 +99,28 @@ class MainPanelEditorTopoNavegacaoTest {
         JPanel linha0 = (JPanel) topo.getComponent(0);
         JPanel linha1 = (JPanel) topo.getComponent(1);
 
-        // Ciclo (spinner inteiro) fica na linha 0; o spinner de largura da
-        // pista (double) é o único spinner que deveria estar na linha 1.
+        // Ciclo (spinner inteiro) fica na linha 0; largura da pista e ângulo
+        // da largada (ambos double) são os dois spinners da linha 1.
         List<JSpinner> spinnersLinha1 = todosOsComponentesDoTipo(linha1, JSpinner.class);
-        assertEquals(1, spinnersLinha1.size());
-        JSpinner larguraSpinner = spinnersLinha1.get(0);
-        assertInstanceOf(JSpinner.DefaultEditor.class, larguraSpinner.getEditor());
-        assertTrue(((JSpinner.DefaultEditor) larguraSpinner.getEditor()).getTextField().getColumns() >= 5,
-                "spinner de largura precisa de largura mínima pra não cortar o valor exibido");
+        assertEquals(2, spinnersLinha1.size());
+        for (JSpinner spinner : spinnersLinha1) {
+            assertInstanceOf(JSpinner.DefaultEditor.class, spinner.getEditor());
+            assertTrue(((JSpinner.DefaultEditor) spinner.getEditor()).getTextField().getColumns() >= 5,
+                    "spinners da linha 1 precisam de largura mínima pra não cortar o valor exibido");
+        }
         assertEquals(1, todosOsComponentesDoTipo(linha0, JSpinner.class).size(), "linha 0 só deveria ter o spinner de ciclo");
+    }
+
+    @Test
+    void anguloLargadaSpinner_temFaixaDeZeroA360() throws Exception {
+        JPanel topo = gerarTopo();
+        JPanel linha1 = (JPanel) topo.getComponent(1);
+
+        List<JSpinner> spinnersLinha1 = todosOsComponentesDoTipo(linha1, JSpinner.class);
+        JSpinner anguloSpinner = spinnersLinha1.get(1);
+        javax.swing.SpinnerNumberModel model = (javax.swing.SpinnerNumberModel) anguloSpinner.getModel();
+        assertEquals(0.0, ((Number) model.getMinimum()).doubleValue());
+        assertEquals(360.0, ((Number) model.getMaximum()).doubleValue());
     }
 
     @Test

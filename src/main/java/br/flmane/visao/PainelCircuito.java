@@ -5313,143 +5313,28 @@ public class PainelCircuito {
         this.desenhaInfo = desenhaPosVelo;
     }
 
+    /**
+     * Traçado suavizado (Catmull-Rom centrípeta) e continuidade de zebra
+     * compartilhados com a geração de imagem em memória da corrida — ver
+     * {@code DesenhoProceduralCircuito.desenhaPista}/{@code desenhaTintaPistaEZebra}/
+     * {@code desenhaPistaBox}/{@code desenhaTintaPistaBox}, que recebem
+     * {@link #descontoCentraliza} pra desenhar corretamente sobre o
+     * viewport com scroll/zoom do editor.
+     */
     private void desenhaPista(Graphics2D g2d) {
-        No oldNo = null;
-        g2d.setColor(Color.LIGHT_GRAY);
-        Stroke stroke = g2d.getStroke();
-        g2d.setStroke(pista);
-        for (Iterator iter = circuito.getPistaKey().iterator(); iter.hasNext(); ) {
-            No no = (No) iter.next();
-            if (oldNo != null) {
-                g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
-                        Util.inteiro((oldNo.getY() - descontoCentraliza.y) * zoom),
-                        Util.inteiro((no.getX() - descontoCentraliza.x) * zoom),
-                        Util.inteiro((no.getY() - descontoCentraliza.y) * zoom));
-
-            }
-            oldNo = no;
-        }
-
-        No noFinal = (No) circuito.getPistaKey().get(0);
-        g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
-                Util.inteiro((oldNo.getY() - descontoCentraliza.y) * zoom),
-                Util.inteiro((noFinal.getX() - descontoCentraliza.x) * zoom),
-                Util.inteiro((noFinal.getY() - descontoCentraliza.y) * zoom));
-        g2d.setStroke(stroke);
+        DesenhoProceduralCircuito.desenhaPista(g2d, circuito, zoom, descontoCentraliza, pista);
     }
 
-    /**
-     * @param fechado true fecha o caminho de volta ao primeiro nó (caso da
-     *                pista, que é um loop); false deixa o caminho aberto,
-     *                do primeiro ao último nó só (caso do box, que é um
-     *                trajeto de entrada até a saída, não um loop).
-     */
-    private GeneralPath construirCaminho(List<No> nos, boolean fechado) {
-        GeneralPath caminho = new GeneralPath();
-        No oldNo = null;
-        for (No no : nos) {
-            int x = Util.inteiro((no.getX() - descontoCentraliza.x) * zoom);
-            int y = Util.inteiro((no.getY() - descontoCentraliza.y) * zoom);
-            if (oldNo == null) {
-                caminho.moveTo(x, y);
-            } else {
-                caminho.lineTo(x, y);
-            }
-            oldNo = no;
-        }
-        if (fechado) {
-            No noInicial = nos.get(0);
-            caminho.lineTo(Util.inteiro((noInicial.getX() - descontoCentraliza.x) * zoom),
-                    Util.inteiro((noInicial.getY() - descontoCentraliza.y) * zoom));
-        }
-        return caminho;
-    }
-
-    /**
-     * Borda branca ao longo do traçado do box, no mesmo espírito de
-     * desenhaTintaPistaZebra() pintar a borda da pista — mas, diferente
-     * dela, suprimida (via Area.subtract) nos trechos em que a borda do box
-     * cairia dentro da área já pintada pelo traçado da pista, pra não
-     * desenhar branco por cima do asfalto/zebra da pista.
-     */
     private void desenhaTintaPistaBox(Graphics2D g2d) {
-        Shape formaPista = pista.createStrokedShape(construirCaminho(circuito.getPistaKey(), true));
-        Shape formaBordaBox = boxBorda.createStrokedShape(construirCaminho(circuito.getBoxKey(), false));
-
-        Area areaBorda = new Area(formaBordaBox);
-        areaBorda.subtract(new Area(formaPista));
-
-        g2d.setColor(Color.WHITE);
-        g2d.fill(areaBorda);
+        DesenhoProceduralCircuito.desenhaTintaPistaBox(g2d, circuito, zoom, descontoCentraliza, pista, boxBorda);
     }
 
     private void desenhaPistaBox(Graphics2D g2d) {
-        g2d.setColor(Color.LIGHT_GRAY);
-        Stroke stroke = g2d.getStroke();
-        g2d.setStroke(box);
-        No oldNo = null;
-        for (Iterator iter = circuito.getBoxKey().iterator(); iter.hasNext(); ) {
-            No no = (No) iter.next();
-            if (oldNo != null) {
-                g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
-                        Util.inteiro((oldNo.getY() - descontoCentraliza.y) * zoom),
-                        Util.inteiro((no.getX() - descontoCentraliza.x) * zoom),
-                        Util.inteiro((no.getY() - descontoCentraliza.y) * zoom));
-
-            }
-            oldNo = no;
-        }
-        No noFinal = (No) circuito.getBoxKey().get(circuito.getBoxKey().size() - 1);
-
-        g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
-                Util.inteiro((oldNo.getY() - descontoCentraliza.y) * zoom),
-                Util.inteiro((noFinal.getX() - descontoCentraliza.x) * zoom),
-                Util.inteiro((noFinal.getY() - descontoCentraliza.y) * zoom));
-        g2d.setStroke(stroke);
+        DesenhoProceduralCircuito.desenhaPistaBox(g2d, circuito, zoom, descontoCentraliza, box);
     }
 
     private void desenhaTintaPistaZebra(Graphics2D g2d) {
-        // As cores customizadas valem só para a faixa de zebra das curvas —
-        // corZebra1 como fundo sólido e corZebra2 como listras — cada uma com
-        // seu próprio fallback (branco/vermelho). A tinta de borda no resto
-        // da pista é sempre branca, independente das cores customizadas.
-        Color corZebra1 = circuito.getCorZebra1() != null ? circuito.getCorZebra1() : Color.WHITE;
-        Color corZebra2 = circuito.getCorZebra2() != null ? circuito.getCorZebra2() : Color.RED;
-        g2d.setColor(Color.WHITE);
-        Stroke stroke = g2d.getStroke();
-        g2d.setStroke(pistaTinta);
-
-        No oldNo = null;
-        int cont = 0;
-        for (Iterator iter = circuito.getPistaKey().iterator(); iter.hasNext(); ) {
-            No no = (No) iter.next();
-            if (oldNo != null) {
-                boolean curva = No.CURVA_ALTA.equals(oldNo.getTipo()) || No.CURVA_BAIXA.equals(oldNo.getTipo());
-                g2d.setColor(curva ? corZebra1 : Color.WHITE);
-                g2d.setStroke(pistaTinta);
-                g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
-                        Util.inteiro((oldNo.getY() - descontoCentraliza.y) * zoom),
-                        Util.inteiro((no.getX() - descontoCentraliza.x) * zoom),
-                        Util.inteiro((no.getY() - descontoCentraliza.y) * zoom));
-                if (curva) {
-                    g2d.setColor(corZebra2);
-                    g2d.setStroke(zebra);
-                    g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
-                            Util.inteiro((oldNo.getY() - descontoCentraliza.y) * zoom),
-                            Util.inteiro((no.getX() - descontoCentraliza.x) * zoom),
-                            Util.inteiro((no.getY() - descontoCentraliza.y) * zoom));
-                }
-            }
-            oldNo = no;
-        }
-        No noFinal = (No) circuito.getPistaKey().get(0);
-        g2d.setColor(Color.WHITE);
-        g2d.setStroke(pistaTinta);
-        g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
-                Util.inteiro((oldNo.getY() - descontoCentraliza.y) * zoom),
-                Util.inteiro((noFinal.getX() - descontoCentraliza.x) * zoom),
-                Util.inteiro((noFinal.getY() - descontoCentraliza.y) * zoom));
-        g2d.setStroke(stroke);
+        DesenhoProceduralCircuito.desenhaTintaPistaEZebra(g2d, circuito, zoom, descontoCentraliza, pistaTinta, zebra);
     }
 
     private void desenhaBoxes(Graphics2D g2d) {

@@ -14,6 +14,7 @@ class MainPanelEditorTestDouble extends MainPanelEditor {
     private int alertasPontoEscapadaInvalido = 0;
     private int alertasEscapadaIncompleta = 0;
     private int alertasDistanciaNaoInformada = 0;
+    private int avisosClicarParaColarObjetos = 0;
 
     @Override
     protected void alertaPontoEscapadaInvalido() {
@@ -40,5 +41,14 @@ class MainPanelEditorTestDouble extends MainPanelEditor {
 
     int getAlertasDistanciaNaoInformada() {
         return alertasDistanciaNaoInformada;
+    }
+
+    @Override
+    protected void avisarClicarParaColarObjetos() {
+        avisosClicarParaColarObjetos++;
+    }
+
+    int getAvisosClicarParaColarObjetos() {
+        return avisosClicarParaColarObjetos;
     }
 }

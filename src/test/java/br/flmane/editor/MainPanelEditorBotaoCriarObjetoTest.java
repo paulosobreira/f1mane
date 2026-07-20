@@ -15,9 +15,10 @@ import org.junit.jupiter.api.Test;
 import br.flmane.recursos.idiomas.Lang;
 
 /**
- * gerarBotaoCriarObjeto(): botões Criar Objeto/Copiar Cor/Colar Cor seguidos
- * da legenda dos atalhos de teclado de objeto (Insert/Delete/Page Up/Page
- * Down) — mesmos atalhos ativados em EditorCircuitos.ativarKeysEditor().
+ * gerarBotaoCriarObjeto(): botões Criar Objeto/Copiar Cor/Colar Cor/Copiar
+ * Objetos/Colar Objetos seguidos da legenda dos atalhos de teclado de objeto
+ * (Insert/Delete/Page Up/Page Down) — mesmos atalhos ativados em
+ * EditorCircuitos.ativarKeysEditor().
  */
 class MainPanelEditorBotaoCriarObjetoTest {
 
@@ -29,26 +30,30 @@ class MainPanelEditorBotaoCriarObjetoTest {
     }
 
     @Test
-    void painel_temTresBotoesMaisQuatroLinhasDeLegenda() throws Exception {
+    void painel_temCincoBotoesMaisQuatroLinhasDeLegenda() throws Exception {
         JPanel painel = gerarPainel();
 
         assertInstanceOf(GridLayout.class, painel.getLayout());
         GridLayout layout = (GridLayout) painel.getLayout();
         assertEquals(1, layout.getColumns());
-        assertEquals(3, layout.getRows());
-        assertEquals(3, painel.getComponentCount());
+        assertEquals(5, layout.getRows());
+        assertEquals(5, painel.getComponentCount());
     }
 
     @Test
-    void primeirosTresComponentes_saoOsBotoesDeObjetoECor() throws Exception {
+    void primeirosCincoComponentes_saoOsBotoesDeObjetoCorECopiarColarObjetos() throws Exception {
         JPanel painel = gerarPainel();
 
         assertInstanceOf(JButton.class, painel.getComponent(0));
         assertInstanceOf(JButton.class, painel.getComponent(1));
         assertInstanceOf(JButton.class, painel.getComponent(2));
+        assertInstanceOf(JButton.class, painel.getComponent(3));
+        assertInstanceOf(JButton.class, painel.getComponent(4));
         assertEquals(Lang.msg("criarObjeto"), ((JButton) painel.getComponent(0)).getText());
         assertEquals(Lang.msg("copiarCor"), ((JButton) painel.getComponent(1)).getText());
         assertEquals(Lang.msg("colarCor"), ((JButton) painel.getComponent(2)).getText());
+        assertEquals(Lang.msg("copiarObjetos"), ((JButton) painel.getComponent(3)).getText());
+        assertEquals(Lang.msg("colarObjetos"), ((JButton) painel.getComponent(4)).getText());
     }
 
 }
