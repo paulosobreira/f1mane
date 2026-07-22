@@ -1,5 +1,7 @@
 # Fl-MANE
 
+[English](README.md) | [Português (Brasil)](README.pt-BR.md)
+
 **Fl-MANE (Formula livre Manager & Engineer)** is a Formula 1 racing management and engineering simulation game developed by **Paulo Sobreira**.
 
 You take the roles of **Team Principal** and **Race Engineer** simultaneously — configuring the car before the race, issuing real-time commands to your driver, and reacting to dynamic race events like weather changes, accidents, and safety car periods.

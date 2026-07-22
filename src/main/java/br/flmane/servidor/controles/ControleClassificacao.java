@@ -1,7 +1,6 @@
 package br.flmane.servidor.controles;
 
 import br.flmane.entidades.Piloto;
-import br.flmane.recursos.CarregadorRecursos;
 import br.flmane.recursos.idiomas.Lang;
 import br.flmane.servidor.entidades.TOs.*;
 import br.flmane.servidor.entidades.persistencia.CampeonatoSrv;
@@ -20,23 +19,15 @@ import java.util.*;
 public class ControleClassificacao {
     private final ControlePersistencia controlePersistencia;
     private final ControleCampeonatoServidor controleCampeonatoServidor;
-    private final CarregadorRecursos carregadorRecursos;
 
     /**
      * @param controlePersistencia
      */
     public ControleClassificacao(ControlePersistencia controlePersistencia,
                                  ControleCampeonatoServidor controleCampeonatoServidor) {
-        this(controlePersistencia, controleCampeonatoServidor, CarregadorRecursos.getCarregadorRecursos(false));
-    }
-
-    ControleClassificacao(ControlePersistencia controlePersistencia,
-                          ControleCampeonatoServidor controleCampeonatoServidor,
-                          CarregadorRecursos carregadorRecursos) {
         super();
         this.controlePersistencia = controlePersistencia;
         this.controleCampeonatoServidor = controleCampeonatoServidor;
-        this.carregadorRecursos = carregadorRecursos;
     }
 
     public List obterListaClassificacao(Integer ano) {
@@ -369,38 +360,6 @@ public class ControleClassificacao {
                 return new MsgSrv(Lang.msg("erroAtualizarCarreira"));
             }
 
-            if (carreiraDados.getTemporadaCapaceteLivery() != null && carreiraDados.getIdCapaceteLivery() != null) {
-                List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
-                        .get("t" + carreiraDados.getTemporadaCapaceteLivery());
-                for (Iterator iterator = list.iterator(); iterator.hasNext(); ) {
-                    Piloto piloto = (Piloto) iterator.next();
-                    Logger.logar(
-                            piloto.getNome() + " " + piloto.getHabilidadeReal() + " " + carreiraDados.getPtsPiloto());
-                    if (piloto.getId() == carreiraDados.getIdCapaceteLivery().intValue()
-                            && piloto.getHabilidadeReal() > carreiraDados.getPtsPiloto()) {
-                        return new MsgSrv(Lang.msg("pinturaCapacete",
-                                new String[]{String.valueOf(piloto.getHabilidadeReal())}));
-                    }
-                }
-            }
-
-            if (carreiraDados.getTemporadaCarroLivery() != null && carreiraDados.getIdCarroLivery() != null) {
-                List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
-                        .get("t" + carreiraDados.getTemporadaCarroLivery());
-                for (Iterator iterator = list.iterator(); iterator.hasNext(); ) {
-                    Piloto piloto = (Piloto) iterator.next();
-                    if (piloto.getCarro().getId() == carreiraDados.getIdCarroLivery().intValue()
-                            && (piloto.getCarro().getPotenciaReal() > carreiraDados.getPtsCarro()
-                            || piloto.getCarro().getAerodinamica() > carreiraDados.getPtsAerodinamica()
-                            || piloto.getCarro().getFreios() > carreiraDados.getPtsFreio())) {
-                        return new MsgSrv(Lang.msg("pinturaCarro",
-                                new String[]{String.valueOf(piloto.getCarro().getPotenciaReal()),
-                                        String.valueOf(piloto.getCarro().getAerodinamica()),
-                                        String.valueOf(piloto.getCarro().getFreios())}));
-                    }
-                }
-            }
-
             carreiraDadosSrv.setPtsConstrutores(validadeDistribucaoPontos);
             carreiraDadosSrv.setPtsCarro(carreiraDados.getPtsCarro());
             carreiraDadosSrv.setPtsPiloto(carreiraDados.getPtsPiloto());
@@ -413,10 +372,6 @@ public class ControleClassificacao {
             carreiraDadosSrv.setC2R(carreiraDados.getC2R());
             carreiraDadosSrv.setC2G(carreiraDados.getC2G());
             carreiraDadosSrv.setC2B(carreiraDados.getC2B());
-            carreiraDadosSrv.setIdCarroLivery(carreiraDados.getIdCarroLivery());
-            carreiraDadosSrv.setIdCapaceteLivery(carreiraDados.getIdCapaceteLivery());
-            carreiraDadosSrv.setTemporadaCapaceteLivery(carreiraDados.getTemporadaCapaceteLivery());
-            carreiraDadosSrv.setTemporadaCarroLivery(carreiraDados.getTemporadaCarroLivery());
 
             controlePersistencia.gravarDados(session, carreiraDadosSrv);
         } catch (Exception e) {
@@ -593,27 +548,10 @@ public class ControleClassificacao {
         piloto.getCarro().setPotencia(carreiraDadosSrv.getPtsCarro());
         piloto.getCarro().setCor1(carreiraDadosSrv.geraCor1());
         piloto.getCarro().setCor2(carreiraDadosSrv.geraCor2());
-        if (carreiraDadosSrv.getTemporadaCapaceteLivery() != null) {
-            piloto.setTemporadaCapaceteLivery(carreiraDadosSrv.getTemporadaCapaceteLivery().toString());
-        } else {
-            piloto.setTemporadaCapaceteLivery(Util.rgb2hex(carreiraDadosSrv.geraCor1()));
-
-        }
-        if (carreiraDadosSrv.getTemporadaCarroLivery() != null) {
-            piloto.setTemporadaCarroLivery(carreiraDadosSrv.getTemporadaCarroLivery().toString());
-        } else {
-            piloto.setTemporadaCarroLivery(Util.rgb2hex(carreiraDadosSrv.geraCor1()));
-        }
-        if (carreiraDadosSrv.getIdCarroLivery() != null) {
-            piloto.setIdCarroLivery(carreiraDadosSrv.getIdCarroLivery().toString());
-        } else {
-            piloto.setIdCarroLivery(Util.rgb2hex(carreiraDadosSrv.geraCor2()));
-        }
-        if (carreiraDadosSrv.getIdCapaceteLivery() != null) {
-            piloto.setIdCapaceteLivery(carreiraDadosSrv.getIdCapaceteLivery().toString());
-        } else {
-            piloto.setIdCapaceteLivery(Util.rgb2hex(carreiraDadosSrv.geraCor2()));
-        }
+        piloto.setTemporadaCapaceteLivery(Util.rgb2hex(carreiraDadosSrv.geraCor1()));
+        piloto.setTemporadaCarroLivery(Util.rgb2hex(carreiraDadosSrv.geraCor1()));
+        piloto.setIdCarroLivery(Util.rgb2hex(carreiraDadosSrv.geraCor2()));
+        piloto.setIdCapaceteLivery(Util.rgb2hex(carreiraDadosSrv.geraCor2()));
         return true;
     }
 

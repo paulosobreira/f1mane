@@ -455,22 +455,6 @@ public class ControleCampeonatoServidor {
 
         campeonatoTO.setIdPiloto(Util.rgb2hex(carreiraDados.geraCor2()));
 
-        if (carreiraDados.getIdCapaceteLivery() != null
-                && carreiraDados.getTemporadaCapaceteLivery() != null) {
-            campeonatoTO.setTemporadaCapacete(
-                    carreiraDados.getTemporadaCapaceteLivery().toString());
-            campeonatoTO.setIdPiloto(
-                    carreiraDados.getIdCapaceteLivery().toString());
-        }
-
-        if (carreiraDados.getIdCarroLivery() != null
-                && carreiraDados.getTemporadaCarroLivery() != null) {
-            campeonatoTO.setTemporadaCarro(
-                    carreiraDados.getTemporadaCarroLivery().toString());
-            campeonatoTO
-                    .setIdCarro(carreiraDados.getIdCarroLivery().toString());
-        }
-
         campeonatoTO.setCarroPiloto(carreiraDados.getNomeCarro());
     }
 

@@ -42,7 +42,7 @@ class ControlePersistenciaTest {
     }
 
     @Test
-    void carreiraDadosParaPiloto_semLiveryDefinido_usaCorComoFallback() {
+    void carreiraDadosParaPiloto_usaCorComoFallbackDeCapaceteECarro() {
         ControlePersistencia controlePersistencia = new ControlePersistencia(null, null);
         CarreiraDadosSrv carreiraDadosSrv = carreiraBasica();
         Piloto piloto = new Piloto();
@@ -57,27 +57,8 @@ class ControlePersistenciaTest {
         assertEquals(600, piloto.getCarro().getAerodinamica());
         assertEquals(650, piloto.getCarro().getPotencia());
         assertEquals(620, piloto.getCarro().getFreios());
-        // sem temporada de livery definida, cai no fallback de cor gerada
         assertNotNull(piloto.getTemporadaCapaceteLivery());
         assertNotNull(piloto.getTemporadaCarroLivery());
-    }
-
-    @Test
-    void carreiraDadosParaPiloto_comLiveryDefinido_usaIdDaLivery() {
-        ControlePersistencia controlePersistencia = new ControlePersistencia(null, null);
-        CarreiraDadosSrv carreiraDadosSrv = carreiraBasica();
-        carreiraDadosSrv.setTemporadaCapaceteLivery(2024);
-        carreiraDadosSrv.setIdCapaceteLivery(5);
-        carreiraDadosSrv.setTemporadaCarroLivery(2024);
-        carreiraDadosSrv.setIdCarroLivery(7);
-        Piloto piloto = new Piloto();
-
-        controlePersistencia.carreiraDadosParaPiloto(carreiraDadosSrv, piloto);
-
-        assertEquals("2024", piloto.getTemporadaCapaceteLivery());
-        assertEquals("5", piloto.getIdCapaceteLivery());
-        assertEquals("2024", piloto.getTemporadaCarroLivery());
-        assertEquals("7", piloto.getIdCarroLivery());
     }
 
     // ---- modoCarreira: validação antes de gravar (spy para estubar chamadas internas) ----

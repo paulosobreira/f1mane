@@ -1,5 +1,7 @@
 # Fl-MANE
 
+[English](README.md) | [Português (Brasil)](README.pt-BR.md)
+
 **Fl-MANE (Formula livre Manager & Engineer)** é um simulador de gerenciamento e engenharia de Fórmula 1 desenvolvido por **Paulo Sobreira**.
 
 Você assume simultaneamente os papéis de **Chefe de Equipe** e **Engenheiro de Corrida** — configurando o carro antes da corrida, enviando comandos em tempo real ao piloto e reagindo a eventos dinâmicos como mudanças climáticas, acidentes e períodos de safety car.
