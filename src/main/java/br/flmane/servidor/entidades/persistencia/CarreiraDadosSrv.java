@@ -40,11 +40,6 @@ public class CarreiraDadosSrv extends FlManeDados implements Serializable {
 	private int c2G;
 	private int c2B;
 
-	private Integer temporadaCapaceteLivery;
-	private Integer temporadaCarroLivery;
-	private Integer idCapaceteLivery;
-	private Integer idCarroLivery;
-	
 	@Transient
 	private Integer bonus;
 
@@ -200,38 +195,6 @@ public class CarreiraDadosSrv extends FlManeDados implements Serializable {
 
 	public void setNomePilotoAbreviado(String nomePilotoAbreviado) {
 		this.nomePilotoAbreviado = nomePilotoAbreviado;
-	}
-
-	public Integer getTemporadaCapaceteLivery() {
-		return temporadaCapaceteLivery;
-	}
-
-	public void setTemporadaCapaceteLivery(Integer temporadaCapaceteLivery) {
-		this.temporadaCapaceteLivery = temporadaCapaceteLivery;
-	}
-
-	public Integer getTemporadaCarroLivery() {
-		return temporadaCarroLivery;
-	}
-
-	public void setTemporadaCarroLivery(Integer temporadaCarroLivery) {
-		this.temporadaCarroLivery = temporadaCarroLivery;
-	}
-
-	public Integer getIdCapaceteLivery() {
-		return idCapaceteLivery;
-	}
-
-	public void setIdCapaceteLivery(Integer idCapaceteLivery) {
-		this.idCapaceteLivery = idCapaceteLivery;
-	}
-
-	public Integer getIdCarroLivery() {
-		return idCarroLivery;
-	}
-
-	public void setIdCarroLivery(Integer idCarroLivery) {
-		this.idCarroLivery = idCarroLivery;
 	}
 
 	public Integer getBonus() {

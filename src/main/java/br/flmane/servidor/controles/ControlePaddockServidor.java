@@ -68,7 +68,7 @@ public class ControlePaddockServidor {
         this.controlePersistencia = controlePersistencia;
         this.carregadorRecursos = carregadorRecursos;
         controleCampeonatoServidor = new ControleCampeonatoServidor(controlePersistencia, this, carregadorRecursos);
-        controleClassificacao = new ControleClassificacao(controlePersistencia, controleCampeonatoServidor, carregadorRecursos);
+        controleClassificacao = new ControleClassificacao(controlePersistencia, controleCampeonatoServidor);
         controleJogosServer = new ControleJogosServer(dadosPaddock, controleClassificacao, controleCampeonatoServidor,
                 controlePersistencia, this);
         try {

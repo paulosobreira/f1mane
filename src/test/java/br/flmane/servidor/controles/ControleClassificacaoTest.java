@@ -17,35 +17,26 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import br.flmane.entidades.Carro;
 import br.flmane.entidades.Piloto;
-import br.flmane.recursos.CarregadorRecursos;
 import br.flmane.servidor.entidades.TOs.ErroServ;
 import br.flmane.servidor.entidades.TOs.MsgSrv;
 import br.flmane.servidor.entidades.persistencia.CarreiraDadosSrv;
 import br.flmane.servidor.entidades.persistencia.JogadorDadosSrv;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * Cobre as regras de pontuação e validação de carreira de ControleClassificacao.
- * ControlePersistencia e CarregadorRecursos são mockados via o construtor
- * pacote-privado de injeção; nenhum banco real nem classpath real é tocado.
+ * ControlePersistencia é mockado via o construtor; nenhum banco real é tocado.
  */
 class ControleClassificacaoTest {
 
     private ControlePersistencia controlePersistencia;
-    private CarregadorRecursos carregadorRecursos;
     private ControleClassificacao controleClassificacao;
 
     @BeforeEach
     void setUp() {
         controlePersistencia = mock(ControlePersistencia.class);
-        carregadorRecursos = mock(CarregadorRecursos.class);
         ControleCampeonatoServidor controleCampeonatoServidor = mock(ControleCampeonatoServidor.class);
-        controleClassificacao = new ControleClassificacao(controlePersistencia, controleCampeonatoServidor,
-                carregadorRecursos);
+        controleClassificacao = new ControleClassificacao(controlePersistencia, controleCampeonatoServidor);
     }
 
     private Piloto pilotoNaPosicao(int posicao) {
@@ -199,78 +190,5 @@ class ControleClassificacaoTest {
 
         verify(controlePersistencia).gravarDados(any(Session.class), any(CarreiraDadosSrv.class));
         assertFalse(resultado instanceof ErroServ);
-    }
-
-    // ---- atualizaCarreira: validação de livery/capacete (CarregadorRecursos mockado) ----
-
-    private Piloto pilotoModeloComCarro(int id, int habilidadeReal, int carroId, int potenciaReal, int aerodinamica,
-                                        int freios) {
-        Piloto piloto = new Piloto();
-        piloto.setId(id);
-        piloto.setHabilidadeReal(habilidadeReal);
-        Carro carro = new Carro();
-        carro.setId(carroId);
-        carro.setPotenciaReal(potenciaReal);
-        carro.setAerodinamica(aerodinamica);
-        carro.setFreios(freios);
-        piloto.setCarro(carro);
-        return piloto;
-    }
-
-    @Test
-    void atualizaCarreira_capaceteDeNivelMaisAltoQueOJogador_retornaMsgSrvSemGravar() throws Exception {
-        stubCarreiraExistente(1000);
-        when(controlePersistencia.existeNomeCarro(any(Session.class), any(), anyLong())).thenReturn(false);
-        when(controlePersistencia.existeNomePiloto(any(Session.class), any(), anyLong())).thenReturn(false);
-        Piloto pilotoModelo = pilotoModeloComCarro(5, 999, 1, 0, 0, 0);
-        when(carregadorRecursos.carregarTemporadasPilotos()).thenReturn(Map.of("t2024", List.of(pilotoModelo)));
-
-        CarreiraDadosSrv carreiraDados = carreiraValida();
-        carreiraDados.setTemporadaCapaceteLivery(2024);
-        carreiraDados.setIdCapaceteLivery(5);
-        carreiraDados.setPtsPiloto(100); // muito abaixo da habilidadeReal (999) do piloto modelo
-
-        Object resultado = controleClassificacao.atualizaCarreira("usuario1", carreiraDados);
-
-        assertTrue(resultado instanceof MsgSrv);
-        verify(controlePersistencia, never()).gravarDados(any(), any());
-    }
-
-    @Test
-    void atualizaCarreira_capaceteDeNivelCompativel_naoBloqueia() throws Exception {
-        stubCarreiraExistente(1000);
-        when(controlePersistencia.existeNomeCarro(any(Session.class), any(), anyLong())).thenReturn(false);
-        when(controlePersistencia.existeNomePiloto(any(Session.class), any(), anyLong())).thenReturn(false);
-        Piloto pilotoModelo = pilotoModeloComCarro(5, 50, 1, 0, 0, 0);
-        when(carregadorRecursos.carregarTemporadasPilotos()).thenReturn(Map.of("t2024", List.of(pilotoModelo)));
-
-        CarreiraDadosSrv carreiraDados = carreiraValida();
-        carreiraDados.setTemporadaCapaceteLivery(2024);
-        carreiraDados.setIdCapaceteLivery(5);
-        carreiraDados.setPtsPiloto(100); // igual ou acima da habilidadeReal (50) do piloto modelo
-
-        Object resultado = controleClassificacao.atualizaCarreira("usuario1", carreiraDados);
-
-        verify(controlePersistencia).gravarDados(any(Session.class), any(CarreiraDadosSrv.class));
-        assertFalse(resultado instanceof ErroServ);
-    }
-
-    @Test
-    void atualizaCarreira_carroDeNivelMaisAltoQueOJogador_retornaMsgSrvSemGravar() throws Exception {
-        stubCarreiraExistente(1000);
-        when(controlePersistencia.existeNomeCarro(any(Session.class), any(), anyLong())).thenReturn(false);
-        when(controlePersistencia.existeNomePiloto(any(Session.class), any(), anyLong())).thenReturn(false);
-        Piloto pilotoModelo = pilotoModeloComCarro(1, 0, 7, 999, 0, 0);
-        when(carregadorRecursos.carregarTemporadasPilotos()).thenReturn(Map.of("t2024", List.of(pilotoModelo)));
-
-        CarreiraDadosSrv carreiraDados = carreiraValida();
-        carreiraDados.setTemporadaCarroLivery(2024);
-        carreiraDados.setIdCarroLivery(7);
-        carreiraDados.setPtsCarro(100); // muito abaixo da potenciaReal (999) do carro modelo
-
-        Object resultado = controleClassificacao.atualizaCarreira("usuario1", carreiraDados);
-
-        assertTrue(resultado instanceof MsgSrv);
-        verify(controlePersistencia, never()).gravarDados(any(), any());
     }
 }

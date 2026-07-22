@@ -377,30 +377,10 @@ public class ControlePersistencia {
     public void carreiraDadosParaPiloto(CarreiraDadosSrv carreiraDadosSrv, Piloto piloto) {
         piloto.setNome(carreiraDadosSrv.getNomePiloto());
 
-        if (carreiraDadosSrv.getTemporadaCapaceteLivery() != null) {
-            piloto.setTemporadaCapaceteLivery(carreiraDadosSrv.getTemporadaCapaceteLivery().toString());
-        } else {
-            piloto.setTemporadaCapaceteLivery(Util.rgb2hex(carreiraDadosSrv.geraCor1()));
-        }
-
-        if (carreiraDadosSrv.getTemporadaCarroLivery() != null) {
-            piloto.setTemporadaCarroLivery(carreiraDadosSrv.getTemporadaCarroLivery().toString());
-        } else {
-            piloto.setTemporadaCarroLivery(Util.rgb2hex(carreiraDadosSrv.geraCor1()));
-        }
-
-        if (carreiraDadosSrv.getTemporadaCapaceteLivery() != null && carreiraDadosSrv.getIdCapaceteLivery() != null
-                && carreiraDadosSrv.getIdCapaceteLivery().intValue() != 0) {
-            piloto.setIdCapaceteLivery(carreiraDadosSrv.getIdCapaceteLivery().toString());
-        } else {
-            piloto.setIdCapaceteLivery(Util.rgb2hex(carreiraDadosSrv.geraCor2()));
-        }
-        if (carreiraDadosSrv.getTemporadaCarroLivery() != null && carreiraDadosSrv.getIdCarroLivery() != null
-                && carreiraDadosSrv.getIdCarroLivery().intValue() != 0) {
-            piloto.setIdCarroLivery(carreiraDadosSrv.getIdCarroLivery().toString());
-        } else {
-            piloto.setIdCarroLivery(Util.rgb2hex(carreiraDadosSrv.geraCor2()));
-        }
+        piloto.setTemporadaCapaceteLivery(Util.rgb2hex(carreiraDadosSrv.geraCor1()));
+        piloto.setTemporadaCarroLivery(Util.rgb2hex(carreiraDadosSrv.geraCor1()));
+        piloto.setIdCapaceteLivery(Util.rgb2hex(carreiraDadosSrv.geraCor2()));
+        piloto.setIdCarroLivery(Util.rgb2hex(carreiraDadosSrv.geraCor2()));
         piloto.setNomeCarro(carreiraDadosSrv.getNomeCarro());
         piloto.setHabilidade(carreiraDadosSrv.getPtsPiloto());
         Carro carro = new Carro();
