@@ -12,14 +12,14 @@
        <string>x</string>
        <void method="set">
         <object idref="Point0"/>
-        <int>1108</int>
+        <int>5560</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point0"/>
-        <int>2744</int>
+        <int>2996</int>
        </void>
       </void>
      </void>
@@ -28,7 +28,7 @@
       <object class="java.awt.Color">
        <object idref="Integer0"/>
        <int>255</int>
-       <object idref="Integer0"/>
+       <int>255</int>
        <int>255</int>
       </object>
      </void>
@@ -44,19 +44,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point1"/>
-        <int>1025</int>
+        <int>5507</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point1"/>
-        <int>2634</int>
+        <int>3005</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object class="java.awt.Color">
+      <object class="java.awt.Color" id="Color0">
        <object idref="Integer0"/>
        <int>255</int>
        <object idref="Integer0"/>
@@ -75,19 +75,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point2"/>
-        <int>843</int>
+        <int>5266</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point2"/>
-        <int>2429</int>
+        <int>3104</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object class="java.awt.Color" id="Color0">
+      <object class="java.awt.Color" id="Color1">
        <object idref="Integer0"/>
        <int>255</int>
        <object idref="Integer0"/>
@@ -106,19 +106,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point3"/>
-        <int>752</int>
+        <int>5131</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point3"/>
-        <int>2302</int>
+        <int>3175</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -132,19 +132,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point4"/>
-        <int>694</int>
+        <int>4737</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point4"/>
-        <int>2201</int>
+        <int>3484</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -158,22 +158,22 @@
        <string>x</string>
        <void method="set">
         <object idref="Point5"/>
-        <int>673</int>
+        <int>4644</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point5"/>
-        <int>2097</int>
+        <int>3548</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object class="java.awt.Color" id="Color1">
+      <object class="java.awt.Color" id="Color2">
+       <int>255</int>
+       <int>255</int>
        <object idref="Integer0"/>
-       <int>255</int>
-       <int>255</int>
        <int>255</int>
       </object>
      </void>
@@ -189,24 +189,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point6"/>
-        <int>688</int>
+        <int>4593</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point6"/>
-        <int>1992</int>
+        <int>3575</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object class="java.awt.Color">
-       <int>255</int>
-       <int>200</int>
-       <object idref="Integer0"/>
-       <int>255</int>
-      </object>
+      <object idref="Color2"/>
      </void>
     </object>
    </void>
@@ -220,24 +215,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point7"/>
-        <int>691</int>
+        <int>4538</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point7"/>
-        <int>1177</int>
+        <int>3571</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object class="java.awt.Color">
-       <int>255</int>
-       <int>175</int>
-       <int>175</int>
-       <int>255</int>
-      </object>
+      <object idref="Color2"/>
      </void>
     </object>
    </void>
@@ -251,19 +241,24 @@
        <string>x</string>
        <void method="set">
         <object idref="Point8"/>
-        <int>668</int>
+        <int>4508</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point8"/>
-        <int>1122</int>
+        <int>3550</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color1"/>
+      <object class="java.awt.Color">
+       <object idref="Integer0"/>
+       <int>255</int>
+       <int>255</int>
+       <int>255</int>
+      </object>
      </void>
     </object>
    </void>
@@ -277,21 +272,21 @@
        <string>x</string>
        <void method="set">
         <object idref="Point9"/>
-        <int>666</int>
+        <int>4377</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point9"/>
-        <int>1093</int>
+        <int>3448</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object class="java.awt.Color" id="Color2">
+      <object class="java.awt.Color">
        <int>255</int>
-       <int>255</int>
+       <int>200</int>
        <object idref="Integer0"/>
        <int>255</int>
       </object>
@@ -308,19 +303,24 @@
        <string>x</string>
        <void method="set">
         <object idref="Point10"/>
-        <int>678</int>
+        <int>3653</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point10"/>
-        <int>1038</int>
+        <int>2864</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object class="java.awt.Color">
+       <int>255</int>
+       <int>175</int>
+       <int>175</int>
+       <int>255</int>
+      </object>
      </void>
     </object>
    </void>
@@ -334,19 +334,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point11"/>
-        <int>699</int>
+        <int>3467</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point11"/>
-        <int>962</int>
+        <int>2705</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color0"/>
      </void>
     </object>
    </void>
@@ -360,19 +360,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point12"/>
-        <int>736</int>
+        <int>3391</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point12"/>
-        <int>892</int>
+        <int>2637</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -386,19 +386,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point13"/>
-        <int>792</int>
+        <int>3347</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point13"/>
-        <int>831</int>
+        <int>2534</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -412,19 +412,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point14"/>
-        <int>856</int>
+        <int>3344</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point14"/>
-        <int>797</int>
+        <int>2483</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -438,19 +438,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point15"/>
-        <int>1030</int>
+        <int>3349</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point15"/>
-        <int>745</int>
+        <int>2408</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -464,19 +464,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point16"/>
-        <int>1197</int>
+        <int>3356</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point16"/>
-        <int>714</int>
+        <int>2281</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -490,19 +490,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point17"/>
-        <int>1323</int>
+        <int>3361</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point17"/>
-        <int>692</int>
+        <int>2128</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -516,24 +516,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point18"/>
-        <int>1367</int>
+        <int>3345</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point18"/>
-        <int>688</int>
+        <int>1983</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object class="java.awt.Color" id="Color3">
-       <object idref="Integer0"/>
-       <int>255</int>
-       <object idref="Integer0"/>
-       <int>255</int>
-      </object>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -547,25 +542,60 @@
        <string>x</string>
        <void method="set">
         <object idref="Point19"/>
-        <int>1499</int>
+        <int>3308</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point19"/>
-        <int>652</int>
+        <int>1872</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color3"/>
+      <object idref="Color0"/>
      </void>
     </object>
    </void>
   </void>
   <void property="ciclo">
-   <int>180</int>
+   <int>155</int>
+  </void>
+  <void property="corAsfalto">
+   <object class="java.awt.Color">
+    <int>116</int>
+    <int>116</int>
+    <int>116</int>
+    <int>255</int>
+   </object>
+  </void>
+  <void property="corBox1">
+   <object class="java.awt.Color">
+    <object idref="Integer0"/>
+    <object idref="Integer0"/>
+    <int>255</int>
+    <int>255</int>
+   </object>
+  </void>
+  <void property="corBox2">
+   <object class="java.awt.Color">
+    <int>255</int>
+    <object idref="Integer0"/>
+    <object idref="Integer0"/>
+    <int>255</int>
+   </object>
+  </void>
+  <void property="corFundo">
+   <object class="java.awt.Color">
+    <int>115</int>
+    <int>123</int>
+    <int>80</int>
+    <int>255</int>
+   </object>
+  </void>
+  <void property="distanciaKm">
+   <int>5891</int>
   </void>
   <void property="ladoBox">
    <int>2</int>
@@ -577,7 +607,7 @@
    <double>1.5</double>
   </void>
   <void property="nome">
-   <string>Silverstone</string>
+   <string>Briton Airport</string>
   </void>
   <void property="pista">
    <void method="add">
@@ -587,14 +617,14 @@
        <string>x</string>
        <void method="set">
         <object idref="Point20"/>
-        <int>557</int>
+        <int>3886</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point20"/>
-        <int>1772</int>
+        <int>3279</int>
        </void>
       </void>
      </void>
@@ -615,19 +645,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point21"/>
-        <int>558</int>
+        <int>3549</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point21"/>
-        <int>1504</int>
+        <int>2974</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -638,19 +668,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point22"/>
-        <int>551</int>
+        <int>3330</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point22"/>
-        <int>1183</int>
+        <int>2775</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color2"/>
      </void>
     </object>
    </void>
@@ -661,20 +691,20 @@
        <string>x</string>
        <void method="set">
         <object idref="Point23"/>
-        <int>564</int>
+        <int>3286</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point23"/>
-        <int>937</int>
+        <int>2714</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object class="java.awt.Color">
-       <object idref="Integer0"/>
+      <object class="java.awt.Color" id="Color3">
+       <int>255</int>
        <int>255</int>
        <object idref="Integer0"/>
        <int>255</int>
@@ -689,24 +719,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point24"/>
-        <int>593</int>
+        <int>3254</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point24"/>
-        <int>850</int>
+        <int>2663</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object class="java.awt.Color" id="Color4">
-       <int>255</int>
-       <object idref="Integer0"/>
-       <object idref="Integer0"/>
-       <int>255</int>
-      </object>
+      <object idref="Color2"/>
      </void>
     </object>
    </void>
@@ -717,19 +742,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point25"/>
-        <int>628</int>
+        <int>3227</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point25"/>
-        <int>805</int>
+        <int>2577</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color4"/>
+      <object idref="Color3"/>
      </void>
     </object>
    </void>
@@ -740,19 +765,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point26"/>
-        <int>697</int>
+        <int>3221</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point26"/>
-        <int>749</int>
+        <int>2508</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -763,19 +788,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point27"/>
-        <int>862</int>
+        <int>3288</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point27"/>
-        <int>680</int>
+        <int>2296</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -786,19 +811,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point28"/>
-        <int>1314</int>
+        <int>3319</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point28"/>
-        <int>648</int>
+        <int>2091</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -809,19 +834,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point29"/>
-        <int>1500</int>
+        <int>3317</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point29"/>
-        <int>652</int>
+        <int>1898</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -832,19 +857,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point30"/>
-        <int>1935</int>
+        <int>3252</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point30"/>
-        <int>661</int>
+        <int>1724</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -855,14 +880,14 @@
        <string>x</string>
        <void method="set">
         <object idref="Point31"/>
-        <int>2085</int>
+        <int>3033</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point31"/>
-        <int>633</int>
+        <int>1439</int>
        </void>
       </void>
      </void>
@@ -878,19 +903,24 @@
        <string>x</string>
        <void method="set">
         <object idref="Point32"/>
-        <int>2207</int>
+        <int>2934</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point32"/>
-        <int>585</int>
+        <int>1306</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color4"/>
+      <object class="java.awt.Color" id="Color4">
+       <int>255</int>
+       <object idref="Integer0"/>
+       <object idref="Integer0"/>
+       <int>255</int>
+      </object>
      </void>
     </object>
    </void>
@@ -901,19 +931,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point33"/>
-        <int>2306</int>
+        <int>2889</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point33"/>
-        <int>573</int>
+        <int>1181</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color4"/>
      </void>
     </object>
    </void>
@@ -924,19 +954,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point34"/>
-        <int>2405</int>
+        <int>2921</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point34"/>
-        <int>599</int>
+        <int>1103</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color4"/>
      </void>
     </object>
    </void>
@@ -947,14 +977,14 @@
        <string>x</string>
        <void method="set">
         <object idref="Point35"/>
-        <int>2503</int>
+        <int>2984</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point35"/>
-        <int>655</int>
+        <int>1062</int>
        </void>
       </void>
      </void>
@@ -970,19 +1000,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point36"/>
-        <int>2657</int>
+        <int>3235</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point36"/>
-        <int>717</int>
+        <int>1017</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color4"/>
      </void>
     </object>
    </void>
@@ -993,19 +1023,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point37"/>
-        <int>2774</int>
+        <int>3308</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point37"/>
-        <int>706</int>
+        <int>980</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color4"/>
      </void>
     </object>
    </void>
@@ -1016,19 +1046,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point38"/>
-        <int>2891</int>
+        <int>3341</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point38"/>
-        <int>653</int>
+        <int>914</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color4"/>
      </void>
     </object>
    </void>
@@ -1039,19 +1069,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point39"/>
-        <int>2991</int>
+        <int>3313</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point39"/>
-        <int>602</int>
+        <int>851</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color4"/>
+      <object idref="Color2"/>
      </void>
     </object>
    </void>
@@ -1062,19 +1092,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point40"/>
-        <int>3058</int>
+        <int>3245</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point40"/>
-        <int>595</int>
+        <int>800</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color4"/>
+      <object idref="Color2"/>
      </void>
     </object>
    </void>
@@ -1085,19 +1115,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point41"/>
-        <int>3130</int>
+        <int>3186</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point41"/>
-        <int>611</int>
+        <int>777</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -1108,19 +1138,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point42"/>
-        <int>3219</int>
+        <int>2922</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point42"/>
-        <int>694</int>
+        <int>695</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color2"/>
      </void>
     </object>
    </void>
@@ -1131,19 +1161,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point43"/>
-        <int>3270</int>
+        <int>2820</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point43"/>
-        <int>790</int>
+        <int>686</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color3"/>
      </void>
     </object>
    </void>
@@ -1154,19 +1184,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point44"/>
-        <int>3326</int>
+        <int>2721</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point44"/>
-        <int>886</int>
+        <int>702</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color2"/>
      </void>
     </object>
    </void>
@@ -1177,19 +1207,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point45"/>
-        <int>3379</int>
+        <int>2564</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point45"/>
-        <int>957</int>
+        <int>792</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -1200,19 +1230,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point46"/>
-        <int>3655</int>
+        <int>1357</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point46"/>
-        <int>1142</int>
+        <int>1943</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -1223,19 +1253,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point47"/>
-        <int>4198</int>
+        <int>1212</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point47"/>
-        <int>1498</int>
+        <int>2089</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color2"/>
      </void>
     </object>
    </void>
@@ -1246,19 +1276,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point48"/>
-        <int>4501</int>
+        <int>1046</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point48"/>
-        <int>1694</int>
+        <int>2278</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color2"/>
      </void>
     </object>
    </void>
@@ -1269,19 +1299,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point49"/>
-        <int>4690</int>
+        <int>1014</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point49"/>
-        <int>1827</int>
+        <int>2350</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color3"/>
      </void>
     </object>
    </void>
@@ -1292,19 +1322,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point50"/>
-        <int>4920</int>
+        <int>1002</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point50"/>
-        <int>1999</int>
+        <int>2440</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color2"/>
      </void>
     </object>
    </void>
@@ -1315,24 +1345,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point51"/>
-        <int>5117</int>
+        <int>1022</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point51"/>
-        <int>2146</int>
+        <int>2504</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object class="java.awt.Color" id="Color5">
-       <int>255</int>
-       <object idref="Integer0"/>
-       <object idref="Integer0"/>
-       <int>255</int>
-      </object>
+      <object idref="Color3"/>
      </void>
     </object>
    </void>
@@ -1343,14 +1368,14 @@
        <string>x</string>
        <void method="set">
         <object idref="Point52"/>
-        <int>5148</int>
+        <int>1066</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point52"/>
-        <int>2170</int>
+        <int>2559</int>
        </void>
       </void>
      </void>
@@ -1366,19 +1391,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point53"/>
-        <int>5214</int>
+        <int>1088</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point53"/>
-        <int>2302</int>
+        <int>2577</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color0"/>
      </void>
     </object>
    </void>
@@ -1389,19 +1414,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point54"/>
-        <int>5216</int>
+        <int>1306</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point54"/>
-        <int>2426</int>
+        <int>2631</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color4"/>
      </void>
     </object>
    </void>
@@ -1412,19 +1437,24 @@
        <string>x</string>
        <void method="set">
         <object idref="Point55"/>
-        <int>5186</int>
+        <int>1398</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point55"/>
-        <int>2523</int>
+        <int>2666</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object class="java.awt.Color" id="Color5">
+       <int>255</int>
+       <object idref="Integer0"/>
+       <object idref="Integer0"/>
+       <int>255</int>
+      </object>
      </void>
     </object>
    </void>
@@ -1435,19 +1465,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point56"/>
-        <int>5108</int>
+        <int>1472</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point56"/>
-        <int>2592</int>
+        <int>2728</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color4"/>
      </void>
     </object>
    </void>
@@ -1458,19 +1488,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point57"/>
-        <int>5023</int>
+        <int>1493</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point57"/>
-        <int>2638</int>
+        <int>2783</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color5"/>
      </void>
     </object>
    </void>
@@ -1481,19 +1511,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point58"/>
-        <int>4858</int>
+        <int>1495</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point58"/>
-        <int>2690</int>
+        <int>2839</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color4"/>
      </void>
     </object>
    </void>
@@ -1504,19 +1534,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point59"/>
-        <int>4614</int>
+        <int>1490</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point59"/>
-        <int>2835</int>
+        <int>2886</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color5"/>
      </void>
     </object>
    </void>
@@ -1527,19 +1557,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point60"/>
-        <int>4408</int>
+        <int>1457</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point60"/>
-        <int>2980</int>
+        <int>2936</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color4"/>
      </void>
     </object>
    </void>
@@ -1550,24 +1580,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point61"/>
-        <int>4360</int>
+        <int>1426</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point61"/>
-        <int>3010</int>
+        <int>2971</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object class="java.awt.Color">
-       <int>255</int>
-       <int>255</int>
-       <object idref="Integer0"/>
-       <int>255</int>
-      </object>
+      <object idref="Color5"/>
      </void>
     </object>
    </void>
@@ -1578,19 +1603,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point62"/>
-        <int>4311</int>
+        <int>1359</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point62"/>
-        <int>3041</int>
+        <int>3001</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color4"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -1601,19 +1626,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point63"/>
-        <int>4265</int>
+        <int>1265</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point63"/>
-        <int>3128</int>
+        <int>2999</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color4"/>
+      <object idref="Color0"/>
      </void>
     </object>
    </void>
@@ -1624,19 +1649,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point64"/>
-        <int>4253</int>
+        <int>1168</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point64"/>
-        <int>3178</int>
+        <int>2969</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color4"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -1647,19 +1672,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point65"/>
-        <int>4263</int>
+        <int>891</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point65"/>
-        <int>3248</int>
+        <int>2796</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -1670,19 +1695,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point66"/>
-        <int>4285</int>
+        <int>742</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point66"/>
-        <int>3344</int>
+        <int>2701</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color0"/>
      </void>
     </object>
    </void>
@@ -1693,19 +1718,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point67"/>
-        <int>4275</int>
+        <int>651</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point67"/>
-        <int>3413</int>
+        <int>2618</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -1716,14 +1741,14 @@
        <string>x</string>
        <void method="set">
         <object idref="Point68"/>
-        <int>4234</int>
+        <int>561</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point68"/>
-        <int>3485</int>
+        <int>2517</int>
        </void>
       </void>
      </void>
@@ -1739,19 +1764,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point69"/>
-        <int>4144</int>
+        <int>500</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point69"/>
-        <int>3543</int>
+        <int>2400</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -1762,14 +1787,14 @@
        <string>x</string>
        <void method="set">
         <object idref="Point70"/>
-        <int>3975</int>
+        <int>462</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point70"/>
-        <int>3559</int>
+        <int>2279</int>
        </void>
       </void>
      </void>
@@ -1785,19 +1810,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point71"/>
-        <int>3852</int>
+        <int>446</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point71"/>
-        <int>3516</int>
+        <int>2159</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -1808,19 +1833,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point72"/>
-        <int>3754</int>
+        <int>446</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point72"/>
-        <int>3458</int>
+        <int>1842</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -1831,19 +1856,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point73"/>
-        <int>3348</int>
+        <int>452</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point73"/>
-        <int>3054</int>
+        <int>1315</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -1854,14 +1879,14 @@
        <string>x</string>
        <void method="set">
         <object idref="Point74"/>
-        <int>3002</int>
+        <int>447</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point74"/>
-        <int>2707</int>
+        <int>774</int>
        </void>
       </void>
      </void>
@@ -1877,19 +1902,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point75"/>
-        <int>2884</int>
+        <int>454</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point75"/>
-        <int>2595</int>
+        <int>671</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color4"/>
+      <object idref="Color3"/>
      </void>
     </object>
    </void>
@@ -1900,19 +1925,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point76"/>
-        <int>2768</int>
+        <int>485</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point76"/>
-        <int>2540</int>
+        <int>582</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color4"/>
+      <object idref="Color2"/>
      </void>
     </object>
    </void>
@@ -1923,19 +1948,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point77"/>
-        <int>2655</int>
+        <int>522</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point77"/>
-        <int>2555</int>
+        <int>511</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color4"/>
+      <object idref="Color3"/>
      </void>
     </object>
    </void>
@@ -1946,19 +1971,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point78"/>
-        <int>2568</int>
+        <int>560</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point78"/>
-        <int>2643</int>
+        <int>477</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color3"/>
      </void>
     </object>
    </void>
@@ -1969,19 +1994,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point79"/>
-        <int>2482</int>
+        <int>614</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point79"/>
-        <int>2679</int>
+        <int>451</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color0"/>
      </void>
     </object>
    </void>
@@ -1992,19 +2017,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point80"/>
-        <int>2369</int>
+        <int>748</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point80"/>
-        <int>2703</int>
+        <int>413</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -2015,19 +2040,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point81"/>
-        <int>1919</int>
+        <int>1036</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point81"/>
-        <int>2669</int>
+        <int>353</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -2038,19 +2063,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point82"/>
-        <int>1812</int>
+        <int>1394</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point82"/>
-        <int>2615</int>
+        <int>317</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -2061,19 +2086,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point83"/>
-        <int>1773</int>
+        <int>1741</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point83"/>
-        <int>2558</int>
+        <int>318</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -2084,24 +2109,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point84"/>
-        <int>1612</int>
+        <int>2068</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point84"/>
-        <int>2302</int>
+        <int>334</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object class="java.awt.Color" id="Color6">
-       <object idref="Integer0"/>
-       <int>255</int>
-       <object idref="Integer0"/>
-       <int>255</int>
-      </object>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -2112,24 +2132,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point85"/>
-        <int>1551</int>
+        <int>2207</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point85"/>
-        <int>2194</int>
+        <int>333</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object class="java.awt.Color" id="Color7">
-       <int>255</int>
-       <int>255</int>
-       <object idref="Integer0"/>
-       <int>255</int>
-      </object>
+      <object idref="Color0"/>
      </void>
     </object>
    </void>
@@ -2140,19 +2155,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point86"/>
-        <int>1493</int>
+        <int>2323</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point86"/>
-        <int>2144</int>
+        <int>324</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color4"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -2163,19 +2178,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point87"/>
-        <int>1389</int>
+        <int>2460</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point87"/>
-        <int>2110</int>
+        <int>276</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -2186,19 +2201,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point88"/>
-        <int>1336</int>
+        <int>2517</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point88"/>
-        <int>2115</int>
+        <int>241</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color6"/>
+      <object idref="Color3"/>
      </void>
     </object>
    </void>
@@ -2209,19 +2224,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point89"/>
-        <int>1251</int>
+        <int>2596</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point89"/>
-        <int>2142</int>
+        <int>219</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color2"/>
      </void>
     </object>
    </void>
@@ -2232,19 +2247,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point90"/>
-        <int>1080</int>
+        <int>2660</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point90"/>
-        <int>2258</int>
+        <int>219</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color7"/>
+      <object idref="Color3"/>
      </void>
     </object>
    </void>
@@ -2255,19 +2270,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point91"/>
-        <int>1017</int>
+        <int>2727</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point91"/>
-        <int>2322</int>
+        <int>238</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color5"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -2278,19 +2293,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point92"/>
-        <int>1010</int>
+        <int>2874</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point92"/>
-        <int>2372</int>
+        <int>323</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color5"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -2301,19 +2316,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point93"/>
-        <int>1036</int>
+        <int>2959</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point93"/>
-        <int>2420</int>
+        <int>357</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color4"/>
+      <object idref="Color3"/>
      </void>
     </object>
    </void>
@@ -2324,14 +2339,14 @@
        <string>x</string>
        <void method="set">
         <object idref="Point94"/>
-        <int>1074</int>
+        <int>3051</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point94"/>
-        <int>2459</int>
+        <int>383</int>
        </void>
       </void>
      </void>
@@ -2347,19 +2362,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point95"/>
-        <int>1256</int>
+        <int>3130</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point95"/>
-        <int>2493</int>
+        <int>383</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color3"/>
      </void>
     </object>
    </void>
@@ -2370,19 +2385,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point96"/>
-        <int>1353</int>
+        <int>3194</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point96"/>
-        <int>2540</int>
+        <int>371</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color4"/>
+      <object idref="Color2"/>
      </void>
     </object>
    </void>
@@ -2393,19 +2408,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point97"/>
-        <int>1383</int>
+        <int>3271</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point97"/>
-        <int>2630</int>
+        <int>349</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color4"/>
+      <object idref="Color3"/>
      </void>
     </object>
    </void>
@@ -2416,19 +2431,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point98"/>
-        <int>1380</int>
+        <int>3339</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point98"/>
-        <int>2715</int>
+        <int>312</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color4"/>
+      <object idref="Color2"/>
      </void>
     </object>
    </void>
@@ -2439,19 +2454,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point99"/>
-        <int>1325</int>
+        <int>3398</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point99"/>
-        <int>2780</int>
+        <int>269</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color4"/>
+      <object idref="Color3"/>
      </void>
     </object>
    </void>
@@ -2462,19 +2477,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point100"/>
-        <int>1236</int>
+        <int>3461</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point100"/>
-        <int>2798</int>
+        <int>234</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color4"/>
+      <object idref="Color3"/>
      </void>
     </object>
    </void>
@@ -2485,19 +2500,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point101"/>
-        <int>1074</int>
+        <int>3543</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point101"/>
-        <int>2724</int>
+        <int>225</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color2"/>
+      <object idref="Color3"/>
      </void>
     </object>
    </void>
@@ -2508,19 +2523,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point102"/>
-        <int>974</int>
+        <int>3613</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point102"/>
-        <int>2670</int>
+        <int>241</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color2"/>
      </void>
     </object>
    </void>
@@ -2531,19 +2546,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point103"/>
-        <int>746</int>
+        <int>3654</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point103"/>
-        <int>2510</int>
+        <int>258</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color3"/>
      </void>
     </object>
    </void>
@@ -2554,19 +2569,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point104"/>
-        <int>644</int>
+        <int>3695</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point104"/>
-        <int>2391</int>
+        <int>299</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -2577,14 +2592,14 @@
        <string>x</string>
        <void method="set">
         <object idref="Point105"/>
-        <int>588</int>
+        <int>3738</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point105"/>
-        <int>2253</int>
+        <int>358</int>
        </void>
       </void>
      </void>
@@ -2600,19 +2615,19 @@
        <string>x</string>
        <void method="set">
         <object idref="Point106"/>
-        <int>558</int>
+        <int>3777</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point106"/>
-        <int>2042</int>
+        <int>446</int>
        </void>
       </void>
      </void>
      <void property="tipo">
-      <object idref="Color0"/>
+      <object idref="Color1"/>
      </void>
     </object>
    </void>
@@ -2623,14 +2638,14 @@
        <string>x</string>
        <void method="set">
         <object idref="Point107"/>
-        <int>558</int>
+        <int>3808</int>
        </void>
       </void>
       <void class="java.awt.Point" method="getField">
        <string>y</string>
        <void method="set">
         <object idref="Point107"/>
-        <int>1890</int>
+        <int>529</int>
        </void>
       </void>
      </void>
@@ -2639,9 +2654,883 @@
      </void>
     </object>
    </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No108">
+     <void id="Point108" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point108"/>
+        <int>3850</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point108"/>
+        <int>607</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No109">
+     <void id="Point109" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point109"/>
+        <int>3887</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point109"/>
+        <int>658</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color0"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No110">
+     <void id="Point110" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point110"/>
+        <int>3945</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point110"/>
+        <int>710</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No111">
+     <void id="Point111" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point111"/>
+        <int>4232</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point111"/>
+        <int>894</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No112">
+     <void id="Point112" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point112"/>
+        <int>4800</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point112"/>
+        <int>1255</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No113">
+     <void id="Point113" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point113"/>
+        <int>5545</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point113"/>
+        <int>1746</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No114">
+     <void id="Point114" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point114"/>
+        <int>6072</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point114"/>
+        <int>2119</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No115">
+     <void id="Point115" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point115"/>
+        <int>6152</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point115"/>
+        <int>2190</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color0"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No116">
+     <void id="Point116" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point116"/>
+        <int>6226</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point116"/>
+        <int>2282</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color2"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No117">
+     <void id="Point117" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point117"/>
+        <int>6259</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point117"/>
+        <int>2357</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No118">
+     <void id="Point118" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point118"/>
+        <int>6278</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point118"/>
+        <int>2421</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No119">
+     <void id="Point119" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point119"/>
+        <int>6276</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point119"/>
+        <int>2485</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color2"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No120">
+     <void id="Point120" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point120"/>
+        <int>6258</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point120"/>
+        <int>2540</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No121">
+     <void id="Point121" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point121"/>
+        <int>6236</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point121"/>
+        <int>2594</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No122">
+     <void id="Point122" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point122"/>
+        <int>6211</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point122"/>
+        <int>2631</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color3"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No123">
+     <void id="Point123" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point123"/>
+        <int>6165</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point123"/>
+        <int>2666</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No124">
+     <void id="Point124" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point124"/>
+        <int>5560</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point124"/>
+        <int>2997</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No125">
+     <void id="Point125" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point125"/>
+        <int>5275</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point125"/>
+        <int>3201</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color2"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No126">
+     <void id="Point126" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point126"/>
+        <int>5118</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point126"/>
+        <int>3316</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color4"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No127">
+     <void id="Point127" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point127"/>
+        <int>5072</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point127"/>
+        <int>3364</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No128">
+     <void id="Point128" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point128"/>
+        <int>5045</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point128"/>
+        <int>3393</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No129">
+     <void id="Point129" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point129"/>
+        <int>5026</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point129"/>
+        <int>3423</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No130">
+     <void id="Point130" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point130"/>
+        <int>5029</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point130"/>
+        <int>3459</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No131">
+     <void id="Point131" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point131"/>
+        <int>5050</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point131"/>
+        <int>3494</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No132">
+     <void id="Point132" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point132"/>
+        <int>5076</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point132"/>
+        <int>3530</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color4"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No133">
+     <void id="Point133" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point133"/>
+        <int>5105</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point133"/>
+        <int>3574</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No134">
+     <void id="Point134" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point134"/>
+        <int>5119</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point134"/>
+        <int>3600</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No135">
+     <void id="Point135" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point135"/>
+        <int>5115</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point135"/>
+        <int>3636</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No136">
+     <void id="Point136" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point136"/>
+        <int>5111</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point136"/>
+        <int>3660</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No137">
+     <void id="Point137" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point137"/>
+        <int>5107</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point137"/>
+        <int>3687</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color5"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No138">
+     <void id="Point138" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point138"/>
+        <int>5070</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point138"/>
+        <int>3727</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color2"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No139">
+     <void id="Point139" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point139"/>
+        <int>5011</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point139"/>
+        <int>3782</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No140">
+     <void id="Point140" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point140"/>
+        <int>4887</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point140"/>
+        <int>3856</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No141">
+     <void id="Point141" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point141"/>
+        <int>4752</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point141"/>
+        <int>3894</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color2"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No142">
+     <void id="Point142" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point142"/>
+        <int>4618</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point142"/>
+        <int>3904</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color2"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No143">
+     <void id="Point143" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point143"/>
+        <int>4572</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point143"/>
+        <int>3887</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color0"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No144">
+     <void id="Point144" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point144"/>
+        <int>4508</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point144"/>
+        <int>3848</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color0"/>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="br.flmane.entidades.No" id="No145">
+     <void id="Point145" property="point">
+      <void class="java.awt.Point" method="getField">
+       <string>x</string>
+       <void method="set">
+        <object idref="Point145"/>
+        <int>4425</int>
+       </void>
+      </void>
+      <void class="java.awt.Point" method="getField">
+       <string>y</string>
+       <void method="set">
+        <object idref="Point145"/>
+        <int>3778</int>
+       </void>
+      </void>
+     </void>
+     <void property="tipo">
+      <object idref="Color1"/>
+     </void>
+    </object>
+   </void>
   </void>
   <void property="probalidadeChuva">
-   <int>70</int>
+   <int>50</int>
   </void>
   <void property="usaBkg">
    <boolean>true</boolean>
