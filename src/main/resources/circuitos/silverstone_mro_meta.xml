@@ -604,7 +604,7 @@
    <int>1</int>
   </void>
   <void property="multiplicadorLarguraPista">
-   <double>1.5</double>
+   <double>1.8</double>
   </void>
   <void property="nome">
    <string>Briton Airport</string>
