@@ -3,14 +3,22 @@ package br.flmane;
 import br.flmane.recursos.CarregadorRecursos;
 import br.flmane.recursos.idiomas.Lang;
 import br.flmane.servidor.applet.AppletPaddock;
+import br.flmane.servidor.netty.FlmaneHttpDispatcher;
 import br.flmane.visao.PainelCircuito;
 import br.nnpe.ImageUtil;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
-import org.apache.catalina.Context;
-import org.apache.catalina.startup.Tomcat;
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpServerCodec;
 
 import javax.swing.*;
 import java.awt.*;
@@ -77,6 +85,13 @@ public class MainLauncher {
         return false;
     }
 
+    /**
+     * Folga generosa para o body agregado de uma requisição: cobre tanto o
+     * protocolo de serialização Java de ServletPaddock (estado de jogo
+     * completo, potencialmente grande) quanto os corpos JSON de LetsRace.
+     */
+    private static final int TAMANHO_MAXIMO_REQUISICAO = 100 * 1024 * 1024;
+
     private static void iniciarServidorHeadless() throws Exception {
         File base = extrairWebapp();
         System.out.println(
@@ -87,26 +102,35 @@ public class MainLauncher {
                     "Diretorio webapp nao encontrado: "
                             + base.getAbsolutePath());
         }
-        Tomcat tomcat = new Tomcat();
-        tomcat.setPort(PORT);
-        tomcat.getConnector();
-        Context context = tomcat.addWebapp(
-                "/flmane",
-                base.getAbsolutePath());
-        File webXml = new File(base, "WEB-INF/web.xml");
-        if (webXml.exists()) {
-            context.setConfigFile(webXml.toURI().toURL());
-            System.out.println("WEB.XML: " + webXml.getAbsolutePath());
+        FlmaneHttpDispatcher dispatcher = new FlmaneHttpDispatcher(base.toPath());
+        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        try {
+            ServerBootstrap bootstrap = new ServerBootstrap();
+            bootstrap.group(bossGroup, workerGroup)
+                    .channel(NioServerSocketChannel.class)
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        protected void initChannel(SocketChannel ch) {
+                            ch.pipeline().addLast(new HttpServerCodec());
+                            ch.pipeline().addLast(
+                                    new HttpObjectAggregator(TAMANHO_MAXIMO_REQUISICAO));
+                            ch.pipeline().addLast(dispatcher);
+                        }
+                    });
+            Channel channel = bootstrap.bind(PORT).sync().channel();
+            String ip = descobrirIP();
+            String url = "http://" + ip + ":" + PORT
+                    + "/flmane/html5/index.html";
+            System.out.println("=================================");
+            System.out.println("SERVER STARTED");
+            System.out.println(url);
+            System.out.println("=================================");
+            channel.closeFuture().sync();
+        } finally {
+            bossGroup.shutdownGracefully();
+            workerGroup.shutdownGracefully();
         }
-        tomcat.start();
-        String ip = descobrirIP();
-        String url = "http://" + ip + ":" + PORT
-                + "/flmane/html5/index.html";
-        System.out.println("=================================");
-        System.out.println("SERVER STARTED");
-        System.out.println(url);
-        System.out.println("=================================");
-        tomcat.getServer().await();
     }
 
     private static Process iniciarProcessoServidor(String jar)

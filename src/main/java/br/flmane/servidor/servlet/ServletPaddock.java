@@ -1,5 +1,12 @@
 package br.flmane.servidor.servlet;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.sql.Timestamp;
+import java.util.List;
+
 import br.flmane.servidor.MonitorAtividade;
 import br.flmane.servidor.PaddockConstants;
 import br.flmane.servidor.PaddockServer;
@@ -8,158 +15,173 @@ import br.flmane.servidor.entidades.TOs.SessaoCliente;
 import br.flmane.servidor.util.ZipUtil;
 import br.nnpe.FormatDate;
 import br.nnpe.Logger;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
-import java.io.*;
-import java.sql.Timestamp;
-import java.util.*;
+import io.netty.buffer.ByteBufUtil;
+import io.netty.buffer.Unpooled;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpHeaderNames;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http.QueryStringDecoder;
 
 /**
+ * Handler Netty do protocolo de serialização Java em {@code /ServletPaddock}
+ * (usado pelo cliente multiplayer {@code AppletPaddock}) e das páginas HTML
+ * de admin ({@code ?tipo=X} exceptions, {@code ?tipo=S} sessões) — mesmo
+ * comportamento de quando esta classe era um {@code HttpServlet}, incluindo
+ * o corte precoce da página quando não há parâmetro {@code tipo}.
+ *
  * @author paulo.sobreira
  */
-public class ServletPaddock extends HttpServlet {
-    private final static String lock = "lock";
-    private ControlePaddockServidor controlePaddock;
-    private static MonitorAtividade monitorAtividade;
+public class ServletPaddock {
 
-    @Override
-    public void init() throws ServletException {
+    private static final String LOCK = "lock";
+
+    private final ControlePaddockServidor controlePaddock;
+    private final MonitorAtividade monitorAtividade;
+
+    public ServletPaddock() {
         Logger.logar("Init");
-        PaddockServer.init(getServletContext().getRealPath(""));
-        controlePaddock = PaddockServer.getControlePaddock();
-        monitorAtividade = PaddockServer.getMonitorAtividade();
+        PaddockServer.init(null);
+        this.controlePaddock = PaddockServer.getControlePaddock();
+        this.monitorAtividade = PaddockServer.getMonitorAtividade();
     }
 
-    public void destroy() {
+    public void destruir() {
         monitorAtividade.setAlive(false);
-        super.destroy();
     }
 
-    public void doPost(HttpServletRequest arg0, HttpServletResponse arg1)
-            throws ServletException, IOException {
-        doGet(arg0, arg1);
-    }
-
-    public void doGet(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, IOException {
-        Object escrever = null;
+    public FullHttpResponse manipular(FullHttpRequest requisicao) {
         try {
-            ObjectInputStream inputStream = null;
-            try {
-                inputStream = new ObjectInputStream(req.getInputStream());
-            } catch (Exception e) {
-                Logger.logar("inputStream null - > doGetHtml");
+            Object objetoLido = lerObjeto(requisicao);
+            if (objetoLido != null) {
+                return respostaBinaria(processarObjeto(objetoLido));
             }
-            if (inputStream != null) {
-                Object object = null;
-
-                object = inputStream.readObject();
-
-                escrever = controlePaddock
-                        .processarObjetoRecebido(object);
-
-                if (PaddockConstants.modoZip) {
-                    ZipUtil.compactarObjeto(false, escrever, res.getOutputStream());
-                } else {
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    ObjectOutputStream oos = new ObjectOutputStream(bos);
-                    oos.writeObject(escrever);
-                    oos.flush();
-                    res.getOutputStream().write(bos.toByteArray());
-                }
-
-                return;
-            } else {
-                doGetHtml(req, res);
-                return;
-            }
+            return respostaHtml(paginaHtml(requisicao));
         } catch (Exception e) {
             Logger.topExecpts(e);
+            return respostaBinaria(new byte[0]);
         }
     }
 
-    public void doGetHtml(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, IOException {
-        PrintWriter printWriter = res.getWriter();
-        res.setContentType("text/html");
-        try {
-            html5(printWriter);
-            printWriter.println("<body>");
-            String tipo = req.getParameter("tipo");
-
-            if (tipo == null) {
-                return;
-            } else if ("X".equals(tipo)) {
-                topExceptions(res);
-            } else if ("S".equals(tipo)) {
-                sessoesAtivas(res);
-            }
-            printWriter.println("<br/> ");
+    private Object lerObjeto(FullHttpRequest requisicao) {
+        byte[] corpo = ByteBufUtil.getBytes(requisicao.content());
+        if (corpo.length == 0) {
+            return null;
+        }
+        try (ObjectInputStream inputStream =
+                     new ObjectInputStream(new ByteArrayInputStream(corpo))) {
+            return inputStream.readObject();
         } catch (Exception e) {
-            printWriter.println(e.getMessage());
+            Logger.logar("inputStream null - > doGetHtml");
+            return null;
         }
-        printWriter.println("<br/><a href='conf.jsp'>back</a>");
-        printWriter.println("</body></html>");
-        res.flushBuffer();
     }
 
-    private void topExceptions(HttpServletResponse res) throws IOException {
-        res.setContentType("text/html");
-        PrintWriter printWriter = res.getWriter();
-        html5(printWriter);
-        printWriter.write("<body>");
-        printWriter.write("<h2>Fl-Mane Exceptions</h2><br><hr>");
-        synchronized (lock) {
-            Set top = Logger.topExceptions.keySet();
-            for (Iterator iterator = top.iterator(); iterator.hasNext(); ) {
-                String exept = (String) iterator.next();
-                printWriter.write(
-                        "Quantidade : " + Logger.topExceptions.get(exept));
-                printWriter.write("<br>");
-                printWriter.write(exept);
-                printWriter.write("<br><hr>");
+    private byte[] processarObjeto(Object objetoLido) throws Exception {
+        Object escrever = controlePaddock.processarObjetoRecebido(objetoLido);
+        if (PaddockConstants.modoZip) {
+            ByteArrayOutputStream zipOut = new ByteArrayOutputStream();
+            ZipUtil.compactarObjeto(false, escrever, zipOut);
+            return zipOut.toByteArray();
+        }
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(bos);
+        oos.writeObject(escrever);
+        oos.flush();
+        return bos.toByteArray();
+    }
+
+    private String paginaHtml(FullHttpRequest requisicao) {
+        StringBuilder html = new StringBuilder();
+        try {
+            abrirHtml5(html);
+            html.append("<body>");
+            String tipo = parametroTipo(requisicao);
+            if (tipo == null) {
+                return html.toString();
+            } else if ("X".equals(tipo)) {
+                topExceptions(html);
+            } else if ("S".equals(tipo)) {
+                sessoesAtivas(html);
+            }
+            html.append("<br/> ");
+        } catch (Exception e) {
+            html.append(e.getMessage());
+        }
+        html.append("<br/><a href='conf.jsp'>back</a>");
+        html.append("</body></html>");
+        return html.toString();
+    }
+
+    private String parametroTipo(FullHttpRequest requisicao) {
+        List<String> valores = new QueryStringDecoder(requisicao.uri())
+                .parameters().get("tipo");
+        return (valores == null || valores.isEmpty()) ? null : valores.get(0);
+    }
+
+    private void topExceptions(StringBuilder html) {
+        abrirHtml5(html);
+        html.append("<body>");
+        html.append("<h2>Fl-Mane Exceptions</h2><br><hr>");
+        synchronized (LOCK) {
+            for (String excecao : Logger.topExceptions.keySet()) {
+                html.append("Quantidade : ").append(Logger.topExceptions.get(excecao));
+                html.append("<br>");
+                html.append(excecao);
+                html.append("<br><hr>");
             }
         }
-        res.flushBuffer();
     }
 
-    private void sessoesAtivas(HttpServletResponse res) throws IOException {
-        res.setContentType("text/html");
-        PrintWriter printWriter = res.getWriter();
-        html5(printWriter);
-        printWriter.write("<body>");
-        printWriter.write("<h2>Fl-Mane Sess&otilde;es</h2><br>");
+    private void sessoesAtivas(StringBuilder html) {
+        abrirHtml5(html);
+        html.append("<body>");
+        html.append("<h2>Fl-Mane Sess&otilde;es</h2><br>");
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        printWriter.write("Hora Servidor : " + FormatDate.format(timestamp));
-        printWriter.write("<br><hr>");
+        html.append("Hora Servidor : ").append(FormatDate.format(timestamp));
+        html.append("<br><hr>");
         List<SessaoCliente> clientes = controlePaddock.getDadosPaddock().getClientes();
         int cont = 0;
-        for (Iterator iterator = clientes.iterator(); iterator.hasNext(); ) {
-            SessaoCliente sessaoCliente = (SessaoCliente) iterator.next();
-            printWriter.write("<br>");
-            printWriter.write("Jogador : " + sessaoCliente.getNomeJogador());
-            printWriter.write("<br>");
+        for (SessaoCliente sessaoCliente : clientes) {
+            html.append("<br>");
+            html.append("Jogador : ").append(sessaoCliente.getNomeJogador());
+            html.append("<br>");
             timestamp = new Timestamp(sessaoCliente.getUlimaAtividade());
-            printWriter.write("&Uacute;ltima Atividade : " + FormatDate.format(timestamp));
-            printWriter.write("<br>");
-            printWriter.write("Jogo Atual : " + sessaoCliente.getJogoAtual());
-            printWriter.write("<hr>");
+            html.append("&Uacute;ltima Atividade : ").append(FormatDate.format(timestamp));
+            html.append("<br>");
+            html.append("Jogo Atual : ").append(sessaoCliente.getJogoAtual());
+            html.append("<hr>");
             cont++;
         }
-        printWriter.write("<br>");
-        printWriter.write("Total : " + cont);
-        printWriter.write("<br>");
-        res.flushBuffer();
+        html.append("<br>");
+        html.append("Total : ").append(cont);
+        html.append("<br>");
     }
 
-    public void html5(PrintWriter printWriter) {
-        printWriter.write("<!doctype html>");
-        printWriter.write("<html><head>");
-        printWriter.write("<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>");
-        printWriter.write("<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>");
-        printWriter.write("</head>");
+    private void abrirHtml5(StringBuilder html) {
+        html.append("<!doctype html>");
+        html.append("<html><head>");
+        html.append("<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>");
+        html.append("<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>");
+        html.append("</head>");
+    }
+
+    private FullHttpResponse respostaBinaria(byte[] corpo) {
+        FullHttpResponse resposta = new DefaultFullHttpResponse(
+                HttpVersion.HTTP_1_1, HttpResponseStatus.OK, Unpooled.wrappedBuffer(corpo));
+        resposta.headers().set(HttpHeaderNames.CONTENT_TYPE, "application/octet-stream");
+        resposta.headers().set(HttpHeaderNames.CONTENT_LENGTH, corpo.length);
+        return resposta;
+    }
+
+    private FullHttpResponse respostaHtml(String html) {
+        byte[] corpo = html.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        FullHttpResponse resposta = new DefaultFullHttpResponse(
+                HttpVersion.HTTP_1_1, HttpResponseStatus.OK, Unpooled.wrappedBuffer(corpo));
+        resposta.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/html;charset=UTF-8");
+        resposta.headers().set(HttpHeaderNames.CONTENT_LENGTH, corpo.length);
+        return resposta;
     }
 }

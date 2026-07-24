@@ -14,7 +14,7 @@ O Fl-MANE é distribuído como um único JAR (`flmane.jar`) que suporta três mo
 
 | Modo | Como iniciar | Descrição |
 |---|---|---|
-| **Web (HTML5)** | `java -jar flmane.jar` | Tomcat embutido na porta 8080; jogue pelo navegador |
+| **Web (HTML5)** | `java -jar flmane.jar` | Servidor Netty embutido na porta 8080; jogue pelo navegador |
 | **Solo (Java Swing)** | `java -cp flmane.jar br.flmane.MainFrame` | Jogo desktop completo em Swing, sem servidor |
 | **Multiplayer cliente** | Pelo launcher Swing | Conecta a um servidor Fl-MANE em execução |
 
@@ -70,7 +70,7 @@ Controle total sobre as paradas a qualquer momento:
 
 - Até **5 jogos simultâneos** em uma única instância do servidor
 - Cliente pelo navegador (HTML5 + JavaScript) ou pelo Java Swing
-- API REST (JAX-RS/Jersey) em `/letsRace/*`; autenticação por token no header HTTP
+- API REST (roteador próprio sobre Netty) em `/letsRace/*`; autenticação por token no header HTTP
 - Login com Google, sessão de convidado ou nome personalizado
 
 ---
@@ -197,8 +197,8 @@ docker compose up -d
 |---|---|
 | Linguagem | Java 21 |
 | UI (desktop) | Java Swing |
-| Servidor web | Apache Tomcat (embutido) |
-| API REST | JAX-RS / Jersey |
+| Servidor web | Netty (embutido) |
+| API REST | Roteador próprio sobre Netty |
 | Persistência | JPA (H2 ou MySQL 8.4) |
 | Build | Apache Maven |
 | Containerização | Docker / Docker Compose |
@@ -210,7 +210,7 @@ docker compose up -d
 
 ```
 flmane.jar
-├── MainLauncher       → Tomcat (porta 8080) + launcher Swing
+├── MainLauncher       → Netty (porta 8080) + launcher Swing
 │   └── /flmane/html5/    (webapp extraído do JAR no startup)
 ├── MainFrame          → Jogo solo Swing
 │   └── ControleJogoLocal → ControleCiclo (tick loop ~50ms)

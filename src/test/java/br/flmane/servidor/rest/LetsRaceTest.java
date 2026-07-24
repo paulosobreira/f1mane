@@ -9,7 +9,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import jakarta.ws.rs.core.Response;
+import br.flmane.servidor.netty.RespostaHttp;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,7 +60,7 @@ class LetsRaceTest {
 
     @Test
     void verificaServico_naoChamaControlePaddock() {
-        Response response = letsRace.verificaServico();
+        RespostaHttp response = letsRace.verificaServico();
 
         assertEquals(200, response.getStatus());
         assertEquals("ok", response.getEntity());
@@ -72,7 +72,7 @@ class LetsRaceTest {
     void jogar_tokenInvalido_retorna401ENaoDelegaParaController() {
         when(controlePaddock.obterSessaoPorToken(TOKEN)).thenReturn(null);
 
-        Response response = letsRace.jogar(TOKEN, IDIOMA, "2024", "1", "interlagos",
+        RespostaHttp response = letsRace.jogar(TOKEN, IDIOMA, "2024", "1", "interlagos",
                 "10", "MACIO", "50", "NORMAL", "false");
 
         assertEquals(401, response.getStatus());
@@ -83,7 +83,7 @@ class LetsRaceTest {
     void equipe_tokenInvalido_retorna401() {
         when(controlePaddock.obterSessaoPorToken(TOKEN)).thenReturn(null);
 
-        Response response = letsRace.equipe(TOKEN, IDIOMA);
+        RespostaHttp response = letsRace.equipe(TOKEN, IDIOMA);
 
         assertEquals(401, response.getStatus());
         verify(controleJogosServer, never()).equipe(any());
@@ -93,7 +93,7 @@ class LetsRaceTest {
     void dadosParciais_tokenInvalido_retorna401() {
         when(controlePaddock.obterSessaoPorToken(TOKEN)).thenReturn(null);
 
-        Response response = letsRace.dadosParciais(TOKEN, IDIOMA, "jogo1", "piloto1");
+        RespostaHttp response = letsRace.dadosParciais(TOKEN, IDIOMA, "jogo1", "piloto1");
 
         assertEquals(401, response.getStatus());
     }
@@ -102,7 +102,7 @@ class LetsRaceTest {
     void potenciaMotor_tokenInvalido_retorna401() {
         when(controlePaddock.obterSessaoPorToken(TOKEN)).thenReturn(null);
 
-        Response response = letsRace.potenciaMotor(TOKEN, "GIRO_MAX", "piloto1");
+        RespostaHttp response = letsRace.potenciaMotor(TOKEN, "GIRO_MAX", "piloto1");
 
         assertEquals(401, response.getStatus());
         verify(controleJogosServer, never()).mudarGiroMotor(any(), any(), any());
@@ -114,7 +114,7 @@ class LetsRaceTest {
     void campeonato_sessaoVisitante_retorna403() {
         when(controlePaddock.obterSessaoPorToken(TOKEN)).thenReturn(sessaoValida(true));
 
-        Response response = letsRace.campeonato(TOKEN, IDIOMA);
+        RespostaHttp response = letsRace.campeonato(TOKEN, IDIOMA);
 
         assertEquals(403, response.getStatus());
         verify(controlePaddock, never()).obterCampeonatoEmAberto(any());
@@ -127,7 +127,7 @@ class LetsRaceTest {
         CampeonatoTO campeonatoTO = new CampeonatoTO();
         when(controlePaddock.obterCampeonatoEmAberto("usuario1")).thenReturn(campeonatoTO);
 
-        Response response = letsRace.campeonato(TOKEN, IDIOMA);
+        RespostaHttp response = letsRace.campeonato(TOKEN, IDIOMA);
 
         assertEquals(200, response.getStatus());
         assertEquals(campeonatoTO, response.getEntity());
@@ -138,7 +138,7 @@ class LetsRaceTest {
         when(controlePaddock.obterSessaoPorToken(TOKEN)).thenReturn(sessaoValida(false));
         when(controlePaddock.obterCampeonatoEmAberto("usuario1")).thenReturn(null);
 
-        Response response = letsRace.campeonato(TOKEN, IDIOMA);
+        RespostaHttp response = letsRace.campeonato(TOKEN, IDIOMA);
 
         assertEquals(204, response.getStatus());
     }
@@ -150,7 +150,7 @@ class LetsRaceTest {
         SrvPaddockPack pack = new SrvPaddockPack();
         when(controlePaddock.criarSessaoNome("Piloto")).thenReturn(pack);
 
-        Response response = letsRace.criarSessaoNome("Piloto");
+        RespostaHttp response = letsRace.criarSessaoNome("Piloto");
 
         assertEquals(200, response.getStatus());
         assertEquals(pack, response.getEntity());
@@ -161,7 +161,7 @@ class LetsRaceTest {
         ErroServ erroServ = new ErroServ(new RuntimeException("falha de banco"));
         when(controlePaddock.criarSessaoNome("Piloto")).thenReturn(erroServ);
 
-        Response response = letsRace.criarSessaoNome("Piloto");
+        RespostaHttp response = letsRace.criarSessaoNome("Piloto");
 
         assertEquals(500, response.getStatus());
         assertEquals(erroServ, response.getEntity());
@@ -173,7 +173,7 @@ class LetsRaceTest {
         when(controlePaddock.criarSessaoGoogle("g1", "Nome", "url", "a@b.com"))
                 .thenReturn(erroServ);
 
-        Response response = letsRace.criarSessaoGoogle("g1", "Nome", "url", "a@b.com");
+        RespostaHttp response = letsRace.criarSessaoGoogle("g1", "Nome", "url", "a@b.com");
 
         assertEquals(500, response.getStatus());
     }
@@ -187,7 +187,7 @@ class LetsRaceTest {
                 eq("MACIO"), eq("50"), eq("NORMAL"), any(SessaoCliente.class), eq("false")))
                 .thenReturn(new MsgSrv("Carro indisponivel"));
 
-        Response response = letsRace.jogar(TOKEN, IDIOMA, "2024", "1", "interlagos",
+        RespostaHttp response = letsRace.jogar(TOKEN, IDIOMA, "2024", "1", "interlagos",
                 "10", "MACIO", "50", "NORMAL", "false");
 
         assertEquals(400, response.getStatus());
@@ -201,7 +201,7 @@ class LetsRaceTest {
         when(controlePaddock.jogar(any(), any(), any(), any(), any(), any(), any(), any(), any()))
                 .thenReturn(erroServ);
 
-        Response response = letsRace.jogar(TOKEN, IDIOMA, "2024", "1", "interlagos",
+        RespostaHttp response = letsRace.jogar(TOKEN, IDIOMA, "2024", "1", "interlagos",
                 "10", "MACIO", "50", "NORMAL", "false");
 
         assertEquals(500, response.getStatus());
@@ -218,7 +218,7 @@ class LetsRaceTest {
                 eq("MACIO"), eq("50"), eq("NORMAL"), eq(sessaoCliente), eq("false")))
                 .thenReturn(dadosJogo);
 
-        Response response = letsRace.jogar(TOKEN, IDIOMA, "2024", "1", "interlagos",
+        RespostaHttp response = letsRace.jogar(TOKEN, IDIOMA, "2024", "1", "interlagos",
                 "10", "MACIO", "50", "NORMAL", "false");
 
         assertEquals(200, response.getStatus());
@@ -230,7 +230,7 @@ class LetsRaceTest {
         when(controlePaddock.obterSessaoPorToken(TOKEN)).thenReturn(sessaoValida(false));
         when(controleJogosServer.equipe(any())).thenReturn(null);
 
-        Response response = letsRace.equipe(TOKEN, IDIOMA);
+        RespostaHttp response = letsRace.equipe(TOKEN, IDIOMA);
 
         assertEquals(204, response.getStatus());
     }
@@ -241,7 +241,7 @@ class LetsRaceTest {
         ErroServ erroServ = new ErroServ(new RuntimeException("falha"));
         when(controleJogosServer.equipe(any())).thenReturn(erroServ);
 
-        Response response = letsRace.equipe(TOKEN, IDIOMA);
+        RespostaHttp response = letsRace.equipe(TOKEN, IDIOMA);
 
         assertEquals(500, response.getStatus());
     }
@@ -252,7 +252,7 @@ class LetsRaceTest {
         Object equipe = new Object();
         when(controleJogosServer.equipe(any())).thenReturn(equipe);
 
-        Response response = letsRace.equipe(TOKEN, IDIOMA);
+        RespostaHttp response = letsRace.equipe(TOKEN, IDIOMA);
 
         assertEquals(200, response.getStatus());
         assertEquals(equipe, response.getEntity());
@@ -264,7 +264,7 @@ class LetsRaceTest {
     void gravarEquipe_tokenInvalido_retorna401() {
         when(controlePaddock.obterSessaoPorToken(TOKEN)).thenReturn(null);
 
-        Response response = letsRace.gravarEquipe(TOKEN, IDIOMA, new CarreiraDadosSrv());
+        RespostaHttp response = letsRace.gravarEquipe(TOKEN, IDIOMA, new CarreiraDadosSrv());
 
         assertEquals(401, response.getStatus());
     }
@@ -275,7 +275,7 @@ class LetsRaceTest {
         MsgSrv sucesso = new MsgSrv(Lang.msg("250"));
         when(controleJogosServer.gravarEquipe(any(), eq(IDIOMA), any())).thenReturn(sucesso);
 
-        Response response = letsRace.gravarEquipe(TOKEN, IDIOMA, new CarreiraDadosSrv());
+        RespostaHttp response = letsRace.gravarEquipe(TOKEN, IDIOMA, new CarreiraDadosSrv());
 
         assertEquals(200, response.getStatus());
     }
@@ -286,7 +286,7 @@ class LetsRaceTest {
         when(controleJogosServer.gravarEquipe(any(), eq(IDIOMA), any()))
                 .thenReturn(new MsgSrv("Nome de equipe invalido"));
 
-        Response response = letsRace.gravarEquipe(TOKEN, IDIOMA, new CarreiraDadosSrv());
+        RespostaHttp response = letsRace.gravarEquipe(TOKEN, IDIOMA, new CarreiraDadosSrv());
 
         assertEquals(400, response.getStatus());
     }
@@ -300,7 +300,7 @@ class LetsRaceTest {
         when(controleJogosServer.mudarGiroMotor(sessaoCliente, "piloto1", "GIRO_MAX"))
                 .thenReturn(Boolean.TRUE);
 
-        Response response = letsRace.potenciaMotor(TOKEN, "GIRO_MAX", "piloto1");
+        RespostaHttp response = letsRace.potenciaMotor(TOKEN, "GIRO_MAX", "piloto1");
 
         assertEquals(200, response.getStatus());
         assertEquals(Boolean.TRUE, response.getEntity());
@@ -363,7 +363,7 @@ class LetsRaceTest {
     void obterJogos_retorna200ComListaDoController() {
         when(controlePaddock.obterJogos()).thenReturn(java.util.List.of("jogo1", "jogo2"));
 
-        Response response = letsRace.obterJogos();
+        RespostaHttp response = letsRace.obterJogos();
 
         assertEquals(200, response.getStatus());
         assertEquals(java.util.List.of("jogo1", "jogo2"), response.getEntity());
@@ -374,7 +374,7 @@ class LetsRaceTest {
         Object classificacao = new Object();
         when(controlePaddock.obterClassificacaoGeral()).thenReturn(classificacao);
 
-        Response response = letsRace.classificacaoGeral();
+        RespostaHttp response = letsRace.classificacaoGeral();
 
         assertEquals(200, response.getStatus());
         assertEquals(classificacao, response.getEntity());
@@ -384,7 +384,7 @@ class LetsRaceTest {
     void campeonatoPorId_naoExiste_retorna204() {
         when(controlePaddock.obterCampeonatoId("99")).thenReturn(null);
 
-        Response response = letsRace.campeonatoPorId("99", TOKEN, IDIOMA);
+        RespostaHttp response = letsRace.campeonatoPorId("99", TOKEN, IDIOMA);
 
         assertEquals(204, response.getStatus());
         assertNull(response.getEntity());
@@ -395,7 +395,7 @@ class LetsRaceTest {
         Object classificacao = new Object();
         when(controlePaddock.obterClassificacaoEquipes()).thenReturn(classificacao);
 
-        Response response = letsRace.classificacaoEquipes();
+        RespostaHttp response = letsRace.classificacaoEquipes();
 
         assertEquals(200, response.getStatus());
         assertEquals(classificacao, response.getEntity());
@@ -406,7 +406,7 @@ class LetsRaceTest {
         Object classificacao = new Object();
         when(controlePaddock.obterClassificacaoCampeonato()).thenReturn(classificacao);
 
-        Response response = letsRace.classificacaoCampeonato();
+        RespostaHttp response = letsRace.classificacaoCampeonato();
 
         assertEquals(200, response.getStatus());
         assertEquals(classificacao, response.getEntity());
@@ -417,7 +417,7 @@ class LetsRaceTest {
         Object dadosVisao = new Object();
         when(controlePaddock.atualizarDadosVisao()).thenReturn(dadosVisao);
 
-        Response response = letsRace.atualizarDadosVisao();
+        RespostaHttp response = letsRace.atualizarDadosVisao();
 
         assertEquals(200, response.getStatus());
         assertEquals(dadosVisao, response.getEntity());
@@ -429,7 +429,7 @@ class LetsRaceTest {
         pack.setSessaoCliente(sessaoValida(false));
         when(controlePaddock.obterDadosToken(TOKEN)).thenReturn(pack);
 
-        Response response = letsRace.dadosToken(TOKEN);
+        RespostaHttp response = letsRace.dadosToken(TOKEN);
 
         assertEquals(200, response.getStatus());
         assertEquals(pack, response.getEntity());
@@ -439,7 +439,7 @@ class LetsRaceTest {
     void dadosToken_semSessao_retorna404() {
         when(controlePaddock.obterDadosToken(TOKEN)).thenReturn(null);
 
-        Response response = letsRace.dadosToken(TOKEN);
+        RespostaHttp response = letsRace.dadosToken(TOKEN);
 
         assertEquals(404, response.getStatus());
     }
@@ -448,7 +448,7 @@ class LetsRaceTest {
     void sairJogo_tokenInvalido_retorna401() {
         when(controlePaddock.obterSessaoPorToken(TOKEN)).thenReturn(null);
 
-        Response response = letsRace.sairJogo(TOKEN, "jogo1");
+        RespostaHttp response = letsRace.sairJogo(TOKEN, "jogo1");
 
         assertEquals(401, response.getStatus());
         verify(controlePaddock, never()).sairJogoToken(any(), any(), any());
@@ -459,7 +459,7 @@ class LetsRaceTest {
         SessaoCliente sessaoCliente = sessaoValida(false);
         when(controlePaddock.obterSessaoPorToken(TOKEN)).thenReturn(sessaoCliente);
 
-        Response response = letsRace.sairJogo(TOKEN, "jogo1");
+        RespostaHttp response = letsRace.sairJogo(TOKEN, "jogo1");
 
         assertEquals(200, response.getStatus());
         verify(controlePaddock).sairJogoToken("jogo1", TOKEN, sessaoCliente);
@@ -472,7 +472,7 @@ class LetsRaceTest {
         when(carregadorRecursosMock.carregarCircuitosDefaults())
                 .thenReturn(java.util.List.of());
 
-        Response response = letsRaceComCarregador.circuitos();
+        RespostaHttp response = letsRaceComCarregador.circuitos();
 
         assertEquals(200, response.getStatus());
     }

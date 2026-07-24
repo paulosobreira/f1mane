@@ -1,7 +1,6 @@
 package br.flmane.servidor.rest;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,19 +14,10 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.HeaderParam;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
 
 import br.flmane.servidor.controles.ControleJogosServer;
 import br.flmane.servidor.controles.ControlePaddockServidor;
-import br.flmane.servidor.util.Compress;
+import br.flmane.servidor.netty.RespostaHttp;
 import br.nnpe.Global;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
@@ -52,8 +42,14 @@ import br.flmane.recursos.CarregadorRecursos;
 import br.flmane.recursos.idiomas.Lang;
 import br.flmane.visao.PainelCircuito;
 
-@Path("/letsRace")
+/**
+ * Endpoints do modo multiplayer (paths, params e content-types iguais aos
+ * de antes) — despachados pelo router Netty em {@link RotasLetsRace}, sem
+ * depender de anotações JAX-RS/Jersey.
+ */
 public class LetsRace {
+
+    private static final String APPLICATION_JSON = "application/json";
 
     private final CarregadorRecursos carregadorRecursos;
     private final ControlePaddockServidor controlePaddock;
@@ -69,93 +65,69 @@ public class LetsRace {
         this.controlePaddock = controlePaddock;
     }
 
-    private Response processsaMensagem(Object objeto, String idioma) {
+    private RespostaHttp processsaMensagem(Object objeto, String idioma) {
         if (objeto == null) {
-            return Response.status(500).entity(new MsgSrv("Server error."))
-                    .type(MediaType.APPLICATION_JSON).build();
+            return RespostaHttp.status(500).entity(new MsgSrv("Server error."))
+                    .tipo(APPLICATION_JSON).build();
         }
         if (objeto instanceof MsgSrv) {
             MsgSrv msgSrv = (MsgSrv) objeto;
-            return Response.status(400)
+            return RespostaHttp.status(400)
                     .entity(new MsgSrv(Lang
                             .decodeTextoKey(msgSrv.getMessageString(), idioma)))
-                    .type(MediaType.APPLICATION_JSON).build();
+                    .tipo(APPLICATION_JSON).build();
         }
         if (objeto instanceof ErroServ) {
             ErroServ erroServ = (ErroServ) objeto;
-            return Response.status(500)
+            return RespostaHttp.status(500)
                     .entity(new MsgSrv(erroServ.obterErroFormatado()))
-                    .type(MediaType.APPLICATION_JSON).build();
+                    .tipo(APPLICATION_JSON).build();
         }
         return null;
     }
 
-
-    @GET
-    @Path("/renovarSessaoVisitante/{token}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response renovarSessaoVisitante(@PathParam("token") String token) {
-        return Response.status(200)
+    public RespostaHttp renovarSessaoVisitante(String token) {
+        return RespostaHttp.status(200)
                 .entity(controlePaddock.renovarSessaoVisitante(token)).build();
     }
 
-    @GET
-    @Path("/dadosToken")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response dadosToken(@HeaderParam("token") String token) {
+    public RespostaHttp dadosToken(String token) {
         SrvPaddockPack obterDadosToken = controlePaddock.obterDadosToken(token);
         if (obterDadosToken != null
                 && obterDadosToken.getSessaoCliente() != null) {
             obterDadosToken.getSessaoCliente()
                     .setUlimaAtividade(System.currentTimeMillis());
-            return Response.status(200).entity(obterDadosToken).build();
+            return RespostaHttp.status(200).entity(obterDadosToken).build();
         }
-        return Response.status(404).build();
+        return RespostaHttp.status(404).build();
     }
 
-    @GET
-    @Path("/criarSessaoGoogle")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response criarSessaoGoogle(@HeaderParam("idGoogle") String idGoogle,
-                                      @HeaderParam("nome") String nome,
-                                      @HeaderParam("urlFoto") String urlFoto,
-                                      @HeaderParam("email") String email) {
+    public RespostaHttp criarSessaoGoogle(String idGoogle, String nome,
+                                           String urlFoto, String email) {
         Object criarSessaoGoogle = controlePaddock.criarSessaoGoogle(idGoogle,
                 nome, urlFoto, email);
         if (criarSessaoGoogle instanceof ErroServ) {
-            return Response.status(500).entity(criarSessaoGoogle).build();
+            return RespostaHttp.status(500).entity(criarSessaoGoogle).build();
         } else {
-            return Response.status(200).entity(criarSessaoGoogle).build();
+            return RespostaHttp.status(200).entity(criarSessaoGoogle).build();
         }
     }
 
-    @GET
-    @Path("/criarSessaoVisitante")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response criarSessaoVisitante() {
-        return Response.status(200)
+    public RespostaHttp criarSessaoVisitante() {
+        return RespostaHttp.status(200)
                 .entity(controlePaddock.criarSessaoVisitante()).build();
     }
 
-    @GET
-    @Path("/criarSessaoNome")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response criarSessaoNome(
-            @HeaderParam("nome") String nome) {
-        Object criarSessaoNome = controlePaddock.criarSessaoNome(
-                nome);
+    public RespostaHttp criarSessaoNome(String nome) {
+        Object criarSessaoNome = controlePaddock.criarSessaoNome(nome);
         if (criarSessaoNome instanceof ErroServ) {
-            return Response.status(500).entity(criarSessaoNome).build();
+            return RespostaHttp.status(500).entity(criarSessaoNome).build();
         } else {
-            return Response.status(200).entity(criarSessaoNome).build();
+            return RespostaHttp.status(200).entity(criarSessaoNome).build();
         }
     }
 
-    @GET
-    @Compress
-    @Path("/circuito")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response circuito(@QueryParam("nomeCircuito") String nomeCircuito) {
+    public RespostaHttp circuito(String nomeCircuito) {
         Logger.logar("String nomeCircuito " + nomeCircuito);
         Circuito circuito;
         try {
@@ -167,99 +139,67 @@ public class LetsRace {
         } catch (Exception e) {
             Logger.logarExept(e);
             ErroServ erroServ = new ErroServ(e);
-            return Response.status(500).entity(erroServ)
-                    .type(MediaType.APPLICATION_JSON).build();
+            return RespostaHttp.status(500).entity(erroServ)
+                    .tipo(APPLICATION_JSON).build();
         }
         if (circuito == null) {
-            return Response.status(404).build();
+            return RespostaHttp.status(404).build();
         }
-        return Response.status(200).entity(circuito).build();
+        return RespostaHttp.status(200).entity(circuito).build();
     }
 
-    @GET
-    @Compress
-    @Path("/circuitoClassificacao/{arquivoCircuito}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response circuitoClassificacao(
-            @PathParam("arquivoCircuito") String arquivoCircuito) {
-        return Response.status(200)
+    public RespostaHttp circuitoClassificacao(String arquivoCircuito) {
+        return RespostaHttp.status(200)
                 .entity(controlePaddock
                         .obterClassificacaoCircuito(ControleRecursos
                                 .nomeArquivoCircuitoParaPista(arquivoCircuito)))
                 .build();
     }
 
-    @GET
-    @Compress
-    @Path("/temporadaClassificacao/{temporadaSelecionada}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response temporadaClassificacao(
-            @PathParam("temporadaSelecionada") String temporadaSelecionada) {
-        return Response.status(200)
+    public RespostaHttp temporadaClassificacao(String temporadaSelecionada) {
+        return RespostaHttp.status(200)
                 .entity(controlePaddock
                         .obterClassificacaoTemporada(temporadaSelecionada))
                 .build();
     }
 
-    @GET
-    @Compress
-    @Path("/classificacaoGeral")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response classificacaoGeral() {
-        return Response.status(200)
+    public RespostaHttp classificacaoGeral() {
+        return RespostaHttp.status(200)
                 .entity(controlePaddock.obterClassificacaoGeral()).build();
     }
 
-    @GET
-    @Compress
-    @Path("/classificacaoEquipes")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response classificacaoEquipes() {
-        return Response.status(200)
+    public RespostaHttp classificacaoEquipes() {
+        return RespostaHttp.status(200)
                 .entity(controlePaddock.obterClassificacaoEquipes()).build();
     }
 
-    @GET
-    @Compress
-    @Path("/classificacaoCampeonato")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response classificacaoCampeonato() {
-        return Response.status(200)
+    public RespostaHttp classificacaoCampeonato() {
+        return RespostaHttp.status(200)
                 .entity(controlePaddock.obterClassificacaoCampeonato()).build();
     }
 
-    @GET
-    @Path("/sairJogo/{nomeJogo}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response sairJogo(@HeaderParam("token") String token,
-                             @PathParam("nomeJogo") String nomeJogo) {
+    public RespostaHttp sairJogo(String token, String nomeJogo) {
         SessaoCliente sessaoCliente = controlePaddock
                 .obterSessaoPorToken(token);
         if (sessaoCliente == null) {
-            return Response.status(401).build();
+            return RespostaHttp.status(401).build();
         }
         sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
         controlePaddock.sairJogoToken(nomeJogo, token, sessaoCliente);
-        return Response.status(200).build();
+        return RespostaHttp.status(200).build();
     }
 
-    @GET
-    @Compress
-    @Path("/dadosParciais/{nomeJogo}/{idPiloto}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response dadosParciais(@HeaderParam("token") String token,
-                                  @HeaderParam("idioma") String idioma,
-                                  @PathParam("nomeJogo") String nomeJogo,
-                                  @PathParam("idPiloto") String idPiloto) {
+    public RespostaHttp dadosParciais(String token, String idioma,
+                                       String nomeJogo, String idPiloto) {
         SessaoCliente sessaoCliente = controlePaddock
                 .obterSessaoPorToken(token);
         if (sessaoCliente == null) {
-            return Response.status(401).build();
+            return RespostaHttp.status(401).build();
         }
         DadosParciais dadosParciais = controlePaddock.obterDadosParciaisPilotos(
                 nomeJogo, sessaoCliente.getIdUsuario(), idPiloto);
         if (dadosParciais == null) {
-            return Response.status(401).build();
+            return RespostaHttp.status(401).build();
         }
         try {
             dadosParciais.texto = Lang.decodeTextoKey(dadosParciais.texto,
@@ -267,21 +207,15 @@ public class LetsRace {
         } catch (Exception e) {
             Logger.logarExept(e);
         }
-        return Response.status(200).entity(dadosParciais).build();
+        return RespostaHttp.status(200).entity(dadosParciais).build();
     }
 
-    @GET
-    @Compress
-    @Path("/dadosJogo")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response dadosJogo(@HeaderParam("token") String token,
-                              @HeaderParam("idioma") String idioma,
-                              @QueryParam("nomeJogo") String nomeJogo,
-                              @QueryParam("modoCarreira") String modoCarreira) {
+    public RespostaHttp dadosJogo(String token, String idioma,
+                                   String nomeJogo, String modoCarreira) {
         SessaoCliente sessaoCliente = controlePaddock
                 .obterSessaoPorToken(token);
         if (sessaoCliente == null) {
-            return Response.status(401).build();
+            return RespostaHttp.status(401).build();
         }
         DadosJogo dadosJogo = null;
         try {
@@ -314,111 +248,78 @@ public class LetsRace {
         } catch (Exception e) {
             Logger.logarExept(e);
         }
-        return Response.status(200).entity(dadosJogo).build();
+        return RespostaHttp.status(200).entity(dadosJogo).build();
     }
 
-    @GET
-    @Path("/obterJogos")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response obterJogos() {
-        return Response.status(200).entity(controlePaddock.obterJogos())
+    public RespostaHttp obterJogos() {
+        return RespostaHttp.status(200).entity(controlePaddock.obterJogos())
                 .build();
     }
 
-    @GET
-    @Path("/atualizarDadosVisao")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response atualizarDadosVisao() {
-        return Response.status(200)
+    public RespostaHttp atualizarDadosVisao() {
+        return RespostaHttp.status(200)
                 .entity(controlePaddock.atualizarDadosVisao()).build();
     }
 
-    @GET
-    @Path("/verificaServico")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response verificaServico() {
-        return Response.status(200).entity("ok").build();
+    public RespostaHttp verificaServico() {
+        return RespostaHttp.status(200).entity("ok").build();
     }
 
-    @GET
-    @Compress
-    @Path("/jogar/{temporada}/{idPiloto}/{circuito}/{numVoltas}/{tipoPneu}/{combustivel}/{asa}/{modoCarreira}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response jogar(@HeaderParam("token") String token,
-                          @HeaderParam("idioma") String idioma,
-                          @PathParam("temporada") String temporada,
-                          @PathParam("idPiloto") String idPiloto,
-                          @PathParam("circuito") String circuito,
-                          @PathParam("numVoltas") String numVoltas,
-                          @PathParam("tipoPneu") String tipoPneu,
-                          @PathParam("combustivel") String combustivel,
-                          @PathParam("asa") String asa,
-                          @PathParam("modoCarreira") String modoCarreira) {
+    public RespostaHttp jogar(String token, String idioma, String temporada,
+                               String idPiloto, String circuito, String numVoltas,
+                               String tipoPneu, String combustivel, String asa,
+                               String modoCarreira) {
         SessaoCliente sessaoCliente = controlePaddock
                 .obterSessaoPorToken(token);
         if (sessaoCliente == null) {
-            return Response.status(401).build();
+            return RespostaHttp.status(401).build();
         }
         sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
         Object jogar = controlePaddock.jogar(temporada, circuito, idPiloto,
                 numVoltas, tipoPneu, combustivel, asa, sessaoCliente,
                 modoCarreira);
-        Response processsaMensagem = processsaMensagem(jogar, idioma);
+        RespostaHttp processsaMensagem = processsaMensagem(jogar, idioma);
         if (processsaMensagem != null) {
             return processsaMensagem;
         } else {
-            return Response.status(200).entity(jogar).build();
+            return RespostaHttp.status(200).entity(jogar).build();
         }
     }
 
-    @GET
-    @Compress
-    @Path("/jogarCampeonato/{tipoPneu}/{combustivel}/{asa}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response jogarCampeonato(@HeaderParam("token") String token,
-                                    @HeaderParam("idioma") String idioma,
-                                    @PathParam("tipoPneu") String tipoPneu,
-                                    @PathParam("combustivel") String combustivel,
-                                    @PathParam("asa") String asa) {
+    public RespostaHttp jogarCampeonato(String token, String idioma,
+                                         String tipoPneu, String combustivel, String asa) {
         SessaoCliente sessaoCliente = controlePaddock
                 .obterSessaoPorToken(token);
         if (sessaoCliente == null) {
-            return Response.status(401).build();
+            return RespostaHttp.status(401).build();
         }
         sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
         Object jogar = controlePaddock.jogarCampeonato(tipoPneu, combustivel,
                 asa, sessaoCliente);
-        Response processsaMensagem = processsaMensagem(jogar, idioma);
+        RespostaHttp processsaMensagem = processsaMensagem(jogar, idioma);
         if (processsaMensagem != null) {
             return processsaMensagem;
         } else {
-            return Response.status(200).entity(jogar).build();
+            return RespostaHttp.status(200).entity(jogar).build();
         }
     }
 
-    @GET
-    @Path("/circuitos")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response circuitos() {
+    public RespostaHttp circuitos() {
         List<CircuitosDefault> circuitosDefauts;
         try {
             circuitosDefauts = carregadorRecursos.carregarCircuitosDefaults();
             List<CircuitosDefault> shuffle = new ArrayList<>(circuitosDefauts);
             Collections.shuffle(shuffle);
-            return Response.status(200).entity(shuffle).build();
+            return RespostaHttp.status(200).entity(shuffle).build();
         } catch (Exception e) {
             Logger.topExecpts(e);
-            return Response.status(500)
+            return RespostaHttp.status(500)
                     .entity(new ErroServ(e).obterErroFormatado())
-                    .type(MediaType.APPLICATION_JSON).build();
+                    .tipo(APPLICATION_JSON).build();
         }
-
     }
 
-    @GET
-    @Path("/circuitoJpg/{nmCircuito}")
-    @Produces("image/jpg")
-    public Response circuitoJpg(@PathParam("nmCircuito") String nmCircuito) {
+    public RespostaHttp circuitoJpg(String nmCircuito) {
         try {
             BufferedImage buffer;
             if (Global.MODO_HOMENAGEM && nmCircuito.endsWith(".jpg")) {
@@ -431,26 +332,23 @@ public class LetsRace {
                 buffer = CarregadorRecursos.carregaBufferedImage("circuitos/" + nmCircuito);
             }
             if (buffer == null) {
-                return Response.status(200).entity("null").build();
+                return RespostaHttp.status(200).entity("null").build();
             }
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(buffer, "jpg", baos);
             byte[] imageData = baos.toByteArray();
-            return Response.ok(new ByteArrayInputStream(imageData))
+            return RespostaHttp.status(200).entity(imageData)
                     .header("Cache-Control", "max-age=120")
                     .build();
         } catch (Exception e) {
             Logger.topExecpts(e);
-            return Response.status(500)
+            return RespostaHttp.status(500)
                     .entity(new ErroServ(e).obterErroFormatado())
-                    .type(MediaType.APPLICATION_JSON).build();
+                    .tipo(APPLICATION_JSON).build();
         }
     }
 
-    @GET
-    @Path("/circuitoBg/{nmCircuito}")
-    @Produces("image/jpg")
-    public Response circuitoBg(@PathParam("nmCircuito") String nmCircuito) {
+    public RespostaHttp circuitoBg(String nmCircuito) {
         try {
             nmCircuito = nmCircuito.replace("jpg", "flmane");
             Circuito circuito = CarregadorRecursos.carregarCircuito(nmCircuito);
@@ -465,188 +363,154 @@ public class LetsRace {
             PainelCircuito painelCircuito = new PainelCircuito(circuito, jogo);
             BufferedImage bg = painelCircuito.desenhaCircuito();
             if (bg == null) {
-                return Response.status(200).entity("null").build();
+                return RespostaHttp.status(200).entity("null").build();
             }
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(bg, "jpg", baos);
             byte[] imageData = baos.toByteArray();
-            return Response.status(200).entity(imageData).build();
+            return RespostaHttp.status(200).entity(imageData).build();
         } catch (Exception e) {
             Logger.topExecpts(e);
-            return Response.status(500)
+            return RespostaHttp.status(500)
                     .entity(new ErroServ(e).obterErroFormatado())
-                    .type(MediaType.APPLICATION_JSON).build();
+                    .tipo(APPLICATION_JSON).build();
         }
     }
 
-    @GET
-    @Path("/circuitoMini/{nmCircuito}")
-    @Produces("image/png")
-    public Response circuitoMini(@PathParam("nmCircuito") String nmCircuito) {
+    public RespostaHttp circuitoMini(String nmCircuito) {
         try {
             Circuito circuito = CarregadorRecursos.carregarCircuito(nmCircuito);
             BufferedImage mini = circuito.desenhaMiniCircuito();
             if (mini == null) {
-                return Response.status(200).entity("null").build();
+                return RespostaHttp.status(200).entity("null").build();
             }
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(mini, "png", baos);
             byte[] imageData = baos.toByteArray();
-            return Response.status(200).entity(imageData).build();
+            return RespostaHttp.status(200).entity(imageData).build();
         } catch (Exception e) {
             Logger.topExecpts(e);
-            return Response.status(500)
+            return RespostaHttp.status(500)
                     .entity(new ErroServ(e).obterErroFormatado())
-                    .type(MediaType.APPLICATION_JSON).build();
+                    .tipo(APPLICATION_JSON).build();
         }
     }
 
-    @GET
-    @Path("/objetoPista/{nmCircuito}/{indice}")
-    @Produces("image/png")
-    public Response objetoPista(@PathParam("nmCircuito") String nmCircuito,
-                                @PathParam("indice") String indice) {
+    public RespostaHttp objetoPista(String nmCircuito, String indice) {
         try {
             Circuito circuito = CarregadorRecursos.carregarCircuito(nmCircuito);
             BufferedImage carroCima = circuito.desenhaObjetoPista(indice);
             if (carroCima == null) {
-                return Response.status(200).entity("null").build();
+                return RespostaHttp.status(200).entity("null").build();
             }
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(carroCima, "png", baos);
             byte[] imageData = baos.toByteArray();
-            return Response.status(200).entity(imageData).build();
+            return RespostaHttp.status(200).entity(imageData).build();
         } catch (Exception e) {
             Logger.topExecpts(e);
-            return Response.status(500)
+            return RespostaHttp.status(500)
                     .entity(new ErroServ(e).obterErroFormatado())
-                    .type(MediaType.APPLICATION_JSON).build();
+                    .tipo(APPLICATION_JSON).build();
         }
     }
 
-    @GET
-    @Path("/carroCima/{temporada}/{carro}")
-    @Produces("image/png")
-    public Response carroCimaTemporadaCarro(
-            @PathParam("temporada") String temporada,
-            @PathParam("carro") String carro) {
+    public RespostaHttp carroCimaTemporadaCarro(String temporada, String carro) {
         try {
             BufferedImage carroCima = controlePaddock
                     .carroCimaTemporadaCarro(temporada, carro);
             if (carroCima == null) {
-                return Response.status(200).entity("null").build();
+                return RespostaHttp.status(200).entity("null").build();
             }
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(carroCima, "png", baos);
             byte[] imageData = baos.toByteArray();
-            return Response.ok(new ByteArrayInputStream(imageData)).build();
+            return RespostaHttp.status(200).entity(imageData).build();
         } catch (Exception e) {
             Logger.topExecpts(e);
-            return Response.status(500)
+            return RespostaHttp.status(500)
                     .entity(new ErroServ(e).obterErroFormatado())
-                    .type(MediaType.APPLICATION_JSON).build();
+                    .tipo(APPLICATION_JSON).build();
         }
     }
 
-    @GET
-    @Path("/carroCimaSemAreofolio/{temporada}/{carro}")
-    @Produces("image/png")
-    public Response carroCimaSemAreofolioTemporadaCarro(
-            @PathParam("temporada") String temporada,
-            @PathParam("carro") String carro) {
+    public RespostaHttp carroCimaSemAreofolioTemporadaCarro(String temporada, String carro) {
         try {
             BufferedImage carroCima = controlePaddock
                     .carroCimaSemAreofolioTemporadaCarro(temporada, carro);
             if (carroCima == null) {
-                return Response.status(200).entity("null").build();
+                return RespostaHttp.status(200).entity("null").build();
             }
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(carroCima, "png", baos);
             byte[] imageData = baos.toByteArray();
-            return Response.ok(new ByteArrayInputStream(imageData)).build();
+            return RespostaHttp.status(200).entity(imageData).build();
         } catch (Exception e) {
             Logger.topExecpts(e);
-            return Response.status(500)
+            return RespostaHttp.status(500)
                     .entity(new ErroServ(e).obterErroFormatado())
-                    .type(MediaType.APPLICATION_JSON).build();
+                    .tipo(APPLICATION_JSON).build();
         }
     }
 
-    @GET
-    @Path("/capacete/{temporada}/{piloto}")
-    @Produces("image/png")
-    public Response capaceteTemporadaPiloto(
-            @PathParam("temporada") String temporada,
-            @PathParam("piloto") String piloto) {
+    public RespostaHttp capaceteTemporadaPiloto(String temporada, String piloto) {
         try {
             BufferedImage capacete = controlePaddock
                     .capaceteTemporadaPiloto(temporada, piloto);
             if (capacete == null) {
-                return Response.status(200).entity("null").build();
+                return RespostaHttp.status(200).entity("null").build();
             }
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(capacete, "png", baos);
             byte[] imageData = baos.toByteArray();
-            return Response.ok(new ByteArrayInputStream(imageData)).build();
+            return RespostaHttp.status(200).entity(imageData).build();
         } catch (Exception e) {
             Logger.topExecpts(e);
-            return Response.status(500)
+            return RespostaHttp.status(500)
                     .entity(new ErroServ(e).obterErroFormatado())
-                    .type(MediaType.APPLICATION_JSON).build();
+                    .tipo(APPLICATION_JSON).build();
         }
     }
 
-    @GET
-    @Path("/carroLado/{temporada}/{carro}")
-    @Produces("image/png")
-    public Response carroLadoTemporadaCarro(
-            @PathParam("temporada") String temporada,
-            @PathParam("carro") String carro) {
+    public RespostaHttp carroLadoTemporadaCarro(String temporada, String carro) {
         try {
             BufferedImage carroCima = controlePaddock
                     .carroLadoTemporadaCarro(temporada, carro);
             if (carroCima == null) {
-                return Response.status(200).entity("null").build();
+                return RespostaHttp.status(200).entity("null").build();
             }
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(carroCima, "png", baos);
             byte[] imageData = baos.toByteArray();
-            return Response.ok(new ByteArrayInputStream(imageData)).build();
+            return RespostaHttp.status(200).entity(imageData).build();
         } catch (Exception e) {
             Logger.topExecpts(e);
-            return Response.status(500)
+            return RespostaHttp.status(500)
                     .entity(new ErroServ(e).obterErroFormatado())
-                    .type(MediaType.APPLICATION_JSON).build();
+                    .tipo(APPLICATION_JSON).build();
         }
     }
 
-    @GET
-    @Path("/png/{recurso}")
-    @Produces("image/png")
-    public Response png(@PathParam("recurso") String recurso) {
+    public RespostaHttp png(String recurso) {
         try {
             BufferedImage buffer = CarregadorRecursos
                     .carregaBufferedImage("png/" + recurso + ".png");
             if (buffer == null) {
-                return Response.status(200).entity("null").build();
+                return RespostaHttp.status(200).entity("null").build();
             }
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(buffer, "png", baos);
             byte[] imageData = baos.toByteArray();
-            return Response.ok(new ByteArrayInputStream(imageData)).build();
+            return RespostaHttp.status(200).entity(imageData).build();
         } catch (Exception e) {
             Logger.topExecpts(e);
-            return Response.status(500)
+            return RespostaHttp.status(500)
                     .entity(new ErroServ(e).obterErroFormatado())
-                    .type(MediaType.APPLICATION_JSON).build();
+                    .tipo(APPLICATION_JSON).build();
         }
     }
 
-    @GET
-    @Path("/png/{recurso}/{trasnparencia}")
-    @Produces("image/png")
-    public Response png(@PathParam("recurso") String recurso,
-                        @PathParam("trasnparencia") String trasnparencia) {
+    public RespostaHttp png(String recurso, String trasnparencia) {
         try {
             BufferedImage buffer = ImageUtil.geraTransparenciaAlpha(
                     CarregadorRecursos.carregaBufferedImage("png/" + recurso + ".png"),
@@ -654,30 +518,21 @@ public class LetsRace {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(buffer, "png", baos);
             byte[] imageData = baos.toByteArray();
-            return Response.ok(new ByteArrayInputStream(imageData)).build();
+            return RespostaHttp.status(200).entity(imageData).build();
         } catch (Exception e) {
             Logger.topExecpts(e);
-            return Response.status(500)
+            return RespostaHttp.status(500)
                     .entity(new ErroServ(e).obterErroFormatado())
-                    .type(MediaType.APPLICATION_JSON).build();
+                    .tipo(APPLICATION_JSON).build();
         }
     }
 
-    @GET
-    @Compress
-    @Path("/temporadasPilotos")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response temporadasPilotos() {
-        return Response.status(200)
+    public RespostaHttp temporadasPilotos() {
+        return RespostaHttp.status(200)
                 .entity(carregadorRecursos.carregarTemporadasPilotos()).build();
     }
 
-    @GET
-    @Compress
-    @Path("/temporadas/{temporada}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response temporadasDefaults(
-            @PathParam("temporada") String temporada) {
+    public RespostaHttp temporadasDefaults(String temporada) {
         TemporadasDefault temporadasDefault;
         try {
             temporada = "t" + temporada;
@@ -686,36 +541,27 @@ public class LetsRace {
             temporadasDefault = carregarTemporadasPilotosDefauts.get(temporada);
         } catch (Exception e) {
             Logger.topExecpts(e);
-            return Response.status(500)
+            return RespostaHttp.status(500)
                     .entity(new ErroServ(e).obterErroFormatado())
-                    .type(MediaType.APPLICATION_JSON).build();
+                    .tipo(APPLICATION_JSON).build();
         }
-        return Response.status(200).entity(temporadasDefault).build();
+        return RespostaHttp.status(200).entity(temporadasDefault).build();
     }
 
-    @SuppressWarnings("static-access")
-    @GET
-    @Compress
-    @Path("/temporadas")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response temporadas() {
+    public RespostaHttp temporadas() {
         Vector<String> carregarTemporadas;
         try {
             carregarTemporadas = carregadorRecursos.carregarTemporadas();
         } catch (Exception e) {
             Logger.topExecpts(e);
-            return Response.status(500)
+            return RespostaHttp.status(500)
                     .entity(new ErroServ(e).obterErroFormatado())
-                    .type(MediaType.APPLICATION_JSON).build();
+                    .tipo(APPLICATION_JSON).build();
         }
-        return Response.status(200).entity(carregarTemporadas).build();
+        return RespostaHttp.status(200).entity(carregarTemporadas).build();
     }
 
-    @GET
-    @Compress
-    @Path("/sobre")
-    @Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
-    public Response sobre() {
+    public RespostaHttp sobre() {
         List<String> carregarCreditosJogo = CarregadorRecursos
                 .carregarCreditosJogo();
         StringBuilder buffer = new StringBuilder();
@@ -725,28 +571,22 @@ public class LetsRace {
             buffer.append("<br>");
             buffer.append(string);
         }
-        return Response.status(200).entity(buffer.toString()).build();
+        return RespostaHttp.status(200).entity(buffer.toString()).build();
     }
 
     /**
      * potencia : GIRO_MIN , GIRO_NOR , GIRO_MAX
      */
-    @GET
-    @Compress
-    @Path("/potenciaMotor/{potencia}/{idPiloto}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response potenciaMotor(@HeaderParam("token") String token,
-                                  @PathParam("potencia") String potencia,
-                                  @PathParam("idPiloto") String idPiloto) {
+    public RespostaHttp potenciaMotor(String token, String potencia, String idPiloto) {
         SessaoCliente sessaoCliente = controlePaddock
                 .obterSessaoPorToken(token);
         if (sessaoCliente == null) {
-            return Response.status(401).build();
+            return RespostaHttp.status(401).build();
         }
         sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
         ControleJogosServer controleJogosServer = controlePaddock
                 .getControleJogosServer();
-        return Response
+        return RespostaHttp
                 .status(200).entity(controleJogosServer
                         .mudarGiroMotor(sessaoCliente, idPiloto, potencia))
                 .build();
@@ -755,115 +595,81 @@ public class LetsRace {
     /**
      * agresividade : LENTO , NORMAL , AGRESSIVO
      */
-    @GET
-    @Compress
-    @Path("/agressividadePiloto/{agresividade}/{idPiloto}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response agressividadePiloto(@HeaderParam("token") String token,
-                                        @PathParam("agresividade") String agresividade,
-                                        @PathParam("idPiloto") String idPiloto) {
+    public RespostaHttp agressividadePiloto(String token, String agresividade, String idPiloto) {
         SessaoCliente sessaoCliente = controlePaddock
                 .obterSessaoPorToken(token);
         if (sessaoCliente == null) {
-            return Response.status(401).build();
+            return RespostaHttp.status(401).build();
         }
         sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
         ControleJogosServer controleJogosServer = controlePaddock
                 .getControleJogosServer();
-        return Response.status(200)
+        return RespostaHttp.status(200)
                 .entity(controleJogosServer.mudarAgressividadePiloto(
                         sessaoCliente, idPiloto, agresividade))
                 .build();
     }
 
-    @GET
-    @Compress
-    @Path("/tracadoPiloto/{tracado}/{idPiloto}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response tracadoPiloto(@HeaderParam("token") String token,
-                                  @PathParam("tracado") String tracado,
-                                  @PathParam("idPiloto") String idPiloto) {
+    public RespostaHttp tracadoPiloto(String token, String tracado, String idPiloto) {
         SessaoCliente sessaoCliente = controlePaddock
                 .obterSessaoPorToken(token);
         if (sessaoCliente == null) {
-            return Response.status(401).build();
+            return RespostaHttp.status(401).build();
         }
         sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
         ControleJogosServer controleJogosServer = controlePaddock
                 .getControleJogosServer();
-        return Response
+        return RespostaHttp
                 .status(200).entity(controleJogosServer
                         .mudarTracadoPiloto(sessaoCliente, idPiloto, tracado))
                 .build();
     }
 
-    @GET
-    @Compress
-    @Path("/drsPiloto/{idPiloto}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response drsPiloto(@HeaderParam("token") String token,
-                              @PathParam("idPiloto") String idPiloto) {
+    public RespostaHttp drsPiloto(String token, String idPiloto) {
         SessaoCliente sessaoCliente = controlePaddock
                 .obterSessaoPorToken(token);
         if (sessaoCliente == null) {
-            return Response.status(401).build();
+            return RespostaHttp.status(401).build();
         }
         sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
         ControleJogosServer controleJogosServer = controlePaddock
                 .getControleJogosServer();
-        return Response.status(200)
+        return RespostaHttp.status(200)
                 .entity(controleJogosServer.mudarDrs(sessaoCliente, idPiloto))
                 .build();
     }
 
-    @GET
-    @Compress
-    @Path("/ersPiloto/{idPiloto}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response ersPiloto(@HeaderParam("token") String token,
-                              @PathParam("idPiloto") String idPiloto) {
+    public RespostaHttp ersPiloto(String token, String idPiloto) {
         SessaoCliente sessaoCliente = controlePaddock
                 .obterSessaoPorToken(token);
         if (sessaoCliente == null) {
-            return Response.status(401).build();
+            return RespostaHttp.status(401).build();
         }
         sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
         ControleJogosServer controleJogosServer = controlePaddock
                 .getControleJogosServer();
-        return Response.status(200)
+        return RespostaHttp.status(200)
                 .entity(controleJogosServer.mudarErs(sessaoCliente, idPiloto))
                 .build();
     }
 
-    @GET
-    @Compress
-    @Path("/boxPiloto/{idPiloto}/{ativa}/{pneu}/{combustivel}/{asa}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response boxPiloto(@HeaderParam("token") String token,
-                              @PathParam("idPiloto") String idPiloto,
-                              @PathParam("ativa") Boolean ativa, @PathParam("pneu") String pneu,
-                              @PathParam("combustivel") Integer combustivel,
-                              @PathParam("asa") String asa) {
+    public RespostaHttp boxPiloto(String token, String idPiloto, Boolean ativa,
+                                   String pneu, Integer combustivel, String asa) {
         SessaoCliente sessaoCliente = controlePaddock
                 .obterSessaoPorToken(token);
         if (sessaoCliente == null) {
-            return Response.status(401).build();
+            return RespostaHttp.status(401).build();
         }
         sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
         ControleJogosServer controleJogosServer = controlePaddock
                 .getControleJogosServer();
-        ;
-        return Response.status(200)
+        return RespostaHttp.status(200)
                 .entity(controleJogosServer.boxPiloto(sessaoCliente, idPiloto,
                         ativa, pneu, combustivel, asa))
                 .build();
     }
 
-    @GET
-    @Compress
-    @Path("/lang/{lang}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response lang(@PathParam("lang") String lang) {
+    public RespostaHttp lang(String lang) {
         try {
             PropertyResourceBundle bundle = Lang.carregraBundleMensagens(lang);
             Set<String> keySet = bundle.keySet();
@@ -877,75 +683,60 @@ public class LetsRace {
             Map<String, LinkedList> retorno = new HashMap<String, LinkedList>();
             retorno.put("keys", keys);
             retorno.put("values", values);
-            return Response.status(200).entity(retorno).build();
+            return RespostaHttp.status(200).entity(retorno).build();
         } catch (Exception e) {
             Logger.topExecpts(e);
-            return Response.status(500)
+            return RespostaHttp.status(500)
                     .entity(new ErroServ(e).obterErroFormatado())
-                    .type(MediaType.APPLICATION_JSON).build();
+                    .tipo(APPLICATION_JSON).build();
         }
     }
 
-    @GET
-    @Compress
-    @Path("/equipe")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response equipe(@HeaderParam("token") String token,
-                           @HeaderParam("idioma") String idioma) {
+    public RespostaHttp equipe(String token, String idioma) {
         SessaoCliente sessaoCliente = controlePaddock
                 .obterSessaoPorToken(token);
         if (sessaoCliente == null) {
-            return Response.status(401).build();
+            return RespostaHttp.status(401).build();
         }
         sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
         ControleJogosServer controleJogosServer = controlePaddock
                 .getControleJogosServer();
         Object ret = controleJogosServer.equipe(sessaoCliente);
         if (ret == null) {
-            return Response.status(204).build();
+            return RespostaHttp.status(204).build();
         }
-        Response erro = processsaMensagem(ret, idioma);
+        RespostaHttp erro = processsaMensagem(ret, idioma);
         if (erro != null) {
             return erro;
         }
-        return Response.status(200).entity(ret).build();
+        return RespostaHttp.status(200).entity(ret).build();
     }
 
-    @GET
-    @Compress
-    @Path("/equipePilotoCarro")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response equipePilotoCarro(@HeaderParam("token") String token,
-                                      @HeaderParam("idioma") String idioma) {
+    public RespostaHttp equipePilotoCarro(String token, String idioma) {
         SessaoCliente sessaoCliente = controlePaddock
                 .obterSessaoPorToken(token);
         if (sessaoCliente == null) {
-            return Response.status(401).build();
+            return RespostaHttp.status(401).build();
         }
         sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
         ControleJogosServer controleJogosServer = controlePaddock
                 .getControleJogosServer();
         Object ret = controleJogosServer.equipePilotoCarro(sessaoCliente);
         if (ret == null) {
-            return Response.status(204).build();
+            return RespostaHttp.status(204).build();
         }
-        Response erro = processsaMensagem(ret, idioma);
+        RespostaHttp erro = processsaMensagem(ret, idioma);
         if (erro != null) {
             return erro;
         }
-        return Response.status(200).entity(ret).build();
+        return RespostaHttp.status(200).entity(ret).build();
     }
 
-    @POST
-    @Compress
-    @Path("/equipe")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response gravarEquipe(@HeaderParam("token") String token,
-                                 @HeaderParam("idioma") String idioma, CarreiraDadosSrv equipe) {
+    public RespostaHttp gravarEquipe(String token, String idioma, CarreiraDadosSrv equipe) {
         SessaoCliente sessaoCliente = controlePaddock
                 .obterSessaoPorToken(token);
         if (sessaoCliente == null) {
-            return Response.status(401).build();
+            return RespostaHttp.status(401).build();
         }
         sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
         ControleJogosServer controleJogosServer = controlePaddock
@@ -953,21 +744,16 @@ public class LetsRace {
         Object ret = controleJogosServer.gravarEquipe(sessaoCliente, idioma,
                 equipe);
         if (ret.equals(new MsgSrv(Lang.msg("250")))) {
-            return Response.status(200).entity(ret).build();
+            return RespostaHttp.status(200).entity(ret).build();
         }
         return processsaMensagem(ret, idioma);
     }
 
-    @POST
-    @Compress
-    @Path("/campeonato")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response gravarCampeonato(@HeaderParam("token") String token,
-                                     @HeaderParam("idioma") String idioma, CampeonatoSrv campeonato) {
+    public RespostaHttp gravarCampeonato(String token, String idioma, CampeonatoSrv campeonato) {
         SessaoCliente sessaoCliente = controlePaddock
                 .obterSessaoPorToken(token);
         if (sessaoCliente == null) {
-            return Response.status(401).build();
+            return RespostaHttp.status(401).build();
         }
         sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
         Object ret = null;
@@ -977,45 +763,34 @@ public class LetsRace {
             Logger.logarExept(e);
         }
         if (ret.equals(new MsgSrv(Lang.msg("campeonatoCriado")))) {
-            return Response.status(200).entity(ret).build();
+            return RespostaHttp.status(200).entity(ret).build();
         }
         return processsaMensagem(ret, idioma);
     }
 
-    @POST
-    @Compress
-    @Path("/finalizaCampeonato")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response finalizaCampeonato(@HeaderParam("token") String token,
-                                       @HeaderParam("idioma") String idioma, CampeonatoTO campeonato) {
+    public RespostaHttp finalizaCampeonato(String token, String idioma, CampeonatoTO campeonato) {
         SessaoCliente sessaoCliente = controlePaddock
                 .obterSessaoPorToken(token);
         if (sessaoCliente == null) {
-            return Response.status(401).build();
+            return RespostaHttp.status(401).build();
         }
         sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
-        Object ret = null;
         try {
-            ret = controlePaddock.finalizaCampeonato(campeonato, sessaoCliente.getIdUsuario());
+            controlePaddock.finalizaCampeonato(campeonato, sessaoCliente.getIdUsuario());
         } catch (Exception e) {
             Logger.logarExept(e);
         }
-        return Response.status(200).entity(campeonato).build();
+        return RespostaHttp.status(200).entity(campeonato).build();
     }
 
-    @GET
-    @Compress
-    @Path("/campeonato")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response campeonato(@HeaderParam("token") String token,
-                               @HeaderParam("idioma") String idioma) {
+    public RespostaHttp campeonato(String token, String idioma) {
         SessaoCliente sessaoCliente = controlePaddock
                 .obterSessaoPorToken(token);
         if (sessaoCliente == null) {
-            return Response.status(401).build();
+            return RespostaHttp.status(401).build();
         }
         if (sessaoCliente.isGuest()) {
-            return Response.status(403).build();
+            return RespostaHttp.status(403).build();
         }
         sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 
@@ -1026,19 +801,13 @@ public class LetsRace {
             Logger.logarExept(e);
         }
         if (campeonato == null) {
-            return Response.status(204).build();
+            return RespostaHttp.status(204).build();
         }
 
-        return Response.status(200).entity(campeonato).build();
+        return RespostaHttp.status(200).entity(campeonato).build();
     }
 
-    @GET
-    @Compress
-    @Path("/campeonato/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response campeonatoPorId(@PathParam("id") String id,
-                                    @HeaderParam("token") String token,
-                                    @HeaderParam("idioma") String idioma) {
+    public RespostaHttp campeonatoPorId(String id, String token, String idioma) {
         CampeonatoTO campeonato = null;
         try {
             campeonato = controlePaddock.obterCampeonatoId(id);
@@ -1046,9 +815,9 @@ public class LetsRace {
             Logger.logarExept(e);
         }
         if (campeonato == null) {
-            return Response.status(204).build();
+            return RespostaHttp.status(204).build();
         }
-        return Response.status(200).entity(campeonato).build();
+        return RespostaHttp.status(200).entity(campeonato).build();
     }
 
 }
