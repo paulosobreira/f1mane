@@ -635,6 +635,22 @@ public class Circuito implements Serializable {
         this.objetosCenario = objetosCenario;
     }
 
+    /**
+     * Libera da memória os objetos deste circuito usados exclusivamente
+     * para desenho ({@code objetosCenario} — elementos decorativos de
+     * cenário/{@code ObjetoLivre}, consumidos só por
+     * {@code DesenhoProceduralCircuito}/{@code PainelCircuito}), preservando
+     * todos os campos efetivamente lidos pela mecânica de corrida
+     * ({@code pistaFull}/{@code boxFull}/{@code pistaKey}/{@code boxKey},
+     * {@code objetos} — Escapada/Transparencia, usado por
+     * {@code ControleEscapada} — e os demais campos escalares). Chamado
+     * logo após a imagem de fundo deste circuito ser gravada em disco, tanto
+     * na pré-geração do boot headless quanto no fallback sob demanda.
+     */
+    public void liberarObjetosDesenho() {
+        objetosCenario = null;
+    }
+
     public Color getCorFundo() {
         return corFundo;
     }
