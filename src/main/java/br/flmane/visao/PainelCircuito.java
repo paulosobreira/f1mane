@@ -4275,7 +4275,7 @@ public class PainelCircuito {
 
     private void desenhaContadorVoltas(Graphics2D g2d) {
         g2d.setColor(transpMenus);
-        String txt = Util.substVogais(circuito.getNome()) + " " + controleJogo.getNumVoltaAtual() + "/"
+        String txt = circuito.getNome() + " " + controleJogo.getNumVoltaAtual() + "/"
                 + controleJogo.totalVoltasCorrida();
 
         int largura = 0;

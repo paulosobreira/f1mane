@@ -107,7 +107,12 @@ public class Circuito implements Serializable {
         this.usaBkg = usaBkg;
     }
 
-    public void setNome(String nome) {
+    /**
+     * Sem o prefixo "set" de propósito: nome de exibição do circuito vive em
+     * {@code circuitos.properties}, não é mais persistido no XML (ver
+     * {@link br.flmane.recursos.CarregadorRecursos#nomeExibicaoCircuito}).
+     */
+    public void definirNomePorConvencao(String nome) {
         this.nome = nome;
     }
 
@@ -536,7 +541,6 @@ public class Circuito implements Serializable {
      */
     public Circuito copiaParaArquivoMetadados() {
         Circuito copia = new Circuito();
-        copia.setNome(nome);
         copia.setNoite(noite);
         copia.setUsaBkg(usaBkg);
         copia.setProbalidadeChuva(probalidadeChuva);

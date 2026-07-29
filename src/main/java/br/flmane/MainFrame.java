@@ -28,7 +28,6 @@ import br.flmane.controles.InterfaceJogo;
 import br.flmane.entidades.Campeonato;
 import br.flmane.servidor.applet.AppletPaddock;
 import br.flmane.recursos.idiomas.Lang;
-import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Created on 20/06/2007
@@ -442,9 +441,6 @@ public class MainFrame extends JFrame {
     public static void main(String[] args) throws IOException {
         if (args != null && args.length > 0) {
             for (int i = 0; i < args.length; i++) {
-                if ("real".equals(args[i])) {
-                    Util.substVogais = false;
-                }
                 if ("fast".equals(args[i])) {
                     Global.setarHints = false;
                 }

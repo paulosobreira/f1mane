@@ -6,7 +6,6 @@ import br.flmane.servidor.JogoServidor;
 import br.flmane.servidor.entidades.TOs.TravadaRoda;
 import br.nnpe.Global;
 import br.nnpe.Logger;
-import br.nnpe.Util;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -153,17 +152,6 @@ public abstract class ControleRecursos {
         marcasPneuGeradas.clear();
         circuito = CarregadorRecursos.carregarCircuito(circuitoStr);
         circuito.vetorizarPista();
-        String nome = "";
-        for (Iterator<String> iterator = circuitos.keySet().iterator(); iterator
-                .hasNext(); ) {
-            String key = iterator.next();
-            if (circuitoStr.equals(circuitos.get(key))) {
-                nome = key;
-                break;
-            }
-
-        }
-        circuito.setNome(nome);
         nosDaPista = circuito.getPistaFull();
         nosDoBox = circuito.getBoxFull();
         circuito.gerarObjetosNoTransparencia();
@@ -473,18 +461,13 @@ public abstract class ControleRecursos {
         return null;
     }
 
-    public static String nomeCircuitoParaArquivoCircuito(String nomeCircuito,
-                                                         boolean substVogais) {
+    public static String nomeCircuitoParaArquivoCircuito(String nomeCircuito) {
         Map<String, String> carregarCircuitos = ControleRecursos
                 .carregarCircuitos();
         for (Iterator iterator = carregarCircuitos.keySet().iterator(); iterator
                 .hasNext(); ) {
             String nmCircuito = (String) iterator.next();
-            String compare = nmCircuito;
-            if (substVogais) {
-                compare = Util.substVogais(nmCircuito);
-            }
-            if (compare.equals(nomeCircuito)) {
+            if (nmCircuito.equals(nomeCircuito)) {
                 return carregarCircuitos.get(nmCircuito);
             }
         }

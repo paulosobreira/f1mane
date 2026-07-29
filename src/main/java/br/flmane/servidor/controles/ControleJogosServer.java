@@ -326,8 +326,7 @@ public class ControleJogosServer {
         dadosJogo.setDrs(Boolean.valueOf(jogoServidor.isDrs()));
         dadosJogo.setTrocaPneu(Boolean.valueOf(jogoServidor.isTrocaPneu()));
         dadosJogo.setReabastecimento(Boolean.valueOf(jogoServidor.isReabastecimento()));
-        dadosJogo.setNomeCircuito(
-                Util.substVogais(jogoServidor.getCircuito().getNome()));
+        dadosJogo.setNomeCircuito(jogoServidor.getCircuito().getNome());
         dadosJogo.setArquivoCircuito(jogoServidor.getCircuitos()
                 .get(jogoServidor.getCircuito().getNome()));
         dadosJogo.setTemporada(jogoServidor.getTemporada().replaceAll("t", ""));

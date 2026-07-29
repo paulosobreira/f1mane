@@ -4313,7 +4313,7 @@ public class MainPanelEditor extends JPanel {
         circuito.setUsaBkg(true);
         circuito.setMultiplicadorLarguraPista(multiplicadorLarguraPista);
         circuito.setProbalidadeChuva(Integer.parseInt(probalidadeChuvaText.getText()));
-        circuito.setNome(nomePistaText.getText());
+        circuito.definirNomePorConvencao(nomePistaText.getText());
         circuito.setDistanciaKm(distanciaKm);
     }
 
@@ -4331,6 +4331,10 @@ public class MainPanelEditor extends JPanel {
         File arquivoMeta = new File(file.getParentFile(), CarregadorRecursos.nomeArquivoMetadados(file.getName()));
         salvarCircuitoEmArquivo(circuito.copiaParaArquivoMetadados(), arquivoMeta);
         CarregadorRecursos.atualizarAtivoEmCircuitosProperties(file.getName(), circuito.isAtivo());
+        CarregadorRecursos.atualizarNomeEmCircuitosProperties(file.getName(), circuito.getNome());
+        String nomeRelido = CarregadorRecursos.lerNomeDaFonte(file.getName());
+        circuito.definirNomePorConvencao(nomeRelido);
+        nomePistaText.setText(nomeRelido);
         return true;
     }
 

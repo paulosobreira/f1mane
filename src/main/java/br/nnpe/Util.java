@@ -24,8 +24,6 @@ public class Util {
 	public static final String MASCARA_CPF = "###.###.###-##";
 	public static final String MASCARA_CNPJ = "##.###.###/####-##";
 
-	public static boolean substVogais = true;
-
 	static {
 		conectivos = new Vector();
 		conectivos.addElement("DE");
@@ -339,49 +337,6 @@ public class Util {
 
 	public static String mascararCnpj(String cnpj) throws ParseException {
 		return mascarar(cnpj, MASCARA_CNPJ);
-	}
-
-	public static String substVogais(String name) {
-		if(!substVogais){
-			return name;
-		}
-		StringBuilder retorno = new StringBuilder();
-		boolean subst = false;
-		for (int i = 0; i < name.length(); i++) {
-			if (i == (name.length() - 1)) {
-				retorno.append(name.charAt(i));
-			} else if (name.charAt(i) == 'a' && !subst) {
-				retorno.append('e');
-				subst = true;
-			} else if (name.charAt(i) == 'e' && !subst) {
-				retorno.append('i');
-				subst = true;
-			} else if (name.charAt(i) == 'i' && !subst) {
-				retorno.append('a');
-				subst = true;
-			} else if (name.charAt(i) == 'o' && !subst) {
-				retorno.append('u');
-				subst = true;
-			} else if (name.charAt(i) == 'u' && !subst) {
-				retorno.append('o');
-				subst = true;
-			}
-			/*
-			 * else if (name.charAt(i) == 'A' && !subst) { retorno.append('E');
-			 * subst = true; } else if (name.charAt(i) == 'E' && !subst) {
-			 * retorno.append('I'); subst = true; } else if (name.charAt(i) ==
-			 * 'I' && !subst) { retorno.append('A'); subst = true; } else if
-			 * (name.charAt(i) == 'O' && !subst) { retorno.append('U'); subst =
-			 * true; } else if (name.charAt(i) == 'U' && !subst) {
-			 * retorno.append('O'); subst = true; }
-			 */
-			else {
-				// subst = true;
-				retorno.append(name.charAt(i));
-			}
-
-		}
-		return retorno.toString();
 	}
 
 	public static int larguraTexto(String msg, Graphics2D g2d) {

@@ -28,14 +28,15 @@ import br.flmane.entidades.ObjetoPista;
  * ({@code _mro_meta.xml} com metadados leves + traçado autorado;
  * {@code _mro.xml} com objetos/objetosCenario), a remoção de {@code ativo}
  * do XML em favor de {@code circuitos.properties}, o descarte dos campos
- * derivados da persistência (recalculados por {@code vetorizarPista()}), e a
+ * derivados da persistência (recalculados por {@code vetorizarPista()}), a
+ * remoção de {@code nome} do XML em favor de {@code circuitos.properties}, e a
  * reescrita linha a linha de {@code circuitos.properties}.
  */
 class CircuitoMetadadosArquivoTest {
 
     private Circuito circuitoCompleto() {
         Circuito circuito = new Circuito();
-        circuito.setNome("Circuito Teste");
+        circuito.definirNomePorConvencao("Circuito Teste");
         circuito.setAtivo(true);
         circuito.setNoite(true);
         circuito.setUsaBkg(true);
@@ -115,11 +116,11 @@ class CircuitoMetadadosArquivoTest {
 
         assertTrue(xml.contains("property=\"pista\""), "meta deveria conter pista");
         assertTrue(xml.contains("property=\"box\""), "meta deveria conter box");
-        assertTrue(xml.contains("property=\"nome\""), "meta deveria conter nome");
         assertTrue(xml.contains("property=\"corFundo\""), "meta deveria conter corFundo");
         assertTrue(xml.contains("property=\"ciclo\""), "meta deveria conter ciclo");
         assertTrue(xml.contains("property=\"distanciaKm\""), "meta deveria conter distanciaKm");
         assertFalse(xml.contains("property=\"ativo\""), "meta não deveria conter ativo");
+        assertFalse(xml.contains("property=\"nome\""), "meta não deveria conter nome (vive em circuitos.properties)");
         assertFalse(xml.contains("property=\"objetosCenario\""), "meta não deveria conter objetosCenario");
         assertFalse(xml.contains("property=\"pistaKey\""), "meta não deveria conter pistaKey");
         assertFalse(xml.contains("property=\"boxKey\""), "meta não deveria conter boxKey");
@@ -285,6 +286,59 @@ class CircuitoMetadadosArquivoTest {
     @Test
     void lerAtivoDaFonte_arquivoInexistente_retornaFalseSemLancarExcecao() {
         assertFalse(CarregadorRecursos.lerAtivoDaFonte(new File("nao_existe.properties"), "monza_mro.xml"));
+    }
+
+    @Test
+    void atualizarNomeEmCircuitosProperties_alteraSoALinhaAlvoPreservandoAtivo(@TempDir File tempDir) throws Exception {
+        File arquivo = new File(tempDir, "circuitos.properties");
+        try (FileWriter writer = new FileWriter(arquivo)) {
+            writer.write("circuitoA_mro.xml=Circuito A,false\n");
+            writer.write("circuitoB_mro.xml=Circuito B,true\n");
+        }
+
+        CarregadorRecursos.atualizarNomeEmCircuitosProperties(arquivo, "circuitoB_mro.xml", "Circuito B Renomeado");
+
+        List<String> linhas = lerLinhas(arquivo);
+        assertEquals("circuitoA_mro.xml=Circuito A,false", linhas.get(0), "linha de A não deveria mudar");
+        assertEquals("circuitoB_mro.xml=Circuito B Renomeado,true", linhas.get(1),
+                "nome muda, ativo permanece true");
+    }
+
+    /**
+     * Mesmo raciocínio de {@link #lerAtivoDaFonte_enxergaValorGravadoPeloSalvamentoSemRebuild}:
+     * o editor grava o nome direto no arquivo-fonte e precisa reler o mesmo
+     * arquivo-fonte, não a cópia de classpath, para refletir a mudança sem
+     * exigir rebuild.
+     */
+    @Test
+    void lerNomeDaFonte_enxergaValorGravadoPeloSalvamentoSemRebuild(@TempDir File tempDir) throws Exception {
+        File arquivo = new File(tempDir, "circuitos.properties");
+        try (FileWriter writer = new FileWriter(arquivo)) {
+            writer.write("monza_mro.xml=Monza,false\n");
+        }
+        assertEquals("Monza", CarregadorRecursos.lerNomeDaFonte(arquivo, "monza_mro.xml"));
+
+        CarregadorRecursos.atualizarNomeEmCircuitosProperties(arquivo, "monza_mro.xml", "Monza Renomeado");
+
+        assertEquals("Monza Renomeado", CarregadorRecursos.lerNomeDaFonte(arquivo, "monza_mro.xml"),
+                "deveria enxergar o valor recém-gravado no arquivo-fonte imediatamente");
+    }
+
+    @Test
+    void lerNomeDaFonte_semLinhaCorrespondente_derivaNomePorConvencaoDoArquivo(@TempDir File tempDir) throws Exception {
+        File arquivo = new File(tempDir, "circuitos.properties");
+        try (FileWriter writer = new FileWriter(arquivo)) {
+            writer.write("outroCircuito_mro.xml=Outro,true\n");
+        }
+
+        assertEquals("Circuito Novo",
+                CarregadorRecursos.lerNomeDaFonte(arquivo, "circuito_novo_mro.xml"));
+    }
+
+    @Test
+    void nomeExibicaoCircuito_semEntradaEmCircuitosProperties_derivaNomePorConvencao() {
+        assertEquals("Circuito Inexistente",
+                CarregadorRecursos.nomeExibicaoCircuito("circuito_inexistente_mro.xml"));
     }
 
     private List<String> lerLinhas(File arquivo) throws Exception {

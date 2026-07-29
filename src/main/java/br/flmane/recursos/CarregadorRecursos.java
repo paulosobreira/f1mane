@@ -1277,7 +1277,7 @@ public class CarregadorRecursos {
                 .hasNext(); ) {
             CircuitosDefault cd = new CircuitosDefault();
             String nmCircuitoOri = (String) iterator.next();
-            cd.setNome(Util.substVogais(nmCircuitoOri));
+            cd.setNome(nmCircuitoOri);
             cd.setArquivo(carregarCircuitos.get(nmCircuitoOri));
             Circuito circuito = CarregadorRecursos.carregarCircuito(cd.getArquivo());
             cd.setProbalidadeChuva(circuito.getProbalidadeChuva());
@@ -1344,6 +1344,52 @@ public class CarregadorRecursos {
     }
 
     /**
+     * Lê só o primeiro campo (nome de exibição) da linha correspondente em
+     * {@code properties/circuitos.properties}
+     * (<code>&lt;arquivo&gt;=&lt;NomeExibicao&gt;,&lt;ativo&gt;</code>), sem
+     * tocar em nenhum XML de circuito. Se o circuito não tiver linha em
+     * {@code circuitos.properties} (ainda não cadastrado), o nome de exibição
+     * é derivado por convenção do próprio nome do arquivo XML (mesmo padrão
+     * já usado para o jpg de referência e o arquivo de metadados).
+     */
+    public static String nomeExibicaoCircuito(String nmCircuito) {
+        Properties properties = new Properties();
+        try (InputStream stream = recursoComoStream("properties/circuitos.properties")) {
+            if (stream != null) {
+                properties.load(stream);
+                String valor = properties.getProperty(nmCircuito);
+                if (valor != null) {
+                    String[] campos = valor.split(",", -1);
+                    if (campos.length > 0 && !campos[0].trim().isEmpty()) {
+                        return campos[0].trim();
+                    }
+                }
+            }
+        } catch (IOException e) {
+            Logger.logarExept(e);
+        }
+        return nomeExibicaoPorConvencao(nmCircuito);
+    }
+
+    /**
+     * Deriva um nome de exibição a partir do nome do arquivo XML quando o
+     * circuito não tem (ou ainda não tem) linha em
+     * {@code circuitos.properties}: remove o sufixo {@code _mro.xml}/{@code .xml},
+     * troca "_" por espaço e capitaliza cada palavra.
+     */
+    static String nomeExibicaoPorConvencao(String nmCircuitoXml) {
+        String base = nmCircuitoXml.replaceFirst("_mro\\.xml$", "").replaceFirst("\\.xml$", "");
+        String[] palavras = base.split("_");
+        StringBuilder nome = new StringBuilder();
+        for (String palavra : palavras) {
+            if (palavra.isEmpty()) continue;
+            if (nome.length() > 0) nome.append(' ');
+            nome.append(Character.toUpperCase(palavra.charAt(0))).append(palavra.substring(1));
+        }
+        return nome.toString();
+    }
+
+    /**
      * Decodifica {@code <nome>_mro.xml} (objetos/objetosCenario) e, se
      * existir, {@code <nome>_mro_meta.xml} (metadados leves + pista/box),
      * mesclando os dois num único {@code Circuito}. {@code ativo} é sempre
@@ -1369,6 +1415,7 @@ public class CarregadorRecursos {
                 circuito = circuitoObjetos;
             }
             circuito.setAtivo(circuitoAtivo(nmCircuito));
+            circuito.definirNomePorConvencao(nomeExibicaoCircuito(nmCircuito));
             aplicarBackGroundPorConvencao(circuito, nmCircuito);
             migrarObjetoLivreParaCenario(circuito);
             circuito.vetorizarPista();
@@ -1396,6 +1443,7 @@ public class CarregadorRecursos {
         }
         Circuito circuitoMeta = (Circuito) new XMLDecoder(streamMeta).readObject();
         circuitoMeta.setAtivo(circuitoAtivo(nmCircuito));
+        circuitoMeta.definirNomePorConvencao(nomeExibicaoCircuito(nmCircuito));
         return circuitoMeta;
     }
 
@@ -1414,6 +1462,18 @@ public class CarregadorRecursos {
     public static void atualizarAtivoEmCircuitosProperties(String nmCircuitoXml, boolean ativo) throws IOException {
         atualizarAtivoEmCircuitosProperties(new File("src/main/resources/properties/circuitos.properties"),
                 nmCircuitoXml, ativo);
+    }
+
+    /**
+     * Atualiza (ou acrescenta) o primeiro campo CSV (nome de exibição) da
+     * linha de {@code nmCircuitoXml} em {@code circuitos.properties},
+     * preservando o campo {@code ativo} da mesma linha — mesmo raciocínio de
+     * {@link #atualizarAtivoEmCircuitosProperties(String, boolean)}, mas para
+     * o nome. Uso exclusivo do editor.
+     */
+    public static void atualizarNomeEmCircuitosProperties(String nmCircuitoXml, String nomeExibicao) throws IOException {
+        atualizarNomeEmCircuitosProperties(new File("src/main/resources/properties/circuitos.properties"),
+                nmCircuitoXml, nomeExibicao);
     }
 
     /**
@@ -1467,9 +1527,76 @@ public class CarregadorRecursos {
     /**
      * Mesma lógica de {@link #atualizarAtivoEmCircuitosProperties(String, boolean)},
      * mas recebendo o arquivo alvo explicitamente — usado por testes para não
-     * mutar o {@code circuitos.properties} real do projeto.
+     * mutar o {@code circuitos.properties} real do projeto. Preserva o nome
+     * de exibição já gravado na linha.
      */
     static void atualizarAtivoEmCircuitosProperties(File arquivo, String nmCircuitoXml, boolean ativo)
+            throws IOException {
+        String nomeAtual = lerNomeDaFonte(arquivo, nmCircuitoXml);
+        atualizarCircuitosProperties(arquivo, nmCircuitoXml, nomeAtual, ativo);
+    }
+
+    /**
+     * Lê o nome de exibição direto do arquivo-fonte
+     * {@code src/main/resources/properties/circuitos.properties} — mesmo
+     * raciocínio de {@link #lerAtivoDaFonte(String)}: o editor lê/escreve
+     * relativo à raiz do projeto, não via classpath (que só atualiza em
+     * rebuild). Uso exclusivo do editor.
+     */
+    public static String lerNomeDaFonte(String nmCircuitoXml) {
+        return lerNomeDaFonte(new File("src/main/resources/properties/circuitos.properties"), nmCircuitoXml);
+    }
+
+    /**
+     * Mesma lógica de {@link #lerNomeDaFonte(String)}, mas recebendo o
+     * arquivo alvo explicitamente — usado por testes.
+     */
+    static String lerNomeDaFonte(File arquivo, String nmCircuitoXml) {
+        if (!arquivo.exists()) {
+            return nomeExibicaoPorConvencao(nmCircuitoXml);
+        }
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(new FileInputStream(arquivo), StandardCharsets.UTF_8))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                int idxIgual = linha.indexOf('=');
+                if (idxIgual > 0 && linha.substring(0, idxIgual).equals(nmCircuitoXml)) {
+                    String[] campos = linha.substring(idxIgual + 1).split(",", -1);
+                    if (campos.length > 0 && !campos[0].trim().isEmpty()) {
+                        return campos[0].trim();
+                    }
+                    return nomeExibicaoPorConvencao(nmCircuitoXml);
+                }
+            }
+        } catch (IOException e) {
+            Logger.logarExept(e);
+        }
+        return nomeExibicaoPorConvencao(nmCircuitoXml);
+    }
+
+    /**
+     * Mesma lógica de {@link #atualizarNomeEmCircuitosProperties(String, String)},
+     * mas recebendo o arquivo alvo explicitamente — usado por testes. Preserva
+     * o valor de {@code ativo} já gravado na linha.
+     */
+    static void atualizarNomeEmCircuitosProperties(File arquivo, String nmCircuitoXml, String nomeExibicao)
+            throws IOException {
+        boolean ativoAtual = lerAtivoDaFonte(arquivo, nmCircuitoXml);
+        atualizarCircuitosProperties(arquivo, nmCircuitoXml, nomeExibicao, ativoAtual);
+    }
+
+    /**
+     * Reescreve a linha inteira ({@code nmCircuitoXml=nomeExibicao,ativo}) de
+     * {@code circuitos.properties} numa única passada, preservando todas as
+     * outras linhas exatamente como estavam — leitura e escrita linha a
+     * linha, não via {@code Properties.store()} (que reordena as linhas e
+     * escreve um comentário de timestamp, gerando diffs git ruidosos). Se a
+     * linha de {@code nmCircuitoXml} ainda não existir (circuito nunca
+     * listado em circuitos.properties), não grava nada e só registra um
+     * aviso — criar automaticamente a linha de um circuito novo está fora do
+     * escopo desta mudança.
+     */
+    static void atualizarCircuitosProperties(File arquivo, String nmCircuitoXml, String nomeExibicao, boolean ativo)
             throws IOException {
         if (!arquivo.exists()) {
             return;
@@ -1482,8 +1609,6 @@ public class CarregadorRecursos {
             while ((linha = reader.readLine()) != null) {
                 int idxIgual = linha.indexOf('=');
                 if (idxIgual > 0 && linha.substring(0, idxIgual).equals(nmCircuitoXml)) {
-                    String[] campos = linha.substring(idxIgual + 1).split(",", -1);
-                    String nomeExibicao = campos.length > 0 ? campos[0] : "";
                     linha = nmCircuitoXml + "=" + nomeExibicao + "," + ativo;
                     encontrada = true;
                 }
@@ -1492,7 +1617,7 @@ public class CarregadorRecursos {
         }
         if (!encontrada) {
             Logger.logar("circuitos.properties não tem entrada para " + nmCircuitoXml
-                    + "; valor de ativo não foi gravado.");
+                    + "; valor não foi gravado.");
             return;
         }
         try (BufferedWriter writer = new BufferedWriter(
