@@ -21,6 +21,7 @@ import br.flmane.servidor.netty.RespostaHttp;
 import br.nnpe.Global;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 import br.flmane.controles.ControleRecursos;
 import br.flmane.controles.InterfaceJogo;
 import br.flmane.entidades.Circuito;
@@ -39,6 +40,7 @@ import br.flmane.servidor.entidades.TOs.SrvPaddockPack;
 import br.flmane.servidor.entidades.persistencia.CampeonatoSrv;
 import br.flmane.servidor.entidades.persistencia.CarreiraDadosSrv;
 import br.flmane.recursos.CarregadorRecursos;
+import br.flmane.recursos.ImagensHeadlessDisco;
 import br.flmane.recursos.idiomas.Lang;
 import br.flmane.visao.PainelCircuito;
 
@@ -321,22 +323,28 @@ public class LetsRace {
 
     public RespostaHttp circuitoJpg(String nmCircuito) {
         try {
-            BufferedImage buffer;
-            if (Global.MODO_HOMENAGEM && nmCircuito.endsWith(".jpg")) {
-                String nomeArquivoCircuito = nmCircuito.substring(0,
-                        nmCircuito.length() - ".jpg".length()) + ".xml";
-                Circuito circuito = CarregadorRecursos.carregarCircuito(nomeArquivoCircuito);
-                circuito.vetorizarPista();
-                buffer = DesenhoProceduralCircuito.geraImagem(circuito);
+            byte[] imageData;
+            if (CarregadorRecursos.isModoHeadlessDisco()
+                    && Global.MODO_HOMENAGEM && nmCircuito.endsWith(".jpg")) {
+                String nomeArquivoCircuito = nomeXmlDoCircuito(nmCircuito);
+                imageData = ImagensHeadlessDisco.obterOuGerarBytes(
+                        ImagensHeadlessDisco.arquivoCircuitoFundo(nmCircuito), "jpg",
+                        () -> gerarFundoCircuito(nomeArquivoCircuito));
             } else {
-                buffer = CarregadorRecursos.carregaBufferedImage("circuitos/" + nmCircuito);
+                BufferedImage buffer;
+                if (Global.MODO_HOMENAGEM && nmCircuito.endsWith(".jpg")) {
+                    String nomeArquivoCircuito = nomeXmlDoCircuito(nmCircuito);
+                    Circuito circuito = CarregadorRecursos.carregarCircuito(nomeArquivoCircuito);
+                    circuito.vetorizarPista();
+                    buffer = DesenhoProceduralCircuito.geraImagem(circuito);
+                } else {
+                    buffer = CarregadorRecursos.carregaBufferedImage("circuitos/" + nmCircuito);
+                }
+                imageData = buffer == null ? null : codificarJpg(buffer);
             }
-            if (buffer == null) {
+            if (imageData == null) {
                 return RespostaHttp.status(200).entity("null").build();
             }
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(buffer, "jpg", baos);
-            byte[] imageData = baos.toByteArray();
             return RespostaHttp.status(200).entity(imageData)
                     .header("Cache-Control", "max-age=120")
                     .build();
@@ -350,24 +358,30 @@ public class LetsRace {
 
     public RespostaHttp circuitoBg(String nmCircuito) {
         try {
-            nmCircuito = nmCircuito.replace("jpg", "flmane");
-            Circuito circuito = CarregadorRecursos.carregarCircuito(nmCircuito);
-            circuito.vetorizarPista();
-            InterfaceJogo jogo = null;
-            if (controlePaddock.obterJogos() != null
-                    && !controlePaddock.obterJogos().isEmpty()) {
-                jogo = controlePaddock
-                        .obterJogoPeloNome(controlePaddock.obterJogos().get(0));
-            }
+            byte[] imageData;
+            if (CarregadorRecursos.isModoHeadlessDisco() && nmCircuito.endsWith(".jpg")) {
+                String nomeArquivoCircuito = nomeXmlDoCircuito(nmCircuito);
+                imageData = ImagensHeadlessDisco.obterOuGerarBytes(
+                        ImagensHeadlessDisco.arquivoCircuitoFundo(nmCircuito), "jpg",
+                        () -> gerarFundoCircuito(nomeArquivoCircuito));
+            } else {
+                String nomeArquivoCircuito = nmCircuito.replace("jpg", "flmane");
+                Circuito circuito = CarregadorRecursos.carregarCircuito(nomeArquivoCircuito);
+                circuito.vetorizarPista();
+                InterfaceJogo jogo = null;
+                if (controlePaddock.obterJogos() != null
+                        && !controlePaddock.obterJogos().isEmpty()) {
+                    jogo = controlePaddock
+                            .obterJogoPeloNome(controlePaddock.obterJogos().get(0));
+                }
 
-            PainelCircuito painelCircuito = new PainelCircuito(circuito, jogo);
-            BufferedImage bg = painelCircuito.desenhaCircuito();
-            if (bg == null) {
+                PainelCircuito painelCircuito = new PainelCircuito(circuito, jogo);
+                BufferedImage bg = painelCircuito.desenhaCircuito();
+                imageData = bg == null ? null : codificarJpg(bg);
+            }
+            if (imageData == null) {
                 return RespostaHttp.status(200).entity("null").build();
             }
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(bg, "jpg", baos);
-            byte[] imageData = baos.toByteArray();
             return RespostaHttp.status(200).entity(imageData).build();
         } catch (Exception e) {
             Logger.topExecpts(e);
@@ -379,14 +393,19 @@ public class LetsRace {
 
     public RespostaHttp circuitoMini(String nmCircuito) {
         try {
-            Circuito circuito = CarregadorRecursos.carregarCircuito(nmCircuito);
-            BufferedImage mini = circuito.desenhaMiniCircuito();
-            if (mini == null) {
+            byte[] imageData;
+            if (CarregadorRecursos.isModoHeadlessDisco()) {
+                imageData = ImagensHeadlessDisco.obterOuGerarBytes(
+                        ImagensHeadlessDisco.arquivoCircuitoMini(nmCircuito), "png",
+                        () -> gerarMiniCircuito(nmCircuito));
+            } else {
+                Circuito circuito = CarregadorRecursos.carregarCircuito(nmCircuito);
+                BufferedImage mini = circuito.desenhaMiniCircuito();
+                imageData = mini == null ? null : codificarPng(mini);
+            }
+            if (imageData == null) {
                 return RespostaHttp.status(200).entity("null").build();
             }
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(mini, "png", baos);
-            byte[] imageData = baos.toByteArray();
             return RespostaHttp.status(200).entity(imageData).build();
         } catch (Exception e) {
             Logger.topExecpts(e);
@@ -394,6 +413,47 @@ public class LetsRace {
                     .entity(new ErroServ(e).obterErroFormatado())
                     .tipo(APPLICATION_JSON).build();
         }
+    }
+
+    /**
+     * Deriva o nome do XML do circuito a partir do nome do jpg de fundo
+     * (convenção de {@code CarregadorRecursos.aplicarBackGroundPorConvencao}:
+     * {@code <nome>.xml -> <nome>.jpg}).
+     */
+    private static String nomeXmlDoCircuito(String nomeJpg) {
+        return nomeJpg.substring(0, nomeJpg.length() - ".jpg".length()) + ".xml";
+    }
+
+    /**
+     * Gera a imagem de fundo do circuito e libera seus objetos de desenho
+     * em seguida — usado tanto pela pré-geração preguiçosa de
+     * {@code circuitoJpg}/{@code circuitoBg} quanto por qualquer chamador
+     * que precise da mesma imagem servida no boot headless.
+     */
+    private static BufferedImage gerarFundoCircuito(String nomeArquivoXml) throws Exception {
+        Circuito circuito = CarregadorRecursos.carregarCircuito(nomeArquivoXml);
+        BufferedImage imagem = DesenhoProceduralCircuito.geraImagem(circuito);
+        circuito.liberarObjetosDesenho();
+        return imagem;
+    }
+
+    private static BufferedImage gerarMiniCircuito(String nomeArquivoXml) throws Exception {
+        Circuito circuito = CarregadorRecursos.carregarCircuito(nomeArquivoXml);
+        BufferedImage imagem = circuito.desenhaMiniCircuito();
+        circuito.liberarObjetosDesenho();
+        return imagem;
+    }
+
+    private static byte[] codificarJpg(BufferedImage imagem) throws java.io.IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(imagem, "jpg", baos);
+        return baos.toByteArray();
+    }
+
+    private static byte[] codificarPng(BufferedImage imagem) throws java.io.IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(imagem, "png", baos);
+        return baos.toByteArray();
     }
 
     public RespostaHttp objetoPista(String nmCircuito, String indice) {
@@ -415,16 +475,34 @@ public class LetsRace {
         }
     }
 
+    /**
+     * {@code temporada}/{@code identificador} de 6 caracteres cada é a
+     * variante de cor customizada (hex), usada em telas de carreira para
+     * pré-visualizar combinações de cor não enumeráveis de antemão — nunca
+     * passa pelo disco pré-gerado (só o par temporada-ano/id-numérico faz),
+     * mesmo em modo headless.
+     */
+    private static boolean isVarianteCorCustomizada(String temporada, String identificador) {
+        return temporada != null && temporada.length() == 6
+                && identificador != null && identificador.length() == 6;
+    }
+
     public RespostaHttp carroCimaTemporadaCarro(String temporada, String carro) {
         try {
-            BufferedImage carroCima = controlePaddock
-                    .carroCimaTemporadaCarro(temporada, carro);
-            if (carroCima == null) {
+            byte[] imageData;
+            if (CarregadorRecursos.isModoHeadlessDisco() && !isVarianteCorCustomizada(temporada, carro)) {
+                int idCarro = Util.intOr0(carro);
+                imageData = ImagensHeadlessDisco.obterOuGerarBytes(
+                        ImagensHeadlessDisco.arquivoCarroCima(temporada, idCarro, false), "png",
+                        () -> controlePaddock.carroCimaTemporadaCarro(temporada, carro));
+            } else {
+                BufferedImage carroCima = controlePaddock
+                        .carroCimaTemporadaCarro(temporada, carro);
+                imageData = carroCima == null ? null : codificarPng(carroCima);
+            }
+            if (imageData == null) {
                 return RespostaHttp.status(200).entity("null").build();
             }
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(carroCima, "png", baos);
-            byte[] imageData = baos.toByteArray();
             return RespostaHttp.status(200).entity(imageData).build();
         } catch (Exception e) {
             Logger.topExecpts(e);
@@ -436,14 +514,20 @@ public class LetsRace {
 
     public RespostaHttp carroCimaSemAreofolioTemporadaCarro(String temporada, String carro) {
         try {
-            BufferedImage carroCima = controlePaddock
-                    .carroCimaSemAreofolioTemporadaCarro(temporada, carro);
-            if (carroCima == null) {
+            byte[] imageData;
+            if (CarregadorRecursos.isModoHeadlessDisco() && !isVarianteCorCustomizada(temporada, carro)) {
+                int idCarro = Util.intOr0(carro);
+                imageData = ImagensHeadlessDisco.obterOuGerarBytes(
+                        ImagensHeadlessDisco.arquivoCarroCima(temporada, idCarro, true), "png",
+                        () -> controlePaddock.carroCimaSemAreofolioTemporadaCarro(temporada, carro));
+            } else {
+                BufferedImage carroCima = controlePaddock
+                        .carroCimaSemAreofolioTemporadaCarro(temporada, carro);
+                imageData = carroCima == null ? null : codificarPng(carroCima);
+            }
+            if (imageData == null) {
                 return RespostaHttp.status(200).entity("null").build();
             }
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(carroCima, "png", baos);
-            byte[] imageData = baos.toByteArray();
             return RespostaHttp.status(200).entity(imageData).build();
         } catch (Exception e) {
             Logger.topExecpts(e);
@@ -455,14 +539,20 @@ public class LetsRace {
 
     public RespostaHttp capaceteTemporadaPiloto(String temporada, String piloto) {
         try {
-            BufferedImage capacete = controlePaddock
-                    .capaceteTemporadaPiloto(temporada, piloto);
-            if (capacete == null) {
+            byte[] imageData;
+            if (CarregadorRecursos.isModoHeadlessDisco() && !isVarianteCorCustomizada(temporada, piloto)) {
+                int idPiloto = Util.intOr0(piloto);
+                imageData = ImagensHeadlessDisco.obterOuGerarBytes(
+                        ImagensHeadlessDisco.arquivoCapacete(temporada, idPiloto), "png",
+                        () -> controlePaddock.capaceteTemporadaPiloto(temporada, piloto));
+            } else {
+                BufferedImage capacete = controlePaddock
+                        .capaceteTemporadaPiloto(temporada, piloto);
+                imageData = capacete == null ? null : codificarPng(capacete);
+            }
+            if (imageData == null) {
                 return RespostaHttp.status(200).entity("null").build();
             }
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(capacete, "png", baos);
-            byte[] imageData = baos.toByteArray();
             return RespostaHttp.status(200).entity(imageData).build();
         } catch (Exception e) {
             Logger.topExecpts(e);
@@ -474,14 +564,20 @@ public class LetsRace {
 
     public RespostaHttp carroLadoTemporadaCarro(String temporada, String carro) {
         try {
-            BufferedImage carroCima = controlePaddock
-                    .carroLadoTemporadaCarro(temporada, carro);
-            if (carroCima == null) {
+            byte[] imageData;
+            if (CarregadorRecursos.isModoHeadlessDisco() && !isVarianteCorCustomizada(temporada, carro)) {
+                int idCarro = Util.intOr0(carro);
+                imageData = ImagensHeadlessDisco.obterOuGerarBytes(
+                        ImagensHeadlessDisco.arquivoCarroLado(temporada, idCarro), "png",
+                        () -> controlePaddock.carroLadoTemporadaCarro(temporada, carro));
+            } else {
+                BufferedImage carroLado = controlePaddock
+                        .carroLadoTemporadaCarro(temporada, carro);
+                imageData = carroLado == null ? null : codificarPng(carroLado);
+            }
+            if (imageData == null) {
                 return RespostaHttp.status(200).entity("null").build();
             }
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(carroCima, "png", baos);
-            byte[] imageData = baos.toByteArray();
             return RespostaHttp.status(200).entity(imageData).build();
         } catch (Exception e) {
             Logger.topExecpts(e);

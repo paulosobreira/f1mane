@@ -46,6 +46,16 @@ public class CarregadorRecursos {
 
     private static boolean cache;
 
+    /**
+     * Ativada por {@code MainLauncher.iniciarServidorHeadless()} antes de
+     * qualquer geração de imagem: quando ativa, os métodos de imagem desta
+     * classe (e de {@link SpriteSheet}) param de inserir o resultado nos
+     * mapas estáticos — a fonte de verdade servida ao cliente passa a ser o
+     * arquivo em disco gerenciado por {@link ImagensHeadlessDisco}, não mais
+     * um {@code BufferedImage} retido em memória pela vida do processo.
+     */
+    private static volatile boolean modoHeadlessDisco;
+
     private static String versao;
 
     private static String versaoMesAno;
@@ -112,6 +122,14 @@ public class CarregadorRecursos {
 
     public static String getVersaoFormatado() {
         return decimalFormat.format(Integer.parseInt(getVersao())) + " " + getVersaoMesAno();
+    }
+
+    public static void ativarModoHeadlessDisco() {
+        modoHeadlessDisco = true;
+    }
+
+    public static boolean isModoHeadlessDisco() {
+        return modoHeadlessDisco;
     }
 
     public static synchronized CarregadorRecursos getCarregadorRecursos(
@@ -202,7 +220,7 @@ public class CarregadorRecursos {
 
             bufferedImage = ImageUtil
                     .toCompatibleImage(ImageUtil.geraTransparencia(buffer));
-            if (cache) {
+            if (cache && !modoHeadlessDisco) {
                 bufferImages.put(file, bufferedImage);
             }
         }
@@ -222,7 +240,7 @@ public class CarregadorRecursos {
             if (bufferedImage == null) {
                 Logger.logar("carregaBufferedImage null : " + file);
             }
-            if (cache) {
+            if (cache && !modoHeadlessDisco) {
                 bufferImages.put(file, bufferedImage);
             }
         }
@@ -478,7 +496,9 @@ public class CarregadorRecursos {
             g2.dispose();
         }
 
-        cacheModeloV2.put(chave, result);
+        if (!modoHeadlessDisco) {
+            cacheModeloV2.put(chave, result);
+        }
         return result;
     }
 
@@ -560,7 +580,9 @@ public class CarregadorRecursos {
             }
         }
 
-        cacheMonocromatico.put(chave, painted);
+        if (!modoHeadlessDisco) {
+            cacheMonocromatico.put(chave, painted);
+        }
         return painted;
     }
 
@@ -571,7 +593,7 @@ public class CarregadorRecursos {
         }
         bufferedImage = ImageUtil
                 .toCompatibleImage(carregaBufferedImageTranspareciaBranca(img));
-        if (cache) {
+        if (cache && !modoHeadlessDisco) {
             bufferCarros.put(img, bufferedImage);
         }
         return bufferedImage;
@@ -873,7 +895,7 @@ public class CarregadorRecursos {
             return bufferedImage;
         }
         bufferedImage = ImageUtil.toBufferedImage(img);
-        if (cache) {
+        if (cache && !modoHeadlessDisco) {
             bufferImages.put(img, bufferedImage);
         }
         return bufferedImage;
@@ -1025,7 +1047,7 @@ public class CarregadorRecursos {
                 if (ret == null) {
                     ret = desenhaCapacete(piloto);
                 }
-                if (ret != null && cache) {
+                if (ret != null && cache && !modoHeadlessDisco) {
                     bufferCapacete.put(chave, ret);
                 }
             }
@@ -1092,7 +1114,7 @@ public class CarregadorRecursos {
                 carroLado = desenhaCarroLado(carro);
             }
         }
-        if (cache) {
+        if (cache && !modoHeadlessDisco) {
             bufferCarrosLado.put(carro.getNome(), carroLado);
         }
         return carroLado;
@@ -1128,7 +1150,7 @@ public class CarregadorRecursos {
                 carroLado = desenhaCArroladoSemAereofolio(carro);
             }
         }
-        if (cache) {
+        if (cache && !modoHeadlessDisco) {
             bufferCarrosLadoSemAreofolio.put(carro.getNome(), carroLado);
         }
         return carroLado;
@@ -1180,7 +1202,7 @@ public class CarregadorRecursos {
         if (carroCima == null) {
             carroCima = desenhaCarroCimaSemAsa(carro);
         }
-        if (cache) {
+        if (cache && !modoHeadlessDisco) {
             bufferCarrosCimaSemAreofolio.put(carro.getNome(), carroCima);
         }
         return carroCima;
@@ -1220,7 +1242,7 @@ public class CarregadorRecursos {
             carroCima = desenhaCarroCima(carro);
             preAquecerSemAsa(carro);
         }
-        if (cache) {
+        if (cache && !modoHeadlessDisco) {
             bufferCarrosCima.put(carro.getNome(), carroCima);
         }
         return carroCima;
@@ -1238,7 +1260,7 @@ public class CarregadorRecursos {
     private void preAquecerSemAsa(Carro carro) {
         if (bufferCarrosCimaSemAreofolio.containsKey(carro.getNome())) return;
         BufferedImage semAsa = desenhaCarroCimaSemAsa(carro);
-        if (cache) {
+        if (cache && !modoHeadlessDisco) {
             bufferCarrosCimaSemAreofolio.put(carro.getNome(), semAsa);
         }
     }
@@ -1351,7 +1373,7 @@ public class CarregadorRecursos {
             migrarObjetoLivreParaCenario(circuito);
             circuito.vetorizarPista();
         }
-        if (cache) {
+        if (cache && !modoHeadlessDisco) {
             bufferCircuitos.put(nmCircuito, circuito);
         }
         return circuito;

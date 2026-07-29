@@ -11,28 +11,6 @@ O build do projeto SHALL usar `maven.compiler.release=25` no `pom.xml`.
 - **WHEN** o desenvolvedor executa `mvn test` em ambiente com JDK 25
 - **THEN** todos os testes concluem sem falhas ou erros causados pela versão da JVM (incluindo a cadeia Mockito/byte-buddy usada nos mocks)
 
-### Requirement: Tomcat embutido atualizado para 11.x
-O projeto SHALL usar `tomcat-embed-jasper` versão 11.x (Jakarta EE 11 / Servlet 6.1). Esta versão é necessária para compatibilidade com Hibernate 7.4 (Jakarta Persistence 3.2).
-
-#### Scenario: Servidor web sobe com Tomcat 11
-- **WHEN** o JAR é iniciado via `MainLauncher`
-- **THEN** o Tomcat 11 sobe na porta 8080, serve o contexto `/flmane` e registra a versão 11 nos logs de inicialização
-
-#### Scenario: Import javax.servlet no código causa falha de compilação
-- **WHEN** qualquer import `javax.servlet.*` existe no código-fonte
-- **THEN** o build falha em tempo de compilação, não em runtime
-
-### Requirement: Servlet API e JAX-RS migrados para Jakarta EE 11
-O projeto SHALL depender de `jakarta.servlet-api 6.1` e Jersey 4.x. Jersey 4.x é necessário para compatibilidade com Servlet 6.1 (Tomcat 11). Todos os imports `javax.servlet.*`, `javax.ws.rs.*` e `javax.inject.*` SHALL ser substituídos pelos equivalentes `jakarta.*`.
-
-#### Scenario: Nenhum import javax.servlet ou javax.ws.rs no código
-- **WHEN** é executado `grep -r "javax\.servlet\|javax\.ws\.rs" src/main/java`
-- **THEN** nenhum resultado é retornado
-
-#### Scenario: Endpoint REST responde após atualização
-- **WHEN** o servidor está rodando e é feita uma requisição ao endpoint `/letsRace/*`
-- **THEN** a resposta HTTP é recebida com o status esperado pela lógica de negócio
-
 ### Requirement: Hibernate atualizado para 7.4
 O projeto SHALL usar `hibernate-core` versão 7.4, que implementa Jakarta Persistence 3.2 (Jakarta EE 11), compatível com Tomcat 11. O artefato `hibernate-entitymanager` SHALL ser removido do `pom.xml`.
 

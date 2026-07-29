@@ -30,11 +30,31 @@ public class SpriteSheet {
 
     private static final Map<String, BufferedImage> cache = new HashMap<>();
 
+    /**
+     * Ativada por {@code MainLauncher.iniciarServidorHeadless()} junto com
+     * {@link CarregadorRecursos#ativarModoHeadlessDisco()}: quando ativa,
+     * {@link #obterSheet} para de reter a sprite sheet decodificada em
+     * {@link #cache} — a imagem é usada uma vez (pré-geração/fallback) e
+     * descartada, em vez de ficar presa em memória pela vida do processo.
+     */
+    private static volatile boolean modoHeadlessDisco;
+
+    public static void ativarModoHeadlessDisco() {
+        modoHeadlessDisco = true;
+    }
+
     public static boolean isDisponivel(String temporada) {
+        return obterSheet(temporada) != null;
+    }
+
+    private static BufferedImage obterSheet(String temporada) {
+        if (modoHeadlessDisco) {
+            return carregar(temporada);
+        }
         if (!cache.containsKey(temporada)) {
             cache.put(temporada, carregar(temporada));
         }
-        return cache.get(temporada) != null;
+        return cache.get(temporada);
     }
 
     private static BufferedImage carregar(String temporada) {
@@ -52,7 +72,7 @@ public class SpriteSheet {
     }
 
     public static BufferedImage getCarroLado(String temporada, int idx) {
-        BufferedImage sheet = cache.get(temporada);
+        BufferedImage sheet = obterSheet(temporada);
         if (sheet == null) return null;
         try {
             return sheet.getSubimage(idx * LADO_W, Y_LADO, LADO_W, LADO_H);
@@ -62,7 +82,7 @@ public class SpriteSheet {
     }
 
     public static BufferedImage getCarroCima(String temporada, int idx) {
-        BufferedImage sheet = cache.get(temporada);
+        BufferedImage sheet = obterSheet(temporada);
         if (sheet == null) return null;
         try {
             return sheet.getSubimage(idx * CIMA_W, Y_CIMA, CIMA_W, CIMA_H);
@@ -72,7 +92,7 @@ public class SpriteSheet {
     }
 
     public static BufferedImage getWingOverlay(String temporada, int wingOverlayIdx) {
-        BufferedImage sheet = cache.get(temporada);
+        BufferedImage sheet = obterSheet(temporada);
         if (sheet == null) return null;
         try {
             return sheet.getSubimage(wingOverlayIdx * CIMA_W, Y_CIMA, CIMA_W, CIMA_H);
@@ -86,7 +106,7 @@ public class SpriteSheet {
     }
 
     public static BufferedImage getCapacete(String temporada, int idx) {
-        BufferedImage sheet = cache.get(temporada);
+        BufferedImage sheet = obterSheet(temporada);
         if (sheet == null) return null;
         try {
             int row = idx / CAP_PER_ROW;

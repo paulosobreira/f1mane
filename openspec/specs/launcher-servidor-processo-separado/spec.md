@@ -1,27 +1,27 @@
 # launcher-servidor-processo-separado
 
 ## Purpose
-Documents that the GUI launcher spawns the backend (Tomcat + PaddockServer) in a separate child JVM via `ProcessBuilder`, manages that child process's lifecycle, and hosts the Swing game applications (`MainFrame`, `AppletPaddock`) in-process instead of spawning them.
+Documents that the GUI launcher spawns the backend (Netty + PaddockServer) in a separate child JVM via `ProcessBuilder`, manages that child process's lifecycle, and hosts the Swing game applications (`MainFrame`, `AppletPaddock`) in-process instead of spawning them.
 
 ## Requirements
 
 ### Requirement: Launcher GUI inicia o backend em processo separado
-Quando executado sem argumentos (modo GUI), `MainLauncher` SHALL iniciar o backend (Tomcat + PaddockServer) numa JVM filha via `ProcessBuilder` (`java -cp <jar> br.f1mane.MainLauncher --headless`), e NÃO SHALL subir o Tomcat na própria JVM. A URL exibida (QR Code e campo de texto) SHALL continuar sendo calculada localmente via descoberta de IP + porta 8080.
+Quando executado sem argumentos (modo GUI), `MainLauncher` SHALL iniciar o backend (Netty + `PaddockServer`) numa JVM filha via `ProcessBuilder` (`java -cp <jar> br.f1mane.MainLauncher --headless`), e NÃO SHALL subir o servidor Netty na própria JVM. A URL exibida (QR Code e campo de texto) SHALL continuar sendo calculada localmente via descoberta de IP + porta 8080.
 
 #### Scenario: Execução GUI spawna o servidor como filho
 - **WHEN** `MainLauncher` é executado sem argumentos
-- **THEN** um processo filho `java ... br.f1mane.MainLauncher --headless` é iniciado, o Tomcat não é instanciado na JVM do launcher, e a janela do launcher mostra o QR Code com a URL do servidor
+- **THEN** um processo filho `java ... br.f1mane.MainLauncher --headless` é iniciado, o servidor Netty não é instanciado na JVM do launcher, e a janela do launcher mostra o QR Code com a URL do servidor
 
 #### Scenario: Logs do servidor visíveis no console do launcher
 - **WHEN** o processo filho do servidor escreve em stdout/stderr
 - **THEN** a saída aparece no console do launcher (`inheritIO()`), incluindo o banner "SERVER STARTED"
 
 ### Requirement: Parâmetro fixo --headless aciona o modo servidor in-process
-Quando executado com o parâmetro **`--headless`** (casos Docker e servidor), `MainLauncher` SHALL extrair `webapp/` do JAR, subir o Tomcat na própria JVM na porta 8080, não exibir nenhuma GUI/QR Code e não iniciar nenhum processo filho.
+Quando executado com o parâmetro **`--headless`** (casos Docker e servidor), `MainLauncher` SHALL extrair `webapp/` do JAR, subir o servidor Netty na própria JVM na porta 8080, não exibir nenhuma GUI/QR Code e não iniciar nenhum processo filho.
 
-#### Scenario: Headless sobe Tomcat in-process
+#### Scenario: Headless sobe Netty in-process
 - **WHEN** `MainLauncher --headless` é executado
-- **THEN** o Tomcat roda na mesma JVM, nenhuma janela Swing é criada e nenhum `ProcessBuilder` é acionado
+- **THEN** o servidor Netty roda na mesma JVM, nenhuma janela Swing é criada e nenhum `ProcessBuilder` é acionado
 
 ### Requirement: Encerrar o launcher encerra o processo do servidor
 O launcher SHALL gerenciar o ciclo de vida do processo filho: ao encerrar a JVM do launcher (fechamento da janela com `EXIT_ON_CLOSE` ou término normal), o processo filho do servidor SHALL ser destruído via shutdown hook, sem deixar JVM órfã.

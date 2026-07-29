@@ -1,11 +1,18 @@
 package br.flmane;
 
+import br.flmane.controles.ControleRecursos;
+import br.flmane.entidades.Circuito;
+import br.flmane.entidades.DesenhoProceduralCircuito;
+import br.flmane.entidades.Piloto;
 import br.flmane.recursos.CarregadorRecursos;
+import br.flmane.recursos.ImagensHeadlessDisco;
+import br.flmane.recursos.SpriteSheet;
 import br.flmane.recursos.idiomas.Lang;
 import br.flmane.servidor.applet.AppletPaddock;
 import br.flmane.servidor.netty.FlmaneHttpDispatcher;
 import br.flmane.visao.PainelCircuito;
 import br.nnpe.ImageUtil;
+import br.nnpe.Logger;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -41,6 +48,9 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.security.CodeSource;
 import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -50,11 +60,29 @@ public class MainLauncher {
 
     private static final int PORT = 8080;
 
+    /**
+     * Setada só pelo processo filho que {@link #iniciarProcessoServidor}
+     * sobe pro modo GUI — nunca pelo usuário/deploy — pra manter o cache de
+     * imagens em memória (comportamento normal) naquele filho, em vez do
+     * modo disco que {@code --headless} usa por padrão.
+     */
+    private static final String ENV_CACHE_MEMORIA_LOCAL = "FLMANE_CACHE_MEMORIA_LOCAL";
+
     public static void main(String[] args) {
 
         try {
-            if (contemHeadless(args)) {
-                iniciarServidorHeadless();
+            if (contemArg(args, "--headless")) {
+                // --headless sozinho já significa modo disco: pré-gera as
+                // imagens em disco e não retém BufferedImage nenhum em
+                // memória. Único caso em que isso não vale é o processo
+                // filho que o próprio modo GUI sobe logo abaixo — sinalizado
+                // pra si mesmo via variável de ambiente (não por outra flag
+                // de linha de comando, que o usuário/deploy nunca precisa
+                // conhecer) porque aquele filho só serve o teste local via
+                // navegador e não deve pagar os minutos de pré-geração.
+                boolean modoImagensDisco =
+                        !"true".equals(System.getenv(ENV_CACHE_MEMORIA_LOCAL));
+                iniciarServidorHeadless(modoImagensDisco);
                 return;
             }
             // Modo GUI: o backend sobe numa JVM filha (--headless) pra que o
@@ -73,12 +101,12 @@ public class MainLauncher {
         }
     }
 
-    private static boolean contemHeadless(String[] args) {
+    private static boolean contemArg(String[] args, String procurado) {
         if (args == null) {
             return false;
         }
         for (String arg : args) {
-            if ("--headless".equals(arg)) {
+            if (procurado.equals(arg)) {
                 return true;
             }
         }
@@ -92,7 +120,17 @@ public class MainLauncher {
      */
     private static final int TAMANHO_MAXIMO_REQUISICAO = 100 * 1024 * 1024;
 
-    private static void iniciarServidorHeadless() throws Exception {
+    /**
+     * @param modoImagensDisco quando {@code true} (padrão de {@code --headless}),
+     *                         ativa a pré-geração de imagens em disco e desliga
+     *                         os caches estáticos de {@code BufferedImage} em
+     *                         memória. Quando {@code false} (só o processo
+     *                         filho que o modo GUI sobe pra teste local via
+     *                         navegador, ver {@link #ENV_CACHE_MEMORIA_LOCAL}),
+     *                         mantém o cache em memória normal e não paga o
+     *                         custo de boot da pré-geração.
+     */
+    private static void iniciarServidorHeadless(boolean modoImagensDisco) throws Exception {
         File base = extrairWebapp();
         System.out.println(
                 "WEBAPP: " +
@@ -102,6 +140,13 @@ public class MainLauncher {
                     "Diretorio webapp nao encontrado: "
                             + base.getAbsolutePath());
         }
+        if (modoImagensDisco) {
+            CarregadorRecursos.ativarModoHeadlessDisco();
+            SpriteSheet.ativarModoHeadlessDisco();
+            ImagensHeadlessDisco.iniciar();
+            preGerarImagensHeadless();
+        }
+
         FlmaneHttpDispatcher dispatcher = new FlmaneHttpDispatcher(base.toPath());
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -133,6 +178,173 @@ public class MainLauncher {
         }
     }
 
+    /**
+     * Gera em disco, sequencialmente, a imagem de fundo/miniatura de cada
+     * circuito ativo e as imagens de carro-lado/carro-cima (com e sem
+     * aerofólio)/capacete de cada carro/piloto de cada temporada
+     * configurada — cada imagem é escrita em
+     * {@link ImagensHeadlessDisco} e a referência em memória é descartada
+     * antes de passar para a próxima, para que o pico de memória fique
+     * limitado a poucas imagens por vez, nunca ao total. Falha ao gerar um
+     * asset específico é logada e pulada, sem abortar a subida do servidor.
+     */
+    private static void preGerarImagensHeadless() {
+        long inicio = System.currentTimeMillis();
+        System.out.println(
+                "PRE-GERANDO IMAGENS HEADLESS: " + ImagensHeadlessDisco.diretorioBase());
+        ProgressoTerminal progresso = new ProgressoTerminal(contarAssetsHeadless());
+        preGerarCircuitos(progresso);
+        preGerarCarrosPilotos(progresso);
+        progresso.concluir();
+        System.out.println("PRE-GERACAO DE IMAGENS CONCLUIDA EM "
+                + (System.currentTimeMillis() - inicio) + "ms");
+    }
+
+    /**
+     * Quantidade de itens que {@link #preGerarCircuitos}/
+     * {@link #preGerarCarrosPilotos} vão percorrer — usada só para
+     * dimensionar a barra de progresso do console (não precisa bater com o
+     * número exato de arquivos gerados, já que cada circuito/piloto gera
+     * mais de um arquivo).
+     */
+    private static int contarAssetsHeadless() {
+        int total = ControleRecursos.carregarCircuitos().size();
+        CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);
+        for (String temporadaBare : carregadorRecursos.getVectorTemps()) {
+            List<Piloto> pilotos = carregadorRecursos
+                    .carregarTemporadasPilotos().get("t" + temporadaBare);
+            if (pilotos != null) {
+                total += pilotos.size();
+            }
+        }
+        return total;
+    }
+
+    private static void preGerarCircuitos(ProgressoTerminal progresso) {
+        Map<String, String> circuitos = ControleRecursos.carregarCircuitos();
+        for (String arquivoXml : circuitos.values()) {
+            try {
+                Circuito circuito = CarregadorRecursos.carregarCircuito(arquivoXml);
+                BufferedImage fundo = DesenhoProceduralCircuito.geraImagem(circuito);
+                ImagensHeadlessDisco.gravar(
+                        ImagensHeadlessDisco.arquivoCircuitoFundo(circuito.getBackGround()),
+                        fundo, "jpg");
+                BufferedImage mini = circuito.desenhaMiniCircuito();
+                ImagensHeadlessDisco.gravar(
+                        ImagensHeadlessDisco.arquivoCircuitoMini(arquivoXml), mini, "png");
+                circuito.liberarObjetosDesenho();
+            } catch (Exception e) {
+                Logger.logar("Falha ao pre-gerar imagem do circuito "
+                        + arquivoXml + ": " + e.getMessage());
+                Logger.logarExept(e);
+            } finally {
+                progresso.avancar("circuito " + arquivoXml);
+            }
+        }
+    }
+
+    private static void preGerarCarrosPilotos(ProgressoTerminal progresso) {
+        CarregadorRecursos carregadorRecursos =
+                CarregadorRecursos.getCarregadorRecursos(false);
+        for (String temporadaBare : carregadorRecursos.getVectorTemps()) {
+            String temporadaKey = "t" + temporadaBare;
+            try {
+                List<Piloto> pilotos = carregadorRecursos
+                        .carregarTemporadasPilotos().get(temporadaKey);
+                if (pilotos == null) {
+                    continue;
+                }
+                Set<Integer> carrosGerados = new HashSet<>();
+                for (Piloto piloto : pilotos) {
+                    preGerarCarroEPiloto(
+                            carregadorRecursos, piloto, temporadaBare, temporadaKey,
+                            carrosGerados, progresso);
+                }
+            } catch (Exception e) {
+                Logger.logar("Falha ao pre-gerar temporada "
+                        + temporadaBare + ": " + e.getMessage());
+                Logger.logarExept(e);
+            }
+        }
+    }
+
+    private static void preGerarCarroEPiloto(
+            CarregadorRecursos carregadorRecursos,
+            Piloto piloto,
+            String temporadaBare,
+            String temporadaKey,
+            Set<Integer> carrosGerados,
+            ProgressoTerminal progresso) {
+        try {
+            if (piloto.getCarro() != null
+                    && carrosGerados.add(piloto.getCarro().getId())) {
+                int idCarro = piloto.getCarro().getId();
+                ImagensHeadlessDisco.gravar(
+                        ImagensHeadlessDisco.arquivoCarroLado(temporadaBare, idCarro),
+                        carregadorRecursos.obterCarroLado(piloto, temporadaKey), "png");
+                ImagensHeadlessDisco.gravar(
+                        ImagensHeadlessDisco.arquivoCarroCima(temporadaBare, idCarro, false),
+                        carregadorRecursos.obterCarroCima(piloto, temporadaKey), "png");
+                ImagensHeadlessDisco.gravar(
+                        ImagensHeadlessDisco.arquivoCarroCima(temporadaBare, idCarro, true),
+                        carregadorRecursos.obterCarroCimaSemAreofolio(piloto, temporadaKey), "png");
+            }
+            ImagensHeadlessDisco.gravar(
+                    ImagensHeadlessDisco.arquivoCapacete(temporadaBare, piloto.getId()),
+                    carregadorRecursos.obterCapacete(piloto, temporadaKey), "png");
+        } catch (Exception e) {
+            Logger.logar("Falha ao pre-gerar imagem de carro/piloto da temporada "
+                    + temporadaBare + ": " + e.getMessage());
+            Logger.logarExept(e);
+        } finally {
+            progresso.avancar(temporadaKey + " " + piloto.getNome());
+        }
+    }
+
+    /**
+     * Barra de progresso estilo terminal (sobrescrita na mesma linha via
+     * {@code \r}) para a pré-geração de imagens headless — só serve pra dar
+     * visibilidade do que está acontecendo durante o boot (que pode levar
+     * minutos com muitas temporadas/circuitos configurados), sem gerar uma
+     * linha de log por asset.
+     */
+    private static final class ProgressoTerminal {
+        private static final int LARGURA_BARRA = 30;
+
+        private final int total;
+        private int atual;
+
+        private ProgressoTerminal(int total) {
+            this.total = total;
+        }
+
+        private void avancar(String rotulo) {
+            atual++;
+            int preenchido = total <= 0 ? LARGURA_BARRA
+                    : (int) Math.min(LARGURA_BARRA, (atual * (long) LARGURA_BARRA) / total);
+            int percentual = total <= 0 ? 100 : Math.min(100, (atual * 100) / total);
+            StringBuilder linha = new StringBuilder();
+            linha.append('\r').append('[');
+            for (int i = 0; i < LARGURA_BARRA; i++) {
+                linha.append(i < preenchido ? '=' : ' ');
+            }
+            linha.append("] ").append(percentual).append("% (")
+                    .append(atual).append('/').append(total).append(") ")
+                    .append(rotulo);
+            // Preenche com espaços até uma largura fixa pra apagar o resto
+            // de uma linha anterior mais comprida (rótulo variável).
+            while (linha.length() < 110) {
+                linha.append(' ');
+            }
+            System.out.print(linha);
+            System.out.flush();
+        }
+
+        private void concluir() {
+            System.out.println();
+        }
+    }
+
     private static Process iniciarProcessoServidor(String jar)
             throws Exception {
         ProcessBuilder pb =
@@ -140,11 +352,13 @@ public class MainLauncher {
                         "java",
                         "-Xms64m",
                         "-Xmx512m",
+                        "-Djava.awt.headless=true",
                         "-cp",
                         jar,
                         "br.flmane.MainLauncher",
                         "--headless"
                 );
+        pb.environment().put(ENV_CACHE_MEMORIA_LOCAL, "true");
         pb.inheritIO();
         return pb.start();
     }
