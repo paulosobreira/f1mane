@@ -25,8 +25,8 @@ mvn test
 # Fat jar com H2 (desenvolvimento local)
 mvn clean package -Ph2 -DskipTests
 
-# Fat jar com MySQL (produção/Docker)
-mvn clean package -Pmysql -DskipTests
+# Fat jar com MariaDB (produção/Docker)
+mvn clean package -Pmariadb -DskipTests
 
 # Build completo + Docker (para o registry)
 ./build.sh
@@ -98,14 +98,18 @@ Todas as mensagens ao usuário passam por `Lang.msg("chave")` ou `Lang.decodeTex
 | Perfil | Banco | Uso |
 |---|---|---|
 | `h2` (default) | H2 em `~/flmane-data/flmane` | desenvolvimento local |
-| `mysql` | MySQL em `db:3306/flmane` | Docker / produção |
+| `mariadb` | MariaDB em `db:3306/flmane` | Docker / produção |
 | `test` | — | inclui `logback-test.xml` |
 
 **IMPORTANTE: nunca mover `src/main/resources/logback-test.xml`.** Ele parece estar no lugar errado à primeira vista — só o perfil `test` o inclui no build, o que sugere que deveria morar em `src/test/resources`. Não é o caso: o `pom.xml` já tem o mecanismo certo. O build padrão exclui `logback-test.xml` explicitamente do `src/main/resources` (`<exclude>logback-test.xml</exclude>`), e só o perfil `test` o inclui de volta, de propósito, gerando um jar de debug com saída no console (nível DEBUG) em vez do `logback.xml` de produção (nível INFO, só arquivo). Mover o arquivo pra `src/test/resources` quebra esse mecanismo — `mvn package -Ptest` aponta pra `src/main/resources` e para de encontrá-lo, e o jar final perde o log de console mesmo rodando com `-Ptest`. Se precisar silenciar um logger específico em DEBUG (ex.: `org.apache.commons.beanutils`, que loga "Converting ... to type ..." em todo `describe()`/`copyProperties()`), adicione um `<logger name="..." level="WARN"/>` dentro do próprio arquivo — não mexa na localização dele.
 
 ## Docker Compose
 
-Inclui três serviços: `flmane` (porta 80→8080), `db` (MySQL 8.4) e `phpmyadmin` (porta 8080). O container aguarda o healthcheck do MySQL antes de subir.
+Inclui três serviços: `flmane` (porta 80→8080), `db` (MariaDB 11) e `phpmyadmin` (porta 8080). O container `flmane` aguarda o healthcheck do `db` (via `healthcheck.sh --connect`, script nativo da imagem MariaDB) antes de subir. `phpmyadmin` funciona sem alteração contra MariaDB, que fala o mesmo protocolo de fio do MySQL.
+
+O `docker-compose.yaml` funciona tanto com `docker compose` quanto com `podman compose`/`podman-compose`. Duas ressalvas ao rodar com Podman em modo rootless (sem root):
+- **Porta 80 do serviço `flmane`**: bind de porta privilegiada (<1024) falha em rootless (`rootlessport cannot expose privileged port 80`). Publique numa porta ≥1024 (ex. `-p 8080:8080` ao rodar o container manualmente, ou ajuste `net.ipv4.ip_unprivileged_port_start` via sysctl) — não é um bug do compose, é restrição do kernel para processos sem privilégio.
+- **Migração de dados de uma instalação MySQL existente**: o volume `mariadb_data` é novo e começa vazio. Para levar dados de um volume MySQL antigo, faça `mysqldump` (ou `mariadb-dump`) do banco MySQL de origem e restaure (`mysql`/`mariadb` client) no container MariaDB novo — não há migração automática entre os volumes.
 
 ## Debugging
 

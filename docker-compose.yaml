@@ -1,12 +1,12 @@
 services:
   flmane:
-    image: sowbreira/flmane:latest
+    image: docker.io/sowbreira/flmane:latest
     container_name: flmane
     restart: unless-stopped
     ports:
       - "80:8080"
     environment:
-      JDBC_URL: jdbc:mysql://db:3306/flmane?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      JDBC_URL: jdbc:mariadb://db:3306/flmane?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       JDBC_USER: root
       JDBC_PASSWORD: flmane
     depends_on:
@@ -14,15 +14,15 @@ services:
         condition: service_healthy
 
   db:
-    image: mysql:8.4
+    image: docker.io/library/mariadb:11
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: flmane
       MYSQL_DATABASE: flmane
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pflmane"]
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -53,7 +53,7 @@ services:
       retries: 10
 
 volumes:
-  mysql_data:
+  mariadb_data:
   sonarqube_data:
 networks:
   default:
