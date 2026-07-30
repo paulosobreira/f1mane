@@ -28,8 +28,8 @@ mvn clean package -Ph2 -DskipTests
 # Fat jar com MariaDB (produção/Docker)
 mvn clean package -Pmariadb -DskipTests
 
-# Build completo + Docker (para o registry)
-./build.sh
+# Build completo + imagem de container (sempre local, sem push/pull de registry)
+utilitarios/build_container.sh
 
 # Rodar o jogo (modo web — Tomcat embutido na porta 8080)
 java -jar target/flmane.jar
@@ -107,9 +107,13 @@ Todas as mensagens ao usuário passam por `Lang.msg("chave")` ou `Lang.decodeTex
 
 Inclui três serviços: `flmane` (porta 80→8080), `db` (MariaDB 11) e `phpmyadmin` (porta 8080). O container `flmane` aguarda o healthcheck do `db` (via `healthcheck.sh --connect`, script nativo da imagem MariaDB) antes de subir. `phpmyadmin` funciona sem alteração contra MariaDB, que fala o mesmo protocolo de fio do MySQL.
 
-O `docker-compose.yaml` funciona tanto com `docker compose` quanto com `podman compose`/`podman-compose`. Duas ressalvas ao rodar com Podman em modo rootless (sem root):
-- **Porta 80 do serviço `flmane`**: bind de porta privilegiada (<1024) falha em rootless (`rootlessport cannot expose privileged port 80`). Publique numa porta ≥1024 (ex. `-p 8080:8080` ao rodar o container manualmente, ou ajuste `net.ipv4.ip_unprivileged_port_start` via sysctl) — não é um bug do compose, é restrição do kernel para processos sem privilégio.
+O `docker-compose.yaml` funciona tanto com `docker compose` quanto com `podman compose`/`podman-compose`. Uma ressalva ao rodar com Podman em modo rootless (sem root):
+- **Porta 80 do serviço `flmane`**: bind de porta privilegiada (<1024) falha em rootless (`rootlessport cannot expose privileged port 80`). Publique numa porta ≥1024 (ex. `8000:8080`) ou ajuste `net.ipv4.ip_unprivileged_port_start` via sysctl — não é bug do compose, é restrição do kernel pra processos sem privilégio.
 - **Migração de dados de uma instalação MySQL existente**: o volume `mariadb_data` é novo e começa vazio. Para levar dados de um volume MySQL antigo, faça `mysqldump` (ou `mariadb-dump`) do banco MySQL de origem e restaure (`mysql`/`mariadb` client) no container MariaDB novo — não há migração automática entre os volumes.
+
+A imagem `flmane` nunca é puxada de um registry (`pull_policy: never`) — é sempre construída localmente a partir de `flmane.dockerfile`, via `utilitarios/build_container.sh` ou `docker/podman compose up --build`.
+
+O `flmane.dockerfile` roda `--pre-gerar-imagens` (modo "assar") num `RUN` durante o `docker build`, gerando de uma vez as imagens de circuito/carro/capacete do modo headless e embutindo-as na imagem final (`FLMANE_IMAGENS_HEADLESS_DIR=/app/imagens-headless`). Por isso, restart do container `flmane` (mesma imagem) não paga de novo o custo de minutos de pré-geração no boot — o servidor detecta o marcador de conclusão já presente e pula direto pro bind da porta. Rebuilds da imagem sempre re-assam as imagens do zero.
 
 ## Debugging
 

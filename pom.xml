@@ -336,7 +336,7 @@
                     org.mariadb.jdbc.Driver
                 </jdbc.driver>
                 <jdbc.url>
-                    jdbc:mariadb://db:3306/flmane?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC
+                    jdbc:mariadb://db:3306/flmane?useSSL=false&amp;amp;allowPublicKeyRetrieval=true&amp;amp;serverTimezone=UTC
                 </jdbc.url>
                 <jdbc.user>
                     root

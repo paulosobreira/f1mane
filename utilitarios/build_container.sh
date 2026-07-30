@@ -23,5 +23,5 @@ $COMPOSE down
 mvn clean package -Pmariadb -DskipTests
 $RUNTIME build \
   -f flmane.dockerfile \
-  -t docker.io/sowbreira/flmane:latest .
+  -t sowbreira/flmane:latest .
 $COMPOSE up -d

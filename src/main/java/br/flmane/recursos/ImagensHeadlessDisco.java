@@ -26,6 +26,17 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class ImagensHeadlessDisco {
 
+    /**
+     * Quando setada, aponta pro diretório fixo de imagens headless — usado
+     * pelo {@code flmane.dockerfile} pra assar as imagens no build e
+     * reaproveitá-las entre restarts do mesmo container. Sem ela (dev
+     * local/GUI), o comportamento é o de sempre: diretório temporário novo
+     * a cada boot.
+     */
+    private static final String ENV_DIRETORIO_FIXO = "FLMANE_IMAGENS_HEADLESS_DIR";
+
+    private static final String ARQUIVO_MARCADOR = ".pronto";
+
     private static volatile Path base;
 
     /**
@@ -39,7 +50,20 @@ public final class ImagensHeadlessDisco {
     }
 
     public static synchronized void iniciar() throws IOException {
-        Path novaBase = criarDiretorioTemporarioSeguro("flmane-imagens-headless");
+        iniciar(System.getenv(ENV_DIRETORIO_FIXO));
+    }
+
+    /**
+     * Mesma lógica de {@link #iniciar()}, mas recebendo o valor do
+     * diretório fixo diretamente em vez de lê-lo de {@code System.getenv}
+     * — usado por {@code MainLauncher} (que também recebe o override
+     * assim, pra ficar testável sem mutar variáveis de ambiente reais) e
+     * diretamente pelos testes deste pacote.
+     */
+    public static synchronized void iniciar(String diretorioFixo) throws IOException {
+        Path novaBase = diretorioFixo != null && !diretorioFixo.isBlank()
+                ? Paths.get(diretorioFixo)
+                : criarDiretorioTemporarioSeguro("flmane-imagens-headless");
         Files.createDirectories(novaBase.resolve("circuitos"));
         Files.createDirectories(novaBase.resolve("carros"));
         Files.createDirectories(novaBase.resolve("capacetes"));
@@ -53,6 +77,21 @@ public final class ImagensHeadlessDisco {
 
     public static Path diretorioBase() {
         return base;
+    }
+
+    /**
+     * {@code true} quando o diretório base já contém uma pré-geração
+     * completa de uma execução anterior (marcador gravado por
+     * {@link #marcarPreGeracaoConcluida()}) — usado pra pular a pré-geração
+     * inteira num boot subsequente sobre o mesmo diretório (restart de
+     * container com imagens já assadas no build).
+     */
+    public static boolean preGeracaoConcluida() {
+        return Files.exists(base.resolve(ARQUIVO_MARCADOR));
+    }
+
+    public static void marcarPreGeracaoConcluida() throws IOException {
+        Files.write(base.resolve(ARQUIVO_MARCADOR), new byte[0]);
     }
 
     public static File arquivoCircuitoFundo(String nomeJpg) {

@@ -1,6 +1,10 @@
 services:
   flmane:
-    image: docker.io/sowbreira/flmane:latest
+    image: sowbreira/flmane:latest
+    build:
+      context: .
+      dockerfile: flmane.dockerfile
+    pull_policy: never
     container_name: flmane
     restart: unless-stopped
     ports:

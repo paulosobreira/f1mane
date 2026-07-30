@@ -600,9 +600,6 @@
   <void property="multiplicadorLarguraPista">
    <double>1.5</double>
   </void>
-  <void property="nome">
-   <string>Hockenheim</string>
-  </void>
   <void property="pista">
    <void method="add">
     <object class="br.flmane.entidades.No" id="No21">

@@ -144,26 +144,27 @@ java -cp target/flmane.jar br.flmane.MainFrameSimulacao 2024 Catalunya 72
 
 ## Docker
 
-**Construir imagem**
+**Construir imagem localmente**
 ```bash
-docker build -f flmane.dockerfile -t sowbreira/flmane .
+utilitarios/build_container.sh
+# equivalente a:
+docker build -f flmane.dockerfile -t sowbreira/flmane:latest .
 ```
 
-**Enviar para o Docker Hub**
-```bash
-docker push sowbreira/flmane
-```
+A imagem é sempre construída e usada localmente — sem push/pull de registry.
 
 **Executar localmente**
 ```bash
-docker run -p 8080:8080 sowbreira/flmane
+docker run -p 8080:8080 sowbreira/flmane:latest
 ```
 
 ---
 
 ## Docker Compose
 
-Inclui três serviços: Fl-MANE (porta 80→8080), MySQL 8.4 e phpMyAdmin (porta 8080). O container da aplicação aguarda o healthcheck do MySQL antes de subir.
+Inclui três serviços: Fl-MANE (porta 80→8080), MariaDB e phpMyAdmin (porta 8080). O container da aplicação aguarda o healthcheck do banco antes de subir.
+
+> Podman rootless não consegue bindar porta privilegiada (<1024). Se o `flmane` falhar ao subir com `rootlessport cannot expose privileged port 80`, publique numa porta ≥1024 (ex. `8000:8080`) ou ajuste `net.ipv4.ip_unprivileged_port_start` via sysctl.
 
 **Baixar o arquivo de configuração**
 ```bash
