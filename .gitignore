@@ -9,3 +9,4 @@ logs
 .claude
 .opencode
 *.xml.bak
+.sdkmanrc

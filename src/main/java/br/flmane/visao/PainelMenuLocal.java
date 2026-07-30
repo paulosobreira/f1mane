@@ -1264,7 +1264,7 @@ public class PainelMenuLocal {
 
         Font fontOri = g2d.getFont();
         g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
-        String txt = Util.substVogais(circuitoSelecionado);
+        String txt = circuitoSelecionado;
         int larguraTexto = 350;
         pistaRect.setFrame(x, y - 25, larguraTexto + 20, 30);
         g2d.setColor(lightWhite);
@@ -1358,7 +1358,7 @@ public class PainelMenuLocal {
     private void desenhaNomeCircuito(Graphics2D g2d, int x, int y, int i, String circuito) {
         Font fontOri = g2d.getFont();
         g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 14));
-        String circuitoNm = (i + 1) + " " + Util.substVogais(circuito);
+        String circuitoNm = (i + 1) + " " + circuito;
         circuitoNm = circuitoNm.toUpperCase();
         int tamNmPiloto = Util.calculaLarguraText(circuitoNm, g2d);
         g2d.setColor(lightWhite);
@@ -1566,7 +1566,7 @@ public class PainelMenuLocal {
 
         Font fontOri = g2d.getFont();
         g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
-        String txt = Util.substVogais(circuitoSelecionado);
+        String txt = circuitoSelecionado;
         int larguraTexto = 350;
         pistaRect.setFrame(x, y - 25, larguraTexto + 20, 30);
         g2d.setColor(lightWhite);
@@ -2545,7 +2545,7 @@ public class PainelMenuLocal {
 
         Font fontOri = g2d.getFont();
         g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
-        String txt = Util.substVogais(circuitoSelecionado);
+        String txt = circuitoSelecionado;
         int larguraTexto = 350;
         pistaRect.setFrame(centerX, centerY - 25, larguraTexto + 20, 30);
         g2d.setColor(lightWhite);

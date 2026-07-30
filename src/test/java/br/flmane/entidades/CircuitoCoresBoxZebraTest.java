@@ -38,7 +38,6 @@ class CircuitoCoresBoxZebraTest {
     @Test
     void xmlExistenteSemAsNovasPropriedades_carregaComCoresNulas() throws Exception {
         Circuito antigo = new Circuito();
-        antigo.setNome("Circuito Antigo");
         antigo.setCorFundo(new Color(1, 2, 3));
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -54,7 +53,7 @@ class CircuitoCoresBoxZebraTest {
             circuito = (Circuito) decoder.readObject();
         }
 
-        assertEquals("Circuito Antigo", circuito.getNome());
+        assertEquals(new Color(1, 2, 3), circuito.getCorFundo());
         assertNull(circuito.getCorBox1());
         assertNull(circuito.getCorBox2());
         assertNull(circuito.getCorZebra1());

@@ -210,8 +210,7 @@ public class ControleCampeonatoServidor {
                 return;
             }
             CorridaCampeonatoSrv corridaCampeonatoCorrente = null;
-            String circuitoSelecionado = Util
-                    .substVogais(dadosCriarJogo.getCircuitoSelecionado());
+            String circuitoSelecionado = dadosCriarJogo.getCircuitoSelecionado();
             for (CorridaCampeonatoSrv corridaCampeonato : campeonato
                     .getCorridaCampeonatos()) {
                 if (circuitoSelecionado
@@ -407,7 +406,7 @@ public class ControleCampeonatoServidor {
                     .setNomeCircuito(corridaCampeonato.getNomeCircuito());
             corridaCampeonatoTO.setArquivoCircuito(
                     ControleRecursos.nomeCircuitoParaArquivoCircuito(
-                            corridaCampeonato.getNomeCircuito(), true));
+                            corridaCampeonato.getNomeCircuito()));
             campeonatoTO.getCorridas().add(corridaCampeonatoTO);
             if (corridaCampeonato.getTempoFim() == null
                     && campeonatoTO.getArquivoCircuitoAtual() == null) {
