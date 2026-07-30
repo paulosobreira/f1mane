@@ -105,7 +105,12 @@ Todas as mensagens ao usuário passam por `Lang.msg("chave")` ou `Lang.decodeTex
 
 ## Docker Compose
 
-Inclui três serviços: `flmane` (porta 80→8080), `db` (MariaDB 11) e `phpmyadmin` (porta 8080). O container `flmane` aguarda o healthcheck do `db` (via `healthcheck.sh --connect`, script nativo da imagem MariaDB) antes de subir. `phpmyadmin` funciona sem alteração contra MariaDB, que fala o mesmo protocolo de fio do MySQL.
+`docker-compose.yaml` (base) contém só o runtime do jogo: `flmane` (porta 80→8080) e `db` (MariaDB 11). O container `flmane` aguarda o healthcheck do `db` (via `healthcheck.sh --connect`, script nativo da imagem MariaDB) antes de subir.
+
+`docker-compose.override.yaml` acrescenta `phpmyadmin` (porta 8080, funciona sem alteração contra MariaDB, que fala o mesmo protocolo de fio do MySQL) e `sonarqube` (porta 9000) — ferramentas de desenvolvimento, não fazem parte do runtime de produção.
+
+- **Dev** (comando padrão, sem `-f`): `docker compose up -d` / `podman compose up -d` / `utilitarios/build_container.sh` — Compose carrega `docker-compose.override.yaml` automaticamente (convenção do Compose Spec), subindo os 4 serviços
+- **Produção**: `docker compose -f docker-compose.yaml up -d` / `utilitarios/build_container_prod.sh` (ignora o override explicitamente) — só `flmane`+`db`
 
 O `docker-compose.yaml` funciona tanto com `docker compose` quanto com `podman compose`/`podman-compose`. Uma ressalva ao rodar com Podman em modo rootless (sem root):
 - **Porta 80 do serviço `flmane`**: bind de porta privilegiada (<1024) falha em rootless (`rootlessport cannot expose privileged port 80`). Publique numa porta ≥1024 (ex. `8000:8080`) ou ajuste `net.ipv4.ip_unprivileged_port_start` via sysctl — não é bug do compose, é restrição do kernel pra processos sem privilégio.

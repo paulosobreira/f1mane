@@ -146,7 +146,8 @@ java -cp target/flmane.jar br.flmane.MainFrameSimulacao 2024 Catalunya 72
 
 **Construir imagem localmente**
 ```bash
-utilitarios/build_container.sh
+utilitarios/build_container.sh       # dev — inclui phpMyAdmin/SonarQube
+utilitarios/build_container_prod.sh  # produção — só flmane+db
 # equivalente a:
 docker build -f flmane.dockerfile -t sowbreira/flmane:latest .
 ```
@@ -162,24 +163,31 @@ docker run -p 8080:8080 sowbreira/flmane:latest
 
 ## Docker Compose
 
-Inclui três serviços: Fl-MANE (porta 80→8080), MariaDB e phpMyAdmin (porta 8080). O container da aplicação aguarda o healthcheck do banco antes de subir.
+`docker-compose.yaml` (base) tem só o runtime do jogo: Fl-MANE (porta 80→8080) e MariaDB. O container da aplicação aguarda o healthcheck do banco antes de subir. `docker-compose.override.yaml` acrescenta ferramentas de dev (phpMyAdmin, porta 8080; SonarQube, porta 9000) — não fazem parte do runtime de produção.
 
 > Podman rootless não consegue bindar porta privilegiada (<1024). Se o `flmane` falhar ao subir com `rootlessport cannot expose privileged port 80`, publique numa porta ≥1024 (ex. `8000:8080`) ou ajuste `net.ipv4.ip_unprivileged_port_start` via sysctl.
 
-**Baixar o arquivo de configuração**
+**Baixar os arquivos de configuração**
 ```bash
 curl -LfO https://raw.githubusercontent.com/paulosobreira/f1mane/master/docker-compose.yaml
+curl -LfO https://raw.githubusercontent.com/paulosobreira/f1mane/master/docker-compose.override.yaml
 ```
 
-**Iniciar todos os serviços**
+**Iniciar todos os serviços (dev — padrão, sem `-f`)**
 ```bash
 docker compose up -d
+```
+O Compose mescla `docker-compose.override.yaml` automaticamente quando nenhum `-f` é passado (comportamento padrão do Compose).
+
+**Iniciar só produção (sem ferramentas de dev)**
+```bash
+docker compose -f docker-compose.yaml up -d
 ```
 
 | Serviço | URL |
 |---|---|
 | Jogo (HTML5) | `http://localhost/flmane/html5/index.html` |
-| phpMyAdmin | `http://localhost:8080` |
+| phpMyAdmin (só dev) | `http://localhost:8080` |
 
 ---
 

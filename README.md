@@ -146,7 +146,8 @@ java -cp target/flmane.jar br.flmane.MainFrameSimulacao 2024 Catalunya 72
 
 **Build image locally**
 ```bash
-utilitarios/build_container.sh
+utilitarios/build_container.sh       # dev — includes phpMyAdmin/SonarQube
+utilitarios/build_container_prod.sh  # production — flmane+db only
 # equivalent to:
 docker build -f flmane.dockerfile -t sowbreira/flmane:latest .
 ```
@@ -162,24 +163,31 @@ docker run -p 8080:8080 sowbreira/flmane:latest
 
 ## Docker Compose
 
-Includes three services: Fl-MANE (port 80→8080), MariaDB, and phpMyAdmin (port 8080). The app container waits for the database health check before starting.
+`docker-compose.yaml` (base) has just the game runtime: Fl-MANE (port 80→8080) and MariaDB. The app container waits for the database health check before starting. `docker-compose.override.yaml` adds dev tools (phpMyAdmin, port 8080; SonarQube, port 9000) — not part of the production runtime.
 
 > Rootless Podman can't bind privileged ports (<1024). If `flmane` fails to start with `rootlessport cannot expose privileged port 80`, either publish it on a port ≥1024 instead (e.g. `8000:8080`) or set `net.ipv4.ip_unprivileged_port_start` via sysctl.
 
-**Download compose file**
+**Download compose files**
 ```bash
 curl -LfO https://raw.githubusercontent.com/paulosobreira/f1mane/master/docker-compose.yaml
+curl -LfO https://raw.githubusercontent.com/paulosobreira/f1mane/master/docker-compose.override.yaml
 ```
 
-**Start all services**
+**Start all services (dev — default, no `-f`)**
 ```bash
 docker compose up -d
+```
+Compose automatically merges `docker-compose.override.yaml` when no `-f` is given (standard Compose behavior).
+
+**Start production only (no dev tools)**
+```bash
+docker compose -f docker-compose.yaml up -d
 ```
 
 | Service | URL |
 |---|---|
 | Game (HTML5) | `http://localhost/flmane/html5/index.html` |
-| phpMyAdmin | `http://localhost:8080` |
+| phpMyAdmin (dev only) | `http://localhost:8080` |
 
 ---
 
