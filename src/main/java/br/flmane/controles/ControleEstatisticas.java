@@ -503,6 +503,14 @@ public class ControleEstatisticas {
     }
 
     public void atualizaInfoDebug() {
+        if (infoTextual == null) {
+            // Ninguém pediu o painel de debug (caso do servidor headless, que
+            // serve a corrida por REST): sem componente pra alimentar, montar o
+            // texto a cada tick e acordar a Event Dispatch Thread é puro custo —
+            // e o read() abaixo estouraria em NPE.
+            return;
+        }
+
         StringBuilder buffer = new StringBuilder();
 
         if (controleJogo != null) {

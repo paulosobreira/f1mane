@@ -25,6 +25,7 @@ import br.nnpe.Global;
 import br.nnpe.Logger;
 import br.flmane.controles.ControleJogoLocal;
 import br.flmane.controles.InterfaceJogo;
+import br.flmane.controles.InterfaceJogoVisual;
 import br.flmane.entidades.Campeonato;
 import br.flmane.servidor.applet.AppletPaddock;
 import br.flmane.recursos.idiomas.Lang;
@@ -36,7 +37,7 @@ public class MainFrame extends JFrame {
 
 
     private static final long serialVersionUID = -284357233387917389L;
-    protected transient InterfaceJogo controleJogo;
+    protected transient InterfaceJogoVisual controleJogo;
     private JMenuBar bar;
     private JMenu menuJogo;
     private JMenu menuInfo;
@@ -51,7 +52,7 @@ public class MainFrame extends JFrame {
 
     private transient AppletPaddock appletPaddock = new AppletPaddock();
 
-    public InterfaceJogo getControleJogo() {
+    public InterfaceJogoVisual getControleJogo() {
         return controleJogo;
     }
 
@@ -499,7 +500,7 @@ public class MainFrame extends JFrame {
         }
     }
 
-    public void setControleJogo(InterfaceJogo controleJogo) {
+    public void setControleJogo(InterfaceJogoVisual controleJogo) {
         this.controleJogo = controleJogo;
     }
 

@@ -1,15 +1,19 @@
 package br.flmane.controles;
 
-import br.flmane.MainFrame;
 import br.flmane.entidades.*;
-import br.flmane.visao.PainelTabelaResultadoFinal;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Contrato de uma corrida, usado tanto pelos modos com interface gráfica quanto
+ * pelo servidor headless. Os pontos que devolvem componentes gráficos moram em
+ * {@link InterfaceJogoVisual}: mantê-los aqui fazia o processo servidor
+ * carregar Swing e {@code br.flmane.visao} só para resolver as assinaturas.
+ * {@code BufferedImage} permanece — é Java2D puro, gerado e servido em modo
+ * headless sem qualquer componente de UI.
+ */
 public interface InterfaceJogo {
 
     public List<String> listaInfo();
@@ -32,7 +36,6 @@ public interface InterfaceJogo {
 
     public List<No> getNosDoBox();
 
-    public MainFrame getMainFrame();
 
     public int getMediaPontecia();
 
@@ -104,7 +107,6 @@ public interface InterfaceJogo {
 
     public void pausarJogo();
 
-    public PainelTabelaResultadoFinal obterResultadoFinal();
 
     public boolean isSafetyCarNaPista();
 
@@ -160,7 +162,6 @@ public interface InterfaceJogo {
 
     public void mudarModoPilotagem(String modo);
 
-    public void setMainFrame(MainFrame mainFrame);
 
     public boolean isModoQualify();
 
@@ -288,7 +289,6 @@ public interface InterfaceJogo {
 
     public int porcentagemChuvaCircuito();
 
-    public JPanel painelNarracao();
 
     public void forcaSafatyCar();
 
@@ -394,7 +394,6 @@ public interface InterfaceJogo {
 
     public boolean mostraTipoPneuAdversario();
 
-    public JPanel painelDebug();
 
     public void atualizaInfoDebug();
 

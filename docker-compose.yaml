@@ -7,12 +7,22 @@ services:
     pull_policy: never
     container_name: flmane
     restart: unless-stopped
+    # O heap e derivado deste limite pelo -XX:MaxRAMPercentage do ENTRYPOINT.
+    # Sem limite, a JVM dimensionaria o heap pela RAM do host inteiro.
+    mem_limit: ${FLMANE_MEM_LIMIT:-1g}
     ports:
-      - "80:8080"
+      # 80 no deploy real. FLMANE_PORTA_HOST permite publicar numa porta >=1024
+      # (ex.: Podman rootless, onde bind em porta privilegiada falha) sem editar
+      # este arquivo — usado por utilitarios/medir_memoria_headless.sh.
+      - "${FLMANE_PORTA_HOST:-80}:8080"
     environment:
       JDBC_URL: jdbc:mariadb://db:3306/flmane?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       JDBC_USER: root
       JDBC_PASSWORD: flmane
+      # Vazio no uso normal. Preenchido só por utilitarios/medir_memoria_headless.sh,
+      # que injeta o Flight Recorder (a imagem JRE nao tem jcmd) para medir heap,
+      # metaspace e classes carregadas sem alterar o ENTRYPOINT de producao.
+      JAVA_TOOL_OPTIONS: ${FLMANE_JAVA_TOOL_OPTIONS:-}
     depends_on:
       db:
         condition: service_healthy

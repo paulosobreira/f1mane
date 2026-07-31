@@ -132,6 +132,38 @@ public class CarregadorRecursos {
         return modoHeadlessDisco;
     }
 
+    /**
+     * Descarta as estruturas memoizadas que a pré-geração de imagens headless
+     * enche mas que o regime do servidor não precisa manter: o grid completo
+     * (pilotos + carros ligados) de <b>todas</b> as temporadas, os defaults por
+     * temporada, os defaults de circuito e as listas de times/pilotos por
+     * temporada, além dos circuitos desserializados.
+     * <p>
+     * Todas são caches preguiçosos: a primeira requisição que precisar de
+     * qualquer uma delas recarrega do classpath. Chamado por
+     * {@code MainLauncher} depois da pré-geração (ou depois de detectar que ela
+     * já estava pronta) e antes do bind da porta, para que o heap em regime não
+     * carregue o pico de carga da pré-geração pelo resto da vida do processo.
+     * Não tem efeito no modo GUI, que nunca chama este caminho.
+     */
+    public static synchronized void liberarCachesPreGeracao() {
+        if (carregadorRecursos != null) {
+            carregadorRecursos.temporadasPilotos = null;
+            carregadorRecursos.temporadasPilotosDefauts = null;
+            carregadorRecursos.circuitosDefauts = null;
+        }
+        cacheTimes.clear();
+        cachePilotos.clear();
+        bufferCircuitos.clear();
+        bufferImages.clear();
+        bufferCarros.clear();
+        bufferCarrosCima.clear();
+        bufferCarrosCimaSemAreofolio.clear();
+        bufferCarrosLado.clear();
+        bufferCarrosLadoSemAreofolio.clear();
+        bufferCapacete.clear();
+    }
+
     public static synchronized CarregadorRecursos getCarregadorRecursos(
             boolean cache) {
         if (carregadorRecursos == null) {

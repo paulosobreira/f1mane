@@ -1,6 +1,7 @@
 package br.flmane;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -63,5 +64,43 @@ class MainLauncherGarantirImagensHeadlessTest {
         }
 
         assertFalse(Files.exists(diretorioFixo.resolve("circuitos").resolve("qualquer.jpg")));
+    }
+
+    /**
+     * O grid completo de todas as temporadas e os circuitos desserializados só
+     * existem pra alimentar a pré-geração — ficar com eles presos nos caches
+     * memoizados pelo resto da vida do processo servidor é justamente o custo
+     * que esta liberação elimina.
+     */
+    @Test
+    void aposPreGeracao_cachesMemoizadosSaoLiberados(@TempDir Path diretorioFixo) throws Exception {
+        // false: ligar o cache aqui contaminaria a suíte inteira — a flag é
+        // estática e sticky, e faria outros testes receberem circuitos já
+        // desserializados (e mutados) por este.
+        CarregadorRecursos carregador = CarregadorRecursos.getCarregadorRecursos(false);
+        assertFalse(carregador.carregarTemporadasPilotos().isEmpty(),
+                "pré-condição: o grid das temporadas foi carregado e memoizado");
+
+        try (MockedStatic<ControleRecursos> controleRecursos = mockStatic(ControleRecursos.class)) {
+            controleRecursos.when(ControleRecursos::carregarCircuitos)
+                    .thenReturn(Collections.emptyMap());
+
+            MainLauncher.garantirImagensHeadless(diretorioFixo.toString());
+        }
+
+        assertNull(campoTemporadasPilotos(carregador),
+                "o grid memoizado deve ter sido descartado antes do bind da porta");
+    }
+
+    /**
+     * Lê o campo memoizado direto por reflexão: o getter público recarrega o
+     * grid sob demanda (é justamente o comportamento desejado), então chamá-lo
+     * não distinguiria "liberado" de "nunca carregado".
+     */
+    private static Object campoTemporadasPilotos(CarregadorRecursos carregador) throws Exception {
+        java.lang.reflect.Field campo =
+                CarregadorRecursos.class.getDeclaredField("temporadasPilotos");
+        campo.setAccessible(true);
+        return campo.get(carregador);
     }
 }

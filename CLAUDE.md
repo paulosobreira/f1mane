@@ -120,6 +120,17 @@ A imagem `flmane` nunca é puxada de um registry (`pull_policy: never`) — é s
 
 O `flmane.dockerfile` roda `--pre-gerar-imagens` (modo "assar") num `RUN` durante o `docker build`, gerando de uma vez as imagens de circuito/carro/capacete do modo headless e embutindo-as na imagem final (`FLMANE_IMAGENS_HEADLESS_DIR=/app/imagens-headless`). Por isso, restart do container `flmane` (mesma imagem) não paga de novo o custo de minutos de pré-geração no boot — o servidor detecta o marcador de conclusão já presente e pula direto pro bind da porta. Rebuilds da imagem sempre re-assam as imagens do zero.
 
+### Flags de runtime do modo headless
+
+As flags de JVM do deploy moram **só** no `ENTRYPOINT` do `flmane.dockerfile` (não há script wrapper) e são guardadas pelo teste `FlmaneDockerfileFlagsRuntimeTest`:
+
+- `-Djava.awt.headless=true` — o servidor só usa Java2D para gerar `BufferedImage`; sem a flag a JVM inicializa o toolkit gráfico nativo (fontconfig/X11) num processo que nunca abre janela. O `RUN` de pré-geração já usava a flag; o `ENTRYPOINT` não.
+- `-XX:MaxRAMPercentage=75` — dimensiona o heap pelo `mem_limit` do serviço `flmane` no `docker-compose.yaml` (default `1g`, ajustável por `FLMANE_MEM_LIMIT`). Sem isso o G1 dimensiona pela RAM do host inteiro: numa medição de linha de base, o heap usado após GC era ~31 MB mas o committed chegava a 500 MB, com RSS de ~455 MB.
+
+O `docker-compose.yaml` também tem duas interpolações que são no-op no deploy real e existem só para o utilitário de medição/dev: `JAVA_TOOL_OPTIONS: ${FLMANE_JAVA_TOOL_OPTIONS:-}` (injeta o Flight Recorder — a imagem JRE não tem `jcmd`) e `"${FLMANE_PORTA_HOST:-80}:8080"` (publicar em porta ≥1024 no Podman rootless).
+
+Para medir memória do servidor headless: `utilitarios/medir_memoria_headless.sh --rotulo <nome>` (sobe a stack, mede RSS pós-boot e sob carga, resume o JFR). O cenário fixo está descrito em `openspec/changes/otimizar-memoria-headless/medicoes.md`.
+
 ## Debugging
 
 `Global.DEBUG = true` ativa overlays visuais na `PainelCircuito`. Ao ativar, verificar sempre se `pilotoSelecionado != null` antes de acessar nós — o rendering roda em thread separada e o piloto pode ser null durante inicialização.

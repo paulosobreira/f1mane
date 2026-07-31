@@ -3,7 +3,6 @@ package br.flmane.controles;
 import br.flmane.MainFrame;
 import br.flmane.entidades.*;
 import br.flmane.recursos.idiomas.Lang;
-import br.flmane.servidor.JogoServidor;
 import br.flmane.servidor.entidades.TOs.TravadaRoda;
 import br.flmane.visao.GerenciadorVisual;
 import br.flmane.visao.PainelTabelaResultadoFinal;
@@ -25,7 +24,7 @@ import java.util.*;
  */
 public class ControleJogoLocal extends ControleRecursos
         implements
-        InterfaceJogo {
+        InterfaceJogo, InterfaceJogoVisual {
     protected Piloto pilotoSelecionado;
     protected Piloto pilotoJogador;
 
@@ -54,8 +53,24 @@ public class ControleJogoLocal extends ControleRecursos
     private MainFrame mainFrame;
 
     public ControleJogoLocal(String temporada) throws Exception {
+        this(temporada, true);
+    }
+
+    /**
+     * Construtor com decisão explícita sobre rendering: o servidor headless
+     * ({@link br.flmane.servidor.JogoServidor}) passa {@code false} porque o
+     * desenho acontece no navegador do cliente, então criar o
+     * {@link GerenciadorVisual} aqui só carregaria as classes de
+     * {@code br.flmane.visao} num processo que nunca desenha.
+     * <p>
+     * Antes essa decisão era um {@code instanceof JogoServidor} escondido
+     * dentro do construtor da superclasse — qualquer subclasse nova de servidor
+     * voltaria a criar o gerenciador em silêncio.
+     */
+    protected ControleJogoLocal(String temporada, boolean comRendering)
+            throws Exception {
         super(temporada, System.currentTimeMillis());
-        if (!(this instanceof JogoServidor)) {
+        if (comRendering) {
             gerenciadorVisual = new GerenciadorVisual(this);
         }
         controleEstatisticas = new ControleEstatisticas(this);
@@ -520,10 +535,14 @@ public class ControleJogoLocal extends ControleRecursos
     }
 
     /**
-     * @see br.flmane.controles.InterfaceJogo#obterResultadoFinal()
+     * @see br.flmane.controles.InterfaceJogoVisual#obterResultadoFinal()
      */
     public PainelTabelaResultadoFinal obterResultadoFinal() {
-
+        if (gerenciadorVisual == null) {
+            // Modo sem rendering (corrida servida por REST): não há tabela
+            // Swing de resultado para devolver.
+            return null;
+        }
         return gerenciadorVisual.getResultadoFinal();
     }
 

@@ -3,6 +3,7 @@ package br.flmane.recursos;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import br.flmane.entidades.Circuito;
@@ -19,6 +20,19 @@ import br.flmane.entidades.ObjetoLivre;
  * objetos, útil para provar a migração de ponta a ponta.
  */
 class ObjetoLivreMigracaoCenarioTest {
+
+    /**
+     * A migração só roda ao desserializar o XML: se outro teste da suíte já
+     * deixou este circuito no cache estático — possivelmente com
+     * {@code objetosCenario} zerado por {@code liberarObjetosDesenho()}, que a
+     * pré-geração headless chama — este teste veria a instância alheia em vez
+     * de exercitar a migração. Limpar antes torna o resultado independente da
+     * ordem de execução.
+     */
+    @BeforeEach
+    void limparCacheDeCircuitos() {
+        CarregadorRecursos.liberarCachesPreGeracao();
+    }
 
     @Test
     void carregarCircuitoComObjetoLivreLegado_migraParaObjetosCenario() throws Exception {

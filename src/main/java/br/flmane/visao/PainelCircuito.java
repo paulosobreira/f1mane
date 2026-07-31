@@ -4,6 +4,7 @@ import br.flmane.MainFrame;
 import br.flmane.controles.ControleEstatisticas;
 import br.flmane.controles.ControleJogoLocal;
 import br.flmane.controles.InterfaceJogo;
+import br.flmane.controles.InterfaceJogoVisual;
 import br.flmane.entidades.*;
 import br.flmane.recursos.CarregadorRecursos;
 import br.flmane.recursos.idiomas.Lang;
@@ -230,6 +231,20 @@ public class PainelCircuito {
     private Rectangle2D.Double rectangleGerarBoxes;
     private int contImgFundo;
 
+    /**
+     * O construtor {@code (Circuito, InterfaceJogo)} é usado também pelo
+     * servidor headless (fallback de fundo de circuito ainda não pré-gerado),
+     * onde o jogo é um {@code JogoServidor} sem parte gráfica — daí a
+     * verificação em vez de um cast direto. Nos modos com interface o jogo
+     * sempre implementa {@link InterfaceJogoVisual} e o retorno é o mesmo
+     * {@code MainFrame} de antes.
+     */
+    private MainFrame mainFrame() {
+        return controleJogo instanceof InterfaceJogoVisual
+                ? ((InterfaceJogoVisual) controleJogo).getMainFrame()
+                : null;
+    }
+
     public PainelCircuito(InterfaceJogo jogo, GerenciadorVisual gerenciadorVisual) {
         carregaRecursos();
         controleJogo = jogo;
@@ -238,13 +253,13 @@ public class PainelCircuito {
         for (int i = 0; i < pilotosRect.length; i++) {
             pilotosRect[i] = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
         }
-        MouseListener[] mouseListeners = controleJogo.getMainFrame().getMouseListeners();
+        MouseListener[] mouseListeners = mainFrame().getMouseListeners();
         for (int i = 0; i < mouseListeners.length; i++) {
-            controleJogo.getMainFrame().removeMouseListener(mouseListeners[i]);
+            mainFrame().removeMouseListener(mouseListeners[i]);
         }
-        controleJogo.getMainFrame().addMouseListener(new MouseAdapter() {
+        mainFrame().addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                controleJogo.getMainFrame().requestFocus();
+                mainFrame().requestFocus();
                 if (!verificaComando(e)) {
                     Piloto pilotoJogador = controleJogo.getPilotoJogador();
                     if (pilotoJogador != null && pilotoJogador.getPtosBox() == 0 && pilotoJogador.getP1() != null
@@ -325,7 +340,7 @@ public class PainelCircuito {
 
     protected void render() {
         try {
-            Graphics2D g2d = controleJogo.getMainFrame().obterGraficos();
+            Graphics2D g2d = mainFrame().obterGraficos();
             if (g2d == null) {
                 return;
             }
@@ -1802,12 +1817,12 @@ public class PainelCircuito {
             if (pilotoSelecionado == null) {
                 controleJogo.selecionouPiloto(ps);
                 pilotoSelecionado = ps;
-                controleJogo.getMainFrame().requestFocus();
+                mainFrame().requestFocus();
 
             }
             if (ps != null && !ps.equals(pilotoSelecionado)) {
                 pilotoSelecionado = ps;
-                controleJogo.getMainFrame().requestFocus();
+                mainFrame().requestFocus();
             }
         }
     }
@@ -2855,7 +2870,7 @@ public class PainelCircuito {
         if (backGround != null) {
             graphics = backGround.getGraphics();
         } else {
-            graphics = controleJogo.getMainFrame().obterGraficos();
+            graphics = mainFrame().obterGraficos();
         }
         if (graphics == null) {
             return;
@@ -3235,7 +3250,7 @@ public class PainelCircuito {
         int x = 10;
         int y = 35;
 
-        MainFrame mainFrame = controleJogo.getMainFrame();
+        MainFrame mainFrame = mainFrame();
         Rectangle rectangle = new Rectangle(x, y, (int) (mainFrame.getWidth() - 20),
                 (int) (mainFrame.getHeight() - 40));
         return rectangle;
@@ -3245,7 +3260,7 @@ public class PainelCircuito {
         int x = 0;
         int y = 0;
 
-        MainFrame mainFrame = controleJogo.getMainFrame();
+        MainFrame mainFrame = mainFrame();
         Rectangle rectangle = new Rectangle(x, y, (int) (mainFrame.getWidth()), (int) (mainFrame.getHeight()));
         return rectangle;
     }
@@ -3454,7 +3469,7 @@ public class PainelCircuito {
         int y = 0;
 
         if (pontoCentralizado != null) {
-            MainFrame mainFrame = controleJogo.getMainFrame();
+            MainFrame mainFrame = mainFrame();
             x = (int) (pontoCentralizado.x - ((mainFrame.getWidth() / 2) / zoom));
             y = (int) (pontoCentralizado.y - ((mainFrame.getHeight() / 2) / zoom));
         }

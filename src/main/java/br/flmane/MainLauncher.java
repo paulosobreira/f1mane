@@ -219,10 +219,15 @@ public class MainLauncher {
             System.out.println(
                     "IMAGENS HEADLESS JA PRE-GERADAS, REAPROVEITANDO: "
                             + ImagensHeadlessDisco.diretorioBase());
+            CarregadorRecursos.liberarCachesPreGeracao();
             return;
         }
         preGerarImagensHeadless();
         ImagensHeadlessDisco.marcarPreGeracaoConcluida();
+        // O grid completo de todas as temporadas e os circuitos desserializados
+        // só serviram pra gerar as imagens: soltar antes do bind da porta pra
+        // que o regime do servidor não carregue o pico da pré-geração.
+        CarregadorRecursos.liberarCachesPreGeracao();
     }
 
     /**
