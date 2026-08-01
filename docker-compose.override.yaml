@@ -1,4 +1,11 @@
 services:
+  flmane:
+    # O merge do Compose CONCATENA listas de portas — sem a tag !override, dev
+    # publicaria 80 e 8000, e o bind do 80 seguiria falhando em Podman rootless.
+    # !override descarta a lista do arquivo base em vez de somar a ela.
+    ports: !override
+      - "${FLMANE_PORTA_HOST:-8000}:8080"
+
   phpmyadmin:
     image: phpmyadmin:latest
     container_name: phpmyadmin

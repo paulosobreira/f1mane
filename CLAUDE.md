@@ -107,13 +107,15 @@ Todas as mensagens ao usuário passam por `Lang.msg("chave")` ou `Lang.decodeTex
 
 `docker-compose.yaml` (base) contém só o runtime do jogo: `flmane` (porta 80→8080) e `db` (MariaDB 11). O container `flmane` aguarda o healthcheck do `db` (via `healthcheck.sh --connect`, script nativo da imagem MariaDB) antes de subir.
 
-`docker-compose.override.yaml` acrescenta `phpmyadmin` (porta 8080, funciona sem alteração contra MariaDB, que fala o mesmo protocolo de fio do MySQL) e `sonarqube` (porta 9000) — ferramentas de desenvolvimento, não fazem parte do runtime de produção.
+`docker-compose.override.yaml` acrescenta `phpmyadmin` (porta 8080, funciona sem alteração contra MariaDB, que fala o mesmo protocolo de fio do MySQL) e `sonarqube` (porta 9000) — ferramentas de desenvolvimento, não fazem parte do runtime de produção — e republica o `flmane` em `${FLMANE_PORTA_HOST:-8000}:8080`.
+
+Essa republicação usa a tag `ports: !override`, e ela é obrigatória: o merge do Compose **concatena** listas de portas em vez de substituí-las, então sem a tag o dev publicaria 80 *e* 8000 e o bind do 80 continuaria falhando em rootless. `!override` (Compose Spec, `docker compose` ≥ 2.24) descarta a lista do arquivo base. Consequência prática: o serviço `flmane` aparece nos dois arquivos, mas no override só com a chave `ports` — nenhuma outra configuração dele é duplicada. Se algum dia o provider de compose for o `podman-compose` (Python) em vez do binário `docker-compose`, confirmar que ele entende a tag — é extensão do Compose Spec, não YAML padrão.
 
 - **Dev** (comando padrão, sem `-f`): `docker compose up -d` / `podman compose up -d` / `utilitarios/build_container.sh` — Compose carrega `docker-compose.override.yaml` automaticamente (convenção do Compose Spec), subindo os 4 serviços
 - **Produção**: `docker compose -f docker-compose.yaml up -d` / `utilitarios/build_container_prod.sh` (ignora o override explicitamente) — só `flmane`+`db`
 
 O `docker-compose.yaml` funciona tanto com `docker compose` quanto com `podman compose`/`podman-compose`. Uma ressalva ao rodar com Podman em modo rootless (sem root):
-- **Porta 80 do serviço `flmane`**: bind de porta privilegiada (<1024) falha em rootless (`rootlessport cannot expose privileged port 80`). Publique numa porta ≥1024 (ex. `8000:8080`) ou ajuste `net.ipv4.ip_unprivileged_port_start` via sysctl — não é bug do compose, é restrição do kernel pra processos sem privilégio.
+- **Porta 80 do serviço `flmane`**: bind de porta privilegiada (<1024) falha em rootless (`rootlessport cannot expose privileged port 80`). Em dev isso já está resolvido pelo override (8000); atinge só a subida de produção. Publique numa porta ≥1024 (`FLMANE_PORTA_HOST=8000`) ou ajuste `net.ipv4.ip_unprivileged_port_start` via sysctl — não é bug do compose, é restrição do kernel pra processos sem privilégio.
 - **Migração de dados de uma instalação MySQL existente**: o volume `mariadb_data` é novo e começa vazio. Para levar dados de um volume MySQL antigo, faça `mysqldump` (ou `mariadb-dump`) do banco MySQL de origem e restaure (`mysql`/`mariadb` client) no container MariaDB novo — não há migração automática entre os volumes.
 
 A imagem `flmane` nunca é puxada de um registry (`pull_policy: never`) — é sempre construída localmente a partir de `flmane.dockerfile`, via `utilitarios/build_container.sh` ou `docker/podman compose up --build`.

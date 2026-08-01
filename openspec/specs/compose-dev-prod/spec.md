@@ -20,4 +20,19 @@ Descreve a separação entre `docker-compose.yaml` (base, runtime de produção)
 
 #### Scenario: Nenhuma definição de flmane/db é duplicada entre os arquivos
 - **WHEN** o conteúdo de `docker-compose.yaml` e `docker-compose.override.yaml` é inspecionado
-- **THEN** os serviços `flmane` e `db` aparecem definidos uma única vez, só no arquivo base
+- **THEN** o serviço `db` aparece definido uma única vez, só no arquivo base, e o serviço `flmane` aparece no override exclusivamente com a chave `ports` (republicação da porta de dev) — imagem, build, `mem_limit`, `environment` e `depends_on` ficam só no arquivo base
+
+### Requirement: A porta publicada do jogo difere entre dev e produção
+O serviço `flmane` SHALL ser publicado na porta `80` do host na subida de produção e na porta `8000` na subida de dev, ambas apontando pra `8080` do container. A diferença SHALL vir do `docker-compose.override.yaml`, sem exigir edição do arquivo base nem variável de ambiente no uso normal. Ambas as portas SHALL continuar sobrescrevíveis por `FLMANE_PORTA_HOST`.
+
+#### Scenario: Dev publica em 8000
+- **WHEN** o compose é executado sem `-f` explícito
+- **THEN** o serviço `flmane` publica **somente** `8000:8080` — a porta `80` não é publicada
+
+#### Scenario: Produção publica em 80
+- **WHEN** o compose é executado com `-f docker-compose.yaml` explícito
+- **THEN** o serviço `flmane` publica `80:8080`
+
+#### Scenario: Lista de portas é substituída, não concatenada
+- **WHEN** o override redefine `ports` do serviço `flmane`
+- **THEN** a redefinição usa a tag `!override` do Compose Spec, porque o merge padrão do Compose concatena listas de portas — sem a tag, a subida de dev publicaria `80` e `8000` simultaneamente

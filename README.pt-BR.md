@@ -163,9 +163,9 @@ docker run -p 8080:8080 sowbreira/flmane:latest
 
 ## Docker Compose
 
-`docker-compose.yaml` (base) tem só o runtime do jogo: Fl-MANE (porta 80→8080) e MariaDB. O container da aplicação aguarda o healthcheck do banco antes de subir. `docker-compose.override.yaml` acrescenta ferramentas de dev (phpMyAdmin, porta 8080; SonarQube, porta 9000) — não fazem parte do runtime de produção.
+`docker-compose.yaml` (base) tem só o runtime do jogo: Fl-MANE (porta 80→8080) e MariaDB. O container da aplicação aguarda o healthcheck do banco antes de subir. `docker-compose.override.yaml` acrescenta ferramentas de dev (phpMyAdmin, porta 8080; SonarQube, porta 9000) — não fazem parte do runtime de produção — e republica o Fl-MANE em `8000` no lugar do `80`.
 
-> Podman rootless não consegue bindar porta privilegiada (<1024). Se o `flmane` falhar ao subir com `rootlessport cannot expose privileged port 80`, publique numa porta ≥1024 (ex. `8000:8080`) ou ajuste `net.ipv4.ip_unprivileged_port_start` via sysctl.
+> Podman rootless não consegue bindar porta privilegiada (<1024) — por isso o override de dev usa `8000`. Em produção (`-f docker-compose.yaml`, porta 80), se o `flmane` falhar com `rootlessport cannot expose privileged port 80`, publique numa porta ≥1024 via `FLMANE_PORTA_HOST=8000` ou ajuste `net.ipv4.ip_unprivileged_port_start` via sysctl.
 
 **Baixar os arquivos de configuração**
 ```bash
@@ -186,7 +186,8 @@ docker compose -f docker-compose.yaml up -d
 
 | Serviço | URL |
 |---|---|
-| Jogo (HTML5) | `http://localhost/flmane/html5/index.html` |
+| Jogo (HTML5) — dev | `http://localhost:8000/flmane/html5/index.html` |
+| Jogo (HTML5) — produção | `http://localhost/flmane/html5/index.html` |
 | phpMyAdmin (só dev) | `http://localhost:8080` |
 
 ---
