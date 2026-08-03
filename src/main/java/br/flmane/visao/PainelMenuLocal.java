@@ -2,6 +2,7 @@ package br.flmane.visao;
 
 import br.flmane.MainFrame;
 import br.flmane.controles.InterfaceJogo;
+import br.flmane.controles.InterfaceJogoVisual;
 import br.flmane.entidades.*;
 import br.flmane.recursos.CarregadorRecursos;
 import br.flmane.recursos.idiomas.Lang;
@@ -1711,7 +1712,7 @@ public class PainelMenuLocal {
                     Thread run = new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            InterfaceJogo controleJogo = mainFrame.getControleJogo();
+                            InterfaceJogoVisual controleJogo = mainFrame.getControleJogo();
                             controleJogo.setMainFrame(mainFrame);
                             try {
                                 controleJogo.iniciarJogoMenuLocal(circuitoSelecionado, temporadaSelecionada,

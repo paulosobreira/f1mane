@@ -11,8 +11,23 @@ public class Logger {
     private static final org.slf4j.Logger LOG =
             LoggerFactory.getLogger("FLMANE");
 
+    /**
+     * Limite de assinaturas distintas de exceção retidas em memória. Ao
+     * estourar, a entrada mais antiga (por ordem de primeira ocorrência) é
+     * descartada — num container de uptime longo o mapa antes crescia até
+     * este teto e, ao enchê-lo, parava de registrar qualquer exceção nova,
+     * ficando preso ao diagnóstico do começo da vida do processo.
+     */
+    public static final int MAX_TOP_EXCEPTIONS = 10000;
+
     public static Map<String, Integer> topExceptions =
-            new LinkedHashMap<>();
+            new LinkedHashMap<String, Integer>() {
+                @Override
+                protected boolean removeEldestEntry(
+                        Map.Entry<String, Integer> eldest) {
+                    return size() > MAX_TOP_EXCEPTIONS;
+                }
+            };
 
     public static void logar(String val) {
         LOG.info(val);
@@ -36,10 +51,7 @@ public class Logger {
         topExecpts(e);
     }
 
-    public static void topExecpts(Throwable e) {
-        if (topExceptions.size() > 10000) {
-            return;
-        }
+    public static synchronized void topExecpts(Throwable e) {
         StackTraceElement[] trace = e.getStackTrace();
         StringBuilder retorno = new StringBuilder();
         int size = Math.min(trace.length, 15);

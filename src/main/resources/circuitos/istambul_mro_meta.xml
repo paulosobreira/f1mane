@@ -706,9 +706,6 @@
   <void property="multiplicadorLarguraPista">
    <double>1.4</double>
   </void>
-  <void property="nome">
-   <string>Istanbul Park</string>
-  </void>
   <void property="pista">
    <void method="add">
     <object class="br.flmane.entidades.No" id="No25">

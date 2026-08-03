@@ -23,6 +23,7 @@ import br.flmane.controles.ControleCampeonato;
 import br.flmane.controles.ControleEstatisticas;
 import br.flmane.controles.ControleRecursos;
 import br.flmane.controles.InterfaceJogo;
+import br.flmane.controles.InterfaceJogoVisual;
 import br.flmane.entidades.Campeonato;
 import br.flmane.entidades.Carro;
 import br.flmane.entidades.Circuito;
@@ -45,7 +46,8 @@ import br.flmane.visao.PainelTabelaResultadoFinal;
 /**
  * @author Paulo Sobreira Criado em 29/07/2007 as 17:30:43
  */
-public class JogoCliente extends ControleRecursos implements InterfaceJogo {
+public class JogoCliente extends ControleRecursos
+        implements InterfaceJogo, InterfaceJogoVisual {
     private DadosCriarJogo dadosParticiparJogo;
     private String nomeJogoCriado;
     private String nomePilotoJogador;

@@ -71,6 +71,15 @@ public class MainLauncher {
     public static void main(String[] args) {
 
         try {
+            if (contemArg(args, "--pre-gerar-imagens")) {
+                // Modo "assar": roda só a pré-geração de imagens headless e
+                // sai, sem bindar porta — usado pelo flmane.dockerfile num
+                // RUN durante o docker build, pra embutir as imagens já
+                // prontas na imagem final e restarts do container não
+                // pagarem esse custo de novo.
+                assarImagensHeadless();
+                return;
+            }
             if (contemArg(args, "--headless")) {
                 // --headless sozinho já significa modo disco: pré-gera as
                 // imagens em disco e não retém BufferedImage nenhum em
@@ -143,8 +152,7 @@ public class MainLauncher {
         if (modoImagensDisco) {
             CarregadorRecursos.ativarModoHeadlessDisco();
             SpriteSheet.ativarModoHeadlessDisco();
-            ImagensHeadlessDisco.iniciar();
-            preGerarImagensHeadless();
+            garantirImagensHeadless();
         }
 
         FlmaneHttpDispatcher dispatcher = new FlmaneHttpDispatcher(base.toPath());
@@ -176,6 +184,50 @@ public class MainLauncher {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
+    }
+
+    /**
+     * Roda a pré-geração de imagens headless e sai, sem bindar porta —
+     * modo "assar" invocado via {@code --pre-gerar-imagens}, pensado pra
+     * rodar dentro de um {@code RUN} do {@code flmane.dockerfile}.
+     */
+    private static void assarImagensHeadless() throws Exception {
+        CarregadorRecursos.ativarModoHeadlessDisco();
+        SpriteSheet.ativarModoHeadlessDisco();
+        garantirImagensHeadless();
+    }
+
+    /**
+     * Inicia {@link ImagensHeadlessDisco} e, se o diretório resultante já
+     * tiver uma pré-geração completa de uma execução anterior (imagens
+     * assadas no {@code docker build} ou de um boot headless anterior sobre
+     * o mesmo diretório fixo), pula a pré-geração inteira; caso contrário,
+     * gera tudo e grava o marcador de conclusão.
+     */
+    private static void garantirImagensHeadless() throws Exception {
+        garantirImagensHeadless(System.getenv("FLMANE_IMAGENS_HEADLESS_DIR"));
+    }
+
+    /**
+     * Pacote-visível pra teste: mesma lógica de {@link #garantirImagensHeadless()},
+     * recebendo o diretório fixo diretamente em vez de lê-lo de
+     * {@code System.getenv} (não mutável a partir do teste).
+     */
+    static void garantirImagensHeadless(String diretorioFixo) throws Exception {
+        ImagensHeadlessDisco.iniciar(diretorioFixo);
+        if (ImagensHeadlessDisco.preGeracaoConcluida()) {
+            System.out.println(
+                    "IMAGENS HEADLESS JA PRE-GERADAS, REAPROVEITANDO: "
+                            + ImagensHeadlessDisco.diretorioBase());
+            CarregadorRecursos.liberarCachesPreGeracao();
+            return;
+        }
+        preGerarImagensHeadless();
+        ImagensHeadlessDisco.marcarPreGeracaoConcluida();
+        // O grid completo de todas as temporadas e os circuitos desserializados
+        // só serviram pra gerar as imagens: soltar antes do bind da porta pra
+        // que o regime do servidor não carregue o pico da pré-geração.
+        CarregadorRecursos.liberarCachesPreGeracao();
     }
 
     /**

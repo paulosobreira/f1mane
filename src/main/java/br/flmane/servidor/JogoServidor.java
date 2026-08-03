@@ -49,7 +49,8 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
     public JogoServidor(String temporada, DadosCriarJogo dadosCriarJogo)
             throws Exception {
-        super(temporada);
+        // false: corrida servida por REST, o desenho acontece no cliente web.
+        super(temporada, false);
         this.dadosCriarJogo = dadosCriarJogo;
         controleEstatisticas = new ControleEstatisticas(JogoServidor.this);
         processarEntradaDados();

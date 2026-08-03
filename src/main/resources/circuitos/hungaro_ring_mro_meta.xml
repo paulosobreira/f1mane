@@ -592,9 +592,6 @@
   <void property="multiplicadorLarguraPista">
    <double>1.3</double>
   </void>
-  <void property="nome">
-   <string>Hungaro Ring</string>
-  </void>
   <void property="pista">
    <void method="add">
     <object class="br.flmane.entidades.No" id="No21">

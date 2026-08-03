@@ -24,9 +24,9 @@
             <version>7.4.0.Final</version>
         </dependency>
         <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-            <version>8.2.0</version>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>3.5.1</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
@@ -329,14 +329,14 @@
             </properties>
         </profile>
         <profile>
-            <id>mysql</id>
+            <id>mariadb</id>
             <properties>
-                <env>mysql</env>
+                <env>mariadb</env>
                 <jdbc.driver>
-                    com.mysql.cj.jdbc.Driver
+                    org.mariadb.jdbc.Driver
                 </jdbc.driver>
                 <jdbc.url>
-                    jdbc:mysql://db:3306/flmane?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC
+                    jdbc:mariadb://db:3306/flmane?useSSL=false&amp;amp;allowPublicKeyRetrieval=true&amp;amp;serverTimezone=UTC
                 </jdbc.url>
                 <jdbc.user>
                     root
@@ -345,7 +345,7 @@
                     flmane
                 </jdbc.password>
                 <hibernate.dialect>
-                    org.hibernate.dialect.MySQLDialect
+                    org.hibernate.dialect.MariaDBDialect
                 </hibernate.dialect>
             </properties>
         </profile>

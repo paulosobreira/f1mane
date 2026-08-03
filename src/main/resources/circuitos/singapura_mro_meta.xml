@@ -699,9 +699,6 @@
   <void property="noite">
    <boolean>true</boolean>
   </void>
-  <void property="nome">
-   <string>Singapura</string>
-  </void>
   <void property="pista">
    <void method="add">
     <object class="br.flmane.entidades.No" id="No25">

@@ -144,41 +144,51 @@ java -cp target/flmane.jar br.flmane.MainFrameSimulacao 2024 Catalunya 72
 
 ## Docker
 
-**Build image**
+**Build image locally**
 ```bash
-docker build -f flmane.dockerfile -t sowbreira/flmane .
+utilitarios/build_container.sh       # dev — includes phpMyAdmin/SonarQube
+utilitarios/build_container_prod.sh  # production — flmane+db only
+# equivalent to:
+docker build -f flmane.dockerfile -t sowbreira/flmane:latest .
 ```
 
-**Push to Docker Hub**
-```bash
-docker push sowbreira/flmane
-```
+The image is always built and run locally — no registry push/pull involved.
 
 **Run locally**
 ```bash
-docker run -p 8080:8080 sowbreira/flmane
+docker run -p 8080:8080 sowbreira/flmane:latest
 ```
 
 ---
 
 ## Docker Compose
 
-Includes three services: Fl-MANE (port 80→8080), MySQL 8.4, and phpMyAdmin (port 8080). The app container waits for the MySQL health check before starting.
+`docker-compose.yaml` (base) has just the game runtime: Fl-MANE (port 80→8080) and MariaDB. The app container waits for the database health check before starting. `docker-compose.override.yaml` adds dev tools (phpMyAdmin, port 8080; SonarQube, port 9000) — not part of the production runtime — and republishes Fl-MANE on `8000` instead of `80`.
 
-**Download compose file**
+> Rootless Podman can't bind privileged ports (<1024) — that's why the dev override uses `8000`. In production (`-f docker-compose.yaml`, port 80), if `flmane` fails with `rootlessport cannot expose privileged port 80`, publish it on a port ≥1024 via `FLMANE_PORTA_HOST=8000` or set `net.ipv4.ip_unprivileged_port_start` via sysctl.
+
+**Download compose files**
 ```bash
 curl -LfO https://raw.githubusercontent.com/paulosobreira/f1mane/master/docker-compose.yaml
+curl -LfO https://raw.githubusercontent.com/paulosobreira/f1mane/master/docker-compose.override.yaml
 ```
 
-**Start all services**
+**Start all services (dev — default, no `-f`)**
 ```bash
 docker compose up -d
+```
+Compose automatically merges `docker-compose.override.yaml` when no `-f` is given (standard Compose behavior).
+
+**Start production only (no dev tools)**
+```bash
+docker compose -f docker-compose.yaml up -d
 ```
 
 | Service | URL |
 |---|---|
-| Game (HTML5) | `http://localhost/flmane/html5/index.html` |
-| phpMyAdmin | `http://localhost:8080` |
+| Game (HTML5) — dev | `http://localhost:8000/flmane/html5/index.html` |
+| Game (HTML5) — production | `http://localhost/flmane/html5/index.html` |
+| phpMyAdmin (dev only) | `http://localhost:8080` |
 
 ---
 

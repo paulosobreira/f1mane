@@ -1,0 +1,35 @@
+services:
+  flmane:
+    # O merge do Compose CONCATENA listas de portas — sem a tag !override, dev
+    # publicaria 80 e 8000, e o bind do 80 seguiria falhando em Podman rootless.
+    # !override descarta a lista do arquivo base em vez de somar a ela.
+    ports: !override
+      - "${FLMANE_PORTA_HOST:-8000}:8080"
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: flmane
+
+  sonarqube:
+    image: sonarqube:community
+    container_name: sonarqube
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s -u admin:admin http://localhost:9000/api/system/status | grep -q '\"status\":\"UP\"'"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+
+volumes:
+  sonarqube_data:

@@ -1,6 +1,7 @@
 package br.flmane.visao;
 
 import br.flmane.controles.InterfaceJogo;
+import br.flmane.controles.InterfaceJogoVisual;
 import br.flmane.entidades.*;
 import br.flmane.recursos.CarregadorRecursos;
 import br.flmane.recursos.idiomas.Lang;
@@ -42,7 +43,7 @@ public class GerenciadorVisual {
     private JSlider spinnerDificuldadeUltrapassagem;
     private JList listPilotosSelecionados;
     private PainelCircuito painelCircuito;
-    private final InterfaceJogo controleJogo;
+    private final InterfaceJogoVisual controleJogo;
     private final JPanel centerPanel = new JPanel();
     private JLabel infoCorrida;
     private JLabel infoPiloto;
@@ -80,7 +81,7 @@ public class GerenciadorVisual {
         return comboBoxTemporadas;
     }
 
-    public GerenciadorVisual(InterfaceJogo controleJogo) throws IOException {
+    public GerenciadorVisual(InterfaceJogoVisual controleJogo) throws IOException {
         this.controleJogo = controleJogo;
         random = new VisualRandom(controleJogo.getRandom().getSeed());
     }
@@ -478,7 +479,7 @@ public class GerenciadorVisual {
         return comboBoxNivelCorrida;
     }
 
-    public InterfaceJogo getControleJogo() {
+    public InterfaceJogoVisual getControleJogo() {
         return controleJogo;
     }
 
